@@ -1,0 +1,23 @@
+<form [formGroup]="formGroup">
+	<div class="c-control">
+		<label class="c-label">{{'erp.app.pages.crm.business-partner-detail.bp-address.coordinates' | translate}}
+			<small>
+				{{formGroup.controls.Lat.value || ('erp.app.pages.crm.business-partner-detail.bp-address.lat' | translate)}}
+				-
+				{{formGroup.controls.Long.value || ('erp.app.pages.crm.business-partner-detail.bp-address.long' | translate)}}
+			</small>
+		</label>
+		<google-map class="c-input marker" width="100%" height="100%" *ngIf="center" [options]="options" [center]="formGroup.controls.Lat.value? {lat: formGroup.controls.Lat.value, lng: formGroup.controls.Long.value } : center">
+			<map-marker #somemarker="mapMarker" 
+			[position]="formGroup.controls.Lat.value? {lat: formGroup.controls.Lat.value, lng: formGroup.controls.Long.value } : center" 
+			[title]="formGroup.controls.Contact.value" 
+			[options]="markerOptions" 
+			(mapDragend)="changePosition(somemarker)"></map-marker>
+		</google-map>
+		<label class="c-label coordinate">
+			<ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="findCoordinate()">Tìm tọa độ theo địa chỉ</ion-button>
+		</label>
+
+		
+	</div>
+</form>

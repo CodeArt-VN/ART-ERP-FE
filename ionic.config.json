@@ -1,0 +1,7 @@
+{
+  "name": "ART-DMS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

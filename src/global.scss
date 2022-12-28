@@ -1,0 +1,498 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import "~intro.js/introjs.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+@import "./theme/_inholding-theme.scss";
+@import "./theme/_inholding-dark-theme.scss";
+@import "./theme/_gem-theme.scss";
+@import "./theme/_white-palace-theme.scss";
+@import "./theme/_the-log-theme.scss";
+@import "./theme/_pqc-theme.scss";
+@import "./theme/_artdistribution-theme.scss";
+@import "./theme/_wgourmet-theme.scss";
+@import "./theme/_dark-theme.scss";
+
+@import "./theme/dpr-query.scss";
+@import "./theme/common.scss";
+@import "./theme/data-table.scss";
+@import "./theme/form-control.scss";
+@import "./theme/introjs.scss";
+@import "./theme/ng-select.scss";
+@import "./theme/fullcalendar.scss";
+@import "./theme/angular-tree-component.scss";
+@import "./theme/print.scss";
+
+
+body{
+    font-size: 1.3rem;
+}
+ion-app{
+    background-color: var(--ion-background-color);
+}
+ion-icon{
+    .fa-secondary{
+        fill: var(--ion-color-primary);
+        opacity: 0.4;
+        
+    }
+}
+
+ion-segment-button {
+    min-width: auto !important;
+	--color-checked: var(--ion-color-primary);
+}
+
+ion-content {
+    --background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
+}
+
+ion-virtual-scroll, ion-item {
+    user-select: text;
+}
+
+ion-picker {
+    --background: var(--main-background-bottom) !important;
+}
+
+ion-popover{
+    &.delivery-review-filter{
+        --width: 260px !important;
+        --max-width: 400px;
+    }
+
+    &.pos-detail-payment{
+        --width: 275px !important;
+        --max-width: 400px;
+
+        .popover-wrapper {
+            .popover-content{
+                left: calc(100vw - 303px) !important;
+                width: 280px;
+                max-width: 400px;
+            }
+        }
+    }
+    
+    // ion-backdrop{
+    // opacity: 0.5 !important;
+    // }    
+    .popover-wrapper {
+        .popover-arrow {
+            display: block !important;
+            position: absolute;
+            left: calc(100vw - 35px) !important;
+            right: 16px !important;
+            top: calc(0vh + 40px) !important;
+        }
+        .popover-content{
+            position: absolute;
+            left: calc(100vw - 280px) !important;
+            right: 16px !important;
+            top: calc(0vh + 50px) !important;
+            width: 70vw;
+            max-width: 270px;
+            transform-origin: right top !important;
+        }
+    }
+}
+
+
+ion-header, app-list-toolbar, app-detail-toolbar{
+    > ion-toolbar:not(.no-padding){
+        --padding-start: 40px;
+        @media screen and (max-width: 991px )
+        {
+            --padding-start: 40px;
+        }
+    }
+}
+
+
+a{
+    text-decoration: none;
+}
+
+// input, select{
+//     -webkit-appearance: none;
+// }
+
+.one-col {
+    @media(min-width: 768px) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 600px;
+    }
+}
+
+.chart-box {
+    flex: auto;
+    margin-top: 40px !important;
+    min-height: 150px;
+    min-width: 240px;
+    width: 240px;
+    background: var(--ion-color-tertiary-tint);
+    border-radius: 0 0 0 18px;
+    margin: 15px;
+
+    @media screen and (min-width: 768px) {
+        border-radius: 6px;
+    }
+
+
+    // @media screen and (min-width: 481px )
+    // {
+    //     max-width: 50vw;
+    // }
+    .title {
+        position: absolute;
+        margin-top: -30px;
+    }
+
+    .chart-contain {
+        // height: 150px;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+
+        .chart-loading {
+            margin: auto;
+            color: var(--ion-color-primary);
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+    }
+
+
+}
+
+.main-view {
+    // margin-right: 0;
+    // @media screen and (min-width: 1024px) {
+    //     margin-right: 320px;
+    // }
+
+    .row-full{
+        background: var(--ion-color-tertiary-tint);
+        overflow: hidden;
+        border-radius: 6px;
+        &.shadow{
+            box-shadow: 0 7px 14px 0 rgba(85,110,145,0), 0 1px 3px 0 rgba(0,0,0,.1), 0 5px 10px 0 rgba(0,0,0,.08), inset 0 -1px 0 0 rgba(0,0,0,.2);
+        }
+        
+        .c-input, .cell .c-input{
+            // background-color: rgba(var(--ion-color-primary-rgb,0,0,0),.05);
+        }
+
+        
+
+    }
+
+    .row-1 {
+        display: flex;
+        flex-flow: row wrap;
+
+        @media screen and (min-width: 768px) {
+            flex-flow: row;
+            flex-direction: row;
+            margin: 0 40px;
+        }
+
+        .top-main-chart {
+            padding-top: 40px;
+            margin-top: -20px;
+            order: 5;
+            height: 185px;
+            width: 100%;
+            border-radius: 0 0 0 18px;
+            background-color: var(--ion-color-primary);
+            color: var(--ion-color-primary-contrast);
+            z-index: 0;
+            display: flex;
+
+            @media screen and (min-width: 768px) {
+                display: block;
+                padding-top: 0px;
+                margin-top: 0px;
+                order: 0;
+                width: 240px;
+                height: 233px;
+                border-radius: 0 0 18px 18px;
+            }
+
+            .number {
+                font-size: 3.0rem;
+                font-weight: 500;
+                color: var(--ion-color-primary-contrast);
+
+                margin-top: 26px;
+                margin-left: 26px;
+            }
+
+            .title {
+                padding-left: 0;
+                font-size: 1.2rem;
+                text-transform: uppercase;
+                color: var(--ion-color-primary-contrast);
+                opacity: 0.5;
+                margin: 7px 7px 10px 27px;
+
+            }
+
+            .number-container {
+                width: 25%;
+                min-width: 130px;
+                max-width: 200px;
+
+                @media screen and (min-width: 768px) {
+                    position: initial;
+                    width: 100%;
+                }
+            }
+
+            .chart-contain {
+                flex: auto;
+                height: 133px;
+                overflow: hidden;
+
+                @media screen and (min-width: 768px) {
+                    width: 100%;
+                }
+            }
+
+            .chart-loading {
+                margin: auto;
+                height: 100%;
+                width: 25px;
+                display: block;
+                color: var(--ion-color-primary-contrast);
+            }
+        }
+
+        .top-chart {
+            flex: auto;
+            max-width: 33.33%;
+            height: 150px;
+            border-radius: 0 0 0px 0px;
+            margin-left: 0px;
+            background-color: var(--ion-color-tertiary-shade); 
+            vertical-align: top;
+            z-index: 1;
+
+            @media screen and (min-width: 768px) {
+                max-width: 33.33%;
+                margin-left: 16px;
+                border-radius: 0 0 18px 18px;
+            }
+
+            @media screen and (min-width: 1366px) {
+                width: 180px;
+                margin-left: 30px;
+                border-radius: 0 0 18px 18px;
+            }
+
+            &.multi-lines {
+                padding-top: 26px;
+                // border-radius: 0 0 0 18px;
+
+                @media screen and (min-width: 768px) {
+                    border-radius: 0 0 18px 18px;
+                }
+
+                &>div {
+                    white-space: nowrap;
+                }
+            }
+
+            .number {
+                font-size: 2.2rem;
+                font-weight: 600;
+                color: var(--ion-color-dark);
+                margin-top: 26px;
+                margin-left: 26px;
+                white-space: nowrap;
+            }
+
+            .title {
+                padding: 0;
+                font-size: .9rem;
+                text-transform: uppercase;
+                color: var(--ion-color-medium);
+                opacity: 0.5;
+                margin: 7px 7px 10px 27px;
+            }
+
+            .stats {
+                font-size: 1.6rem;
+                margin-top: 26px;
+                margin-left: 17px;
+                vertical-align: middle;
+                font-weight: bold;
+
+                ion-icon {
+                    font-size: 2.5rem;
+                    vertical-align: middle;
+                    height: 20px;
+                }
+            }
+
+        }
+    }
+
+    .row-2 {
+        margin-top: 40px;
+
+        @media screen and (min-width: 768px) {
+            margin: 40px;
+            margin-top: 40px;
+        }
+
+        .chart-contain {
+            height: 255px;
+            width: 100%;
+            overflow: hidden;
+        }
+    }
+
+    .row-3 {
+        display: flex;
+        flex-flow: wrap;
+        align-items: stretch;
+        margin: -16px;
+        margin-top: 25px;
+        overflow: hidden;
+        overflow-x: auto;
+        padding-bottom: 20px;
+
+        @media screen and (min-width: 768px) {
+            margin: 25px;
+        }
+    }
+
+}
+
+
+
+.modal-wrapper {
+        
+    $modal-width: 750px;
+    width: 100vw; 
+
+    @media(min-width: 500px) {
+        // left: calc(50% - #{$modal-width / 2 } );
+        // top: calc(50% - #{$modal-width / 2 } );
+
+        top:0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+
+
+        position: absolute;
+        width: $modal-width;
+        height: $modal-width;
+        max-height: 100vh;
+        max-width: 100vw;
+
+        border-radius: 0;
+        box-shadow: 0 0px 30px var(--ion-color-primary);
+    }
+
+    ion-header{
+        .close-btn{
+            position: absolute;
+            right: 15px;
+            top: 0px;
+            font-size: 3.0rem;
+       }
+    }
+
+    
+    
+}
+
+.chartjs-tooltip-key {
+    border-radius: 5px;
+    height: 5px;
+    width: 5px
+}
+
+.highlighted{
+    // text-decoration: none !important;
+    // color: var(--ion-color-primary);
+    background-color: var(--ion-color-warning);
+}
+
+ion-content.cameraFrame {
+    --background: transparent;
+
+    .frame {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        // border: 100px solid rgba(255, 255, 255, 0.32);
+        // border-bottom: 150px solid rgba(255, 255, 255, 0.32);
+        // border-top: 50px solid rgba(255, 255, 255, 0.32);
+
+        border-left: solid calc((100vw - 250px) /2) rgba(255, 255, 255, 0.32);
+        border-right: solid calc((100vw - 250px) /2) rgba(255, 255, 255, 0.32);
+        border-bottom: solid calc((100vh - 250px) /2) rgba(255, 255, 255, 0.32);
+        border-top: solid calc((100vh - 250px) /2 - 162px) rgba(255, 255, 255, 0.32);
+
+        border-width: calc((100vh - 250px) /2 - 162px) calc((100vw - 250px) /2) calc((100vh - 250px) /2) calc((100vw - 250px) /2);
+
+        .blink-line {
+            background-color: red;
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            animation: blinker 1s linear infinite;
+        }
+    }
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.custom-button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

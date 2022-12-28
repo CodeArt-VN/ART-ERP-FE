@@ -1,0 +1,274 @@
+<ion-app [class]="appTheme" [ngClass]="{'dark': (env.user && env.user.UserSetting && env.user.UserSetting.IsDarkTheme.Value), 'showScrollbar': showScrollbar}">
+	<div id="ng-select-holder" style="position: absolute; z-index: 30005;"></div>
+	<ion-split-pane contentId="main-content">
+		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env.user && env.user.UserSetting && env.user.UserSetting.IsCompactMenu.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu">
+			<ion-header>
+				<div class="close-menu">
+					<ion-toolbar>
+						<ion-buttons slot="start">
+							<ion-menu-button icon="close-circle-outline"></ion-menu-button>
+						</ion-buttons>
+					</ion-toolbar>
+				</div>
+				<div class="app-logo-wrapper">
+					<a [ngStyle]="{'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
+
+					<div class="c-control branch-select" *ngIf="env.branchList.length">
+						<!-- {{countForm}} -->
+						
+
+						<ng-select appendTo="#ng-select-holder" [(ngModel)]="env.selectedBranch"  [searchFn]="searchShowAllChildren" (change)="changeBranch()" class="c-input" [clearable]="false" #IDBranch  labelForId="IDBranch" [items]="env.branchList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'erp.app.app-component.unit-placeholder' | translate}}">
+							<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+								<div *ngIf="i">
+									<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <ion-text [color]=" i.IDType == 111? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text></div>
+								</div>
+							</ng-template>
+						</ng-select>
+
+					</div>
+					<!-- <div class="app-title">
+						<ion-chip color="primary" outline="true" (click)="presentPopover($event)">
+							<ion-label>ART-DMS</ion-label>
+							<ion-icon name="chevron-down-outline"></ion-icon>
+						</ion-chip>
+					</div>
+					<div class="app-info">
+						artdistribution.vn
+					</div> -->
+				</div>
+
+			</ion-header>
+			<ion-content appScrollbarTheme>
+				<!-- https://github.com/ionic-team/ionic-v3/issues/737#issuecomment-519105142 -->
+
+				<div class="menu-items" *ngIf="isShowSearch && env.user">
+					<ion-header>
+						<ion-toolbar class="no-padding" style="padding-top: 13px;">
+							<ion-buttons slot="start">
+								<ion-button (click)="isShowSearch = false">
+									<ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+								</ion-button>
+							</ion-buttons>
+							<ion-searchbar #search [(ngModel)]="queryMenu" (ionChange)="searchMenu($event)" placeholder="{{'erp.app.app-component.find-menu' | translate}}"></ion-searchbar>
+						</ion-toolbar>
+					</ion-header>
+					<div class="menu-group" *ngIf="foundMenu">
+						<ng-container *ngFor="let f of foundMenu">
+							<div *ngIf="f.Type == 10 && f.Code != 'NoGroup'" class="menu-group-title">{{f.Name}}</div>
+							<div *ngIf=" f.Type == 11 && f.Code != 'NoGroup'" class="menu-sub-group-title">{{f.Name}}</div>
+							<a *ngIf="f.Type ==1" (click)="goToPage('/'+f.Code, $event)" [routerLink]="['/'+f.Code]" [routerLinkActive]="['is-active']" class="menu-item">
+								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
+								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" *ngIf="countForm>=7" (click)="menuPin(f, $event)"></ion-icon>
+								<span class="menu-title">
+									{{f.Name}}
+								</span>
+							</a>
+						</ng-container>
+					</div>
+
+				</div>
+				<div class="menu-items" *ngIf="!isShowSearch">
+					<div class="menu-group pinned" *ngIf="env.user && countForm>=7">
+						<div class="menu-sub-group-title">
+							<span>{{'erp.app.app-component.menu.menu-group.quick-access' | translate}}</span>
+							<ion-button (click)="(isShowSearch=!isShowSearch) && focusSearch()" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
+								<ion-icon slot="icon-only" name="search"></ion-icon>
+							</ion-button>
+						</div>
+						<ng-container *ngFor="let f of pinnedForms">
+							<a *ngIf="f.Type ==1" (click)="goToPage('/'+f.Code, $event)" [routerLink]="['/'+f.Code]" [routerLinkActive]="['is-active']" class="menu-item">
+								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
+								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" (click)="menuPin(f, $event)"></ion-icon>
+								<span class="menu-title">
+									<!-- {{f.Name}} -->
+									{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								</span>
+							</a>
+						</ng-container>
+					</div>
+
+					<div class="menu-group" *ngIf="env.user">
+						<ng-container *ngFor="let f of env.user.Forms">
+							<div (click)="toogleMenuGroup(f)" *ngIf="f.Type == 10 && f.Code != 'NoGroup' && countForm>=7" class="menu-group-title clickable">
+								<!-- {{f.Name}} -->
+								{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								<ion-button *ngIf="countForm>=7" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
+									<ion-icon slot="icon-only" [name]="f.isShowDetail?'chevron-down-outline':'chevron-forward-outline'"></ion-icon>
+								</ion-button>
+							</div>
+
+							<div (click)="toogleMenuForm(f)" *ngIf="(f.isShowDetail || countForm < 7) && f.Type == 11 && f.Code != 'NoGroup' && countForm>=7" class="menu-sub-group-title clickable">
+								<!-- {{f.Name}} -->
+								{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								<ion-button *ngIf="countForm>=7" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
+									<ion-icon slot="icon-only" [name]="f.isShowForm?'chevron-down-outline':'chevron-forward-outline'"></ion-icon>
+								</ion-button>
+							</div>
+
+							<a *ngIf="((f.isShowDetail && f.isShowForm) || countForm < 7) && f.Type ==1" (click)="goToPage('/'+f.Code, $event)" [routerLink]="['/'+f.Code]" [routerLinkActive]="['is-active']" class="menu-item">
+								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
+								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" *ngIf="countForm>=7" (click)="menuPin(f, $event)"></ion-icon>
+								<span class="menu-title">
+									<!-- {{f.Name}} -->
+									{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								</span>
+							</a>
+
+						</ng-container>
+					</div>
+
+					<!-- <div class="ion-padding"></div>
+
+					<a (click)="goToPage('/about', $event)" [routerLink]="['/about']" [routerLinkActive]="['is-active']"
+						class="menu-item">
+						<ion-icon class="menu-icon" name="information-circle"></ion-icon>
+						<span class="menu-title">
+							Giới thiệu
+						</span>
+					</a> -->
+
+					<!-- <a (click)="goToPage('/setting', $event)" [routerLink]="['/setting']" [routerLinkActive]="['is-active']" class="menu-item">
+						<ion-icon class="menu-icon" name="cog"></ion-icon>
+						<span class="menu-title">
+							Thiết lập
+						</span>	
+					</a> -->
+					<div class="menu-group">
+						<a (click)="goToPage('/login', $event)" [routerLink]="['/login']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="!(env.user && env.user.Id)">
+							<ion-icon class="menu-icon" name="log-in"></ion-icon>
+							<span class="menu-title">erp.app.app-component.menu.login</span>
+						</a>
+					</div>
+				</div>
+
+			</ion-content>
+
+			<ion-footer *ngIf="(env.user && env.user.Id)">
+
+				<a style="height: 56px; line-height: 56px;" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env.user && env.user.UserSetting && env.user.UserSetting.IsCompactMenu.Value)">
+					<ion-avatar slot="start">
+						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					</ion-avatar>
+				</a>
+
+				<ion-item lines="none" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" *ngIf="(env.user && env.user.UserSetting && !env.user.UserSetting.IsCompactMenu.Value)">
+					<ion-avatar slot="start">
+						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					</ion-avatar>
+					<ion-label>
+						<h3>
+							<ion-text color="primary">{{env.user.FullName}}</ion-text>
+						</h3>
+						<p>{{env.user.UserName}}</p>
+						<!-- <p><i>{{'Version: ' + this.env.version}}</i></p> -->
+					</ion-label>
+				</ion-item>
+			</ion-footer>
+
+
+			<!-- <ion-footer>
+				<div *ngIf="(env.user && env.user.Id)">
+
+					<a (click)="env.user.UserSetting.IsCompactMenu.Value = !env.user.UserSetting.IsCompactMenu.Value; env.setStorage('UserProfile', env.user)" class="menu-item hide-small">
+						<ion-icon class="menu-icon" [name]="env.user.UserSetting.IsCompactMenu.Value? 'chevron-forward-outline': 'chevron-back-outline'">
+						</ion-icon>
+					</a>
+
+					<a style="height: 56px; line-height: 56px;" (click)="goToPage('/profile', $event)" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="env.user && env.user.Id">
+						<ion-avatar slot="start">
+							<ion-img #img [src]="env.user.Avatar"  (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+						</ion-avatar>
+
+						<span class="menu-title">
+							<h2>{{env.user.FullName}}</h2>
+							<p>{{env.user.UserName}}</p>
+						</span>
+					</a>
+
+				</div>
+
+			</ion-footer> -->
+		</ion-menu>
+
+		<ion-router-outlet id="main-content" main [swipeGesture]="false">
+			<ion-header class="menu-toogle-btn" *ngIf="(env.user && env.user.Id)">
+				<ion-toolbar>
+					<ion-buttons slot="start">
+						<ion-back-button *ngIf="canGoBack"></ion-back-button>
+						<ion-menu-button *ngIf="!canGoBack"></ion-menu-button>
+
+						<ion-button class="hide-small" (click)="env.user.UserSetting.IsCompactMenu.Value = !env.user.UserSetting.IsCompactMenu.Value; env.setStorage('UserProfile', env.user)">
+							<ion-icon slot="icon-only" name="menu-outline"></ion-icon>
+						</ion-button>
+
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<div class="safe-holder">
+				<div class="empty-message splash" *ngIf="!(env.user && env.user.Id)">
+					<div class="random-img" *ngIf="randomImg">
+						<img appSvgImage [src]="randomImg">
+					</div>
+					<div class="message">
+						<div class="title">
+
+							<!-- <ion-icon name="shipping-fast"></ion-icon> -->
+
+						</div>
+						<div class="detail">
+							<a href=".">
+								<ion-text *ngIf="isConnectFail" color="danger">
+									{{'erp.app.app-component.lost-connection-1' | translate}}
+									<br> {{'erp.app.app-component.lost-connection-2' | translate}}
+								</ion-text>
+							</a>
+
+							<span *ngIf="!isConnectFail" class="info">
+								{{'erp.app.app-component.pending-connect-1' | translate}}
+								<br> {{'erp.app.app-component.pending-connect-2' | translate}}
+								<br>
+								<ion-spinner name="dots"></ion-spinner>
+							</span>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</ion-router-outlet>
+	</ion-split-pane>
+	<div class="app-footer">
+		<a class="text" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" *ngIf="(env.user && env.user.Id)">{{env.user.UserName}}</a>
+		<a class="text" href=".">{{appVersion}} </a>
+		<span class="text float-right">
+			<ion-icon [color]="env.isOnline? 'success': 'danger'" [name]="env.isOnline? 'wifi': 'alert-circle'"></ion-icon>
+			<!-- <span *ngIf="!env.isOnline"> rớt mạng...</span> -->
+		</span>
+		<span (click)="changeLanguage()" class="text float-right" style="font-size: x-large">
+			
+			<!-- <b *ngIf="translate.currentLang !='vi-VN'">E</b>
+			<b *ngIf="translate.currentLang =='vi-VN'">V</b> -->
+			<b *ngIf="translate.currentLang !='vi-VN'">🇻🇳</b>
+			<b *ngIf="translate.currentLang =='vi-VN'">🇺🇸</b>
+
+			 
+		</span>
+		
+
+		<!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">
+			<ion-icon color="danger" name="alert-circle"></ion-icon>
+		</span> -->
+		<!-- <span class="text float-right">
+			<ion-icon color="warning" name="notifications"></ion-icon>
+			<span>10</span>
+		</span> -->
+
+
+		<span class="text float-right" *ngFor="let m of appMessages">
+			<ion-icon [ngClass]="{blink: m.IsBlink}" [color]="m.Color" [name]="m.Icon"></ion-icon>
+			<span>{{m.Message}}</span>
+		</span>
+
+
+
+	</div>
+</ion-app>

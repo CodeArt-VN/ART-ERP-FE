@@ -1,0 +1,79 @@
+<ion-header>
+	<app-list-toolbar pageTitle="Danh sách" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query" (add)="add()" (refresh)="refresh()" (export)="export()" (import)="import($event)" (help)="help()" (unselect)="unselect()" (archiveItems)="archiveItems()" (deleteItems)="deleteItems()" (changeBranch)="changeBranch($event)"></app-list-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="scrollx">
+	<ion-fab *ngIf="pageConfig.isShowFeature" class="feature" vertical="top" horizontal="end" slot="fixed">
+		<div class="ion-padding">
+
+		</div>
+	</ion-fab>
+
+	<section class="table responsive">
+		<header class="bold">
+			<div class="col-checkbox cell"></div>
+			<div class="col-id cell" (click)="sortToggle('Id')">
+				{{'Id' | translate}}
+				<ion-icon class="min-btn" *ngIf="sort.Id" [name]="sort.Id == 'Id'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id" name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-code cell" (click)="sortToggle('Code')">
+				{{'Code' | translate}}
+				<ion-icon class="min-btn" *ngIf="sort.Code" [name]="sort.Code == 'Code'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Code" name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-name cell" (click)="sortToggle('Name')">
+				{{'Name' | translate}}
+				<ion-icon class="min-btn" *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Name" name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-remark cell">Ghi chú</div>
+		</header>
+		<form (keydown.enter)="refresh()" (submit)="refresh()" action="#">
+			<header class="filter" *ngIf="pageConfig.isShowSearch">
+				<div class="col-checkbox cell"></div>
+				<div class="col-id cell">
+					<input (keydown.enter)="refresh()" [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Id" class="c-input" [ngClass]="{active: query.Id}" type="search">
+					<ion-icon class="min-btn" (click)="query.Id=''; refresh()" *ngIf="query.Id" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-code cell">
+					<input (keydown.enter)="refresh()" [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Code" class="c-input" [ngClass]="{active: query.Code}" type="search">
+					<ion-icon class="min-btn" (click)="query.Code=''; refresh()" *ngIf="query.Code" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-name cell">
+					<input (keydown.enter)="refresh()" [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Name" class="c-input" [ngClass]="{active: query.Name}" type="search">
+					<ion-icon class="min-btn" (click)="query.Name=''; refresh()" *ngIf="query.Name" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-remark cell"></div>
+				<button mat-raised-button type="submit" style="display:none">Search</button>
+			</header>
+		</form>
+
+		<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+		<ion-virtual-scroll [items]="items" approxItemHeight="27px" *ngIf="items.length && pageConfig.showSpinner==false">
+			<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
+				<div class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
+					<div class="col-checkbox cell">
+						<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+					</div>
+					<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-id cell">
+						<a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
+					</div>
+					<div class="col-code cell" (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
+						<span *ngIf="i.Code">{{i.Code}}</span>
+					</div>
+					<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-name cell">
+						{{i.Name}}
+					</div>
+					<div class="col-remark cell">
+						{{i.Remark}}
+					</div>
+				</div>
+			</ng-container>
+		</ion-virtual-scroll>
+	</section>
+
+	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

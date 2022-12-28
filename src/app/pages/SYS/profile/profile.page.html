@@ -1,0 +1,268 @@
+<ion-header>
+	<ion-toolbar>
+		
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+			<ion-button color="dark">
+				{{'erp.app.pages.sys.profile.page-title' | translate}}
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+
+</ion-header>
+
+<ion-content appScrollbarTheme class="ion-padding">
+
+	<div class="one-col ion-padding">
+		<div class="ion-text-center" *ngIf="env.user">
+			<ion-avatar class="avatar" slot="start">
+				<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+			</ion-avatar>
+			<div class="full-name">
+				{{env.user.FullName}}
+			</div>
+		</div>
+		<ion-button color="primary" class="logout shadow" (click)="logout()" expand="block">{{'erp.app.pages.sys.profile.logout' | translate}}
+		</ion-button>
+		<div class="ion-margin ion-padding"></div>
+	</div>
+	<div class="main-view">
+		<div class="row-full shadow full-screen">
+			<ion-toolbar color="primary">
+				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+					<ion-segment-button value="s1">
+						<ion-label>{{'erp.app.pages.sys.profile.personal-info' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s2">
+						<ion-label>{{'erp.app.pages.sys.profile.bonus-tab' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s3">
+						<ion-label>{{'erp.app.pages.sys.profile.payroll-tab' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s4">
+						<ion-label>{{'erp.app.pages.sys.profile.day-off-tab' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s5">
+						<ion-label>{{'erp.app.pages.sys.profile.suggests-tab' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s6">
+						<ion-label>{{'erp.app.pages.sys.profile.other-tab' | translate}}</ion-label>
+					</ion-segment-button>
+				</ion-segment>
+			</ion-toolbar>
+
+			<div *ngIf="segmentView == 's1'">
+				
+
+				<div class="ion-padding" *ngIf="item && env.user">
+					<ion-grid fixed>
+						<form [formGroup]="formGroup">
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list lines="none">
+										<ion-list-header class="ion-no-padding">
+											<ion-label color="primary">{{'erp.app.pages.sys.profile.personal-information' | translate}}</ion-label>
+										</ion-list-header>
+										<ion-item class="ion-no-padding">
+											<ion-label color="medium" class="ion-text-wrap">
+												
+											</ion-label>
+										</ion-item>
+									</ion-list>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control" *ngIf="item.Id">
+										<label class="c-label" for="Id">{{'erp.app.pages.sys.profile.id' | translate}}</label>
+										<input class="c-input" id="Id" formControlName="Id" type="number">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="Email">{{'erp.app.pages.sys.profile.email' | translate}}</label>
+										<input class="c-input" id="Email" formControlName="Email" [(ngModel)]="env.user.Email">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="FullName">{{'erp.app.pages.sys.profile.full-name' | translate}}
+											<span *ngIf="!formGroup.controls.FullName.valid && !formGroup.controls.FullName.pending && (formGroup.controls.FullName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="FullName" [(ngModel)]="env.user.FullName" formControlName="FullName" type="text">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="DOB">{{'erp.app.pages.sys.profile.dob' | translate}}
+											<span *ngIf="!formGroup.controls.DOB.valid && !formGroup.controls.DOB.pending && (formGroup.controls.DOB.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="DOB" formControlName="DOB" type="date" [min]="minDOB" [max]="maxDOB">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="PhoneNumber">{{'erp.app.pages.sys.profile.phone-number' | translate}}
+											<span *ngIf="!formGroup.controls.PhoneNumber.valid && !formGroup.controls.PhoneNumber.pending && (formGroup.controls.PhoneNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" formControlName="PhoneNumber" type="text">
+									</div>
+								</ion-col>
+							</ion-row>
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{'erp.app.pages.sys.profile.id-card-information' | translate}}</ion-label>
+									</ion-list-header>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control">
+										<label class="c-label" for="Domicile">{{'erp.app.pages.sys.profile.domicile' | translate}}
+											<span *ngIf="!formGroup.controls.Domicile.valid && !formGroup.controls.Domicile.pending && (formGroup.controls.Domicile.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="Domicile" formControlName="Domicile" type="text">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="IdentityCardNumber">{{'erp.app.pages.sys.profile.id-card-number' | translate}}
+											<span *ngIf="!formGroup.controls.IdentityCardNumber.valid && !formGroup.controls.IdentityCardNumber.pending && (formGroup.controls.IdentityCardNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="IdentityCardNumber" formControlName="IdentityCardNumber" type="text">
+									</div>
+
+									<div class="c-control">
+										<label class="c-label" for="DateOfIssueID">{{'erp.app.pages.sys.profile.date-of-issued-id' | translate}}
+											<span *ngIf="!formGroup.controls.DateOfIssueID.valid && !formGroup.controls.DateOfIssueID.pending && (formGroup.controls.DateOfIssueID.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="DateOfIssueID" formControlName="DateOfIssueID" type="date" [min]="minDOB">
+									</div>
+
+									<div class="c-control">
+										<label class="c-label" for="IssuedBy">{{'erp.app.pages.sys.profile.issued-by' | translate}}
+											<span *ngIf="!formGroup.controls.IssuedBy.valid && !formGroup.controls.IssuedBy.pending && (formGroup.controls.IssuedBy.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="IssuedBy" formControlName="IssuedBy" type="text">
+									</div>
+								</ion-col>
+							</ion-row>
+
+
+						</form>
+						<form [formGroup]="changePasswordForm">
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list lines="none">
+										<ion-list-header class="ion-no-padding">
+											<ion-label color="primary">{{'erp.app.pages.sys.profile.change-password' | translate}}</ion-label>
+										</ion-list-header>
+										<ion-item class="ion-no-padding">
+											<ion-label color="medium" class="ion-text-wrap">
+												{{'erp.app.pages.sys.profile.password-hint' | translate}}:
+												<ul>
+													<li>{{'erp.app.pages.sys.profile.password-hint-1' | translate}}</li>
+													<li>{{'erp.app.pages.sys.profile.password-hint-2' | translate}}:<ul>
+															<li>{{'erp.app.pages.sys.profile.password-hint-number' | translate}}</li>
+															<li>{{'erp.app.pages.sys.profile.password-hint-caps' | translate}}</li>
+															<li>{{'erp.app.pages.sys.profile.password-hint-normal' | translate}}</li>
+															<li>{{'erp.app.pages.sys.profile.password-hint-special' | translate}}</li>
+														</ul>
+													</li>
+												</ul>
+											</ion-label>
+
+										</ion-item>
+									</ion-list>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control">
+										<label class="c-label" for="oldPassword">{{'erp.app.pages.sys.profile.old-password' | translate}}
+											<span *ngIf="!changePasswordForm.controls.oldPassword.valid && !changePasswordForm.controls.oldPassword.pending && (changePasswordForm.controls.oldPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="oldPassword" formControlName="oldPassword" [type]="passwordViewType">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="newPassword">{{'erp.app.pages.sys.profile.new-password' | translate}}
+											<span *ngIf="!changePasswordForm.controls.newPassword.valid && !changePasswordForm.controls.newPassword.pending && (changePasswordForm.controls.newPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="newPassword" formControlName="newPassword" [type]="passwordViewType">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="confirmPassword">{{'erp.app.pages.sys.profile.confirm-password' | translate}}
+											<span *ngIf="!changePasswordForm.controls.confirmPassword.valid && !changePasswordForm.controls.confirmPassword.pending && (changePasswordForm.controls.confirmPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="confirmPassword" formControlName="confirmPassword" [type]="passwordViewType">
+									</div>
+
+									<div class="c-control">
+										<ion-button size="small" (click)="changePassword()">
+											{{'erp.app.pages.sys.profile.change-password' | translate}}
+										</ion-button>
+
+										<ion-button size="small" (click)="passwordViewType = passwordViewType=='password'?'text':'password'" color="warning">
+											<ion-icon slot="icon-only" [name]="passwordViewType=='password'?'eye':'eye-off'"></ion-icon>
+										</ion-button>
+									</div>
+								</ion-col>
+
+							</ion-row>
+						</form>
+						<ion-row class="hr-group">
+							<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+								<ion-list lines="none">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{'erp.app.pages.sys.profile.theme' | translate}}</ion-label>
+									</ion-list-header>
+									<ion-item class="ion-no-padding">
+										<ion-label color="medium" class="ion-text-wrap">
+											{{'erp.app.pages.sys.profile.theme-customize' | translate}}
+										</ion-label>
+									</ion-item>
+								</ion-list>
+							</ion-col>
+							<ion-col size="12" size-sm size-md="8" size-xl="6">
+								
+
+								<ion-list *ngIf="userSetting && userSetting.isLoaded">
+									<ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Dark theme</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>{{'erp.app.pages.sys.profile.dark-theme' | translate}}</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (click)="updateUserSetting(userSetting.IsDarkTheme); changeTheme();" slot="end" color="primary" [checked]="userSetting.IsDarkTheme.Value"></ion-toggle>
+									</ion-item>
+
+									<ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Compact menu</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>{{'erp.app.pages.sys.profile.compact-menu' | translate}}</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (click)="updateUserSetting(userSetting.IsCompactMenu)" slot="end" [checked]="userSetting.IsCompactMenu.Value">
+										</ion-toggle>
+									</ion-item>
+
+									<!-- <ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Cache query</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>Lưu lại các truy vấn để giữ lại tình trạng làm việc trước đó</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (ionChange)="updateUserSetting(userSetting.IsCacheQuery, $event)" slot="end" [checked]="userSetting.IsCacheQuery.Value">
+										</ion-toggle>
+									</ion-item> -->
+
+								</ion-list>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div>
+			</div>
+			<div *ngIf="segmentView == 's2'">
+				<div class="ion-padding"></div>
+			</div>
+			<div *ngIf="segmentView == 's3'">
+				<div class="ion-padding"></div>
+			</div>
+		</div>
+
+	</div>
+</ion-content>

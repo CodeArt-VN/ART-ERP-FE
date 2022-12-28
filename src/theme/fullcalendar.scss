@@ -1,0 +1,141 @@
+:root {
+    --fc-button-bg-color: var(--ion-color-primary) !important;
+    --fc-button-border-color: var(--ion-color-primary) !important;
+    --fc-button-hover-bg-color: var(--ion-color-primary-share) !important;
+    --fc-button-hover-border-color: var(--ion-color-primary) !important;
+    --fc-button-active-bg-color: var(--menu-background-item-active) !important;
+    --fc-button-active-border-color: var(--ion-color-primary-share) !important;
+}
+
+.fc {
+    --fc-border-color: var(--menu-right-border-color);
+    --fc-page-bg-color: var(--main-background-top);
+    --fc-more-link-bg-color: var(--menu-right-border-color);
+
+    a{
+        color: var(--ion-color-medium);
+    }
+
+    .fc-scrollgrid {
+        border: none !important;
+    }
+
+    .fc-scrollgrid td:last-of-type {
+        border-right: none !important;
+    }
+
+    .fc-event-main {
+
+        ion-icon {
+            height: 1.8rem;
+            width: 1.8rem;
+            vertical-align: middle;
+        }
+
+        .v-align-middle {
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        ion-icon.del-event-btn {
+            float: right;
+            padding-right: 5px;
+            display: none;
+        }
+
+        &:hover ion-icon.del-event-btn {
+            display: block;
+        }
+
+
+        font-size: 1.3rem;
+        min-height: 1.8rem;
+
+    }
+
+    .fc-datagrid-cell-cushion {
+        span.fc-datagrid-cell-main {
+            display: inline-block;
+        }
+
+    }
+
+    .staff-resource {
+        display: flex;
+        align-items: center;
+
+        .avatar {
+            width: 3rem;
+            height: 3rem;
+            margin-right: 8px;
+        }
+
+        .name {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+
+            .full-name {
+                font-weight: bold;
+                color: var(--ion-color-medium);
+            }
+
+            .code {
+                font-size: 90%;
+                color: var(--ion-color-primary);
+            }
+        }
+
+        ion-icon.del-event-btn {
+            display: none;
+            cursor: pointer;
+            height: 2rem;
+            width: 2rem;
+            margin-left: 5px;
+        }
+
+        &:hover ion-icon.del-event-btn {
+            display: block;
+        }
+
+    }
+
+
+    
+
+    .fc-toolbar.fc-header-toolbar {
+        padding: 7px 7px;
+        padding-left: 52px;
+        background: var(--ion-toolbar-background, var(--ion-color-step-50, #fff));
+        border-bottom: solid var(--ion-toolbar-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.2)))) 0.55px;
+        margin-bottom: 0 !important;
+
+        .fc-toolbar-title {
+            color: var(--ion-color-primary);
+        }
+
+        .fc-button-primary {
+            background-color: var(--ion-color-primary) !important;
+            border-color: var(--ion-color-primary-shade) !important;
+            color: var(--ion-color-primary-contrast) !important;
+        }
+    
+        .fc-button-primary:hover {
+            background-color: var(--ion-color-primary-shade) !important;
+            border-color: var(--ion-color-primary-shade) !important;
+            color: var(--ion-color-primary-contrast) !important;
+        }
+    
+        .fc-button-primary:disabled {
+            background-color: var(--ion-color-primary-shade) !important;
+            border-color: var(--ion-color-primary-shade) !important;
+            color: var(--ion-color-primary-contrast) !important;
+    
+        }
+    
+    }
+
+    .fc-datagrid-cell{
+        cursor: pointer;
+    }
+}

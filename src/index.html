@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8"/>
+  <title>ART DMS</title>
+
+  <base href="/"/>
+
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="msapplication-tap-highlight" content="no"/>
+  <meta name="theme-color" content="#b7322a">
+  
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png"/>
+  <link rel="manifest" href="manifest.webmanifest">
+  
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+  <script>
+    var browser = (function () {
+      var test = function (regexpOrCss) {
+        return regexpOrCss instanceof RegExp ?
+          regexpOrCss.test(window.navigator.userAgent) :
+          window.CSS && window.CSS.supports && window.CSS.supports(regexpOrCss);
+      };
+      switch (true) {
+        case test(/edg/i):
+          return "edge";
+        case test(/trident/i):
+          return "ie";
+        case test(/firefox/i) || test(/fxios/i):
+          return "firefox";
+        case test(/opr\//i):
+          return "opera";
+        case test(/ucbrowser/i):
+          return "uc browser";
+        case test(/samsungbrowser/i):
+          return "samsung browser";
+        case test('(-webkit-appearance:none) and (not (overflow:-webkit-marquee))'):
+          return "chrome";
+        case test(/safari/i):
+          return "safari";
+        default:
+          return "other";
+      }
+    })();
+    console.log(browser);
+    if (browser == "edge" || browser == "ie") {
+      var r = confirm("Trình duyệt IE / Edge hay bị lỗi, nên bạn vui lòng sử dụng chrome để làm việc.");
+      if (r == true) {
+        window.location.href = 'https://www.google.com/intl/vi/chrome/';
+      } else {
+        document.title = '[Trình duyệt này không được hỗ trợ]';
+      }
+    }
+
+    if (
+      window.navigator.userAgent.indexOf('Android') > -1 ||
+      window.navigator.userAgent.indexOf('iPhone') > -1 ||
+      window.navigator.userAgent.indexOf('iPad') > -1
+    ) {
+      document.querySelector('html').classList.add('mobile-font');
+    }
+  </script>
+
+  <!-- Start of Woopra Code -->
+  <!-- <script>
+  (function(){
+    var t,i,e,n=window,o=document,a=arguments,s="script",r=["config","track","identify","visit","push","call","trackForm","trackClick"],c=function(){var t,i=this;for(i._e=[],t=0;r.length>t;t++)(function(t){i[t]=function(){return i._e.push([t].concat(Array.prototype.slice.call(arguments,0))),i}})(r[t])};for(n._w=n._w||{},t=0;a.length>t;t++)n._w[a[t]]=n[a[t]]=n[a[t]]||new c;i=o.createElement(s),i.async=1,i.src="//static.woopra.com/js/w.js",e=o.getElementsByTagName(s)[0],e.parentNode.insertBefore(i,e)
+  })("woopra");
+
+  woopra.config({
+      domain: 'hungvq.com'
+  });
+  woopra.track();
+</script> -->
+  <!-- End of Woopra Code -->
+
+  <!-- Google Tag Manager -->
+  <!-- <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-NK3Q5CM');</script> -->
+  <!-- End Google Tag Manager -->
+
+
+</head>
+
+<body>
+  <app-root></app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+
+</html>

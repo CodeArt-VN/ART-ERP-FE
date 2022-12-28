@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar *ngIf="!pageConfig.isShowSearch">
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+            <ion-button color="dark">
+                {{'erp.app.pages.sys.not-found.page-title' | translate}}
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content appScrollbarTheme>
+	<div class="one-col ion-padding">
+		<div class="ion-text-center">
+			<img class="logo" src="../../../assets/gem-logo-190.png">
+			<div class="header">
+				404 - Không có trang này
+			</div>
+		</div>
+		<div class="ion-margin ion-padding"></div>
+		<div class="text">
+			<p>Xin lỗi, trang bạn đang truy cập không tồn tại. Vui lòng kiểm tra lại địa chỉ trang, hoặc trở lại <a (click)="openDefault()" >trang mặc định</a>.</p>
+		</div>
+	</div>
+</ion-content> -->
+
+<ion-content appScrollbarTheme>
+	<!-- <div *ngIf="pageConfig.showSpinner" class="page-loading">
+		<ion-spinner name="dots"></ion-spinner>
+	</div> -->
+	<div class="empty-message">
+		<div class="icon">
+			<img class="svgcolor" appSvgImage src="./assets/undraw_no_data_qbuo.svg">
+		</div>
+		<div class="message">
+			<div class="title">
+				{{'erp.app.pages.sys.not-found.title' | translate}}
+				<!-- <ion-icon name="shipping-fast"></ion-icon> -->
+			</div>
+			<div class="detail">
+				<ion-text>
+					{{'erp.app.pages.sys.not-found.detail' | translate}}
+				</ion-text>
+			</div>
+		</div>
+	</div>
+</ion-content>

@@ -1,0 +1,13 @@
+<google-map width="100%" height="100%" *ngIf="(env.isMapLoaded || (mapLoaded | async)) && center" [options]="options" [center]="center">
+  <ng-container *ngIf="this.items?.length">
+    <map-marker *ngFor="let i of items" #somemarker="mapMarker" [label]="i.option?.label" [title]="i.option?.title" [options]="i.option" (mapDragend)="changePosition(somemarker, i)" (mapClick)="openInfo(somemarker, i)"></map-marker>
+  </ng-container>
+  <map-info-window>
+    <div *ngIf="item">
+      <b>{{item.Contact||'Người liên hệ'}}</b> ({{item.Phone1||'điện thoại'}} <span> / {{item.Phone2||'điện thoại khác'}}</span>) <br>
+      {{item.AddressLine1||'AddressLine1'}}, {{item.Ward||'phường xã'}}, {{item.District||'quận huyện'}}, {{item.Province||'tỉnh thành'}}, {{item.Country||'Việt Nam'}}<br>
+      {{item.AddressLine2||'AddressLine2'}} <br>
+    </div>
+  </map-info-window>
+</google-map>
+<app-page-message [itemsLength]="this.items?.length" [showSpinner]="!(env.isMapLoaded && center)"></app-page-message>
