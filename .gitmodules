@@ -1,3 +1,6 @@
 [submodule "src/app/pages/ADMIN"]
 	path = src/app/pages/ADMIN
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-ADMIN.git
+[submodule "src/app/pages/POS"]
+	path = src/app/pages/POS
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-POS.git
