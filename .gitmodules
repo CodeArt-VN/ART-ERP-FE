@@ -7,3 +7,6 @@
 [submodule "src/app/pages/SALE"]
 	path = src/app/pages/SALE
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-SALE.git
+[submodule "src/app/pages/OST"]
+	path = src/app/pages/OST
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-OST.git
