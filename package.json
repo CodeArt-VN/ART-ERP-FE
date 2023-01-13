@@ -1,7 +1,7 @@
 {
 	"name": "vn.inholdings.metafoods.app",
 	"description": "MetaFoods App",
-	"version": "0.18.20",
+	"version": "0.18.21",
 	"author": "Hùng Vũ",
 	"homepage": "https://inholdings.vn/",
 	"scripts": {
@@ -12,7 +12,7 @@
 		"lint": "ng lint",
 		"e2e": "ng e2e",
 		"updateBuild": "node ./replace.build.js",
-		"build-prod": "npm version patch --force && node ./replace.build.js && ionic cap sync --prod"
+		"build-prod": "npm version patch --force && node ./replace.build.js --force && ionic cap sync --prod"
 	},
 	"private": true,
 	"dependencies": {
