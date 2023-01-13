@@ -31,3 +31,6 @@
 [submodule "src/app/pages/PURCHASE"]
 	path = src/app/pages/PURCHASE
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-PURCHASE.git
+[submodule "src/app/pages/PROD"]
+	path = src/app/pages/PROD
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PROD.git
