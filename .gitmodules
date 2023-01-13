@@ -19,3 +19,6 @@
 [submodule "src/app/pages/FINANCIAL"]
 	path = src/app/pages/FINANCIAL
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-FINANCIAL.git
+[submodule "src/app/pages/ACCOUNTANT"]
+	path = src/app/pages/ACCOUNTANT
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-ACCOUNTANT.git
