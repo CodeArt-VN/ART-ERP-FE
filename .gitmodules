@@ -4,3 +4,6 @@
 [submodule "src/app/pages/POS"]
 	path = src/app/pages/POS
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-POS.git
+[submodule "src/app/pages/SALE"]
+	path = src/app/pages/SALE
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-SALE.git
