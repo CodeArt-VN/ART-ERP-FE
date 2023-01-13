@@ -10,3 +10,6 @@
 [submodule "src/app/pages/OST"]
 	path = src/app/pages/OST
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-OST.git
+[submodule "src/app/pages/HRM"]
+	path = src/app/pages/HRM
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-HRM.git
