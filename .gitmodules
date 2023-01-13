@@ -28,3 +28,6 @@
 [submodule "src/app/pages/BI"]
 	path = src/app/pages/BI
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-BI.git
+[submodule "src/app/pages/PURCHASE"]
+	path = src/app/pages/PURCHASE
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PURCHASE.git
