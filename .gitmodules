@@ -22,3 +22,6 @@
 [submodule "src/app/pages/ACCOUNTANT"]
 	path = src/app/pages/ACCOUNTANT
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-ACCOUNTANT.git
+[submodule "src/app/pages/APPROVAL"]
+	path = src/app/pages/APPROVAL
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-APPROVAL.git
