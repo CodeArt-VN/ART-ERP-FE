@@ -19,7 +19,7 @@ export const environment = {
   showScrollbar: (navigator.appVersion.indexOf("Win") > -1) || true,
   // signalRServiceDomain: 'https://localhost:5001/' 
   signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
-  loginEmail: '@codeart.vn'
+  loginEmail: '@inholdings.vn'
 };
 
 /*

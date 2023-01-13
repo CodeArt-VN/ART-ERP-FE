@@ -1,0 +1,148 @@
+.metafoods-theme {
+    $wide-logo-url: '../assets/logos/logo-metafoods.png';
+    $small-logo-url: '../assets/logos/logo-metafoods-square.png';
+    
+    .login{
+        .logo-contain{
+            padding-top: 10vh;
+            padding-bottom: 0vh;
+            background-color: transparent;
+        }
+
+        .logo{
+            margin: auto;
+            width: 90vw;
+            height: 20vh;
+            max-width: 250px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+            background-image: url($wide-logo-url);
+        }
+
+        form{
+            margin-top: 0px !important;
+        }
+    }
+
+    #app-menu {
+        .app-logo-wrapper {
+
+            // .branch-select{
+            //     display: none;
+            // }
+            .app-logo {
+                background-image: url($wide-logo-url) !important;
+            }
+        }
+
+        &.min {
+            .app-logo-wrapper {
+                .app-logo {
+                    background-image: url($small-logo-url) !important;
+                }
+            }
+        }
+    }
+
+    .splash{
+        background: url('../assets/IN-splash.jpg') rgba(148,148,148,.32);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-blend-mode: soft-light;
+        .random-img{
+            background-image: url($wide-logo-url) !important;
+            height: 115px;
+            width: 70vw;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+
+            svg{
+                display: none !important;
+            }
+        }
+        .message{
+            position: absolute;
+            bottom: 32px;
+
+            .detail{
+                .info{
+                    color: var(--ion-color-primary);
+                }
+            }
+        }
+    }
+
+    --ion-color-primary: #720f11;
+	--ion-color-primary-rgb: 114,15,17;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #640d0f;
+	--ion-color-primary-tint: #802729;
+
+	--ion-color-secondary: #720f11;
+	--ion-color-secondary-rgb: 114,15,17;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255,255,255;
+	--ion-color-secondary-shade: #640d0f;
+	--ion-color-secondary-tint: #802729;
+  
+    --ion-color-tertiary: #FFFFFF;
+	--ion-color-tertiary-rgb: 255, 255, 255;
+	--ion-color-tertiary-contrast: #000000;
+	--ion-color-tertiary-contrast-rgb: 0, 0, 0;
+	--ion-color-tertiary-shade: #e0e0e0;
+	--ion-color-tertiary-tint: #ffffff;
+
+	--ion-color-dark: #1b1a16;
+	--ion-color-dark-rgb: 27, 26, 22;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255, 255, 255;
+	--ion-color-dark-shade: #181713;
+	--ion-color-dark-tint: #32312d;
+
+    --ion-color-medium: #394951;
+    --ion-color-medium-rgb: 57, 73, 81;
+    --ion-color-medium-contrast: #ffffff;
+    --ion-color-medium-contrast-rgb: 255, 255, 255;
+    --ion-color-medium-shade: #324047;
+    --ion-color-medium-tint: #4d5b62;
+  
+    --ion-color-light: #f0f6f8;
+    --ion-color-light-rgb: 240, 246, 248;
+    --ion-color-light-contrast: #000000;
+    --ion-color-light-contrast-rgb: 0, 0, 0;
+    --ion-color-light-shade: #d3d8da;
+    --ion-color-light-tint: #f2f7f9;
+
+	--menu-right-border-color: #e2e8ed;
+	--menu-background-item-active: #f4eae9;
+	--menu-background-top: #ffffff;
+	--menu-background-bottom: #ffffff;
+
+	--main-background-top: #eff2f5;
+	--main-background-bottom: #eff2f5;
+
+	--feature-background-top: #ffffff;
+	--feature-background-bottom: #ffffff;
+
+	// ion-item {
+	//   --border-color: var(--ion-color-primary);
+	// }
+
+	ion-segment-button {
+        --ion-background-color: var(--ion-color-secondary); //segment selected background
+        --ion-background-color-rgb: var(--ion-color-secondary-rgb);
+        --color-checked: var(--ion-color-secondary-contrast);
+    }
+
+    --ion-background-color: var(--main-background-bottom);
+	--ion-background-color-rgb: 239, 242, 245;
+
+	--ion-toolbar-background: #FFF;
+	--ion-item-background: transparent;
+	--ion-item-background-activated: transparent;
+
+  }
