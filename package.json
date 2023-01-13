@@ -1,8 +1,9 @@
 {
-	"name": "vn.codeart.art.dms",
+	"name": "vn.inholdings.metafoods.app",
+	"description": "MetaFoods App",
 	"version": "0.18.20",
 	"author": "Hùng Vũ",
-	"homepage": "https://codeart.vn/",
+	"homepage": "https://inholdings.vn/",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
@@ -107,7 +108,6 @@
 		"ts-node": "~8.3.0",
 		"typescript": "~4.7.3"
 	},
-	"description": "ART DMS",
 	"browser": {
 		"path": false
 	}

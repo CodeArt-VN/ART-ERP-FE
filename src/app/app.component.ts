@@ -21,7 +21,7 @@ let ga: any;
 })
 export class AppComponent implements OnInit {
 	@ViewChild('search') search: any;
-	appTheme = 'artdistribution-theme';
+	appTheme = 'metafoods-theme';
 	isConnectFail = false;
 	appMessages = [];
 	appVersion = '';

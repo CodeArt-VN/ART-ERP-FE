@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   appVersion: '9dev',
-  //appDomain: 'http://api.inholdings.vn/',
+  appDomain: 'http://api.inholdings.vn/',
   //appDomain: 'https://erp-dev.appcenter.vn/',
   //appDomain: 'https://artlogistics.vn/',
   //appDomain: "http://art.appcenter.vn:54009/",
   //appDomain: "http://192.168.1.8:54009/",
   //appDomain: "http://10.211.55.4:54009/",
-  appDomain: "http://art.appcenter.vn:54009/",
-  staffAvatarsServer: "https://artlogistics.vn/Uploads/HRM/Staffs/Avatars/",
+  //appDomain: "http://art.appcenter.vn:54009/",
+  staffAvatarsServer: "https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/",
   posImagesServer: "https://api.inholdings.vn/",
 
   apiVersion: "api/v1/",
