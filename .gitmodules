@@ -37,3 +37,6 @@
 [submodule "src/app/pages/SHIP"]
 	path = src/app/pages/SHIP
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-SHIP.git
+[submodule "src/app/pages/WMS"]
+	path = src/app/pages/WMS
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-WMS.git
