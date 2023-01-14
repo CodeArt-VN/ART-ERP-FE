@@ -36,6 +36,9 @@ ngx-pwa-icons -i ".src/assets/logos/logo-in-square.png"
 
 
 
+
+# Developing
+
 ## debug
 ```
 ionic cap run android --l --external
@@ -48,8 +51,6 @@ adb devices
 http-server -p 8080 -c-1 www
 ```
 
-# Developing
-
 ## Update npm
 ```
 npm outdated
@@ -59,6 +60,8 @@ npm outdated
 ```
 
 ```
+
+
 
 
 # Deployment
@@ -86,6 +89,8 @@ ionic capacitor open android
 ```
 
 ## Deploying a Progressive Web App
+
+
 
 
 
