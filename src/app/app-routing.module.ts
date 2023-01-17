@@ -197,9 +197,10 @@ const routes: Routes = [
   
 
   //BI
-  //{ path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
-  { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
-  // { path: 'sale-daily-report', loadChildren: () => import('./pages/BI/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
+  { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
+  { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/HRM/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
+  { path: 'branch-payroll-report', loadChildren: () => import('./pages/BI/HRM/branch-payroll-report/branch-payroll-report.module').then(m => m.BranchPayrollReportPageModule), canActivate: [AuthGuard] },
+  //{ path: 'sale-daily-report', loadChildren: () => import('./pages/BI/SALE/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
   // // { path: 'sale-kpi', loadChildren: () => import('./pages/BI').then(m => m), canActivate: [AuthGuard] },
   { path: 'finance-management', loadChildren: () => import('./pages/BI/finance-management/finance-management.module').then(m => m.FinanceManagementPageModule), canActivate: [AuthGuard] },
   { path: 'finance-daily-report', loadChildren: () => import('./pages/BI/finance-daily-report/finance-daily-report.module').then(m => m.FinanceDailyReportPageModule), canActivate: [AuthGuard] },
@@ -207,11 +208,14 @@ const routes: Routes = [
   // { path: 'pipeline', loadChildren: () => import('./pages/BI/pipeline/pipeline.module').then(m => m.PipelinePageModule), canActivate: [AuthGuard] },
   // { path: 'sale-insignts', loadChildren: () => import('./pages/BI/sale-insignts/sale-insignts.module').then(m => m.SaleInsigntsPageModule), canActivate: [AuthGuard] },
   // { path: 'sale-performance', loadChildren: () => import('./pages/BI/sale-performance/sale-performance.module').then(m => m.SalePerformancePageModule), canActivate: [AuthGuard] },
-  { path: 'sales-reports', loadChildren: () => import('./pages/BI/sales-reports/sales-reports.module').then(m => m.SalesReportsPageModule), canActivate: [AuthGuard] },
+  { path: 'sales-reports', loadChildren: () => import('./pages/BI/SALE/sales-reports/sales-reports.module').then(m => m.SalesReportsPageModule), canActivate: [AuthGuard] },
   { path: 'ar-invoice-report', loadChildren: () => import('./pages/BI/ar-invoice-report/ar-invoice-report.module').then(m => m.ARInvoiceReportPageModule), canActivate: [AuthGuard] },
-  { path: 'sales-reports-mobile', loadChildren: () => import('./pages/BI/sale-summary-mobile/sale-summary-mobile.module').then(m => m.SaleSummaryMobilePageModule), canActivate: [AuthGuard] },
+  { path: 'sales-reports-mobile', loadChildren: () => import('./pages/BI/SALE/sale-summary-mobile/sale-summary-mobile.module').then(m => m.SaleSummaryMobilePageModule), canActivate: [AuthGuard] },
   { path: 'price-report', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
   { path: 'price-report/:segment/:id', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
+  
+  
+  
   //ADMIN
   { path: 'form', loadChildren: () => import('./pages/ADMIN/form/form.module').then(m => m.FormPageModule), canActivate: [AuthGuard] },
   { path: 'form/:id', loadChildren: () => import('./pages/ADMIN/form-detail/form-detail.module').then(m => m.FormDetailPageModule), canActivate: [AuthGuard] },
@@ -233,84 +237,6 @@ const routes: Routes = [
   { path: 'system-type', loadChildren: () => import('./pages/SYS/system-type/system-type.module').then(m => m.SystemTypePageModule), canActivate: [AuthGuard] },
   { path: 'system-type/:id', loadChildren: () => import('./pages/SYS/system-type-detail/system-type-detail.module').then(m => m.SystemTypeDetailPageModule), canActivate: [AuthGuard] },
   
-  // // Logistics
-  { path: 'transportation', loadChildren: () => import('./pages/BI/logistics/transportation/transportation.module').then( m => m.TransportationPageModule), canActivate: [AuthGuard] },
-  { path: 'warehouse-kpi', loadChildren: () => import('./pages/BI/logistics/warehouse-kpi/warehouse-kpi.module').then( m => m.WarehouseKpiPageModule), canActivate: [AuthGuard] },
-  { path: 'supply-chain-management', loadChildren: () => import('./pages/BI/logistics/supply-chain-management/supply-chain-management.module').then( m => m.SupplyChainManagementPageModule), canActivate: [AuthGuard] },
-
-  // // FMCG
-  { path: 'kpi-dashboard', loadChildren: () => import('./pages/BI/fmcg/kpi-dashboard/kpi-dashboard.module').then( m => m.KpiDashboardPageModule), canActivate: [AuthGuard] },
-  { path: 'fmcg-financial', loadChildren: () => import('./pages/BI/fmcg/fmcg-financial/fmcg-financial.module').then( m => m.FmcgFinancialPageModule), canActivate: [AuthGuard] },
-  { path: 'consumer-goods', loadChildren: () => import('./pages/BI/fmcg/consumer-goods/consumer-goods.module').then( m => m.ConsumerGoodsPageModule), canActivate: [AuthGuard] },
-
-  // // Retail
-  { path: 'retail-store', loadChildren: () => import('./pages/BI/retail/retail-store/retail-store.module').then( m => m.RetailStorePageModule), canActivate: [AuthGuard] },
-  { path: 'retail-analytics', loadChildren: () => import('./pages/BI/retail/retail-analytics/retail-analytics.module').then( m => m.RetailAnalyticsPageModule), canActivate: [AuthGuard] },
-  { path: 'retail-kpi', loadChildren: () => import('./pages/BI/retail/retail-kpi/retail-kpi.module').then( m => m.RetailKpiPageModule), canActivate: [AuthGuard] },
-  { path: 'sales-order-overview', loadChildren: () => import('./pages/BI/retail/sales-order-overview/sales-order-overview.module').then( m => m.SalesOrderOverviewPageModule), canActivate: [AuthGuard] },
-
-  // // Manufacturing
-  { path: 'production', loadChildren: () => import('./pages/BI/manufacturing/production/production.module').then( m => m.ProductionPageModule), canActivate: [AuthGuard]  },
-  { path: 'production-quality', loadChildren: () => import('./pages/BI/manufacturing/production-quality/production-quality.module').then( m => m.ProductionQualityPageModule), canActivate: [AuthGuard]  },
-  { path: 'cost-management', loadChildren: () => import('./pages/BI/manufacturing/cost-management/cost-management.module').then( m => m.CostManagementPageModule), canActivate: [AuthGuard]  },
-  { path: 'manufactoring-kpi', loadChildren: () => import('./pages/BI/manufacturing/manufactoring-kpi/manufactoring-kpi.module').then( m => m.ManufactoringKpiPageModule), canActivate: [AuthGuard] },
-
-  // // Market Research
-  { path: 'brand-analysis', loadChildren: () => import('./pages/BI/market-research/brand-analysis/brand-analysis.module').then( m => m.BrandAnalysisPageModule), canActivate: [AuthGuard] },
-  { path: 'product-innovation', loadChildren: () => import('./pages/BI/market-research/product-innovation/product-innovation.module').then( m => m.ProductInnovationPageModule), canActivate: [AuthGuard] },
-  { path: 'customer-satisfaction', loadChildren: () => import('./pages/BI/market-research/customer-satisfaction/customer-satisfaction.module').then( m => m.CustomerSatisfactionPageModule), canActivate: [AuthGuard] },
-
-  // // Healthcare
-  { path: 'hospital-kpi', loadChildren: () => import('./pages/BI/healthcare/hospital-kpi/hospital-kpi.module').then( m => m.HospitalKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'patient-satisfaction', loadChildren: () => import('./pages/BI/healthcare/patient-satisfaction/patient-satisfaction.module').then( m => m.PatientSatisfactionPageModule), canActivate: [AuthGuard]},
-  { path: 'hospital-performance', loadChildren: () => import('./pages/BI/healthcare/hospital-performance/hospital-performance.module').then( m => m.HospitalPerformancePageModule), canActivate: [AuthGuard]},
-  { path: 'patient', loadChildren: () => import('./pages/BI/healthcare/patient/patient.module').then( m => m.PatientPageModule), canActivate: [AuthGuard]},
-
-  // // Finance
-  { path: 'cash-management', loadChildren: () => import('./pages/BI/finance/cash-management/cash-management.module').then( m => m.CashManagementPageModule), canActivate: [AuthGuard]},
-  { path: 'financial-kpi', loadChildren: () => import('./pages/BI/finance/financial-kpi/financial-kpi.module').then( m => m.FinancialKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'profit-and-lost', loadChildren: () => import('./pages/BI/finance/profit-and-lost/profit-and-lost.module').then( m => m.ProfitAndLostPageModule), canActivate: [AuthGuard]},
-  { path: 'cfo-dashboard', loadChildren: () => import('./pages/BI/finance/cfo-dashboard/cfo-dashboard.module').then( m => m.CfoDashboardPageModule), canActivate: [AuthGuard]},
-  { path: 'financial-performance', loadChildren: () => import('./pages/BI/finance/financial-performance/financial-performance.module').then( m => m.FinancialPerformancePageModule), canActivate: [AuthGuard]},
-
-  // // Sales
-  { path: 'sale-performance', loadChildren: () => import('./pages/BI/sales/sale-performance/sale-performance.module').then( m => m.SalePerformancePageModule), canActivate: [AuthGuard]},
-  { path: 'sale-kpi', loadChildren: () => import('./pages/BI/sales/sale-kpi/sale-kpi.module').then( m => m.SaleKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'sales-cycle-length', loadChildren: () => import('./pages/BI/sales/sales-cycle-length/sales-cycle-length.module').then( m => m.SalesCycleLengthPageModule), canActivate: [AuthGuard]},
-  { path: 'sales-conversion', loadChildren: () => import('./pages/BI/sales/sales-conversion/sales-conversion.module').then( m => m.SalesConversionPageModule), canActivate: [AuthGuard]},
-  { path: 'sales-opportunity', loadChildren: () => import('./pages/BI/sales/sales-opportunity/sales-opportunity.module').then( m => m.SalesOpportunityPageModule), canActivate: [AuthGuard]},
-  
-  // // Marketing
-  { path: 'cmo-dashboard', loadChildren: () => import('./pages/BI/marketing/cmo-dashboard/cmo-dashboard.module').then( m => m.CmoDashboardPageModule), canActivate: [AuthGuard]},
-  { path: 'marketing-performance', loadChildren: () => import('./pages/BI/marketing/marketing-performance/marketing-performance.module').then( m => m.MarketingPerformancePageModule), canActivate: [AuthGuard]},
-  { path: 'marketing-kpi', loadChildren: () => import('./pages/BI/marketing/marketing-kpi/marketing-kpi.module').then( m => m.MarketingKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'web-analytics', loadChildren: () => import('./pages/BI/marketing/web-analytics/web-analytics.module').then( m => m.WebAnalyticsPageModule), canActivate: [AuthGuard]},
-  { path: 'social-media', loadChildren: () => import('./pages/BI/marketing/social-media/social-media.module').then( m => m.SocialMediaPageModule), canActivate: [AuthGuard]},
-  
-  // // Human Resources
-  { path: 'employee-performance', loadChildren: () => import('./pages/BI/human-resources/employee-performance/employee-performance.module').then( m => m.EmployeePerformancePageModule), canActivate: [AuthGuard]},
-  { path: 'recruiting', loadChildren: () => import('./pages/BI/human-resources/recruiting/recruiting.module').then( m => m.RecruitingPageModule), canActivate: [AuthGuard]},
-  { path: 'talent-management', loadChildren: () => import('./pages/BI/human-resources/talent-management/talent-management.module').then( m => m.TalentManagementPageModule), canActivate: [AuthGuard]},
-  { path: 'workforce-dashboard', loadChildren: () => import('./pages/BI/human-resources/workforce-dashboard/workforce-dashboard.module').then( m => m.WorkforceDashboardPageModule), canActivate: [AuthGuard]},
-
-  // // Procurement
-  { path: 'procurement-kpi', loadChildren: () => import('./pages/BI/procurement/procurement-kpi/procurement-kpi.module').then( m => m.ProcurementKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'procurement-quality', loadChildren: () => import('./pages/BI/procurement/procurement-quality/procurement-quality.module').then( m => m.ProcurementQualityPageModule), canActivate: [AuthGuard]},
-  { path: 'supplier-delivery', loadChildren: () => import('./pages/BI/procurement/supplier-delivery/supplier-delivery.module').then( m => m.SupplierDeliveryPageModule), canActivate: [AuthGuard]},
-  { path: 'procurement-cost', loadChildren: () => import('./pages/BI/procurement/procurement-cost/procurement-cost.module').then( m => m.ProcurementCostPageModule), canActivate: [AuthGuard]},
-
-  // // Service-Support
-  { path: 'customer-service-team', loadChildren: () => import('./pages/BI/service-support/customer-service-team/customer-service-team.module').then( m => m.CustomerServiceTeamPageModule), canActivate: [AuthGuard]},
-  { path: 'customer-satisfaction', loadChildren: () => import('./pages/BI/service-support/customer-satisfaction/customer-satisfaction.module').then( m => m.CustomerSatisfactionPageModule), canActivate: [AuthGuard]},
-  { path: 'customer-support-kpi', loadChildren: () => import('./pages/BI/service-support/customer-support-kpi/customer-support-kpi.module').then( m => m.CustomerSupportKpiPageModule), canActivate: [AuthGuard]},
-  { path: 'customer-retention', loadChildren: () => import('./pages/BI/service-support/customer-retention/customer-retention.module').then( m => m.CustomerRetentionPageModule), canActivate: [AuthGuard]},
-  
-  // // IT
-  { path: 'it-project-management', loadChildren: () => import('./pages/BI/it/it-project-management/it-project-management.module').then( m => m.ItProjectManagementPageModule), canActivate: [AuthGuard]},
-  { path: 'cto-dashboard', loadChildren: () => import('./pages/BI/it/cto-dashboard/cto-dashboard.module').then( m => m.CtoDashboardPageModule), canActivate: [AuthGuard]},
-  { path: 'it-issue-management', loadChildren: () => import('./pages/BI/it/it-issue-management/it-issue-management.module').then( m => m.ItIssueManagementPageModule), canActivate: [AuthGuard]},
-  { path: 'it-cost', loadChildren: () => import('./pages/BI/it/it-cost/it-cost.module').then( m => m.ItCostPageModule), canActivate: [AuthGuard]},
-
   // Request
   { path: 'request', loadChildren: () => import('./pages/APPROVAL/request/request.module').then( m => m.RequestPageModule), canActivate: [AuthGuard] },
   { path: 'request/:id', loadChildren: () => import('./pages/APPROVAL/request-detail/request-detail.module').then( m => m.RequestDetailPageModule), canActivate: [AuthGuard] },

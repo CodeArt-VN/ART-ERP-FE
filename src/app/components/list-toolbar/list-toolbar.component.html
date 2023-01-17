@@ -27,10 +27,10 @@
 
 		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval">|</span>
 
-		<ion-button *ngIf="ShowSearch" title="{{'erp.app.components.list-toolbar.search' | translate}}" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch">
+		<ion-button *ngIf="ShowSearch" title="{{'erp.app.components.list-toolbar.search' | translate}}" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" >
 			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
 		</ion-button>
-		<ion-button *ngIf="ShowRefresh" (click)="emit('refresh')" title="{{'erp.app.components.list-toolbar.refresh' | translate}}">
+		<ion-button *ngIf="ShowRefresh" (click)="emit('refresh')" title="{{'erp.app.components.list-toolbar.refresh' | translate}}" class="ion-hide-sm-down">
 			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 		</ion-button>
 		<ion-button title="{{'erp.app.components.list-toolbar.create-einvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && !query.IsDisabled" (click)="emit('createEInvoice')">

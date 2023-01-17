@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
 import { ApiSetting } from 'src/app/services/static/api-setting';
-import * as _ from 'lodash'; 
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
 
