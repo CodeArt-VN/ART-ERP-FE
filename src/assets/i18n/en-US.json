@@ -3214,5 +3214,6 @@
 "erp.app.pages.pos.pos-order.customer-quantity": "Customer Qty",
 "erp.app.pages.pos.pos-order.history-order-quantity": "History Order Qty",
 "erp.app.pages.pos.pos-order.history-customer-quantity": "History Customer Qty",
-"erp.app.components.list-toolbar.show-history": "Show History"
+"erp.app.components.list-toolbar.show-history": "Show History",
+"erp.app.app-component.menu.menu-group.branch-payroll-report" : "Báo cáo lương"
 }

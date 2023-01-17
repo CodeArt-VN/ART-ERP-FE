@@ -242,6 +242,55 @@ export var APIListBase = {
 		
 	},
 
+	AC_Case:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("AC/Case/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("AC/Case")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("AC/Case/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("AC/Case/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("AC/Case/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("AC/Case/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("AC/Case")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("AC/Case/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+        }
+		
+	},
+
 	AC_JournalEntry:{
         getSearchList:{
             method: "GET",
@@ -1365,6 +1414,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+        }
+		
+	},
+
+	BI_HRM_PayrollPerBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
         }
 		
 	},
