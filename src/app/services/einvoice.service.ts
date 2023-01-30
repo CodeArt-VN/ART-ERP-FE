@@ -20,7 +20,7 @@ export class EInvoiceService extends exService {
 		public env: EnvService,
 
 	) {
-		super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
+		super(APIList.AC_ARInvoice, SearchConfig.getSearchFields('AC_ARInvoice'), commonService);
 	}
 
 	//ARInvoice
@@ -48,123 +48,19 @@ export class EInvoiceService extends exService {
 	}
 
 	GetLatestEInvoice() {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "GET",
-				url: function () { return ApiSetting.apiDomain("AC/ARInvoice/GetLatestEInvoice") }
-			};
-
-			let data = {};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), data).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
-
+		return this.commonService.connect('GET', ApiSetting.apiDomain("AC/ARInvoice/GetLatestEInvoice"), {});
 	}
 
-	GetEinvoiceInfo(InvoiceGUID, IDBranch) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "GET",
-				url: function () { return ApiSetting.apiDomain("AC/ARInvoice/GetEInvoice") }
-			};
-
-			let data = {
-				InvoiceGUID: InvoiceGUID,
-				IDBranch: IDBranch
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), data).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
-
+	CreateEInvoice(Ids) {
+		return this.commonService.connect('POST', ApiSetting.apiDomain("AC/ARInvoice/CreateEInvoice"), { Ids: Ids });
 	}
 
-	CreateEInvoice(IDARInvoice, IDBranch) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "POST",
-				url: function () { return ApiSetting.apiDomain("AC/ARInvoice/CreateEInvoice") }
-			};
-
-			let data = {
-				IDARInvoice: IDARInvoice,
-				IDBranch: IDBranch
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), data).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
+	UpdateEInvoice(Ids) {
+		return this.commonService.connect('PUT', ApiSetting.apiDomain("AC/ARInvoice/UpdateEInvoice"), { Ids: Ids });
 	}
 
-	UpdateEInvoice(IDARInvoice, InvoiceGUID, IDBranch) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "PUT",
-				url: function () { return ApiSetting.apiDomain("AC/ARInvoice/UpdateEInvoice") }
-			};
-
-			let data = {
-				IDARInvoice: IDARInvoice,
-				InvoiceGUID: InvoiceGUID,
-				IDBranch: IDBranch
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), data).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
-	}
-
-	SyncEInvoice(InvoiceGUID, IDBranch) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "PUT",
-				url: function () { return ApiSetting.apiDomain("AC/ARInvoice/SyncEInvoiceDataFromEhoadon") }
-			};
-
-			let data = {
-				InvoiceGUID: InvoiceGUID,
-				IDBranch: IDBranch
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), data).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
+	SyncEInvoice(Ids) {
+		return this.commonService.connect('PUT', ApiSetting.apiDomain("AC/ARInvoice/SyncEInvoiceData"), {Ids:Ids});
 	}
 
 	AutoMergeARAndCreateEInvoice(date = '') {

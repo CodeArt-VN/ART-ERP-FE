@@ -46,7 +46,7 @@
                 // -webkit-appearance: none;
 
                 max-width: 250px;
-                padding: 0px 0px 0px 5px;
+                padding: 0px 20px 0px 5px;
                 font-size: 1.2rem;
 
                 &.active,
@@ -68,11 +68,14 @@
                 }
 
                 &.c-dropdown {
-                    width: calc(100% - 20px);
-                    margin-right: 20px;
+                    
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    text-indent: 1px;
+                    text-overflow: '';
                 }
-                width: calc(100% - 20px);
-                margin-right: 20px;
+                // width: calc(100% - 20px);
+                // margin-right: 20px;
 
                 
             }
@@ -383,9 +386,15 @@
     }
 
     &.responsive{
+        .show-small-inline{
+            display: none;
+        }
         @media screen and (max-width: calc(1164px + 0px)) {
             background-color: transparent;
             min-width: unset !important;
+            .show-small-inline{
+                display: inline;
+            }
 
             header, .row.header {
                 display: none;
@@ -437,6 +446,11 @@
                 background-color: var(--ion-color-tertiary-tint);
                 line-height: 1.5rem;
 
+                @media screen and (max-width: calc(320px)) {
+                    margin: 0px;
+                    border-radius: 0px;
+                }
+
                 &:hover{
                     background-color: var(--ion-color-tertiary-tint); 
                 }
@@ -459,16 +473,16 @@
 
                 .col-id{
                     order: 1;
-                    padding: 1px 7px !important;
-                    border-radius: 3px;
-                    background-color: var(--ion-color-primary);
-                    color: var(--ion-color-primary-contrast) !important;
                     min-width: fit-content !important;
                     max-width: fit-content !important;
-                    margin-bottom: 5px;
-                    margin-right: 5px;
+                    padding: 0 !important;
 
                     > a{
+                        margin-bottom: 5px;
+                        margin-right: 5px;
+                        padding: 1px 7px !important;
+                        border-radius: 3px;
+                        background-color: var(--ion-color-primary);
                         color: var(--ion-color-primary-contrast) !important;
                     }
                 }
@@ -552,7 +566,7 @@
                     min-width: fit-content;
                     max-width: fit-content;
                     position: absolute;
-                    right: 0px;
+                    right: 8px;
                     justify-content: right;
                     
                     small{

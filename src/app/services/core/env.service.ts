@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform, ToastController, AlertController } from '@ionic/angular';
+import { Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -40,6 +40,7 @@ export class EnvService {
         public storage: Storage,
         public toastController: ToastController,
         public alertCtrl: AlertController,
+        public loadingController: LoadingController,
         public translate: TranslateService
     ) {
         this.isMobile = this.plt.is('mobile');
@@ -236,10 +237,26 @@ export class EnvService {
                 option.inputs = inputs;
             }
 
-
             this.alertCtrl.create(option).then(alert => {
                 alert.present();
             })
+        });
+    }
+
+    showLoading(message, promise){
+        return new Promise((resolve, reject) => {
+            this.loadingController.create({ cssClass: 'my-custom-class', message: message}).then((loading) => 
+            {
+                loading.present();
+                promise.then(result=>{
+                    if (loading) loading.dismiss();
+                    resolve(result);
+                        
+                }).catch(err => {
+                    if (loading) loading.dismiss();
+                    reject(err);
+                });
+            });
         });
     }
 
