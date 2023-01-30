@@ -100,6 +100,15 @@ export abstract class PageBase implements OnInit {
                         }
 
                         this.loadedData(event);
+                    }).catch(err => {
+                        if (err.message != null) {
+                            this.env.showMessage(err.message, 'danger');
+                        }
+                        else {
+                            this.env.showTranslateMessage('erp.app.pages.bi.sales-report.message.can-not-get-data','danger');
+                        }
+
+                        this.loadedData(event);
                     });
                 }
 

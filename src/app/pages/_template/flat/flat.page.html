@@ -3,6 +3,9 @@
 </ion-header>
 
 <ion-content appScrollbarTheme class="scrollx">
+	<ion-refresher [disabled]="!pageConfig.refresher" [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
 	<ion-fab *ngIf="pageConfig.isShowFeature" class="feature" vertical="top" horizontal="end" slot="fixed">
 		<div class="ion-padding">
 
