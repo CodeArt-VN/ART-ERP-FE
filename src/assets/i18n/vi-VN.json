@@ -3213,5 +3213,14 @@
 "erp.app.pages.pos.pos-order.history-order-quantity": "Số đơn cũ",
 "erp.app.pages.pos.pos-order.history-customer-quantity": "Số khách cũ",
 "erp.app.components.list-toolbar.show-history": "Xem lịch sử",
-"erp.app.app-component.menu.menu-group.branch-payroll-report" : "Báo cáo lương"
+"erp.app.app-component.menu.menu-group.branch-payroll-report" : "Báo cáo lương",
+"erp.app.app-component.menu.menu-group.echarts": "ECharts",
+"erp.app.app-component.menu.menu-group.pos-item": "POS Item Report",
+"erp.app.app-component.menu.menu-group.pos-test": "POS Test Report",
+"erp.app.app-component.menu.menu-group.pos-dashboard": "POS Dashboard Report",
+"erp.app.app-component.menu.menu-group.pos-receipt": "POS Receipt Report",
+"erp.app.app-component.menu.menu-group.pos-day": "POS Day Report",
+"erp.app.pages.bi.pos-dashboard.page-title": "POS Dashboard",
+"erp.app.app-component.menu.menu-group.pos-category": "POS Category",
+"erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue"
 }
