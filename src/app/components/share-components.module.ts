@@ -7,15 +7,17 @@ import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail
 import { PageMessageComponent } from './page-message/page-message.component';
 import { ShareDirectivesModule } from '../directives/share-directives.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { QueryFilterComponent } from './query-filter/query-filter.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-	imports: [IonicModule, CommonModule, ShareDirectivesModule, TranslateModule ],
+	imports: [IonicModule, CommonModule, FormsModule, ShareDirectivesModule, TranslateModule ],
 	declarations: [
-		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent
+		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent
 	],
 	exports: [
-		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, ShareDirectivesModule
+		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent, ShareDirectivesModule
 	],
 })
 export class ShareComponentsModule { }

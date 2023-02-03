@@ -26,14 +26,14 @@ export class ReportService extends exService {
     rptGlobal: any = {
         branch: [
             { Id: 16, Code: 'INGROUP', ShowBtn: false, Name: 'INGROUP', IsHidden: false, IsHiddenDetailColumn: true, Color: '#84ff00' }, //Tổng công ty
-            { Id: 1, Code: 'MetaFood', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
-            { Id: 21, Code: 'InHoldings', ShowBtn: false, Name: 'InHoldings', IsHidden: false, IsHiddenDetailColumn: true, Color: '#00ffae' },
-            { Id: 22, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
-            { Id: 23, Code: 'InDevelopment', ShowBtn: false, Name: 'InDevelopment', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ffe400' },
-            { Id: 24, Code: 'DongXuan', ShowBtn: false, Name: 'Đồng Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#2b9a00' },
+            { Id: 1, Code: 'METAFOODS', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
+            { Id: 21, Code: 'INHOLDINGS', ShowBtn: false, Name: 'InHoldings', IsHidden: false, IsHiddenDetailColumn: true, Color: '#00ffae' },
+            { Id: 22, Code: 'INHOSPITALITY', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
+            { Id: 23, Code: 'INDEVELOPMENT', ShowBtn: false, Name: 'InDevelopment', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ffe400' },
+            { Id: 24, Code: 'WP_PVD', ShowBtn: false, Name: 'Đồng Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#2b9a00' },
             { Id: 25, Code: 'XuanNam', ShowBtn: false, Name: 'Xuân Nam', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff00ae' },
-            { Id: 26, Code: 'MyXuan', ShowBtn: false, Name: 'Mỹ Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#c000ff' },
-            { Id: 27, Code: 'PQTM', ShowBtn: false, Name: 'PQTM', IsHidden: false, IsHiddenDetailColumn: true, Color: '#FF5733' },
+            { Id: 26, Code: 'MX', ShowBtn: false, Name: 'Mỹ Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#c000ff' },
+            { Id: 27, Code: 'WP_HVT', ShowBtn: false, Name: 'PQTM', IsHidden: false, IsHiddenDetailColumn: true, Color: '#FF5733' },
             // { Id: 28, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
             // { Id: 29, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
             // { Id: 446, Code: 'MetaFood', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
@@ -41,6 +41,7 @@ export class ReportService extends exService {
 
         ],
         frequency: [
+            { Id: 0, Name: 'hour' },
             { Id: 1, Name: 'day' },
             { Id: 2, Name: 'month' },
             { Id: 3, Name: 'quarter' },
