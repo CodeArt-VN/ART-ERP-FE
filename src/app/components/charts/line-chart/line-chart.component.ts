@@ -12,6 +12,12 @@ export class LineChartComponent implements OnInit {
   @Input() type: string
   @Input() label: any
   chartId;
+
+  chartStyle = {
+    width: '100%',
+    'min-height': '300px',
+  }
+
   constructor(public chartOptionService :ChartOptionService){
     
   }
@@ -22,8 +28,10 @@ export class LineChartComponent implements OnInit {
   ngAfterViewInit(){
     var chartDom = document.getElementById(this.chartId);
     var myChart = echarts.init(chartDom);
-    
-    var option = this.chartOptionService.lineChartOption
+
+    new ResizeObserver(() => myChart.resize()).observe(chartDom);
+
+    var option = this.chartOptionService.lineChartOption;
     option.xAxis.data = this.label
     option.title.text=this.title
     Object.assign(option,{    
@@ -43,7 +51,7 @@ export class LineChartComponent implements OnInit {
       })
     }
     myChart.setOption(option);
-    new ResizeObserver(() => myChart.resize()).observe(chartDom);
+
   }
   getSeries(){
     var result=[]
