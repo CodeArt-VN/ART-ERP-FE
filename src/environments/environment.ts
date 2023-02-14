@@ -19,6 +19,8 @@ export const environment = {
   showScrollbar: (navigator.appVersion.indexOf("Win") > -1) || true,
   // signalRServiceDomain: 'https://localhost:5001/' 
   signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
+  appStoreURL: 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8',
+  playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn',
   loginEmail: '@inholdings.vn'
 };
 
