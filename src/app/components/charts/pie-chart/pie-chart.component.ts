@@ -118,7 +118,9 @@ export class PieChartComponent implements OnInit {
       Object.assign(option,{tooltip: null})
     }
     
-    option.color = this.chartColorTemplate;
+    if (this.chartColorTemplate) {
+      option.color = this.chartColorTemplate;
+    }
 
     option.title['text'] = chartTitle; 
     option.title['subtext'] = chartSubtext;
