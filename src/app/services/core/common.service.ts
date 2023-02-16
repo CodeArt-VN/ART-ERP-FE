@@ -146,7 +146,7 @@ export class CommonService {
 	}
 
 	getToken() {
-		return 'Bearer ' + GlobalData?.Token?.access_token;
+		return 'Bearer ' + GlobalData.Token.access_token;
 	}
 
 	getAnItemLocal(Id: number, UID: string = '', apiPath) {

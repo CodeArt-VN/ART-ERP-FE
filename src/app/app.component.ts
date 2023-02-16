@@ -299,10 +299,10 @@ export class AppComponent implements OnInit {
 	openAppStore() {
 		console.log('openAppStore');
 		if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
-			window.location.href = environment.playStoreURL;
+			window.location.href = 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn';
 		}
 		if (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) {
-			window.location.href = environment.appStoreURL;
+			window.location.href = 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8';
 		}
 	}
 

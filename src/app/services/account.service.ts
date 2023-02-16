@@ -27,14 +27,12 @@ export class AccountService {
 		public env: EnvService,
 		public plt: Platform,
 	) {
-		this.plt.ready().then(() => {
-			this.loadSavedData().then(() => {
-				console.log('loaded saved data');
-
-			}).catch(err => {
-				console.log(err);
-			});
-		});
+		// this.plt.ready().then(() => {
+		// 	this.loadSavedData().then(() => {
+		// 	}).catch(err => {
+		// 		//console.log(err);
+		// 	});
+		// });
 		// Done: flow
 		// 1. check app version
 		//   => old: clear all
@@ -46,36 +44,32 @@ export class AccountService {
 	}
 
 	checkVersion() {
-		console.log('check version');
-
 		return new Promise(resolve => {
-			this.env.ready.then(_ => {
-				this.env.getStorage('appVersion').then((version) => {
-					if (this.env.version != version) {
-						GlobalData.Token = {
-							"access_token": "no token",
-							"expires_in": 0,
-							"token_type": "",
-							"refresh_token": "no token"
-						};
+			this.env.getStorage('appVersion').then((version) => {
+				if (this.env.version != version) {
 
-						this.env.setStorage('UserToken', GlobalData.Token).then(() => {
-							this.env.user = null;
-							this.env.setStorage('UserProfile', null).then(() => {
-								this.env.setStorage('appVersion', this.env.version).then(() => {
-									location.reload();
-									//resolve(this.env.version);
-								})
-							});
+
+					GlobalData.Token = {
+						"access_token": "no token",
+						"expires_in": 0,
+						"token_type": "",
+						"refresh_token": "no token"
+					};
+
+					this.env.setStorage('UserToken', GlobalData.Token).then(() => {
+						this.env.user = null;
+						this.env.setStorage('UserProfile', null).then(() => {
+							this.env.setStorage('appVersion', this.env.version).then(() => {
+								location.reload();
+								resolve(this.env.version);
+							})
 						});
-					}
-					else {
-						resolve(this.env.version);
-					}
-				});
-			}).catch(err => {
-				console.log(err);
-			})
+					});
+				}
+				else {
+					resolve(this.env.version);
+				}
+			});
 		});
 	}
 
@@ -122,11 +116,21 @@ export class AccountService {
 						GlobalData.Token = token;
 					}
 					else {
-						GlobalData.Token = null;
+						GlobalData.Token = {
+							"access_token": "-1",
+							"expires_in": 0,
+							"token_type": "",
+							"refresh_token": "no token"
+						};
 					}
 				}
 				else {
-					GlobalData.Token = null;
+					GlobalData.Token = {
+						"access_token": "-1",
+						"expires_in": 0,
+						"token_type": "",
+						"refresh_token": "no token"
+					};
 				}
 				resolve(GlobalData.Token);
 			});
@@ -151,9 +155,9 @@ export class AccountService {
 		return userSetting;
 	}
 	setProfile(profile) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 
-			if (profile && profile.Id) {
+			if (profile) {
 				let settings = JSON.parse(JSON.stringify(profile.UserSetting));
 				profile.UserSetting = this.loadUserSettings(settings, profile);
 				this.env.user = profile;
@@ -171,7 +175,7 @@ export class AccountService {
 							resolve(true);
 						});
 					});
-				}).catch(err => reject(err));
+				})
 			}
 			else {
 				this.env.user = null;
@@ -189,11 +193,11 @@ export class AccountService {
 	}
 
 	getProfile(forceReload = false) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			if (forceReload) {
 				this.syncGetUserData().then(() => {
 					resolve(true);
-				}).catch(err => reject(err));
+				});
 			}
 			else {
 				this.env.getStorage('UserProfile').then((profile) => {
@@ -203,9 +207,9 @@ export class AccountService {
 					} else {
 						this.syncGetUserData().then(() => {
 							resolve(true);
-						}).catch(err => reject(err));
+						});
 					}
-				}).catch(err => reject(err));;
+				});
 			}
 
 		});
@@ -235,7 +239,7 @@ export class AccountService {
 
 							that.setProfile(data).then(_ => {
 								resolve(true);
-							}).catch(err => reject(err));
+							});
 						});
 
 					}
@@ -368,10 +372,7 @@ export class AccountService {
 						that.syncGetUserData()
 							.then(() => {
 								resolve(true);
-							})
-							.catch(err => {
-								reject(err);
-							})
+							});
 					}
 					else {
 						reject('Can not login!')
@@ -429,7 +430,7 @@ export class AccountService {
 						resolve(true);
 					})
 
-				}).catch(err => reject(err));
+				});
 			})
 		});
 	}
