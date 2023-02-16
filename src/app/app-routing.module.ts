@@ -260,8 +260,6 @@ const routes: Routes = [
   { path: 'shift', loadChildren: () => import('./pages/HRM/shift/shift.module').then( m => m.ShiftPageModule), canActivate: [AuthGuard] },
   { path: 'shift/:id', loadChildren: () => import('./pages/HRM/shift-detail/shift-detail.module').then( m => m.ShiftDetailPageModule), canActivate: [AuthGuard] },
 
-  // // Test Components
-  { path: 'echarts', loadChildren: () => import('./pages/BI/echarts/echarts.module').then( m => m.EchartsPageModule), canActivate: [AuthGuard] },
 
   {
     path: '',
