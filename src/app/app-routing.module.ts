@@ -197,7 +197,7 @@ const routes: Routes = [
   
 
   //BI
-  { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
+  // { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
   { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/HRM/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
   { path: 'branch-payroll-report', loadChildren: () => import('./pages/BI/HRM/branch-payroll-report/branch-payroll-report.module').then(m => m.BranchPayrollReportPageModule), canActivate: [AuthGuard] },
   //{ path: 'sale-daily-report', loadChildren: () => import('./pages/BI/SALE/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
@@ -215,12 +215,12 @@ const routes: Routes = [
   { path: 'price-report/:segment/:id', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
   
   //BI / POS
-  { path: 'pos-dashboard', loadChildren: () => import('./pages/BI/pos-report/pos-dashboard/pos-dashboard.module').then(m => m.PosDashboardPageModule), canActivate: [AuthGuard] },
-  { path: 'pos-item', loadChildren: () => import('./pages/BI/pos-report/pos-item/pos-item.module').then(m => m.PosItemPageModule), canActivate: [AuthGuard] },
-  { path: 'pos-receipt', loadChildren: () => import('./pages/BI/pos-report/pos-receipt/pos-receipt-report.module').then(m => m.POSReceiptReportPageModule), canActivate: [AuthGuard] },
-  { path: 'pos-day', loadChildren: () => import('./pages/BI/pos-report/pos-day/pos-day.module').then(m => m.PosDayPageModule), canActivate: [AuthGuard] },
-  { path: 'pos-category', loadChildren: () => import('./pages/BI/pos-report/pos-category/pos-category.module').then(m => m.PosCategoryPageModule), canActivate: [AuthGuard] },
-  { path: 'pos-revenue', loadChildren: () => import('./pages/BI/pos-report/pos-revenue/pos-revenue.module').then(m => m.PosRevenuePageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-dashboard', loadChildren: () => import('./pages/BI/pos-report/pos-dashboard/pos-dashboard.module').then(m => m.PosDashboardPageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-item', loadChildren: () => import('./pages/BI/pos-report/pos-item/pos-item.module').then(m => m.PosItemPageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-receipt', loadChildren: () => import('./pages/BI/pos-report/pos-receipt/pos-receipt-report.module').then(m => m.POSReceiptReportPageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-day', loadChildren: () => import('./pages/BI/pos-report/pos-day/pos-day.module').then(m => m.PosDayPageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-category', loadChildren: () => import('./pages/BI/pos-report/pos-category/pos-category.module').then(m => m.PosCategoryPageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-revenue', loadChildren: () => import('./pages/BI/pos-report/pos-revenue/pos-revenue.module').then(m => m.PosRevenuePageModule), canActivate: [AuthGuard] },
   // { path: 'pos-test', loadChildren: () => import('./pages/BI/pos-report/pos-test/pos-test.module').then(m => m.PosTestPageModule), canActivate: [AuthGuard] },
   
   //ADMIN
