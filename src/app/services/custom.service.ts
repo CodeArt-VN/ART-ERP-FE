@@ -111,6 +111,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_ManagementCashFlow(FromDate, ToDate, Frequency, IDBranches, IDTemplate) {
 		let apiPath = {
 			method: "GET",
@@ -119,6 +120,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_StatementCashFlow(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
 		let apiPath = {
 			method: "GET",
@@ -127,6 +129,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_StatementIncome(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
 		let apiPath = {
 			method: "GET",
@@ -135,6 +138,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_StatementBalanceSheet(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
 		let apiPath = {
 			method: "GET",
@@ -143,6 +147,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	//daily report
 	getSAP_RPT_DailyBalance(ReportDate, IDBranches, IDTemplate) {
 		let apiPath = {
@@ -161,6 +166,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_DailyRevenue(FromDate, ToDate, IDBranches, IDTemplate) {
 		let apiPath = {
 			method: "GET",
@@ -169,6 +175,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_DailyDebt(FromDate, ToDate, IDBranches, IDTemplate) {
 		let apiPath = {
 			method: "GET",
@@ -177,6 +184,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_DailyRevExpn1(FromDate, ToDate, IDBranches, IDTemplate) {
 		let apiPath = {
 			method: "GET",
@@ -185,6 +193,7 @@ export class CustomService extends exService {
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
+
 	getSAP_RPT_DailyRevExpn2(FromDate, ToDate, IDBranches, IDTemplate) {
 		let apiPath = {
 			method: "GET",

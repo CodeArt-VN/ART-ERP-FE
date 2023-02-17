@@ -1,17 +1,14 @@
-import { ChartOptions } from "chart.js";
-
-export interface ChartDefaultOptions {
-    lineChart: ChartOptions;
-    barChart: ChartOptions;
-    pieChart: ChartOptions;
-    dougnutChart: ChartOptions;
-    // pieChart: ChartOptions;
-    // pieChart: ChartOptions;
-  }
+// export interface ChartDefaultOptions {
+//     lineChart: ChartOptions;
+//     barChart: ChartOptions;
+//     pieChart: ChartOptions;
+//     dougnutChart: ChartOptions;
+//     // pieChart: ChartOptions;
+//     // pieChart: ChartOptions;
+//   }
 
 
 
-//   //https://www.chartjs.org/docs/latest/getting-started/v3-migration.html
 //   defaultChartOptions: ChartOptions = {
 //     maintainAspectRatio: false,
 //     responsive: true,
