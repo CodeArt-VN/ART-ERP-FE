@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
-import { EchartsService } from 'src/app/services/echarts-pie.service';
+import { EchartsService } from 'src/app/services/echarts.service';
 import { lib } from 'src/app/services/static/global-functions';
 type EChartsOption = echarts.EChartsOption;
 
