@@ -89,7 +89,7 @@ export class EchartsService {
 
                 labelLine: { // Đường kẻ cho data label với data chart.
                     lineStyle: {
-                    color: lib.getCssVariableValue('--ion-color-primary'),
+                        color: lib.getCssVariableValue('--ion-color-primary'),
                     },
                     smooth: 0.2,
                     length: 10,
@@ -502,5 +502,132 @@ export class EchartsService {
                 }
             },
         ],
+    }
+
+    //Global Radar
+    radarChartOptionGlobal: any = {
+        title: { // Hiển thị tên của chart
+            text: 'chartTitle',
+            subtext: 'chartSubtext',
+            left: 'center',
+
+            textStyle: {
+                color: lib.getCssVariableValue('--ion-color-primary') // Text color
+            }
+        },
+
+        tooltip: { // Hiển thị thông tin của item khi hover chuột lên data.
+            trigger: 'item',
+        },
+
+        legend: { // Tên của các trường dữ liệu
+            orient: 'vertical',
+            bottom: 'bottom'
+        },
+
+
+        toolbox: {
+            show: false,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+        },
+
+        backgroundColor: lib.getCssVariableValue('--ion-color-tint'), // Màu nền của chart
+
+        radar: {
+            // shape: 'circle',
+            indicator: [
+                { name: 'Sales', max: 70 },
+                { name: 'Administration', max: 70 },
+                { name: 'Information Technology', max: 70 },
+                { name: 'Customer Support', max: 70 },
+                { name: 'Development', max: 70 },
+                { name: 'Marketing', max: 70 }
+            ]
+        },
+    }
+
+    radarChartOpt:any = {
+        series: [
+            {
+                name: 'chartSeriesName',
+                type: 'radar',
+                data: this.chartData,
+            }
+        ]
+    }
+
+    
+    //Global Funnel
+    funnelChartOptionGlobal = {
+        title: {
+            text: 'chartTitle',
+            subtext: 'chartSubtext',
+            left: 'center',
+
+            textStyle: {
+                color: lib.getCssVariableValue('--ion-color-primary') // Text color
+            }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c}%'
+        },
+        toolbox: {
+            show: false,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+        },
+        legend: {
+          data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+        }
+    }
+
+    funnelChartOpt: any = {
+        series: [
+            {
+              name: 'Funnel',
+              type: 'funnel',
+              left: '10%',
+              top: 60,
+              bottom: 60,
+              width: '80%',
+              min: 0,
+              max: 80,
+              minSize: '0%',
+              maxSize: '80%',
+              sort: 'descending',
+              gap: 2,
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              labelLine: {
+                length: 10,
+                lineStyle: {
+                  width: 1,
+                  type: 'solid'
+                }
+              },
+              itemStyle: {
+                borderColor: '#fff',
+                borderWidth: 1
+              },
+              emphasis: {
+                label: {
+                  fontSize: 20
+                }
+              },
+              data: this.chartData
+            }
+          ]
     }
 }
