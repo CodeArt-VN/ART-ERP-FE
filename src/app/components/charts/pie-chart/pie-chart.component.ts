@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
-import { EchartsService } from 'src/app/services/echarts-pie.service';
+import { EchartsService } from 'src/app/services/echarts.service';
 import { lib } from 'src/app/services/static/global-functions';
 type EChartsOption = echarts.EChartsOption;
 
@@ -17,6 +17,8 @@ export class PieChartComponent implements OnInit {
   chartSeriesName;
   chartType;
   chartLegend;
+  chartItemLabel;
+  chartColorTemplate;
   chartStyle = {
     width: 300,
     height: 300,
@@ -30,6 +32,8 @@ export class PieChartComponent implements OnInit {
     this.chartType = value.Type;
     this.chartStyle = value.Style;
     this.chartLegend = value.Legend;
+    this.chartItemLabel = value.ItemLabel;
+    this.chartColorTemplate = value.ColorTemplate;
   }
 
   @Input() set ChartData(value:any) {
@@ -43,10 +47,10 @@ export class PieChartComponent implements OnInit {
 	ngOnInit() { }
 
   ngAfterViewInit() {
-    this.buildPieChart(this.containerId, this.chartTitle, this.chartSubtext, this.chartSeriesName, this.chartData, this.chartType, this.chartLegend);
+    this.buildPieChart(this.containerId, this.chartTitle, this.chartSubtext, this.chartSeriesName, this.chartData, this.chartType, this.chartLegend, this.chartItemLabel);
   }
 
-	buildPieChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?) {
+	buildPieChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?, showItemLabel?) {
 		var chartDom = document.getElementById(divId);
 
     var myChart = echarts.init(chartDom, null, {
@@ -101,8 +105,21 @@ export class PieChartComponent implements OnInit {
 
     Object.assign(option, tempOption);
 
+    if (!showItemLabel) {
+      option.series[0]['label']['show'] = false; 
+      option.series[0]['labelLine']['show'] = false; 
+    }
+    else {
+      option.series[0]['label']['show'] = true; 
+      option.series[0]['labelLine']['show'] = true; 
+    }
+
     if(chartType == 'customDoughnut'){
       Object.assign(option,{tooltip: null})
+    }
+    
+    if (this.chartColorTemplate) {
+      option.color = this.chartColorTemplate;
     }
 
     option.title['text'] = chartTitle; 

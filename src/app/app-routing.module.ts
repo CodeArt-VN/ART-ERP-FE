@@ -197,7 +197,7 @@ const routes: Routes = [
   
 
   //BI
-  { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
+  // { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
   { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/HRM/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
   { path: 'branch-payroll-report', loadChildren: () => import('./pages/BI/HRM/branch-payroll-report/branch-payroll-report.module').then(m => m.BranchPayrollReportPageModule), canActivate: [AuthGuard] },
   //{ path: 'sale-daily-report', loadChildren: () => import('./pages/BI/SALE/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
