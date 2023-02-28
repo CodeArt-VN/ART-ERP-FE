@@ -157,7 +157,7 @@ export class AccountService {
 				let settings = JSON.parse(JSON.stringify(profile.UserSetting));
 				profile.UserSetting = this.loadUserSettings(settings, profile);
 				this.env.user = profile;
-				this.env.branchList = profile.BranchList;
+				this.env.rawBranchList = profile.BranchList;
 
 				Promise.all([
 					this.statusProvider.read({ Take: 10000 }),
@@ -175,7 +175,7 @@ export class AccountService {
 			}
 			else {
 				this.env.user = null;
-				this.env.branchList = [];
+				this.env.rawBranchList = [];
 				this.env.setStorage('UserProfile', profile).then(_ => {
 					this.env.loadBranch().then(_ => {
 						this.env.publishEvent({ Code: 'app:updatedUser' });
