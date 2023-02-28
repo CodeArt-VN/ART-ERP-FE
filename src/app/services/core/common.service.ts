@@ -5,6 +5,7 @@ import { GlobalData } from '../static/global-variable';
 import { lib } from '../static/global-functions';
 import { EnvService } from './env.service';
 import { environment } from 'src/environments/environment';
+import { ApiSetting } from '../static/api-setting';
 
 @Injectable({
 	providedIn: 'root'
@@ -51,6 +52,10 @@ export class CommonService {
 		if (data && data.hasOwnProperty('IgnoredBranch') && data.hasOwnProperty('IDBranch')) {
 			delete data.IDBranch;
 			delete data.SelectedBranch;
+		}
+
+		if (URL.indexOf('http') != 0) {
+			URL = ApiSetting.apiDomain(  URL);
 		}
 
 		if ((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch') || !data) && URL.indexOf('IDBranch') == -1 && this.env.selectedBranch) {

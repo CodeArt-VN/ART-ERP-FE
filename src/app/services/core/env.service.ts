@@ -18,6 +18,7 @@ export class EnvService {
     user: any = {};
     isloaded = false;
     deviceInfo: any = null;
+    rawBranchList = [];
     branchList = [];
     jobTitleList = [];
     selectedBranch = null;
@@ -291,7 +292,7 @@ export class EnvService {
 
     loadBranch() {
         return new Promise((resolve) => {
-            lib.buildFlatTree(this.branchList, [], true).then((resp: any) => {
+            lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
                 this.branchList = [];
                 this.jobTitleList = [];
                 for (let ix = 0; ix < resp.length; ix++) {
