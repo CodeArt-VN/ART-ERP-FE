@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-list-toolbar',
@@ -7,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChange
 })
 export class ListToolbarComponent implements OnInit {
 	@ViewChild('importfile') importfile: any;
+	
 	@Input() pageTitle;
 	@Input() selectedTitle;
 	@Input() pageConfig;
@@ -25,6 +27,8 @@ export class ListToolbarComponent implements OnInit {
 	@Input() canSelect = true;
 	@Input() ShowChangeTable = true;
 
+	//@Input() set pageTitle(value) {window.document.title = value;};
+	
 	@Output() add = new EventEmitter();
 	@Output() refresh = new EventEmitter();
 	@Output() export = new EventEmitter();
@@ -65,10 +69,14 @@ export class ListToolbarComponent implements OnInit {
 	@Output() submitBusinessPartner = new EventEmitter();
 	@Output() approveBusinessPartner = new EventEmitter();
 	@Output() disapproveBusinessPartner = new EventEmitter();
-	constructor() { }
+	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 
-		window.document.title = this.pageTitle;
+		
+		this.translate.get('erp.app.app-component.menu.menu-group.' + this.pageConfig.pageName).subscribe((text: string) => {
+            this.pageTitle = text;
+			window.document.title = text;
+        });
 	}
 
 	emit(eventName) {

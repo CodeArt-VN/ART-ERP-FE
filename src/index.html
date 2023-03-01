@@ -48,9 +48,10 @@
           return "other";
       }
     })();
+
     console.log(browser);
-    if (browser == "edge" || browser == "ie") {
-      var r = confirm("Trình duyệt IE / Edge hay bị lỗi, nên bạn vui lòng sử dụng chrome để làm việc.");
+    if (browser == "other" || browser == "ie") {
+      var r = confirm("Trình duyệt không được hỗ trợ, xin vui lòng sử dụng chrome để làm việc.");
       if (r == true) {
         window.location.href = 'https://www.google.com/intl/vi/chrome/';
       } else {

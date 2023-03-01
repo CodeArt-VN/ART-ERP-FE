@@ -17,8 +17,8 @@ const routes: Routes = [
  { path: 'ar-invoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
  { path: 'ar-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice-detail/arinvoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
 
- { path: 'ap-invoice', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice/ap-invoice.module').then(m => m.APInvoicePageModule), canActivate: [AuthGuard] },
- { path: 'ap-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice-detail/ap-invoice-detail.module').then(m => m.APInvoiceDetailPageModule), canActivate: [AuthGuard] },
+//  { path: 'ap-invoice', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice/ap-invoice.module').then(m => m.APInvoicePageModule), canActivate: [AuthGuard] },
+//  { path: 'ap-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice-detail/ap-invoice-detail.module').then(m => m.APInvoiceDetailPageModule), canActivate: [AuthGuard] },
 
 
   //CRM
@@ -197,9 +197,10 @@ const routes: Routes = [
   
 
   //BI
-  //{ path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
+  // { path: 'dashboard', loadChildren: () => import('./pages/BI/dashboard/dashboard.module').then(m => m.DashboardPageModule), canActivate: [AuthGuard] },
   { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/HRM/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
-  // { path: 'sale-daily-report', loadChildren: () => import('./pages/BI/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
+  { path: 'branch-payroll-report', loadChildren: () => import('./pages/BI/HRM/branch-payroll-report/branch-payroll-report.module').then(m => m.BranchPayrollReportPageModule), canActivate: [AuthGuard] },
+  //{ path: 'sale-daily-report', loadChildren: () => import('./pages/BI/SALE/sale-daily-report/sale-daily-report.module').then(m => m.SaleDailyReportPageModule), canActivate: [AuthGuard] },
   // // { path: 'sale-kpi', loadChildren: () => import('./pages/BI').then(m => m), canActivate: [AuthGuard] },
   { path: 'finance-management', loadChildren: () => import('./pages/BI/finance-management/finance-management.module').then(m => m.FinanceManagementPageModule), canActivate: [AuthGuard] },
   { path: 'finance-daily-report', loadChildren: () => import('./pages/BI/finance-daily-report/finance-daily-report.module').then(m => m.FinanceDailyReportPageModule), canActivate: [AuthGuard] },
@@ -212,6 +213,16 @@ const routes: Routes = [
   { path: 'sales-reports-mobile', loadChildren: () => import('./pages/BI/SALE/sale-summary-mobile/sale-summary-mobile.module').then(m => m.SaleSummaryMobilePageModule), canActivate: [AuthGuard] },
   { path: 'price-report', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
   { path: 'price-report/:segment/:id', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
+  
+  //BI / POS
+  { path: 'pos-dashboard', loadChildren: () => import('./pages/BI/pos-report/pos-dashboard/pos-dashboard.module').then(m => m.PosDashboardPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-item', loadChildren: () => import('./pages/BI/pos-report/pos-item/pos-item.module').then(m => m.PosItemPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-receipt', loadChildren: () => import('./pages/BI/pos-report/pos-receipt/pos-receipt-report.module').then(m => m.POSReceiptReportPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-day', loadChildren: () => import('./pages/BI/pos-report/pos-day/pos-day.module').then(m => m.PosDayPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-category', loadChildren: () => import('./pages/BI/pos-report/pos-category/pos-category.module').then(m => m.PosCategoryPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-revenue', loadChildren: () => import('./pages/BI/pos-report/pos-revenue/pos-revenue.module').then(m => m.PosRevenuePageModule), canActivate: [AuthGuard] },
+  // { path: 'pos-test', loadChildren: () => import('./pages/BI/pos-report/pos-test/pos-test.module').then(m => m.PosTestPageModule), canActivate: [AuthGuard] },
+  
   //ADMIN
   { path: 'form', loadChildren: () => import('./pages/ADMIN/form/form.module').then(m => m.FormPageModule), canActivate: [AuthGuard] },
   { path: 'form/:id', loadChildren: () => import('./pages/ADMIN/form-detail/form-detail.module').then(m => m.FormDetailPageModule), canActivate: [AuthGuard] },
@@ -248,6 +259,7 @@ const routes: Routes = [
   // // Shift
   { path: 'shift', loadChildren: () => import('./pages/HRM/shift/shift.module').then( m => m.ShiftPageModule), canActivate: [AuthGuard] },
   { path: 'shift/:id', loadChildren: () => import('./pages/HRM/shift-detail/shift-detail.module').then( m => m.ShiftDetailPageModule), canActivate: [AuthGuard] },
+
 
   {
     path: '',

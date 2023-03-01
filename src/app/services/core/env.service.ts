@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform, ToastController, AlertController } from '@ionic/angular';
+import { Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,7 @@ export class EnvService {
     user: any = {};
     isloaded = false;
     deviceInfo: any = null;
+    rawBranchList = [];
     branchList = [];
     jobTitleList = [];
     selectedBranch = null;
@@ -32,6 +33,12 @@ export class EnvService {
         IsOnline: false
     }
 
+    ready: Promise<any> | null;
+
+    lastMessage = '';
+
+    private _storage: Storage | null = null;
+
 
     public EventTracking = new Subject<any>();
 
@@ -40,17 +47,23 @@ export class EnvService {
         public storage: Storage,
         public toastController: ToastController,
         public alertCtrl: AlertController,
+        public loadingController: LoadingController,
         public translate: TranslateService
     ) {
         this.isMobile = this.plt.is('mobile');
-        this.init();
-    }
+        this.ready = new Promise((resolve, reject) => {
+            this.init().then(resolve).catch(reject);
+        });
 
-    private _storage: Storage | null = null;
+        
+    }
+    
+    
     async init() {
+        console.log('init env');
+        
         // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-        const storage = await this.storage.create();
-        this._storage = storage;
+        this._storage = await this.storage.create();
         this.publishEvent({ Code: 'app:loadLang' });
         Network.addListener('networkStatusChange', status => {
             console.log('Network status changed', status);
@@ -151,7 +164,13 @@ export class EnvService {
     }
 
     showMessage(message, color = '', duration = 5000, showCloseButton = false) {
+        if (this.lastMessage == message) return;
+        this.lastMessage = message;
 
+        setTimeout(() => {
+            this.lastMessage = '';
+        }, 5000);
+        
         if (!showCloseButton) {
             this.toastController.create({
                 message: message,
@@ -236,10 +255,26 @@ export class EnvService {
                 option.inputs = inputs;
             }
 
-
             this.alertCtrl.create(option).then(alert => {
                 alert.present();
             })
+        });
+    }
+
+    showLoading(message, promise){
+        return new Promise((resolve, reject) => {
+            this.loadingController.create({ cssClass: 'my-custom-class', message: message}).then((loading) => 
+            {
+                loading.present();
+                promise.then(result=>{
+                    if (loading) loading.dismiss();
+                    resolve(result);
+                        
+                }).catch(err => {
+                    if (loading) loading.dismiss();
+                    reject(err);
+                });
+            });
         });
     }
 
@@ -257,7 +292,7 @@ export class EnvService {
 
     loadBranch() {
         return new Promise((resolve) => {
-            lib.buildFlatTree(this.branchList, [], true).then((resp: any) => {
+            lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
                 this.branchList = [];
                 this.jobTitleList = [];
                 for (let ix = 0; ix < resp.length; ix++) {
