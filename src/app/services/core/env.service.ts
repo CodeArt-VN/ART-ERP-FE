@@ -18,6 +18,7 @@ export class EnvService {
     user: any = {};
     isloaded = false;
     deviceInfo: any = null;
+    rawBranchList = [];
     branchList = [];
     jobTitleList = [];
     selectedBranch = null;
@@ -32,6 +33,12 @@ export class EnvService {
         IsOnline: false
     }
 
+    ready: Promise<any> | null;
+
+    lastMessage = '';
+
+    private _storage: Storage | null = null;
+
 
     public EventTracking = new Subject<any>();
 
@@ -44,14 +51,19 @@ export class EnvService {
         public translate: TranslateService
     ) {
         this.isMobile = this.plt.is('mobile');
-        this.init();
-    }
+        this.ready = new Promise((resolve, reject) => {
+            this.init().then(resolve).catch(reject);
+        });
 
-    private _storage: Storage | null = null;
+        
+    }
+    
+    
     async init() {
+        console.log('init env');
+        
         // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-        const storage = await this.storage.create();
-        this._storage = storage;
+        this._storage = await this.storage.create();
         this.publishEvent({ Code: 'app:loadLang' });
         Network.addListener('networkStatusChange', status => {
             console.log('Network status changed', status);
@@ -152,7 +164,13 @@ export class EnvService {
     }
 
     showMessage(message, color = '', duration = 5000, showCloseButton = false) {
+        if (this.lastMessage == message) return;
+        this.lastMessage = message;
 
+        setTimeout(() => {
+            this.lastMessage = '';
+        }, 5000);
+        
         if (!showCloseButton) {
             this.toastController.create({
                 message: message,
@@ -274,7 +292,7 @@ export class EnvService {
 
     loadBranch() {
         return new Promise((resolve) => {
-            lib.buildFlatTree(this.branchList, [], true).then((resp: any) => {
+            lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
                 this.branchList = [];
                 this.jobTitleList = [];
                 for (let ix = 0; ix < resp.length; ix++) {

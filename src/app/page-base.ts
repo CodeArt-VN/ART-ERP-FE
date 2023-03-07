@@ -187,7 +187,6 @@ export abstract class PageBase implements OnInit {
 
     lastchecked = null;
     changeSelection(i, e = null) {
-
         if (e && e.shiftKey) {
             let from = this.items.indexOf(this.lastchecked);
             let to = this.items.indexOf(i);
@@ -245,35 +244,17 @@ export abstract class PageBase implements OnInit {
 
     deleteItems(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.canDelete) {
-            this.alertCtrl.create({
-                header: 'Xóa ' + this.selectedItems.length + ' dòng',
-                //subHeader: '---',
-                message: 'Bạn chắc muốn xóa ' + this.selectedItems.length + ' đang chọn?',
-                buttons: [
-                    {
-                        text: 'Không',
-                        role: 'cancel',
-                        handler: () => {
-                            //console.log('Không xóa');
-                        }
-                    },
-                    {
-                        text: 'Đồng ý xóa',
-                        cssClass: 'danger-btn',
-                        handler: () => {
-                            this.pageProvider.delete(this.selectedItems).then(values => {
-                                this.removeSelectedItems();
-                                this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
-                                this.env.publishEvent({ Code: publishEventCode });
-                            }).catch(err => {
-                                //console.log(err);
-                            });
-                        }
-                    }
-                ]
-            }).then(alert => {
-                alert.present();
-            })
+            this.env.showPrompt('Bạn chắc muốn xóa ' + this.selectedItems.length + ' đang chọn?', null, 'Xóa ' + this.selectedItems.length + ' dòng').then(_=>{
+                this.env.showLoading('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
+                .then(_ => {
+                    this.removeSelectedItems();
+                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.publishEvent({ Code: publishEventCode });
+                }).catch(err => {
+                    this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
+                    console.log(err);
+                });
+            });
         }
     }
 
@@ -428,23 +409,37 @@ export abstract class PageBase implements OnInit {
                 this.item = ite;
                 this.loadedData(event);
             }).catch((err) => {
-                debugger;
-                // if(err.status = 404){
-                //     this.nav('not-found', 'back');
-                // }
-                // else{
-                //     this.item = null;
-                //     this.loadedData(event);
-                // }
+                console.log(err);
+                
+                if(err.status = 404){
+                    this.nav('not-found', 'back');
+                }
+                else{
+                    this.item = null;
+                    this.loadedData(event);
+                }
 
             });
         }
-        else {
-            this.item = {};
+        else if (this.id == 0) {
+            if (!this.item) this.item = {};
+            
+            Object.assign(this.item, this.DefaultItem);
             this.loadedData(event);
         }
+        else{
+            this.loadedData(event);
+        }
+        
     }
 
+    debounceTimeout;
+    debounce(fn, delay) {
+        if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+        this.debounceTimeout = setTimeout(() => {
+            fn()
+        }, delay);
+    }
 
     saveChange(publishEventCode = this.pageConfig.pageName) {
         return new Promise((resolve, reject) => {
