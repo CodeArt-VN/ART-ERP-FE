@@ -97,8 +97,7 @@ export class FieldControlComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		console.log(this.field);
-
+		
 	}
 
 	trackChange(data) {

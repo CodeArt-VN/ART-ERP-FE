@@ -4,8 +4,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
-//import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -102,7 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     SplashScreen,
     //BarcodeScanner,
-    Geolocation,
+    //Geolocation,
     //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],

@@ -220,13 +220,11 @@
             border: 1px solid var(--menu-right-border-color) !important;
             outline: none;
             width: 100%;
-            height: 2rem;
-
+            height: unset !important;
+            padding: 0.5rem;
             border-radius: 3px;
             font-weight: normal;
-
             background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), .05);
-
             &.ng-dirty:not(.no-check-dirty) {
                 border: 1px solid var(--ion-color-success) !important;
             }
@@ -234,13 +232,20 @@
             &.ng-invalid, &.ng-invalid.ng-dirty:not(.no-check-dirty) {
                 border: 1px solid var(--ion-color-danger) !important;
             }
-            &[readonly],&[disabled],&.disable{
+            &[readonly],&[disabled],&.disable,&.ng-select-disabled{
                 background-color: var(--menu-right-border-color) !important;
                 color: var(--ion-color-medium);
             }
 
-            &:focus{
-                border-width: 2px !important;
+            &:focus, &.ng-select-focused{
+                border: 1px solid var(--ion-color-primary) !important;
+            }
+
+            &.ng-select {
+                padding: 0;
+                .ng-select-container{
+                    padding: 0.5rem;
+                }
             }
         }
 
@@ -541,7 +546,7 @@
                     position: absolute;
                     right: 8px;
                     min-width: fit-content;
-                    margin-top: 20px;
+                    margin-top: 2rem;
                     font-size: 160%;
                     color: var(--ion-color-primary) !important;
                     font-weight: bold;
