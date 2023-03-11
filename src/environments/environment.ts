@@ -11,17 +11,17 @@ export const environment = {
   //appDomain: "http://art.appcenter.vn:54009/",
   //appDomain: "http://192.168.1.8:54009/",
   //appDomain: "http://10.211.55.4:54009/",
-  appDomain: "http://art.appcenter.vn:54009/",
-  staffAvatarsServer: "https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/",
-  posImagesServer: "https://api.inholdings.vn/",
+  appDomain: 'http://art.appcenter.vn:54009/',
+  staffAvatarsServer: 'https://artlogistics.vn/Uploads/HRM/Staffs/Avatars/',
+  posImagesServer: 'https://artlogistics.vn/',
 
-  apiVersion: "api/v1/",
+  apiVersion: 'api/v1/',
   showScrollbar: (navigator.appVersion.indexOf("Win") > -1) || true,
   // signalRServiceDomain: 'https://localhost:5001/' 
   signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
   appStoreURL: 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8',
   playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn',
-  loginEmail: '@inholdings.vn'
+  loginEmail: '@artlogistics.vn'
 };
 
 /*
