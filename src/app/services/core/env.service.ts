@@ -366,7 +366,7 @@ export class EnvService {
         this.publishEvent({ Code: 'changeBranch' });
     }
 
-    getStatus(Code: string) {
+    getStatus(Code: string): Promise<any[]> {
         return new Promise((resolve) => {
             let it = this.statusList.find(d => d.Code == Code);
             if (it)

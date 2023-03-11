@@ -43,10 +43,10 @@
 			<!-- <ion-toolbar color="primary">
                 <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
                     <ion-segment-button value="s1">
-                        <ion-label>Thông tin xe</ion-label>
+                        <ion-label>Thông tin chung</ion-label>
                     </ion-segment-button>
                     <ion-segment-button value="s2">
-                        <ion-label>Lịch bảo dưỡng</ion-label>
+                        <ion-label>Thông tin khác</ion-label>
                     </ion-segment-button>
                 </ion-segment>
             </ion-toolbar> -->
@@ -83,7 +83,7 @@
 									<label class="c-label" for="Remark">{{'Remark' | translate}}
 										<span *ngIf="!formGroup.controls.Remark.valid && !formGroup.controls.Remark.pending && (formGroup.controls.Remark.dirty || submitAttempt)" ion-text color="danger">(*)</span>
 									</label>
-									<textarea rows="3" class="c-input remark" id="Remark" formControlName="Remark" type="textarea"></textarea>
+									<textarea (change)="saveChange()" rows="3" class="c-input remark" id="Remark" formControlName="Remark" type="textarea"></textarea>
 								</div>
 
 							</ion-col>
