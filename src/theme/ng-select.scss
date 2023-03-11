@@ -1,6 +1,6 @@
 .ng-select {
 	&.ng-select-opened>.ng-select-container {
-		background: var(--menu-background-bottom);
+		background: transparent;
 		border-color: var(--menu-right-border-color) var(--menu-right-border-color) var(--menu-right-border-color);
 
 		.ng-arrow {
@@ -17,22 +17,30 @@
 		box-shadow: none;
 	}
 
-	&.ng-select-disabled>.ng-select-container {
-		background-color: var(--menu-right-border-color)
+	&.ng-select-disabled{
+		background-color: var(--menu-right-border-color);
+		&>.ng-select-container {
+			background-color: transparent;
+		}
 	}
 
 	.ng-select-container {
+		height: 100%;
+		min-height: unset;
 		color: var(--ion-color-light-contrast);
 		background-color: transparent;
-		//background-color: var(--menu-background-bottom);
-		//border: 1px solid var(--menu-right-border-color);
 		border: none;
+		overflow: visible !important;
 
 		&:hover {
-			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06)
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+			box-shadow: none;
 		}
 
 		.ng-value-container {
+			padding: 0;
+			position: relative;
+			height: 100%;
 			.ng-placeholder {
 				color: var(--ion-color-light-contrast)
 			}
@@ -40,16 +48,24 @@
 			.ng-input>input {
 				padding: 5px 0;
 			}
+
+			ion-chip {
+				margin: 0.2rem 0.4rem 0.2rem 0;
+			}
 		}
+
+		 
 	}
 
 	&.ng-select-single {
 		.ng-select-container {
-			height: auto;
-
+			
 			.ng-value-container {
+				padding: 0;
 				.ng-input {
-					line-height: 2.8rem;
+					line-height: unset;
+					top: 0;
+    				padding: 0;
 				}
 			}
 		}
@@ -60,12 +76,18 @@
 	&.ng-select-multiple {
 		.ng-select-container {
 			.ng-value-container {
+				padding-top: 0;
+    			padding-left: 0;
+
 				.ng-placeholder {
 					padding: 0;
-					top: 10px;
+					top: 0;
 				}
 
 				.ng-value {
+					
+					margin: 0.2rem 0.4rem 0.2rem 0;
+		
 					color: var(--ion-color-dark);
 					background-color: var(--menu-background-item-active);
 
@@ -94,8 +116,8 @@
 	}
 
 	&.ng-select-multiple.ng-select-disabled>.ng-select-container .ng-value-container .ng-value {
-		background-color: var(--menu-right-border-color);
-		border: 1px solid var(--menu-right-border-color);
+		background-color: transparent;
+		border: none;
 	}
 
 	.ng-clear-wrapper {
