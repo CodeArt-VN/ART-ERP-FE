@@ -25,7 +25,7 @@
 	}
 
 	.ng-select-container {
-		height: unset;
+		height: 100%;
 		min-height: unset;
 		color: var(--ion-color-light-contrast);
 		background-color: transparent;
@@ -40,7 +40,7 @@
 		.ng-value-container {
 			padding: 0;
 			position: relative;
-
+			height: 100%;
 			.ng-placeholder {
 				color: var(--ion-color-light-contrast)
 			}
@@ -59,7 +59,7 @@
 
 	&.ng-select-single {
 		.ng-select-container {
-			height: unset;
+			
 			.ng-value-container {
 				padding: 0;
 				.ng-input {
