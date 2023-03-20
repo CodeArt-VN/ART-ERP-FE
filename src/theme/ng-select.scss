@@ -41,6 +41,8 @@
 			padding: 0;
 			position: relative;
 			height: 100%;
+			min-height: 1.5rem;
+			
 			.ng-placeholder {
 				color: var(--ion-color-light-contrast)
 			}
