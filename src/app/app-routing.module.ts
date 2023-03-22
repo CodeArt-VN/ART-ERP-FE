@@ -51,6 +51,7 @@ const routes: Routes = [
   //SALE
   { path: 'sale-order', loadChildren: () => import('./pages/SALE/sale-order/sale-order.module').then(m => m.SaleOrderPageModule), canActivate: [AuthGuard] },
   { path: 'sale-order/:id', loadChildren: () => import('./pages/SALE/sale-order-detail/sale-order-detail.module').then(m => m.SaleOrderDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'sale-order/close-order/:id', loadChildren: () => import('./pages/SALE/close-order/close-order.module').then(m => m.CloseOrderPageModule), canActivate: [AuthGuard] },
 
   { path: 'receivable-debt', loadChildren: () => import('./pages/SALE/receivable-debt/receivable-debt.module').then(m => m.ReceivableDebtPageModule), canActivate: [AuthGuard] },
   { path: 'saleman-debt', loadChildren: () => import('./pages/SALE/saleman-debt/saleman-debt.module').then(m => m.SalemanDebtPageModule), canActivate: [AuthGuard] },
@@ -59,8 +60,8 @@ const routes: Routes = [
   { path: 'sale-order-mobile/:id', loadChildren: () => import('./pages/SALE/sale-order-mobile-detail/sale-order-mobile-detail.module').then(m => m.SaleOrderMobileDetailPageModule), canActivate: [AuthGuard] },
   { path: 'sale-order-mobile-viewer/:id', loadChildren: () => import('./pages/SALE/sale-order-mobile-viewer/sale-order-mobile-viewer.module').then(m => m.SaleOrderMobileViewerPageModule), canActivate: [AuthGuard] },
 
-  // { path: 'sale-order-note', loadChildren: () => import('./pages/SALE/sale-order-note/sale-order-note.module').then(m => m.SaleOrderNotePageModule) },
-  // { path: 'sale-order-note/:id', loadChildren: () => import('./pages/SALE/sale-order-note/sale-order-note.module').then(m => m.SaleOrderNotePageModule) },
+  { path: 'sale-order-note', loadChildren: () => import('./pages/SALE/sale-order-note/sale-order-note.module').then(m => m.SaleOrderNotePageModule) },
+  { path: 'sale-order-note/:id', loadChildren: () => import('./pages/SALE/sale-order-note/sale-order-note.module').then(m => m.SaleOrderNotePageModule) },
 
 
   //FINANCIALS

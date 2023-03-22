@@ -448,7 +448,27 @@ export class CommonService {
 		});
 	}
 
+	post(URL, data){
+		return new Promise((resolve, reject) => {
+			this.connect('POST', URL, data).toPromise().then(resp=>{
+				resolve(resp);
+			}).catch(err => {
+				this.checkError(err);
+				reject(err);
+			})
+		});
+	}
 
+	put(URL, data){
+		return new Promise((resolve, reject) => {
+			this.connect('PUT', URL, data).toPromise().then(resp=>{
+				resolve(resp);
+			}).catch(err => {
+				this.checkError(err);
+				reject(err);
+			})
+		});
+	}
 
 	checkError(err) {
 		//console.log(err);
@@ -456,10 +476,6 @@ export class CommonService {
 			let vers = err.statusText.split('|');
 			this.env.showTranslateMessage('erp.app.app-component.account-service.message.update-version-with-value','danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: 'app:ForceUpdate' });
-		}
-		else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
-			this.env.showTranslateMessage('erp.app.app-component.account-service.message.can-not-connect', 'danger');
-			this.env.publishEvent({ Code: 'app:ConnectFail' });
 		}
 		else if (err.status == 401) {
 			this.env.publishEvent({ Code: 'app:silentlogout' });

@@ -9,6 +9,9 @@ export class DetailToolbarComponent implements OnInit {
   @Input() page;
   @Input() title;
 	@Input() ShowFeature = false;
+  @Input() ShowDelete = true;
+  @Input() ShowHelp = true;
+  @Input() ShowRefresh = true;
   @Input() NoBorder = false;
 
   @Output() refresh = new EventEmitter();
