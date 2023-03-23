@@ -20,6 +20,13 @@ export class AC_APInvoiceProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class AC_APInvoiceDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.AC_APInvoiceDetail, SearchConfig.getSearchFields('AC_APInvoiceDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class AC_ARInvoiceProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.AC_ARInvoice, SearchConfig.getSearchFields('AC_ARInvoice'), commonService);
@@ -1038,6 +1045,48 @@ export class POS_TerminalProvider extends exService {
 export class POS_WorkOrderCoordinateProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.POS_WorkOrderCoordinate, SearchConfig.getSearchFields('POS_WorkOrderCoordinate'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_DealProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_Deal, SearchConfig.getSearchFields('PR_Deal'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_ProgramProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_Program, SearchConfig.getSearchFields('PR_Program'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_ProgramConditionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_ProgramCondition, SearchConfig.getSearchFields('PR_ProgramCondition'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_ProgramItemProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_ProgramItem, SearchConfig.getSearchFields('PR_ProgramItem'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_ProgramPartnerProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_ProgramPartner, SearchConfig.getSearchFields('PR_ProgramPartner'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class PR_ProgramRewardProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.PR_ProgramReward, SearchConfig.getSearchFields('PR_ProgramReward'), commonService);
 	}
 }
 
