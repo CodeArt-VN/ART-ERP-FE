@@ -2769,7 +2769,17 @@ export class ReportService extends exService {
             rundate.setDate(rundate.getDate() + 1);
         };
 
-        if (this.rptGlobal.query.frequency == 1) {
+        if (this.rptGlobal.query.frequency == 0) {
+
+            var hours = [];
+            let l:any;
+			for (var i = 0; i < 24; i++) {
+				l = ((i < 10 ? '0' : '') + i + ':00');
+
+                this.timeGroups.push({ Label: l, Hour: i});
+			}
+        }
+        else if (this.rptGlobal.query.frequency == 1) {
             for (let i = 0; i < dates.length; i++) {
                 const d = dates[i];
 

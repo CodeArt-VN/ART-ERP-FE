@@ -42,9 +42,9 @@
 
   <div>
     <div class="title">{{'erp.app.pages.bi.dashboard.branch' | translate}}</div>
-    <ng-container *ngFor="let b of branchList">
+    <ng-container *ngFor="let b of reportBranchList">
       <ion-button *ngIf="b.ShowBtn && b.Code && b.Id != 16" [fill]="b.IsHidden ? 'outline' : 'solid'" size="small" (click)="toogleBranchDataset(b)">
-        {{b.Code}}
+        {{b.Name}}
       </ion-button>
     </ng-container>
     <div class="query-time"></div>
