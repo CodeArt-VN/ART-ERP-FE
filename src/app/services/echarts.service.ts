@@ -490,7 +490,8 @@ export class EchartsService {
                     //   image: piePatternImg,
                     //   repeat: 'repeat'
                     // },
-                    borderWidth: 3,
+                    borderWidth: 0,
+                    gapWidth: 2
                     // borderColor: '#235894'
                 },
 
@@ -499,7 +500,8 @@ export class EchartsService {
                 animationEasing: 'elasticOut',
                 animationDelay: function (idx) {
                     return Math.random() * 200;
-                }
+                },
+                breadcrumb: false,
             },
         ],
     }

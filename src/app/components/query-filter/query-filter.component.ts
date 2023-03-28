@@ -11,7 +11,8 @@ import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 })
 export class QueryFilterComponent extends PageBase {
 
-  branchList = [];
+  reportBranchList = []
+  colorList = ['#84ff00', '#772727', '#00ffae', '#ff4200', '#ffe400', '#2b9a00', '#ff00ae', '#c000ff', '#FF5733', '#5DADE2']
 
   @Output() changeFrequencyComp = new EventEmitter();
   @Output() changeDateFilterComp = new EventEmitter();
@@ -22,43 +23,46 @@ export class QueryFilterComponent extends PageBase {
     public rpt: ReportService,
     public env: EnvService,
   ) {
-    super();
+		super();
 
-    this.query.IDParent = 16;
-
-    this.pageConfig.subscribeEvent = this.env.getEvents().subscribe((data) => {
+		this.pageConfig.subscribeEvent = this.env.getEvents().subscribe((data) => {
       if (data.Code == 'changeBranch') {
-          this.changeBranchBtn();
+        this.changeBranchBtn();
+      } else {
+        this.refresh();
       }
-      else {
-          this.refresh();
-      }
-  });
-  }
-
-  ngOnInit() {
-    this.branchProvider.read({Type: 'Tổng công ty / Công ty', IsDeleted: false}).then((resutl:any) => {
-      this.branchList = resutl.data;
-      // console.log(this.branchList);
-
-      this.changeBranchBtn();
     });
 
+    let template = {
+      "ShowBtn": true,
+      "IsHidden": true,
+      "IsHiddenDetailColumn": true,
+    }
+    
+    this.reportBranchList = this.env.branchList.filter(b => b.IDType == '111');
+    for (let index = 0; index < this.reportBranchList.length; index++) {
+        let val = this.reportBranchList[index];
+        Object.assign(val, template);
+        val.Color = this.colorList[index];
+    };
+
+    this.changeBranchBtn();
   }
 
   changeBranchBtn() {
     if (this.env.selectedBranch == 16) {
-        this.branchList.forEach(b => {
+        this.reportBranchList.forEach(b => {
             b.ShowBtn = true;
             b.IsHidden = false;
         });
     }
     else {
-        let currentBranch = this.branchList.find(b => b.Id == this.env.selectedBranch);
-        this.branchList.forEach(b => {
+        let currentBranch = this.reportBranchList.find(b => b.Id == this.env.selectedBranch);
+        this.reportBranchList.forEach(b => {
             b.ShowBtn = false;
-            b.IsHidden = true;
+            b.IsHidden = false;
         });
+
         if (currentBranch) {
             currentBranch.ShowBtn = true;
             currentBranch.IsHidden = false;
