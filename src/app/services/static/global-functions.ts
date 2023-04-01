@@ -96,6 +96,9 @@ export var lib = {
 			const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 			result = weekday[value.getDay()];
 		}
+		else if (term == 'yyMMdd') {
+			result = this.paddingNumber(yy - 2000, 2) + this.paddingNumber(mm, 2) + this.paddingNumber(dd, 2);
+		}
 
 		return result;
 	},

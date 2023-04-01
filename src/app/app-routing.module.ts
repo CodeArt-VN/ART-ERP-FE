@@ -269,7 +269,8 @@ const routes: Routes = [
   // // Shift
   { path: 'shift', loadChildren: () => import('./pages/HRM/shift/shift.module').then( m => m.ShiftPageModule), canActivate: [AuthGuard] },
   { path: 'shift/:id', loadChildren: () => import('./pages/HRM/shift-detail/shift-detail.module').then( m => m.ShiftDetailPageModule), canActivate: [AuthGuard] },
-
+  { path: 'pr-deal', loadChildren: () => import('./pages/PR/pr-deal/pr-deal.module').then( m => m.PRDealPageModule), canActivate: [AuthGuard]},
+  { path: 'pr-deal/:id', loadChildren: () => import('./pages/PR/pr-deal-detail/pr-deal-detail.module').then( m => m.PRDealDetailPageModule),canActivate: [AuthGuard]},
 
   {
     path: '',
