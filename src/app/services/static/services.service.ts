@@ -1776,3 +1776,9 @@ export class WMS_ZoneProvider extends exService {
 	}
 }
 
+@Injectable({ providedIn: 'root' })
+export class POS_ForCustomerProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.POS_ForCustomer, SearchConfig.getSearchFields('POS_ForCustomer'), commonService);
+	}
+}
