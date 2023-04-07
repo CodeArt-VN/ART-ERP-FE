@@ -2281,7 +2281,6 @@
 "erp.app.pages.sale.sale-order-note.customer-name": "Tên KH",
 "erp.app.pages.sale.sale-order-note.detail-table": "BẢNG KÊ CHI TIẾT THANH TOÁN",
 "erp.app.pages.sale.sale-order-note.in-text": "Viết bằng chữ",
-"erp.app.pages.sale.sale-order-note.o": "O",
 "erp.app.pages.sale.sale-order-note.orde-date": "Ngày lên đơn",
 "erp.app.pages.sale.sale-order-note.order-name": "Nội dung",
 "erp.app.pages.sale.sale-order-note.page-title": "In phiếu đơn hàng",
@@ -2301,7 +2300,7 @@
 "erp.app.pages.sale.sale-order-note.sum-up-remain": "Số tiền còn lại",
 "erp.app.pages.sale.sale-order-note.total": "THÀNH TIỀN",
 "erp.app.pages.sale.sale-order-note.total-after-tax": "TỔNG TIỀN",
-"erp.app.pages.sale.sale-order-note.total-service": "TIỀN PV % (T.TIỀN)",
+"erp.app.pages.sale.sale-order-note.total-service": "TIỀN PV (T.TIỀN)",
 "erp.app.pages.sale.sale-order-note.total-vat": "TIỀN VAT",
 "erp.app.pages.sale.sale-order-note.uom": "ĐVT",
 "erp.app.pages.sale.sale-order-note.vat": "VAT(%)",
@@ -3224,5 +3223,15 @@
 "erp.app.app-component.menu.menu-group.pos-category": "POS Category",
 "erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue",
 "erp.app.app-component.menu.menu-group.bi-pos": "POS Report",
-"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng"
-}
+"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng""erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.pr-deal":"Sản phẩm giảm giá  Deal",
+"erp.app.pages.purchase.purchase-order.remark": "Remark",
+"erp.app.pages.purchase.purchase-order.total-after-tax-detail": "Tổng tiền",
+"erp.app.pages.purchase.purchase-order.order-information": "Thông tin đơn hàng",
+"erp.app.pages.purchase.purchase-order.po-code-from-vendor": "Mã PO (của NCC)",
+"erp.app.pages.purchase.purchase-order.name": "Nội dung",
+"erp.app.pages.purchase.purchase-order.payment-status-detail": "Tình trạng thanh toán",
+"erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Ngày dự kiến giao hàng",
+"erp.app.pages.purchase.purchase-order.receipt-date-detail": "Ngày giao hàng",
+"erp.app.pages.sale.sale-order.expected-delivery-date": "Ngày dự kiến",
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh"}

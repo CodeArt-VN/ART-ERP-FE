@@ -2283,7 +2283,6 @@
 "erp.app.pages.sale.sale-order-note.customer-name": "Customer name",
 "erp.app.pages.sale.sale-order-note.detail-table": "Payment detail listings",
 "erp.app.pages.sale.sale-order-note.in-text": "In words",
-"erp.app.pages.sale.sale-order-note.o": "O",
 "erp.app.pages.sale.sale-order-note.orde-date": "Order created date",
 "erp.app.pages.sale.sale-order-note.order-name": "Content",
 "erp.app.pages.sale.sale-order-note.page-title": "Print sale order",
@@ -2303,7 +2302,7 @@
 "erp.app.pages.sale.sale-order-note.sum-up-remain": "Remaining amount",
 "erp.app.pages.sale.sale-order-note.total": "Amount",
 "erp.app.pages.sale.sale-order-note.total-after-tax": "Total amount",
-"erp.app.pages.sale.sale-order-note.total-service": "Service charge (%) (Amount)",
+"erp.app.pages.sale.sale-order-note.total-service": "Service charge (Amount)",
 "erp.app.pages.sale.sale-order-note.total-vat": "VAT",
 "erp.app.pages.sale.sale-order-note.uom": "Unit",
 "erp.app.pages.sale.sale-order-note.vat": "VAT(%)",
@@ -3226,5 +3225,16 @@
 "erp.app.app-component.menu.menu-group.pos-category": "POS Category",
 "erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue",
 "erp.app.app-component.menu.menu-group.bi-pos": "POS Report",
-"erp.app.app-component.menu.menu-group.purchase-reports": "Purchase Report"
-}
+"erp.app.app-component.menu.menu-group.purchase-reports": "Purchase Report""erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.pr-deal":"Deal","erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.pr-deal":"Deal",
+"erp.app.pages.purchase.purchase-order.remark": "Remark",
+"erp.app.pages.purchase.purchase-order.total-after-tax-detail": "Total after tax",
+"erp.app.pages.purchase.purchase-order.order-information": "Order information",
+"erp.app.pages.purchase.purchase-order.po-code-from-vendor": "PO Code (from Vendor)",
+"erp.app.pages.purchase.purchase-order.name": "Name",
+"erp.app.pages.purchase.purchase-order.payment-status-detail": "Payment status",
+"erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Expected receipt date",
+"erp.app.pages.purchase.purchase-order.receipt-date-detail": "Receipt date",
+"erp.app.pages.sale.sale-order.expected-delivery-date": "Expected delivery date",
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Adjusted"
