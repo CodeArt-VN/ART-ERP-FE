@@ -101,6 +101,15 @@ export class EnvService {
             if (e.code == 'SystemAlert') {
                 this.showAlert(e.value, null, e.name);
             }
+            else if(e.code=='POSOrderPaymentUpdate'){
+                this.publishEvent({ Code:'app:POSOrderPaymentUpdate',Id: e.id, Name:e.name , Value:e.value});
+            }
+            else if(e.code=='POSOrderFromCustomer'){              
+                this.publishEvent({ Code:'app:POSOrderFromCustomer', Data:e});
+            }
+            else if(e.code=='POSOrderFromStaff'){              
+                this.publishEvent({ Code:'app:POSOrderFromStaff', Data:e});
+            }
             else if (e.code == 'SystemMessage') {
                 this.showMessage(e.value, e.name);
             }

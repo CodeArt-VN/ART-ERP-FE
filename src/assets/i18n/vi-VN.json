@@ -3223,5 +3223,6 @@
 "erp.app.app-component.menu.menu-group.pos-category": "POS Category",
 "erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue",
 "erp.app.app-component.menu.menu-group.bi-pos": "POS Report",
-"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng"
+"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng""erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.pr-deal":"Sản phẩm giảm giá  Deal"
 }
