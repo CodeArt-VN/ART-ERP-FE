@@ -3223,7 +3223,8 @@
 "erp.app.app-component.menu.menu-group.pos-category": "POS Category",
 "erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue",
 "erp.app.app-component.menu.menu-group.bi-pos": "POS Report",
-"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng""erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.purchase-reports": "Báo cáo mua hàng",
+"erp.app.app-component.menu.menu-group.pr":"PR",
 "erp.app.app-component.menu.menu-group.pr-deal":"Sản phẩm giảm giá  Deal",
 "erp.app.pages.purchase.purchase-order.remark": "Remark",
 "erp.app.pages.purchase.purchase-order.total-after-tax-detail": "Tổng tiền",
@@ -3234,4 +3235,5 @@
 "erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Ngày dự kiến giao hàng",
 "erp.app.pages.purchase.purchase-order.receipt-date-detail": "Ngày giao hàng",
 "erp.app.pages.sale.sale-order.expected-delivery-date": "Ngày dự kiến",
-"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh"}
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh"
+}
