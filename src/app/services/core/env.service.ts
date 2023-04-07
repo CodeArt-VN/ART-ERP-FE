@@ -163,7 +163,7 @@ export class EnvService {
         });
     }
 
-    showMessage(message, color = '', duration = 5000, showCloseButton = false) {
+    showMessage(message, color = 'warning', duration = 5000, showCloseButton = false) {
         if (this.lastMessage == message) return;
         this.lastMessage = message;
 
