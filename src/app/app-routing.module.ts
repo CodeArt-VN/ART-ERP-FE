@@ -189,8 +189,8 @@ const routes: Routes = [
   { path: 'pos-table-group', loadChildren: () => import('./pages/POS/pos-table-group/pos-table-group.module').then(m => m.POSTableGroupPageModule), canActivate: [AuthGuard] },
   { path: 'pos-table-group/:id', loadChildren: () => import('./pages/POS/pos-table-group-detail/pos-table-group-detail.module').then(m => m.POSTableGroupDetailPageModule), canActivate: [AuthGuard] },
 
-  { path: 'pos-welcome/:id', loadChildren: () => import('./pages/POS/pos-welcome/pos-welcome.module').then(m => m.POSWelcomePageModule) },
-  { path: 'pos-customer-order/:branch/:id/:table', loadChildren: () => import('./pages/POS/pos-customer-order/pos-customer-order.module').then(m => m.POSCustomerOrderPageModule) },
+  { path: 'pos-welcome/:id', loadChildren: () => import('./pages/POS/pos-for-customer/welcome/pos-welcome.module').then(m => m.POSWelcomePageModule) },
+  { path: 'pos-customer-order/:id/:table', loadChildren: () => import('./pages/POS/pos-for-customer/order/pos-customer-order.module').then(m => m.POSCustomerOrderPageModule) },
 
 
   // { path: 'pos-table', loadChildren: () => import('./pages/POS/pos-table/pos-table.module').then(m => m.TablePageModule), canActivate: [AuthGuard] },
