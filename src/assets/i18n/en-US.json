@@ -3226,5 +3226,15 @@
 "erp.app.app-component.menu.menu-group.pos-revenue": "POS Revenue",
 "erp.app.app-component.menu.menu-group.bi-pos": "POS Report",
 "erp.app.app-component.menu.menu-group.purchase-reports": "Purchase Report""erp.app.app-component.menu.menu-group.pr":"PR",
-"erp.app.app-component.menu.menu-group.pr-deal":"Deal"
-}
+"erp.app.app-component.menu.menu-group.pr-deal":"Deal","erp.app.app-component.menu.menu-group.pr":"PR",
+"erp.app.app-component.menu.menu-group.pr-deal":"Deal",
+"erp.app.pages.purchase.purchase-order.remark": "Remark",
+"erp.app.pages.purchase.purchase-order.total-after-tax-detail": "Total after tax",
+"erp.app.pages.purchase.purchase-order.order-information": "Order information",
+"erp.app.pages.purchase.purchase-order.po-code-from-vendor": "PO Code (from Vendor)",
+"erp.app.pages.purchase.purchase-order.name": "Name",
+"erp.app.pages.purchase.purchase-order.payment-status-detail": "Payment status",
+"erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Expected receipt date",
+"erp.app.pages.purchase.purchase-order.receipt-date-detail": "Receipt date",
+"erp.app.pages.sale.sale-order.expected-delivery-date": "Expected delivery date",
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Adjusted"
