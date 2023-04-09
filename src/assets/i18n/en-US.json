@@ -3237,5 +3237,6 @@
 "erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Expected receipt date",
 "erp.app.pages.purchase.purchase-order.receipt-date-detail": "Receipt date",
 "erp.app.pages.sale.sale-order.expected-delivery-date": "Expected delivery date",
-"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Adjusted"
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Adjusted",
+"erp.app.pages.sale.sale-order-detail.transaction-existed": "Transaction existed! Cannot change UoM configs"
 }

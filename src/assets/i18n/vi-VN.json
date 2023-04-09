@@ -3235,5 +3235,6 @@
 "erp.app.pages.purchase.purchase-order.expected-receipt-date-detail": "Ngày dự kiến giao hàng",
 "erp.app.pages.purchase.purchase-order.receipt-date-detail": "Ngày giao hàng",
 "erp.app.pages.sale.sale-order.expected-delivery-date": "Ngày dự kiến",
-"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh"
+"erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh",
+"erp.app.pages.sale.sale-order-detail.transaction-existed": "Đã tồn tại đơn hàng! Không thể chỉnh sửa quy cách."
 }
