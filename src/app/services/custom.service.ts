@@ -239,57 +239,9 @@ export class ACCOUNT_ApplicationUserProvider extends exService {
 	}
 
 }
-
-@Injectable({
-	providedIn: 'root'
-})
-export class SALE_MasanImportProvider extends exService {
+@Injectable({ providedIn: 'root' })
+export class POS_ForCustomerProvider extends exService {
 	constructor(public commonService: CommonService) {
-		super(null, SearchConfig.getSearchFields('SALE_MasanImport_Provider'), commonService);
+		super(APIList.POS_ForCustomer, SearchConfig.getSearchFields('POS_ForCustomer'), commonService);
 	}
-
-	MasanImport(query = null) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "GET",
-				url: function () { return ApiSetting.apiDomain("SALE/Order/MasanImport") }
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), query).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
-	}
-
-
-
-
-
-
-}
-
-@Injectable({
-	providedIn: 'root'
-})
-export class CRM_BusinessPartnerProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
-	}
-
-	SearchContact(query = null) {
-		let that = this;
-
-		let apiPath = {
-			method: "GET",
-			url: function () { return ApiSetting.apiDomain("CRM/Contact/POSSearch") }
-		};
-		return this.commonService.connect(apiPath.method, apiPath.url(), query);
-	}
-
 }

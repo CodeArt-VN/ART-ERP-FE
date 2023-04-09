@@ -22,6 +22,8 @@ export class AuthGuard implements CanActivate {
                     return this.checkCanUse(next, state).then(result => {
                         resolve(result);
                     });
+                }).catch(err=>{
+                    this.accountService.commonService.checkError(err);
                 });
             } else {
                 return this.checkCanUse(next, state).then(result => {

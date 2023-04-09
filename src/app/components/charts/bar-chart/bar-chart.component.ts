@@ -55,6 +55,7 @@ export class BarChartComponent implements OnInit {
     }
 
     this.Option.series = this.Data;
+    this.Option.legend.show = false;
 
     let chartDom = document.getElementById(this.Id)!;
     let myChart = echarts.init(chartDom);

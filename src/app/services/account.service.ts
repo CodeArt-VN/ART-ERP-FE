@@ -32,7 +32,7 @@ export class AccountService {
 				console.log('loaded saved data');
 
 			}).catch(err => {
-				console.log(err);
+				this.commonService.checkError(err);
 			});
 		});
 		// Done: flow
@@ -80,7 +80,7 @@ export class AccountService {
 	}
 
 	loadSavedData(forceReload = false) {
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
 			this.checkVersion().then((v) => {
 				GlobalData.Version = v;
 				this.getToken().then(() => {
@@ -89,7 +89,9 @@ export class AccountService {
 						resolve(true);
 						this.env.isloaded = true;
 						this.env.publishEvent({ Code: 'app:loadedLocalData' })
-					})
+					}).catch(err=>{
+						reject(err);
+					});
 				})
 			});
 		});

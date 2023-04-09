@@ -1,6 +1,6 @@
 <ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}" *ngIf="page">
 	<ion-buttons slot="start">
-		<ion-back-button [defaultHref]="page.pageConfig.pageName" [text]="(page.pageConfig.pageName?('erp.app.app-component.menu.menu-group.' + page.pageConfig.pageName) : '') | translate "> </ion-back-button>
+		<ion-back-button [defaultHref]="BackHref? BackHref : page.pageConfig.pageName" [text]="(page.pageConfig.pageName?('erp.app.app-component.menu.menu-group.' + page.pageConfig.pageName) : '') | translate "> </ion-back-button>
 	</ion-buttons>
     <ion-title *ngIf="title">
         <!-- <ion-button class="title" text-center fill="clear" expand="full" size="small"> -->
@@ -31,13 +31,13 @@
         <span class="split ion-hide-sm-down" *ngIf="(page.pageConfig.canSubmitForApproval || page.pageConfig.canApprove || page.pageConfig.canDisapprove || page.pageConfig.canCancel) && !page.Item?.IsDisabled ">|</span> -->
 
 
-		<ion-button title="{{'erp.app.components.detail-toolbar.refresh' | translate}}" (click)="page.refresh()">
+		<ion-button *ngIf="ShowRefresh" title="{{'erp.app.components.detail-toolbar.refresh' | translate}}" (click)="page.refresh()">
 			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 		</ion-button>
-		<ion-button *ngIf="page.item && page.item.Id && page.pageConfig.canDelete" (click)="page.delete()" title="{{'erp.app.components.detail-toolbar.delete' | translate}}">
+		<ion-button *ngIf="ShowDelete && page.item && page.item.Id && page.pageConfig.canDelete" (click)="page.delete()" title="{{'erp.app.components.detail-toolbar.delete' | translate}}">
 			<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
 		</ion-button>
-		<ion-button title="{{'erp.app.components.detail-toolbar.help' | translate}}" (click)="page.help()">
+		<ion-button *ngIf="ShowHelp" title="{{'erp.app.components.detail-toolbar.help' | translate}}" (click)="page.help()">
 			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
 		</ion-button>
 		<ion-button *ngIf="ShowFeature" title="{{'erp.app.components.detail-toolbar.show-feature' | translate}}" (click)="page.pageConfig.isShowFeature = !page.pageConfig.isShowFeature;">

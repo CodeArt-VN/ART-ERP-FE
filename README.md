@@ -8,7 +8,18 @@ npm i
 
 ## add platform
 ```
-ionic capacitor add [android/ios]
+npm i @capacitor/core
+npm i -D @capacitor/cli
+
+npm i @capacitor/android @capacitor/ios
+
+npm i @capacitor/app@latest...
+
+ionic capacitor add android
+ionic capacitor add ios
+
+
+npm i @ng-select/ng-option-highlight --save --legacy-peer-deps
 ```
 ios/App/App/Info.plist <= fix ITMS-90683: Missing Purpose String in Info.plist
 Open platforms/ios/ART DMS.xcworkspace
