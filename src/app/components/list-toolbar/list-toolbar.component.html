@@ -74,6 +74,10 @@
 			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
 		</ion-button>
 
+		<ion-button *ngIf="pageConfig.canCopy" title="Copy" (click)="emit('copy')">
+			<ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
+		</ion-button>
+
 		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
 
 		<ng-content select="[selected]"></ng-content>

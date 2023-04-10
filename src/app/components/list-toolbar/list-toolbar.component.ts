@@ -35,6 +35,7 @@ export class ListToolbarComponent implements OnInit {
 	@Output() import = new EventEmitter();
 	@Output() help = new EventEmitter();
 	@Output() unselect = new EventEmitter();
+	@Output() copy = new EventEmitter();
 	@Output() archiveItems = new EventEmitter();
 	@Output() deleteItems = new EventEmitter();
 	@Output() mergeOrders = new EventEmitter();

@@ -136,6 +136,10 @@ const routes: Routes = [
   { path: 'goods-receiving/:id', loadChildren: () => import('./pages/WMS/goods-receiving-detail/goods-receiving-detail.module').then(m => m.GoodReceivingDetailPageModule), canActivate: [AuthGuard] },
   { path: 'lpn-label', loadChildren: () => import('./pages/WMS/lpn-label/lpn-label.module').then(m => m.LPNLabelPageModule), canActivate: [AuthGuard] },
   { path: 'lpn-label/:id', loadChildren: () => import('./pages/WMS/lpn-label/lpn-label.module').then(m => m.LPNLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'serial-label', loadChildren: () => import('./pages/WMS/serial-label/serial-label.module').then(m => m.SerialLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'item-uom-label', loadChildren: () => import('./pages/WMS/item-uom-label/item-uom-label.module').then(m => m.ItemUomLabelPageModule), canActivate: [AuthGuard] },
+  
+
 
   //OST
   { path: 'branch', loadChildren: () => import('./pages/OST/branch/branch.module').then(m => m.BranchPageModule), canActivate: [AuthGuard] },
