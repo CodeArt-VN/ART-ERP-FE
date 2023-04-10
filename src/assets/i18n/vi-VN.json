@@ -3236,5 +3236,12 @@
 "erp.app.pages.purchase.purchase-order.receipt-date-detail": "Ngày giao hàng",
 "erp.app.pages.sale.sale-order.expected-delivery-date": "Ngày dự kiến",
 "erp.app.pages.purchase.purchase-order.adjusted-quantity-label": "Điều chỉnh",
-"erp.app.pages.sale.sale-order-detail.transaction-existed": "Đã tồn tại đơn hàng! Không thể chỉnh sửa quy cách."
+"erp.app.pages.sale.sale-order-detail.transaction-existed": "Đã tồn tại đơn hàng! Không thể chỉnh sửa quy cách.",
+"erp.app.app-component.menu.menu-group.label-printing": "In tem/nhãn",
+"erp.app.app-component.menu.menu-group.serial-label": "In nhãn theo serial",
+"erp.app.app-component.menu.menu-group.item-uom-label": "Tạo và in nhãn cho item",
+"erp.app.app-component.menu.menu-group.pos-table-label": "In nhãn bàn",
+"erp.app.app-component.menu.menu-group.voucher-printing": "In voucher",
+"erp.app.app-component.menu.menu-group.member-card-printing": "In thẻ thành viên",
+"erp.app.app-component.menu.menu-group.staff-label": "In thẻ nhân viên"
 }
