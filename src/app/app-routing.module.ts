@@ -180,6 +180,9 @@ const routes: Routes = [
   { path: 'pos-order/:id', loadChildren: () => import('./pages/POS/pos-order-detail/pos-order-detail.module').then(m => m.POSOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'pos-order/:id/:table', loadChildren: () => import('./pages/POS/pos-order-detail/pos-order-detail.module').then(m => m.POSOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'pos-work-order', loadChildren: () => import('./pages/POS/pos-work-order/pos-work-order.module').then(m => m.POSWorkOrderPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-kitchen-dashboard', loadChildren: () => import('./pages/POS/pos-kitchen-dashboard/pos-kitchen-dashboard.module').then(m => m.POSKitchenDashboardPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-terminal', loadChildren: () => import('./pages/POS/pos-terminal/pos-terminal.module').then(m => m.POSTerminalPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-terminal/:id', loadChildren: () => import('./pages/POS/pos-terminal-detail/pos-terminal-detail.module').then(m => m.POSTerminalDetailPageModule), canActivate: [AuthGuard] },
 
   { path: 'pos-kitchen', loadChildren: () => import('./pages/POS/pos-kitchen/pos-kitchen.module').then(m => m.POSKitchenPageModule), canActivate: [AuthGuard] },
   { path: 'pos-kitchen/:id', loadChildren: () => import('./pages/POS/pos-kitchen-detail/pos-kitchen-detail.module').then(m => m.POSKitchenDetailPageModule), canActivate: [AuthGuard] },
