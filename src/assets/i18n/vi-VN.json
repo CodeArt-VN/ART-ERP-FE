@@ -1717,6 +1717,7 @@
 "erp.app.pages.pos.pos-order.total": "Total",
 "erp.app.pages.pos.pos-order.total-after-discount": "Base VAT",
 "erp.app.pages.pos.pos-order.total-after-tax": "Amount Due",
+"erp.app.pages.pos.pos-order.total-discount-from-saleman": "Discount From SaleMan",
 "erp.app.pages.pos.pos-order.total-before-discount": "Total",
 "erp.app.pages.pos.pos-order.total-discount": "Discounted",
 "erp.app.pages.pos.pos-order.vat": "VAT",
@@ -3243,5 +3244,6 @@
 "erp.app.app-component.menu.menu-group.pos-table-label": "In nhãn bàn",
 "erp.app.app-component.menu.menu-group.voucher-printing": "In voucher",
 "erp.app.app-component.menu.menu-group.member-card-printing": "In thẻ thành viên",
-"erp.app.app-component.menu.menu-group.staff-label": "In thẻ nhân viên"
-}
+"erp.app.app-component.menu.menu-group.staff-label": "In thẻ nhân viên",
+"erp.app.app-component.menu.menu-group.pos-kitchen-dashboard": "Quản lý bếp",
+"erp.app.app-component.menu.menu-group.pos-terminal": "Quản lý quầy"}
