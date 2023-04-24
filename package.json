@@ -50,6 +50,7 @@
 		"@ng-select/ng-select": "^9.0.2",
 		"@ngx-translate/core": "^14.0.0",
 		"@ngx-translate/http-loader": "^7.0.0",
+		"dhtmlx-gantt": "^8.0.1",
 		"echarts": "^5.4.1",
 		"html2canvas": "^1.4.1",
 		"intro.js": "^6.0.0",
