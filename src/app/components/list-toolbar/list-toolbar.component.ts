@@ -35,6 +35,7 @@ export class ListToolbarComponent implements OnInit {
 	@Output() import = new EventEmitter();
 	@Output() help = new EventEmitter();
 	@Output() unselect = new EventEmitter();
+	@Output() copy = new EventEmitter();
 	@Output() archiveItems = new EventEmitter();
 	@Output() deleteItems = new EventEmitter();
 	@Output() mergeOrders = new EventEmitter();
@@ -157,27 +158,27 @@ export class ListToolbarComponent implements OnInit {
 				// [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
 
 				let notShowSubmitOrdersForApproval = [103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-				if (notShowSubmitOrdersForApproval.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowSubmitOrdersForApproval.indexOf(i._Status.IDStatus) > -1) {
 					this.showSubmitOrdersForApproval = false;
 				}
 
 				let notShowApproveOrders = [101, 102, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-				if (notShowApproveOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowApproveOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showApproveOrders = false;
 				}
 
 				let notShowDisapproveOrders = [101, 102, 103, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-				if (notShowDisapproveOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowDisapproveOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showDisapproveOrders = false;
 				}
 
 				let notShowCancelOrders = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-				if (notShowCancelOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowCancelOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showCancelOrders = false;
 				}
 
 				let notShowDelete = [103, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114];
-				if (notShowDelete.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowDelete.indexOf(i._Status.IDStatus) > -1) {
 					this.showDelete = false;
 				}
 
