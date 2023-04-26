@@ -3248,4 +3248,6 @@
 "erp.app.app-component.menu.menu-group.member-card-printing": "In thẻ thành viên",
 "erp.app.app-component.menu.menu-group.staff-label": "In thẻ nhân viên",
 "erp.app.app-component.menu.menu-group.pos-kitchen-dashboard": "POS Kitchen Dashboard",
-"erp.app.app-component.menu.menu-group.pos-terminal": "POS Terminal"}
+"erp.app.app-component.menu.menu-group.pos-terminal": "POS Terminal",
+"erp.app.app-component.menu.menu-group.pr-program": "Program"
+}

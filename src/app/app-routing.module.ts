@@ -281,6 +281,8 @@ const routes: Routes = [
   //PR
   { path: 'pr-deal', loadChildren: () => import('./pages/PR/pr-deal/pr-deal.module').then( m => m.PRDealPageModule), canActivate: [AuthGuard]},
   { path: 'pr-deal/:id', loadChildren: () => import('./pages/PR/pr-deal-detail/pr-deal-detail.module').then( m => m.PRDealDetailPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-program', loadChildren: () => import('./pages/PR/pr-program/pr-program.module').then( m => m.PRProgramPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-program/:id', loadChildren: () => import('./pages/PR/pr-program-detail/pr-program-detail.module').then( m => m.PRProgramDetailPageModule),canActivate: [AuthGuard]},
 
 
   {
