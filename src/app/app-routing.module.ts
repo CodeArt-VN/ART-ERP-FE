@@ -283,7 +283,8 @@ const routes: Routes = [
   { path: 'pr-deal/:id', loadChildren: () => import('./pages/PR/pr-deal-detail/pr-deal-detail.module').then( m => m.PRDealDetailPageModule),canActivate: [AuthGuard]},
   { path: 'pr-program', loadChildren: () => import('./pages/PR/pr-program/pr-program.module').then( m => m.PRProgramPageModule),canActivate: [AuthGuard]},
   { path: 'pr-program/:id', loadChildren: () => import('./pages/PR/pr-program-detail/pr-program-detail.module').then( m => m.PRProgramDetailPageModule),canActivate: [AuthGuard]},
-
+  { path: 'pr-voucher-policy', loadChildren: () => import('./pages/PR/pr-voucher-policy/pr-voucher-policy.module').then( m => m.PRVoucherPolicyPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-voucher-policy/:id', loadChildren: () => import('./pages/PR/pr-voucher-policy-detail/pr-voucher-policy-detail.module').then( m => m.PRVoucherPolicyDetailPageModule),canActivate: [AuthGuard]},
 
   {
     path: '',
@@ -292,6 +293,8 @@ const routes: Routes = [
   },
 
   { path: '**', redirectTo: '/not-found' },
+  
+
 
 
 ];
