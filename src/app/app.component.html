@@ -1,7 +1,7 @@
-<ion-app [class]="appTheme" [ngClass]="{'dark': (env.user && env.user.UserSetting && env.user.UserSetting.IsDarkTheme.Value), 'showScrollbar': showScrollbar}">
+<ion-app [class]="appTheme" [ngClass]="{'dark': (env?.user?.UserSetting?.IsDarkTheme?.Value), 'showScrollbar': showScrollbar}">
 	<div id="ng-select-holder" style="position: absolute; z-index: 30005;"></div>
 	<ion-split-pane contentId="main-content">
-		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env.user && env.user.UserSetting && env.user.UserSetting.IsCompactMenu.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu">
+		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env?.user?.UserSetting?.IsCompactMenu?.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu">
 			<ion-header>
 				<div class="close-menu">
 					<ion-toolbar>
@@ -145,13 +145,13 @@
 
 			<ion-footer *ngIf="(env.user && env.user.Id)">
 
-				<a style="height: 56px; line-height: 56px;" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env.user && env.user.UserSetting && env.user.UserSetting.IsCompactMenu.Value)">
+				<a style="height: 56px; line-height: 56px;" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
 				</a>
 
-				<ion-item lines="none" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" *ngIf="(env.user && env.user.UserSetting && !env.user.UserSetting.IsCompactMenu.Value)">
+				<ion-item lines="none" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>

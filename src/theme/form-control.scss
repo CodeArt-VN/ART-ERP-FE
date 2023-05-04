@@ -92,6 +92,8 @@
         }
         &[readonly],&[disabled],&.disable,&.ng-select-disabled{
             background-color: var(--menu-right-border-color) !important;
+            // background: linear-gradient(180deg, var(--main-background-top), var(--main-background-top));
+
             color: var(--ion-color-medium);
         }
 
