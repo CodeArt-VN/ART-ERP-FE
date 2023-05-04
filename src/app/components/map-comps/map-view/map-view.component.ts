@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
-import { Observable, of } from 'rxjs';
+import { Observable, interval, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
@@ -15,19 +15,18 @@ import { EnvService } from 'src/app/services/core/env.service';
   styleUrls: ['./map-view.component.scss'],
 })
 export class MapViewComponent extends PageBase {
+  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
+  @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
+
   addressList = [];
   @Input() set CoordinateList(value) {
     this.addressList = value;
-    console.log('Map View!')
   };
 
   @Output() savePosition = new EventEmitter();
 
   mapLoaded: Observable<boolean>;
-  center: google.maps.LatLngLiteral = {
-    lat: 11.0517262,
-    lng: 106.8842023,
-  };
+
   bounds;
   options = {
     scrollwheel: false,
@@ -71,7 +70,7 @@ export class MapViewComponent extends PageBase {
       Id: new FormControl({ value: '', disabled: true }),
       Addresses: this.formBuilder.array([])
     });
-    this.alwaysReturnProps.push('IDPartner');
+
     if (!this.env.isMapLoaded) {
       this.mapLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyAtyM-Th784YwQUTquYa0WlFIj8C6RB2uM', 'callback')
         .pipe(map(() => {
@@ -90,47 +89,42 @@ export class MapViewComponent extends PageBase {
 
   loadedData() {
     this.items = this.addressList;
-    let j = 1;
-    this.items.forEach((i:any) => {
-      i.Lat = i.Coordinate[0].Lat;
-      i.Long = i.Coordinate[0].Long;
-      let lat: number = + i.Lat;
-      let long: number = + i.Long;
+    
+    this.intervalFitBound = setInterval(()=>{
+      if (this.map && google) {
+        let j = 1;
+        this.items.forEach((i: any) => {
+          i.Lat = i.Coordinate[0].Lat;
+          i.Long = i.Coordinate[0].Long;
+          let lat: number = + i.Lat;
+          let long: number = + i.Long;
+    
+          if (lat && long) {
+            let markerOption: google.maps.MarkerOptions = {
+              draggable: true,
+              // label: { text: '' + (j++), color: 'white' },
+              position: { lat: lat, lng: long },
+              animation: google.maps.Animation.DROP,
+            };
+    
+            this.bounds.extend({ lat: lat, lng: long });
+    
+            i.option = markerOption;
+          }
+        });
 
-      let markerOption: google.maps.MarkerOptions = {
-        draggable: true,
-        // label: { text: '' + (j++), color: 'white' }, // Mark Number
-        // label: {color: 'white' },
-        position: {
-          lat: lat ? lat : this.center.lat,
-          lng: lat ? long : this.center.lng,
-        },
-        animation: google.maps.Animation.DROP,
-      };
-
-      this.bounds.extend({
-        lat: lat ? lat : this.center.lat,
-        lng: lat ? long : this.center.lng,
-      });
-
-      i.option = markerOption;
-    });
-
-    this.map.fitBounds(this.bounds, 100);
+        this.map.fitBounds(this.bounds, 100);
+        clearInterval(this.intervalFitBound);
+      }
+    },500)
+    
   }
+
+  intervalFitBound = null;
 
   initMap() {
     this.bounds = new google.maps.LatLngBounds();
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      }
-    });
   }
-
-  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
-  @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
 
   openInfo(marker: MapMarker, content) {
     this.item = content;
@@ -148,7 +142,7 @@ export class MapViewComponent extends PageBase {
     this.infoWindow.open(marker)
   }
 
-  changePosition(marker: MapMarker, content:any) {
+  changePosition(marker: MapMarker, content: any) {
 
     this.alertCtrl.create({
       message: 'Bạn có chắc muốn di chuyển đến vị trí này?',
@@ -158,7 +152,7 @@ export class MapViewComponent extends PageBase {
           text: 'Đồng ý',
           cssClass: 'danger-btn',
           handler: () => {
-            this.savePosition.emit({marker, content});
+            this.savePosition.emit({ marker, content });
           }
         }
       ]
@@ -166,5 +160,5 @@ export class MapViewComponent extends PageBase {
       alert.present();
     })
   }
-  
+
 }

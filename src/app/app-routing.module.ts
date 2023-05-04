@@ -9,6 +9,8 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  //PM
+  { path: 'gantt', loadChildren: () => import('./pages/PM/gantt/gantt.module').then(m => m.GanttPageModule) },
 
   //ACCOUNTANT
   { path: 'arinvoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
@@ -138,6 +140,7 @@ const routes: Routes = [
   { path: 'lpn-label/:id', loadChildren: () => import('./pages/WMS/lpn-label/lpn-label.module').then(m => m.LPNLabelPageModule), canActivate: [AuthGuard] },
   { path: 'serial-label', loadChildren: () => import('./pages/WMS/serial-label/serial-label.module').then(m => m.SerialLabelPageModule), canActivate: [AuthGuard] },
   { path: 'item-uom-label', loadChildren: () => import('./pages/WMS/item-uom-label/item-uom-label.module').then(m => m.ItemUomLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-table-label', loadChildren: () => import('./pages/WMS/pos-table-label/pos-table-label.module').then(m => m.POSTableLabelPageModule), canActivate: [AuthGuard] },
   
 
 

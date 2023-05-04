@@ -84,14 +84,20 @@ export class AccountService {
 			this.checkVersion().then((v) => {
 				GlobalData.Version = v;
 				this.getToken().then(() => {
-					//TODO forceReload
-					this.getProfile(true).then(() => {
+					this.getProfile(forceReload).then(() => {
 						resolve(true);
 						this.env.isloaded = true;
 						this.env.publishEvent({ Code: 'app:loadedLocalData' })
-					}).catch(err=>{
+					}).catch(err => {
 						reject(err);
 					});
+
+					// //TODO: lazy check profile;
+					// this.commonService.connect('GET', 'Account/UserName', null).toPromise().then(_ => {
+					// 	console.log(_);
+					// }).catch(err => {
+					// 	this.commonService.checkError(err);
+					// })
 				})
 			});
 		});
@@ -109,7 +115,7 @@ export class AccountService {
 				"refresh_token": "no token"
 			};
 		}
-		this.env.setStorage('UserToken', GlobalData.Token);
+		return this.env.setStorage('UserToken', GlobalData.Token);
 	}
 
 	getToken() {
@@ -154,39 +160,45 @@ export class AccountService {
 	}
 	setProfile(profile) {
 		return new Promise((resolve, reject) => {
+			this.env.setStorage('UserProfile', profile).then(_ => {
+				resolve(true);
+			});
+		});
+	}
 
-			if (profile && profile.Id) {
-				let settings = JSON.parse(JSON.stringify(profile.UserSetting));
-				profile.UserSetting = this.loadUserSettings(settings, profile);
-				this.env.user = profile;
-				this.env.rawBranchList = profile.BranchList;
+	loadSavedProfile() {
+		return new Promise((resolve, reject) => {
+			this.env.getStorage('UserProfile').then((profile) => {
+				if (profile && profile.Id) {
+					let settings = null;
+					if (Array.isArray(profile.UserSetting)) {
+						settings = JSON.parse(JSON.stringify(profile.UserSetting));
+						profile.UserSetting = this.loadUserSettings(settings, profile);
+					}
 
-				Promise.all([
-					this.statusProvider.read({ Take: 10000 }),
-					this.typeProvider.read({ Take: 10000 })
-				]).then(values => {
-					this.env.statusList = values[0]['data'];
-					this.env.typeList = values[1]['data'];
-					this.env.setStorage('UserProfile', profile).then(_ => {
+					this.env.user = profile;
+					this.env.rawBranchList = profile.BranchList;
+					Promise.all([
+						this.statusProvider.read({ Take: 10000 }),
+						this.typeProvider.read({ Take: 10000 })
+					]).then(values => {
+						this.env.statusList = values[0]['data'];
+						this.env.typeList = values[1]['data'];
 						this.env.loadBranch().then(_ => {
 							this.env.publishEvent({ Code: 'app:updatedUser' });
 							resolve(true);
 						});
-					});
-				}).catch(err => reject(err));
-			}
-			else {
-				this.env.user = null;
-				this.env.rawBranchList = [];
-				this.env.setStorage('UserProfile', profile).then(_ => {
+					}).catch(err => reject(err));
+				}
+				else {
+					this.env.user = null;
+					this.env.rawBranchList = [];
 					this.env.loadBranch().then(_ => {
 						this.env.publishEvent({ Code: 'app:updatedUser' });
 						resolve(true);
 					});
-				});
-			}
-
-
+				}
+			}).catch(err => reject(err));
 		});
 	}
 
@@ -194,22 +206,16 @@ export class AccountService {
 		return new Promise((resolve, reject) => {
 			if (forceReload) {
 				this.syncGetUserData().then(() => {
-					resolve(true);
+					this.loadSavedProfile().then(() => {
+						resolve(true);
+					}).catch(err => reject(err));
 				}).catch(err => reject(err));
 			}
 			else {
-				this.env.getStorage('UserProfile').then((profile) => {
-					if (profile) {
-						this.env.user = profile;
-						resolve(true);
-					} else {
-						this.syncGetUserData().then(() => {
-							resolve(true);
-						}).catch(err => reject(err));
-					}
-				}).catch(err => reject(err));;
+				this.loadSavedProfile().then(() => {
+					resolve(true);
+				}).catch(err => reject(err));
 			}
-
 		});
 	}
 
@@ -226,15 +232,7 @@ export class AccountService {
 						data.Avatar = data.Avatar ? (data.Avatar.indexOf('http') != -1 ? data.Avatar : ApiSetting.mainService.base + data.Avatar) : null;
 
 						lib.buildFlatTree(data.Forms, data.Forms, true).then((resp: any) => {
-
-							// let currentItem = resp.find(i => i.Id == 2656); //Seller app
-							// if (currentItem) {
-							// 	currentItem.isMobile = true;
-							// 	lib.markNestedNode(resp, 2656, 'isMobile');
-							// }
-
 							data.Forms = resp.filter(d => !d.isMobile);
-
 							that.setProfile(data).then(_ => {
 								resolve(true);
 							}).catch(err => reject(err));
@@ -244,7 +242,6 @@ export class AccountService {
 				})
 				.catch(err => {
 					reject(err);
-					//return Promise.reject(err.message || err);
 				});
 		});
 	}
@@ -350,30 +347,31 @@ export class AccountService {
 				)
 				.subscribe(data => {
 					if (data) {
-						that.setToken(data);
-						if (deviceInfo) {
-							that.userDeviceProvider.save(deviceInfo).then(info => {
-								if (!info) {
-									that.env.deviceInfo = null;
-								}
-								else if (info == 'This device was registered') {
+						that.setToken(data).then(_ => {
+							if (deviceInfo) {
+								that.userDeviceProvider.save(deviceInfo).then(info => {
+									if (!info) {
+										that.env.deviceInfo = null;
+									}
+									else if (info == 'This device was registered') {
 
-									that.env.deviceInfo = null;
-								}
-								else {
-									that.env.deviceInfo = info;
-								}
+										that.env.deviceInfo = null;
+									}
+									else {
+										that.env.deviceInfo = info;
+									}
 
-							});
-						}
+								});
+							}
+							that.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch(err => {
+									reject(err);
+								})
+						});
 
-						that.syncGetUserData()
-							.then(() => {
-								resolve(true);
-							})
-							.catch(err => {
-								reject(err);
-							})
 					}
 					else {
 						reject('Can not login!')
@@ -402,11 +400,15 @@ export class AccountService {
 				)
 				.subscribe(data => {
 					if (data) {
-						that.setToken(data);
-						that.syncGetUserData()
-							.then(() => {
-								resolve(true);
-							});
+						that.setToken(data).then(_ => {
+							that.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch(err => {
+									reject(err);
+								})
+						})
 					}
 					else {
 						reject('Can not login!')
@@ -428,6 +430,7 @@ export class AccountService {
 				that.setToken(null);
 				that.setProfile(null).then(_ => {
 					that.env.setStorage('Username', curentUsername).then(() => {
+						that.env.publishEvent({ Code: 'app:updatedUser' });
 						resolve(true);
 					})
 

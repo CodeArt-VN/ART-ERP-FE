@@ -135,13 +135,6 @@ export class ProfilePage extends PageBase {
 			this.item.DateOfIssueID = lib.dateFormat(this.item.DateOfIssueID, 'yyyy-mm-dd');
 			this.userSetting = this.env.user.UserSetting;
 			this.userSetting.isLoaded = true;
-
-			// this.userSettingProvider.read({ IDUser: this.env.user.Id, IgnoredBranch: true }).then((response: any) => {
-			// 	this.userSetting = this.accountProvider.loadUserSettings(response.data);
-			// 	this.userSetting.isLoaded = true;
-
-			// });
-
 		}
 		super.loadedData(event);
 	}
@@ -201,12 +194,13 @@ export class ProfilePage extends PageBase {
 			if (!setting.Id) {
 				setting.Id = response.Id;
 			}
-			// this.userSetting = this.accountProvider.loadUserSettings(response.data);
-			// this.userSetting.isLoaded = true;
+			
 			setting.Value = JSON.parse(setting.Value);
 			this.submitAttempt = false;
-			//this.env.user.UserSetting[setting.Code] = setting;
-			// 	// this.env.setStorage('UserProfile', this.env.user);
+			this.env.user.UserSetting = this.userSetting;
+			this.accountProvider.setProfile(this.env.user).then(()=>{
+				this.accountProvider.loadSavedProfile();
+			})
 		});
 
 

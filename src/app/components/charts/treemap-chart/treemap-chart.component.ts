@@ -18,6 +18,7 @@ export class TreemapChartComponent implements OnInit {
   chartSeriesName;
   chartType;
   chartLegend;
+  chartTooltip;
   chartStyle = {
     width: 300,
     height: 300,
@@ -31,6 +32,7 @@ export class TreemapChartComponent implements OnInit {
     this.chartType = value.Type;
     this.chartStyle = value.Style;
     this.chartLegend = value.Legend;
+    this.chartTooltip = value.Tooltip;
   }
 
   @Input() set ChartData(value:any) {
@@ -45,10 +47,10 @@ export class TreemapChartComponent implements OnInit {
 
   
   ngAfterViewInit() {
-    this.buildTreeChart(this.containerId, this.chartTitle, this.chartSubtext, this.chartSeriesName, this.chartData, this.chartType, this.chartLegend);
+    this.buildTreeChart(this.containerId, this.chartTitle, this.chartSubtext, this.chartSeriesName, this.chartData, this.chartType, this.chartLegend, this.chartTooltip);
   }
 
-	buildTreeChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?) {
+	buildTreeChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?, toolTip?) {
 		var chartDom = document.getElementById(divId);
 
     var myChart = echarts.init(chartDom, null, {
@@ -64,6 +66,7 @@ export class TreemapChartComponent implements OnInit {
     var tempOption = {};
 
     var LegendOption: any;
+    var TooltipOption: any;
 
     if (chartType == 'Treemap'){
       Object.assign(this.eChartsService.treeChartOpt, this.eChartsService.treeChartOptionGlobal);
@@ -80,6 +83,18 @@ export class TreemapChartComponent implements OnInit {
       LegendOption = null;
     }
 
+    if (toolTip == 'Percent') {
+      TooltipOption = {
+        show: true,
+        formatter: function(d) {
+          // return d.name + '  ' + d.value + '(' + d.data.percent + ')';
+          return `${d.name}: <b>${d.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</b> ₫ <b>(${d.data.percent}%)</b>`;
+        }
+      }
+    }
+    else {
+      TooltipOption = null;
+    }
     Object.assign(option, tempOption);
 
     option.title['text'] = chartTitle; 
@@ -89,6 +104,9 @@ export class TreemapChartComponent implements OnInit {
     option.series[0]['data'] = chartData;
 
     option.legend = LegendOption;
+    if (TooltipOption) {
+      option.tooltip = TooltipOption;
+    }
 
 		option && myChart.setOption(option);
 	}

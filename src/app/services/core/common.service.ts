@@ -537,8 +537,8 @@ export class exService {
 
 	}
 
-	read(query = null) {
-		if (this.allowCache) {
+	read(query = null, forceReload = false) {
+		if (this.allowCache && forceReload == false) {
 			return this.commonService.connectLocal(this.apiPath.getList, query, this.searchField);
 		}
 		else {
