@@ -288,6 +288,8 @@ const routes: Routes = [
   { path: 'pr-program/:id', loadChildren: () => import('./pages/PR/pr-program-detail/pr-program-detail.module').then( m => m.PRProgramDetailPageModule),canActivate: [AuthGuard]},
   { path: 'pr-voucher-policy', loadChildren: () => import('./pages/PR/pr-voucher-policy/pr-voucher-policy.module').then( m => m.PRVoucherPolicyPageModule),canActivate: [AuthGuard]},
   { path: 'pr-voucher-policy/:id', loadChildren: () => import('./pages/PR/pr-voucher-policy-detail/pr-voucher-policy-detail.module').then( m => m.PRVoucherPolicyDetailPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-discount-policy', loadChildren: () => import('./pages/PR/pr-discount-policy/pr-discount-policy.module').then( m => m.PRDiscountPolicyPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-discount-policy/:id', loadChildren: () => import('./pages/PR/pr-discount-policy-detail/pr-discount-policy-detail.module').then( m => m.PRDiscountPolicyDetailPageModule),canActivate: [AuthGuard]},
 
   {
     path: '',
