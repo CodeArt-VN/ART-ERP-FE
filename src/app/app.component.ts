@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
@@ -182,9 +182,12 @@ export class AppComponent implements OnInit {
 	}
 
 	updateStatusbar() {
+		setTimeout(() => {
+			let themeColor = lib.getCssVariableValue('--ion-color-primary');
+			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);	
+		}, 100);
+		
 		if (Capacitor.isPluginAvailable('StatusBar')) {
-			console.log('sb');
-
 			StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
 			StatusBar.setStyle({ style: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? Style.Dark : Style.Light });
 			//StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
@@ -205,18 +208,10 @@ export class AppComponent implements OnInit {
 
 	initializeApp() {
 		this.platform.ready().then(() => {
-			//console.log('initializeApp', this.env.user);
-
 			this.showScrollbar = environment.showScrollbar;
-
 			this.updateStatusbar();
 			this.splashScreen.hide();
-
-			if (this.platform.is('cordova')) {
-				// make your native API calls
-			} else {
-				// fallback to browser APIs
-			}
+		
 		});
 	}
 
