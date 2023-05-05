@@ -70,6 +70,14 @@ export class ListToolbarComponent implements OnInit {
 	@Output() submitBusinessPartner = new EventEmitter();
 	@Output() approveBusinessPartner = new EventEmitter();
 	@Output() disapproveBusinessPartner = new EventEmitter();
+
+	@Output() submitDealForApproval = new EventEmitter();
+	@Output() disapproveDeal = new EventEmitter();
+	@Output() approveDeal = new EventEmitter();
+
+	@Output() submitVoucherForApproval = new EventEmitter();
+	@Output() disapproveVoucher = new EventEmitter();
+	@Output() approveVoucher = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 
