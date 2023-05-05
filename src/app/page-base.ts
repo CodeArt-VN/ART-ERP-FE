@@ -718,8 +718,8 @@ export abstract class PageBase implements OnInit {
     }
 
     nav(URL, direction = "forward", data = null) {
-        event.preventDefault();
-        event.stopPropagation();
+        event?.preventDefault();
+        event?.stopPropagation();
 
         if (direction == "forward") {
             if (data) {
