@@ -69,9 +69,29 @@
 
 	</ion-buttons>
 	<ion-buttons slot="end" *ngIf="selectedItems.length && canSelect">
-
+		
 		<ion-button title="{{'erp.app.components.list-toolbar.unselect' | translate}}" (click)="emit('unselect')">
 			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
+		</ion-button>
+
+		<ion-button *ngIf="pageConfig.canSubmitDealForApproval" (click)="emit('submitDealForApproval')" title="Gửi Duyệt">
+			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canDisapproveDeal" (click)="emit('disapproveDeal')" title="Không Duyệt">
+			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canApproveDeal" (click)="emit('approveDeal')" title="Duyệt">
+			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+		</ion-button>
+
+		<ion-button *ngIf="pageConfig.canSubmitVoucherForApproval" (click)="emit('submitVoucherForApproval')" title="Gửi Duyệt">
+			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canDisapproveVoucher" (click)="emit('disapproveVoucher')" title="Không Duyệt">
+			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canApproveVoucher" (click)="emit('approveVoucher')" title="Duyệt">
+			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
 		</ion-button>
 
 		<ion-button *ngIf="pageConfig.canCopy" title="Copy" (click)="emit('copy')">
