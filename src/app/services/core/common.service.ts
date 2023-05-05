@@ -55,7 +55,7 @@ export class CommonService {
 		}
 
 		if (URL.indexOf('http') != 0) {
-			URL = ApiSetting.apiDomain(  URL);
+			URL = ApiSetting.apiDomain(URL);
 		}
 
 		if ((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch') || !data) && URL.indexOf('IDBranch') == -1 && this.env.selectedBranch) {
@@ -126,12 +126,17 @@ export class CommonService {
 				.then(items => {
 
 					if (items == null) {
-						that.connect(apiPath.method, apiPath.url(), null).subscribe(data => {
-							that.cacheLocal(apiPath.url(), data);
-							that.searchInItems(keyword, fields, page, pageSize, data).then(result => {
-								resolve(result);
+						that.connect(apiPath.method, apiPath.url(), { Take: pageSize }).toPromise()
+							.then((data: any) => {
+								that.cacheLocal(apiPath.url(), data);
+								that.searchInItems(keyword, fields, page, pageSize, data).then(result => {
+									resolve(result);
+								})
 							})
-						})
+							.catch(err => {
+								that.checkError(err);
+								reject(err);
+							});
 					}
 					else {
 						that.searchInItems(keyword, fields, page, pageSize, items).then(result => {
@@ -344,11 +349,11 @@ export class CommonService {
 			}
 		});
 	}
-	changeBranch(item, apiPath){
+	changeBranch(item, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (item.Ids) {
 				let Ids = '';
-				
+
 				this.connect(apiPath.changeBranch.method, apiPath.changeBranch.url(Ids), item).toPromise()
 					.then(() => {
 						resolve(true);
@@ -448,9 +453,9 @@ export class CommonService {
 		});
 	}
 
-	post(URL, data){
+	post(URL, data) {
 		return new Promise((resolve, reject) => {
-			this.connect('POST', URL, data).toPromise().then(resp=>{
+			this.connect('POST', URL, data).toPromise().then(resp => {
 				resolve(resp);
 			}).catch(err => {
 				this.checkError(err);
@@ -459,9 +464,9 @@ export class CommonService {
 		});
 	}
 
-	put(URL, data){
+	put(URL, data) {
 		return new Promise((resolve, reject) => {
-			this.connect('PUT', URL, data).toPromise().then(resp=>{
+			this.connect('PUT', URL, data).toPromise().then(resp => {
 				resolve(resp);
 			}).catch(err => {
 				this.checkError(err);
@@ -474,7 +479,7 @@ export class CommonService {
 		//console.log(err);
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
-			this.env.showTranslateMessage('erp.app.app-component.account-service.message.update-version-with-value','danger', vers[0], 0, true);
+			this.env.showTranslateMessage('erp.app.app-component.account-service.message.update-version-with-value', 'danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: 'app:ForceUpdate' });
 		}
 		else if (err.status == 401) {
