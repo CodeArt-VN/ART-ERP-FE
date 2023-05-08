@@ -46,6 +46,9 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
+import { POSNotificationModalPage } from './pages/POS/pos-notification-modal/pos-notification-modal.page';
+// import { POSNotificationModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -58,7 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage],
+  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage,POSNotificationModalPage],
   entryComponents: [PopoverPage],
   imports: [
     BrowserModule,
