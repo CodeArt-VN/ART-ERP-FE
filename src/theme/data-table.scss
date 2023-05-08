@@ -242,7 +242,7 @@
 			padding: 0.5rem;
 			border-radius: 3px;
 			font-weight: normal;
-			background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), .05);
+			background-color: var(--menu-background-bottom);
 
 			&.ng-dirty:not(.no-check-dirty) {
 				border: 1px solid var(--ion-color-success) !important;
@@ -257,9 +257,12 @@
 			&[disabled],
 			&.disable,
 			&.ng-select-disabled {
-				background-color: var(--menu-right-border-color) !important;
+				background: linear-gradient(180deg, var(--main-background-top), var(--main-background-top));
 				color: var(--ion-color-medium);
 			}
+
+
+		
 
 			&:focus,
 			&.ng-select-focused {

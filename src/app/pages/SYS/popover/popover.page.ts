@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from '@ionic/angular';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
-import { HRM_StaffProvider, SYS_StatusProvider } from 'src/app/services/static/services.service';
+import { HRM_StaffProvider } from 'src/app/services/static/services.service';
 import { concat, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -43,7 +43,6 @@ export class PopoverPage {
 
     constructor(
         public staffProvider: HRM_StaffProvider,
-        public statusProvider: SYS_StatusProvider,
 
         public env: EnvService,
         public navCtrl: NavController,
@@ -98,8 +97,8 @@ export class PopoverPage {
     }
 
     initSaleOrderStatus() {
-        this.statusProvider.read({ IDParent: 1 }).then(response => {
-            this.saleOrderStatusList = response['data'];
+        this.env.getStatus('SalesOrder').then(data=>{
+            this.saleOrderStatusList = data;
             this.translate.get('erp.app.pages.sys.popover.not-shipping').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'[101,102,103,104,110]', Name: message, Color:'primary'});
             });
@@ -115,7 +114,7 @@ export class PopoverPage {
             this.translate.get('erp.app.pages.sys.popover.all').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'', Name: message, Color:'primary'});
             });
-        });
+        })
     }
 
     changeDateFillter(type) {

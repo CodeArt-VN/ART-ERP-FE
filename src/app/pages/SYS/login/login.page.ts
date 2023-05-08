@@ -76,7 +76,7 @@ export class LoginPage extends PageBase {
             this.nav( this.returnUrl, 'back');
         }
 
-        this.env.getStorage('Username').then(v=>{
+        this.env.getStorage('Username')?.then(v=>{
             this.email = v;
         })
     }
