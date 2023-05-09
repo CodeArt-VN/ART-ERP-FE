@@ -2200,7 +2200,7 @@
 "erp.app.pages.sale.sale-order.split.discount-from-salesman": "Discount from sales staff",
 "erp.app.pages.sale.sale-order.split.discount-from-vendor": "Vendor Discount",
 "erp.app.pages.sale.sale-order.split.help": "Help",
-"erp.app.pages.sale.sale-order.split.idcontact": "Customer (Individual)",
+"erp.app.pages.sale.sale-order.split.idcontact": "Customer - ",
 "erp.app.pages.sale.sale-order.split.id-uom": "Unit",
 "erp.app.pages.sale.sale-order.split.is-sample-order": "Sample",
 "erp.app.pages.sale.sale-order.split.is-urgent-orders": "Urgent order",
