@@ -1,5 +1,3 @@
-
-
 .safe-holder {
 	position: relative;
 	margin-top: 20px;
@@ -249,6 +247,52 @@
 				border-right: 0.3rem solid transparent;
 			}
 		}
+	}
+}
+
+.coupon {
+	display: flex;
+    // overflow: hidden;
+    // border-radius: 6px;
+    // height: 60px;
+    // flex-direction: row;
+    // flex-wrap: nowrap;
+    // align-items: stretch;
+    // border: solid 1px var(--ion-color-primary);
+    // background-color: var(--ion-color-primary);
+    // background: linear-gradient(135deg, var(--ion-color-primary-tint), var(--ion-color-primary));
+    background: linear-gradient(135deg, #7158fe, #9d4de6);
+    color: #FFF;
+	border-radius: 9px;
+    box-shadow: 0px 3px 10px 0 rgba(0,0,0,0.15);
+    margin: 8px 0 8px 0;
+	position: relative;
+
+	.coupon-left {
+		border-right: dotted 4px var(--ion-color-tertiary-tint);
+		min-width: 62px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.coupon-right {
+		/* background: var(--ion-color-tertiary-tint); */
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 8px;
+	}
+
+	.del-btn {
+		position: absolute;
+		z-index: 1;
+		right: -9px;
+		background: var(--ion-color-tertiary-tint);
+		border-radius: 100px;
+		width: 3rem;
+		height: 3rem;
 	}
 }
 
