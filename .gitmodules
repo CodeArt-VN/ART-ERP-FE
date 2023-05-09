@@ -40,3 +40,9 @@
 [submodule "src/app/pages/WMS"]
 	path = src/app/pages/WMS
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-WMS.git
+[submodule "src/app/pages/PM"]
+	path = src/app/pages/PM
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PM.git
+[submodule "src/app/pages/PR"]
+	path = src/app/pages/PR
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PR.git

@@ -75,8 +75,12 @@
 
 	}
 
+	
+
 	&.ng-select-multiple {
 		.ng-select-container {
+			align-items: flex-start;
+
 			.ng-value-container {
 				padding-top: 0;
     			padding-left: 0;
@@ -87,8 +91,10 @@
 				}
 
 				.ng-value {
-					
+					border-radius: 0.4rem;
+					white-space: break-spaces !important;
 					margin: 0.2rem 0.4rem 0.2rem 0;
+    				padding: 0.2rem 0 0.2rem 0.4rem;
 		
 					color: var(--ion-color-dark);
 					background-color: var(--menu-background-item-active);
@@ -107,6 +113,14 @@
 
 					.ng-value-icon.right {
 						border-left: 1px solid var(--menu-right-border-color);
+					}
+
+					ion-icon {
+						display: inline-block;
+						font-size: 1.3rem;
+						margin: -2px 3px;
+						color: var(--ion-color-danger);
+						cursor: pointer;
 					}
 				}
 

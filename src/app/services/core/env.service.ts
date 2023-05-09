@@ -55,13 +55,13 @@ export class EnvService {
             this.init().then(resolve).catch(reject);
         });
 
-        
+
     }
-    
-    
+
+
     async init() {
         console.log('init env');
-        
+
         // If using, define drivers here: await this.storage.defineDriver(/*...*/);
         this._storage = await this.storage.create();
         this.publishEvent({ Code: 'app:loadLang' });
@@ -101,14 +101,14 @@ export class EnvService {
             if (e.code == 'SystemAlert') {
                 this.showAlert(e.value, null, e.name);
             }
-            else if(e.code=='POSOrderPaymentUpdate'){
-                this.publishEvent({ Code:'app:POSOrderPaymentUpdate',Id: e.id, Name:e.name , Value:e.value});
+            else if (e.code == 'POSOrderPaymentUpdate') {
+                this.publishEvent({ Code: 'app:POSOrderPaymentUpdate', Id: e.id, Name: e.name, Value: e.value });
             }
-            else if(e.code=='POSOrderFromCustomer'){              
-                this.publishEvent({ Code:'app:POSOrderFromCustomer', Data:e});
+            else if (e.code == 'POSOrderFromCustomer') {
+                this.publishEvent({ Code: 'app:POSOrderFromCustomer', Data: e });
             }
-            else if(e.code=='POSOrderFromStaff'){              
-                this.publishEvent({ Code:'app:POSOrderFromStaff', Data:e});
+            else if (e.code == 'POSOrderFromStaff') {
+                this.publishEvent({ Code: 'app:POSOrderFromStaff', Data: e });
             }
             else if (e.code == 'SystemMessage') {
                 this.showMessage(e.value, e.name);
@@ -179,7 +179,7 @@ export class EnvService {
         setTimeout(() => {
             this.lastMessage = '';
         }, 5000);
-        
+
         if (!showCloseButton) {
             this.toastController.create({
                 message: message,
@@ -270,19 +270,24 @@ export class EnvService {
         });
     }
 
-    showLoading(message, promise){
+    showLoading(message, promise) {
         return new Promise((resolve, reject) => {
-            this.loadingController.create({ cssClass: 'my-custom-class', message: message}).then((loading) => 
-            {
+            this.loadingController.create({ cssClass: 'my-custom-class', message: message }).then((loading) => {
                 loading.present();
-                promise.then(result=>{
-                    if (loading) loading.dismiss();
-                    resolve(result);
-                        
-                }).catch(err => {
-                    if (loading) loading.dismiss();
-                    reject(err);
-                });
+                setTimeout(() => {
+                    if (typeof promise == 'function')
+                        promise = promise();
+
+                    promise.then(result => {
+                        if (loading) loading.dismiss();
+                        resolve(result);
+                    }).catch(err => {
+                        if (loading) loading.dismiss();
+                        reject(err);
+                    });
+                }, 0);
+
+
             });
         });
     }

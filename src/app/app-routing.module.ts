@@ -9,6 +9,8 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  //PM
+  { path: 'gantt', loadChildren: () => import('./pages/PM/gantt/gantt.module').then(m => m.GanttPageModule) },
 
   //ACCOUNTANT
   { path: 'arinvoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
@@ -136,6 +138,11 @@ const routes: Routes = [
   { path: 'goods-receiving/:id', loadChildren: () => import('./pages/WMS/goods-receiving-detail/goods-receiving-detail.module').then(m => m.GoodReceivingDetailPageModule), canActivate: [AuthGuard] },
   { path: 'lpn-label', loadChildren: () => import('./pages/WMS/lpn-label/lpn-label.module').then(m => m.LPNLabelPageModule), canActivate: [AuthGuard] },
   { path: 'lpn-label/:id', loadChildren: () => import('./pages/WMS/lpn-label/lpn-label.module').then(m => m.LPNLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'serial-label', loadChildren: () => import('./pages/WMS/serial-label/serial-label.module').then(m => m.SerialLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'item-uom-label', loadChildren: () => import('./pages/WMS/item-uom-label/item-uom-label.module').then(m => m.ItemUomLabelPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-table-label', loadChildren: () => import('./pages/WMS/pos-table-label/pos-table-label.module').then(m => m.POSTableLabelPageModule), canActivate: [AuthGuard] },
+  
+
 
   //OST
   { path: 'branch', loadChildren: () => import('./pages/OST/branch/branch.module').then(m => m.BranchPageModule), canActivate: [AuthGuard] },
@@ -176,6 +183,8 @@ const routes: Routes = [
   { path: 'pos-order/:id', loadChildren: () => import('./pages/POS/pos-order-detail/pos-order-detail.module').then(m => m.POSOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'pos-order/:id/:table', loadChildren: () => import('./pages/POS/pos-order-detail/pos-order-detail.module').then(m => m.POSOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'pos-work-order', loadChildren: () => import('./pages/POS/pos-work-order/pos-work-order.module').then(m => m.POSWorkOrderPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-terminal', loadChildren: () => import('./pages/POS/pos-terminal/pos-terminal.module').then(m => m.POSTerminalPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-terminal/:id', loadChildren: () => import('./pages/POS/pos-terminal-detail/pos-terminal-detail.module').then(m => m.POSTerminalDetailPageModule), canActivate: [AuthGuard] },
 
   { path: 'pos-kitchen', loadChildren: () => import('./pages/POS/pos-kitchen/pos-kitchen.module').then(m => m.POSKitchenPageModule), canActivate: [AuthGuard] },
   { path: 'pos-kitchen/:id', loadChildren: () => import('./pages/POS/pos-kitchen-detail/pos-kitchen-detail.module').then(m => m.POSKitchenDetailPageModule), canActivate: [AuthGuard] },
@@ -275,7 +284,12 @@ const routes: Routes = [
   //PR
   { path: 'pr-deal', loadChildren: () => import('./pages/PR/pr-deal/pr-deal.module').then( m => m.PRDealPageModule), canActivate: [AuthGuard]},
   { path: 'pr-deal/:id', loadChildren: () => import('./pages/PR/pr-deal-detail/pr-deal-detail.module').then( m => m.PRDealDetailPageModule),canActivate: [AuthGuard]},
-
+  { path: 'pr-program', loadChildren: () => import('./pages/PR/pr-program/pr-program.module').then( m => m.PRProgramPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-program/:id', loadChildren: () => import('./pages/PR/pr-program-detail/pr-program-detail.module').then( m => m.PRProgramDetailPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-voucher-policy', loadChildren: () => import('./pages/PR/pr-voucher-policy/pr-voucher-policy.module').then( m => m.PRVoucherPolicyPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-voucher-policy/:id', loadChildren: () => import('./pages/PR/pr-voucher-policy-detail/pr-voucher-policy-detail.module').then( m => m.PRVoucherPolicyDetailPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-discount-policy', loadChildren: () => import('./pages/PR/pr-discount-policy/pr-discount-policy.module').then( m => m.PRDiscountPolicyPageModule),canActivate: [AuthGuard]},
+  { path: 'pr-discount-policy/:id', loadChildren: () => import('./pages/PR/pr-discount-policy-detail/pr-discount-policy-detail.module').then( m => m.PRDiscountPolicyDetailPageModule),canActivate: [AuthGuard]},
 
   {
     path: '',
@@ -284,6 +298,8 @@ const routes: Routes = [
   },
 
   { path: '**', redirectTo: '/not-found' },
+  
+
 
 
 ];
