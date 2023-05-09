@@ -92,6 +92,16 @@ export class AccountService {
 						reject(err);
 					});
 
+					setTimeout(() => {
+						this.getProfile(true).then(() => {
+							resolve(true);
+							this.env.isloaded = true;
+							this.env.publishEvent({ Code: 'app:loadedLocalData' })
+						}).catch(err => {
+							reject(err);
+						});
+					}, 1500);
+
 					// //TODO: lazy check profile;
 					// this.commonService.connect('GET', 'Account/UserName', null).toPromise().then(_ => {
 					// 	console.log(_);

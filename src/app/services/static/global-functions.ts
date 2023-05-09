@@ -25,6 +25,10 @@ export var lib = {
 		});
 		return uuid;
 	},
+	generateCode(radix = 36){
+		var d = (new Date);
+		return d.getTime().toString(radix);
+	},
 	isNumeric(value: any): boolean {
 		return !isNaN(value - parseFloat(value));
 	},
