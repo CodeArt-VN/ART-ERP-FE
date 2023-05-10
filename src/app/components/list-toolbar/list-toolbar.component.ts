@@ -78,6 +78,10 @@ export class ListToolbarComponent implements OnInit {
 	@Output() submitVoucherForApproval = new EventEmitter();
 	@Output() disapproveVoucher = new EventEmitter();
 	@Output() approveVoucher = new EventEmitter();
+
+	@Output() submitDiscountForApproval = new EventEmitter();
+	@Output() disapproveDiscount = new EventEmitter();
+	@Output() approveDiscount = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 
