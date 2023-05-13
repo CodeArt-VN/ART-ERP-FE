@@ -94,6 +94,16 @@
 			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
 		</ion-button>
 
+		<ion-button *ngIf="pageConfig.canSubmitDiscountForApproval" (click)="emit('submitDiscountForApproval')" title="Gửi Duyệt">
+			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canDisapproveDiscount" (click)="emit('disapproveDiscount')" title="Không Duyệt">
+			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="pageConfig.canApproveDiscount" (click)="emit('approveDiscount')" title="Duyệt">
+			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+		</ion-button>
+
 		<ion-button *ngIf="pageConfig.canCopy" title="Copy" (click)="emit('copy')">
 			<ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
 		</ion-button>
