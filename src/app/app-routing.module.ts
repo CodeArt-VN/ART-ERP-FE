@@ -231,6 +231,7 @@ const routes: Routes = [
 
   //BI/POS
   { path: 'pos-dashboard', loadChildren: () => import('./pages/BI/pos-report/pos-dashboard/pos-dashboard.module').then(m => m.PosDashboardPageModule), canActivate: [AuthGuard] },
+  { path: 'pos-shift', loadChildren: () => import('./pages/BI/pos-report/pos-shift/pos-shift.module').then(m => m.PosShiftPageModule), canActivate: [AuthGuard] },
   { path: 'pos-item', loadChildren: () => import('./pages/BI/pos-report/pos-item/pos-item.module').then(m => m.PosItemPageModule), canActivate: [AuthGuard] },
   { path: 'pos-receipt', loadChildren: () => import('./pages/BI/pos-report/pos-receipt/pos-receipt-report.module').then(m => m.POSReceiptReportPageModule), canActivate: [AuthGuard] },
   { path: 'pos-day', loadChildren: () => import('./pages/BI/pos-report/pos-day/pos-day.module').then(m => m.PosDayPageModule), canActivate: [AuthGuard] },
