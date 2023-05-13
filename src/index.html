@@ -20,6 +20,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
+  <script type="text/javascript">
+    if(window.location.protocol != 'https:' && window.location.host.indexOf('localhost') == -1 ) {
+        location.href = location.href.replace("http://", "https://");
+    }
+  </script>
+
   <script>
     var browser = (function () {
       var test = function (regexpOrCss) {

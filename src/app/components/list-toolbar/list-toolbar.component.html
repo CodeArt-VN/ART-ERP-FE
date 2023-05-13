@@ -201,6 +201,9 @@
 		<ion-button title="{{'erp.app.components.list-toolbar.split-order' | translate}}" *ngIf="pageConfig.canSplit && selectedItems.length==1 && !query.IsDisabled" (click)="emit('splitOrder')">
 			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
 		</ion-button>
+		<ion-button title="{{'erp.app.components.list-toolbar.cancel-orders' | translate}}" *ngIf="pageConfig.canCancelOrder && selectedItems.length==1 && !query.IsDisabled" (click)="emit('cancelOrder')">
+			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+		</ion-button>
 
 		<ion-button title="{{query.IsDisabled?'erp.app.components.list-toolbar.archive-items-disabled' : 'erp.app.components.list-toolbar.archive-items-notdisabled' | translate}}" *ngIf="pageConfig.canArchive" (click)="emit('archiveItems')">
 			<ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled? 'arrow-undo':'archive'"></ion-icon>

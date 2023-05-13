@@ -15,7 +15,7 @@ export class LineChartComponent implements OnInit {
 
   chartStyle = {
     width: '100%',
-    'min-height': '300px',
+    'min-height': '100%',
   }
 
   constructor(public chartOptionService :ChartOptionService){
@@ -61,6 +61,8 @@ export class LineChartComponent implements OnInit {
           name: element.name,          
           data: element.data,
           type: 'line',
+          lineStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
@@ -69,7 +71,9 @@ export class LineChartComponent implements OnInit {
           name: element.name,
           data: element.data,
           type: 'line',
-          smooth: true
+          smooth: true,
+          lineStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
@@ -79,6 +83,8 @@ export class LineChartComponent implements OnInit {
           data: element.data,
           type: 'line',
           areaStyle: {},
+          lineStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
@@ -88,6 +94,8 @@ export class LineChartComponent implements OnInit {
           data: element.data,
           type: 'line',
           stack: 'Total',
+          lineStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
@@ -97,7 +105,8 @@ export class LineChartComponent implements OnInit {
           data: element.data,
           type: 'line',
           stack: 'Total',
-          areaStyle: {},
+          areaStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
@@ -109,8 +118,8 @@ export class LineChartComponent implements OnInit {
           stack: 'Total',
           smooth: true,
           showSymbol: false,
-          areaStyle: {           
-          },
+          areaStyle: {color: element.color},
+          itemStyle: {color: element.color},
         }
         result.push(series)
       }
