@@ -66,6 +66,7 @@ export class ListToolbarComponent implements OnInit {
 	@Output() syncEInvoice = new EventEmitter();
 
 	@Output() changeTable = new EventEmitter();
+	@Output() cancelOrder = new EventEmitter();
 
 	@Output() submitBusinessPartner = new EventEmitter();
 	@Output() approveBusinessPartner = new EventEmitter();

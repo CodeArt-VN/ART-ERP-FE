@@ -3249,5 +3249,7 @@
 "erp.app.app-component.menu.menu-group.pos-terminal": "Quản lý quầy",
 "erp.app.app-component.menu.menu-group.pr-program": "Program",
 "erp.app.app-component.menu.menu-group.pr-voucher-policy": "Voucher Policy",
-"erp.app.app-component.menu.menu-group.pr-discount-policy": "Discount Policy"
+"erp.app.app-component.menu.menu-group.pr-discount-policy": "Discount Policy",
+"erp.app.app-component.menu.menu-group.pos-shift": "POS Shift Report",
+"erp.app.pages.bi.pos-shift.page-title": "Báo cáo ca"
 }
