@@ -18,6 +18,7 @@ export class DetailToolbarComponent implements OnInit {
   @Output() delete = new EventEmitter();
   @Output() help = new EventEmitter();
 
+  @Output() showNotify = new EventEmitter();
   pageConfig = {};
   constructor() { }
 

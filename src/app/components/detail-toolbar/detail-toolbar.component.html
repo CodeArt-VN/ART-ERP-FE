@@ -10,6 +10,9 @@
 	<ion-buttons slot="end">
 		<ng-content></ng-content>
 
+		<ion-button *ngIf="pageConfig['pageName'] == 'pos-order'" class="toggle" title="thông báo" (click)="emit('showNotify')">
+			<ion-icon name="notifications-outline"></ion-icon> <sup *ngIf="pageConfig['countNotifications'] > 0">{{pageConfig['countNotifications']}}</sup>
+		</ion-button>
 		<ion-button *ngIf="page.pageConfig.canChangeBranch" (click)="page.changeBranch()" title="{{'erp.app.components.list-toolbar.change-branch' | translate}}">
 			<ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
 		</ion-button>

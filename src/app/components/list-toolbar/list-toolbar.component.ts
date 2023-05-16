@@ -26,7 +26,6 @@ export class ListToolbarComponent implements OnInit {
 	@Input() NoBorder = false;
 	@Input() canSelect = true;
 	@Input() ShowChangeTable = true;
-
 	//@Input() set pageTitle(value) {window.document.title = value;};
 	
 	@Output() add = new EventEmitter();
@@ -83,6 +82,8 @@ export class ListToolbarComponent implements OnInit {
 	@Output() submitDiscountForApproval = new EventEmitter();
 	@Output() disapproveDiscount = new EventEmitter();
 	@Output() approveDiscount = new EventEmitter();
+
+	@Output() showNotify = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 

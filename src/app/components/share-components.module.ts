@@ -9,15 +9,16 @@ import { ShareDirectivesModule } from '../directives/share-directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { FormsModule } from '@angular/forms';
+import { ModalNotifyComponent } from './modal-notify/modal-notify.component';
 
 
 @NgModule({
 	imports: [IonicModule, CommonModule, FormsModule, ShareDirectivesModule, TranslateModule ],
 	declarations: [
-		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent
+		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent,ModalNotifyComponent
 	],
 	exports: [
-		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent, ShareDirectivesModule
+		ListToolbarComponent, DetailToolbarComponent, ModalDetailToolbarComponent, PageMessageComponent, QueryFilterComponent, ShareDirectivesModule,ModalNotifyComponent
 	],
 })
 export class ShareComponentsModule { }

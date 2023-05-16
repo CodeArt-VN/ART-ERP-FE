@@ -1,0 +1,33 @@
+<ion-header>
+	<ion-toolbar> 
+    <ion-title>Thông báo</ion-title>
+    <ion-buttons slot="primary">
+        <ion-button title="{{'erp.app.components.detail-toolbar.refresh' | translate}}" color="primary" (click)="refresh()">
+            <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+        </ion-button>
+        <ion-button title="{{'erp.app.pages.sale.sale-order.merge.close-modal' | translate}}" color="secondary" (click)="closeModal()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme class="header-table">
+  <app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+	<div *ngIf="items.length && pageConfig.showSpinner==false">
+		<section class="table">
+			<ion-virtual-scroll [items]="items" approxItemHeight="50px">
+				<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
+					<ion-card (click)="goToNofication(i)">
+            <ion-card-header>{{i.Name}}</ion-card-header>
+            <ion-card-content>
+              <ion-text>{{i.Message}}</ion-text>
+            </ion-card-content>
+          </ion-card>
+				</ng-container>
+			</ion-virtual-scroll>
+		</section>
+	</div>
+	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>
