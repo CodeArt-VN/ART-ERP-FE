@@ -84,7 +84,7 @@ export class AccountService {
 			this.checkVersion().then((v) => {
 				GlobalData.Version = v;
 				this.getToken().then(() => {
-					this.getProfile(forceReload).then(() => {
+					this.getProfile(true).then(() => {
 						resolve(true);
 						this.env.isloaded = true;
 						this.env.publishEvent({ Code: 'app:loadedLocalData' })
@@ -92,15 +92,15 @@ export class AccountService {
 						reject(err);
 					});
 
-					setTimeout(() => {
-						this.getProfile(true).then(() => {
-							resolve(true);
-							this.env.isloaded = true;
-							this.env.publishEvent({ Code: 'app:loadedLocalData' })
-						}).catch(err => {
-							reject(err);
-						});
-					}, 1500);
+					// setTimeout(() => {
+					// 	this.getProfile(true).then(() => {
+					// 		resolve(true);
+					// 		this.env.isloaded = true;
+					// 		this.env.publishEvent({ Code: 'app:loadedLocalData' })
+					// 	}).catch(err => {
+					// 		reject(err);
+					// 	});
+					// }, 1500);
 
 					// //TODO: lazy check profile;
 					// this.commonService.connect('GET', 'Account/UserName', null).toPromise().then(_ => {
