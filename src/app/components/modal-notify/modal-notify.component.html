@@ -17,7 +17,7 @@
 		<section class="table">
 			<ion-virtual-scroll [items]="items" approxItemHeight="50px">
 				<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
-					<ion-card (click)="goToNofication(i)">
+					<ion-card (click)="goToNofication(i,j)">
             <ion-card-header>{{i.Name}}</ion-card-header>
             <ion-card-content>
               <ion-text>{{i.Message}}</ion-text>

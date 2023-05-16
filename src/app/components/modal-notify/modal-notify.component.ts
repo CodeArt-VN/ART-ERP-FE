@@ -10,7 +10,6 @@ import { EnvService } from 'src/app/services/core/env.service';
   styleUrls: ['./modal-notify.component.scss'],
 })
 export class ModalNotifyComponent extends PageBase {
-  notifications = [];
   constructor(
     public env: EnvService,
     public modalController: ModalController,
@@ -26,9 +25,16 @@ export class ModalNotifyComponent extends PageBase {
   }
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
     super.loadedData();
-    this.items = this.notifications;
+    this.env.getStorage('Notifications').then((result:any)=>{
+        if(result){
+            this.items = result;
+        }
+    });
   }
-  goToNofication(i){
+  goToNofication(i,j){
+    this.items = this.items.splice(j, 1);
+    console.log(this.items);
+    this.env.setStorage('Notifications',this.items);
     this.modalController.dismiss(); 
     this.nav(i.Url,'forward');
   }
