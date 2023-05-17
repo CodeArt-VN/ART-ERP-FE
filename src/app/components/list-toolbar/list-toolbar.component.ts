@@ -26,6 +26,7 @@ export class ListToolbarComponent implements OnInit {
 	@Input() NoBorder = false;
 	@Input() canSelect = true;
 	@Input() ShowChangeTable = true;
+	
 	//@Input() set pageTitle(value) {window.document.title = value;};
 	
 	@Output() add = new EventEmitter();

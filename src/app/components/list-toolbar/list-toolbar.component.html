@@ -9,6 +9,8 @@
 		</ion-button>
 		<ng-content select="[title]"></ng-content>
 	</ion-buttons>
+
+	
 	<ion-buttons slot="end" *ngIf="!(selectedItems.length && canSelect)">
 		<ion-button *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled" (click)="emit('add')" title="{{'erp.app.components.list-toolbar.add' | translate}}">
 			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
