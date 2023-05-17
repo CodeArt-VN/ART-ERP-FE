@@ -83,7 +83,6 @@ export class ListToolbarComponent implements OnInit {
 	@Output() disapproveDiscount = new EventEmitter();
 	@Output() approveDiscount = new EventEmitter();
 
-	@Output() showNotify = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 
