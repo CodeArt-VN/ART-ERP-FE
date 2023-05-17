@@ -11,23 +11,18 @@
     </ion-buttons>
 </ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="header-table">
-  <app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
-	<div *ngIf="items.length && pageConfig.showSpinner==false">
-		<section class="table">
-			<ion-virtual-scroll [items]="items" approxItemHeight="50px">
-				<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
-					<ion-card (click)="goToNofication(i,j)">
-            <ion-card-header>{{i.Name}}</ion-card-header>
-            <ion-card-content>
-              <ion-text>{{i.Message}}</ion-text>
-            </ion-card-content>
-          </ion-card>
-				</ng-container>
-			</ion-virtual-scroll>
-		</section>
-	</div>
-	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
-		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-	</ion-infinite-scroll>
+<ion-content appScrollbarTheme>
+  <app-page-message [itemsLength]="item.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  <div *ngIf="item.length && pageConfig.showSpinner==false" class="ion-padding">
+    <ion-item *ngFor="let i of item; let j = index;" lines="none" class="ion-margin-top c-input">
+      <ion-text>
+        <div><ion-text color="danger" class="clickable" (click)="goToNofication(i,j)"><small>{{i.Name }}</small></ion-text></div>
+        <div><ion-text class="clickable" (click)="goToNofication(i,j)">{{i.Message}}</ion-text></div>
+      </ion-text>
+      <ion-text slot="end" *ngIf="i.Watched">Đã xem</ion-text>
+      <ion-button color="success" fill="clear" slot="end" (click)="goToNofication(i,j)" *ngIf="!i.Watched"><ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+      
+      <ion-button slot="end" (click)="removeNotification(j)" color="danger" fill="clear"><ion-icon  name="trash-outline"></ion-icon></ion-button>
+    </ion-item>
+  </div>
 </ion-content>

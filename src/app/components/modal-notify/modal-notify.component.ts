@@ -23,19 +23,16 @@ export class ModalNotifyComponent extends PageBase {
     super();
     
   }
-  loadedData(event?: any, ignoredFromGroup?: boolean): void {
-    super.loadedData();
-    this.env.getStorage('Notifications').then((result:any)=>{
-        if(result){
-            this.items = result;
-        }
-    });
-  }
   goToNofication(i,j){
-    this.items = this.items.splice(j, 1);
-    console.log(this.items);
-    this.env.setStorage('Notifications',this.items);
+    this.item[j].Watched = true;
+    this.env.setStorage('Notifications',this.item);
     this.modalController.dismiss(); 
-    this.nav(i.Url,'forward');
+    if(i.Url!=null){
+      this.nav(i.Url,'forward');
+    }
+  }
+  removeNotification(j){
+    this.item.splice(j, 1);
+    this.env.setStorage('Notifications',this.item);
   }
 }
