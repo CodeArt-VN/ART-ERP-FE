@@ -35,4 +35,16 @@ export class ModalNotifyComponent extends PageBase {
     this.item.splice(j, 1);
     this.env.setStorage('Notifications',this.item);
   }
+  removeNotifications(){
+    if(this.item.filter(n=>n.Watched == true).length <=0){
+      this.env.showMessage("Không có thông báo nào đã xem!","warning");
+      return
+    }
+    else{
+      this.item.filter(n=>n.Watched == true).forEach((i,index)=>{
+        this.item.splice(index,1);
+      });
+      this.env.setStorage('Notifications',this.item);
+    }
+  }
 }

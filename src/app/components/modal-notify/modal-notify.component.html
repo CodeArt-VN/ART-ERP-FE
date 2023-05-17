@@ -2,6 +2,9 @@
 	<ion-toolbar> 
     <ion-title>Thông báo</ion-title>
     <ion-buttons slot="primary">
+        <ion-button title="Xóa thông báo đã xem" color="primary" (click)="removeNotifications()">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
         <ion-button title="{{'erp.app.components.detail-toolbar.refresh' | translate}}" color="primary" (click)="refresh()">
             <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
         </ion-button>
