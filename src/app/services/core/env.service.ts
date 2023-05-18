@@ -110,6 +110,9 @@ export class EnvService {
             else if (e.code == 'POSOrderFromStaff') {
                 this.publishEvent({ Code: 'app:POSOrderFromStaff', Data: e });
             }
+            else if (e.code == 'POSSupport') {
+                this.publishEvent({ Code: 'app:POSSupport', Data: e });
+            }
             else if (e.code == 'SystemMessage') {
                 this.showMessage(e.value, e.name);
             }

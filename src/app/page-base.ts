@@ -52,7 +52,6 @@ export abstract class PageBase implements OnInit {
         showSpinner: true,
         isEndOfData: false,
         didEnter: false,
-
     }
 
 
