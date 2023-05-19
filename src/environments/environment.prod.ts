@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  appVersion: '0.18.31',
+  appVersion: '0.18.46',
   appDomain: 'https://api.inholdings.vn/',
   staffAvatarsServer: "https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/",
   posImagesServer: "https://api.inholdings.vn/",

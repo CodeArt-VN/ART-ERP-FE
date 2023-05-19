@@ -1,4 +1,4 @@
- import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
@@ -51,15 +51,6 @@ export class AppComponent implements OnInit {
 		public splashScreen: SplashScreen,
 		public translate: TranslateService
 	) {
-		if (window.location.host == 'thelog.inholdings.vn') {
-			this.appTheme = 'thelog-theme'
-		} else if (window.location.host.indexOf('inholdings') > -1) {
-			this.appTheme = 'inholdings-theme'
-		} else if (window.location.host.indexOf('artlogistics') > -1) {
-			this.appTheme = 'artdistribution-theme'
-		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
-			this.appTheme = 'artdistribution-theme'
-		}
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
 			'./assets/undraw_art_museum_8or4.svg',
@@ -117,11 +108,11 @@ export class AppComponent implements OnInit {
 					break;
 				case 'app:loadLang':
 					this.env.getStorage('lang').then(lang => {
-						
+
 						if (lang) {
 							this.changeLanguage(lang);
 						}
-						else{
+						else {
 							this.changeLanguage('vi-VN');
 						}
 					})
@@ -182,11 +173,42 @@ export class AppComponent implements OnInit {
 	}
 
 	updateStatusbar() {
-		setTimeout(() => {
-			let themeColor = lib.getCssVariableValue('--ion-color-primary');
-			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);	
-		}, 100);
+		let title = 'IN ERP';
+		let relIcon = 'assets/icons/icon-512x512.png';
+		if (window.location.host == 'thelog.inholdings.vn') {
+			this.appTheme = 'thelog-theme';
+		} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
+			this.appTheme = 'gem-theme';
+			title = 'GEM Café';
+			relIcon = '/assets/logos/logo-gem-center-small.png';
+		} else if (window.location.host.indexOf('inholdings') > -1) {
+			this.appTheme = 'inholdings-theme';
+		} else if (window.location.host.indexOf('artlogistics') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else {
+			this.appTheme = 'gem-theme';
+			title = 'GEM Café';
+			relIcon = '/assets/logos/logo-gem-center-small.png';
+		}
+
+		let link: any = document.querySelector("link[rel~='icon']");
+		if (!link) {
+			link = document.createElement('link');
+			link.rel = 'icon';
+			document.head.appendChild(link);
+		}
 		
+		window.document.title = title;
+		link.href = relIcon;
+
+		setTimeout(() => {
+			
+			let themeColor = lib.getCssVariableValue('--ion-color-primary');
+			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+		}, 100);
+
 		if (Capacitor.isPluginAvailable('StatusBar')) {
 			StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
 			StatusBar.setStyle({ style: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? Style.Dark : Style.Light });
@@ -211,7 +233,7 @@ export class AppComponent implements OnInit {
 			this.showScrollbar = environment.showScrollbar;
 			this.updateStatusbar();
 			this.splashScreen.hide();
-		
+
 		});
 	}
 
