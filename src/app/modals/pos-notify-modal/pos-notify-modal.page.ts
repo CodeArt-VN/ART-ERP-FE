@@ -35,16 +35,16 @@ export class POSNotifyModalPage extends PageBase {
 		this.env.setStorage('Notifications',this.item);
 	  }
 	  removeNotifications(){
-		if(this.item.filter(n=>n.Watched == true).length <=0){
-		  this.env.showMessage("Không có thông báo nào đã xem!","warning");
-		  return
+		if(this.item.filter(n=>n.Watched == true).length>0){
+			this.item = this.item.filter(n=>n.Watched == false);
+			this.env.setStorage('Notifications',this.item);
+			this.modalController.dismiss(this.item); 
 		}
 		else{
-		  this.item.filter(n=>n.Watched == true).forEach((i,index)=>{
-			this.item.splice(index,1);
-		  });
-		  this.env.setStorage('Notifications',this.item);
+			this.env.showMessage('Không có thông báo nào đã xem','warning');
+			return;
 		}
+		
 	  }
 
 
