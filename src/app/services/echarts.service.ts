@@ -632,4 +632,40 @@ export class EchartsService {
             }
           ]
     }
+
+    //Global Stacked Bar
+    stackedBarChartOptionGlobal: any = {
+        title: {
+            text: 'chartTitle',
+            // subtext: 'chartSubtext',
+            // left: 'center',
+
+            textStyle: {
+                color: lib.getCssVariableValue('--ion-color-primary') // Text color
+            }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c}%'
+        },
+        toolbox: {
+            show: false,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+        },
+        legend: {
+          data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+    }
+
 }

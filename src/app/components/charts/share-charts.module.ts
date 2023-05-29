@@ -7,16 +7,17 @@ import { GaugeChartComponent } from './gauge-chart/gauge-chart.component';
 import { TreemapChartComponent } from './treemap-chart/treemap-chart.component';
 import { RadarChartComponent } from './radar-chart/radar-chart.component';
 import { FunnelChartComponent } from './funnel-chart/funnel-chart.component';
+import { StackedBarChartComponent } from './stacked-bar-chart/stacked-bar-chart.component';
 
 
 
 @NgModule({
 	imports: [ CommonModule ],
 	declarations: [
-    	PieChartComponent, LineChartComponent, BarChartComponent, GaugeChartComponent, TreemapChartComponent, RadarChartComponent, FunnelChartComponent
+    	PieChartComponent, LineChartComponent, BarChartComponent, GaugeChartComponent, TreemapChartComponent, RadarChartComponent, FunnelChartComponent, StackedBarChartComponent
 	],
 	exports: [
-		PieChartComponent, LineChartComponent, BarChartComponent, GaugeChartComponent, TreemapChartComponent, RadarChartComponent, FunnelChartComponent
+		PieChartComponent, LineChartComponent, BarChartComponent, GaugeChartComponent, TreemapChartComponent, RadarChartComponent, FunnelChartComponent, StackedBarChartComponent
 	],
 })
 export class ShareChartsModule { }
