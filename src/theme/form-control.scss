@@ -58,7 +58,20 @@
     padding-left: 0;
     position: relative;
 
-    
+    &.inline-control{
+        .c-label{
+            white-space: nowrap;
+            position: absolute;
+            padding: 1rem;
+            width: auto;
+            font-weight: normal;
+            border: solid transparent;
+            font-size: 1.3rem;
+        }
+        .c-input{
+            text-align: right;
+        }
+    }
 
     .c-input{
         outline: none;
@@ -115,7 +128,39 @@
 
     .c-checkbox{
         display: inline-block;
-        margin: 1.1rem 0.7rem 1.1rem 0;
+        margin: 0px 0.5rem 0.5rem 0;
+        width: 2rem;
+        height: 2rem;
+        margin-top: 0.25em;
+        vertical-align: top;
+        background-color: var(--ion-color-primary-contrast);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border: 1px solid rgba(var(--ion-color-primary-rgb),.25);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        print-color-adjust: exact;
+        
+
+        &[type=radio]{
+            border-radius: 50%;
+        }
+
+        &:checked[type=checkbox] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+            background-color: var(--ion-color-primary);
+            border-color: var(--ion-color-primary);
+        }
+        
+        &:checked[type=radio] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+            background-color: var(--ion-color-primary);
+            border-color: var(--ion-color-primary);
+        }
     }
     
     .c-dropdown,
@@ -224,6 +269,8 @@
     }
 
 }
+
+
 
 fieldset{
     border: 1px solid var(--menu-right-border-color);

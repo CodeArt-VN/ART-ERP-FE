@@ -32,6 +32,7 @@ export class SystemStatusDetailPage extends PageBase {
         public loadingController: LoadingController,
     ) {
         super();
+        this.pageConfig.forceLoadData = true;
         this.pageConfig.isDetailPage = true;
         this.pageConfig.isForceCreate = true;
         this.id = this.route.snapshot.paramMap.get('id');
