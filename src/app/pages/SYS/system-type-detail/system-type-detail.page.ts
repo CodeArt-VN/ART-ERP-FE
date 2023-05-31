@@ -32,6 +32,7 @@ export class SystemTypeDetailPage extends PageBase {
         public loadingController: LoadingController,
     ) {
         super();
+        this.pageConfig.forceLoadData = true;
         this.pageConfig.isDetailPage = true;
         this.id = this.route.snapshot.paramMap.get('id');
         this.formGroup = formBuilder.group({

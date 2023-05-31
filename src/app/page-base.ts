@@ -48,6 +48,7 @@ export abstract class PageBase implements OnInit {
         isShowCheck: false,
         isShowFeature: false,
         infiniteScroll: true,
+        forceLoadData: true,
         refresher: true,
         showSpinner: true,
         isEndOfData: false,
@@ -76,7 +77,7 @@ export abstract class PageBase implements OnInit {
         else {
             if (this.pageProvider && !this.pageConfig.isEndOfData) {
                 if (event == 'search') {
-                    this.pageProvider.read(this.query).then((result: any) => {
+                    this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
                         if (result.data.length == 0) {
                             this.pageConfig.isEndOfData = true;
                         }
@@ -86,7 +87,7 @@ export abstract class PageBase implements OnInit {
                 }
                 else {
                     this.query.Skip = this.items.length;
-                    this.pageProvider.read(this.query).then((result: any) => {
+                    this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
                         if (result.data.length == 0) {
                             this.pageConfig.isEndOfData = true;
                         }
