@@ -316,7 +316,7 @@ export class EnvService {
                     const i = resp[ix];
                     i.Name = i.ShortName ? i.ShortName : i.Name;
                     i.disabled = true;
-                    if (i.IDType != 119) {
+                    if (i.Type != 'TitlePosition') {
                         this.branchList.push(i);
                     }
                     this.jobTitleList.push(Object.assign({}, i));
@@ -343,7 +343,7 @@ export class EnvService {
                         setTimeout(() => {
                             for (let ix = 0; ix < this.jobTitleList.length; ix++) {
                                 const i = this.jobTitleList[ix];
-                                if (i.IDType != 119) {
+                                if (i.Type != 'TitlePosition') {
                                     i.disabled = true;
                                 }
                             }
