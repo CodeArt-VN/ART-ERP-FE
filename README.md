@@ -40,6 +40,11 @@ cordova-res ios --splash --copy
 Android: 
 Icon => Project view\ androi\ app \Right Click \Context Menu go to New->Image Asset\new logo
 
+Push Notification
+
+go to Firebase Console Project Overview\Project setting  tab general download file google-service.json
+then pass android \ app \ google-service.json
+
 Import Icon notification Project view\ android\ capacitor-push-notifications\res\ \Right Click \Context Menu go to New->Image Asset
 at Icon Type option  choose  Notification Icon
 
