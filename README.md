@@ -14,6 +14,7 @@ npm i -D @capacitor/cli
 npm i @capacitor/android @capacitor/ios
 
 npm i @capacitor/app@latest...
+npm i @capacitor/push-notifications@4.1.2
 
 ionic capacitor add android
 ionic capacitor add ios
@@ -38,6 +39,12 @@ cordova-res ios --splash --copy
 
 Android: 
 Icon => Project view\ androi\ app \Right Click \Context Menu go to New->Image Asset\new logo
+
+Import Icon notification Project view\ android\ capacitor-push-notifications\res\ \Right Click \Context Menu go to New->Image Asset
+at Icon Type option  choose  Notification Icon
+
+go to file android \capacitor-push-notifications \java \PushNotificationsPlugin.java at line 232 
+edit "int pushIcon = R.drawable.ic_stat_notifications"
 
 ## PWA Icons gen
 ```

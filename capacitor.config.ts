@@ -7,7 +7,12 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
   server: {
     cleartext: true
-  }
+  },
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"],
+    },
+  },
 };
 
 export default config;
