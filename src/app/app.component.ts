@@ -245,9 +245,6 @@ export class AppComponent implements OnInit {
 			if (permStatus.receive === 'prompt') {
 				permStatus = await PushNotifications.requestPermissions();
 			}
-			if (permStatus.receive !== 'granted') {
-				this.env.showAlert("Vui lòng bật thông báo");
-			}
 			await PushNotifications.register();
 			await PushNotifications.addListener('registration', (token: Token) => {
 				this.env.setStorage('NotifyToken', token.value);
