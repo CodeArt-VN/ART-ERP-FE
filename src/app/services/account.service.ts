@@ -11,7 +11,7 @@ import { lib } from './static/global-functions';
 import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserDeviceProvider } from './static/services.service';
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
-
+import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 @Injectable({
 	providedIn: 'root'
@@ -319,6 +319,13 @@ export class AccountService {
 	}
 
 	login(username, password) {
+		// let notifiToken = null;
+		// if(Capacitor.getPlatform() !== 'web'){
+		// 	PushNotifications.register();
+		// 	PushNotifications.addListener('registration', (token: Token) => {
+		// 		notifiToken = token.value;
+		// 	});
+		// }
 		var that = this;
 		return new Promise(async function (resolve, reject) {
 			let urlSearchParams = new URLSearchParams();
@@ -330,6 +337,14 @@ export class AccountService {
 			if (Capacitor.isPluginAvailable('Device')) {
 				let info = await Device.getInfo();
 				let UID = await Device.getId();
+				let NotifyToken = await that.env.getStorage('NotifyToken').then(result=>{
+					if(result){
+						return result;
+					}
+					else{
+						return null;
+					}
+				})
 				deviceInfo = {
 					Id: 0,
 					Code: UID.uuid,
@@ -340,7 +355,8 @@ export class AccountService {
 					OsVersion: info.osVersion,
 					Manufacturer: info.manufacturer,
 					IsVirtual: info.isVirtual,
-					WebViewVersion: info.webViewVersion
+					WebViewVersion: info.webViewVersion,
+					NotifyToken:NotifyToken,
 				}
 			}
 

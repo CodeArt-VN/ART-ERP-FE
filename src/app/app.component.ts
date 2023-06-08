@@ -11,6 +11,7 @@ import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/s
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
+import { ActionPerformed, PushNotifications, Token} from '@capacitor/push-notifications';
 
 let ga: any;
 
@@ -225,7 +226,7 @@ export class AppComponent implements OnInit {
 		// if (path !== undefined) {
 		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
 		// }
-
+		this.initNotification();
 	}
 
 	initializeApp() {
@@ -235,6 +236,24 @@ export class AppComponent implements OnInit {
 			this.splashScreen.hide();
 
 		});
+		
+		
+	}
+	async initNotification(){
+		if(Capacitor.getPlatform() != 'web'){
+			let permStatus = await PushNotifications.checkPermissions();
+			if (permStatus.receive === 'prompt') {
+				permStatus = await PushNotifications.requestPermissions();
+			}
+			await PushNotifications.register();
+			await PushNotifications.addListener('registration', (token: Token) => {
+				this.env.setStorage('NotifyToken', token.value);
+			});
+			PushNotifications.addListener('pushNotificationActionPerformed',(notification: ActionPerformed) => {
+				let navigateByUrl  = notification.notification.data.navigateByUrl;
+				this.router.navigateByUrl(navigateByUrl);
+			});
+		}
 	}
 
 	toogleMenu() {
