@@ -40,7 +40,7 @@ cordova-res ios --splash --copy
 Android: 
 Icon => Project view\ androi\ app \Right Click \Context Menu go to New->Image Asset\new logo
 
-Push Notification
+## Push Notification Android
 
 go to Firebase Console Project Overview\Project setting  tab general download file google-service.json
 then pass android \ app \ google-service.json
@@ -50,6 +50,55 @@ at Icon Type option  choose  Notification Icon
 
 go to file android \capacitor-push-notifications \java \PushNotificationsPlugin.java at line 232 
 edit "int pushIcon = R.drawable.ic_stat_notifications"
+
+## Push Notification IOS
+go to deleloper.apple.com/account/resources/authkeys/list new key - check Apple push Notification  service (APNs) - Download
+go to Firebase Console Project Overview\Project setting  tab Cloud Messaging upload file APNs Authentication Key 
+go to Firebase Console Project Overview\Project setting  tab general download file GoogleService-Info.json
+then pass App \ app \ GoogleService-Info.json 
+App/Podfile  edit 
+target 'App' do
+    capacitor_pods
+    pod 'Firebase/Messaging'
+end
+npx cap update ios
+
+open xcode edit AppDelegate.swift
+
+    import UIKit
+    import Capacitor
+    import Firebase
+
+    @UIApplicationMain
+    class AppDelegate: UIResponder, UIApplicationDelegate 
+    {
+
+        var window: UIWindow?
+
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            // Override point for customization after application launch.
+            FirebaseApp.configure()
+            return true
+        }
+        ...
+
+        func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+            Messaging.messaging().apnsToken = deviceToken
+            Messaging.messaging().token(completion: { (token, error) in
+            if let error = error {
+                NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+            } else if let token = token {
+                NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: token)
+            }
+            })
+        }
+
+        func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+            NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+        }
+    }
+
+targets App -> tab Signing & capabilities add  Capability - search push notifications 
 
 ## PWA Icons gen
 ```
