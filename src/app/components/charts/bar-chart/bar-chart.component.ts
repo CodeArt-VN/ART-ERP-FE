@@ -15,6 +15,11 @@ export class BarChartComponent implements OnInit {
   @Input() Type: string;
   @Input() Data: any;
   @Input() Label: string[];
+  @Input() set Style(value:any) {
+    if (value) {
+      this.chartStyle = value;
+    }
+  }
   Option: echarts.EChartsOption;
 
   chartStyle = {
@@ -46,16 +51,17 @@ export class BarChartComponent implements OnInit {
       });
     }
     else if (this.Type == 'Horizontal Bar') {
-      this.Option.xAxis = { type: 'value' };
-      this.Option.yAxis = { type: 'category', data: this.Label };
+      this.Option.xAxis = { type: 'value', axisLabel: {hideOverlap: true, formatter: val => `${lib.currencyFormatFriendly(val)}`}};
+      this.Option.yAxis = { type: 'category', data: this.Label};
     }
     else {
-      this.Option.xAxis = { type: 'category', data: this.Label };
-      this.Option.yAxis = { type: 'value' };
+      this.Option.xAxis = { type: 'category', data: this.Label};
+      this.Option.yAxis = { type: 'value', axisLabel: {hideOverlap: true, formatter: val => `${lib.currencyFormatFriendly(val)}`}};
     }
 
     this.Option.series = this.Data;
     this.Option.legend.show = false;
+    this.Option.grid = { left: "20%"};
 
     let chartDom = document.getElementById(this.Id)!;
     let myChart = echarts.init(chartDom);

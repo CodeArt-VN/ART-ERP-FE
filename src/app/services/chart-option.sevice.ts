@@ -47,7 +47,8 @@ export class ChartOptionService {
         },
        
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            confine: true
         },
         yAxis: {
             type: 'value'
