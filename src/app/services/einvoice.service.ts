@@ -59,6 +59,10 @@ export class EInvoiceService extends exService {
 		return this.commonService.connect('PUT', ApiSetting.apiDomain("AC/ARInvoice/UpdateEInvoice"), { Ids: Ids });
 	}
 
+	SignEInvoice(Ids) {
+		return this.commonService.connect('POST', ApiSetting.apiDomain("AC/ARInvoice/SignEInvoice"), { Ids: Ids });
+	}
+
 	SyncEInvoice(Ids) {
 		return this.commonService.connect('PUT', ApiSetting.apiDomain("AC/ARInvoice/SyncEInvoiceData"), {Ids:Ids});
 	}
