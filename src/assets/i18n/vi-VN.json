@@ -3350,5 +3350,13 @@
 "erp.app.pages.pos.pos-customer-order.help-order-cancelled-subhead": "Đơn hàng đã hủy",
 "erp.app.pages.pos.pos-customer-order.help-order-cancelled-message": "Không thể thao tác trên đơn hàng này. Vui lòng chọn bàn phía dưới để đi đến đơn hàng của bạn",
 "erp.app.pages.pos.pos-customer-order.help-order-merged-subhead": "Đơn hàng đã gộp",
-"erp.app.pages.pos.pos-customer-order.help-order-merged-message": "Không thể thao tác trên đơn hàng này. Vui lòng đi đến đơn gốc để tiếp tục đặt hàng"
+"erp.app.pages.pos.pos-customer-order.help-order-merged-message": "Không thể thao tác trên đơn hàng này. Vui lòng đi đến đơn gốc để tiếp tục đặt hàng",
+"erp.app.pages.pos.pos-payment-modal.payment-success": "Thanh toán thành công",
+"erp.app.pages.pos.pos-payment-modal.payment-fail": "Giao dịch thất bại",
+"erp.app.pages.pos.pos-payment-modal.payment-pending": "Đang chờ khách hàng thanh toán",
+"erp.app.pages.pos.pos-payment-modal.notification": "Thông báo",
+"erp.app.pages.pos.pos-payment-modal.confirm-done-message": "Bạn có chắc chắn kết thúc đơn? Đơn sẽ được ghi nhận là thanh toán sau.",
+"erp.app.pages.pos.pos-payment-modal.no": "Không",
+"erp.app.pages.pos.pos-payment-modal.yes": "Đồng ý",
+"erp.app.pages.pos.pos-memo-modal.item-locked": "Sản phẩm này đã khóa."
 }

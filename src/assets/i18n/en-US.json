@@ -3352,5 +3352,13 @@
 "erp.app.pages.pos.pos-customer-order.help-order-cancelled-subhead": "Order cancelled",
 "erp.app.pages.pos.pos-customer-order.help-order-cancelled-message": "This order cannot be manipulated. Please select the table below to go to your order.",
 "erp.app.pages.pos.pos-customer-order.help-order-merged-subhead": "Order merged",
-"erp.app.pages.pos.pos-customer-order.help-order-merged-message": "This order cannot be manipulated. Please go to the original order to continue ordering."
+"erp.app.pages.pos.pos-customer-order.help-order-merged-message": "This order cannot be manipulated. Please go to the original order to continue ordering.",
+"erp.app.pages.pos.pos-payment-modal.payment-success": "Payment success",
+"erp.app.pages.pos.pos-payment-modal.payment-fail": "Payment fail",
+"erp.app.pages.pos.pos-payment-modal.payment-pending": "Payment pending",
+"erp.app.pages.pos.pos-payment-modal.notification": "Notification",
+"erp.app.pages.pos.pos-payment-modal.confirm-done-message": "Are you sure to finish the order? The order will be recorded as postpaid.",
+"erp.app.pages.pos.pos-payment-modal.no": "No",
+"erp.app.pages.pos.pos-payment-modal.yes": "Yes",
+"erp.app.pages.pos.pos-memo-modal.item-locked": "Product locked."
 }
