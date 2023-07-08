@@ -14,10 +14,11 @@ const routes: Routes = [
 
   //ACCOUNTANT
   { path: 'arinvoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
-  { path: 'arinvoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice-detail/arinvoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
+  //{ path: 'arinvoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice-detail/arinvoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'arinvoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/ar-invoice-detail/ar-invoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
 
-  { path: 'ar-invoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
-  { path: 'ar-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice-detail/arinvoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
+  //{ path: 'ar-invoice', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice/arinvoice.module').then(m => m.ARInvoicePageModule), canActivate: [AuthGuard] },
+  //{ path: 'ar-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/arinvoice-detail/arinvoice-detail.module').then(m => m.ARInvoiceDetailPageModule), canActivate: [AuthGuard] },
 
   { path: 'ap-invoice', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice/ap-invoice.module').then(m => m.APInvoicePageModule), canActivate: [AuthGuard] },
   { path: 'ap-invoice/:id', loadChildren: () => import('./pages/ACCOUNTANT/ap-invoice-detail/ap-invoice-detail.module').then(m => m.APInvoiceDetailPageModule), canActivate: [AuthGuard] },

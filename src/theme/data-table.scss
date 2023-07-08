@@ -500,6 +500,7 @@
 				border-radius: 10px;
 				background-color: var(--ion-color-tertiary-tint);
 				line-height: 1.5rem;
+				min-width: auto;
 
 				@media screen and (max-width: calc(320px)) {
 					margin: 0px;
@@ -601,6 +602,13 @@
 					font-size: 160%;
 					color: var(--ion-color-primary) !important;
 					font-weight: bold;
+				}
+
+				.col-icon {
+					order: 1;
+					position: absolute;
+					right: 0px;
+					top: 8px;
 				}
 
 				hr {

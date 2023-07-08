@@ -1,6 +1,6 @@
 <ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}" *ngIf="page">
 	<ion-buttons slot="start">
-		<ion-back-button [defaultHref]="BackHref? BackHref : page.pageConfig.pageName" [text]="(page.pageConfig.pageName?('erp.app.app-component.menu.menu-group.' + page.pageConfig.pageName) : '') | translate "> </ion-back-button>
+		<ion-back-button [defaultHref]="BackHref? BackHref : page.pageConfig.pageName" [text]="(page.pageConfig.pageName?('erp.app.app-component.menu.menu-group.' + page.pageConfig.pageName) : 'Back') | translate "> </ion-back-button>
 		<ng-content select="[startTitle]"></ng-content>
 	</ion-buttons>
     <ion-title *ngIf="title">

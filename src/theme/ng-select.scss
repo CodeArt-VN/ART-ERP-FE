@@ -64,6 +64,9 @@
 			height: 100%;
 			.ng-value-container {
 				padding: 0;
+				.ng-value{
+					z-index: 1;
+				}
 				.ng-input {
 					line-height: unset;
 					top: 0;

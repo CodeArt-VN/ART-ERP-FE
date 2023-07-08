@@ -189,9 +189,9 @@ export class AppComponent implements OnInit {
 		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
 			this.appTheme = 'artdistribution-theme';
 		} else {
-			this.appTheme = 'gem-theme';
-			title = 'GEM Café';
-			relIcon = '/assets/logos/logo-gem-center-small.png';
+			this.appTheme = 'inholdings-theme';
+			// title = 'GEM Café';
+			// relIcon = '/assets/logos/logo-gem-center-small.png';
 		}
 
 		let link: any = document.querySelector("link[rel~='icon']");
@@ -226,7 +226,7 @@ export class AppComponent implements OnInit {
 		// if (path !== undefined) {
 		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
 		// }
-		this.initNotification();
+		//this.initNotification();
 	}
 
 	initializeApp() {

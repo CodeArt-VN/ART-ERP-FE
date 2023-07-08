@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   appVersion: '9dev',
- //appDomain: 'http://api.inholdings.vn/',
+  //appDomain: 'http://api.inholdings.vn/',
+  //appDomain: 'https://beta.inholdings.vn/',
   //appDomain: 'https://erp-dev.appcenter.vn/',
   //appDomain: 'https://artlogistics.vn/',
   //appDomain: "http://art.appcenter.vn:54009/",

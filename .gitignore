@@ -450,3 +450,6 @@ android/
 ios/
 src/app/pages/_tem/
 _publish.*/
+
+_android.*/
+_ios.*/

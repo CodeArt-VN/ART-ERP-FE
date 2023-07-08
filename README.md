@@ -23,8 +23,7 @@ ionic capacitor add ios
 npm i @ng-select/ng-option-highlight --save --legacy-peer-deps
 ```
 ios/App/App/Info.plist <= fix ITMS-90683: Missing Purpose String in Info.plist
-Open platforms/ios/ART DMS.xcworkspace
-Replace qrscanner-min.js trong xcode
+
 
 
 ## resource for capacitor
