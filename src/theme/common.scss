@@ -37,7 +37,8 @@
 }
 
 .text-right {
-	text-align: right;
+	text-align: right !important;
+	justify-content: flex-end !important;
 }
 
 .text-center {
@@ -49,7 +50,7 @@
 }
 
 .bold {
-	font-weight: bold;
+	font-weight: bold !important;
 }
 
 .clickable {

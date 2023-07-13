@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
 	}
 
 	updateStatusbar() {
-		let title = 'IN ERP';
+		let title = 'ERP';
 		let relIcon = 'assets/icons/icon-512x512.png';
 		if (window.location.host == 'thelog.inholdings.vn') {
 			this.appTheme = 'thelog-theme';
@@ -190,8 +190,6 @@ export class AppComponent implements OnInit {
 			this.appTheme = 'artdistribution-theme';
 		} else {
 			this.appTheme = 'inholdings-theme';
-			// title = 'GEM Café';
-			// relIcon = '/assets/logos/logo-gem-center-small.png';
 		}
 
 		let link: any = document.querySelector("link[rel~='icon']");

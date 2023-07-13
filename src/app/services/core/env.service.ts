@@ -95,7 +95,7 @@ export class EnvService {
         });
 
         connection.on("BroadcastMessage", (e) => {
-            console.log('BroadcastMessage', e);
+            //console.log('BroadcastMessage', e);
             //this.publishEvent({})
 
             if (e.code == 'SystemAlert') {

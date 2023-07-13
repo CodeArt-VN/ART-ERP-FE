@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "ART ERP",
-  "short_name": "ART ERP",
-  "description": "ART Enterprise Resource Planning App.",
+  "name": "ERP",
+  "short_name": "ERP",
+  "description": "Enterprise Resource Planning App.",
   "theme_color": "#b7322a",
   "background_color": "#ffffff",
   "display": "standalone",
