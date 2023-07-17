@@ -234,15 +234,26 @@
 			margin-right: 2px;
 		}
 
+		
+
 		.c-input {
-			border: 1px solid var(--menu-right-border-color) !important;
 			outline: none;
+			display: block;
+			border-radius: 3px;
+			border: 1px solid var(--menu-right-border-color) !important;
+			padding: 0.5rem;
 			width: 100%;
 			height: unset !important;
-			padding: 0.5rem;
-			border-radius: 3px;
-			font-weight: normal;
+			text-overflow: ellipsis;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
 			background-color: var(--menu-background-bottom);
+			
+			font-size: 1.3rem;
+			color: var(--ion-color-light-contrast);
 
 			&.ng-dirty:not(.no-check-dirty) {
 				border: 1px solid var(--ion-color-success) !important;
@@ -257,7 +268,8 @@
 			&[disabled],
 			&.disable,
 			&.ng-select-disabled {
-				background: linear-gradient(180deg, var(--main-background-top), var(--main-background-top));
+				background-color: var(--main-background-top);
+				opacity: 0.7;
 				color: var(--ion-color-medium);
 			}
 
@@ -276,6 +288,17 @@
 					padding: 0.5rem;
 				}
 			}
+		}
+
+		
+
+		.c-dropdown,
+		.date {
+			background-image: url('./../assets/ddown.svg'), none;
+			background-repeat: no-repeat;
+			background-size: 2.6rem;
+			background-position: right center;
+			padding-right: 3.2rem !important;
 		}
 
 		hr {

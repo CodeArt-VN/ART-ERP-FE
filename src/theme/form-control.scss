@@ -77,20 +77,21 @@
         outline: none;
         display: block;
         border-radius: 4px;
-        padding: 1rem;
-        height: 3.8rem;
-        font-size: 1.3rem;
-        color: var(--ion-color-light-contrast);
         border: 1px solid var(--menu-right-border-color);
+        padding: 1rem;
+        width: calc(100% - 0px);
+        height: 3.8rem;
+        text-overflow: ellipsis;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
         background-color: var(--menu-background-bottom);
-        text-overflow: ellipsis;
-        width: calc(100% - 0px);
 
+        font-size: 1.3rem;
+        color: var(--ion-color-light-contrast);
+        
         &[type="textarea"]{
             height: 12rem;
             overflow: auto;
@@ -105,8 +106,7 @@
         }
         &[readonly],&[disabled],&.disable,&.ng-select-disabled{
             background-color: var(--menu-right-border-color) !important;
-            // background: linear-gradient(180deg, var(--main-background-top), var(--main-background-top));
-
+            opacity: 0.7;
             color: var(--ion-color-medium);
         }
 
@@ -121,8 +121,24 @@
             }
 
             .ng-select-container{
-                padding: 1rem;
+                padding: 1rem 0.33rem 1rem 1rem;
             }
+        }
+        &.breadcrumbs{
+            padding: 0;
+            display: flex;
+            overflow: hidden;
+
+            ion-breadcrumbs {
+                display: flex;
+                flex-wrap: nowrap;
+
+                ion-breadcrumb {
+                    font-size: 1.3rem;
+                    line-height: 1;
+                }
+            }
+            
         }
     }
 

@@ -111,6 +111,11 @@ ion-popover {
 		}
 	}
 
+	&.branch-breadcrumbs {
+		--width: 275px !important;
+		--max-width: 400px;
+	}
+
 	// ion-backdrop{
 	// opacity: 0.5 !important;
 	// }    
