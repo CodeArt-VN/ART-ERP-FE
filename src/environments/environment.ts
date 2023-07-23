@@ -10,7 +10,7 @@ export const environment = {
   //appDomain: 'https://erp-dev.appcenter.vn/',
   //appDomain: 'https://artlogistics.vn/',
   //appDomain: "http://art.appcenter.vn:54009/",
-  appDomain: "http://192.168.2.12:54009/",
+  appDomain: "http://192.168.1.12:54009/",
   //appDomain: "http://10.211.55.4:54009/",
   //appDomain: "http://art.appcenter.vn:54009/",
   staffAvatarsServer: "https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/",

@@ -15,18 +15,22 @@
         <input *ngSwitchCase="'email'" type="email" class="c-input" [id]="field.id" [formControlName]="field.id">
 
         <!-- date -->
-        <input *ngSwitchCase="'date'" type="date" class="c-input" [id]="field.id" [formControlName]="field.id">
+        <input *ngSwitchCase="'date'" type="date" class="c-input date" [id]="field.id" [formControlName]="field.id">
 
         <!-- datetime-local -->
-        <input *ngSwitchCase="'datetime-local'" type="datetime-local" class="c-input" [id]="field.id" placeholder="{{field.placeholder | translate}}" [formControlName]="field.id">
+        <input *ngSwitchCase="'datetime-local'" type="datetime-local" class="c-input date" [id]="field.id" placeholder="{{field.placeholder | translate}}" [formControlName]="field.id">
 
         <!-- select -->
         <select *ngSwitchCase="'select'" class="c-input c-dropdown" [formControlName]="field.id">
             <option *ngFor="let i of field.dataSource" [value]="i[field.bindValue]">{{i[field.bindLabel] | translate}}</option>
         </select>
 
+        <!-- ng-select -->
+        <ng-select *ngSwitchCase="'ng-select'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [bindLabel]="field.bindLabel" [clearable]="false" (change)="ngSelectChange($event)">
+        </ng-select>
+
         <!-- ng-select-status -->
-        <ng-select *ngSwitchCase="'ng-select-status'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue">
+        <ng-select *ngSwitchCase="'ng-select-status'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [clearable]="false" (change)="ngSelectChange($event)">
             <ng-template ng-label-tmp let-i="item">
                 <b><ion-text [color]="i.Color">{{i.Name | translate}}</ion-text></b>
             </ng-template>
