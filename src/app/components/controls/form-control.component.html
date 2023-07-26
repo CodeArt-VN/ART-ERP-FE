@@ -4,9 +4,12 @@
         <ng-content select="[label]"></ng-content>
         <ion-text *ngIf="!field.form.controls[field.id].valid && !field.form.controls[field.id].pending && field.form.controls[field.id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
     </label>
+    <app-input-control [field]="field"></app-input-control>
+    
+    
     <ng-container [ngSwitch]="field.type">
         <!-- text -->
-        <input *ngSwitchCase="'text'" type="text" class="c-input" [id]="field.id" [formControlName]="field.id">
+        <input *ngSwitchCase="'text'" type="text" class="c-input" [id]="field.id" [formControlName]="field.id" (change)="inputChange($event);">
 
         <!-- number -->
         <input *ngSwitchCase="'number'" type="number" class="c-input" [id]="field.id" [formControlName]="field.id">

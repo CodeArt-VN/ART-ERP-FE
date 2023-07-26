@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-	selector: 'app-form-control',
-	templateUrl: './form-control.component.html',
+	selector: 'app-input-control',
+	templateUrl: './input-control.component.html',
 })
-export class FormControlComponent implements OnInit {
+export class InputControlComponent implements OnInit {
 	@Output() onChange = new EventEmitter();
 	@Output() onNav = new EventEmitter();
 

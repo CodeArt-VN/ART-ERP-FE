@@ -18,6 +18,7 @@ import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.componen
 import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
 import { GroupControlComponent } from './group-control/group-control.component';
 import { FormControlComponent } from './controls/form-control.component';
+import { InputControlComponent } from './controls/input-control.component';
 import { FieldControlComponent } from './controls/field-control.component';
 
 import { QueryFilterComponent } from './query-filter/query-filter.component';
@@ -45,6 +46,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
+		InputControlComponent,
 		BranchBreadcrumbsComponent,
 		ListToolbarComponent,
 		DetailToolbarComponent,
@@ -56,6 +58,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
+		InputControlComponent,
 		BranchBreadcrumbsComponent,
 		ListToolbarComponent,
 		DetailToolbarComponent,
