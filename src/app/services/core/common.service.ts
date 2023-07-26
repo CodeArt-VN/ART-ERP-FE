@@ -5,6 +5,7 @@ import { GlobalData } from '../static/global-variable';
 import { lib } from '../static/global-functions';
 import { EnvService } from './env.service';
 import { environment } from 'src/environments/environment';
+import { ApiSetting } from '../static/api-setting';
 
 @Injectable({
 	providedIn: 'root'
@@ -51,6 +52,10 @@ export class CommonService {
 		if (data && data.hasOwnProperty('IgnoredBranch') && data.hasOwnProperty('IDBranch')) {
 			delete data.IDBranch;
 			delete data.SelectedBranch;
+		}
+
+		if (URL.indexOf('http') != 0) {
+			URL = ApiSetting.apiDomain(URL);
 		}
 
 		if ((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch') || !data) && URL.indexOf('IDBranch') == -1 && this.env.selectedBranch) {
@@ -121,12 +126,17 @@ export class CommonService {
 				.then(items => {
 
 					if (items == null) {
-						that.connect(apiPath.method, apiPath.url(), null).subscribe(data => {
-							that.cacheLocal(apiPath.url(), data);
-							that.searchInItems(keyword, fields, page, pageSize, data).then(result => {
-								resolve(result);
+						that.connect(apiPath.method, apiPath.url(), { Take: pageSize }).toPromise()
+							.then((data: any) => {
+								that.cacheLocal(apiPath.url(), data);
+								that.searchInItems(keyword, fields, page, pageSize, data).then(result => {
+									resolve(result);
+								})
 							})
-						})
+							.catch(err => {
+								that.checkError(err);
+								reject(err);
+							});
 					}
 					else {
 						that.searchInItems(keyword, fields, page, pageSize, items).then(result => {
@@ -146,7 +156,7 @@ export class CommonService {
 	}
 
 	getToken() {
-		return 'Bearer ' + GlobalData.Token.access_token;
+		return 'Bearer ' + GlobalData?.Token?.access_token;
 	}
 
 	getAnItemLocal(Id: number, UID: string = '', apiPath) {
@@ -339,11 +349,11 @@ export class CommonService {
 			}
 		});
 	}
-	changeBranch(item, apiPath){
+	changeBranch(item, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (item.Ids) {
 				let Ids = '';
-				
+
 				this.connect(apiPath.changeBranch.method, apiPath.changeBranch.url(Ids), item).toPromise()
 					.then(() => {
 						resolve(true);
@@ -443,18 +453,34 @@ export class CommonService {
 		});
 	}
 
+	post(URL, data) {
+		return new Promise((resolve, reject) => {
+			this.connect('POST', URL, data).toPromise().then(resp => {
+				resolve(resp);
+			}).catch(err => {
+				this.checkError(err);
+				reject(err);
+			})
+		});
+	}
 
+	put(URL, data) {
+		return new Promise((resolve, reject) => {
+			this.connect('PUT', URL, data).toPromise().then(resp => {
+				resolve(resp);
+			}).catch(err => {
+				this.checkError(err);
+				reject(err);
+			})
+		});
+	}
 
 	checkError(err) {
 		//console.log(err);
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
-			this.env.showTranslateMessage('erp.app.app-component.account-service.message.update-version-with-value','danger', vers[0], 0, true);
+			this.env.showTranslateMessage('erp.app.app-component.account-service.message.update-version-with-value', 'danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: 'app:ForceUpdate' });
-		}
-		else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
-			this.env.showTranslateMessage('erp.app.app-component.account-service.message.can-not-connect', 'danger');
-			this.env.publishEvent({ Code: 'app:ConnectFail' });
 		}
 		else if (err.status == 401) {
 			this.env.publishEvent({ Code: 'app:silentlogout' });
@@ -516,8 +542,8 @@ export class exService {
 
 	}
 
-	read(query = null) {
-		if (this.allowCache) {
+	read(query = null, forceReload = false) {
+		if (this.allowCache && forceReload == false) {
 			return this.commonService.connectLocal(this.apiPath.getList, query, this.searchField);
 		}
 		else {

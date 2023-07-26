@@ -4,8 +4,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
-//import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -48,6 +46,9 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
+import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
+
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -60,7 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage],
+  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage, POSNotifyModalPage],
   entryComponents: [PopoverPage],
   imports: [
     BrowserModule,
@@ -102,7 +103,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     SplashScreen,
     //BarcodeScanner,
-    Geolocation,
+    //Geolocation,
     //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],

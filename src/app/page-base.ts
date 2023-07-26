@@ -48,6 +48,7 @@ export abstract class PageBase implements OnInit {
         isShowCheck: false,
         isShowFeature: false,
         infiniteScroll: true,
+        forceLoadData: true,
         refresher: true,
         showSpinner: true,
         isEndOfData: false,
@@ -76,7 +77,7 @@ export abstract class PageBase implements OnInit {
         else {
             if (this.pageProvider && !this.pageConfig.isEndOfData) {
                 if (event == 'search') {
-                    this.pageProvider.read(this.query).then((result: any) => {
+                    this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
                         if (result.data.length == 0) {
                             this.pageConfig.isEndOfData = true;
                         }
@@ -86,7 +87,7 @@ export abstract class PageBase implements OnInit {
                 }
                 else {
                     this.query.Skip = this.items.length;
-                    this.pageProvider.read(this.query).then((result: any) => {
+                    this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
                         if (result.data.length == 0) {
                             this.pageConfig.isEndOfData = true;
                         }
@@ -97,6 +98,15 @@ export abstract class PageBase implements OnInit {
                             if (this.items.findIndex(d => d.Id == firstRow.Id) == -1) {
                                 this.items = [...this.items, ...result.data];
                             }
+                        }
+
+                        this.loadedData(event);
+                    }).catch(err => {
+                        if (err.message != null) {
+                            this.env.showMessage(err.message, 'danger');
+                        }
+                        else {
+                            this.env.showTranslateMessage('erp.app.pages.bi.sales-report.message.can-not-get-data','danger');
                         }
 
                         this.loadedData(event);
@@ -178,7 +188,6 @@ export abstract class PageBase implements OnInit {
 
     lastchecked = null;
     changeSelection(i, e = null) {
-
         if (e && e.shiftKey) {
             let from = this.items.indexOf(this.lastchecked);
             let to = this.items.indexOf(i);
@@ -236,35 +245,17 @@ export abstract class PageBase implements OnInit {
 
     deleteItems(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.canDelete) {
-            this.alertCtrl.create({
-                header: 'Xóa ' + this.selectedItems.length + ' dòng',
-                //subHeader: '---',
-                message: 'Bạn chắc muốn xóa ' + this.selectedItems.length + ' đang chọn?',
-                buttons: [
-                    {
-                        text: 'Không',
-                        role: 'cancel',
-                        handler: () => {
-                            //console.log('Không xóa');
-                        }
-                    },
-                    {
-                        text: 'Đồng ý xóa',
-                        cssClass: 'danger-btn',
-                        handler: () => {
-                            this.pageProvider.delete(this.selectedItems).then(values => {
-                                this.removeSelectedItems();
-                                this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
-                                this.env.publishEvent({ Code: publishEventCode });
-                            }).catch(err => {
-                                //console.log(err);
-                            });
-                        }
-                    }
-                ]
-            }).then(alert => {
-                alert.present();
-            })
+            this.env.showPrompt('Bạn chắc muốn xóa ' + this.selectedItems.length + ' đang chọn?', null, 'Xóa ' + this.selectedItems.length + ' dòng').then(_=>{
+                this.env.showLoading('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
+                .then(_ => {
+                    this.removeSelectedItems();
+                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.publishEvent({ Code: publishEventCode });
+                }).catch(err => {
+                    this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
+                    console.log(err);
+                });
+            });
         }
     }
 
@@ -304,77 +295,47 @@ export abstract class PageBase implements OnInit {
     async import(event) {
         if (event.target.files.length == 0)
             return;
-
-        const loading = await this.loadingController.create({
-            cssClass: 'my-custom-class',
-            message: 'Vui lòng chờ import dữ liệu'
-        });
-        await loading.present().then(() => {
-            this.pageProvider.import(event.target.files[0])
-                .then((resp) => {
-                    this.refresh();
-                    if (loading) loading.dismiss();
-
-                    if (resp.ErrorList && resp.ErrorList.length) {
-                        let message = '';
-                        for (let i = 0; i < resp.ErrorList.length && i <= 5; i++)
-                            if (i == 5) message += '<br> Còn nữa...';
-                            else {
-                                const e = resp.ErrorList[i];
-                                message += '<br> ' + e.Id + '. Tại dòng ' + e.Line + ': ' + e.Message;
-                            }
-
-                        this.alertCtrl.create({
-                            header: 'Có lỗi import dữ liệu',
-                            subHeader: 'Bạn có muốn xem lại các mục bị lỗi?',
-                            message: 'Có ' + resp.ErrorList.length + ' lỗi khi import:' + message,
-                            cssClass: 'alert-text-left',
-                            buttons: [
-                                { text: 'Không', role: 'cancel', handler: () => { } },
-                                {
-                                    text: 'Có', cssClass: 'success-btn', handler: () => {
-                                        this.downloadURLContent(ApiSetting.mainService.base + resp.FileUrl);
-                                    }
-                                }
-                            ]
-                        }).then(alert => {
-                            alert.present();
-                        })
-                    }
+        this.env.showLoading('Vui lòng chờ import dữ liệu', this.pageProvider.import(event.target.files[0]))
+        .then((resp) => {
+            this.refresh();
+            if (resp.ErrorList && resp.ErrorList.length) {
+                let message = '';
+                for (let i = 0; i < resp.ErrorList.length && i <= 5; i++)
+                    if (i == 5) message += '<br> Còn nữa...';
                     else {
-                        this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+                        const e = resp.ErrorList[i];
+                        message += '<br> ' + e.Id + '. Tại dòng ' + e.Line + ': ' + e.Message;
                     }
-                })
-                .catch(err => {
-                    if (err.statusText == "Conflict") {
-                        // var contentDispositionHeader = err.headers.get('Content-Disposition');
-                        // var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
-                        // this.downloadContent(result.replace(/"/g, ''),err._body);
-                        this.downloadURLContent(ApiSetting.mainService.base + err._body);
-                    }
-                    //console.log(err);
-                    if (loading) loading.dismiss();
-                })
+                this.env.showPrompt('Có ' + resp.ErrorList.length + ' lỗi khi import:' + message, 'Bạn có muốn xem lại các mục bị lỗi?', 'Có lỗi import dữ liệu').then(_=>{
+                    this.downloadURLContent(ApiSetting.mainService.base + resp.FileUrl);
+                }).catch(e => { });
+            }
+            else {
+                this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+            }
         })
+        .catch(err => {
+            if (err.statusText == "Conflict") {
+                // var contentDispositionHeader = err.headers.get('Content-Disposition');
+                // var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+                // this.downloadContent(result.replace(/"/g, ''),err._body);
+                this.downloadURLContent(ApiSetting.mainService.base + err._body);
+            }
+        })
+
+        
     }
 
     async export() {
         if (this.submitAttempt) return;
         this.submitAttempt = true;
-
-        const loading = await this.loadingController.create({
-            cssClass: 'my-custom-class',
-            message: 'Vui lòng chờ export dữ liệu'
+        this.env.showLoading('Vui lòng chờ export dữ liệu...', this.pageProvider.export(this.query))
+        .then((response: any) => {
+            this.downloadURLContent(ApiSetting.mainService.base + response);
+            this.submitAttempt = false;
+        }).catch(err => {
+            this.submitAttempt = false;
         });
-        await loading.present().then(() => {
-            this.pageProvider.export(this.query).then((response: any) => {
-                this.downloadURLContent(ApiSetting.mainService.base + response);
-                if (loading) loading.dismiss();
-                this.submitAttempt = false;
-            }).catch(err => {
-                this.submitAttempt = false;
-            });
-        })
     }
 
     download(url) {
@@ -419,23 +380,37 @@ export abstract class PageBase implements OnInit {
                 this.item = ite;
                 this.loadedData(event);
             }).catch((err) => {
-                debugger;
-                // if(err.status = 404){
-                //     this.nav('not-found', 'back');
-                // }
-                // else{
-                //     this.item = null;
-                //     this.loadedData(event);
-                // }
+                console.log(err);
+                
+                if(err.status = 404){
+                    this.nav('not-found', 'back');
+                }
+                else{
+                    this.item = null;
+                    this.loadedData(event);
+                }
 
             });
         }
-        else {
-            this.item = {};
+        else if (this.id == 0) {
+            if (!this.item) this.item = {};
+            
+            Object.assign(this.item, this.DefaultItem);
             this.loadedData(event);
         }
+        else{
+            this.loadedData(event);
+        }
+        
     }
 
+    debounceTimeout;
+    debounce(fn, delay) {
+        if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+        this.debounceTimeout = setTimeout(() => {
+            fn()
+        }, delay);
+    }
 
     saveChange(publishEventCode = this.pageConfig.pageName) {
         return new Promise((resolve, reject) => {
@@ -577,39 +552,17 @@ export abstract class PageBase implements OnInit {
 
     delete(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.canDelete) {
-            this.alertCtrl.create({
-                header: 'Xóa' + (this.item.Name ? ' ' + this.item.Name : ''),
-                //subHeader: '---',
-                message: 'Bạn chắc muốn xóa' + (this.item.Name ? ' ' + this.item.Name : '') + '?',
-                buttons: [
-                    {
-                        text: 'Không',
-                        role: 'cancel',
-                        handler: () => {
-                            //console.log('Không xóa');
-                            //debugger
-                            //this.closeModal();
-                        }
-                    },
-                    {
-                        text: 'Đồng ý xóa',
-                        cssClass: 'danger-btn',
-                        handler: () => {
-                            this.pageProvider.delete(this.item).then(() => {
-                                this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
-                                this.env.publishEvent({ Code: publishEventCode });
+            this.env.showPrompt('Bạn chắc muốn xóa' + (this.item.Name ? ' ' + this.item.Name : '') + '?').then(_=>{
+                this.pageProvider.delete(this.item).then(() => {
+                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.publishEvent({ Code: publishEventCode });
 
-                                this.closeModal();
+                    this.closeModal();
 
-                            }).catch(err => {
-                                //console.log(err);
-                            })
-                        }
-                    }
-                ]
-            }).then(alert => {
-                alert.present();
-            })
+                }).catch(err => {
+                    //console.log(err);
+                })
+            }).catch(e => { });
         }
     }
 
@@ -766,8 +719,8 @@ export abstract class PageBase implements OnInit {
     }
 
     nav(URL, direction = "forward", data = null) {
-        event.preventDefault();
-        event.stopPropagation();
+        event?.preventDefault();
+        event?.stopPropagation();
 
         if (direction == "forward") {
             if (data) {

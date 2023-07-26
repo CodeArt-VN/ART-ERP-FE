@@ -6,14 +6,6 @@ import { Observable } from 'rxjs';
 import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
-import { Chart } from 'chart.js';
-import 'chartjs-plugin-labels';
-
-import * as am5 from "@amcharts/amcharts5";
-import * as am5xy from "@amcharts/amcharts5/xy";
-import * as am5percent from "@amcharts/amcharts5/percent";
-import * as am5radar from "@amcharts/amcharts5/radar";
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 @Injectable({
     providedIn: 'root'
@@ -26,14 +18,14 @@ export class ReportService extends exService {
     rptGlobal: any = {
         branch: [
             { Id: 16, Code: 'INGROUP', ShowBtn: false, Name: 'INGROUP', IsHidden: false, IsHiddenDetailColumn: true, Color: '#84ff00' }, //Tổng công ty
-            { Id: 1, Code: 'MetaFood', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
-            { Id: 21, Code: 'InHoldings', ShowBtn: false, Name: 'InHoldings', IsHidden: false, IsHiddenDetailColumn: true, Color: '#00ffae' },
-            { Id: 22, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
-            { Id: 23, Code: 'InDevelopment', ShowBtn: false, Name: 'InDevelopment', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ffe400' },
-            { Id: 24, Code: 'DongXuan', ShowBtn: false, Name: 'Đồng Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#2b9a00' },
+            { Id: 1, Code: 'METAFOODS', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
+            { Id: 21, Code: 'INHOLDINGS', ShowBtn: false, Name: 'InHoldings', IsHidden: false, IsHiddenDetailColumn: true, Color: '#00ffae' },
+            { Id: 22, Code: 'INHOSPITALITY', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
+            { Id: 23, Code: 'INDEVELOPMENT', ShowBtn: false, Name: 'InDevelopment', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ffe400' },
+            { Id: 24, Code: 'WP_PVD', ShowBtn: false, Name: 'Đồng Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#2b9a00' },
             { Id: 25, Code: 'XuanNam', ShowBtn: false, Name: 'Xuân Nam', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff00ae' },
-            { Id: 26, Code: 'MyXuan', ShowBtn: false, Name: 'Mỹ Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#c000ff' },
-            { Id: 27, Code: 'PQTM', ShowBtn: false, Name: 'PQTM', IsHidden: false, IsHiddenDetailColumn: true, Color: '#FF5733' },
+            { Id: 26, Code: 'MX', ShowBtn: false, Name: 'Mỹ Xuân', IsHidden: false, IsHiddenDetailColumn: true, Color: '#c000ff' },
+            { Id: 27, Code: 'WP_HVT', ShowBtn: false, Name: 'PQTM', IsHidden: false, IsHiddenDetailColumn: true, Color: '#FF5733' },
             // { Id: 28, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
             // { Id: 29, Code: 'InHospitality', ShowBtn: false, Name: 'InHospitality', IsHidden: false, IsHiddenDetailColumn: true, Color: '#ff4200' },
             // { Id: 446, Code: 'MetaFood', ShowBtn: false, Name: 'MetaFoods', IsHidden: false, IsHiddenDetailColumn: true, Color: '#772727' },
@@ -41,6 +33,7 @@ export class ReportService extends exService {
 
         ],
         frequency: [
+            { Id: 0, Name: 'hour' },
             { Id: 1, Name: 'day' },
             { Id: 2, Name: 'month' },
             { Id: 3, Name: 'quarter' },
@@ -2776,7 +2769,17 @@ export class ReportService extends exService {
             rundate.setDate(rundate.getDate() + 1);
         };
 
-        if (this.rptGlobal.query.frequency == 1) {
+        if (this.rptGlobal.query.frequency == 0) {
+
+            var hours = [];
+            let l:any;
+			for (var i = 0; i < 24; i++) {
+				l = ((i < 10 ? '0' : '') + i + ':00');
+
+                this.timeGroups.push({ Label: l, Hour: i});
+			}
+        }
+        else if (this.rptGlobal.query.frequency == 1) {
             for (let i = 0; i < dates.length; i++) {
                 const d = dates[i];
 
@@ -2863,36 +2866,6 @@ export class ReportService extends exService {
         return group;
     }
 
-    buildSoLuongTiecChart(canvasElement) {
-        let result = new Observable(ob => {
-            let datasets = this.buildDataset();
-
-
-            for (let i = 0; i < datasets.length; i++) {
-                const ds = datasets[i];
-                ds.showLine = true;
-                ds.fill = false;
-                ds.data = this.calcSumGroupData(ds, 'Event');
-            }
-
-            let ctx = canvasElement.nativeElement.getContext("2d");
-
-            var data = {
-                labels: this.timeGroups.map(m => m.Label),
-                datasets: datasets,
-            };
-
-            let chart = new Chart(ctx, {
-                type: 'line',
-                options: this.rptGlobal.rptOptions.lineChart,
-                data: data,
-            });
-
-            ob.next(chart);
-        });
-        return result;
-    }
-
 
     //Tính tổng tất cả. vd: chi nhánh
     sumDatasetGroupCalc(datasets) {
@@ -2925,202 +2898,5 @@ export class ReportService extends exService {
         gradientStroke.addColorStop(1, color + '00');
         return gradientStroke;
     }
-
-
-
-    buildBarChart(chart, ctx, data) {
-
-        //ctx.height = 255;
-        // var width = ctx.width;
-        // var height = ctx.height;
-        ctx = ctx.getContext("2d");
-
-        if (chart != null)
-            chart.destroy();
-
-        chart = new Chart(ctx, {
-            type: 'bar',
-            options: this.rptGlobal.rptOptions.barChart,
-            data: data,
-        });
-    }
-
-
-
-    buildPieChart(chart, ctx, data) {
-        // ctx.height = 200;
-        // ctx.weight = 200;
-        // var width = ctx.width;
-        // var height = ctx.height;
-        ctx = ctx.getContext("2d");
-
-        if (chart != null)
-            chart.destroy();
-
-        chart = new Chart(ctx, {
-            type: 'pie',
-            options: this.rptGlobal.rptOptions.pieChart,
-            data: data,
-        });
-
-
-    }
-
-    //// amcharts Code 
-    amColumnRoot;
-    amPieRoot;
-    amGaugeRoot;
-    amLineRoot;
-    amTwoLevelPieRoot;
-    amColumnLineMixRoot;
-    amTrendLinesRoot;
-    amHighlightingRoot;
-    amSortedBarRoot;
-    amClusterColumnRoot;
-    amStackedBarRoot;
-    amStackedColumnRoot;
-    amGroupedSortedColumnRoot;
-    amMultilevelTreeRoot;
-
-    DisposeChart(chart) {
-        if(chart) {
-            chart?.dispose();
-        }
-    }
-
-    newColumnRoot(string) {
-        this.DisposeChart(this.amColumnRoot)
-        return this.amColumnRoot = am5.Root.new(string);
-    }
-
-    newPieRoot(string) {
-        this.DisposeChart(this.amPieRoot)
-        return this.amPieRoot = am5.Root.new(string);
-    }
-
-    newGaugeRoot(string) {
-        this.DisposeChart(this.amGaugeRoot)
-        return this.amGaugeRoot = am5.Root.new(string);
-    }
-
-    newLineRoot(string) {
-        this.DisposeChart(this.amLineRoot)
-        return this.amLineRoot = am5.Root.new(string);
-    }
-
-    newTwoLevelPieRoot(string) {
-        this.DisposeChart(this.amTwoLevelPieRoot)
-        return this.amTwoLevelPieRoot = am5.Root.new(string);
-    }
-
-    newColumnLineMixRoot(string) {
-        this.DisposeChart(this.amColumnLineMixRoot)
-        return this.amColumnLineMixRoot = am5.Root.new(string);
-    }
-
-    newTrendLinesRoot(string) {
-        this.DisposeChart(this.amTrendLinesRoot)
-        return this.amTrendLinesRoot = am5.Root.new(string);
-    }
-
-    newHighlightingRoot(string) {
-        this.DisposeChart(this.amHighlightingRoot)
-        return this.amHighlightingRoot = am5.Root.new(string);
-    }
-
-    newSortedBarRoot(string) {
-        this.DisposeChart(this.amSortedBarRoot)
-        return this.amSortedBarRoot = am5.Root.new(string);
-    }
-
-    newClusterColumnRoot(string) {
-        this.DisposeChart(this.amClusterColumnRoot)
-        return this.amClusterColumnRoot = am5.Root.new(string);
-    }
-
-    newStackedBarRoot(string) {
-        this.DisposeChart(this.amStackedBarRoot)
-        return this.amStackedBarRoot = am5.Root.new(string);
-    }
-
-    newStackedColumnRoot(string) {
-        this.DisposeChart(this.amStackedColumnRoot)
-        return this.amStackedColumnRoot = am5.Root.new(string);
-    }
-
-    newGroupedSortedColumnRoot(string) {
-        this.DisposeChart(this.amGroupedSortedColumnRoot)
-        return this.amGroupedSortedColumnRoot = am5.Root.new(string);
-    }
-
-    newMultilevelTreeRoot(string) {
-        this.DisposeChart(this.amMultilevelTreeRoot)
-        return this.amMultilevelTreeRoot = am5.Root.new(string);
-    }
-
-    AmChartGlobal: any = {
-        pieOpt: {
-            Chart: {
-                // startAngle: 0,  // 
-                endAngle: 270,  // Tạo hình vòng tròn (0 >> 360), hoặc tạo thành nửa vòng tròn ( -270 >> 90 )
-                // radius: am5.percent(60), // Độ to, nhỏ của vòng tròn pie chart
-                // innerRadius: am5.percent(0) // Độ rỗng của pie chart >> để tạo donut chart
-            }
-
-        },
-        gaugeOpt: {
-            Chart: {
-                panX: false,
-                panY: false,
-                startAngle: 160,
-                endAngle: 380
-            },
-            AxisRenderer: {
-                innerRadius: -40
-            },
-            ClockHand: {
-                pinRadius: am5.percent(20),
-                radius: am5.percent(100),
-                bottomWidth: 40
-            },
-            Label: {
-                fill: am5.color(0xffffff),
-                centerX: am5.percent(50),
-                textAlign: "center",
-                centerY: am5.percent(50),
-                fontSize: "3em"
-            }
-        },
-        twolevelpieOpt: {
-
-        },
-        columnlinemixOpt: {
-
-        },
-        trendlinesOpt: {
-            Chart: {
-                focusable: true,
-                panX: true,
-                panY: true,
-                wheelX: "panX",
-                wheelY: "zoomX"
-            }
-        },
-        highlightingOpt: {
-            Chart: {
-                panX: true,
-                panY: true,
-                wheelX: "panX",
-                wheelY: "zoomX",
-                maxTooltipDistance: 0
-            }
-        },
-        stackedbarOpt: {
-            Chart: {}
-        }
-    }
-
-
-
 
 }

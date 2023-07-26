@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-list-toolbar',
@@ -7,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChange
 })
 export class ListToolbarComponent implements OnInit {
 	@ViewChild('importfile') importfile: any;
+	
 	@Input() pageTitle;
 	@Input() selectedTitle;
 	@Input() pageConfig;
@@ -25,12 +27,15 @@ export class ListToolbarComponent implements OnInit {
 	@Input() canSelect = true;
 	@Input() ShowChangeTable = true;
 
+	//@Input() set pageTitle(value) {window.document.title = value;};
+	
 	@Output() add = new EventEmitter();
 	@Output() refresh = new EventEmitter();
 	@Output() export = new EventEmitter();
 	@Output() import = new EventEmitter();
 	@Output() help = new EventEmitter();
 	@Output() unselect = new EventEmitter();
+	@Output() copy = new EventEmitter();
 	@Output() archiveItems = new EventEmitter();
 	@Output() deleteItems = new EventEmitter();
 	@Output() mergeOrders = new EventEmitter();
@@ -58,17 +63,35 @@ export class ListToolbarComponent implements OnInit {
 
 	@Output() createEInvoice = new EventEmitter();
 	@Output() updateEInvoice = new EventEmitter();
+	@Output() signEInvoice = new EventEmitter();
 	@Output() syncEInvoice = new EventEmitter();
 
 	@Output() changeTable = new EventEmitter();
+	@Output() cancelOrder = new EventEmitter();
 
 	@Output() submitBusinessPartner = new EventEmitter();
 	@Output() approveBusinessPartner = new EventEmitter();
 	@Output() disapproveBusinessPartner = new EventEmitter();
-	constructor() { }
+
+	@Output() submitDealForApproval = new EventEmitter();
+	@Output() disapproveDeal = new EventEmitter();
+	@Output() approveDeal = new EventEmitter();
+
+	@Output() submitVoucherForApproval = new EventEmitter();
+	@Output() disapproveVoucher = new EventEmitter();
+	@Output() approveVoucher = new EventEmitter();
+	
+	@Output() submitDiscountForApproval = new EventEmitter();
+	@Output() disapproveDiscount = new EventEmitter();
+	@Output() approveDiscount = new EventEmitter();
+	constructor(public translate: TranslateService) { }
 
 	ngOnInit() { 
-		window.document.title = this.pageTitle;
+		
+		this.translate.get('erp.app.app-component.menu.menu-group.' + this.pageConfig.pageName).subscribe((text: string) => {
+            this.pageTitle = text;
+			window.document.title = text;
+        });
 	}
 
 	emit(eventName) {
@@ -149,27 +172,27 @@ export class ListToolbarComponent implements OnInit {
 				// [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
 
 				let notShowSubmitOrdersForApproval = [103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-				if (notShowSubmitOrdersForApproval.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowSubmitOrdersForApproval.indexOf(i._Status.IDStatus) > -1) {
 					this.showSubmitOrdersForApproval = false;
 				}
 
 				let notShowApproveOrders = [101, 102, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-				if (notShowApproveOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowApproveOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showApproveOrders = false;
 				}
 
 				let notShowDisapproveOrders = [101, 102, 103, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-				if (notShowDisapproveOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowDisapproveOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showDisapproveOrders = false;
 				}
 
 				let notShowCancelOrders = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-				if (notShowCancelOrders.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowCancelOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showCancelOrders = false;
 				}
 
 				let notShowDelete = [103, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114];
-				if (notShowDelete.indexOf(i.Status.IDStatus) > -1) {
+				if (notShowDelete.indexOf(i._Status.IDStatus) > -1) {
 					this.showDelete = false;
 				}
 
@@ -198,11 +221,11 @@ export class ListToolbarComponent implements OnInit {
 			this.showDelete = true;
 
 			this.selectedItems.forEach(i => {
-				// PODraft	Nháp
+				// Draft	Nháp
 				// PORequestUnapproved	Không duyệt
 				// PORequestSubmitted	Chờ duyệt
 				// PORequestApproved	Đã duyệt
-				// POSubmitted	Đã đặt mua
+				// Submitted	Đã đặt mua
 				
 				// PORequestQuotation	Chờ báo giá
 				// POConfirmed	NCC đã xác nhận
@@ -211,34 +234,34 @@ export class ListToolbarComponent implements OnInit {
 				// POReceived	Đã nhận hàng
 				// POCancelled	Đã Hủy
 
-				//['PODraft', 'PORequestUnapproved', 'POSubmitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				//['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 
-				let notShowSubmitOrdersForApproval = ['POSubmitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowSubmitOrdersForApproval = ['Submitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 				if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
 					this.showSubmitOrdersForApproval = false;
 				}
 
-				let notShowApproveOrders = ['PODraft', 'PORequestUnapproved', 'POSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowApproveOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 				if (notShowApproveOrders.indexOf(i.Status) > -1) {
 					this.showApproveOrders = false;
 				}
 
-				let notShowDisapproveOrders = ['PODraft', 'PORequestUnapproved', 'POSubmitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowDisapproveOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 				if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
 					this.showDisapproveOrders = false;
 				}
 
-				let notShowCancelOrders = ['POSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowCancelOrders = ['Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 				if (notShowCancelOrders.indexOf(i.Status) > -1) {
 					this.showCancelOrders = false;
 				}
 
-				let notShowSubmitOrders = ['PODraft', 'PORequestUnapproved', 'POSubmitted', 'PORequestSubmitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowSubmitOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestSubmitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
 				if (notShowSubmitOrders.indexOf(i.Status) > -1) {
 					this.showSubmitOrders = false;
 				}
 
-				let notShowDelete = ['POSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived'];
+				let notShowDelete = ['Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived'];
 				if (notShowDelete.indexOf(i.Status) > -1) {
 					this.showDelete = false;
 				}

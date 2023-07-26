@@ -1,0 +1,64 @@
+[submodule "src/app/pages/ADMIN"]
+	path = src/app/pages/ADMIN
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-ADMIN.git
+	branch = main
+[submodule "src/app/pages/POS"]
+	path = src/app/pages/POS
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-POS.git
+	branch = main
+[submodule "src/app/pages/SALE"]
+	path = src/app/pages/SALE
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-SALE.git
+	branch = main
+[submodule "src/app/pages/OST"]
+	path = src/app/pages/OST
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-OST.git
+	branch = main
+[submodule "src/app/pages/HRM"]
+	path = src/app/pages/HRM
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-HRM.git
+	branch = main
+[submodule "src/app/pages/CRM"]
+	path = src/app/pages/CRM
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-CRM.git
+	branch = main
+[submodule "src/app/pages/FINANCIAL"]
+	path = src/app/pages/FINANCIAL
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-FINANCIAL.git
+	branch = main
+[submodule "src/app/pages/ACCOUNTANT"]
+	path = src/app/pages/ACCOUNTANT
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-ACCOUNTANT.git
+	branch = main
+[submodule "src/app/pages/APPROVAL"]
+	path = src/app/pages/APPROVAL
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-APPROVAL.git
+	branch = main
+[submodule "src/app/pages/BI"]
+	path = src/app/pages/BI
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-BI.git
+	branch = main
+[submodule "src/app/pages/PURCHASE"]
+	path = src/app/pages/PURCHASE
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PURCHASE.git
+	branch = main
+[submodule "src/app/pages/PROD"]
+	path = src/app/pages/PROD
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PROD.git
+	branch = main
+[submodule "src/app/pages/SHIP"]
+	path = src/app/pages/SHIP
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-SHIP.git
+	branch = main
+[submodule "src/app/pages/WMS"]
+	path = src/app/pages/WMS
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-WMS.git
+	branch = main
+[submodule "src/app/pages/PM"]
+	path = src/app/pages/PM
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PM.git
+	branch = main
+[submodule "src/app/pages/PR"]
+	path = src/app/pages/PR
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-PR.git
+	branch = main

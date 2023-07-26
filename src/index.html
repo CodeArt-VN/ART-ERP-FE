@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>ART DMS</title>
+  <title>ERP</title>
 
   <base href="/"/>
 
@@ -13,12 +13,18 @@
   <meta name="msapplication-tap-highlight" content="no"/>
   <meta name="theme-color" content="#b7322a">
   
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png"/>
+  <link rel="icon" type="image/png" href="assets/icons/icon-512x512.png"/>
   <link rel="manifest" href="manifest.webmanifest">
   
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+  <script type="text/javascript">
+    if(window.location.protocol != 'https:' && window.location.host.indexOf('localhost') == -1 ) {
+        location.href = location.href.replace("http://", "https://");
+    }
+  </script>
 
   <script>
     var browser = (function () {
@@ -48,9 +54,10 @@
           return "other";
       }
     })();
+
     console.log(browser);
-    if (browser == "edge" || browser == "ie") {
-      var r = confirm("Trình duyệt IE / Edge hay bị lỗi, nên bạn vui lòng sử dụng chrome để làm việc.");
+    if (browser == "other" || browser == "ie") {
+      var r = confirm("Trình duyệt không được hỗ trợ, xin vui lòng sử dụng chrome để làm việc.");
       if (r == true) {
         window.location.href = 'https://www.google.com/intl/vi/chrome/';
       } else {

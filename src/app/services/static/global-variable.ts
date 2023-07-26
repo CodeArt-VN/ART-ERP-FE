@@ -141,6 +141,31 @@ APIList.ReportAPI = {
 
 };
 
+APIList.POS_ForCustomer = {
+    getSearchList: {
+        method: "GET",
+        url: function () { return ApiSetting.apiDomain("POS/ForCustomer/Search") }
+    },
+    getList: {
+        method: "GET",
+        url: function () { return ApiSetting.apiDomain("POS/ForCustomer") }
+    },
+
+    getItem: {
+        method: "GET",
+        url: function (id) { return ApiSetting.apiDomain("POS/ForCustomer/") + id }
+    },
+    putItem: {
+        method: "PUT",
+        url: function (id) { return ApiSetting.apiDomain("POS/ForCustomer/") + id }
+    },
+    postItem: {
+        method: "POST",
+        url: function () { return ApiSetting.apiDomain("POS/ForCustomer") }
+    },
+}
+
+
 
 
 

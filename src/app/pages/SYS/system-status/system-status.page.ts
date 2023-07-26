@@ -25,6 +25,7 @@ export class SystemStatusPage extends PageBase {
         public navCtrl: NavController,
     ) {
         super();
+        this.pageConfig.forceLoadData = true;
         this.query.Take = 5000;
         this.query.AllChildren = true;
         this.query.AllParent = true;

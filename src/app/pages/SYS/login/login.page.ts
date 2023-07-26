@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
 import { ApiSetting } from 'src/app/services/static/api-setting';
-import * as _ from 'lodash'; 
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
 
@@ -77,7 +76,7 @@ export class LoginPage extends PageBase {
             this.nav( this.returnUrl, 'back');
         }
 
-        this.env.getStorage('Username').then(v=>{
+        this.env.getStorage('Username')?.then(v=>{
             this.email = v;
         })
     }
@@ -123,29 +122,22 @@ export class LoginPage extends PageBase {
             return;
         }
 
-        this.loadingCtrl.create({
-            message: 'Vui lòng chờ đăng nhập và đồng bộ dữ liệu...'
-        }).then(loading => {
-            loading.present();
-            this.accountService.login(this.email, this.password)
-                .then(data => {
-                    loading.dismiss();
-                    this.goBack();
-                })
-                .catch(err => {
-                    loading.dismiss();
-                    if (err.error && typeof (err.error.loaded) == 'number' && err.error.loaded == 0) {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-connect','danger');
-                    } else if (err.error && err.error.error_description && err.error.error_description.indexOf("locked out") > -1) {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.lock-or-not-active','danger');
-                    } else if (err.error && err.error.error_description && err.error.error_description.indexOf("user name or password is incorrect") > -1) {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.username-password-incorrect','danger');
-                    }
-                    else {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login','danger');
-                    }
-                });
+        this.env.showLoading('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(this.email, this.password))
+        .then(data => {
+            this.goBack();
         })
+        .catch(err => {
+            if (err.error && typeof (err.error.loaded) == 'number' && err.error.loaded == 0) {
+                this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-connect','danger');
+            } else if (err.error && err.error.error_description && err.error.error_description.indexOf("locked out") > -1) {
+                this.env.showTranslateMessage('erp.app.pages.sys.login.message.lock-or-not-active','danger');
+            } else if (err.error && err.error.error_description && err.error.error_description.indexOf("user name or password is incorrect") > -1) {
+                this.env.showTranslateMessage('erp.app.pages.sys.login.message.username-password-incorrect','danger');
+            }
+            else {
+                this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login','danger');
+            }
+        });
     }
 
     ObtainLocalAccessToken(provider, externalAccessToken){

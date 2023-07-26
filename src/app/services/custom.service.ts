@@ -86,73 +86,112 @@ export class CustomService extends exService {
 	}
 
 	getSAP_RPT_PnL(FromDate, ToDate, Frequency) {
-		let URL = '/api/SAP/RPT/PnL';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/PnL") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 
 	getSAP_RPT_CashFlow(FromDate, ToDate, Frequency) {
-		let URL = '/api/SAP/RPT/CashFlow';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/CashFlow") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 
 	getSAP_RPT_ManagementPnL(FromDate, ToDate, Frequency, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/ManagementPnL';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/ManagementPnL") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_ManagementCashFlow(FromDate, ToDate, Frequency, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/ManagementCashFlow';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/ManagementCashFlow") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, Frequency: Frequency, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_StatementCashFlow(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
-		let URL = '/api/SAP/RPT/CashflowStatement';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/CashflowStatement") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_StatementIncome(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
-		let URL = '/api/SAP/RPT/IncomeStatement';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/IncomeStatement") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_StatementBalanceSheet(FromDate, ToDate, IDBranch, IDTemplate, ReportType) {
-		let URL = '/api/SAP/RPT/BalanceSheetStatement';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/BalanceSheetStatement") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranch: IDBranch, IDTemplate: IDTemplate, ReportType: ReportType, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	//daily report
 	getSAP_RPT_DailyBalance(ReportDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyBalance';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyBalance") }
+		};
 		let query = { ReportDate: ReportDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 
 	getSAP_RPT_DailyGeneral(FromDate, ToDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyGeneral';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyGeneral") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_DailyRevenue(FromDate, ToDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyRevenue';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyRevenue") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_DailyDebt(FromDate, ToDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyDebt';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyDebt") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_DailyRevExpn1(FromDate, ToDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyRevAndExpen1';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyRevAndExpen1") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 	getSAP_RPT_DailyRevExpn2(FromDate, ToDate, IDBranches, IDTemplate) {
-		let URL = '/api/SAP/RPT/DailyRevAndExpen2';
+		let apiPath = {
+			method: "GET",
+			url: function () { return ApiSetting.apiDomain("SAP/RPT/DailyRevAndExpen2") }
+		};
 		let query = { FromDate: FromDate, ToDate: ToDate, IDBranches: IDBranches, IDTemplate: IDTemplate, AppVersion: 'SAP-Sync' };
-		return this.API_connect(URL, query);
+		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}
 }
 
@@ -200,57 +239,9 @@ export class ACCOUNT_ApplicationUserProvider extends exService {
 	}
 
 }
-
-@Injectable({
-	providedIn: 'root'
-})
-export class SALE_MasanImportProvider extends exService {
+@Injectable({ providedIn: 'root' })
+export class POS_ForCustomerProvider extends exService {
 	constructor(public commonService: CommonService) {
-		super(null, SearchConfig.getSearchFields('SALE_MasanImport_Provider'), commonService);
+		super(APIList.POS_ForCustomer, SearchConfig.getSearchFields('POS_ForCustomer'), commonService);
 	}
-
-	MasanImport(query = null) {
-		let that = this;
-		return new Promise(function (resolve, reject) {
-			let apiPath = {
-				method: "GET",
-				url: function () { return ApiSetting.apiDomain("SALE/Order/MasanImport") }
-			};
-
-			that.commonService.connect(apiPath.method, apiPath.url(), query).toPromise()
-				.then((data: any) => {
-					resolve(data);
-				})
-				.catch(err => {
-					that.commonService.checkError(err);
-					reject(err);
-				});
-		});
-	}
-
-
-
-
-
-
-}
-
-@Injectable({
-	providedIn: 'root'
-})
-export class CRM_BusinessPartnerProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
-	}
-
-	SearchContact(query = null) {
-		let that = this;
-
-		let apiPath = {
-			method: "GET",
-			url: function () { return ApiSetting.apiDomain("CRM/Contact/POSSearch") }
-		};
-		return this.commonService.connect(apiPath.method, apiPath.url(), query);
-	}
-
 }

@@ -11,7 +11,7 @@ import { lib } from './static/global-functions';
 import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserDeviceProvider } from './static/services.service';
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
-
+import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 @Injectable({
 	providedIn: 'root'
@@ -27,12 +27,14 @@ export class AccountService {
 		public env: EnvService,
 		public plt: Platform,
 	) {
-		// this.plt.ready().then(() => {
-		// 	this.loadSavedData().then(() => {
-		// 	}).catch(err => {
-		// 		//console.log(err);
-		// 	});
-		// });
+		this.plt.ready().then(() => {
+			this.loadSavedData().then(() => {
+				console.log('loaded saved data');
+
+			}).catch(err => {
+				this.commonService.checkError(err);
+			});
+		});
 		// Done: flow
 		// 1. check app version
 		//   => old: clear all
@@ -44,46 +46,68 @@ export class AccountService {
 	}
 
 	checkVersion() {
+		console.log('check version');
+
 		return new Promise(resolve => {
-			this.env.getStorage('appVersion').then((version) => {
-				if (this.env.version != version) {
+			this.env.ready.then(_ => {
+				this.env.getStorage('appVersion').then((version) => {
+					if (this.env.version != version) {
+						GlobalData.Token = {
+							"access_token": "no token",
+							"expires_in": 0,
+							"token_type": "",
+							"refresh_token": "no token"
+						};
 
-
-					GlobalData.Token = {
-						"access_token": "no token",
-						"expires_in": 0,
-						"token_type": "",
-						"refresh_token": "no token"
-					};
-
-					this.env.setStorage('UserToken', GlobalData.Token).then(() => {
-						this.env.user = null;
-						this.env.setStorage('UserProfile', null).then(() => {
-							this.env.setStorage('appVersion', this.env.version).then(() => {
-								location.reload();
-								resolve(this.env.version);
-							})
+						this.env.setStorage('UserToken', GlobalData.Token).then(() => {
+							this.env.user = null;
+							this.env.setStorage('UserProfile', null).then(() => {
+								this.env.setStorage('appVersion', this.env.version).then(() => {
+									location.reload();
+									//resolve(this.env.version);
+								})
+							});
 						});
-					});
-				}
-				else {
-					resolve(this.env.version);
-				}
-			});
+					}
+					else {
+						resolve(this.env.version);
+					}
+				});
+			}).catch(err => {
+				console.log(err);
+			})
 		});
 	}
 
 	loadSavedData(forceReload = false) {
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
 			this.checkVersion().then((v) => {
 				GlobalData.Version = v;
 				this.getToken().then(() => {
-					//TODO forceReload
 					this.getProfile(true).then(() => {
 						resolve(true);
 						this.env.isloaded = true;
 						this.env.publishEvent({ Code: 'app:loadedLocalData' })
-					})
+					}).catch(err => {
+						reject(err);
+					});
+
+					// setTimeout(() => {
+					// 	this.getProfile(true).then(() => {
+					// 		resolve(true);
+					// 		this.env.isloaded = true;
+					// 		this.env.publishEvent({ Code: 'app:loadedLocalData' })
+					// 	}).catch(err => {
+					// 		reject(err);
+					// 	});
+					// }, 1500);
+
+					// //TODO: lazy check profile;
+					// this.commonService.connect('GET', 'Account/UserName', null).toPromise().then(_ => {
+					// 	console.log(_);
+					// }).catch(err => {
+					// 	this.commonService.checkError(err);
+					// })
 				})
 			});
 		});
@@ -101,7 +125,7 @@ export class AccountService {
 				"refresh_token": "no token"
 			};
 		}
-		this.env.setStorage('UserToken', GlobalData.Token);
+		return this.env.setStorage('UserToken', GlobalData.Token);
 	}
 
 	getToken() {
@@ -116,21 +140,11 @@ export class AccountService {
 						GlobalData.Token = token;
 					}
 					else {
-						GlobalData.Token = {
-							"access_token": "-1",
-							"expires_in": 0,
-							"token_type": "",
-							"refresh_token": "no token"
-						};
+						GlobalData.Token = null;
 					}
 				}
 				else {
-					GlobalData.Token = {
-						"access_token": "-1",
-						"expires_in": 0,
-						"token_type": "",
-						"refresh_token": "no token"
-					};
+					GlobalData.Token = null;
 				}
 				resolve(GlobalData.Token);
 			});
@@ -155,63 +169,63 @@ export class AccountService {
 		return userSetting;
 	}
 	setProfile(profile) {
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
+			this.env.setStorage('UserProfile', profile).then(_ => {
+				resolve(true);
+			});
+		});
+	}
 
-			if (profile) {
-				let settings = JSON.parse(JSON.stringify(profile.UserSetting));
-				profile.UserSetting = this.loadUserSettings(settings, profile);
-				this.env.user = profile;
-				this.env.branchList = profile.BranchList;
+	loadSavedProfile() {
+		return new Promise((resolve, reject) => {
+			this.env.getStorage('UserProfile').then((profile) => {
+				if (profile && profile.Id) {
+					let settings = null;
+					if (Array.isArray(profile.UserSetting)) {
+						settings = JSON.parse(JSON.stringify(profile.UserSetting));
+						profile.UserSetting = this.loadUserSettings(settings, profile);
+					}
 
-				Promise.all([
-					this.statusProvider.read({ Take: 10000 }),
-					this.typeProvider.read({ Take: 10000 })
-				]).then(values => {
-					this.env.statusList = values[0]['data'];
-					this.env.typeList = values[1]['data'];
-					this.env.setStorage('UserProfile', profile).then(_ => {
+					this.env.user = profile;
+					this.env.rawBranchList = profile.BranchList;
+					Promise.all([
+						this.statusProvider.read({ Take: 10000 }),
+						this.typeProvider.read({ Take: 10000 })
+					]).then(values => {
+						this.env.statusList = values[0]['data'];
+						this.env.typeList = values[1]['data'];
 						this.env.loadBranch().then(_ => {
 							this.env.publishEvent({ Code: 'app:updatedUser' });
 							resolve(true);
 						});
-					});
-				})
-			}
-			else {
-				this.env.user = null;
-				this.env.branchList = [];
-				this.env.setStorage('UserProfile', profile).then(_ => {
+					}).catch(err => reject(err));
+				}
+				else {
+					this.env.user = null;
+					this.env.rawBranchList = [];
 					this.env.loadBranch().then(_ => {
 						this.env.publishEvent({ Code: 'app:updatedUser' });
 						resolve(true);
 					});
-				});
-			}
-
-
+				}
+			}).catch(err => reject(err));
 		});
 	}
 
 	getProfile(forceReload = false) {
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
 			if (forceReload) {
 				this.syncGetUserData().then(() => {
-					resolve(true);
-				});
+					this.loadSavedProfile().then(() => {
+						resolve(true);
+					}).catch(err => reject(err));
+				}).catch(err => reject(err));
 			}
 			else {
-				this.env.getStorage('UserProfile').then((profile) => {
-					if (profile) {
-						this.env.user = profile;
-						resolve(true);
-					} else {
-						this.syncGetUserData().then(() => {
-							resolve(true);
-						});
-					}
-				});
+				this.loadSavedProfile().then(() => {
+					resolve(true);
+				}).catch(err => reject(err));
 			}
-
 		});
 	}
 
@@ -228,25 +242,16 @@ export class AccountService {
 						data.Avatar = data.Avatar ? (data.Avatar.indexOf('http') != -1 ? data.Avatar : ApiSetting.mainService.base + data.Avatar) : null;
 
 						lib.buildFlatTree(data.Forms, data.Forms, true).then((resp: any) => {
-
-							// let currentItem = resp.find(i => i.Id == 2656); //Seller app
-							// if (currentItem) {
-							// 	currentItem.isMobile = true;
-							// 	lib.markNestedNode(resp, 2656, 'isMobile');
-							// }
-
 							data.Forms = resp.filter(d => !d.isMobile);
-
 							that.setProfile(data).then(_ => {
 								resolve(true);
-							});
+							}).catch(err => reject(err));
 						});
 
 					}
 				})
 				.catch(err => {
 					reject(err);
-					//return Promise.reject(err.message || err);
 				});
 		});
 	}
@@ -314,6 +319,13 @@ export class AccountService {
 	}
 
 	login(username, password) {
+		// let notifiToken = null;
+		// if(Capacitor.getPlatform() !== 'web'){
+		// 	PushNotifications.register();
+		// 	PushNotifications.addListener('registration', (token: Token) => {
+		// 		notifiToken = token.value;
+		// 	});
+		// }
 		var that = this;
 		return new Promise(async function (resolve, reject) {
 			let urlSearchParams = new URLSearchParams();
@@ -325,6 +337,14 @@ export class AccountService {
 			if (Capacitor.isPluginAvailable('Device')) {
 				let info = await Device.getInfo();
 				let UID = await Device.getId();
+				let NotifyToken = await that.env.getStorage('NotifyToken').then(result=>{
+					if(result){
+						return result;
+					}
+					else{
+						return null;
+					}
+				})
 				deviceInfo = {
 					Id: 0,
 					Code: UID.uuid,
@@ -335,7 +355,8 @@ export class AccountService {
 					OsVersion: info.osVersion,
 					Manufacturer: info.manufacturer,
 					IsVirtual: info.isVirtual,
-					WebViewVersion: info.webViewVersion
+					WebViewVersion: info.webViewVersion,
+					NotifyToken:NotifyToken,
 				}
 			}
 
@@ -352,27 +373,31 @@ export class AccountService {
 				)
 				.subscribe(data => {
 					if (data) {
-						that.setToken(data);
-						if (deviceInfo) {
-							that.userDeviceProvider.save(deviceInfo).then(info => {
-								if (!info) {
-									that.env.deviceInfo = null;
-								}
-								else if (info == 'This device was registered') {
+						that.setToken(data).then(_ => {
+							if (deviceInfo) {
+								that.userDeviceProvider.save(deviceInfo).then(info => {
+									if (!info) {
+										that.env.deviceInfo = null;
+									}
+									else if (info == 'This device was registered') {
 
-									that.env.deviceInfo = null;
-								}
-								else {
-									that.env.deviceInfo = info;
-								}
+										that.env.deviceInfo = null;
+									}
+									else {
+										that.env.deviceInfo = info;
+									}
 
-							});
-						}
+								});
+							}
+							that.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch(err => {
+									reject(err);
+								})
+						});
 
-						that.syncGetUserData()
-							.then(() => {
-								resolve(true);
-							});
 					}
 					else {
 						reject('Can not login!')
@@ -401,11 +426,15 @@ export class AccountService {
 				)
 				.subscribe(data => {
 					if (data) {
-						that.setToken(data);
-						that.syncGetUserData()
-							.then(() => {
-								resolve(true);
-							});
+						that.setToken(data).then(_ => {
+							that.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch(err => {
+									reject(err);
+								})
+						})
 					}
 					else {
 						reject('Can not login!')
@@ -427,10 +456,11 @@ export class AccountService {
 				that.setToken(null);
 				that.setProfile(null).then(_ => {
 					that.env.setStorage('Username', curentUsername).then(() => {
+						that.env.publishEvent({ Code: 'app:updatedUser' });
 						resolve(true);
 					})
 
-				});
+				}).catch(err => reject(err));
 			})
 		});
 	}

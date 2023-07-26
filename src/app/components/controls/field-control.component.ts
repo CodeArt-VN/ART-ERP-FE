@@ -29,7 +29,6 @@ import { lib } from 'src/app/services/static/global-functions';
 			</ng-template>
 		</ng-select>
 		<ng-select *ngSwitchCase="'select-contact'" [multiple]="field.multiple" [items]="field.DataSource | async" [typeahead]="field.SearchInput" [loading]="field.SearchLoading" [virtualScroll]="true" (change)="trackChange(field.data)" [(ngModel)]="field.data.ValueObject" [readonly]="field.disabled" class="c-input no-check-dirty" [labelForId]="field.labelForId" [bindLabel]="field.bindLabel? field.bindLabel: 'Name'" [bindValue]="field.bindValue">
-			llllll
 			<ng-template ng-label-tmp let-i="item" let-a="item.Address">
 				{{i.Name}}
 				<small *ngIf="a">
@@ -71,7 +70,7 @@ import { lib } from 'src/app/services/static/global-functions';
 		<ng-select *ngSwitchCase="'select-branch'" [searchFn]="searchShowAllChildren" [items]="field.items" (change)="trackChange(field.data)" [(ngModel)]="field.data.ValueObject" [readonly]="field.disabled" class="c-input no-check-dirty" [labelForId]="field.labelForId" [bindLabel]="field.bindLabel? field.bindLabel: 'Name'" [bindValue]="field.bindValue" [virtualScroll]="true" placeholder="Chọn đơn vị...">
 			<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 				<div *ngIf="i">
-					<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <ion-text [color]=" i.IDType == 111? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text></div>
+					<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text></div>
 				</div>
 			</ng-template>
 		</ng-select>
@@ -97,8 +96,7 @@ export class FieldControlComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		console.log(this.field);
-
+		
 	}
 
 	trackChange(data) {

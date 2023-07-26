@@ -1,5 +1,9 @@
 export var SearchConfig = {
     defaultSearchFields: { cache: false, filelds: ['Code', 'Name', '_uid']},
+
+    SYS_Status: {cache: true},
+    SYS_Type: {cache: true},
+
     // LIST_BookingSources: { cache: true },
     // LIST_ServiceRole: { cache: true },
     // BRA_Branch: { cache: true },

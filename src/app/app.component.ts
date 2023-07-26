@@ -11,6 +11,7 @@ import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/s
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
+import { ActionPerformed, PushNotifications, Token} from '@capacitor/push-notifications';
 
 let ga: any;
 
@@ -51,15 +52,6 @@ export class AppComponent implements OnInit {
 		public splashScreen: SplashScreen,
 		public translate: TranslateService
 	) {
-		if (window.location.host == 'thelog.inholdings.vn') {
-			this.appTheme = 'thelog-theme'
-		} else if (window.location.host.indexOf('inholdings') > -1) {
-			this.appTheme = 'inholdings-theme'
-		} else if (window.location.host.indexOf('artlogistics') > -1) {
-			this.appTheme = 'artdistribution-theme'
-		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
-			this.appTheme = 'artdistribution-theme'
-		}
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
 			'./assets/undraw_art_museum_8or4.svg',
@@ -117,11 +109,11 @@ export class AppComponent implements OnInit {
 					break;
 				case 'app:loadLang':
 					this.env.getStorage('lang').then(lang => {
-						
+
 						if (lang) {
 							this.changeLanguage(lang);
 						}
-						else{
+						else {
 							this.changeLanguage('vi-VN');
 						}
 					})
@@ -182,9 +174,41 @@ export class AppComponent implements OnInit {
 	}
 
 	updateStatusbar() {
-		if (Capacitor.isPluginAvailable('StatusBar')) {
-			console.log('sb');
+		let title = 'ERP';
+		let relIcon = 'assets/icons/icon-512x512.png';
+		if (window.location.host == 'thelog.inholdings.vn') {
+			this.appTheme = 'thelog-theme';
+		} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
+			this.appTheme = 'gem-theme';
+			title = 'GEM Café';
+			relIcon = '/assets/logos/logo-gem-center-small.png';
+		} else if (window.location.host.indexOf('inholdings') > -1) {
+			this.appTheme = 'inholdings-theme';
+		} else if (window.location.host.indexOf('artlogistics') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else {
+			this.appTheme = 'inholdings-theme';
+		}
 
+		let link: any = document.querySelector("link[rel~='icon']");
+		if (!link) {
+			link = document.createElement('link');
+			link.rel = 'icon';
+			document.head.appendChild(link);
+		}
+		
+		window.document.title = title;
+		link.href = relIcon;
+
+		setTimeout(() => {
+			
+			let themeColor = lib.getCssVariableValue('--ion-color-primary');
+			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+		}, 100);
+
+		if (Capacitor.isPluginAvailable('StatusBar')) {
 			StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
 			StatusBar.setStyle({ style: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? Style.Dark : Style.Light });
 			//StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
@@ -200,24 +224,34 @@ export class AppComponent implements OnInit {
 		// if (path !== undefined) {
 		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
 		// }
-
+		//this.initNotification();
 	}
 
 	initializeApp() {
 		this.platform.ready().then(() => {
-			//console.log('initializeApp', this.env.user);
-
 			this.showScrollbar = environment.showScrollbar;
-
 			this.updateStatusbar();
 			this.splashScreen.hide();
 
-			if (this.platform.is('cordova')) {
-				// make your native API calls
-			} else {
-				// fallback to browser APIs
-			}
 		});
+		
+		
+	}
+	async initNotification(){
+		if(Capacitor.getPlatform() != 'web'){
+			let permStatus = await PushNotifications.checkPermissions();
+			if (permStatus.receive === 'prompt') {
+				permStatus = await PushNotifications.requestPermissions();
+			}
+			await PushNotifications.register();
+			await PushNotifications.addListener('registration', (token: Token) => {
+				this.env.setStorage('NotifyToken', token.value);
+			});
+			PushNotifications.addListener('pushNotificationActionPerformed',(notification: ActionPerformed) => {
+				let navigateByUrl  = notification.notification.data.navigateByUrl;
+				this.router.navigateByUrl(navigateByUrl);
+			});
+		}
 	}
 
 	toogleMenu() {
@@ -299,10 +333,10 @@ export class AppComponent implements OnInit {
 	openAppStore() {
 		console.log('openAppStore');
 		if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
-			window.location.href = 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn';
+			window.location.href = environment.playStoreURL;
 		}
 		if (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) {
-			window.location.href = 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8';
+			window.location.href = environment.appStoreURL;
 		}
 	}
 

@@ -1,0 +1,53 @@
+<div class="ion-padding">
+
+  <div>
+    <div class="title">{{'erp.app.pages.bi.dashboard.group-by' | translate}}</div>
+    <ng-container *ngFor="let f of rpt.rptGlobal.frequency">
+      <ion-button [fill]="rpt.rptGlobal.query.frequency == f.Id ? 'solid' : 'outline'" size="small" (click)="changeFrequency(f)">
+        {{f.Name}}
+      </ion-button>
+    </ng-container>
+    <div class="query-time"></div>
+  </div>
+
+  <div>
+    <div class="title">{{'erp.app.pages.bi.dashboard.time' | translate}}</div>
+
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('d')" [fill]="rpt.rptGlobal.query.type=='d'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.d' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('dw')" [fill]="rpt.rptGlobal.query.type=='dw'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.dw' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('dm')" [fill]="rpt.rptGlobal.query.type=='dm'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.dm' | translate}}</ion-button>
+
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 2" (click)="changeDateFilter('m')" [fill]="rpt.rptGlobal.query.type=='m'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.m' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 2" (click)="changeDateFilter('m3')" [fill]="rpt.rptGlobal.query.type=='m3'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.m3' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 2" (click)="changeDateFilter('m6')" [fill]="rpt.rptGlobal.query.type=='m6'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.m6' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 2" (click)="changeDateFilter('my')" [fill]="rpt.rptGlobal.query.type=='my'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.my' | translate}}</ion-button>
+
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 3" (click)="changeDateFilter('q')" [fill]="rpt.rptGlobal.query.type=='q'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.q' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 3" (click)="changeDateFilter('q2')" [fill]="rpt.rptGlobal.query.type=='q2'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.q2' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 3" (click)="changeDateFilter('q3')" [fill]="rpt.rptGlobal.query.type=='q3'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.q3' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 3" (click)="changeDateFilter('qy')" [fill]="rpt.rptGlobal.query.type=='qy'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.qy' | translate}}</ion-button>
+
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 4" (click)="changeDateFilter('y')" [fill]="rpt.rptGlobal.query.type=='y'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.y' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 4" (click)="changeDateFilter('y2')" [fill]="rpt.rptGlobal.query.type=='y2'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.y2' | translate}}</ion-button>
+    <ion-button *ngIf="rpt.rptGlobal.query.frequency == 4" (click)="changeDateFilter('y3')" [fill]="rpt.rptGlobal.query.type=='y3'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.y3' | translate}}</ion-button>
+
+    <ion-button (click)="changeDateFilter('set')" [fill]="rpt.rptGlobal.query.type=='set'? 'solid': 'outline'" size="small">{{'erp.app.pages.bi.dashboard.option' | translate}}</ion-button>
+
+    <div *ngIf="rpt.rptGlobal.query.type=='set'" class="date-pick">
+      <input (change)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.fromDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+      <input (change)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.toDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+    </div>
+    <div class="query-time">{{rpt.rptGlobal.query.fromDate}} - {{rpt.rptGlobal.query.toDate}}</div>
+  </div>
+
+  <div>
+    <div class="title">{{'erp.app.pages.bi.dashboard.branch' | translate}}</div>
+    <ng-container *ngFor="let b of reportBranchList">
+      <ion-button *ngIf="b.ShowBtn && b.Code && b.Id != 16" [fill]="b.IsHidden ? 'outline' : 'solid'" size="small" (click)="toogleBranchDataset(b)">
+        {{b.Name}}
+      </ion-button>
+    </ng-container>
+    <div class="query-time"></div>
+  </div>
+
+</div>
