@@ -37,6 +37,8 @@ import { POSIntroModalPage } from './pages/POS/pos-intro-modal/pos-intro-modal.p
 import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page';
 import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
 import { POSCustomerOrderModalPage } from './pages/POS/pos-customer-order-modal/pos-customer-order-modal.page';
+import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
+import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -46,8 +48,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
-import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
+
 
 
 
@@ -61,7 +62,10 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage, POSNotifyModalPage],
+  declarations: [AppComponent, PopoverPage, 
+    SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, 
+    ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, 
+    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage, POSNotifyModalPage],
   entryComponents: [PopoverPage],
   imports: [
     BrowserModule,

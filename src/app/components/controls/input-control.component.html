@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="field.type">
+<ng-container [ngSwitch]="field.type" [formGroup]="field.form">
     <!-- text -->
     <input *ngSwitchCase="'text'" type="text" class="c-input" [id]="field.id" [formControlName]="field.id" (change)="inputChange($event);">
 
