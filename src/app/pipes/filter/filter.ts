@@ -3,11 +3,11 @@ import { DomSanitizer } from '@angular/platform-browser'
 
 @Pipe({ name: 'safeFrame' })
 export class SafeFrame implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
-  transform(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-} 
+    constructor(private sanitizer: DomSanitizer) { }
+    transform(url) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+}
 
 @Pipe({ name: 'safeHtml' })
 export class SafeHtml {
@@ -37,7 +37,7 @@ export class filterProperties implements PipeTransform {
     transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
         return items.filter(item => {
             for (let field in conditions) {
-                if(conditions[field]==='all' || conditions[field]==='') return true;  
+                if (conditions[field] === 'all' || conditions[field] === '') return true;
                 if (item[field] != conditions[field]) {
                     return false;
                 }
@@ -52,8 +52,8 @@ export class searchProperties implements PipeTransform {
     transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
         return items.filter(item => {
             for (let field in conditions) {
-                if(conditions[field]==='all' || conditions[field]==='') return true;  
-                if (item[field].toLowerCase().indexOf(conditions[field])==-1) {
+                if (conditions[field] === 'all' || conditions[field] === '') return true;
+                if (item[field].toLowerCase().indexOf(conditions[field]) == -1) {
                     return false;
                 }
             }
@@ -75,18 +75,20 @@ export class MyPipe implements PipeTransform {
 export class searchNoAccents implements PipeTransform {
     transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
         return items.filter(item => {
-            
+
             for (let field in conditions) {
+                let keyword = conditions[field];
+                keyword = this.removeAccents(keyword);
                 item[field] = this.removeAccents(item['Name']);
-                if(conditions[field]==='all' || conditions[field]==='') return true;  
-                if (item[field].toLowerCase().indexOf(conditions[field])==-1) {
+                if (keyword === 'all' || keyword === '') return true;
+                if (item[field].toLowerCase().indexOf(keyword) == -1) {
                     return false;
                 }
             }
             return true;
         });
     }
-    removeAccents(str) {   
+    removeAccents(str) {
         str = str.toLowerCase();
         str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
         str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -98,6 +100,6 @@ export class searchNoAccents implements PipeTransform {
         // Some system encode vietnamese combining accent as individual utf-8 characters
         str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
         str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
-        return str;            
+        return str;
     }
 }

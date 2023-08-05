@@ -129,25 +129,25 @@ export class PrintingService {
                 if (printers.length != 0 && printersDB) {
                     printers.forEach(p => {
                       // // ------PRODUCTION-----
-                      // if (printersDB.indexOf(p.Printer.Code) > -1) {
-                      //     let config = qz.configs.create(p.Printer.Code);
-                      //     for (let idx = 0; idx < p.Printer.Times; idx++) {
-                      //       qzPrinters.push(config);
-                      //       qzDatas.push(p.Printer.Data);
-                      //     }
-                      // }
-                      // else {
-                      //     this.env.showTranslateMessage("Printer " + p + " Not Found! Check Printers Info Database!", "warning");
-                      // }
+                      if (printersDB.indexOf(p.Printer.Code) > -1) {
+                          let config = qz.configs.create(p.Printer.Code);
+                          for (let idx = 0; idx < p.Printer.Times; idx++) {
+                            qzPrinters.push(config);
+                            qzDatas.push(p.Printer.Data);
+                          }
+                      }
+                      else {
+                          this.env.showTranslateMessage("Printer " + p + " Not Found! Check Printers Info Database!", "warning");
+                      }
                       // // ----------------------
 
 
                       // ------TEST----
-                      for (let idx = 0; idx < p.Printer.Times; idx++) {
-                          let config = qz.configs.create("Microsoft Print to PDF"); // USE For test
-                          qzPrinters.push(config);
-                          qzDatas.push(p.Printer.Data);
-                      }
+                      // for (let idx = 0; idx < p.Printer.Times; idx++) {
+                      //     let config = qz.configs.create("Microsoft Print to PDF"); // USE For test
+                      //     qzPrinters.push(config);
+                      //     qzDatas.push(p.Printer.Data);
+                      // }
                       // ---------------
                     });
                 }

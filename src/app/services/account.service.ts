@@ -12,6 +12,7 @@ import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserDeviceProvider } from './
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token} from '@capacitor/push-notifications';
+declare var window: any;
 
 @Injectable({
 	providedIn: 'root'
@@ -85,9 +86,31 @@ export class AccountService {
 				GlobalData.Version = v;
 				this.getToken().then(() => {
 					this.getProfile(true).then(() => {
-						resolve(true);
+						if (this.env.user) {
+
+							setTimeout(() => {
+								let woopraId = {
+									id: this.env.user.Id,
+									email: this.env.user.Email,
+									name: this.env.user.FullName,
+									avatar: this.env.user.Avatar
+								};
+								let woopraInterval = setInterval(() => {
+									if (window?.woopra) {
+										window.woopra.identify(woopraId);
+										window.woopra.push();
+										if (woopraInterval) {
+											clearInterval(woopraInterval);
+											woopraInterval = null;
+										}
+									}
+								}, 2000);
+							}, 1000);
+							
+						}
 						this.env.isloaded = true;
-						this.env.publishEvent({ Code: 'app:loadedLocalData' })
+						this.env.publishEvent({ Code: 'app:loadedLocalData' });
+						resolve(true);
 					}).catch(err => {
 						reject(err);
 					});
