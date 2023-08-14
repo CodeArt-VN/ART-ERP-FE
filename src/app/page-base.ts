@@ -42,6 +42,10 @@ export abstract class PageBase implements OnInit {
     pageConfig: any = {
         pageCode: '',
         pageName: '',
+        pageTitle: '',
+        pageRemark: '',
+        pageIcon: '',
+
         isDetailPage: false,
         isShowMore: false,
         isShowSearch: false,
@@ -673,7 +677,10 @@ export abstract class PageBase implements OnInit {
             let currentForm = this.env.user.Forms.find(d => (this.navCtrl.router.routerState.snapshot.url + '/').indexOf(d.Code + '/') > -1 && (d.Type == 0 || d.Type == 1 || d.Type == 2));
             if (currentForm) {
                 this.pageConfig.pageName = currentForm.Code;
-                console.log(this.pageConfig.pageName);
+                this.pageConfig.pageTitle = currentForm.Name;
+                this.pageConfig.pageIcon = currentForm.Icon;
+                this.pageConfig.pageRemark = currentForm.Remark;
+                
                 let permissionList = this.env.user.Forms.filter(d => d.IDParent == currentForm.Id);
                 if (permissionList.length) {
                     permissionList.forEach(p => {

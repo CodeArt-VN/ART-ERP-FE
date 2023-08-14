@@ -23,6 +23,7 @@ import { FieldControlComponent } from './controls/field-control.component';
 
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcrumbs.component';
+import { PageTitleComponent } from './page-title/page-title.component';
 
 
 
@@ -52,6 +53,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageMessageComponent,
+		PageTitleComponent,
 		QueryFilterComponent
 	],
 	exports: [
@@ -64,6 +66,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageMessageComponent,
+		PageTitleComponent,
 		QueryFilterComponent,
 		ShareDirectivesModule,
 		

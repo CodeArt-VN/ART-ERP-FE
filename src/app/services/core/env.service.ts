@@ -1,45 +1,76 @@
 import { Injectable } from '@angular/core';
-import { Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
-import { Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Observable, Observer, fromEvent, merge } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Network } from '@capacitor/network';
+import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 import * as signalR from '@microsoft/signalr';
-import { lib } from '../static/global-functions';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, Observer, Subject, fromEvent, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { lib } from '../static/global-functions';
 
 @Injectable({
     providedIn: 'root'
 })
+/**
+ * This service allows manipulation of environment variables
+ * @class EnvService
+ */
 export class EnvService {
+    /** Get current app version */
     version = environment.appVersion;
+    
+    /** Get current logged in user */
     user: any = {};
+    
+    /** Check enviroment is loaded */
     isloaded = false;
+    
+    /** Get current device infomation */
     deviceInfo: any = null;
+    
+    /** All branch list */
     rawBranchList = [];
+    
+    /** Get all flat tree branch list */
     branchList = [];
+    
+    /** Get all job title list */
     jobTitleList = [];
+    
+    /** Get current branch id */
     selectedBranch = null;
+    
+    /** Get current branch id and all children branch ids */
     selectedBranchAndChildren = null;
+    
+    /** All system status list */
     statusList = [];
+
+    /** All system type list */
     typeList = [];
 
+    /** Check platform is mobile*/
     isMobile = false;
-    isOnline = false;
+
+    /** Check is map library loaded */
     isMapLoaded = false;
+
+    /** Get network infomation */
     networkInfo = {
-        IsOnline: false
+        isOnline: false
     }
 
+    /** Check app is ready */
     ready: Promise<any> | null;
 
+    /** Last message was shown */
     lastMessage = '';
 
+    /** @deprecated This is an internal implementation detail, do not use. */
     private _storage: Storage | null = null;
 
-
+    /** app event tracking */
     public EventTracking = new Subject<any>();
 
     constructor(
@@ -58,7 +89,13 @@ export class EnvService {
 
     }
 
-
+    /** 
+     * Init enviroment
+     * Create storage service handle
+     * Request app load languages
+     * Add network listener
+     * Connet SignalR
+     */
     async init() {
         console.log('init env');
 
@@ -69,32 +106,23 @@ export class EnvService {
             console.log('Network status changed', status);
         });
 
-        // this.network.onDisconnect().subscribe(() => {
-        //     this.networkInfo.IsOnline = false;
-        //     this.isOnline = false;
-        // });
-        // this.network.onConnect().subscribe(() => {
-        //     this.networkInfo.IsOnline = true;
-        //     this.isOnline = true;
-        // });
-
         this.trackOnline().subscribe(isOnline => {
-            this.isOnline = isOnline;
+            this.networkInfo.isOnline = isOnline;
         });
 
-        const connection = new signalR.HubConnectionBuilder()
+        const signalRConnection = new signalR.HubConnectionBuilder()
             .configureLogging(signalR.LogLevel.Information)
             .withUrl(environment.signalRServiceDomain + 'notify')
             .withAutomaticReconnect()
             .build();
 
-        connection.start().then(function () {
+        signalRConnection.start().then(function () {
             console.log('SignalR Connected!');
         }).catch(function (err) {
             return console.error(err.toString());
         });
 
-        connection.on("BroadcastMessage", (e) => {
+        signalRConnection.on("BroadcastMessage", (e) => {
             //console.log('BroadcastMessage', e);
             //this.publishEvent({})
 
@@ -124,15 +152,12 @@ export class EnvService {
                     location.reload();
                 }
             }
-
-
-
         });
-        connection.on("SendMessage", (user, message) => {
+        signalRConnection.on("SendMessage", (user, message) => {
             console.log('SendMessage', user, message);
             //this.publishEvent({})
         });
-        connection.on("SaleOrdersUpdated", (IDBranch, Ids) => {
+        signalRConnection.on("SaleOrdersUpdated", (IDBranch, Ids) => {
             console.log('SaleOrdersUpdated', IDBranch, Ids);
             this.publishEvent({ Code: 'sale-order-mobile' });
         });
@@ -141,24 +166,22 @@ export class EnvService {
 
     }
 
-    printOut() {
-        //console.log(this.user);
-    }
-
-    forceLoadUserData() {
-        return new Promise(resolve => {
-
-        });
-    }
-
+    /** 
+     * Publish event for application 
+     * Can be used to transfer data anywhere on the app
+     * 
+     * @param data Data to transfer, data.Code is recommended
+     */
     publishEvent(data: any) {
         this.EventTracking.next(data);
     }
 
+    /** Get enviroment event tracking */
     getEvents(): Subject<any> {
         return this.EventTracking;
     }
 
+    /** Check window network event */
     trackOnline() {
         return merge<boolean>(
             fromEvent(window, 'offline').pipe(map(() => false)),
@@ -169,12 +192,28 @@ export class EnvService {
             }));
     }
 
-    showTranslateMessage(key, color = '', value = null, duration = 5000, showCloseButton = false) {
-        this.translate.get(key, { value: value }).subscribe((message: string) => {
+    /** 
+     * Translate message and pass to showMessage method
+     * 
+     * @param messageToTranslate The message in en-US language
+     * @param [color=''] The color of message
+     * @param [value=null] The value to bind in message
+     * @param duration The time (ms) to show message
+     * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast) 
+    */
+    showTranslateMessage(messageToTranslate, color = '', value = null, duration = 5000, showCloseButton = false) {
+        this.translate.get(messageToTranslate, { value: value }).subscribe((message: string) => {
             this.showMessage(message, color, duration, showCloseButton);
         });
     }
 
+    /**
+     * Show the message to end-user. Ignored if message equal to the last message in 5 seconds
+     * @param message The message to show
+     * @param color The color of message
+     * @param duration The time (ms) to show message
+     * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
+     */
     showMessage(message, color = 'warning', duration = 5000, showCloseButton = false) {
         if (this.lastMessage == message) return;
         this.lastMessage = message;
@@ -216,10 +255,9 @@ export class EnvService {
                 alert.present();
             })
         }
-
-
     }
 
+    /** @deprecated Deprecated, do not use. */
     showAlert(message, subHeader = null, header = null, okText = 'OK') {
         let option: any = {
             header: header,
@@ -239,6 +277,16 @@ export class EnvService {
         })
     }
 
+    /**
+     * Show prompt message question.
+     * @param message The message to show
+     * @param subHeader The small text abow message
+     * @param header The header of the message
+     * @param okText OK button text
+     * @param cancelText Cancel button text
+     * @param inputs Extra input
+     * @returns Promise resolve if end-user click ok button, reject if not.
+     */
     showPrompt(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
         return new Promise((resolve, reject) => {
 
@@ -273,6 +321,12 @@ export class EnvService {
         });
     }
 
+    /**
+     * Show loading message to end-user
+     * @param message The message to show
+     * @param promise The promise funtion to wait
+     * @returns Resolve if the promise funtion completed
+     */
     showLoading(message, promise) {
         return new Promise((resolve, reject) => {
             this.loadingController.create({ cssClass: 'my-custom-class', message: message }).then((loading) => {
@@ -295,18 +349,37 @@ export class EnvService {
         });
     }
 
+    /**
+     * Get storage
+     * @param key The key to get storage
+     * @returns Return the storage
+     */
     getStorage(key) {
         return this._storage?.get(key);
     }
 
+    /**
+     * Set storage value
+     * @param key The key to set storage
+     * @param value The value to save
+     * @returns Return promise
+     */
     setStorage(key: string, value: any) {
         return this._storage?.set(key, value);
     }
 
+    /**
+     * Clear all storage value
+     * @returns Return promise
+     */
     clearStorage() {
         return this._storage?.clear();
     }
 
+    /**
+     * Build branch tree from rawBranchList
+     * @returns Return promise
+     */
     loadBranch() {
         return new Promise((resolve) => {
             lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
@@ -376,6 +449,9 @@ export class EnvService {
         });
     }
 
+    /**
+     * Change enviroment selected branch and publish changeBranch event to app
+     */
     changeBranch() {
         this.setStorage('selectedBranch', this.selectedBranch);
         let selectedBranch = this.branchList.find(d => d.Id == this.selectedBranch);
@@ -383,6 +459,11 @@ export class EnvService {
         this.publishEvent({ Code: 'changeBranch' });
     }
 
+    /**
+     * Get status list by parent Code
+     * @param Code Parent status code
+     * @returns Return promise and resolve all children status list
+     */
     getStatus(Code: string): Promise<any[]> {
         return new Promise((resolve) => {
             let it = this.statusList.find(d => d.Code == Code);
@@ -392,6 +473,13 @@ export class EnvService {
                 resolve([]);
         });
     }
+
+    /**
+     * Get system type by parent Code
+     * @param Code Parent type Code
+     * @param AllChild True will return flat tree type
+     * @returns Return promise and Resolve type list
+     */
     getType(Code: string, AllChild = false): Promise<any[]> {
         return new Promise((resolve) => {
             let it = this.typeList.find(d => d.Code == Code);
@@ -411,6 +499,12 @@ export class EnvService {
         });
     }
 
+    /**
+     * Get branch by parent Id
+     * @param Id Id parent branch
+     * @param AllChild True will return flat tree list
+     * @returns Return promise and Resolve branch list
+     */
     getBranch(Id: number, AllChild = false): Promise<any[]> {
         return new Promise((resolve) => {
             let it = this.branchList.find(d => d.Id == Id);
@@ -430,6 +524,12 @@ export class EnvService {
         });
     }
 
+    /**
+     * Get job title list by parent Id
+     * @param Id Id parent
+     * @param AllChild True will return flat tree
+     * @returns Return promise and Resolve job title list
+     */
     getJobTitle(Id: number, AllChild = false): Promise<any[]> {
         return new Promise((resolve) => {
             let it = this.jobTitleList.find(d => d.Id == Id);
@@ -449,6 +549,7 @@ export class EnvService {
         });
     }
 
+    /** @deprecated Deprecated, do not use. */
     private enablePermissionNode(id, list) {
         let currentItem = list.find(i => i.Id == id);
         if (currentItem) {
@@ -457,6 +558,7 @@ export class EnvService {
         }
     }
 
+    /** @deprecated Deprecated, do not use. */
     private getChildrenDepartmentID(ids, id) {
         ids.push(id);
         let children = this.branchList.filter(i => i.IDParent == id);

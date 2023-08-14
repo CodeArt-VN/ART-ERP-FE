@@ -4,7 +4,7 @@
         <ng-content select="[label]"></ng-content>
         <ion-text *ngIf="!field.form.controls[field.id].valid && !field.form.controls[field.id].pending && field.form.controls[field.id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
     </label>
-    <app-input-control [field]="field"></app-input-control>
+    <app-input-control [field]="field" (onChange)="inputChange($event)"></app-input-control>
     
     
 </div>

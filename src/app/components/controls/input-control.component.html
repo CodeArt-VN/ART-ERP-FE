@@ -52,6 +52,25 @@
         </ng-template>
     </ng-select>
 
+    <!-- ng-select-item -->
+    <ng-select *ngSwitchCase="'ng-select-item'" class="c-input" [formControlName]="field.id" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource.items$ | async" [typeahead]="field.dataSource.input$" [loading]="field.dataSource.loading" [clearable]="field.clearable" [bindValue]="field.bindValue" placeholder="{{field.placeholder | translate}}" (change)="ngSelectChange($event)"  appendTo="#order-detail-page" >
+        <ng-template ng-label-tmp let-i="item">
+            <div *ngIf="i.Id">
+                <a class="clickable" (click)="nav('/item/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
+                <span [title]="i.Name"> 
+                    <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{i.Code}}</b> 
+                    {{i.Name}}
+                </span>
+            </div>
+        </ng-template>
+        <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+            <div *ngIf="i">
+                <div><span [ngOptionHighlight]="search">{{i.Name}}</span></div>
+                <small>#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b></small>
+            </div>
+        </ng-template>
+    </ng-select>
+
     <!-- textarea -->
     <textarea *ngSwitchCase="'textarea'" [id]="field.id" [formControlName]="field.id" rows="3" class="c-input remark" type="textarea"></textarea>
 

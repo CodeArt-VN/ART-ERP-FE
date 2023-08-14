@@ -1,0 +1,28 @@
+.page-title{
+	display: flex;
+	flex-wrap: wrap;
+	padding:16px 0 32px 0;
+
+	ion-icon{
+		font-size: 3.8rem;
+		margin-right: 1rem;
+	}
+	.content{
+		flex: 1;
+		h1{
+			font-size: 3.8rem;
+			font-weight: 700;
+			font-family: univia-pro;
+			color: var(--ion-color-medium);
+			margin: -3px 16px 0 0;
+		}
+		p{
+			font-size: 1.6rem;
+			color: var(--ion-color-medium);
+			font-weight: 400;
+			line-height: 2.4rem;
+			opacity: 0.5;
+			margin: 0;
+		}
+	}
+}
