@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/app.guard';
 
+import { BIRoutes} from './pages/BI/bi-routing.module'
 const routes: Routes = [
   // {
   //   path: '',
@@ -41,10 +42,7 @@ const routes: Routes = [
   { path: 'pos-category', loadChildren: () => import('./pages/BI/pos-report/pos-category/pos-category.module').then(m => m.PosCategoryPageModule), canActivate: [AuthGuard] },
   { path: 'pos-revenue', loadChildren: () => import('./pages/BI/pos-report/pos-revenue/pos-revenue.module').then(m => m.PosRevenuePageModule), canActivate: [AuthGuard] },
 
-  //BI/HRM
-  { path: 'branch-payroll-report', loadChildren: () => import('./pages/BI/HRM/branch-payroll-report/branch-payroll-report.module').then(m => m.BranchPayrollReportPageModule), canActivate: [AuthGuard] },
-
-
+ 
 
   //SYSTEM
   { path: 'login', loadChildren: () => import('./pages/SYS/login/login.module').then(m => m.LoginPageModule) },
@@ -70,9 +68,13 @@ const routes: Routes = [
 
 
 ];
+
+let allRoutes = [...BIRoutes,  ...routes ];
+
+
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })

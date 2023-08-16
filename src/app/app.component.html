@@ -15,9 +15,9 @@
 
 					<div class="c-control branch-select" *ngIf="env.branchList.length">
 						<!-- {{countForm}} -->
-						
 
-						<ng-select appendTo="#ng-select-holder" [(ngModel)]="env.selectedBranch"  [searchFn]="searchShowAllChildren" (change)="changeBranch()" class="c-input" [clearable]="false" #IDBranch  labelForId="IDBranch" [items]="env.branchList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'erp.app.app-component.unit-placeholder' | translate}}">
+
+						<ng-select appendTo="#ng-select-holder" [(ngModel)]="env.selectedBranch" [searchFn]="searchShowAllChildren" (change)="changeBranch()" class="c-input" [clearable]="false" #IDBranch labelForId="IDBranch" [items]="env.branchList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'Select unit...' | translate}}">
 							<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 								<div *ngIf="i">
 									<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text></div>
@@ -49,7 +49,7 @@
 									<ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
 								</ion-button>
 							</ion-buttons>
-							<ion-searchbar #search [(ngModel)]="queryMenu" (ionChange)="searchMenu($event)" placeholder="{{'erp.app.app-component.find-menu' | translate}}"></ion-searchbar>
+							<ion-searchbar #search [(ngModel)]="queryMenu" (ionChange)="searchMenu($event)" placeholder="{{'Search menu' | translate}}"></ion-searchbar>
 						</ion-toolbar>
 					</ion-header>
 					<div class="menu-group" *ngIf="foundMenu">
@@ -70,7 +70,7 @@
 				<div class="menu-items" *ngIf="!isShowSearch">
 					<div class="menu-group pinned" *ngIf="env.user && countForm>=7">
 						<div class="menu-sub-group-title">
-							<span>{{'erp.app.app-component.menu.menu-group.quick-access' | translate}}</span>
+							<span>{{'Quick access' | translate}}</span>
 							<ion-button (click)="(isShowSearch=!isShowSearch) && focusSearch()" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
 								<ion-icon slot="icon-only" name="search"></ion-icon>
 							</ion-button>
@@ -80,8 +80,7 @@
 								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
 								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" (click)="menuPin(f, $event)"></ion-icon>
 								<span class="menu-title">
-									<!-- {{f.Name}} -->
-									{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+									{{f.Name | translate}}
 								</span>
 							</a>
 						</ng-container>
@@ -90,16 +89,14 @@
 					<div class="menu-group" *ngIf="env.user">
 						<ng-container *ngFor="let f of env.user.Forms">
 							<div (click)="toogleMenuGroup(f)" *ngIf="f.Type == 10 && f.Code != 'NoGroup' && countForm>=7" class="menu-group-title clickable">
-								<!-- {{f.Name}} -->
-								{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								{{f.Name | translate}}
 								<ion-button *ngIf="countForm>=7" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
 									<ion-icon slot="icon-only" [name]="f.isShowDetail?'chevron-down-outline':'chevron-forward-outline'"></ion-icon>
 								</ion-button>
 							</div>
 
 							<div (click)="toogleMenuForm(f)" *ngIf="(f.isShowDetail || countForm < 7) && f.Type == 11 && f.Code != 'NoGroup' && countForm>=7" class="menu-sub-group-title clickable">
-								<!-- {{f.Name}} -->
-								{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+								{{f.Name | translate}}
 								<ion-button *ngIf="countForm>=7" fill="clear" size="small" class="ion-float-right" style="margin-top: -0.3rem; font-size: 1rem;">
 									<ion-icon slot="icon-only" [name]="f.isShowForm?'chevron-down-outline':'chevron-forward-outline'"></ion-icon>
 								</ion-button>
@@ -109,8 +106,7 @@
 								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
 								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" *ngIf="countForm>=7" (click)="menuPin(f, $event)"></ion-icon>
 								<span class="menu-title">
-									<!-- {{f.Name}} -->
-									{{'erp.app.app-component.menu.menu-group.' + f.Code | translate}}
+									{{f.Name | translate}}
 								</span>
 							</a>
 
@@ -136,7 +132,7 @@
 					<div class="menu-group">
 						<a (click)="goToPage('/login', $event)" [routerLink]="['/login']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="!(env.user && env.user.Id)">
 							<ion-icon class="menu-icon" name="log-in"></ion-icon>
-							<span class="menu-title">erp.app.app-component.menu.login</span>
+							<span class="menu-title">{{'Login' | translate}}</span>
 						</a>
 					</div>
 				</div>
@@ -218,14 +214,14 @@
 						<div class="detail">
 							<a href=".">
 								<ion-text *ngIf="isConnectFail" color="danger">
-									{{'erp.app.app-component.lost-connection-1' | translate}}
-									<br> {{'erp.app.app-component.lost-connection-2' | translate}}
+									{{'Cannot connect to server.' | translate}}
+									<br> {{'Please try again.' | translate}}
 								</ion-text>
 							</a>
 
 							<span *ngIf="!isConnectFail" class="info">
-								{{'erp.app.app-component.pending-connect-1' | translate}}
-								<br> {{'erp.app.app-component.pending-connect-2' | translate}}
+								{{'Connecting to server' | translate}}
+								<br> {{'Please wait for a few moments' | translate}}
 								<br>
 								<ion-spinner name="dots"></ion-spinner>
 							</span>
@@ -240,19 +236,19 @@
 		<a class="text" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" *ngIf="(env.user && env.user.Id)">{{env.user.UserName}}</a>
 		<a class="text" href=".">{{appVersion}} </a>
 		<span class="text float-right">
-			<ion-icon [color]="env.isOnline? 'success': 'danger'" [name]="env.isOnline? 'wifi': 'alert-circle'"></ion-icon>
-			<!-- <span *ngIf="!env.isOnline"> rớt mạng...</span> -->
+			<ion-icon [color]="env.networkInfo.isOnline? 'success': 'danger'" [name]="env.networkInfo.isOnline? 'wifi': 'alert-circle'"></ion-icon>
+			<!-- <span *ngIf="!env.networkInfo.isOnline"> rớt mạng...</span> -->
 		</span>
 		<span (click)="changeLanguage()" class="text float-right" style="font-size: x-large">
-			
+
 			<!-- <b *ngIf="translate.currentLang !='vi-VN'">E</b>
 			<b *ngIf="translate.currentLang =='vi-VN'">V</b> -->
 			<b *ngIf="translate.currentLang !='vi-VN'">🇻🇳</b>
 			<b *ngIf="translate.currentLang =='vi-VN'">🇺🇸</b>
 
-			 
+
 		</span>
-		
+
 
 		<!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">
 			<ion-icon color="danger" name="alert-circle"></ion-icon>

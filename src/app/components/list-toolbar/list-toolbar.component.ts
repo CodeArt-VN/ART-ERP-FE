@@ -86,9 +86,8 @@ export class ListToolbarComponent implements OnInit {
 	@Output() approveDiscount = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
-	ngOnInit() { 
-		
-		this.translate.get('erp.app.app-component.menu.menu-group.' + this.pageConfig.pageName).subscribe((text: string) => {
+	ngOnInit() {
+		this.translate.get(this.pageConfig.pageTitle).subscribe((text: string) => {
             this.pageTitle = text;
 			window.document.title = text;
         });

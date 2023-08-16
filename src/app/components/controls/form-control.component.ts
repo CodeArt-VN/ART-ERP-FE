@@ -18,12 +18,10 @@ export class FormControlComponent implements OnInit {
 
 	ngOnInit() { }
 
-	ngSelectChange(e){
-		this.onChange.emit(e);
-	}
+	
 
 	inputChange(e){
-		
+		this.onChange.emit(e);
 	}
 
 	nav(to){

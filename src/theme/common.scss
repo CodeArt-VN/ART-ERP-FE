@@ -62,6 +62,10 @@
 	--box-shadow: 0px 5px 20px 0px var(--ion-color-base);
 }
 
+.box-shadow {
+	box-shadow: 0 7px 14px 0 rgba(85, 110, 145, 0), 0 1px 3px 0 rgba(0, 0, 0, .1), 0 5px 10px 0 rgba(0, 0, 0, .08), inset 0 -1px 0 0 rgba(0, 0, 0, .2);
+}
+
 .hide-all {
 	display: none !important;
 }
@@ -782,6 +786,24 @@ ion-content.cameraFrame {
 	100% {
 		transform: translateX(0);
 	}
+}
+
+.bellshake{
+	animation: bellshake .5s cubic-bezier(.36,.07,.19,.97) both;
+    backface-visibility: hidden;
+    transform-origin: top right;
+}
+
+@keyframes bellshake {
+	0% { transform: rotate(0); }
+	15% { transform: rotate(5deg); }
+	30% { transform: rotate(-5deg); }
+	45% { transform: rotate(4deg); }
+	60% { transform: rotate(-4deg); }
+	75% { transform: rotate(2deg); }
+	85% { transform: rotate(-2deg); }
+	92% { transform: rotate(1deg); }
+	100% { transform: rotate(0); }
 }
 
 // Modal Style

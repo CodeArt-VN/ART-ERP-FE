@@ -30,7 +30,7 @@
 				<ion-icon class="min-btn" *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
 				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Name" name="search" color="primary"></ion-icon>
 			</div>
-			<div class="col-remark cell">Ghi chú</div>
+			<div class="col-remark cell">{{'Remark' | translate}}</div>
 		</header>
 		<form (keydown.enter)="refresh()" (submit)="refresh()" action="#">
 			<header class="filter" *ngIf="pageConfig.isShowSearch">

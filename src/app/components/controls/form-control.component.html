@@ -1,79 +1,10 @@
-<div class="c-control" [formGroup]="field.form">
+<div class="c-control">
     <label class="c-label" [attr.for]="field.id">
         {{field.label | translate}}
         <ng-content select="[label]"></ng-content>
         <ion-text *ngIf="!field.form.controls[field.id].valid && !field.form.controls[field.id].pending && field.form.controls[field.id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
     </label>
-    <app-input-control [field]="field"></app-input-control>
+    <app-input-control [field]="field" (onChange)="inputChange($event)"></app-input-control>
     
     
-    <ng-container [ngSwitch]="field.type">
-        <!-- text -->
-        <input *ngSwitchCase="'text'" type="text" class="c-input" [id]="field.id" [formControlName]="field.id" (change)="inputChange($event);">
-
-        <!-- number -->
-        <input *ngSwitchCase="'number'" type="number" class="c-input" [id]="field.id" [formControlName]="field.id">
-
-        <!-- email -->
-        <input *ngSwitchCase="'email'" type="email" class="c-input" [id]="field.id" [formControlName]="field.id">
-
-        <!-- date -->
-        <input *ngSwitchCase="'date'" type="date" class="c-input date" [id]="field.id" [formControlName]="field.id">
-
-        <!-- datetime-local -->
-        <input *ngSwitchCase="'datetime-local'" type="datetime-local" class="c-input date" [id]="field.id" placeholder="{{field.placeholder | translate}}" [formControlName]="field.id">
-
-        <!-- select -->
-        <select *ngSwitchCase="'select'" class="c-input c-dropdown" [formControlName]="field.id">
-            <option *ngFor="let i of field.dataSource" [value]="i[field.bindValue]">{{i[field.bindLabel] | translate}}</option>
-        </select>
-
-        <!-- ng-select -->
-        <ng-select *ngSwitchCase="'ng-select'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [bindLabel]="field.bindLabel" [clearable]="false" (change)="ngSelectChange($event)">
-        </ng-select>
-
-        <!-- ng-select-status -->
-        <ng-select *ngSwitchCase="'ng-select-status'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [clearable]="false" (change)="ngSelectChange($event)">
-            <ng-template ng-label-tmp let-i="item">
-                <b><ion-text [color]="i.Color">{{i.Name | translate}}</ion-text></b>
-            </ng-template>
-            <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                <div *ngIf="i"><ion-text [color]="i.Color" [ngOptionHighlight]="search">{{i.Name | translate}}</ion-text></div>
-            </ng-template>
-        </ng-select>
-
-        <!-- ng-select-bp -->
-        <ng-select *ngSwitchCase="'ng-select-bp'" class="c-input" [formControlName]="field.id" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource.items$ | async" [typeahead]="field.dataSource.input$" [loading]="field.dataSource.loading" [clearable]="false" [bindValue]="field.bindValue" placeholder="{{field.placeholder | translate}}" (change)="ngSelectChange($event)">
-            <ng-template ng-label-tmp let-i="item">
-                <div *ngIf="i.Id">
-                    <a class="clickable" (click)="nav('/business-partner/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a>
-                    <small [title]="i.Name"> {{i.Name}}</small>
-                </div>
-            </ng-template>
-            <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                <div *ngIf="i">
-                    <div>
-                        <b *ngIf="i.Code"><span class="important" [ngOptionHighlight]="search">{{i.Code}}</span></b>
-                        <span style="white-space: normal;"> {{i.Name}}</span>
-                        <span *ngIf="i.WorkPhone"> | <small> <b>{{i.WorkPhone}}</b></small></span>
-                    </div>
-                </div>
-            </ng-template>
-        </ng-select>
-
-        <!-- textarea -->
-        <textarea *ngSwitchCase="'textarea'" [id]="field.id" [formControlName]="field.id" rows="3" class="c-input remark" type="textarea"></textarea>
-
-        <!-- branch-breadcrumbs -->
-        <app-branch-breadcrumbs *ngSwitchCase="'branch-breadcrumbs'" [maxItems]="3" [Id]="field.form.controls[field.id].value" [Items]="field.dataSource" class="c-input disable breadcrumbs"></app-branch-breadcrumbs>
-
-        <!-- span-number -->
-        <span *ngSwitchCase="'span-number'" class="c-input disable">{{field.form.controls[field.id].value | number:'1.0-0'}}</span>
-
-        <!-- span-date -->
-        <span *ngSwitchCase="'span-date'" class="c-input disable">{{field.form.controls[field.id].value | date: 'yyyy/MM/dd'}}</span>
-
-        <!-- span-datetime -->
-        <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{field.form.controls[field.id].value | date:'yyyy/MM/dd HH:mm'}}</span>
-    </ng-container>
 </div>
