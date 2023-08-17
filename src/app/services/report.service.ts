@@ -11,7 +11,8 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 })
 export class ReportService extends exService {
-    public reportTracking = new Subject<any>();
+    public reportEventTracking = new Subject<any>();
+    public reportDataTracking = new Subject<any>();
 
     commonOptions = {
         /**
@@ -92,18 +93,25 @@ export class ReportService extends exService {
     };
 
     schemaList = [
-        {
-            Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', ModifiedDate: '2023-01-01', LastData: '2023-01-01',
-            Columns: [
-                { Id: 1, Code: 'Status', Name: 'A/R invoice status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Count', Name: 'Count of documents', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Total', Name: 'Sum of total', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        {Id: 1, Code: 'SaleOrder', Name: 'Sale orders', ModifiedDate: '2023-01-01'},
+        {Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', ModifiedDate: '2023-01-01'},
+    ];
 
-                //Sample dataset: [{Status: 'New', Count: 37, Total: 23000000, Discount: 9800000}]
+    schemaDetailList = [
+        { IDSchema: 1, Id: 1, Code: 'Status', Name: 'A/R invoice status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Count', Name: 'Count of documents', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Total', Name: 'Sum of total', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+    ]
+
+    datasetList = [
+        {
+            Id: 1, Code: 'SaleOrder', LastData: '2023-01-01',
+            rawData: [
+                { Id: 1 },
             ]
         }
-    ];
+    ]
 
     datasetManage = {
         lastSchemaModifiedDate: '2023-01-01',
@@ -111,6 +119,98 @@ export class ReportService extends exService {
     };
 
 
+    /**
+     * get report data from raw dataset
+     * @param reportConfig The report configurations to get data from raw dataset
+     * @returns Return friendly data to view and serves as a data source for charts
+     */
+    getReportDataset(reportConfig): Subject<any> {
+
+        // Sample reportConfig
+        // {
+        //     timeFrame: { From: '-7D', To: 0 },
+        //     compareTo: '-1W',
+        //     schema: { Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset' },
+        //     transform: {
+        //         type: 'filter',
+        //         config: {
+        //             and: [
+        //                 { dimension: 'IDBranch', operator: '=', value: 1 },
+        //                 { dimension: 'Type', operator: '=', value: 'POS' },
+        //                 { dimension: 'OrderDate', operator: '>=', value: 'calcFromTimeFrame' },
+        //                 { dimension: 'OrderDate', operator: '<=', value: 'calcToTimeFrame' }
+        //             ]
+        //         }
+        //     },
+        //     interval: { type: 'Day' },
+        //     compareBy: [
+        //         { property: 'IDBranch' },
+        //         { property: 'Title' },
+        //     ],
+        //     measureBy: [
+        //         { property: 'Id', method: 'count' },
+        //         { property: 'Discount', method: 'sum', title: 'Sum of discount' },
+        //     ]
+        // }
+
+        //1. Use reportConfig.Schema.Id to get raw data from the corresponding dataset
+        //
+
+        let schema = this.schemaList.find(d=>d.Id == reportConfig.Schema.Id);
+
+        setTimeout(() => {
+            this.getDatasetFromLocal(schema, true);
+        }, 0);
+        return this.reportDataTracking;
+    }
+
+    getDatasetFromLocal(schema, checkNewData = false) {
+        let dataset = this.datasetList.find(d=> d.Id == schema.Id);
+        if (!dataset) {
+            dataset = {Id: schema.Id, Code: schema.Code, LastData: '2000-01-01', rawData: []};
+            this.datasetList.push(dataset);
+        }
+        else{
+            this.reportDataTracking.next(dataset.rawData);
+        }
+
+        this.env.getStorage('BI-Dataset-'+schema.Code).then(data => {
+            this.reportDataTracking.next(data);
+            if (checkNewData)
+                this.checkNewDataAvailble(schema);
+        });
+    }
+
+    getDatasetFromServer(schema) {
+        this.commonService.connect('GET', 'BI/Schema/GetData', { Id: schema.Id, LastData: schema.LastData })
+            .subscribe((resp: any) => {
+                let dataset = this.datasetList.find(d=> d.Id == schema.Id);
+                if (!dataset) {
+                    dataset = {Id: schema.Id, Code: schema.Code, LastData: '2000-01-01', rawData: []};
+                    this.datasetList.push(dataset);
+                }
+
+                dataset.rawData = [...dataset.rawData, ...resp];
+
+                this.env.setStorage('BI-Dataset-'+schema.Code, dataset);
+
+            }, error => { console.log(error); });
+    }
+
+
+    /**
+     * Call the api with the dataset's information to check if there is new data
+     * @param schema Schema to check
+     */
+    checkNewDataAvailble(schema) {
+        //if has new data => call update
+        this.commonService.connect('GET', 'BI/Schema/CheckNewDataAvailble', { Id: schema.Id, LastData: schema.LastData })
+            .subscribe((resp: any) => {
+                if (resp == 'Yes') {
+                    this.getDatasetFromServer(schema);
+                }
+            }, error => { console.log(error); });
+    }
 
     groupByArray(xs, key) {
         return xs.reduce(function (rv, x) {
@@ -145,7 +245,7 @@ export class ReportService extends exService {
     }
 
 
-
+    
 
     rptGlobal: any = {
         frequency: [
@@ -517,11 +617,11 @@ export class ReportService extends exService {
     }
 
     publishChange(data: any) {
-        this.reportTracking.next(data);
+        this.reportEventTracking.next(data);
     }
 
     Tracking(): Subject<any> {
-        return this.reportTracking;
+        return this.reportEventTracking;
     }
 
     dateQuery(type) {
@@ -790,4 +890,7 @@ export class ReportService extends exService {
         return gradientStroke;
     }
 
+
+
+    
 }
