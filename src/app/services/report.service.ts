@@ -6,11 +6,12 @@ import { Observable } from 'rxjs';
 import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
+import { ReportConfig, Schema } from '../models/options-interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ReportService extends exService {
+export class ReportService {
     public reportEventTracking = new Subject<any>();
     public reportDataTracking = new Subject<any>();
 
@@ -56,28 +57,33 @@ export class ReportService extends exService {
         ],
 
         transformOperator: [
-            { code: 'Text', name: 'Text', icon: '', disabled: true },
+            { code: 'TextGroup', name: 'Text', icon: '', disabled: true },
             { code: '=', name: 'is', icon: '' },
-            { code: 'contains', name: 'contains', icon: '' },
+            { code: 'like', name: 'contains', icon: '' },
             { code: 'Text', name: 'starts with', icon: '' },
             { code: 'Text', name: 'ends with', icon: '' },
             { code: 'Text', name: 'is not', icon: '' },
             { code: 'Text', name: 'does not contain', icon: '' },
             { code: 'Text', name: 'does not start with', icon: '' },
             { code: 'Text', name: 'does not end with', icon: '' },
-            { code: 'Text', name: 'matches regexp', icon: '' },
+            //{ code: 'Text', name: 'matches regexp', icon: '' },
 
-            { code: 'Text', name: 'Number', icon: '', disabled: true },
-            { code: 'Text', name: 'equals', icon: '' },
-            { code: 'Text', name: 'greater than', icon: '' },
-            { code: 'Text', name: 'less than', icon: '' },
-            { code: 'Text', name: 'greater than or equals', icon: '' },
-            { code: 'Text', name: 'less than or equals', icon: '' },
-            { code: 'Text', name: 'does not equal', icon: '' },
+            { code: 'NumberGroup', name: 'Number', icon: '', disabled: true },
+            { code: '=', name: 'equals', icon: '' },
+            { code: '>', name: 'greater than', icon: '' },
+            { code: '<', name: 'less than', icon: '' },
+            { code: '>=', name: 'greater than or equals', icon: '' },
+            { code: '<=', name: 'less than or equals', icon: '' },
+            { code: '<>', name: 'does not equal', icon: '' },
 
-            { code: 'Text', name: 'Boolean', icon: '', disabled: true },
-            { code: 'Text', name: 'true', icon: '' },
-            { code: 'Text', name: 'false', icon: '' }
+            { code: 'BooleanGroup', name: 'Boolean', icon: '', disabled: true },
+            { code: '1', name: 'true', icon: '' },
+            { code: '0', name: 'false', icon: '' }
+        ],
+
+        logicalOperator: [
+            { code: 'AND', name: 'AND', icon: '' },
+            { code: 'OR', name: 'OR', icon: '' },
         ],
 
         measureMethod: [
@@ -92,9 +98,9 @@ export class ReportService extends exService {
         monthOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
     };
 
-    schemaList = [
-        {Id: 1, Code: 'SaleOrder', Name: 'Sale orders', ModifiedDate: '2023-01-01'},
-        {Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', ModifiedDate: '2023-01-01'},
+    schemaList: Schema[] = [
+        { Id: 1, Code: 'SaleOrder', Name: 'Sale orders', Type: 'Dataset', ModifiedDate: '2023-01-01' },
+        { Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', Type: 'Dataset', ModifiedDate: '2023-01-01' },
     ];
 
     schemaDetailList = [
@@ -105,18 +111,36 @@ export class ReportService extends exService {
     ]
 
     datasetList = [
-        {
-            Id: 1, Code: 'SaleOrder', LastData: '2023-01-01',
-            rawData: [
-                { Id: 1 },
-            ]
-        }
+        // Sample data
+        // {
+        //     type: 'Dataset', id: 1, code: 'SaleOrder', lastData: '2023-01-01',
+        //     data: [
+        //         { Id: 1, Title: 'New', Count: 37, Total: 23000000, Discount: 9800000 },
+        //         { Id: 2, Title: 'Approved', Count: 23, Total: 45600000, Discount: 6700000 },
+        //         { Id: 3, Title: 'Shipping', Count: 56, Total: 8700000, Discount: 2500000 },
+        //         { Id: 4, Title: 'Done', Count: 87, Total: 89000000, Discount: 1500000 },
+        //     ]
+        // },
+        
     ]
 
-    datasetManage = {
-        lastSchemaModifiedDate: '2023-01-01',
 
-    };
+
+   
+
+    constructor(
+        public commonService: CommonService,
+        public env: EnvService,
+
+    ) {
+        // TODO
+        // Set up SignalR to receive update data mart / data set
+        // Schedule periodic checks
+        // If any dataset has new data, then call to retrieve that dataset.
+        // After retrieving new data, update the relevant open datasets.
+        // Notify commponents to change data to refresh / update UI
+    }
+
 
 
     /**
@@ -124,75 +148,78 @@ export class ReportService extends exService {
      * @param reportConfig The report configurations to get data from raw dataset
      * @returns Return friendly data to view and serves as a data source for charts
      */
-    getReportDataset(reportConfig): Subject<any> {
-
-        // Sample reportConfig
-        // {
-        //     timeFrame: { From: '-7D', To: 0 },
-        //     compareTo: '-1W',
-        //     schema: { Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset' },
-        //     transform: {
-        //         type: 'filter',
-        //         config: {
-        //             and: [
-        //                 { dimension: 'IDBranch', operator: '=', value: 1 },
-        //                 { dimension: 'Type', operator: '=', value: 'POS' },
-        //                 { dimension: 'OrderDate', operator: '>=', value: 'calcFromTimeFrame' },
-        //                 { dimension: 'OrderDate', operator: '<=', value: 'calcToTimeFrame' }
-        //             ]
-        //         }
-        //     },
-        //     interval: { type: 'Day' },
-        //     compareBy: [
-        //         { property: 'IDBranch' },
-        //         { property: 'Title' },
-        //     ],
-        //     measureBy: [
-        //         { property: 'Id', method: 'count' },
-        //         { property: 'Discount', method: 'sum', title: 'Sum of discount' },
-        //     ]
-        // }
-
+    getReportDataset(reportConfig: ReportConfig, checkNewData: boolean = false): Subject<any> {
         //1. Use reportConfig.Schema.Id to get raw data from the corresponding dataset
-        //
-
-        let schema = this.schemaList.find(d=>d.Id == reportConfig.Schema.Id);
+        let schema = this.schemaList.find(d => d.Id == reportConfig.Schema.Id);
 
         setTimeout(() => {
-            this.getDatasetFromLocal(schema, true);
+            this.getDatasetFromLocal(reportConfig, checkNewData);
         }, 0);
+
+        // setInterval(()=>{
+        //     this.getDatasetFromLocal(schema, true);
+        // }, 5000)
+
         return this.reportDataTracking;
     }
 
-    getDatasetFromLocal(schema, checkNewData = false) {
-        let dataset = this.datasetList.find(d=> d.Id == schema.Id);
-        if (!dataset) {
-            dataset = {Id: schema.Id, Code: schema.Code, LastData: '2000-01-01', rawData: []};
-            this.datasetList.push(dataset);
-        }
-        else{
-            this.reportDataTracking.next(dataset.rawData);
+
+    /**
+     * Get local dataset
+     * @param schema Get local dataset by schema
+     * @param checkNewData Check if has new data
+     */
+    getDatasetFromLocal(reportConfig: ReportConfig, checkNewData: boolean = false) {
+        //Check in memory data
+        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
+        if (localDataset)
+            this.reportDataTracking.next(localDataset);
+
+        //if there is no data => check local storage
+        if (checkNewData || !localDataset) {
+
+            if (!localDataset) {
+                this.env.getStorage('BI-Dataset-' + reportConfig.Schema.Code).then(storageDataset => {
+                    if (storageDataset) {
+                        this.datasetList.push(storageDataset);
+                        this.reportDataTracking.next(storageDataset);
+                    }
+                });
+            }
+
+            // if there is no data OR need to checkNewData then go to check new data availble
+            if (checkNewData || !localDataset)
+                this.checkNewDataAvailble(reportConfig);
         }
 
-        this.env.getStorage('BI-Dataset-'+schema.Code).then(data => {
-            this.reportDataTracking.next(data);
-            if (checkNewData)
-                this.checkNewDataAvailble(schema);
-        });
+
     }
 
-    getDatasetFromServer(schema) {
-        this.commonService.connect('GET', 'BI/Schema/GetData', { Id: schema.Id, LastData: schema.LastData })
+    getDatasetFromServer(reportConfig: ReportConfig) {
+        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
+        if (!localDataset) {
+            localDataset = { id: reportConfig.Schema.Id, code: reportConfig.Schema.Code, type: 'Dataset', lastData: '2000-01-01', data: [] };
+            this.datasetList.push(localDataset);
+        }
+        reportConfig.Schema.LastDataModifiedDate = localDataset.lastData;
+
+        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
             .subscribe((resp: any) => {
-                let dataset = this.datasetList.find(d=> d.Id == schema.Id);
-                if (!dataset) {
-                    dataset = {Id: schema.Id, Code: schema.Code, LastData: '2000-01-01', rawData: []};
-                    this.datasetList.push(dataset);
+                if (!resp.Message) {
+                    localDataset.lastData = resp.LastModifiedDate;
+                    localDataset.data = resp.Data;//[...localDataset.data, ...resp.Data];
+
+                    this.reportDataTracking.next(localDataset);
+                    this.env.showTranslateMessage('You just loaded the latest data!', 'success');
+                    this.env.setStorage('BI-Dataset-' + reportConfig.Schema.Code, localDataset);
+
+
+                }
+                else {
+                    this.env.showTranslateMessage(resp.Message);
                 }
 
-                dataset.rawData = [...dataset.rawData, ...resp];
 
-                this.env.setStorage('BI-Dataset-'+schema.Code, dataset);
 
             }, error => { console.log(error); });
     }
@@ -202,12 +229,15 @@ export class ReportService extends exService {
      * Call the api with the dataset's information to check if there is new data
      * @param schema Schema to check
      */
-    checkNewDataAvailble(schema) {
+    checkNewDataAvailble(reportConfig: ReportConfig) {
         //if has new data => call update
-        this.commonService.connect('GET', 'BI/Schema/CheckNewDataAvailble', { Id: schema.Id, LastData: schema.LastData })
+        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig)
             .subscribe((resp: any) => {
                 if (resp == 'Yes') {
-                    this.getDatasetFromServer(schema);
+                    this.getDatasetFromServer(reportConfig);
+                }
+                else {
+                    this.env.showTranslateMessage('You are viewing the latest data', 'success');
                 }
             }, error => { console.log(error); });
     }
@@ -245,7 +275,7 @@ export class ReportService extends exService {
     }
 
 
-    
+
 
     rptGlobal: any = {
         frequency: [
@@ -606,15 +636,7 @@ export class ReportService extends exService {
 
     };
 
-    constructor(
-        public commonService: CommonService,
-        public env: EnvService,
 
-    ) {
-        super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
-        //this.rptGlobal.branch = [];
-        this.dateQuery('d');
-    }
 
     publishChange(data: any) {
         this.reportEventTracking.next(data);
@@ -892,5 +914,5 @@ export class ReportService extends exService {
 
 
 
-    
+
 }
