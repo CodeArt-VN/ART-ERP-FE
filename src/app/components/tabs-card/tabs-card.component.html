@@ -1,0 +1,12 @@
+<div class="statistic-row">
+  <div class="card-multirow" *ngFor="let m of tabs"
+    [ngClass]="{selected: type === (m.Title || m.Property)}" (click)="onChange.emit((m.Title || m.Property))">
+    <div class="card-header">{{(m.Title || m.Property)}}</div>
+    <div class="card-value">{{1595 | number: '1.0-0' }}</div>
+    <ion-text color="success" class="card-compare-percent">
+      24%
+      <ion-icon name="caret-up"></ion-icon>
+    </ion-text>
+    <div class="card-chart-preview"></div>
+  </div>
+</div>
