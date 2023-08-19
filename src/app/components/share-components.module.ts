@@ -26,6 +26,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 import { PageTitleComponent } from './page-title/page-title.component';
 import { TabsCardComponent } from './tabs-card/tabs-card.component';
 
+import { ChartFilterComponent } from "./chart-filter/chart-filter.component";
 
 
 
@@ -56,7 +57,8 @@ import { TabsCardComponent } from './tabs-card/tabs-card.component';
 		PageMessageComponent,
 		PageTitleComponent,
 		TabsCardComponent,
-		QueryFilterComponent
+		QueryFilterComponent,
+		ChartFilterComponent
 	],
 	exports: [
 		GroupControlComponent,
@@ -71,6 +73,7 @@ import { TabsCardComponent } from './tabs-card/tabs-card.component';
 		PageTitleComponent,
 		TabsCardComponent,
 		QueryFilterComponent,
+		ChartFilterComponent,
 		ShareDirectivesModule,
 		
 		CommonModule,

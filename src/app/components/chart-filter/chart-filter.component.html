@@ -1,0 +1,101 @@
+<ion-modal class="filter-chart" trigger="open-modal" [isOpen]="isOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button [strong]="true" (click)="onCancel.emit()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content appScrollbarTheme class="ion-padding">
+      <div class="item-row">
+        <div class="filter-item">
+          <ion-row class="filter-row">
+            <ion-col size="4">
+              <div class="c-control">
+                <ng-select class="c-input" [clearable]="false"></ng-select>
+              </div>
+            </ion-col>
+  
+            <ion-col size="3">
+              <div class="c-control">
+                <ng-select 
+                  class="c-input" 
+                  [clearable]="false"
+                  [items]="operatorOptions"
+                ></ng-select>
+              </div>
+            </ion-col>
+  
+            <ion-col size="2">
+              <div class="c-control">
+                <input type="text" class="c-input" />
+              </div>
+            </ion-col>
+  
+            <ion-col size="3">
+              <div class="c-control">
+                <ng-select class="c-input" [clearable]="false"></ng-select>
+              </div>
+            </ion-col>
+          </ion-row>
+          <div class="filter-action">
+            <div class="c-control">
+              <ion-button size="small" fill="clear">
+                <ion-icon name="remove-outline"></ion-icon>
+              </ion-button>
+              <ion-button size="small" fill="clear">
+                <ion-icon name="add-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+        <div class="filter-item children" *ngIf="false">
+          <div class="filter-item">
+            <ion-row class="filter-row">
+              <ion-col size="4">
+                <div class="c-control">
+                  <ng-select class="c-input" [clearable]="false"></ng-select>
+                </div>
+              </ion-col>
+    
+              <ion-col size="3">
+                <div class="c-control">
+                  <ng-select class="c-input" [clearable]="false"></ng-select>
+                </div>
+              </ion-col>
+    
+              <ion-col size="2">
+                <div class="c-control">
+                  <input type="text" class="c-input" />
+                </div>
+              </ion-col>
+    
+              <ion-col size="3">
+                <div class="c-control">
+                  <ng-select class="c-input" [clearable]="false"></ng-select>
+                </div>
+              </ion-col>
+            </ion-row>
+            <div class="filter-action">
+              <div class="c-control">
+                <ion-button size="small" fill="clear">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </ion-button>
+                <ion-button size="small" fill="clear">
+                  <ion-icon name="add-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="c-control ion-text-right">
+        <label class="c-label" for=""></label>
+        <ion-button>Lọc</ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
