@@ -5,7 +5,7 @@
     <div class="card-value">{{1595 | number: '1.0-0' }}</div>
     <ion-text color="success" class="card-compare-percent" [ngClass]="{'percent-down': true}">
       24%
-      <ion-icon [name]="false ?'caret-down' : 'caret-up'"></ion-icon>
+      <ion-icon [name]="true ?'caret-down':'caret-up'"></ion-icon>
     </ion-text>
     <div class="card-chart-preview"></div>
   </div>
