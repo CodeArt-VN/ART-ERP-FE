@@ -1,0 +1,24 @@
+.filter-chart {
+    .item-row {
+        .filter-item {
+            display: flex;
+            width: 100%;
+            .filter-row {
+                width: calc(100% - 100px);
+            }
+            .filter-action {
+                width: 100px;
+                display: flex;
+    
+                .c-control {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            &.children {
+                padding-left: 25px;
+            }
+        }
+    }
+}

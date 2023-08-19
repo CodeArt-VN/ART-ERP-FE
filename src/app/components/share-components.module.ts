@@ -24,7 +24,7 @@ import { FieldControlComponent } from './controls/field-control.component';
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcrumbs.component';
 import { PageTitleComponent } from './page-title/page-title.component';
-
+import { ChartFilterComponent } from "./chart-filter/chart-filter.component";
 
 
 
@@ -54,7 +54,8 @@ import { PageTitleComponent } from './page-title/page-title.component';
 		ModalDetailToolbarComponent,
 		PageMessageComponent,
 		PageTitleComponent,
-		QueryFilterComponent
+		QueryFilterComponent,
+		ChartFilterComponent
 	],
 	exports: [
 		GroupControlComponent,
@@ -68,6 +69,7 @@ import { PageTitleComponent } from './page-title/page-title.component';
 		PageMessageComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
+		ChartFilterComponent,
 		ShareDirectivesModule,
 		
 		CommonModule,
