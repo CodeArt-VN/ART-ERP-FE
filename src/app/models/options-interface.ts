@@ -1,8 +1,3 @@
-
-
-
-
-
 export interface ReportConfig {
 	ReprotInfo: BIReport;
 	TimeFrame: TimeFrame;
@@ -13,7 +8,6 @@ export interface ReportConfig {
 	CompareBy: SchemaDetail[];
 	MeasureBy: SchemaDetail[];
 }
-
 
 export interface BIReport extends Schema { }
 
