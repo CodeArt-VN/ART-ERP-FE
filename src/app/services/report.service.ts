@@ -6,12 +6,14 @@ import { Observable } from 'rxjs';
 import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
+import { ReportConfig, Schema } from '../models/options-interface';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ReportService extends exService {
-    public reportTracking = new Subject<any>();
+export class ReportService {
+    public reportEventTracking = new Subject<any>();
+    public reportDataTracking = new Subject<any>();
 
     commonOptions = {
         /**
@@ -55,28 +57,33 @@ export class ReportService extends exService {
         ],
 
         transformOperator: [
-            { code: 'Text', name: 'Text', icon: '', disabled: true },
+            { code: 'TextGroup', name: 'Text', icon: '', disabled: true },
             { code: '=', name: 'is', icon: '' },
-            { code: 'contains', name: 'contains', icon: '' },
-            { code: 'Text', name: 'starts with', icon: '' },
-            { code: 'Text', name: 'ends with', icon: '' },
-            { code: 'Text', name: 'is not', icon: '' },
-            { code: 'Text', name: 'does not contain', icon: '' },
-            { code: 'Text', name: 'does not start with', icon: '' },
-            { code: 'Text', name: 'does not end with', icon: '' },
-            { code: 'Text', name: 'matches regexp', icon: '' },
+            // { code: 'like', name: 'contains', icon: '' },
+            // { code: 'Text', name: 'starts with', icon: '' },
+            // { code: 'Text', name: 'ends with', icon: '' },
+            // { code: 'Text', name: 'is not', icon: '' },
+            // { code: 'Text', name: 'does not contain', icon: '' },
+            // { code: 'Text', name: 'does not start with', icon: '' },
+            // { code: 'Text', name: 'does not end with', icon: '' },
+            //{ code: 'Text', name: 'matches regexp', icon: '' },
 
-            { code: 'Text', name: 'Number', icon: '', disabled: true },
-            { code: 'Text', name: 'equals', icon: '' },
-            { code: 'Text', name: 'greater than', icon: '' },
-            { code: 'Text', name: 'less than', icon: '' },
-            { code: 'Text', name: 'greater than or equals', icon: '' },
-            { code: 'Text', name: 'less than or equals', icon: '' },
-            { code: 'Text', name: 'does not equal', icon: '' },
+            { code: 'NumberGroup', name: 'Number', icon: '', disabled: true },
+            { code: '=', name: 'equals', icon: '' },
+            { code: '>', name: 'greater than', icon: '' },
+            { code: '<', name: 'less than', icon: '' },
+            { code: '>=', name: 'greater than or equals', icon: '' },
+            { code: '<=', name: 'less than or equals', icon: '' },
+            { code: '<>', name: 'does not equal', icon: '' },
 
-            { code: 'Text', name: 'Boolean', icon: '', disabled: true },
-            { code: 'Text', name: 'true', icon: '' },
-            { code: 'Text', name: 'false', icon: '' }
+            { code: 'BooleanGroup', name: 'Boolean', icon: '', disabled: true },
+            { code: '1', name: 'true', icon: '' },
+            { code: '0', name: 'false', icon: '' }
+        ],
+
+        logicalOperator: [
+            { code: 'AND', name: 'AND', icon: '' },
+            { code: 'OR', name: 'OR', icon: '' },
         ],
 
         measureMethod: [
@@ -87,30 +94,168 @@ export class ReportService extends exService {
             { code: 'average', name: 'Average {0}', icon: '' },
         ],
 
+        visualCategories:[
+            { code: 'count', name: 'Comparison', remark: 'To compare the magnitude of measures', icon: '' },
+            { code: 'count', name: 'Change over time', remark: 'To display the changing trend of measures', icon: '' },
+            { code: 'count', name: 'Part-to-whole', remark: 'To identify the parts making up a measure total', icon: '' },
+            { code: 'count', name: 'Flow', remark: 'To display a flow or dynamic relations', icon: '' },
+            { code: 'count', name: 'Ranking', remark: 'To rank measures in an order', icon: '' },
+            { code: 'count', name: 'Spatial', remark: 'To display measures over spatial maps', icon: '' },
+            { code: 'count', name: 'Distribution', remark: 'To display the distribution of values', icon: '' },
+            { code: 'count', name: 'Correlation', remark: 'To show correlations between measures', icon: '' },
+            { code: 'count', name: 'Single', remark: 'To present single values', icon: '' },
+            { code: 'count', name: 'Narrative', remark: 'To tell a story with data', icon: '' },
+            { code: 'count', name: 'Filter', remark: 'To control report filters', icon: '' },
+            { code: 'count', name: 'Miscellaneous', remark: '', icon: '' },
+        ],
+
         dayOfWeek: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
         monthOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
     };
 
-    schemaList = [
-        {
-            Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', ModifiedDate: '2023-01-01', LastData: '2023-01-01',
-            Columns: [
-                { Id: 1, Code: 'Status', Name: 'A/R invoice status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Count', Name: 'Count of documents', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Total', Name: 'Sum of total', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-                { Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
-
-                //Sample dataset: [{Status: 'New', Count: 37, Total: 23000000, Discount: 9800000}]
-            ]
-        }
+    schemaList: Schema[] = [
+        { Id: 1, Code: 'SaleOrder', Name: 'Sale orders', Type: 'Dataset', ModifiedDate: '2023-01-01' },
+        { Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', Type: 'Dataset', ModifiedDate: '2023-01-01' },
     ];
 
-    datasetManage = {
-        lastSchemaModifiedDate: '2023-01-01',
+    schemaDetailList = [
+        { IDSchema: 1, Id: 1, Code: 'Status', Name: 'A/R invoice status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Count', Name: 'Count of documents', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Total', Name: 'Sum of total', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+    ]
 
-    };
+    datasetList = [
+        // Sample data
+        // {
+        //     type: 'Dataset', id: 1, code: 'SaleOrder', lastData: '2023-01-01',
+        //     data: [
+        //         { Id: 1, Title: 'New', Count: 37, Total: 23000000, Discount: 9800000 },
+        //         { Id: 2, Title: 'Approved', Count: 23, Total: 45600000, Discount: 6700000 },
+        //         { Id: 3, Title: 'Shipping', Count: 56, Total: 8700000, Discount: 2500000 },
+        //         { Id: 4, Title: 'Done', Count: 87, Total: 89000000, Discount: 1500000 },
+        //     ]
+        // },
+        
+    ]
 
 
+
+   
+
+    constructor(
+        public commonService: CommonService,
+        public env: EnvService,
+
+    ) {
+        // TODO
+        // Set up SignalR to receive update data mart / data set
+        // Schedule periodic checks
+        // If any dataset has new data, then call to retrieve that dataset.
+        // After retrieving new data, update the relevant open datasets.
+        // Notify commponents to change data to refresh / update UI
+    }
+
+
+
+    /**
+     * get report data from raw dataset
+     * @param reportConfig The report configurations to get data from raw dataset
+     * @returns Return friendly data to view and serves as a data source for charts
+     */
+    getReportDataset(reportConfig: ReportConfig, checkNewData: boolean = false): Subject<any> {
+        //1. Use reportConfig.Schema.Id to get raw data from the corresponding dataset
+        let schema = this.schemaList.find(d => d.Id == reportConfig.Schema.Id);
+
+        setTimeout(() => {
+            this.getDatasetFromLocal(reportConfig, checkNewData);
+        }, 0);
+
+        // setInterval(()=>{
+        //     this.getDatasetFromLocal(schema, true);
+        // }, 5000)
+
+        return this.reportDataTracking;
+    }
+
+
+    /**
+     * Get local dataset
+     * @param schema Get local dataset by schema
+     * @param checkNewData Check if has new data
+     */
+    getDatasetFromLocal(reportConfig: ReportConfig, checkNewData: boolean = false) {
+        //Check in memory data
+        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
+        if (localDataset)
+            this.reportDataTracking.next(localDataset);
+
+        //if there is no data => check local storage
+        if (checkNewData || !localDataset) {
+
+            if (!localDataset) {
+                this.env.getStorage('BI-Dataset-' + reportConfig.Schema.Code).then(storageDataset => {
+                    if (storageDataset) {
+                        this.datasetList.push(storageDataset);
+                        this.reportDataTracking.next(storageDataset);
+                    }
+                });
+            }
+
+            // if there is no data OR need to checkNewData then go to check new data availble
+            if (checkNewData || !localDataset)
+                this.checkNewDataAvailble(reportConfig);
+        }
+
+
+    }
+
+    getDatasetFromServer(reportConfig: ReportConfig) {
+        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
+        if (!localDataset) {
+            localDataset = { id: reportConfig.Schema.Id, code: reportConfig.Schema.Code, type: 'Dataset', lastData: '2000-01-01', data: [] };
+            this.datasetList.push(localDataset);
+        }
+        reportConfig.Schema.LastDataModifiedDate = localDataset.lastData;
+
+        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
+            .subscribe((resp: any) => {
+                if (!resp.Message) {
+                    localDataset.lastData = resp.LastModifiedDate;
+                    localDataset.data = resp.Data;//[...localDataset.data, ...resp.Data];
+
+                    this.reportDataTracking.next(localDataset);
+                    this.env.showTranslateMessage('You just loaded the latest data!', 'success');
+                    this.env.setStorage('BI-Dataset-' + reportConfig.Schema.Code, localDataset);
+
+
+                }
+                else {
+                    this.env.showTranslateMessage(resp.Message);
+                }
+
+
+
+            }, error => { console.log(error); });
+    }
+
+
+    /**
+     * Call the api with the dataset's information to check if there is new data
+     * @param schema Schema to check
+     */
+    checkNewDataAvailble(reportConfig: ReportConfig) {
+        //if has new data => call update
+        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig)
+            .subscribe((resp: any) => {
+                if (resp == 'Yes') {
+                    this.getDatasetFromServer(reportConfig);
+                }
+                else {
+                    this.env.showTranslateMessage('You are viewing the latest data', 'success');
+                }
+            }, error => { console.log(error); });
+    }
 
     groupByArray(xs, key) {
         return xs.reduce(function (rv, x) {
@@ -506,22 +651,14 @@ export class ReportService extends exService {
 
     };
 
-    constructor(
-        public commonService: CommonService,
-        public env: EnvService,
 
-    ) {
-        super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
-        //this.rptGlobal.branch = [];
-        this.dateQuery('d');
-    }
 
     publishChange(data: any) {
-        this.reportTracking.next(data);
+        this.reportEventTracking.next(data);
     }
 
     Tracking(): Subject<any> {
-        return this.reportTracking;
+        return this.reportEventTracking;
     }
 
     dateQuery(type) {
@@ -789,5 +926,8 @@ export class ReportService extends exService {
         gradientStroke.addColorStop(1, color + '00');
         return gradientStroke;
     }
+
+
+
 
 }
