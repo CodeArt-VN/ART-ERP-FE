@@ -1,0 +1,10 @@
+<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner"></app-page-message>
+
+<!-- <ion-virtual-scroll [items]="rows" approxItemHeight="26px" *ngIf="rows.length && !showSpinner">
+    <ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
+        <datatable-body-row class="row" [columns]="columns" [row]="i" [rowIndex]="j" ></datatable-body-row>
+    </ng-container>
+</ion-virtual-scroll> -->
+<cdk-virtual-scroll-viewport scrollWindow itemSize="26" class="ion-content-scroll-host" > 
+    <datatable-body-row class="row" [columns]="columns" [row]="row" [rowIndex]="idx" *cdkVirtualFor="let row of rows; let idx = index"></datatable-body-row>
+</cdk-virtual-scroll-viewport>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 //3th party
 import { IonicModule } from '@ionic/angular';
@@ -26,6 +27,7 @@ import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcru
 import { PageTitleComponent } from './page-title/page-title.component';
 import { CardMultiRowComponent } from './visualizations/card-multi-row/card-multi-row.component';
 import { ReportChartComponent } from './visualizations/report-chart/report-chart.component';
+import { ShareDataTableModule } from './data-table/share-data-table.module';
 
 
 
@@ -35,6 +37,7 @@ import { ReportChartComponent } from './visualizations/report-chart/report-chart
 		CommonModule,
 		FormsModule,
 		ReactiveFormsModule,
+		ScrollingModule,
 
 		IonicModule,
 		TranslateModule,
@@ -42,10 +45,11 @@ import { ReportChartComponent } from './visualizations/report-chart/report-chart
 		NgOptionHighlightModule,
 		NgxMaskModule.forRoot(),
 		FileUploadModule,
-
+		ShareDataTableModule,
 		ShareDirectivesModule,
 	],
 	declarations: [
+		
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
@@ -54,13 +58,13 @@ import { ReportChartComponent } from './visualizations/report-chart/report-chart
 		ListToolbarComponent,
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
-		PageMessageComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
 		CardMultiRowComponent,
 		ReportChartComponent,
 	],
 	exports: [
+		
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
@@ -69,17 +73,15 @@ import { ReportChartComponent } from './visualizations/report-chart/report-chart
 		ListToolbarComponent,
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
-		PageMessageComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
 		CardMultiRowComponent,
 		ReportChartComponent,
-
-
+		ShareDataTableModule,
 		ShareDirectivesModule,
-		
 		CommonModule,
 		FormsModule,
+		ScrollingModule,
 		IonicModule,
 		ReactiveFormsModule,
 		TranslateModule,

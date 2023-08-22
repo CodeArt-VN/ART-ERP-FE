@@ -1,0 +1,8 @@
+<datatable-body-cell 
+class="cell"
+[class]="column.class" 
+[ngClass]="{'col-checkbox': column.checkbox, 'col-sticky': column.sticky}" 
+[column]="column" 
+[row]="row"
+[rowIndex]="rowIndex"
+*ngFor="let column of columns;" ></datatable-body-cell>

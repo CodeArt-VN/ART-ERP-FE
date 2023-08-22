@@ -18,6 +18,27 @@ import { NgxMaskModule } from 'ngx-mask';
 
 
 
+import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
+import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
+import { SaleOrderMergeModalPage } from './pages/SALE/sale-order-merge-modal/sale-order-merge-modal.page';
+import { SaleOrderARInvoiceModalPage } from './pages/SALE/sale-order-create-arinvoice-modal/sale-order-create-arinvoice-modal.page';
+import { SaleOrderMergeARInvoiceModalPage } from './pages/SALE/sale-order-merge-arinvoice-modal/sale-order-merge-arinvoice-modal.page';
+import { SaleOrderMobileAddContactModalPage } from './pages/SALE/sale-order-mobile-add-contact-modal/sale-order-mobile-add-contact-modal.page';
+
+import { ARInvoiceSplitModalPage } from './pages/ACCOUNTANT/arinvoice-split-modal/arinvoice-split-modal.page';
+import { ARInvoiceMergeModalPage } from './pages/ACCOUNTANT/arinvoice-merge-modal/arinvoice-merge-modal.page';
+
+import { POSSplitModalPage } from './pages/POS/pos-split-modal/pos-split-modal.page';
+import { POSMergeModalPage } from './pages/POS/pos-merge-modal/pos-merge-modal.page';
+import { POSChangeTableModalPage } from './pages/POS/pos-change-table-modal/pos-change-table-modal.page';
+import { POSPaymentModalPage } from './pages/POS/pos-payment-modal/pos-payment-modal.page';
+import { POSDiscountModalPage } from './pages/POS/pos-discount-modal/pos-discount-modal.page';
+import { POSIntroModalPage } from './pages/POS/pos-intro-modal/pos-intro-modal.page';
+import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page';
+import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
+import { POSCustomerOrderModalPage } from './pages/POS/pos-customer-order-modal/pos-customer-order-modal.page';
+import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
+import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -25,6 +46,15 @@ import { environment } from '../environments/environment';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
+//import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+
+
+
+
+// FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+//   dayGridPlugin,
+// ]);
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -32,7 +62,10 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage],
+  declarations: [AppComponent, PopoverPage, 
+    SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, 
+    ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, 
+    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage, POSNotifyModalPage],
   entryComponents: [PopoverPage],
   imports: [
     BrowserModule,

@@ -32,13 +32,14 @@
 	}
 }
 
-.table {
+app-data-table,.table {
+	display: block;
 	background: var(--ion-color-tertiary-tint);
 	$cell-padding-horizontal: 16px;
 
+	>datatable-header,
 	>header.bold,
 	>form,
-
 	.sticky-header {
 		position: sticky;
 		top: 0;
@@ -46,6 +47,7 @@
 		z-index: 10;
 	}
 
+	datatable-header,
 	header,
 	.row.header {
 		display: flex;
@@ -118,6 +120,7 @@
 			}
 		}
 
+		datatable-header-cell,
 		.cell {
 			color: var(--ion-color-dark);
 		}
@@ -164,6 +167,7 @@
 		min-height: 20px;
 	}
 
+	datatable-header-cell,
 	.cell {
 		display: flex;
 		flex: 1;
@@ -421,6 +425,14 @@
 		cursor: pointer;
 		min-width: 250px;
 
+	}
+
+	.col-sticky{
+		position: sticky;
+		left: 0;
+		background: var(--table-header-background);
+		border-right: solid var(--menu-right-border-color);
+		border-left: solid var(--menu-right-border-color);
 	}
 
 	.col-code {
