@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { Router, NavigationEnd } from '@angular/router';
@@ -49,7 +48,6 @@ export class AppComponent implements OnInit {
 		public env: EnvService,
 		public accountService: AccountService,
 		public platform: Platform,
-		public splashScreen: SplashScreen,
 		public translate: TranslateService
 	) {
 		this.appVersion = 'v' + this.env.version;
@@ -231,8 +229,6 @@ export class AppComponent implements OnInit {
 		this.platform.ready().then(() => {
 			this.showScrollbar = environment.showScrollbar;
 			this.updateStatusbar();
-			this.splashScreen.hide();
-
 		});
 		
 		

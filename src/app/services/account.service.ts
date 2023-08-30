@@ -50,7 +50,7 @@ export class AccountService {
 		console.log('check version');
 
 		return new Promise(resolve => {
-			this.env.ready.then(_ => {
+			this.env?.ready?.then(_ => {
 				this.env.getStorage('appVersion').then((version) => {
 					if (this.env.version != version) {
 						GlobalData.Token = {
@@ -95,7 +95,7 @@ export class AccountService {
 									name: this.env.user.FullName,
 									avatar: this.env.user.Avatar
 								};
-								let woopraInterval = setInterval(() => {
+								let woopraInterval: any = setInterval(() => {
 									if (window?.woopra) {
 										window.woopra.identify(woopraId);
 										window.woopra.push();
@@ -153,7 +153,7 @@ export class AccountService {
 
 	getToken() {
 		return new Promise(resolve => {
-			this.env.getStorage('UserToken').then((token) => {
+			this.env?.getStorage('UserToken')?.then((token) => {
 				if (token != null) {
 					let expires = new Date(token[".expires"]);
 					let cDate = new Date();
@@ -214,7 +214,7 @@ export class AccountService {
 					Promise.all([
 						this.statusProvider.read({ Take: 10000 }),
 						this.typeProvider.read({ Take: 10000 })
-					]).then(values => {
+					]).then((values: any[]) => {
 						this.env.statusList = values[0]['data'];
 						this.env.typeList = values[1]['data'];
 						this.env.loadBranch().then(_ => {
@@ -356,7 +356,7 @@ export class AccountService {
 			urlSearchParams.set('username', username);
 			urlSearchParams.set('password', password);
 
-			let deviceInfo = null;
+			let deviceInfo: any = null;
 			if (Capacitor.isPluginAvailable('Device')) {
 				let info = await Device.getInfo();
 				let UID = await Device.getId();

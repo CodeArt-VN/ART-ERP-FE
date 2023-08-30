@@ -8,29 +8,21 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-import { NgxMaskModule } from 'ngx-mask';
 import { FileUploadModule } from 'ng2-file-upload';
 
 //Custom component
 import { ShareDirectivesModule } from '../directives/share-directives.module';
-import { PageMessageComponent } from './page-message/page-message.component';
 import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
 import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.component';
 import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
-import { GroupControlComponent } from './group-control/group-control.component';
-import { FormControlComponent } from './controls/form-control.component';
-import { InputControlComponent } from './controls/input-control.component';
-import { FieldControlComponent } from './controls/field-control.component';
 
 import { QueryFilterComponent } from './query-filter/query-filter.component';
-import { BranchBreadcrumbsComponent } from './branch-breadcrumbs/branch-breadcrumbs.component';
 import { PageTitleComponent } from './page-title/page-title.component';
-import { CardMultiRowComponent } from './visualizations/card-multi-row/card-multi-row.component';
-import { ReportChartComponent } from './visualizations/report-chart/report-chart.component';
 import { ShareDataTableModule } from './data-table/share-data-table.module';
 
-
-
+//import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ShareInputControlsModule } from './controls/share-input-controls.modules';
+import { ShareVisualizationsModule } from './visualizations/share-visualizations.modules';
 
 @NgModule({
 	imports: [
@@ -38,56 +30,46 @@ import { ShareDataTableModule } from './data-table/share-data-table.module';
 		FormsModule,
 		ReactiveFormsModule,
 		ScrollingModule,
-
 		IonicModule,
+		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
 		NgOptionHighlightModule,
-		NgxMaskModule.forRoot(),
 		FileUploadModule,
+
+		ShareInputControlsModule,
 		ShareDataTableModule,
+		ShareVisualizationsModule,
 		ShareDirectivesModule,
 	],
+	// providers: [provideNgxMask()],
+
 	declarations: [
-		
-		GroupControlComponent,
-		FieldControlComponent,
-		FormControlComponent,
-		InputControlComponent,
-		BranchBreadcrumbsComponent,
 		ListToolbarComponent,
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
-		CardMultiRowComponent,
-		ReportChartComponent,
 	],
 	exports: [
-		
-		GroupControlComponent,
-		FieldControlComponent,
-		FormControlComponent,
-		InputControlComponent,
-		BranchBreadcrumbsComponent,
 		ListToolbarComponent,
 		DetailToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
-		CardMultiRowComponent,
-		ReportChartComponent,
+		ShareInputControlsModule,
 		ShareDataTableModule,
+		ShareVisualizationsModule,
 		ShareDirectivesModule,
 		CommonModule,
 		FormsModule,
 		ScrollingModule,
 		IonicModule,
 		ReactiveFormsModule,
+		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
 		NgOptionHighlightModule,
-		NgxMaskModule,
 		FileUploadModule
 	],
 })

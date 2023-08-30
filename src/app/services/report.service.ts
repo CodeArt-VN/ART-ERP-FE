@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { APIList } from './static/global-variable';
 import { CommonService, exService } from './core/common.service';
 import { SearchConfig } from './static/search-config';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
-import { ReportConfig, Schema } from '../models/options-interface';
+import { ReportConfig, Schema, TimeConfig } from '../models/options-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -16,30 +16,44 @@ export class ReportService {
     public reportDataTracking = new Subject<any>();
 
     commonOptions = {
+        timeConfigType: [
+            { code: 'Relative', name: 'Relative' },
+            { code: 'Absolute', name: 'Absolute' },
+        ],
+
+        timeConfigPeriod: [
+            { code: 'Minute', name: 'Minutes' },
+            { code: 'Hour', name: 'Hours' },
+            { code: 'Day', name: 'Days' },
+            { code: 'Week', name: 'Weekss' },
+            { code: 'Month', name: 'Months' },
+            { code: 'Year', name: 'Years' },
+        ],
+
         /**
          * Timeframe is the period in which BI will examine all your data during that time frame
          * Can use relate date like '-90' 90 days ago
          * or absolute date linke '2023-08-01'
          */
         timeframe: [
-            { code: '-0', name: 'Today' },
-            { code: '-1', name: 'Yesterday' },
-            { code: '-2', name: '2 days ago' },
-            { code: '-7', name: '7 days ago' },
-            { code: '-30', name: '30 days ago' },
-            { code: '-90', name: '90 days ago' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }, name: 'Today' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 }, name: 'Yesterday' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 2 }, name: '2 days ago' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 }, name: '1 week ago' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Month', Amount: 1 }, name: '1 month ago' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Month', Amount: 3 }, name: '3 months ago' },
         ],
 
         /**
          * The comparison to compare the results of the chart to a previous period
          */
         compareTo: [
-            { code: '-1D', name: 'Previous day' },
-            { code: '-1W', name: 'Previous week' },
-            { code: '-2W', name: 'Previous 2 weeks' },
-            { code: '-1M', name: 'Previous month' },
-            { code: '-1Q', name: 'Previous quater' },
-            { code: '-1Y', name: 'Previous year' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 }, name: 'Previous day' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 }, name: 'Previous week' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 2 }, name: 'Previous 2 weeks' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Month', Amount: 1 }, name: 'Previous month' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Month', Amount: 3 }, name: 'Previous 3 months' },
+            { timeConfig: { Type: 'Relative', IsPastDate: true, Period: 'Year', Amount: 1 }, name: 'Previous year' },
         ],
 
         /**
@@ -94,7 +108,7 @@ export class ReportService {
             { code: 'average', name: 'Average {0}', icon: '' },
         ],
 
-        visualCategories:[
+        visualCategories: [
             { code: 'count', name: 'Comparison', remark: 'To compare the magnitude of measures', icon: '' },
             { code: 'count', name: 'Change over time', remark: 'To display the changing trend of measures', icon: '' },
             { code: 'count', name: 'Part-to-whole', remark: 'To identify the parts making up a measure total', icon: '' },
@@ -119,7 +133,8 @@ export class ReportService {
     ];
 
     schemaDetailList = [
-        { IDSchema: 1, Id: 1, Code: 'Status', Name: 'A/R invoice status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'OrderDate', Name: 'Ngày lên đơn', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
+        { IDSchema: 1, Id: 1, Code: 'Status', Name: 'Status', Type: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
         { IDSchema: 1, Id: 1, Code: 'Count', Name: 'Count of documents', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
         { IDSchema: 1, Id: 1, Code: 'Total', Name: 'Sum of total', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
         { IDSchema: 1, Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
@@ -128,6 +143,7 @@ export class ReportService {
     datasetList = [
         // Sample data
         // {
+        //                    
         //     type: 'Dataset', id: 1, code: 'SaleOrder', lastData: '2023-01-01',
         //     data: [
         //         { Id: 1, Title: 'New', Count: 37, Total: 23000000, Discount: 9800000 },
@@ -136,12 +152,19 @@ export class ReportService {
         //         { Id: 4, Title: 'Done', Count: 87, Total: 89000000, Discount: 1500000 },
         //     ]
         // },
-        
-    ]
+
+    ];
+
+    trackingList = [
+        // {
+        //     schemaId: Number
+        //     tracking: Subject
+        // }
+    ];
 
 
 
-   
+
 
     constructor(
         public commonService: CommonService,
@@ -157,25 +180,125 @@ export class ReportService {
     }
 
 
+    calcTimeValue(timeConfig: TimeConfig, isFullfillDate = false): Date {
+        if (timeConfig.Type == 'absolute') {
+            return timeConfig.Value;
+        }
+
+        let addMinutes = 0;
+        let addHours = 0;
+        let addDays = 0;
+        let addMonths = 0;
+        let addYears = 0;
+
+
+        switch (timeConfig.Period) {
+            case 'Minute':
+                addMinutes = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+                break;
+            case 'Hour':
+                addHours = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+                break;
+            case 'Day':
+                addDays = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+                break;
+            case 'Week':
+                addDays = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount * 7;
+                break;
+            case 'Month':
+                addMonths = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+                break;
+            case 'Year':
+                addYears = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+                break;
+
+            default:
+                break;
+        }
+
+        let date = new Date();
+
+        if (isFullfillDate) {
+            return new Date(
+                date.getFullYear() + addYears,
+                date.getMonth() + addMonths,
+                date.getDate() + addDays,
+                (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getHours() + addHours) : 23,
+                (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getMinutes() + addMinutes) : 59,
+                (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getSeconds() : 59,
+                (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getMilliseconds() : 999
+            );
+        }
+
+
+        return new Date(
+            date.getFullYear() + addYears,
+            date.getMonth() + addMonths,
+            date.getDate() + addDays,
+            (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getHours() + addHours) : 0,
+            (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getMinutes() + addMinutes) : 0,
+            (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getSeconds() : 0,
+            (timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getMilliseconds() : 0
+        );
+    }
+
+    formatTimeConfig(timeConfig: TimeConfig, isPrevious = false) {
+
+        if (isPrevious) {
+            if (timeConfig.Amount == 0)
+                return 'Today';
+
+            if (timeConfig.Amount == 1) {
+                return 'Previous ' + timeConfig.Period.toLocaleLowerCase();
+            }
+
+            return 'Previous ' + timeConfig.Amount + ' ' + timeConfig.Period.toLocaleLowerCase() + 's';
+
+        }
+
+        if (timeConfig.Amount == 0)
+            return 'Today';
+
+        if (timeConfig.Amount == 1 && timeConfig.Period == 'Day')
+            return 'Yesterday';
+
+        return timeConfig.Amount + ' ' + timeConfig.Period.toLocaleLowerCase() + (timeConfig.Amount == 1 ? '' : 's') + (timeConfig.IsPastDate ? ' ago' : '');
+    }
+
+    getSchema(id: number) {
+        return this.schemaList.find(d => d.Id == id);
+    }
+
+    getSchemaDetail(id: number) {
+        return this.schemaDetailList.filter(d => d.IDSchema == id);
+    }
+
+
 
     /**
      * get report data from raw dataset
      * @param reportConfig The report configurations to get data from raw dataset
      * @returns Return friendly data to view and serves as a data source for charts
      */
-    getReportDataset(reportConfig: ReportConfig, checkNewData: boolean = false): Subject<any> {
-        //1. Use reportConfig.Schema.Id to get raw data from the corresponding dataset
-        let schema = this.schemaList.find(d => d.Id == reportConfig.Schema.Id);
+    regReportTrackingData(reportConfig: ReportConfig, checkNewData: boolean = false): Subject<any> {
+        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
+        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
 
-        setTimeout(() => {
-            this.getDatasetFromLocal(reportConfig, checkNewData);
-        }, 0);
+        if (localDataset && trackingData) {
+            return trackingData.tracking;
+        }
 
-        // setInterval(()=>{
-        //     this.getDatasetFromLocal(schema, true);
-        // }, 5000)
+        localDataset = { id: reportConfig.Schema.Id, data: null };
+        trackingData = { id: reportConfig.Schema.Id };
+        trackingData.tracking = new Subject<any>();
+        this.datasetList.push(localDataset);
+        this.trackingList.push(trackingData);
 
-        return this.reportDataTracking;
+        return trackingData.tracking;
+    }
+
+    getReportData(reportConfig: ReportConfig, checkNewData: boolean = false) {
+        this.getDatasetFromLocal(reportConfig, checkNewData);
     }
 
 
@@ -187,23 +310,30 @@ export class ReportService {
     getDatasetFromLocal(reportConfig: ReportConfig, checkNewData: boolean = false) {
         //Check in memory data
         let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
-        if (localDataset)
-            this.reportDataTracking.next(localDataset);
+        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
+        if (!(localDataset && trackingData)) {
+            console.log('Need to regReportTrackingData first');
+        }
+
+        if (localDataset.data) {
+            trackingData.tracking.next(localDataset);
+        }
+
 
         //if there is no data => check local storage
-        if (checkNewData || !localDataset) {
+        if (checkNewData || !localDataset.data) {
 
-            if (!localDataset) {
-                this.env.getStorage('BI-Dataset-' + reportConfig.Schema.Code).then(storageDataset => {
+            if (!localDataset.data) {
+                this.env.getStorage('BI-Dataset-' + reportConfig.Schema.Id).then(storageDataset => {
                     if (storageDataset) {
-                        this.datasetList.push(storageDataset);
-                        this.reportDataTracking.next(storageDataset);
+                        localDataset.data = storageDataset.data;
+                        trackingData.tracking.next(localDataset);
                     }
                 });
             }
 
             // if there is no data OR need to checkNewData then go to check new data availble
-            if (checkNewData || !localDataset)
+            if (checkNewData || !localDataset.data)
                 this.checkNewDataAvailble(reportConfig);
         }
 
@@ -212,23 +342,23 @@ export class ReportService {
 
     getDatasetFromServer(reportConfig: ReportConfig) {
         let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
-        if (!localDataset) {
-            localDataset = { id: reportConfig.Schema.Id, code: reportConfig.Schema.Code, type: 'Dataset', lastData: '2000-01-01', data: [] };
-            this.datasetList.push(localDataset);
+        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
+        if (!(localDataset && trackingData)) {
+            console.log('Need to regReportTrackingData first');
         }
+
         reportConfig.Schema.LastDataModifiedDate = localDataset.lastData;
+        reportConfig.TimeFrame.From.Value = this.calcTimeValue(reportConfig.TimeFrame.From);
+        reportConfig.TimeFrame.To.Value = this.calcTimeValue(reportConfig.TimeFrame.To, true);
 
         this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
             .subscribe((resp: any) => {
                 if (!resp.Message) {
                     localDataset.lastData = resp.LastModifiedDate;
-                    localDataset.data = resp.Data;//[...localDataset.data, ...resp.Data];
-
-                    this.reportDataTracking.next(localDataset);
+                    localDataset.data = resp.Data;
+                    trackingData.tracking.next(localDataset);
                     this.env.showTranslateMessage('You just loaded the latest data!', 'success');
-                    this.env.setStorage('BI-Dataset-' + reportConfig.Schema.Code, localDataset);
-
-
+                    this.env.setStorage('BI-Dataset-' + reportConfig.Schema.Id, localDataset);
                 }
                 else {
                     this.env.showTranslateMessage(resp.Message);
@@ -290,6 +420,9 @@ export class ReportService {
     }
 
 
+
+
+    ////////////// Từ đây trở xuống sẽ bỏ hết
 
 
     rptGlobal: any = {

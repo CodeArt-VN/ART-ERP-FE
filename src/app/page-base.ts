@@ -5,6 +5,7 @@ import { ApiSetting } from './services/static/api-setting';
 import introJs from 'intro.js/intro.js';
 import { APIList, GlobalData } from './services/static/global-variable';
 import { PopoverPage } from "./pages/SYS/popover/popover.page";
+import { Subscription } from "rxjs";
 
 @Component({
     template: '',
@@ -58,7 +59,11 @@ export abstract class PageBase implements OnInit {
         isEndOfData: false,
         didEnter: false,
 
+        sort: []
+
     }
+
+    subscriptions: Subscription[] = [];
 
 
     //Data load
@@ -75,10 +80,13 @@ export abstract class PageBase implements OnInit {
     }
 
     loadData(event = null) {
+        
         if (this.pageConfig.isDetailPage) {
             this.loadAnItem(event);
         }
         else {
+            this.parseSort();
+            
             if (this.pageProvider && !this.pageConfig.isEndOfData) {
                 if (event == 'search') {
                     this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
@@ -692,17 +700,19 @@ export abstract class PageBase implements OnInit {
         }
 
         console.log('subs', this.pageConfig.pageName);
-        this.pageConfig.subscribeEvent = this.env.getEvents().subscribe((data) => {
-            if (data.Code == 'changeBranch') {
-                this.preLoadData(null);
-            }
-            else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
-                this.refresh(null);
-            }
-            else {
-                this.events(data);
-            }
-        });
+        this.subscriptions.push(
+            this.env.getEvents().subscribe((data) => {
+                if (data.Code == 'changeBranch') {
+                    this.preLoadData(null);
+                }
+                else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
+                    this.refresh(null);
+                }
+                else {
+                    this.events(data);
+                }
+            })
+        );
 
         if (this.env.user?.UserSetting?.IsCacheQuery.Value) {
             this.env.getStorage('saved-query-' + this.pageConfig.pageName).then((result) => {
@@ -720,9 +730,7 @@ export abstract class PageBase implements OnInit {
     }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy', this.pageConfig.pageName);
-        this.pageConfig?.subscribeEvent?.unsubscribe();
-        console.log('unsubs', this.pageConfig.pageName)
+        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     nav(URL, direction = "forward", data = null) {
@@ -844,6 +852,24 @@ export abstract class PageBase implements OnInit {
         if (event.key === "Enter") {
             this.refresh();
         }
+    }
+
+
+    onDatatableFilter(e) {
+        Object.assign(this.query, e.query);
+        this.refresh();
+    }
+
+    parseSort(){
+        let sortTerms = this.pageConfig.sort.map(m => m.Dimension + (m.Order == 'DESC' ? '_desc' : ''));
+        if (sortTerms.length) {
+            this.query.SortBy = '[' + sortTerms.join(',') + ']';    
+        }
+    }
+
+    onSort(event) {
+        this.pageConfig.sort = event;
+        this.refresh();
     }
 
 }

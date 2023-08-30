@@ -68,6 +68,10 @@ const androidVersion = { files: androidProjectFile, from: /versionName "(.*)"/g,
 const iosVersion = { files: iosProjectFile, from: /MARKETING_VERSION = (.*)/g, to: "MARKETING_VERSION = " + buildVersion + ";", allowEmptyPaths: false };
 const iosProjectVersion = { files: iosProjectFile, from: /CURRENT_PROJECT_VERSION = (.*)/g, to: "CURRENT_PROJECT_VERSION = " + buildVersion + ";", allowEmptyPaths: false };
 
+const webOutput = { files: 'angular.json', from: /outputPath\": \"(.*)\",/g, to: 'outputPath": "www/v' + buildVersion + '",', allowEmptyPaths: false };
+const webBaseHref = { files: 'angular.json', from: /baseHref\": \"(.*)\",/g, to: 'baseHref": "v' + buildVersion + '/",', allowEmptyPaths: false };
+//const webIndex = { files: 'angular.json', from: /index-(.*)\"/g, to: 'v' + buildVersion + '-index.html"', allowEmptyPaths: false };
+
 
 try {
     replace.sync(environmentPROD);
@@ -76,6 +80,10 @@ try {
     replace.sync(androidVersionCode);
     replace.sync(iosVersion);
     replace.sync(iosProjectVersion);
+
+    replace.sync(webOutput);
+    replace.sync(webBaseHref);
+    //replace.sync(webIndex);
 
     console.log('Build version: ' + buildVersion);
 }

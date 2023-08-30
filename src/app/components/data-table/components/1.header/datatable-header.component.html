@@ -1,7 +1,21 @@
-<datatable-header-cell 
-class="cell"
-[class]="column.class" 
-[ngClass]="{'col-checkbox': column.checkbox, 'col-sticky': column.sticky}" 
-[column]="column" 
-*ngFor="let column of columns;" ></datatable-header-cell>
-
+<ng-container *ngFor="let column of columns;">
+    <datatable-header-cell *ngIf="!isFilter" 
+    class="cell" 
+    [class]="column.class" 
+    [ngClass]="{'col-checkbox': column.checkbox, 'col-sticky': column.sticky}" 
+    [column]="column" 
+    [filterValue]="_filterValue" 
+    [sortOrder]="sortOrder"
+    (sort)="onSort($event)"></datatable-header-cell>
+    
+    <datatable-filter-cell *ngIf="isFilter" [field]="{ 
+        form: formGroup, 
+        type: column.filterControlType, 
+        id: column.property, 
+        placeholder: column.name, 
+        dataSource: column.filterDataSource,
+        noCheckDirty: true  }" class="cell" [class]="column.class" 
+        [ngClass]="{'col-checkbox': column.checkbox, 'col-sticky': column.sticky}" 
+        [column]="column" (filterInputChange)="onFilterInputChange($event)" 
+        (filterFieldReset)="onFilterFieldReset()"></datatable-filter-cell>
+</ng-container>

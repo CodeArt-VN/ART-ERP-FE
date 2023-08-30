@@ -22,6 +22,12 @@ export class EnvService {
     
     /** Get current logged in user */
     user: any = {};
+
+    /** All cached config */
+    configs: any[] = [];
+
+    /** */
+    public configTracking = new Subject<any[]>();
     
     /** Check enviroment is loaded */
     isloaded = false;
@@ -57,7 +63,7 @@ export class EnvService {
     isMapLoaded = false;
 
     /** Get network infomation */
-    networkInfo = {
+    networkInfo:any = {
         isOnline: false
     }
 
@@ -183,7 +189,7 @@ export class EnvService {
 
     /** Check window network event */
     trackOnline() {
-        return merge<boolean>(
+        return merge<any>(
             fromEvent(window, 'offline').pipe(map(() => false)),
             fromEvent(window, 'online').pipe(map(() => true)),
             new Observable((sub: Observer<boolean>) => {
@@ -355,7 +361,7 @@ export class EnvService {
      * @returns Return the storage
      */
     getStorage(key) {
-        return this._storage?.get(key);
+        return this._storage?.get(key)!;
     }
 
     /**
@@ -365,7 +371,7 @@ export class EnvService {
      * @returns Return promise
      */
     setStorage(key: string, value: any) {
-        return this._storage?.set(key, value);
+        return this._storage?.set(key, value)!;
     }
 
     /**
@@ -373,7 +379,7 @@ export class EnvService {
      * @returns Return promise
      */
     clearStorage() {
-        return this._storage?.clear();
+        return this._storage?.clear()!;
     }
 
     /**
@@ -386,7 +392,7 @@ export class EnvService {
                 this.branchList = [];
                 this.jobTitleList = [];
                 for (let ix = 0; ix < resp.length; ix++) {
-                    const i = resp[ix];
+                    const i: any = resp[ix];
                     i.Name = i.ShortName ? i.ShortName : i.Name;
                     i.disabled = true;
                     if (i.Type != 'TitlePosition') {
@@ -395,12 +401,12 @@ export class EnvService {
                     this.jobTitleList.push(Object.assign({}, i));
                 }
                 for (let ix = 0; ix < this.branchList.length; ix++) {
-                    const i = this.branchList[ix];
+                    const i: any = this.branchList[ix];
                     i.IDs = [null];
                     this.getChildrenDepartmentID(i.IDs, i.Id);
                 }
                 for (let ix = 0; ix < this.branchList.length; ix++) {
-                    const i = this.branchList[ix];
+                    const i: any = this.branchList[ix];
                     i.Query = JSON.stringify(i.IDs);
 
                 }
@@ -415,7 +421,7 @@ export class EnvService {
 
                         setTimeout(() => {
                             for (let ix = 0; ix < this.jobTitleList.length; ix++) {
-                                const i = this.jobTitleList[ix];
+                                const i: any = this.jobTitleList[ix];
                                 if (i.Type != 'TitlePosition') {
                                     i.disabled = true;
                                 }
@@ -425,7 +431,7 @@ export class EnvService {
                         this.branchList = [...this.branchList];
                     }
 
-                    let selected = null;
+                    let selected:any = null;
 
                     if (val) {
                         selected = this.branchList.find(d => d.Id == val && d.disabled == false);
@@ -457,6 +463,12 @@ export class EnvService {
         let selectedBranch = this.branchList.find(d => d.Id == this.selectedBranch);
         this.selectedBranchAndChildren = selectedBranch.Query;
         this.publishEvent({ Code: 'changeBranch' });
+
+        this.configTracking.next(this.configs.filter(d=>d.IDBranch == this.selectedBranch ));
+    }
+
+    getConfig(){
+        
     }
 
     /**

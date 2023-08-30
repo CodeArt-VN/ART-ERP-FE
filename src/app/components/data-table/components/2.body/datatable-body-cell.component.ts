@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
 
 
@@ -34,19 +34,42 @@ export class DataTableBodyCellComponent {
 
     @Input() rowIndex: number;
 
+    _isSelected: boolean;
+    @Input() set isSelected(val: boolean) {
+        this._isSelected = val;
+        this.cellContext.isSelected = val;
+        this.cd.markForCheck();
+    }
 
-    cellContext : any = {};
+    get isSelected(): boolean {
+        return this._isSelected;
+    }
+
+    get format(): string {
+        return this._column.format;
+    }
+    
+    get dataType(): string {
+        if (this.format?.indexOf('1') > -1)
+            return 'number';
+        if (this.format?.indexOf('yy') > -1 || this.format?.indexOf('HH'))
+            return 'date';        
+        return 'string';
+    }
+
+    cellContext: any = {};
     value: any;
 
+    private _element: any;
 
-    constructor(private cd: ChangeDetectorRef) {
+    constructor(element: ElementRef, private cd: ChangeDetectorRef) {
+        this._element = element.nativeElement;
 
     }
 
     ngOnInit() {
         this.checkValueUpdates();
     }
-
 
     checkValueUpdates(): void {
         let value: any = '';
@@ -74,6 +97,12 @@ export class DataTableBodyCellComponent {
             this.cellContext.row = this.row;
             this.cellContext.value = value;
         }
+    }
+
+    @Output() activate: EventEmitter<any> = new EventEmitter();
+    changeSelection(i: any, event: any): void {
+        i.checked = !i.checked;
+        this.activate.emit(event);
     }
 
 }

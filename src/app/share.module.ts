@@ -3,10 +3,10 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { ShareComponentsModule } from './components/share-components.module';
 @NgModule({
+	imports: [IonicModule, CommonModule, ShareComponentsModule],
 	declarations: [],
 	exports: [
 		ShareComponentsModule,
-	],
-	imports: [IonicModule, CommonModule, ShareComponentsModule],
+	]
 })
 export class ShareModule { }
