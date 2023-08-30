@@ -1,32 +1,47 @@
-<ng-container [ngSwitch]="field.type" [formGroup]="field.form">
+<ng-container [ngSwitch]="type" [formGroup]="form">
     <!-- text -->
-    <input *ngSwitchCase="'text'" type="text" class="c-input" [id]="field.id" [formControlName]="field.id" (change)="inputChange($event);">
+    <input *ngSwitchCase="'text'" type="text" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
 
     <!-- number -->
-    <input *ngSwitchCase="'number'" type="number" class="c-input" [id]="field.id" [formControlName]="field.id">
+    <input *ngSwitchCase="'number'" type="number" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
 
     <!-- email -->
-    <input *ngSwitchCase="'email'" type="email" class="c-input" [id]="field.id" [formControlName]="field.id">
+    <input *ngSwitchCase="'email'" type="email" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
 
     <!-- date -->
-    <input *ngSwitchCase="'date'" type="date" class="c-input date" [id]="field.id" [formControlName]="field.id">
+    <input *ngSwitchCase="'date'" type="date" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input date" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
 
     <!-- datetime-local -->
-    <input *ngSwitchCase="'datetime-local'" type="datetime-local" class="c-input date" [id]="field.id" placeholder="{{field.placeholder | translate}}" [formControlName]="field.id">
+    <input *ngSwitchCase="'datetime-local'" type="datetime-local" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input date" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
+
+    <!-- radio -->
+    <ng-container *ngSwitchCase="'radio'">
+        <ng-container *ngFor="let i of dataSource; let j = index">
+            <input [type]="'radio'" class="c-checkbox" [id]="id+'_'+j"  
+            [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event);" >
+            <label class="c-label radio" [for]="id+'_'+j">
+                <span>{{i[bindLabel] | translate}}</span>
+            </label>
+        </ng-container>
+    </ng-container>
+
+
+
+
 
     <!-- select -->
-    <select *ngSwitchCase="'select'" class="c-input c-dropdown" [formControlName]="field.id">
-        <option *ngFor="let i of field.dataSource" [value]="i[field.bindValue]">{{i[field.bindLabel] | translate}}</option>
+    <select *ngSwitchCase="'select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input c-dropdown" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
+        <option *ngFor="let i of dataSource" [value]="i[bindValue]">{{i[bindLabel] | translate}}</option>
     </select>
 
     <!-- ng-select -->
-    <ng-select *ngSwitchCase="'ng-select'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [bindLabel]="field.bindLabel" [clearable]="false" (change)="ngSelectChange($event)">
+    <ng-select *ngSwitchCase="'ng-select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [bindLabel]="bindLabel" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)">
     </ng-select>
 
     <!-- ng-select-status -->
-    <ng-select *ngSwitchCase="'ng-select-status'" class="c-input" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource" [bindValue]="field.bindValue" [clearable]="false" (change)="ngSelectChange($event)">
+    <ng-select *ngSwitchCase="'ng-select-status'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)">
         <ng-template ng-label-tmp let-i="item">
-            <b><ion-text [color]="i.Color">{{i.Name | translate}}</ion-text></b>
+            <b><ion-text [color]="i.Color">ss{{i.Name | translate}}</ion-text></b>
         </ng-template>
         <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i"><ion-text [color]="i.Color" [ngOptionHighlight]="search">{{i.Name | translate}}</ion-text></div>
@@ -34,17 +49,17 @@
     </ng-select>
 
     <!-- ng-select-bp -->
-    <ng-select *ngSwitchCase="'ng-select-bp'" class="c-input" [formControlName]="field.id" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource.items$ | async" [typeahead]="field.dataSource.input$" [loading]="field.dataSource.loading" [clearable]="false" [bindValue]="field.bindValue" placeholder="{{field.placeholder | translate}}" (change)="ngSelectChange($event)">
+    <ng-select *ngSwitchCase="'ng-select-bp'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)">
         <ng-template ng-label-tmp let-i="item">
             <div *ngIf="i.Id">
-                <a class="clickable" (click)="nav('/business-partner/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a>
+                <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/business-partner/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a>
                 <small [title]="i.Name"> {{i.Name}}</small>
             </div>
         </ng-template>
         <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i">
                 <div>
-                    <b *ngIf="i.Code"><span class="important" [ngOptionHighlight]="search">{{i.Code}}</span></b>
+                    <b *ngIf="i.Code"><span [ngClass]="{'no-check-dirty': noCheckDirty}" class="important" [ngOptionHighlight]="search">{{i.Code}}</span></b>
                     <span style="white-space: normal;"> {{i.Name}}</span>
                     <span *ngIf="i.WorkPhone"> | <small> <b>{{i.WorkPhone}}</b></small></span>
                 </div>
@@ -53,12 +68,12 @@
     </ng-select>
 
     <!-- ng-select-item -->
-    <ng-select *ngSwitchCase="'ng-select-item'" class="c-input" [formControlName]="field.id" [formControlName]="field.id" [labelForId]="field.id" [items]="field.dataSource.items$ | async" [typeahead]="field.dataSource.input$" [loading]="field.dataSource.loading" [clearable]="field.clearable" [bindValue]="field.bindValue" placeholder="{{field.placeholder | translate}}" (change)="ngSelectChange($event)"  appendTo="#order-detail-page" >
+    <ng-select *ngSwitchCase="'ng-select-item'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#order-detail-page">
         <ng-template ng-label-tmp let-i="item">
             <div *ngIf="i.Id">
-                <a class="clickable" (click)="nav('/item/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
-                <span [title]="i.Name"> 
-                    <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{i.Code}}</b> 
+                <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/item/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
+                <span [title]="i.Name">
+                    <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{i.Code}}</b>
                     {{i.Name}}
                 </span>
             </div>
@@ -66,23 +81,26 @@
         <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i">
                 <div><span [ngOptionHighlight]="search">{{i.Name}}</span></div>
-                <small>#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b></small>
+                <small>#<b><span [ngClass]="{'no-check-dirty': noCheckDirty}" class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b></small>
             </div>
         </ng-template>
     </ng-select>
 
     <!-- textarea -->
-    <textarea *ngSwitchCase="'textarea'" [id]="field.id" [formControlName]="field.id" rows="3" class="c-input remark" type="textarea"></textarea>
+    <textarea *ngSwitchCase="'textarea'" type="textarea" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input remark" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)" rows="3"></textarea>
 
     <!-- branch-breadcrumbs -->
-    <app-branch-breadcrumbs *ngSwitchCase="'branch-breadcrumbs'" [maxItems]="3" [Id]="field.form.controls[field.id].value" [Items]="field.dataSource" class="c-input disable breadcrumbs"></app-branch-breadcrumbs>
+    <app-branch-breadcrumbs *ngSwitchCase="'branch-breadcrumbs'" [maxItems]="3" [Id]="form.controls[id].value" [Items]="dataSource" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input disable breadcrumbs"></app-branch-breadcrumbs>
 
     <!-- span-number -->
-    <span *ngSwitchCase="'span-number'" class="c-input disable">{{field.form.controls[field.id].value | number:'1.0-0'}}</span>
+    <span *ngSwitchCase="'span-number'" class="c-input disable">{{form.controls[id].value | number:'1.0-0'}}</span>
 
     <!-- span-date -->
-    <span *ngSwitchCase="'span-date'" class="c-input disable">{{field.form.controls[field.id].value | date: 'yyyy/MM/dd'}}</span>
+    <span *ngSwitchCase="'span-date'" class="c-input disable">{{form.controls[id].value | date: 'yyyy/MM/dd'}}</span>
 
     <!-- span-datetime -->
-    <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{field.form.controls[field.id].value | date:'yyyy/MM/dd HH:mm'}}</span>
+    <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{form.controls[id].value | date:'yyyy/MM/dd HH:mm'}}</span>
+
+    
+    
 </ng-container>

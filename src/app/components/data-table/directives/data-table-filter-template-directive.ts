@@ -1,6 +1,7 @@
 import { Directive, TemplateRef } from "@angular/core";
 
-@Directive({ selector: '[datatable-header-template]' })
-export class DataTableColumnHeaderDirective {
+
+@Directive({ selector: '[datatable-filter-template]' })
+export class DataTableColumnFilterDirective {
   constructor(public template: TemplateRef<any>) { }
 }

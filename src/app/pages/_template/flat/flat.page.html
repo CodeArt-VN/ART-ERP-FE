@@ -53,27 +53,25 @@
 		</form>
 
 		<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
-		<ion-virtual-scroll [items]="items" approxItemHeight="27px" *ngIf="items.length && pageConfig.showSpinner==false">
-			<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
-				<div class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
-					<div class="col-checkbox cell">
-						<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
-					</div>
-					<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-id cell">
-						<a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
-					</div>
-					<div class="col-code cell" (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
-						<span *ngIf="i.Code">{{i.Code}}</span>
-					</div>
-					<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-name cell">
-						{{i.Name}}
-					</div>
-					<div class="col-remark cell">
-						{{i.Remark}}
-					</div>
-				</div>
-			</ng-container>
-		</ion-virtual-scroll>
+
+		<div *ngFor="let i of items; let j = index;" class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
+			<div class="col-checkbox cell">
+				<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+			</div>
+			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-id cell">
+				<a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
+			</div>
+			<div class="col-code cell" (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
+				<span *ngIf="i.Code">{{i.Code}}</span>
+			</div>
+			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-name cell">
+				{{i.Name}}
+			</div>
+			<div class="col-remark cell">
+				{{i.Remark}}
+			</div>
+		</div>
+
 	</section>
 
 	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">

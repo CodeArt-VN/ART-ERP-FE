@@ -22,26 +22,54 @@ export interface Schema {
 }
 
 export interface TimeFrame {
+	Dimension: string;
 	From?: TimeConfig;
 	To?: TimeConfig;
 }
 
 export interface TimeConfig {
-	Type?: string;
+	/**
+	 * Relative or absolute time
+	 */
+	Type: string;
+
+	/**
+	 * If relative time
+	 */
+	IsPastDate?: boolean;
+	/**
+	 * If relative time
+	 */
+    Period?: string;
+	/**
+	 * If relative time
+	 */
+	Amount?: number;
+	
+	/**
+	 * If absolute time
+	 */
 	Value?: Date;
 }
 
 export interface Transform {
-	Filter?: ConfigFilter;
-
+	Filter?: FilterConfig;
+	Sort?: SortConfig[];
 }
 
-export interface ConfigFilter {
+export interface SortConfig {
+	Dimension?: string;
+	Order?: 'ASC'|'DESC'|'';
+
+	Format?: 'string';
+}
+
+export interface FilterConfig {
 	Dimension?: string;
 	Operator?: string;
 	Value?: string;
 
-	Logicals?: ConfigFilter[];
+	Logicals?: FilterConfig[];
 
 }
 
@@ -50,4 +78,5 @@ export interface SchemaDetail {
 	Property?: string;
 	Type?: string;
 	Method?: string;
+	Value?: any;
 }

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -14,7 +13,7 @@ import { PipesModule } from './pipes/pipes.module';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-import { NgxMaskModule } from 'ngx-mask';
+
 
 
 
@@ -43,18 +42,11 @@ import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.p
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-//import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 
-
-
-
-// FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-//   dayGridPlugin,
-// ]);
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -62,11 +54,10 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage, 
-    SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage, 
-    ARInvoiceSplitModalPage, ARInvoiceMergeModalPage, 
-    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage,POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage,POSCancelModalPage, POSNotifyModalPage],
-  entryComponents: [PopoverPage],
+  declarations: [AppComponent, PopoverPage,
+    SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage,
+    ARInvoiceSplitModalPage, ARInvoiceMergeModalPage,
+    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage, POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage, POSCancelModalPage, POSNotifyModalPage],
   imports: [
     BrowserModule,
     TranslateModule.forRoot({
@@ -75,7 +66,7 @@ export function createTranslateLoader(http: HttpClient) {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
-    }
+      }
     }),
     IonicModule.forRoot({
       mode: 'ios',
@@ -91,10 +82,9 @@ export function createTranslateLoader(http: HttpClient) {
     ShareModule,
     PipesModule,
 
-    //FullCalendarModule,
+    FullCalendarModule,
     NgSelectModule,
     NgOptionHighlightModule,
-    NgxMaskModule.forRoot(),
 
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -105,7 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   exports: [],
   providers: [
-    SplashScreen,
+    //SplashScreen,
     //BarcodeScanner,
     //Geolocation,
     //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

@@ -61,6 +61,15 @@ body {
 	font-size: 1.3rem;
 }
 
+a {
+	text-decoration: none;
+}
+
+select {
+    background-color: transparent;
+    border: none;
+}
+
 ion-app {
 	background-color: var(--ion-background-color);
 }
@@ -85,6 +94,11 @@ ion-content {
 ion-virtual-scroll,
 ion-item {
 	user-select: text;
+}
+
+ion-item,
+ion-label{
+	font-size: 1.3rem !important;
 }
 
 ion-picker {
@@ -153,9 +167,7 @@ app-detail-toolbar {
 }
 
 
-a {
-	text-decoration: none;
-}
+
 
 //hide the HTML5 number input’s spin box
 input::-webkit-outer-spin-button,
@@ -173,15 +185,24 @@ input[type=number] {
 //     -webkit-appearance: none;
 // }
 
+.cdk-virtual-scroll-content-wrapper{
+	width: 100%;
+}
+
 ::-webkit-scrollbar {
 	width: 6px;
-	height: 6px;
+	height: 16px;
 }
 
 ::-webkit-scrollbar-track {
-	background: var(--menu-right-border-color);
-	background: transprent;
+	
+	background: transparent;
+
+	&:hover{
+		background: var(--menu-right-border-color);
+	}
 }
+
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 0px;

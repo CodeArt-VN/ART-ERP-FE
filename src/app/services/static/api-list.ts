@@ -65,19 +65,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoice/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoice/Enable/") + id} 
         },
         
         postItem:{
@@ -90,7 +90,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
         }
 		
 	},
@@ -114,19 +114,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoiceDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoiceDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -139,7 +139,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
         }
 		
 	},
@@ -163,19 +163,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoice/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoice/Enable/") + id} 
         },
         
         postItem:{
@@ -188,7 +188,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
         }
 		
 	},
@@ -212,19 +212,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -237,7 +237,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
         }
 		
 	},
@@ -261,19 +261,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Enable/") + id} 
         },
         
         postItem:{
@@ -286,7 +286,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
         }
 		
 	},
@@ -310,19 +310,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/Case/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/Case/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/Case/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/Case/Enable/") + id} 
         },
         
         postItem:{
@@ -335,7 +335,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/Case/") + id} 
         }
 		
 	},
@@ -359,19 +359,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntry/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntry/Enable/") + id} 
         },
         
         postItem:{
@@ -384,7 +384,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
         }
 		
 	},
@@ -408,19 +408,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntryRow/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntryRow/Enable/") + id} 
         },
         
         postItem:{
@@ -433,7 +433,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
         }
 		
 	},
@@ -457,19 +457,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/PostingPeriod/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/PostingPeriod/Enable/") + id} 
         },
         
         postItem:{
@@ -482,7 +482,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
         }
 		
 	},
@@ -506,19 +506,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Changelog/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Changelog/Enable/") + id} 
         },
         
         postItem:{
@@ -531,7 +531,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
         }
 		
 	},
@@ -555,19 +555,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Comment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Comment/Enable/") + id} 
         },
         
         postItem:{
@@ -580,7 +580,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
         }
 		
 	},
@@ -604,19 +604,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Request/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Request/Enable/") + id} 
         },
         
         postItem:{
@@ -629,7 +629,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
         }
 		
 	},
@@ -653,19 +653,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Enable/") + id} 
         },
         
         postItem:{
@@ -678,7 +678,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
         }
 		
 	},
@@ -702,19 +702,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPayment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPayment/Enable/") + id} 
         },
         
         postItem:{
@@ -727,7 +727,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
         }
 		
 	},
@@ -751,19 +751,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -776,7 +776,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
         }
 		
 	},
@@ -800,19 +800,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/PaymentTerm/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/PaymentTerm/Enable/") + id} 
         },
         
         postItem:{
@@ -825,7 +825,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
         }
 		
 	},
@@ -849,19 +849,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Enable/") + id} 
         },
         
         postItem:{
@@ -874,7 +874,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
         }
 		
 	},
@@ -898,19 +898,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Enable/") + id} 
         },
         
         postItem:{
@@ -923,7 +923,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
         }
 		
 	},
@@ -947,19 +947,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Balance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Balance/Enable/") + id} 
         },
         
         postItem:{
@@ -972,7 +972,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
         }
 		
 	},
@@ -996,19 +996,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Debt/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Debt/Enable/") + id} 
         },
         
         postItem:{
@@ -1021,7 +1021,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
         }
 		
 	},
@@ -1045,19 +1045,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/General/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/General/Enable/") + id} 
         },
         
         postItem:{
@@ -1070,7 +1070,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
         }
 		
 	},
@@ -1094,19 +1094,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Revenue/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Revenue/Enable/") + id} 
         },
         
         postItem:{
@@ -1119,7 +1119,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
         }
 		
 	},
@@ -1143,19 +1143,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Enable/") + id} 
         },
         
         postItem:{
@@ -1168,7 +1168,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
         }
 		
 	},
@@ -1192,19 +1192,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Enable/") + id} 
         },
         
         postItem:{
@@ -1217,7 +1217,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
         }
 		
 	},
@@ -1241,19 +1241,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Enable/") + id} 
         },
         
         postItem:{
@@ -1266,7 +1266,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
         }
 		
 	},
@@ -1290,19 +1290,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Enable/") + id} 
         },
         
         postItem:{
@@ -1315,7 +1315,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
         }
 		
 	},
@@ -1339,19 +1339,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/CashFlow/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/CashFlow/Enable/") + id} 
         },
         
         postItem:{
@@ -1364,7 +1364,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
         }
 		
 	},
@@ -1388,19 +1388,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Enable/") + id} 
         },
         
         postItem:{
@@ -1413,7 +1413,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
         }
 		
 	},
@@ -1437,19 +1437,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/Management/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/Management/Enable/") + id} 
         },
         
         postItem:{
@@ -1462,7 +1462,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
         }
 		
 	},
@@ -1486,19 +1486,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Enable/") + id} 
         },
         
         postItem:{
@@ -1511,7 +1511,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
         }
 		
 	},
@@ -1535,19 +1535,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Enable/") + id} 
         },
         
         postItem:{
@@ -1560,7 +1560,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
         }
 		
 	},
@@ -1584,19 +1584,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Oppotunity/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Oppotunity/Enable/") + id} 
         },
         
         postItem:{
@@ -1609,7 +1609,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
         }
 		
 	},
@@ -1633,19 +1633,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplate/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplate/Enable/") + id} 
         },
         
         postItem:{
@@ -1658,7 +1658,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
         }
 		
 	},
@@ -1682,19 +1682,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -1707,7 +1707,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
         }
 		
 	},
@@ -1731,19 +1731,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BP/Partner/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BP/Partner/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BP/Partner/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BP/Partner/Enable/") + id} 
         },
         
         postItem:{
@@ -1756,7 +1756,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BP/Partner/") + id} 
         }
 		
 	},
@@ -1780,19 +1780,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BRA/Branch/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BRA/Branch/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BRA/Branch/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BRA/Branch/Enable/") + id} 
         },
         
         postItem:{
@@ -1805,7 +1805,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BRA/Branch/") + id} 
         }
 		
 	},
@@ -1829,19 +1829,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BSC/RevenueTarget/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BSC/RevenueTarget/Enable/") + id} 
         },
         
         postItem:{
@@ -1854,7 +1854,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
         }
 		
 	},
@@ -1878,19 +1878,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Activity/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Activity/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Activity/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Activity/Enable/") + id} 
         },
         
         postItem:{
@@ -1903,7 +1903,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Activity/") + id} 
         }
 		
 	},
@@ -1927,19 +1927,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Attendance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Attendance/Enable/") + id} 
         },
         
         postItem:{
@@ -1952,7 +1952,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
         }
 		
 	},
@@ -1976,19 +1976,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -2001,7 +2001,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
         }
 		
 	},
@@ -2025,19 +2025,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Campaign/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Campaign/Enable/") + id} 
         },
         
         postItem:{
@@ -2050,7 +2050,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
         }
 		
 	},
@@ -2074,19 +2074,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/CampaignMember/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/CampaignMember/Enable/") + id} 
         },
         
         postItem:{
@@ -2099,7 +2099,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
         }
 		
 	},
@@ -2123,19 +2123,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Config/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Config/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Config/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Config/Enable/") + id} 
         },
         
         postItem:{
@@ -2148,7 +2148,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Config/") + id} 
         }
 		
 	},
@@ -2172,19 +2172,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contact/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contact/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contact/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contact/Enable/") + id} 
         },
         
         postItem:{
@@ -2197,7 +2197,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contact/") + id} 
         }
 		
 	},
@@ -2221,19 +2221,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/ContactReference/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/ContactReference/Enable/") + id} 
         },
         
         postItem:{
@@ -2246,7 +2246,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
         }
 		
 	},
@@ -2270,19 +2270,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contract/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contract/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contract/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contract/Enable/") + id} 
         },
         
         postItem:{
@@ -2295,7 +2295,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Contract/") + id} 
         }
 		
 	},
@@ -2319,19 +2319,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Customer/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Customer/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Customer/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Customer/Enable/") + id} 
         },
         
         postItem:{
@@ -2344,7 +2344,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Customer/") + id} 
         }
 		
 	},
@@ -2368,19 +2368,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Lead/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Lead/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Lead/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Lead/Enable/") + id} 
         },
         
         postItem:{
@@ -2393,7 +2393,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Lead/") + id} 
         }
 		
 	},
@@ -2417,19 +2417,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/MemberCard/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/MemberCard/Enable/") + id} 
         },
         
         postItem:{
@@ -2442,7 +2442,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
         }
 		
 	},
@@ -2466,19 +2466,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Opportunity/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Opportunity/Enable/") + id} 
         },
         
         postItem:{
@@ -2491,7 +2491,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
         }
 		
 	},
@@ -2515,19 +2515,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Outlets/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Outlets/Enable/") + id} 
         },
         
         postItem:{
@@ -2540,7 +2540,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
         }
 		
 	},
@@ -2564,19 +2564,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerAddress/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerAddress/Enable/") + id} 
         },
         
         postItem:{
@@ -2589,7 +2589,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
         }
 		
 	},
@@ -2613,19 +2613,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Enable/") + id} 
         },
         
         postItem:{
@@ -2638,7 +2638,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
         }
 		
 	},
@@ -2662,19 +2662,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PersonInfo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PersonInfo/Enable/") + id} 
         },
         
         postItem:{
@@ -2687,7 +2687,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
         }
 		
 	},
@@ -2711,19 +2711,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Quotation/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Quotation/Enable/") + id} 
         },
         
         postItem:{
@@ -2736,7 +2736,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
         }
 		
 	},
@@ -2760,19 +2760,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Route/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Route/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Route/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Route/Enable/") + id} 
         },
         
         postItem:{
@@ -2785,7 +2785,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Route/") + id} 
         }
 		
 	},
@@ -2809,19 +2809,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/RouteDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/RouteDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -2834,7 +2834,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
         }
 		
 	},
@@ -2858,19 +2858,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Voucher/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Voucher/Enable/") + id} 
         },
         
         postItem:{
@@ -2883,7 +2883,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
         }
 		
 	},
@@ -2907,19 +2907,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/CostCenter/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/CostCenter/Enable/") + id} 
         },
         
         postItem:{
@@ -2932,7 +2932,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
         }
 		
 	},
@@ -2956,19 +2956,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Enable/") + id} 
         },
         
         postItem:{
@@ -2981,7 +2981,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
         }
 		
 	},
@@ -3005,19 +3005,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Enable/") + id} 
         },
         
         postItem:{
@@ -3030,7 +3030,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
         }
 		
 	},
@@ -3054,19 +3054,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Enable/") + id} 
         },
         
         postItem:{
@@ -3079,7 +3079,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
         }
 		
 	},
@@ -3103,19 +3103,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OpenSchedule/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OpenSchedule/Enable/") + id} 
         },
         
         postItem:{
@@ -3128,7 +3128,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
         }
 		
 	},
@@ -3152,19 +3152,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OvertimePolicy/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OvertimePolicy/Enable/") + id} 
         },
         
         postItem:{
@@ -3177,7 +3177,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
         }
 		
 	},
@@ -3201,19 +3201,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollElement/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollElement/Enable/") + id} 
         },
         
         postItem:{
@@ -3226,7 +3226,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
         }
 		
 	},
@@ -3250,19 +3250,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Enable/") + id} 
         },
         
         postItem:{
@@ -3275,7 +3275,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
         }
 		
 	},
@@ -3299,19 +3299,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Enable/") + id} 
         },
         
         postItem:{
@@ -3324,7 +3324,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
         }
 		
 	},
@@ -3348,19 +3348,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Enable/") + id} 
         },
         
         postItem:{
@@ -3373,7 +3373,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
         }
 		
 	},
@@ -3397,19 +3397,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowance/Enable/") + id} 
         },
         
         postItem:{
@@ -3422,7 +3422,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
         }
 		
 	},
@@ -3446,19 +3446,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Enable/") + id} 
         },
         
         postItem:{
@@ -3471,7 +3471,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
         }
 		
 	},
@@ -3495,19 +3495,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Enable/") + id} 
         },
         
         postItem:{
@@ -3520,7 +3520,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
         }
 		
 	},
@@ -3544,19 +3544,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Enable/") + id} 
         },
         
         postItem:{
@@ -3569,7 +3569,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
         }
 		
 	},
@@ -3593,19 +3593,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyHoliday/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyHoliday/Enable/") + id} 
         },
         
         postItem:{
@@ -3618,7 +3618,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
         }
 		
 	},
@@ -3642,19 +3642,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Enable/") + id} 
         },
         
         postItem:{
@@ -3667,7 +3667,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
         }
 		
 	},
@@ -3691,19 +3691,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Enable/") + id} 
         },
         
         postItem:{
@@ -3716,7 +3716,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
         }
 		
 	},
@@ -3740,19 +3740,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfare/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfare/Enable/") + id} 
         },
         
         postItem:{
@@ -3765,7 +3765,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
         }
 		
 	},
@@ -3789,19 +3789,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Enable/") + id} 
         },
         
         postItem:{
@@ -3814,7 +3814,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
         }
 		
 	},
@@ -3838,19 +3838,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Shift/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Shift/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Shift/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Shift/Enable/") + id} 
         },
         
         postItem:{
@@ -3863,7 +3863,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Shift/") + id} 
         }
 		
 	},
@@ -3887,19 +3887,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Enable/") + id} 
         },
         
         postItem:{
@@ -3912,7 +3912,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
         }
 		
 	},
@@ -3936,19 +3936,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/Enable/") + id} 
         },
         
         postItem:{
@@ -3961,7 +3961,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/") + id} 
         }
 		
 	},
@@ -3985,19 +3985,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Enable/") + id} 
         },
         
         postItem:{
@@ -4010,7 +4010,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
         }
 		
 	},
@@ -4034,19 +4034,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Enable/") + id} 
         },
         
         postItem:{
@@ -4059,7 +4059,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
         }
 		
 	},
@@ -4083,19 +4083,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Enable/") + id} 
         },
         
         postItem:{
@@ -4108,7 +4108,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
         }
 		
 	},
@@ -4132,19 +4132,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAddress/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAddress/Enable/") + id} 
         },
         
         postItem:{
@@ -4157,7 +4157,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
         }
 		
 	},
@@ -4181,19 +4181,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAllowance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAllowance/Enable/") + id} 
         },
         
         postItem:{
@@ -4206,7 +4206,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
         }
 		
 	},
@@ -4230,19 +4230,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Enable/") + id} 
         },
         
         postItem:{
@@ -4255,7 +4255,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
         }
 		
 	},
@@ -4279,19 +4279,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Enable/") + id} 
         },
         
         postItem:{
@@ -4304,7 +4304,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
         }
 		
 	},
@@ -4328,19 +4328,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBank/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBank/Enable/") + id} 
         },
         
         postItem:{
@@ -4353,7 +4353,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
         }
 		
 	},
@@ -4377,19 +4377,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Enable/") + id} 
         },
         
         postItem:{
@@ -4402,7 +4402,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
         }
 		
 	},
@@ -4426,19 +4426,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Enable/") + id} 
         },
         
         postItem:{
@@ -4451,7 +4451,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
         }
 		
 	},
@@ -4475,19 +4475,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Enable/") + id} 
         },
         
         postItem:{
@@ -4500,7 +4500,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
         }
 		
 	},
@@ -4524,19 +4524,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Enable/") + id} 
         },
         
         postItem:{
@@ -4549,7 +4549,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
         }
 		
 	},
@@ -4573,19 +4573,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Enable/") + id} 
         },
         
         postItem:{
@@ -4598,7 +4598,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
         }
 		
 	},
@@ -4622,19 +4622,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Enable/") + id} 
         },
         
         postItem:{
@@ -4647,7 +4647,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
         }
 		
 	},
@@ -4671,19 +4671,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Enable/") + id} 
         },
         
         postItem:{
@@ -4696,7 +4696,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
         }
 		
 	},
@@ -4720,19 +4720,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffFamily/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffFamily/Enable/") + id} 
         },
         
         postItem:{
@@ -4745,7 +4745,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
         }
 		
 	},
@@ -4769,19 +4769,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Enable/") + id} 
         },
         
         postItem:{
@@ -4794,7 +4794,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
         }
 		
 	},
@@ -4818,19 +4818,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Enable/") + id} 
         },
         
         postItem:{
@@ -4843,7 +4843,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
         }
 		
 	},
@@ -4867,19 +4867,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Enable/") + id} 
         },
         
         postItem:{
@@ -4892,7 +4892,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
         }
 		
 	},
@@ -4916,19 +4916,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Enable/") + id} 
         },
         
         postItem:{
@@ -4941,7 +4941,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
         }
 		
 	},
@@ -4965,19 +4965,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLaborContract/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLaborContract/Enable/") + id} 
         },
         
         postItem:{
@@ -4990,7 +4990,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
         }
 		
 	},
@@ -5014,19 +5014,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Enable/") + id} 
         },
         
         postItem:{
@@ -5039,7 +5039,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
         }
 		
 	},
@@ -5063,19 +5063,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPhone/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPhone/Enable/") + id} 
         },
         
         postItem:{
@@ -5088,7 +5088,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
         }
 		
 	},
@@ -5112,19 +5112,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Enable/") + id} 
         },
         
         postItem:{
@@ -5137,7 +5137,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
         }
 		
 	},
@@ -5161,19 +5161,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Enable/") + id} 
         },
         
         postItem:{
@@ -5186,7 +5186,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
         }
 		
 	},
@@ -5210,19 +5210,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Enable/") + id} 
         },
         
         postItem:{
@@ -5235,7 +5235,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
         }
 		
 	},
@@ -5259,19 +5259,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Enable/") + id} 
         },
         
         postItem:{
@@ -5284,7 +5284,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
         }
 		
 	},
@@ -5308,19 +5308,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSchedule/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSchedule/Enable/") + id} 
         },
         
         postItem:{
@@ -5333,7 +5333,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
         }
 		
 	},
@@ -5357,19 +5357,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Enable/") + id} 
         },
         
         postItem:{
@@ -5382,7 +5382,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
         }
 		
 	},
@@ -5406,19 +5406,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Enable/") + id} 
         },
         
         postItem:{
@@ -5431,7 +5431,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
         }
 		
 	},
@@ -5455,19 +5455,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Enable/") + id} 
         },
         
         postItem:{
@@ -5480,7 +5480,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
         }
 		
 	},
@@ -5504,19 +5504,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Enable/") + id} 
         },
         
         postItem:{
@@ -5529,7 +5529,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
         }
 		
 	},
@@ -5553,19 +5553,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Enable/") + id} 
         },
         
         postItem:{
@@ -5578,7 +5578,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
         }
 		
 	},
@@ -5602,19 +5602,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Enable/") + id} 
         },
         
         postItem:{
@@ -5627,7 +5627,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
         }
 		
 	},
@@ -5651,19 +5651,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWelfare/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWelfare/Enable/") + id} 
         },
         
         postItem:{
@@ -5676,7 +5676,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
         }
 		
 	},
@@ -5700,19 +5700,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Enable/") + id} 
         },
         
         postItem:{
@@ -5725,7 +5725,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
         }
 		
 	},
@@ -5749,19 +5749,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Enable/") + id} 
         },
         
         postItem:{
@@ -5774,7 +5774,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
         }
 		
 	},
@@ -5798,19 +5798,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Timesheet/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Timesheet/Enable/") + id} 
         },
         
         postItem:{
@@ -5823,7 +5823,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
         }
 		
 	},
@@ -5847,19 +5847,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Enable/") + id} 
         },
         
         postItem:{
@@ -5872,7 +5872,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
         }
 		
 	},
@@ -5896,19 +5896,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Enable/") + id} 
         },
         
         postItem:{
@@ -5921,7 +5921,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
         }
 		
 	},
@@ -5945,19 +5945,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycle/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycle/Enable/") + id} 
         },
         
         postItem:{
@@ -5970,7 +5970,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
         }
 		
 	},
@@ -5994,19 +5994,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -6019,7 +6019,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
         }
 		
 	},
@@ -6043,19 +6043,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetFormula/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetFormula/Enable/") + id} 
         },
         
         postItem:{
@@ -6068,7 +6068,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
         }
 		
 	},
@@ -6092,19 +6092,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetLog/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetLog/Enable/") + id} 
         },
         
         postItem:{
@@ -6117,7 +6117,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
         }
 		
 	},
@@ -6141,19 +6141,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ContractTemplate/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ContractTemplate/Enable/") + id} 
         },
         
         postItem:{
@@ -6166,7 +6166,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
         }
 		
 	},
@@ -6190,19 +6190,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Country/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Country/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Country/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Country/Enable/") + id} 
         },
         
         postItem:{
@@ -6215,7 +6215,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Country/") + id} 
         }
 		
 	},
@@ -6239,19 +6239,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/District/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/District/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/District/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/District/Enable/") + id} 
         },
         
         postItem:{
@@ -6264,7 +6264,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/District/") + id} 
         }
 		
 	},
@@ -6288,19 +6288,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ElementOfSalary/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ElementOfSalary/Enable/") + id} 
         },
         
         postItem:{
@@ -6313,7 +6313,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
         }
 		
 	},
@@ -6337,19 +6337,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/General/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/General/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/General/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/General/Enable/") + id} 
         },
         
         postItem:{
@@ -6362,7 +6362,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/General/") + id} 
         }
 		
 	},
@@ -6386,19 +6386,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/PayPeriod/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/PayPeriod/Enable/") + id} 
         },
         
         postItem:{
@@ -6411,7 +6411,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
         }
 		
 	},
@@ -6435,19 +6435,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Province/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Province/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Province/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Province/Enable/") + id} 
         },
         
         postItem:{
@@ -6460,7 +6460,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Province/") + id} 
         }
 		
 	},
@@ -6484,19 +6484,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Ward/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Ward/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Ward/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Ward/Enable/") + id} 
         },
         
         postItem:{
@@ -6509,7 +6509,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("LIST/Ward/") + id} 
         }
 		
 	},
@@ -6533,19 +6533,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/CompetiorOrder/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/CompetiorOrder/Enable/") + id} 
         },
         
         postItem:{
@@ -6558,7 +6558,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
         }
 		
 	},
@@ -6582,19 +6582,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/TrackingCompetitor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/TrackingCompetitor/Enable/") + id} 
         },
         
         postItem:{
@@ -6607,7 +6607,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
         }
 		
 	},
@@ -6631,19 +6631,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/Office/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/Office/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/Office/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/Office/Enable/") + id} 
         },
         
         postItem:{
@@ -6656,7 +6656,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/Office/") + id} 
         }
 		
 	},
@@ -6680,19 +6680,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/OfficeGate/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/OfficeGate/Enable/") + id} 
         },
         
         postItem:{
@@ -6705,7 +6705,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
         }
 		
 	},
@@ -6729,19 +6729,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/Task/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/Task/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/Task/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/Task/Enable/") + id} 
         },
         
         postItem:{
@@ -6754,7 +6754,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/Task/") + id} 
         }
 		
 	},
@@ -6778,19 +6778,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/TaskLink/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/TaskLink/Enable/") + id} 
         },
         
         postItem:{
@@ -6803,7 +6803,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
         }
 		
 	},
@@ -6827,19 +6827,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/BillTable/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/BillTable/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/BillTable/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/BillTable/Enable/") + id} 
         },
         
         postItem:{
@@ -6852,7 +6852,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/BillTable/") + id} 
         }
 		
 	},
@@ -6876,19 +6876,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Cash/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Cash/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Cash/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Cash/Enable/") + id} 
         },
         
         postItem:{
@@ -6901,7 +6901,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Cash/") + id} 
         }
 		
 	},
@@ -6925,19 +6925,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Kitchen/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Kitchen/Enable/") + id} 
         },
         
         postItem:{
@@ -6950,7 +6950,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
         }
 		
 	},
@@ -6974,19 +6974,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MemberCardPromotion/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MemberCardPromotion/Enable/") + id} 
         },
         
         postItem:{
@@ -6999,7 +6999,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
         }
 		
 	},
@@ -7023,19 +7023,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Memo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Memo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Memo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Memo/Enable/") + id} 
         },
         
         postItem:{
@@ -7048,7 +7048,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Memo/") + id} 
         }
 		
 	},
@@ -7072,19 +7072,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Menu/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Menu/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Menu/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Menu/Enable/") + id} 
         },
         
         postItem:{
@@ -7097,7 +7097,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Menu/") + id} 
         }
 		
 	},
@@ -7121,19 +7121,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MenuDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MenuDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -7146,7 +7146,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
         }
 		
 	},
@@ -7170,19 +7170,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Table/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Table/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Table/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Table/Enable/") + id} 
         },
         
         postItem:{
@@ -7195,7 +7195,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Table/") + id} 
         }
 		
 	},
@@ -7219,19 +7219,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -7244,7 +7244,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
         }
 		
 	},
@@ -7268,19 +7268,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroupStaff/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroupStaff/Enable/") + id} 
         },
         
         postItem:{
@@ -7293,7 +7293,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
         }
 		
 	},
@@ -7317,19 +7317,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Terminal/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Terminal/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Terminal/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Terminal/Enable/") + id} 
         },
         
         postItem:{
@@ -7342,7 +7342,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/Terminal/") + id} 
         }
 		
 	},
@@ -7366,19 +7366,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Enable/") + id} 
         },
         
         postItem:{
@@ -7391,7 +7391,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
         }
 		
 	},
@@ -7415,19 +7415,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Deal/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Deal/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Deal/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Deal/Enable/") + id} 
         },
         
         postItem:{
@@ -7440,7 +7440,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Deal/") + id} 
         }
 		
 	},
@@ -7464,19 +7464,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Program/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Program/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Program/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Program/Enable/") + id} 
         },
         
         postItem:{
@@ -7489,7 +7489,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/Program/") + id} 
         }
 		
 	},
@@ -7513,19 +7513,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramCondition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramCondition/Enable/") + id} 
         },
         
         postItem:{
@@ -7538,7 +7538,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
         }
 		
 	},
@@ -7562,19 +7562,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramItem/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramItem/Enable/") + id} 
         },
         
         postItem:{
@@ -7587,7 +7587,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
         }
 		
 	},
@@ -7611,19 +7611,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramPartner/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramPartner/Enable/") + id} 
         },
         
         postItem:{
@@ -7636,7 +7636,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
         }
 		
 	},
@@ -7660,19 +7660,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramReward/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramReward/Enable/") + id} 
         },
         
         postItem:{
@@ -7685,7 +7685,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
         }
 		
 	},
@@ -7709,19 +7709,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/PromotionTracking/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/PromotionTracking/Enable/") + id} 
         },
         
         postItem:{
@@ -7734,7 +7734,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
         }
 		
 	},
@@ -7758,19 +7758,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterials/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterials/Enable/") + id} 
         },
         
         postItem:{
@@ -7783,7 +7783,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
         }
 		
 	},
@@ -7807,19 +7807,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -7832,7 +7832,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
         }
 		
 	},
@@ -7856,19 +7856,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/ItemInVendor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/ItemInVendor/Enable/") + id} 
         },
         
         postItem:{
@@ -7881,7 +7881,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
         }
 		
 	},
@@ -7905,19 +7905,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRP/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRP/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRP/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRP/Enable/") + id} 
         },
         
         postItem:{
@@ -7930,7 +7930,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRP/") + id} 
         }
 		
 	},
@@ -7954,19 +7954,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRPScenario/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRPScenario/Enable/") + id} 
         },
         
         postItem:{
@@ -7979,7 +7979,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
         }
 		
 	},
@@ -8003,19 +8003,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/Order/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/Order/Enable/") + id} 
         },
         
         postItem:{
@@ -8028,7 +8028,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
         }
 		
 	},
@@ -8052,19 +8052,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -8077,7 +8077,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
         }
 		
 	},
@@ -8101,19 +8101,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/Order/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/Order/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/Order/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/Order/Enable/") + id} 
         },
         
         postItem:{
@@ -8126,7 +8126,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/Order/") + id} 
         }
 		
 	},
@@ -8150,19 +8150,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderAddition/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderAddition/Enable/") + id} 
         },
         
         postItem:{
@@ -8175,7 +8175,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
         }
 		
 	},
@@ -8199,19 +8199,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDeduction/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDeduction/Enable/") + id} 
         },
         
         postItem:{
@@ -8224,7 +8224,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
         }
 		
 	},
@@ -8248,19 +8248,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -8273,7 +8273,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
         }
 		
 	},
@@ -8297,19 +8297,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIFT/TimeSheet/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIFT/TimeSheet/Enable/") + id} 
         },
         
         postItem:{
@@ -8322,7 +8322,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
         }
 		
 	},
@@ -8346,19 +8346,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Shipment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Shipment/Enable/") + id} 
         },
         
         postItem:{
@@ -8371,7 +8371,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
         }
 		
 	},
@@ -8395,19 +8395,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Enable/") + id} 
         },
         
         postItem:{
@@ -8420,7 +8420,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
         }
 		
 	},
@@ -8444,19 +8444,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -8469,7 +8469,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
         }
 		
 	},
@@ -8493,19 +8493,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Vehicle/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Vehicle/Enable/") + id} 
         },
         
         postItem:{
@@ -8518,7 +8518,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
         }
 		
 	},
@@ -8542,19 +8542,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Enable/") + id} 
         },
         
         postItem:{
@@ -8567,7 +8567,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
         }
 		
 	},
@@ -8591,19 +8591,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Apps/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Apps/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Apps/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Apps/Enable/") + id} 
         },
         
         postItem:{
@@ -8616,7 +8616,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Apps/") + id} 
         }
 		
 	},
@@ -8640,19 +8640,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Config/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Config/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Config/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Config/Enable/") + id} 
         },
         
         postItem:{
@@ -8665,7 +8665,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Config/") + id} 
         }
 		
 	},
@@ -8689,19 +8689,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/ConfigOption/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/ConfigOption/Enable/") + id} 
         },
         
         postItem:{
@@ -8714,7 +8714,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
         }
 		
 	},
@@ -8738,19 +8738,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Currency/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Currency/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Currency/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Currency/Enable/") + id} 
         },
         
         postItem:{
@@ -8763,7 +8763,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Currency/") + id} 
         }
 		
 	},
@@ -8787,19 +8787,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/DataPermissionList/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/DataPermissionList/Enable/") + id} 
         },
         
         postItem:{
@@ -8812,7 +8812,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
         }
 		
 	},
@@ -8836,19 +8836,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Form/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Form/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Form/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Form/Enable/") + id} 
         },
         
         postItem:{
@@ -8861,7 +8861,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Form/") + id} 
         }
 		
 	},
@@ -8885,19 +8885,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/FormGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/FormGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -8910,7 +8910,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
         }
 		
 	},
@@ -8934,19 +8934,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/GlobalConfig/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/GlobalConfig/Enable/") + id} 
         },
         
         postItem:{
@@ -8959,7 +8959,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
         }
 		
 	},
@@ -8983,19 +8983,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Log/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Log/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Log/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Log/Enable/") + id} 
         },
         
         postItem:{
@@ -9008,7 +9008,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Log/") + id} 
         }
 		
 	},
@@ -9032,19 +9032,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/PermissionList/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/PermissionList/Enable/") + id} 
         },
         
         postItem:{
@@ -9057,7 +9057,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
         }
 		
 	},
@@ -9081,19 +9081,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Printer/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Printer/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Printer/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Printer/Enable/") + id} 
         },
         
         postItem:{
@@ -9106,7 +9106,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Printer/") + id} 
         }
 		
 	},
@@ -9130,19 +9130,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Role/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Role/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Role/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Role/Enable/") + id} 
         },
         
         postItem:{
@@ -9155,7 +9155,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Role/") + id} 
         }
 		
 	},
@@ -9179,19 +9179,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/RuningNo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/RuningNo/Enable/") + id} 
         },
         
         postItem:{
@@ -9204,7 +9204,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
         }
 		
 	},
@@ -9228,19 +9228,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SAP/Databases/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SAP/Databases/Enable/") + id} 
         },
         
         postItem:{
@@ -9253,7 +9253,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
         }
 		
 	},
@@ -9277,19 +9277,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Status/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Status/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Status/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Status/Enable/") + id} 
         },
         
         postItem:{
@@ -9302,7 +9302,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Status/") + id} 
         }
 		
 	},
@@ -9326,19 +9326,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SyncJob/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SyncJob/Enable/") + id} 
         },
         
         postItem:{
@@ -9351,7 +9351,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
         }
 		
 	},
@@ -9375,19 +9375,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Translate/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Translate/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Translate/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Translate/Enable/") + id} 
         },
         
         postItem:{
@@ -9400,7 +9400,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Translate/") + id} 
         }
 		
 	},
@@ -9424,19 +9424,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Type/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Type/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Type/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Type/Enable/") + id} 
         },
         
         postItem:{
@@ -9449,7 +9449,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/Type/") + id} 
         }
 		
 	},
@@ -9473,19 +9473,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserDevice/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserDevice/Enable/") + id} 
         },
         
         postItem:{
@@ -9498,7 +9498,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
         }
 		
 	},
@@ -9522,19 +9522,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserSetting/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserSetting/Enable/") + id} 
         },
         
         postItem:{
@@ -9547,7 +9547,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
         }
 		
 	},
@@ -9571,19 +9571,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserVoice/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserVoice/Enable/") + id} 
         },
         
         postItem:{
@@ -9596,7 +9596,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
         }
 		
 	},
@@ -9620,19 +9620,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Enable/") + id} 
         },
         
         postItem:{
@@ -9645,7 +9645,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
         }
 		
 	},
@@ -9669,19 +9669,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("Version/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("Version/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("Version/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("Version/Enable/") + id} 
         },
         
         postItem:{
@@ -9694,7 +9694,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("Version/") + id} 
         }
 		
 	},
@@ -9718,19 +9718,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Category/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Category/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Category/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Category/Enable/") + id} 
         },
         
         postItem:{
@@ -9743,7 +9743,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Category/") + id} 
         }
 		
 	},
@@ -9767,19 +9767,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Enable/") + id} 
         },
         
         postItem:{
@@ -9792,7 +9792,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/") + id} 
         }
 		
 	},
@@ -9816,19 +9816,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Tag/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Tag/Enable/") + id} 
         },
         
         postItem:{
@@ -9841,7 +9841,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
         }
 		
 	},
@@ -9865,19 +9865,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/ContentInCategory/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/ContentInCategory/Enable/") + id} 
         },
         
         postItem:{
@@ -9890,7 +9890,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
         }
 		
 	},
@@ -9914,19 +9914,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Tag/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Tag/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Tag/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Tag/Enable/") + id} 
         },
         
         postItem:{
@@ -9939,7 +9939,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WEB/Tag/") + id} 
         }
 		
 	},
@@ -9963,19 +9963,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Branches/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Branches/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Branches/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Branches/Enable/") + id} 
         },
         
         postItem:{
@@ -9988,7 +9988,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Branches/") + id} 
         }
 		
 	},
@@ -10012,19 +10012,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/CashFlows/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/CashFlows/Enable/") + id} 
         },
         
         postItem:{
@@ -10037,7 +10037,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
         }
 		
 	},
@@ -10061,19 +10061,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ContactGroups/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ContactGroups/Enable/") + id} 
         },
         
         postItem:{
@@ -10086,7 +10086,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
         }
 		
 	},
@@ -10110,19 +10110,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Contacts/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Contacts/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Contacts/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Contacts/Enable/") + id} 
         },
         
         postItem:{
@@ -10135,7 +10135,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Contacts/") + id} 
         }
 		
 	},
@@ -10159,19 +10159,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/GeneralLedgers/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/GeneralLedgers/Enable/") + id} 
         },
         
         postItem:{
@@ -10184,7 +10184,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
         }
 		
 	},
@@ -10208,19 +10208,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/InvoiceRows/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/InvoiceRows/Enable/") + id} 
         },
         
         postItem:{
@@ -10233,7 +10233,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
         }
 		
 	},
@@ -10257,19 +10257,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Invoices/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Invoices/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Invoices/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Invoices/Enable/") + id} 
         },
         
         postItem:{
@@ -10282,7 +10282,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Invoices/") + id} 
         }
 		
 	},
@@ -10306,19 +10306,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemGroups/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemGroups/Enable/") + id} 
         },
         
         postItem:{
@@ -10331,7 +10331,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
         }
 		
 	},
@@ -10355,19 +10355,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemPriceLists/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemPriceLists/Enable/") + id} 
         },
         
         postItem:{
@@ -10380,7 +10380,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
         }
 		
 	},
@@ -10404,19 +10404,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Items/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Items/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Items/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Items/Enable/") + id} 
         },
         
         postItem:{
@@ -10429,7 +10429,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Items/") + id} 
         }
 		
 	},
@@ -10453,19 +10453,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemUoM/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemUoM/Enable/") + id} 
         },
         
         postItem:{
@@ -10478,7 +10478,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
         }
 		
 	},
@@ -10502,19 +10502,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntries/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntries/Enable/") + id} 
         },
         
         postItem:{
@@ -10527,7 +10527,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
         }
 		
 	},
@@ -10551,19 +10551,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntryRows/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntryRows/Enable/") + id} 
         },
         
         postItem:{
@@ -10576,7 +10576,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
         }
 		
 	},
@@ -10600,19 +10600,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PostingPeriods/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PostingPeriods/Enable/") + id} 
         },
         
         postItem:{
@@ -10625,7 +10625,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
         }
 		
 	},
@@ -10649,19 +10649,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PriceLists/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PriceLists/Enable/") + id} 
         },
         
         postItem:{
@@ -10674,7 +10674,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
         }
 		
 	},
@@ -10698,19 +10698,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Staff/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Staff/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Staff/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Staff/Enable/") + id} 
         },
         
         postItem:{
@@ -10723,7 +10723,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/Staff/") + id} 
         }
 		
 	},
@@ -10747,19 +10747,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/UoM/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/UoM/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/UoM/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/UoM/Enable/") + id} 
         },
         
         postItem:{
@@ -10772,7 +10772,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/UoM/") + id} 
         }
 		
 	},
@@ -10796,19 +10796,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/VTB/Statements/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/VTB/Statements/Enable/") + id} 
         },
         
         postItem:{
@@ -10821,7 +10821,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
         }
 		
 	},
@@ -10845,19 +10845,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Adjustment/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Adjustment/Enable/") + id} 
         },
         
         postItem:{
@@ -10870,7 +10870,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
         }
 		
 	},
@@ -10894,19 +10894,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -10919,7 +10919,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
         }
 		
 	},
@@ -10943,19 +10943,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carrier/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carrier/Enable/") + id} 
         },
         
         postItem:{
@@ -10968,7 +10968,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
         }
 		
 	},
@@ -10992,19 +10992,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carton/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carton/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carton/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carton/Enable/") + id} 
         },
         
         postItem:{
@@ -11017,7 +11017,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Carton/") + id} 
         }
 		
 	},
@@ -11041,19 +11041,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/CartonGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/CartonGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -11066,7 +11066,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
         }
 		
 	},
@@ -11090,19 +11090,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Item/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Item/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Item/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Item/Enable/") + id} 
         },
         
         postItem:{
@@ -11115,7 +11115,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Item/") + id} 
         }
 		
 	},
@@ -11139,19 +11139,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -11164,7 +11164,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
         }
 		
 	},
@@ -11188,19 +11188,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInLocation/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInLocation/Enable/") + id} 
         },
         
         postItem:{
@@ -11213,7 +11213,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
         }
 		
 	},
@@ -11237,19 +11237,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Enable/") + id} 
         },
         
         postItem:{
@@ -11262,7 +11262,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
         }
 		
 	},
@@ -11286,19 +11286,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemUoM/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemUoM/Enable/") + id} 
         },
         
         postItem:{
@@ -11311,7 +11311,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
         }
 		
 	},
@@ -11335,19 +11335,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Enable/") + id} 
         },
         
         postItem:{
@@ -11360,7 +11360,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
         }
 		
 	},
@@ -11384,19 +11384,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Location/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Location/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Location/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Location/Enable/") + id} 
         },
         
         postItem:{
@@ -11409,7 +11409,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Location/") + id} 
         }
 		
 	},
@@ -11433,19 +11433,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Lot/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Lot/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Lot/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Lot/Enable/") + id} 
         },
         
         postItem:{
@@ -11458,7 +11458,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Lot/") + id} 
         }
 		
 	},
@@ -11482,19 +11482,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotAttribute/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotAttribute/Enable/") + id} 
         },
         
         postItem:{
@@ -11507,7 +11507,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
         }
 		
 	},
@@ -11531,19 +11531,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotLPNLocation/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotLPNLocation/Enable/") + id} 
         },
         
         postItem:{
@@ -11556,7 +11556,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
         }
 		
 	},
@@ -11580,19 +11580,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceList/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceList/Enable/") + id} 
         },
         
         postItem:{
@@ -11605,7 +11605,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
         }
 		
 	},
@@ -11629,19 +11629,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -11654,7 +11654,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
         }
 		
 	},
@@ -11678,19 +11678,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersion/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersion/Enable/") + id} 
         },
         
         postItem:{
@@ -11703,7 +11703,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
         }
 		
 	},
@@ -11727,19 +11727,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -11752,7 +11752,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
         }
 		
 	},
@@ -11776,19 +11776,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategy/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategy/Enable/") + id} 
         },
         
         postItem:{
@@ -11801,7 +11801,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
         }
 		
 	},
@@ -11825,19 +11825,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -11850,7 +11850,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
         }
 		
 	},
@@ -11874,19 +11874,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Receipt/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Receipt/Enable/") + id} 
         },
         
         postItem:{
@@ -11899,7 +11899,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
         }
 		
 	},
@@ -11923,19 +11923,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -11948,7 +11948,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
         }
 		
 	},
@@ -11972,19 +11972,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Enable/") + id} 
         },
         
         postItem:{
@@ -11997,7 +11997,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
         }
 		
 	},
@@ -12021,19 +12021,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Storer/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Storer/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Storer/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Storer/Enable/") + id} 
         },
         
         postItem:{
@@ -12046,7 +12046,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Storer/") + id} 
         }
 		
 	},
@@ -12070,19 +12070,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Enable/") + id} 
         },
         
         postItem:{
@@ -12095,7 +12095,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
         }
 		
 	},
@@ -12119,19 +12119,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Enable/") + id} 
         },
         
         postItem:{
@@ -12144,7 +12144,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
         }
 		
 	},
@@ -12168,19 +12168,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Transaction/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Transaction/Enable/") + id} 
         },
         
         postItem:{
@@ -12193,7 +12193,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
         }
 		
 	},
@@ -12217,19 +12217,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoM/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoM/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoM/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoM/Enable/") + id} 
         },
         
         postItem:{
@@ -12242,7 +12242,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoM/") + id} 
         }
 		
 	},
@@ -12266,19 +12266,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoMGroup/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoMGroup/Enable/") + id} 
         },
         
         postItem:{
@@ -12291,7 +12291,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
         }
 		
 	},
@@ -12315,19 +12315,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Vendor/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Vendor/Enable/") + id} 
         },
         
         postItem:{
@@ -12340,7 +12340,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
         }
 		
 	},
@@ -12364,19 +12364,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WarehouseInfo/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WarehouseInfo/Enable/") + id} 
         },
         
         postItem:{
@@ -12389,7 +12389,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
         }
 		
 	},
@@ -12413,19 +12413,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WavePlanning/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WavePlanning/Enable/") + id} 
         },
         
         postItem:{
@@ -12438,7 +12438,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
         }
 		
 	},
@@ -12462,19 +12462,19 @@ export var APIListBase = {
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Zone/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Zone/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/Disable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Zone/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/Enable/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Zone/Enable/") + id} 
         },
         
         postItem:{
@@ -12487,7 +12487,7 @@ export var APIListBase = {
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id:number){return ApiSetting.apiDomain("WMS/Zone/") + id} 
         }
 		
 	},

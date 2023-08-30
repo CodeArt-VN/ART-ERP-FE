@@ -5,4 +5,6 @@ class="cell"
 [column]="column" 
 [row]="row"
 [rowIndex]="rowIndex"
-*ngFor="let column of columns;" ></datatable-body-cell>
+[isSelected] = "isSelected"
+(activate)="onActivate($event, idx)"
+*ngFor="let column of columns; let idx = index;" ></datatable-body-cell>

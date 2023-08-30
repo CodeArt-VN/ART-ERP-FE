@@ -35,9 +35,10 @@
 app-data-table,.table {
 	display: block;
 	background: var(--ion-color-tertiary-tint);
+	width: 100%;
+    margin: auto;
 	$cell-padding-horizontal: 16px;
 
-	>datatable-header,
 	>header.bold,
 	>form,
 	.sticky-header {
@@ -47,7 +48,6 @@ app-data-table,.table {
 		z-index: 10;
 	}
 
-	datatable-header,
 	header,
 	.row.header {
 		display: flex;
@@ -68,8 +68,9 @@ app-data-table,.table {
 				// -moz-appearance: none;
 				// -webkit-appearance: none;
 				
-				max-width: 250px;
-				padding: 3px 20px 3px 7px;
+				//max-width: 250px;
+				padding-right: 1.6rem;
+				background-position-x: calc(100% - 8px);
 				font-size: 1.2rem;
 
 				&.active,
@@ -123,6 +124,10 @@ app-data-table,.table {
 		datatable-header-cell,
 		.cell {
 			color: var(--ion-color-dark);
+
+			&.selected{
+				background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
+			}
 		}
 
 
@@ -138,7 +143,7 @@ app-data-table,.table {
 		margin: 0;
 		line-height: 1.5rem;
 		border-bottom: solid 1px var(--menu-right-border-color);
-
+		position: relative;
 
 		&:hover {
 			background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), .5);
@@ -167,7 +172,6 @@ app-data-table,.table {
 		min-height: 20px;
 	}
 
-	datatable-header-cell,
 	.cell {
 		display: flex;
 		flex: 1;
@@ -175,6 +179,10 @@ app-data-table,.table {
 		padding: 5px 8px;
 		font-size: 1.3rem;
 		color: var(--ion-color-dark);
+
+		&.selected{
+			background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+		}
 
 		app-input-control{
 			width: 100%;
@@ -275,6 +283,12 @@ app-data-table,.table {
 			font-size: 1.3rem;
 			color: var(--ion-color-light-contrast);
 
+			// &::-webkit-inner-spin-button,
+			// &::-webkit-calendar-picker-indicator {
+			// 	//display: none;
+			// 	-webkit-appearance: none;
+			// }
+
 			&.ng-dirty:not(.no-check-dirty) {
 				border: 1px solid var(--ion-color-success) !important;
 			}
@@ -358,12 +372,14 @@ app-data-table,.table {
 		}
 
 		.c-dropdown,
-		.date {
+		.date::-webkit-calendar-picker-indicator {
 			background-image: url('./../assets/ddown.svg'), none;
 			background-repeat: no-repeat;
 			background-size: 2.6rem;
 			background-position: right center;
 		}
+
+		
 
 		.c-dropdown{
 			padding-right: 1.6rem !important;
@@ -424,7 +440,7 @@ app-data-table,.table {
 	.col-name {
 		cursor: pointer;
 		min-width: 250px;
-
+		max-width: 70vw;
 	}
 
 	.col-sticky{

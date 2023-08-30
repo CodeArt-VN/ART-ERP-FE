@@ -1,32 +1,42 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
-import { SortConfig } from 'src/app/models/options-interface';
 
 
 
 
 
 @Component({
-    selector: 'datatable-header-cell',
-    templateUrl: './datatable-header-cell.component.html',
+    selector: 'datatable-filter-cell',
+    templateUrl: './datatable-filter-cell.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataTableHeaderCellComponent {
+export class DataTableFilterCellComponent {
     _column: TableColumn;
 
     @Input() set column(column: TableColumn) {
         this._column = column;
     }
 
-
     get column(): TableColumn {
         return this._column;
     }
 
-    @Input() filterValue: any = {};
+    @Input() field: any;
 
-    @HostBinding('style.height.px')
-    @Input() headerHeight: number;
+    @Output() filterInputChange: EventEmitter<any> = new EventEmitter();
+    onFilterInputChange(e){
+		this.filterInputChange.emit(e);
+	}
+
+    @Output() filterFieldReset: EventEmitter<any> = new EventEmitter();
+    onFilterFieldReset(){
+        this.field.form.get(this.field.id).setValue('');
+        this.filterFieldReset.emit();
+    }
+
+
+    @Output() sort: EventEmitter<any> = new EventEmitter();
     @Output() select: EventEmitter<any> = new EventEmitter();
     @Output() columnContextmenu = new EventEmitter<{ event: MouseEvent; column: any }>(false);
 
@@ -36,8 +46,8 @@ export class DataTableHeaderCellComponent {
         if (this.column.class) {
             cls += ' ' + this.column.class;
         }
-        if (this.column.headerClass) {
-            cls += ' ' + this.column.headerClass;
+        if (this.column.filterClass) {
+            cls += ' ' + this.column.filterClass;
         }
 
         return cls;
@@ -46,7 +56,7 @@ export class DataTableHeaderCellComponent {
     @HostBinding('attr.title')
     get name(): string {
         // guaranteed to have a value by setColumnDefaults() in column-helper.ts
-        return this.column.headerTemplate === undefined ? this.column.name : undefined;
+        return this.column.filterTemplate === undefined ? this.column.name : undefined;
     }
 
     @HostBinding('style.minWidth.px')
@@ -73,26 +83,8 @@ export class DataTableHeaderCellComponent {
 
     }
 
-    @Input() sortOrder: 'ASC' | 'DESC' | '' = '';
+ 
 
-    @Output() sort: EventEmitter<any> = new EventEmitter();
-
-    onSort() {
-        if (!this._column.canSort) return;
-        
-        if (!this.sortOrder) 
-            this.sortOrder = 'ASC';
-        else if(this.sortOrder == 'ASC')
-            this.sortOrder = 'DESC';
-        else
-            this.sortOrder = '';
-
-        let sortElment: SortConfig = { Dimension: this.column.property, Order: this.sortOrder };
-        this.sort.emit(sortElment);
-        
-    }
-
-
-
+    
 
 }

@@ -1,10 +1,23 @@
 <div class="c-control">
-    <label class="c-label" [attr.for]="field.id">
-        {{field.label | translate}}
+    <label class="c-label" [attr.for]="id" *ngIf="type != 'radio' && label">
+        {{label | translate}}
         <ng-content select="[label]"></ng-content>
-        <ion-text *ngIf="!field.form.controls[field.id].valid && !field.form.controls[field.id].pending && field.form.controls[field.id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
+        <ion-text *ngIf="!form.controls[id].valid && !form.controls[id].pending && form.controls[id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
     </label>
-    <app-input-control [field]="field" (onChange)="inputChange($event)"></app-input-control>
-    
-    
+    <app-input-control 
+    [form]="form" 
+    [type]="type"
+    [id]="id"
+    [label]="label"
+    [placeholder]="placeholder"
+    [dataSource]="dataSource"
+    [bindValue]="bindValue"
+    [bindLabel]="bindLabel"
+    [multiple]="multiple"
+    [clearable]="clearable"
+    [noCheckDirty]="noCheckDirty"
+
+    (inputChange)="onInputChange($event)"
+    (nav) = "onNav($event)"
+    ></app-input-control>
 </div>

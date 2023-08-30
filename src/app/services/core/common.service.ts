@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { GlobalData } from '../static/global-variable';
 import { lib } from '../static/global-functions';
 import { EnvService } from './env.service';
@@ -78,7 +78,21 @@ export class CommonService {
 
 		}
 		else if (pmethod == "GET") {
-			options.params = data;
+			if (data) {
+				let params: HttpParams = new HttpParams();
+				for (const key of Object.keys(data)) {
+					if (data[key]) {
+						if (data[key] instanceof Array) {
+							console.log(data);
+							
+							params = params.append(key.toString(), JSON.stringify(data[key]));
+						} else {
+							params = params.append(key.toString(), data[key]);
+						}
+					}
+				}
+				options.params = params;
+			}
 			return this.http.get(URL, options);
 		}
 		else if (pmethod == "POST") {
@@ -102,6 +116,10 @@ export class CommonService {
 			return this.http.post(URL, data, options);
 		}
 		else if (pmethod == "DOWNLOAD") {
+			options.params = data;
+			return this.http.get(URL, options);
+		}
+		else {
 			options.params = data;
 			return this.http.get(URL, options);
 		}
@@ -542,7 +560,7 @@ export class exService {
 
 	}
 
-	read(query = null, forceReload = false) {
+	read(query: any = null, forceReload = false) {
 		if (this.allowCache && forceReload == false) {
 			return this.commonService.connectLocal(this.apiPath.getList, query, this.searchField);
 		}
@@ -564,7 +582,7 @@ export class exService {
 		}
 	}
 
-	search(query = null) {
+	search(query: any = null) {
 		let apiPath = this.apiPath.getSearchList;
 		return this.commonService.connect(apiPath.method, apiPath.url(), query);
 	}

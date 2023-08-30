@@ -7,9 +7,15 @@ import { lib } from 'src/app/services/static/global-functions';
   <div class="c-control" *ngIf="field.data">
 	<ion-item class="ion-no-padding ion-no-margin" lines="none" [disabled]="field.disabled" *ngIf="!(field.type == 'toggle')">
 		<ion-label class="ion-text-wrap ">
-			<label class=" c-label" [attr.for]="field.labelForId">{{field.label}} <a (click)="reset(field)" class="clickable" *ngIf="field.data.ValueObject != null">[reset]</a></label>
+			<label class=" c-label" [attr.for]="field.labelForId">
+			{{field.label}} 
+			<a (click)="reset(field)" class="clickable" *ngIf="field.data.ValueObject != null && !field.data._InheritedConfig">[reset]</a>
+			<a (click)="field.showInherited = !field.showInherited " class="clickable" *ngIf="field.data._InheritedConfig">[Inherit]</a>
+			</label>
 			<p *ngIf="field.remark">{{field.remark}}</p>
 		</ion-label>
+		
+
 	</ion-item>
 	<ng-container [ngSwitch]="field.type">
 		<ng-select *ngSwitchCase="'select-staff'" [multiple]="field.multiple" [items]="field.DataSource | async" [typeahead]="field.SearchInput" [loading]="field.SearchLoading" [virtualScroll]="true" (change)="trackChange(field.data)" [(ngModel)]="field.data.ValueObject" [readonly]="field.disabled" class="c-input no-check-dirty" [labelForId]="field.labelForId" [bindLabel]="field.bindLabel? field.bindLabel: 'Name'" [bindValue]="field.bindValue">
@@ -81,11 +87,25 @@ import { lib } from 'src/app/services/static/global-functions';
 	</ng-container>
 	<ion-item class="ion-no-padding" lines="none" *ngIf="field.type == 'toggle'">
 		<ion-label class="ion-text-wrap">
-			<label class="c-label" [attr.for]="field.labelForId">{{field.label}} <a (click)="reset(field)" class="clickable" *ngIf="field.data.ValueObject != null">[reset]</a></label>
+			<label class="c-label" [attr.for]="field.labelForId">
+				{{field.label}} 
+
+				<a (click)="reset(field)" class="clickable" *ngIf="field.data.ValueObject != null && !field.data._InheritedConfig">[reset]</a>
+				<a (click)="field.showInherited = !field.showInherited " class="clickable" *ngIf="field.data._InheritedConfig">[Inherit]</a>
+
+			</label>
 			<p *ngIf="field.remark">{{field.remark}}</p>
 		</ion-label>
 		<ion-toggle [id]="field.labelForId" (click)="trackChange(field.data)" [(ngModel)]="field.data.ValueObject" [disabled]="field.disabled" slot="end" color="primary"></ion-toggle>
 	</ion-item>
+
+	<div *ngIf="field.showInherited && field.data._InheritedConfig" style="opacity: 0.8; margin: 5px 0 32px 0px;" >
+		<label class="c-label" >
+			Inherit from
+		</label>
+		<app-branch-breadcrumbs [maxItems]="3" [Id]="field.data._InheritedConfig.IDBranch" [Items]="field.data._InheritedConfig._Branches" class="c-input disable breadcrumbs"></app-branch-breadcrumbs>
+	</div>
+	
 </div>
   `
 })
