@@ -23,7 +23,7 @@ let ga: any;
 })
 export class AppComponent implements OnInit {
 	@ViewChild('search') search: any;
-	appTheme = 'artdistribution-theme';
+	appTheme = 'default-theme';
 	isConnectFail = false;
 	appMessages = [];
 	appVersion = '';
@@ -207,7 +207,6 @@ export class AppComponent implements OnInit {
 		link.href = relIcon;
 
 		setTimeout(() => {
-
 			let themeColor = lib.getCssVariableValue('--ion-color-primary');
 			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
 		}, 100);

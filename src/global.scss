@@ -28,15 +28,7 @@
 @import "~intro.js/introjs.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-@import "./theme/_inholding-theme.scss";
-@import "./theme/_gem-theme.scss";
-@import "./theme/_gem-dark-theme.scss";
-@import "./theme/_white-palace-theme.scss";
-@import "./theme/_the-log-theme.scss";
-@import "./theme/_pqc-theme.scss";
-@import "./theme/_artdistribution-theme.scss";
-@import "./theme/_wgourmet-theme.scss";
-@import "./theme/_dark-theme.scss";
+@import "./theme/_default-theme.scss";
 
 @import "./theme/dpr-query.scss";
 @import "./theme/common.scss";
