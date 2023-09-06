@@ -14,7 +14,14 @@ const config: CapacitorConfig = {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
     },
-  },
-};
+  }
+  ,
+  android: {
+    buildOptions: {
+        keystorePath: 'undefined',
+        keystoreAlias: 'undefined',
+    }
+  }
+  };
 
 export default config;

@@ -1,5 +1,8 @@
 # Getting Started
 
+node ./replace.translate.js
+
+
 ## Init project
 ```
 npm i

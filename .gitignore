@@ -453,3 +453,6 @@ _publish.*/
 
 _android.*/
 _ios.*/
+
+resources/ios/**/*
+resources/android/**/*

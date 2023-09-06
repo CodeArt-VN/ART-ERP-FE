@@ -81,8 +81,8 @@ try {
     replace.sync(iosVersion);
     replace.sync(iosProjectVersion);
 
-    replace.sync(webOutput);
-    replace.sync(webBaseHref);
+    //replace.sync(webOutput);
+    //replace.sync(webBaseHref);
     //replace.sync(webIndex);
 
     console.log('Build version: ' + buildVersion);
