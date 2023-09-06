@@ -191,8 +191,6 @@ export class AppComponent implements OnInit {
 				relIcon = '/assets/logos/logo-gem-center-small.png';
 			} else if (window.location.host.indexOf('inholdings') > -1) {
 				this.appTheme = 'inholdings-theme';
-			} else {
-				this.appTheme = 'inholdings-theme';
 			}
 		}
 
