@@ -12,8 +12,8 @@ try {
     var androidRegx = /applicationId "(.*)"/g;
     var androidAppId = androidRegx.exec(androidFileData)[1];
 
-    console.log('Rename android => _android.' + androidAppId);
-    fs.renameSync('android', '_android.' + androidAppId);
+    console.log('Rename android => android.' + androidAppId + '.app');
+    fs.renameSync('android', 'android.' + androidAppId + '.app');
 }
 catch (err) {
     console.error(err);
@@ -25,8 +25,8 @@ try {
     var iosRegx = /PRODUCT_BUNDLE_IDENTIFIER = (.*);/g;
     var iosAppId = iosRegx.exec(iosFileData)[1];
 
-    console.log('Rename ios => _ios.' + iosAppId);
-    fs.renameSync('ios', '_ios.' + iosAppId);
+    console.log('Rename ios => ios.' + iosAppId + '.app');
+    fs.renameSync('ios', 'ios.' + iosAppId + '.app');
 }
 catch (err) {
     console.error(err);
@@ -36,10 +36,10 @@ catch (err) {
 //3. Rename current ios + android folder
 var buildAppId = package.name;
 try {
-    fs.renameSync('_android.' + buildAppId, 'android');
-    fs.renameSync('_ios.' + buildAppId, 'ios');
+    fs.renameSync('android.' + buildAppId + '.app', 'android');
+    fs.renameSync('ios.' + buildAppId + '.app', 'ios');
 
-    console.log('Rename _[android/ios]'+buildAppId+' folders => android and ios.');
+    console.log('Rename [android/ios]' + buildAppId + ' folders => android and ios.');
 }
 catch (err) {
     console.error(err);
@@ -81,8 +81,8 @@ try {
     replace.sync(iosVersion);
     replace.sync(iosProjectVersion);
 
-    //replace.sync(webOutput);
-    //replace.sync(webBaseHref);
+    replace.sync(webOutput);
+    replace.sync(webBaseHref);
     //replace.sync(webIndex);
 
     console.log('Build version: ' + buildVersion);
