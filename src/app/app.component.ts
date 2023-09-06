@@ -10,7 +10,7 @@ import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/s
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
-import { ActionPerformed, PushNotifications, Token} from '@capacitor/push-notifications';
+import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
 
 register();
@@ -176,20 +176,24 @@ export class AppComponent implements OnInit {
 	updateStatusbar() {
 		let title = 'ERP';
 		let relIcon = 'assets/icons/icon-512x512.png';
-		if (window.location.host == 'thelog.inholdings.vn') {
-			this.appTheme = 'thelog-theme';
-		} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
-			this.appTheme = 'gem-theme';
-			title = 'GEM Café';
-			relIcon = '/assets/logos/logo-gem-center-small.png';
-		} else if (window.location.host.indexOf('inholdings') > -1) {
-			this.appTheme = 'inholdings-theme';
-		} else if (window.location.host.indexOf('artlogistics') > -1) {
+
+		if (environment.appDomain.indexOf('artlogistics') > -1) {
 			this.appTheme = 'artdistribution-theme';
-		} else if (window.location.host.indexOf('art.appcenter.vn') > -1) {
+		} else if (environment.appDomain.indexOf('art.appcenter.vn') > -1) {
 			this.appTheme = 'artdistribution-theme';
 		} else {
-			this.appTheme = 'inholdings-theme';
+
+			if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
+				this.appTheme = 'thelog-theme';
+			} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
+				this.appTheme = 'gem-theme';
+				title = 'GEM Café';
+				relIcon = '/assets/logos/logo-gem-center-small.png';
+			} else if (window.location.host.indexOf('inholdings') > -1) {
+				this.appTheme = 'inholdings-theme';
+			} else {
+				this.appTheme = 'inholdings-theme';
+			}
 		}
 
 		let link: any = document.querySelector("link[rel~='icon']");
@@ -198,12 +202,12 @@ export class AppComponent implements OnInit {
 			link.rel = 'icon';
 			document.head.appendChild(link);
 		}
-		
+
 		window.document.title = title;
 		link.href = relIcon;
 
 		setTimeout(() => {
-			
+
 			let themeColor = lib.getCssVariableValue('--ion-color-primary');
 			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
 		}, 100);
@@ -232,11 +236,11 @@ export class AppComponent implements OnInit {
 			this.showScrollbar = environment.showScrollbar;
 			this.updateStatusbar();
 		});
-		
-		
+
+
 	}
-	async initNotification(){
-		if(Capacitor.getPlatform() != 'web'){
+	async initNotification() {
+		if (Capacitor.getPlatform() != 'web') {
 			let permStatus = await PushNotifications.checkPermissions();
 			if (permStatus.receive === 'prompt') {
 				permStatus = await PushNotifications.requestPermissions();
@@ -245,8 +249,8 @@ export class AppComponent implements OnInit {
 			await PushNotifications.addListener('registration', (token: Token) => {
 				this.env.setStorage('NotifyToken', token.value);
 			});
-			PushNotifications.addListener('pushNotificationActionPerformed',(notification: ActionPerformed) => {
-				let navigateByUrl  = notification.notification.data.navigateByUrl;
+			PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+				let navigateByUrl = notification.notification.data.navigateByUrl;
 				this.router.navigateByUrl(navigateByUrl);
 			});
 		}
