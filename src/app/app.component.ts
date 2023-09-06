@@ -11,7 +11,9 @@ import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token} from '@capacitor/push-notifications';
+import { register } from 'swiper/element/bundle';
 
+register();
 let ga: any;
 
 @Component({

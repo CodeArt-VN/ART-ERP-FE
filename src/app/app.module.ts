@@ -15,8 +15,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 
-
-
 import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
 import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
 import { SaleOrderMergeModalPage } from './pages/SALE/sale-order-merge-modal/sale-order-merge-modal.page';
@@ -32,10 +30,8 @@ import { POSMergeModalPage } from './pages/POS/pos-merge-modal/pos-merge-modal.p
 import { POSChangeTableModalPage } from './pages/POS/pos-change-table-modal/pos-change-table-modal.page';
 import { POSPaymentModalPage } from './pages/POS/pos-payment-modal/pos-payment-modal.page';
 import { POSDiscountModalPage } from './pages/POS/pos-discount-modal/pos-discount-modal.page';
-import { POSIntroModalPage } from './pages/POS/pos-intro-modal/pos-intro-modal.page';
 import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page';
 import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
-import { POSCustomerOrderModalPage } from './pages/POS/pos-customer-order-modal/pos-customer-order-modal.page';
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 
@@ -57,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent, PopoverPage,
     SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage,
     ARInvoiceSplitModalPage, ARInvoiceMergeModalPage,
-    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSIntroModalPage, POSMemoModalPage, POSAddContactModalPage, POSCustomerOrderModalPage, POSCancelModalPage, POSNotifyModalPage],
+    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSMemoModalPage, POSAddContactModalPage, POSCancelModalPage, POSNotifyModalPage],
   imports: [
     BrowserModule,
     TranslateModule.forRoot({

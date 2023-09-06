@@ -872,4 +872,13 @@ export abstract class PageBase implements OnInit {
         this.refresh();
     }
 
+    searchResultIdList = { term: '', ids: [] };
+	searchShowAllChildren = (term: string, item: any) => {
+		if (this.searchResultIdList.term != term) {
+			this.searchResultIdList.term = term;
+			this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
+		}
+		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
+	}
+
 }
