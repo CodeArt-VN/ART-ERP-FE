@@ -380,6 +380,8 @@ export class AppComponent implements OnInit {
 
 			this.env.setStorage('lang', this.translate.currentLang);
 		}
+
+		this.env.lang = this.translate.currentLang;
 	}
 }
 

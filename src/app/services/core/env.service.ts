@@ -17,6 +17,24 @@ import { lib } from '../static/global-functions';
  * @class EnvService
  */
 export class EnvService {
+    /**
+     * The lang currently used
+     */
+    language: any = {
+        default: 'vi-VN',
+        current : '',
+        isDefault: true,
+    };
+
+    
+    get lang(): string {
+        return this.language.current;
+    }
+    set lang(value: string) {
+        this.language.current = value;
+        this.language.isDefault = this.language.current == this.language.default;
+    }
+
     /** Get current app version */
     version = environment.appVersion;
     
