@@ -231,6 +231,15 @@
 				</div>
 			</div>
 		</ion-router-outlet>
+
+		<!-- <ion-menu id="noty-side" side="end" [swipeGesture]="false" contentId="main-content">
+			<ion-content class="ion-padding" appScrollbarTheme>
+
+				<app-page-message [itemsLength]="0" [showSpinner]="false"></app-page-message>
+
+			</ion-content>
+		</ion-menu> -->
+
 	</ion-split-pane>
 	<div class="app-footer">
 		<a class="text" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" *ngIf="(env.user && env.user.Id)">{{env.user.UserName}}</a>

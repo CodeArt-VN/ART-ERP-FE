@@ -300,6 +300,23 @@
     --background: transparent;
 }
 
+#noty-side{
+    @media print {
+        display: none;
+    }
+
+    border-left: none;
+    border-left: solid 1px var(--menu-right-border-color);
+    --width: 270px;
+    --background: linear-gradient(180deg, var(--menu-background-top), var(--menu-background-bottom));
+
+    @media screen and (min-width: 992px) {
+        --width: 270px;
+        max-width: 270px !important;
+        min-width: 270px !important;
+    }
+}
+
 .menu-toogle-btn {
     @media print {
         display: none;
