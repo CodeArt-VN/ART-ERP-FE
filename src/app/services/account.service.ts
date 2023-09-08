@@ -370,7 +370,7 @@ export class AccountService {
 				})
 				deviceInfo = {
 					Id: 0,
-					Code: UID.uuid,
+					Code: UID.identifier,
 					Name: info.name,
 					Model: info.model,
 					Platform: info.platform,
