@@ -22,8 +22,6 @@ npm i @capacitor/push-notifications@4.1.2
 ionic capacitor add android
 ionic capacitor add ios
 
-
-npm i @ng-select/ng-option-highlight --save --legacy-peer-deps
 ```
 ios/App/App/Info.plist <= fix ITMS-90683: Missing Purpose String in Info.plist
 
