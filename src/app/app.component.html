@@ -248,15 +248,8 @@
 			<ion-icon [color]="env.networkInfo.isOnline? 'success': 'danger'" [name]="env.networkInfo.isOnline? 'wifi': 'alert-circle'"></ion-icon>
 			<!-- <span *ngIf="!env.networkInfo.isOnline"> rớt mạng...</span> -->
 		</span>
-		<span (click)="changeLanguage()" class="text float-right" style="font-size: x-large">
-
-			<!-- <b *ngIf="translate.currentLang !='vi-VN'">E</b>
-			<b *ngIf="translate.currentLang =='vi-VN'">V</b> -->
-			<b *ngIf="env.lang !='vi-VN'">🇻🇳</b>
-			<b *ngIf="env.lang =='vi-VN'">🇺🇸</b>
-
-
-		</span>
+		<span *ngIf="!env.language.isDefault" (click)="changeLanguage('vi-VN')" class="text float-right" style="font-size: x-large"><b>🇻🇳</b></span>
+		<span *ngIf="env.language.isDefault" (click)="changeLanguage('en-US')" class="text float-right" style="font-size: x-large"><b>🇺🇸</b></span>
 
 
 		<!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">

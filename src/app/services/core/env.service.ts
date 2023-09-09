@@ -26,12 +26,19 @@ export class EnvService {
         isDefault: true,
     };
 
-    
-    get lang(): string {
-        return this.language.current;
-    }
-    set lang(value: string) {
-        this.language.current = value;
+    /**
+     * Set current language and translate resources
+     * @param value Language code: 'vi-VN' | 'en-US'
+     */
+    setLang(value: string) {
+        if (value) 
+			this.translate.use(value);
+		else 
+			this.translate.use(this.language.default);
+		
+        this.setStorage('lang', this.translate.currentLang);
+
+        this.language.current = this.translate.currentLang;
         this.language.isDefault = this.language.current == this.language.default;
     }
 

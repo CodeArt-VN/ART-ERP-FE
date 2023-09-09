@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
 		public env: EnvService,
 		public accountService: AccountService,
 		public platform: Platform,
-		public translate: TranslateService
+		
 	) {
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
 							this.changeLanguage(lang);
 						}
 						else {
-							this.changeLanguage('vi-VN');
+							this.changeLanguage();
 						}
 					})
 					break;
@@ -367,21 +367,7 @@ export class AppComponent implements OnInit {
 
 
 	changeLanguage(lang = null) {
-		if (lang) {
-			this.translate.use(lang);
-		}
-		else {
-			if (this.translate.currentLang != 'vi-VN') {
-				this.translate.use('vi-VN');
-			}
-			else {
-				this.translate.use('en-US')
-			}
-
-			this.env.setStorage('lang', this.translate.currentLang);
-		}
-
-		this.env.lang = this.translate.currentLang;
+		this.env.setLang(lang);
 	}
 }
 
