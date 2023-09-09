@@ -17,29 +17,29 @@ import { lib } from '../static/global-functions';
  * @class EnvService
  */
 export class EnvService {
+    public languageTracking = new Subject<any>();
+
     /**
      * The lang currently used
      */
     language: any = {
         default: 'vi-VN',
         current : '',
-        isDefault: true,
+        isDefault: false,
     };
 
     /**
      * Set current language and translate resources
      * @param value Language code: 'vi-VN' | 'en-US'
      */
-    setLang(value: string) {
-        if (value) 
-			this.translate.use(value);
-		else 
-			this.translate.use(this.language.default);
-		
-        this.setStorage('lang', this.translate.currentLang);
-
-        this.language.current = this.translate.currentLang;
+    async setLang(value: string) {
+        if (!value)
+            value = this.language.default;      
+        this.translate.use(value);
+        this.setStorage('lang', value);
+        this.language.current = value;
         this.language.isDefault = this.language.current == this.language.default;
+        this.languageTracking.next(this.language);
     }
 
     /** Get current app version */
@@ -51,7 +51,7 @@ export class EnvService {
     /** All cached config */
     configs: any[] = [];
 
-    /** */
+    
     public configTracking = new Subject<any[]>();
     
     /** Check enviroment is loaded */

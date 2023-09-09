@@ -1,5 +1,4 @@
 import { Directive, ElementRef } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
 @Directive({
 	selector: '[appPrintFix]'
