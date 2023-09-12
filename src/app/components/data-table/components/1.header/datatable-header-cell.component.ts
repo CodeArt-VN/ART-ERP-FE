@@ -8,6 +8,7 @@ import { SortConfig } from 'src/app/models/options-interface';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'datatable-header-cell',
     templateUrl: './datatable-header-cell.component.html',
 })

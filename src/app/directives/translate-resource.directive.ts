@@ -41,9 +41,9 @@ export class TranslateResourceDirective {
 	updateText() {
 		if (this.item) {
 			if (this.env.language.isDefault || !this.item[this.foreignName]) {
-				this.el.nativeElement.setHTML(this.item[this.name]);
+				this.el.nativeElement.innerHTML = this.item[this.name];
 			} else {
-				this.el.nativeElement.setHTML(this.item[this.foreignName]);
+				this.el.nativeElement.innerHTML = this.item[this.foreignName];
 			}
 		}
 	}
