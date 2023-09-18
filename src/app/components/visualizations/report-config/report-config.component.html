@@ -1,7 +1,7 @@
 <ion-grid>
-	<form [formGroup]="form" *ngIf="_config" (submit)="onChange($event)">
+	<form [formGroup]="form" *ngIf="_reportConfig" (submit)="onChange($event)">
 		<ion-row class="hr-group" formGroupName="TimeFrame">
-			
+
 			<ion-col size="12">
 				<!-- <div class="c-control">
 					<label class="c-label" [attr.for]="id" *ngIf="type != 'radio'">
@@ -26,23 +26,24 @@
 					(nav) = "onNav($event)"
 					></app-input-control>
 				</div> -->
-				
-				<!-- <app-form-control [form]="form" type="ng-select" id="Schema" label="Schema" placeholder="Please enter data.." [dataSource]="rptS.schemaList" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
+
+				<!-- <app-form-control [form]="form" type="ng-select" id="Schema" label="Schema" placeholder="Please enter data.." [dataSource]="rpt.schemaList" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
 				 -->
 				<div class="c-control">
 					<label class="c-label">{{'Timeframe' | translate}}</label>
-					<span class="c-input" style="display: flex;align-items: center;justify-content: space-between;">
+					<span class="c-input">
 						<ion-icon name="calendar-outline"></ion-icon>
-						<ion-button size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')">{{rptS.formatTimeConfig(form.controls.TimeFrame.controls.From.getRawValue())}}</ion-button>
+
+						<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')">{{rpt.formatTimeConfig(form.controls.TimeFrame.controls.From.getRawValue())}}</ion-button>
 						<ion-icon name="arrow-forward"></ion-icon>
-						<ion-button size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')">{{rptS.formatTimeConfig(form.controls.TimeFrame.controls.To.getRawValue())}}</ion-button>
+						<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')">{{rpt.formatTimeConfig(form.controls.TimeFrame.controls.To.getRawValue())}}</ion-button>
 					</span>
 				</div>
 
 				<div class="c-control">
 					<label class="c-label">{{'Cpmmpare to' | translate}}</label>
-					<span class="c-input" style="display: flex;align-items: center;justify-content: space-between;">
-						<ion-button size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rptS.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
+					<span class="c-input">
+						<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
 					</span>
 				</div>
 
@@ -52,13 +53,13 @@
 						<ion-content>
 							<ion-list>
 								<ng-container *ngIf="pickerGroupName == 'CompareTo'">
-									<ion-item button detail="false" *ngFor="let i of rptS.commonOptions.compareTo" (click)="pickDate(i.timeConfig)">
+									<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.compareTo" (click)="pickDate(i.timeConfig)">
 										<ion-icon name="timer-outline" slot="start"></ion-icon>
 										<ion-label>{{i.name}}</ion-label>
 									</ion-item>
 								</ng-container>
 								<ng-container *ngIf="pickerGroupName != 'CompareTo'">
-									<ion-item button detail="false" *ngFor="let i of rptS.commonOptions.timeframe" (click)="pickDate(i.timeConfig)">
+									<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.timeframe" (click)="pickDate(i.timeConfig)">
 										<ion-icon name="timer-outline" slot="start"></ion-icon>
 										<ion-label>{{i.name}}</ion-label>
 									</ion-item>
@@ -73,31 +74,31 @@
 					</ng-template>
 				</ion-popover>
 
-				
+
 
 				<!-- 				
 				<app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetails" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
 				 -->
 				<!-- <div formGroupName="From">
-					<app-form-control [form]="form.controls.TimeFrame.controls.From" type="radio" id="Type" label="Type" placeholder="Please enter data.." [dataSource]="rptS.commonOptions.timeConfigType" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-form-control>
+					<app-form-control [form]="form.controls.TimeFrame.controls.From" type="radio" id="Type" label="Type" placeholder="Please enter data.." [dataSource]="rpt.commonOptions.timeConfigType" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-form-control>
 				</div> 
 			
 			
-			rptS.calcTimeValue(form.controls.TimeFrame.controls.From.getRawValue())
+			rpt.calcTimeValue(form.controls.TimeFrame.controls.From.getRawValue())
 			
 			-->
 
-			<div class="c-control">
-				
-				<ion-button size="small" (click)="onRunReport()" color="success">
-					<ion-icon slot="start" name="caret-forward-outline"></ion-icon>
-					{{'Run' | translate}}
-				</ion-button>
+				<div class="c-control">
 
-				<ion-button size="small" (click)="onSave()" color="primary">
-					{{'Save' | translate}}
-				</ion-button>
-			</div>
+					<ion-button size="small" (click)="onRunReport()" color="success">
+						<ion-icon slot="start" name="caret-forward-outline"></ion-icon>
+						{{'Run' | translate}}
+					</ion-button>
+
+					<ion-button size="small" (click)="onSave()" color="primary">
+						{{'Save' | translate}}
+					</ion-button>
+				</div>
 
 			</ion-col>
 		</ion-row>

@@ -17,8 +17,10 @@ export interface Schema {
 	Code?: string;
 	Name?: string;
 	Remark?: string;
+	Icon?: string;
+	Color?: string;
 	ModifiedDate?: number | string | Date;
-	LastDataModifiedDate?: number | string | Date;
+	DataFetchDate?: number | string | Date;
 }
 
 export interface TimeFrame {

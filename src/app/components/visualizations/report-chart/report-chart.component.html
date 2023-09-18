@@ -1,3 +1,92 @@
-<p>
-  report-chart works!
-</p>
+<div *ngIf="_reportConfig; let r" class="chart-holder" [class]="[viewMode]" [ngClass]="{'box-shadow': viewMode!='mini'}">
+
+  <ion-item lines="none" *ngIf="viewMode == 'dashboard' && r.ReprotInfo as i">
+    <ion-icon [name]="i.Icon || 'stats-chart'" [color]="i.Color || 'primary'" slot="start"></ion-icon>
+    <ion-label color="primary">
+      <h2>{{i.Name}}</h2>
+      <p>
+        <small>
+          {{rpt.formatTimeConfig(r.TimeFrame.From)}}
+          →
+          {{rpt.formatTimeConfig(r.TimeFrame.To)}}
+          <ion-text color="dark" *ngIf="dataFetchDate">
+            {{'Updated' | translate}}: {{dataFetchDate | date:'HH:mm dd/MM'}}
+          </ion-text>
+        </small>
+      </p>
+    </ion-label>
+
+    <ion-button title="{{'Open report' | translate}}" fill="clear" slot="end" (click)="onOpenReport()" *ngIf="_gridItem?.cols > 2" class="ion-hide-sm-down">
+      <ion-icon color="dark" slot="icon-only" name="open-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button title="{{'Reload' | translate}}" fill="clear" slot="end" (click)="onReloadData()" *ngIf="_gridItem?.cols > 2" class="ion-hide-sm-down">
+      <ion-icon color="dark" slot="icon-only" name="reload-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button title="{{'More...'| translate}}" (click)="presentToolPopover($event)" fill="clear" slot="end">
+      <ion-icon color="dark" slot="icon-only" name="ellipsis-vertical"></ion-icon>
+    </ion-button>
+
+    <ion-popover #toolPopover [isOpen]="isToolPopoverOpen" (didDismiss)="isToolPopoverOpen = false" [dismissOnSelect]="true" [backdropDismiss]="true">
+      <ng-template>
+        <ion-content scroll-y="false">
+          <ion-list>
+            <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onOpenReport()">
+              <ion-icon color="dark" slot="icon-only" name="open-outline" slot="start"></ion-icon>
+              <ion-text color="dark">{{'Open report' | translate}}</ion-text>
+            </ion-item>
+            <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onReloadData()">
+              <ion-icon color="dark" slot="icon-only" name="reload-outline" slot="start"></ion-icon>
+              <ion-text color="dark">{{'Reload' | translate}}</ion-text>
+            </ion-item>
+
+            <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onDeleteClick($event)">
+              <ion-icon color="danger" slot="icon-only" name="trash" slot="start"></ion-icon>
+              <ion-text color="danger">{{'Delete' | translate}}</ion-text>
+            </ion-item>
+            <!-- <ion-item [button]="true" [detail]="false" routerDirection="forward" [routerLink]="['/'+pageConfig.pageName+'/0/']" (click)="$event.stopPropagation(); this.popoverCtrl.dismiss();">
+              <ion-icon color="success" slot="icon-only" name="add-outline" slot="end"></ion-icon>
+              <ion-text color="success">Thêm đơn mới</ion-text>
+            </ion-item> -->
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
+
+  <ion-button class="toggle-mini-btn" title="{{'Resize' | translate}}" size="small" fill="clear" slot="end" *ngIf="viewMode != 'dashboard'" (click)="toggleMiniChart()">
+    <ion-icon color="dark" slot="icon-only" name="resize"></ion-icon>
+  </ion-button>
+
+  <div class="loading fullfill" *ngIf="isLoading">
+    <ion-spinner color="primary" name="dots"></ion-spinner>
+  </div>
+
+  <div class="statistic-row" *ngIf="viewMode == 'full'">
+    <app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" *ngFor="let m of _reportConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
+  </div>
+
+  <ng-container [ngSwitch]="_reportConfig.ReprotInfo.Type" *ngIf="_chartOption && rptLoaded">
+    <app-pie-chart class="app-chart" *ngSwitchCase="'pie'" [reportId]="reportId" [chartOption]="_chartOption" [dataset]="_dataset"></app-pie-chart>
+    <app-bar-chart class="app-chart" *ngSwitchCase="'bar'" [reportId]="reportId" [chartOption]="_chartOption" [dataset]="_dataset"></app-bar-chart>
+  </ng-container>
+
+  <ion-item lines="none" *ngIf="viewMode == 'full'">
+    <ion-icon name="server-outline" color="success" slot="start"></ion-icon>
+    <ion-label color="primary">
+      <p>
+        {{rpt.formatTimeConfig(r.TimeFrame.From)}}
+        →
+        {{rpt.formatTimeConfig(r.TimeFrame.To)}}
+
+        <ion-text color="dark" *ngIf="dataFetchDate">
+          <small>
+            {{'Updated' | translate}}: {{dataFetchDate | date:'yyyy-MM-dd HH:mm'}}
+          </small>
+        </ion-text>
+
+      </p>
+    </ion-label>
+  </ion-item>
+</div>

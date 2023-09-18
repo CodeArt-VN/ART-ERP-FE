@@ -1,5 +1,5 @@
 <ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}">
-	<ion-buttons slot="start">
+	<ion-buttons slot="start" [collapse]="true">
 		<ion-back-button></ion-back-button>
 		<ion-button color="dark" *ngIf="!selectedItems.length" class="ion-hide-sm-down_">
 			{{pageConfig.pageTitle | translate}}
@@ -11,7 +11,7 @@
 	</ion-buttons>
 
 
-	<ion-buttons slot="end" *ngIf="!(selectedItems.length && canSelect)">
+	<ion-buttons [collapse]="true" slot="end" *ngIf="!(selectedItems.length && canSelect)">
 		<ion-button *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled" (click)="emit('add')" title="{{'Add' | translate}}">
 			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
 		</ion-button>

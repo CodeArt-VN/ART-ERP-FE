@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListToolbarComponent implements OnInit {
 	@ViewChild('importfile') importfile: any;
-	
+
 	@Input() pageTitle;
 	@Input() selectedTitle;
 	@Input() pageConfig;
@@ -28,7 +28,7 @@ export class ListToolbarComponent implements OnInit {
 	@Input() ShowChangeTable = true;
 
 	//@Input() set pageTitle(value) {window.document.title = value;};
-	
+
 	@Output() add = new EventEmitter();
 	@Output() refresh = new EventEmitter();
 	@Output() export = new EventEmitter();
@@ -44,7 +44,7 @@ export class ListToolbarComponent implements OnInit {
 	@Output() disapproveOrders = new EventEmitter();
 	@Output() cancelOrders = new EventEmitter();
 	@Output() submitOrders = new EventEmitter();
-	
+
 	@Output() presentPopover = new EventEmitter();
 	@Output() submitOrdersForApproval = new EventEmitter();
 	@Output() createReceipt = new EventEmitter();
@@ -80,17 +80,18 @@ export class ListToolbarComponent implements OnInit {
 	@Output() submitVoucherForApproval = new EventEmitter();
 	@Output() disapproveVoucher = new EventEmitter();
 	@Output() approveVoucher = new EventEmitter();
-	
+
 	@Output() submitDiscountForApproval = new EventEmitter();
 	@Output() disapproveDiscount = new EventEmitter();
 	@Output() approveDiscount = new EventEmitter();
 	constructor(public translate: TranslateService) { }
 
 	ngOnInit() {
-		this.translate.get(this.pageConfig.pageTitle).subscribe((text: string) => {
-            this.pageTitle = text;
-			window.document.title = text;
-        });
+		if (this.pageConfig.pageTitle)
+			this.translate.get(this.pageConfig.pageTitle).subscribe((text: string) => {
+				this.pageTitle = text;
+				window.document.title = text;
+			});
 	}
 
 	emit(eventName) {
@@ -123,7 +124,7 @@ export class ListToolbarComponent implements OnInit {
 	showDisapproveARs = true;
 	showCancelARs = true;
 	showSubmitARs = true;
-	
+
 	showCreateEInvoice = true;
 	showUpdateEInvoice = true;
 	// createARInvoice
@@ -137,14 +138,14 @@ export class ListToolbarComponent implements OnInit {
 	showSubmitBusinessPartner = true;
 	showApproveBusinessPartner = true;
 	showDisapproveBusinessPartner = true;
-	
+
 	ngOnChanges(changes: SimpleChanges) {
 		console.log('check');
 		if (this.pageConfig.pageName == 'sale-order') {
 			this.showSubmitBusinessPartner = false;
 			this.showApproveBusinessPartner = false;
 			this.showDisapproveBusinessPartner = false;
-			
+
 			this.showSubmitOrdersForApproval = true;
 			this.showApproveOrders = true;
 			this.showDisapproveOrders = true;
@@ -225,7 +226,7 @@ export class ListToolbarComponent implements OnInit {
 				// PORequestSubmitted	Chờ duyệt
 				// PORequestApproved	Đã duyệt
 				// Submitted	Đã đặt mua
-				
+
 				// PORequestQuotation	Chờ báo giá
 				// POConfirmed	NCC đã xác nhận
 				// POIsShipping	Đang vận chuyển
@@ -264,7 +265,7 @@ export class ListToolbarComponent implements OnInit {
 				if (notShowDelete.indexOf(i.Status) > -1) {
 					this.showDelete = false;
 				}
-				
+
 			});
 		}
 
@@ -272,7 +273,7 @@ export class ListToolbarComponent implements OnInit {
 			this.showSubmitBusinessPartner = false;
 			this.showApproveBusinessPartner = false;
 			this.showDisapproveBusinessPartner = false;
-			
+
 			this.showSubmitARsForApproval = true;
 			this.showApproveARs = true;
 			this.showDisapproveARs = true;
@@ -296,13 +297,13 @@ export class ListToolbarComponent implements OnInit {
 				// EInvoiceRelease	Đã phát hành HĐĐT
 				// EInvoiceCancel	Đã hủy HĐĐT
 				//, 'ARInvoiceNew', 'ARInvoiceDraft', 'ARInvoiceCanceled', '', 'ARInvoiceRejected', 'ARInvoicePending', 'ARInvoiceSplited', 'ARInvoiceMerged'
-				
+
 				let notShowSubmitARsForApproval = ['ARInvoicePending', 'ARInvoiceApproved', 'ARInvoiceCanceled', 'EInvoiceNew', 'EInvoiceRelease', 'EInvoiceCancel', 'EInvoiceEmpty', 'ARInvoiceSplited', 'ARInvoiceMerged'];
 				if (notShowSubmitARsForApproval.indexOf(i.Status) > -1) {
 					this.showSubmitARsForApproval = false;
 				}
 
-				let notShowApproveARs = ['ARInvoiceApproved', 'ARInvoiceRejected', 'ARInvoiceCanceled', 'EInvoiceEmpty', 'EInvoiceNew', 'EInvoiceRelease', 'EInvoiceCancel','ARInvoiceSplited', 'ARInvoiceMerged'];
+				let notShowApproveARs = ['ARInvoiceApproved', 'ARInvoiceRejected', 'ARInvoiceCanceled', 'EInvoiceEmpty', 'EInvoiceNew', 'EInvoiceRelease', 'EInvoiceCancel', 'ARInvoiceSplited', 'ARInvoiceMerged'];
 				if (notShowApproveARs.indexOf(i.Status) > -1) {
 					this.showApproveARs = false;
 				}
@@ -341,15 +342,15 @@ export class ListToolbarComponent implements OnInit {
 				if (notShowSplit.indexOf(i.Status) > -1) {
 					this.showSplit = false;
 				}
-				
+
 				let notShowMerge = ['EInvoiceRelease', 'EInvoiceNew', 'EInvoiceCancel', 'EInvoiceEmpty', 'ARInvoiceCanceled', 'ARInvoiceSplited', 'ARInvoiceMerged'];
 				if (notShowMerge.indexOf(i.Status) > -1) {
 					this.showMerge = false;
 				}
-				
-			});			
+
+			});
 		}
-		
+
 		if (this.pageConfig.pageName == 'business-partner' || this.pageConfig.pageName == 'outlet' || this.pageConfig.pageName == 'contact-mobile') {
 			this.showSubmitOrdersForApproval = false;
 			this.showApproveOrders = false;
@@ -363,14 +364,14 @@ export class ListToolbarComponent implements OnInit {
 			this.showDelete = true;
 
 			this.selectedItems.forEach(i => {
-				
+
 				// ['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'];
 				// if (['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showCancelOrders = false;
-				
-				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) 					this.showSubmitBusinessPartner = false;
-				if (['New', 'Unapproved', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) 			this.showApproveBusinessPartner = false;
-				if (['New', 'Unapproved', 'Cancelled'].indexOf(i.Status) > -1) 						this.showDisapproveBusinessPartner = false;
-				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) 					this.showDelete = false;
+
+				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showSubmitBusinessPartner = false;
+				if (['New', 'Unapproved', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showApproveBusinessPartner = false;
+				if (['New', 'Unapproved', 'Cancelled'].indexOf(i.Status) > -1) this.showDisapproveBusinessPartner = false;
+				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showDelete = false;
 			});
 		}
 

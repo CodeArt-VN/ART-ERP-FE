@@ -14,6 +14,8 @@ import { ShareInputControlsModule } from '../controls/share-input-controls.modul
 import { ReportConfigComponent } from './report-config/report-config.component';
 import { CardMultiRowComponent } from './card-multi-row/card-multi-row.component';
 import { ReportChartComponent } from './report-chart/report-chart.component';
+import { PieChartComponent } from './types/pie-chart/pie-chart.component';
+import { BarChartComponent } from './types/bar-chart/bar-chart.component';
 
 
 
@@ -34,12 +36,16 @@ import { ReportChartComponent } from './report-chart/report-chart.component';
         ReportConfigComponent,
         ReportChartComponent,
         CardMultiRowComponent,
+		PieChartComponent,
+		BarChartComponent,
 
 	],
 	exports: [
         ReportConfigComponent,
         ReportChartComponent,
         CardMultiRowComponent,
+		PieChartComponent,
+		BarChartComponent,
 	],
 })
 export class ShareVisualizationsModule { }

@@ -66,6 +66,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     IonicModule.forRoot({
       mode: 'ios',
+      innerHTMLTemplatesEnabled: true,
       // backButtonText: 'Trở lại',
       //locationStrategy: 'local',//'local'; Set to 'path' to remove hashbangs when using Deeplinking.
     }),

@@ -7,13 +7,16 @@ import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
 import { ReportConfig, Schema, TimeConfig } from '../models/options-interface';
+import { EChartsOption } from 'echarts';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReportService {
-    public reportEventTracking = new Subject<any>();
     public reportDataTracking = new Subject<any>();
+    public reportConfigTracking = new Subject<any>();
+
+    //In memory
 
     commonOptions = {
         timeConfigType: [
@@ -140,11 +143,13 @@ export class ReportService {
         { IDSchema: 1, Id: 1, Code: 'Discount', Name: 'Sum of discount', Type: 'Number', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' },
     ]
 
-    datasetList = [
+    reportDatasetList = [
         // Sample data
         // {
-        //                    
-        //     type: 'Dataset', id: 1, code: 'SaleOrder', lastData: '2023-01-01',
+        //     type: 'Dataset', //ReportDataset - Dataset
+        //     id: 1, 
+        //     code: 'SaleOrder', 
+        //     dataFetchDate: '2023-01-01',
         //     data: [
         //         { Id: 1, Title: 'New', Count: 37, Total: 23000000, Discount: 9800000 },
         //         { Id: 2, Title: 'Approved', Count: 23, Total: 45600000, Discount: 6700000 },
@@ -152,25 +157,171 @@ export class ReportService {
         //         { Id: 4, Title: 'Done', Count: 87, Total: 89000000, Discount: 1500000 },
         //     ]
         // },
+    ];
+
+    reportList: ReportConfig[] = [
+        {
+            ReprotInfo: { Id: 1, Code: 'BillStatusReport', Name: 'POS SO Status', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'bar' },
+            TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
+            CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+            Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+            Transform: {
+                Filter: {
+                    Dimension: 'logical', Operator: 'AND',
+                    Logicals: [
+                        { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                        { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+                        { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
+                        // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
+                        // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
+                        {
+                            Dimension: 'logical', Operator: 'OR', Logicals: [
+                                { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                                // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
+                            ]
+                        },
+                    ]
+                },
+            },
+            Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
+            CompareBy: [
+                //{ Property: 'IDBranch' },
+                { Property: 'Status' },
+            ],
+            //isGroupByCompareProperties: true, //=> chưa dùng đến
+            MeasureBy: [
+                { Property: 'Id', Method: 'count', Title: 'Count' },
+
+                // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
+                // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
+                // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
+                // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
+                // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
+                // { Property: 'Received', Method: 'sum', Title: 'Received' },
+                // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
+                // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
+                { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+            ]
+        },
+        {
+            ReprotInfo: { Id: 2, Code: 'BillStatusReport', Name: 'POS SO Status', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'pie' },
+            TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 2 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
+            CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+            Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+            Transform: {
+                Filter: {
+                    Dimension: 'logical', Operator: 'AND',
+                    Logicals: [
+                        { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                        { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+                        { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
+                        // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
+                        // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
+                        {
+                            Dimension: 'logical', Operator: 'OR', Logicals: [
+                                { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                                // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
+                            ]
+                        },
+                    ]
+                },
+            },
+            Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
+            CompareBy: [
+                //{ Property: 'IDBranch' },
+                { Property: 'Status' },
+            ],
+            //isGroupByCompareProperties: true, //=> chưa dùng đến
+            MeasureBy: [
+                { Property: 'Id', Method: 'count', Title: 'Count' },
+
+                // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
+                // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
+                // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
+                // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
+                // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
+                // { Property: 'Received', Method: 'sum', Title: 'Received' },
+                // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
+                // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
+                { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+            ]
+        }
 
     ];
 
-    trackingList = [
+    reportDataTrackingList = [
         // {
         //     schemaId: Number
         //     tracking: Subject
         // }
     ];
 
+    eChartsOption: EChartsOption = {
+        backgroundColor: lib.getCssVariableValue('--ion-color-tint'),
+        textStyle: {
+            color: lib.getCssVariableValue('--ion-color-dark'),
+        },
+        legend: {
+            show: true, 
+            bottom: 0,
+            type: "scroll",
+            padding: [16, 16, 16, 16],
+            icon: "circle",
+            textStyle: { color: lib.getCssVariableValue('--ion-color-dark') }
+        },
+        tooltip: {
+            appendToBody: true,
+            extraCssText: 'width:auto; max-width: 250px; white-space:pre-wrap;',
+            textStyle: {
+                color: lib.getCssVariableValue('--ion-color-dark'),
+            },
+        },
+        toolbox: {
+            show: false,
+            orient: "vertical",
+            right: 16,
+            itemSize: 20,
+            feature: {
+                magicType: { type: ["line", "bar", "stack"] },
+                saveAsImage: {}
+            },
+            iconStyle: {
+                color: lib.getCssVariableValue('--ion-color-primary'),
+                borderColor: lib.getCssVariableValue('--ion-color-primary'),
+            }
+        }
+    }
 
+    pieChartOption: EChartsOption = {
+        legend: {
+            show: false,
+        },
+        series: {
+            type: 'pie',
+            label: { show: true },
+            radius: ['40%', '60%'],
+            itemStyle: { borderRadius: 6, borderColor: 'transparent', borderWidth: 1 }
+        }
+    };
 
-
+    pieChartMiniOption: EChartsOption = {
+        toolbox: {show: false},
+        legend: { show: false },
+        series: {
+            type: 'pie',
+            label: { show: false },
+            radius: ['50%', '80%'],
+            itemStyle: { borderRadius: 2, borderColor: 'transparent', borderWidth: 1 }
+        }
+    };
 
     constructor(
         public commonService: CommonService,
         public env: EnvService,
 
     ) {
+        Object.assign(this.pieChartOption, this.eChartsOption);
+
         // TODO
         // Set up SignalR to receive update data mart / data set
         // Schedule periodic checks
@@ -179,7 +330,149 @@ export class ReportService {
         // Notify commponents to change data to refresh / update UI
     }
 
+    //Report config functions
 
+    /**
+     * get report data from raw dataset
+     * @param reportConfig The report configurations to get data from raw dataset
+     * @returns Return friendly data to view and serves as a data source for charts
+     */
+    regReportTrackingData(reportId: number, checkNewData: boolean = false): Subject<any> {
+        let localDataset = this.reportDatasetList.find(d => d.id == reportId);
+        let trackingData = this.reportDataTrackingList.find(d => d.id == reportId);
+
+        if (localDataset && trackingData) {
+            return trackingData.tracking;
+        }
+
+        localDataset = { id: reportId, data: null };
+        trackingData = { id: reportId };
+        trackingData.tracking = new Subject<any>();
+        this.reportDatasetList.push(localDataset);
+        this.reportDataTrackingList.push(trackingData);
+
+        return trackingData.tracking;
+    }
+
+    /**
+     * Get report config by id
+     * @param reportId Repport id
+     * @returns Report config
+     */
+    getReportConfig(reportId: number): ReportConfig {
+        let reportConfig = this.reportList.find(d => d.ReprotInfo.Id == reportId);
+        if (!reportConfig && !reportId)
+            this.env.showTranslateMessage('Report with Id=' + reportId + ' not found!', 'danger');
+
+        return reportConfig;
+    }
+
+    /**
+     * Save report config
+     * @param config Report config value
+     */
+    saveReportConfig(config: ReportConfig) {
+        let reportConfig = this.getReportConfig(config.ReprotInfo.Id) || {};
+        Object.assign(reportConfig, config);
+
+        //TODO: save to db
+    }
+
+    /**
+     * Check report has view data
+     * @param reportId Report id
+     */
+    checkNewDataAvailble(reportId: number) {
+        //if has new data => call update
+        let reportConfig = this.getReportConfig(reportId);
+
+        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig)
+            .subscribe((resp: any) => {
+                if (resp == 'Yes') {
+                    this.getDatasetFromServer(reportId);
+                }
+                else {
+                    this.env.showTranslateMessage('You are viewing the latest data', 'success');
+                }
+            }, error => { console.log(error); });
+    }
+
+    /**
+     * Get local dataset
+     * @param reportId Get local report dataset by id
+     * @param checkNewData Check if has new data
+     */
+    getReportData(reportId: number, checkNewData: boolean = false) {
+        //Check in memory data
+        let localDataset = this.reportDatasetList.find(d => d.id == reportId);
+        let trackingData = this.reportDataTrackingList.find(d => d.id == reportId);
+        if (!(localDataset && trackingData)) {
+            console.log('Need to regReportTrackingData first');
+        }
+
+        if (localDataset.data) {
+            trackingData.tracking.next(localDataset);
+        }
+
+
+        //if there is no data => check local storage
+        if (checkNewData || !localDataset.data) {
+
+            if (!localDataset.data) {
+                this.env.getStorage('ReportDataset-' + reportId).then(storageDataset => {
+                    if (storageDataset) {
+                        localDataset.data = storageDataset.data;
+                        trackingData.tracking.next(localDataset);
+                    }
+                });
+            }
+
+            // if there is no data OR need to checkNewData then go to check new data availble
+            if (checkNewData || !localDataset.data)
+                this.checkNewDataAvailble(reportId);
+        }
+    }
+
+    /**
+     * Get data form servery by report id OR custom report config
+     * @param reportId Report Id
+     */
+    getDatasetFromServer(reportId: number) {
+        let reportConfig = this.getReportConfig(reportId);
+        let localDataset = this.reportDatasetList.find(d => d.id == reportId);
+        let trackingData = this.reportDataTrackingList.find(d => d.id == reportId);
+        if (!(localDataset && trackingData)) {
+            console.log('Need to regReportTrackingData first');
+        }
+
+        reportConfig.Schema.DataFetchDate = localDataset.dataFetchDate;
+
+        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
+            .subscribe((resp: any) => {
+                if (!resp.Message) {
+                    localDataset.dataFetchDate = resp.LastModifiedDate;
+                    localDataset.data = resp.Data;
+                    trackingData.tracking.next(localDataset);
+                    //this.env.showTranslateMessage('You just loaded the latest data!', 'success');
+                    this.env.setStorage('ReportDataset-' + reportId, localDataset);
+                }
+                else {
+                    this.env.showTranslateMessage(resp.Message);
+                }
+            }, error => { console.log(error); });
+    }
+
+
+    runTestReport(config: ReportConfig){
+        return this.commonService.connect('POST', 'BI/Schema/QueryReportData', config);
+    }
+
+    /**
+     * Caculate absolute datetime from relative date time config
+     * @param timeConfig Time config object like Timeframe in report config
+     * @param isFullfillDate Fill hour, minute, second to end of date
+     * @returns Datetime
+     */
     calcTimeValue(timeConfig: TimeConfig, isFullfillDate = false): Date {
         if (timeConfig.Type == 'absolute') {
             return timeConfig.Value;
@@ -242,8 +535,13 @@ export class ReportService {
         );
     }
 
+    /**
+     * Format relative time config to read
+     * @param timeConfig Time config object like Timeframe in report config
+     * @param isPrevious Is previous days
+     * @returns Return text
+     */
     formatTimeConfig(timeConfig: TimeConfig, isPrevious = false) {
-
         if (isPrevious) {
             if (timeConfig.Amount == 0)
                 return 'Today';
@@ -265,127 +563,25 @@ export class ReportService {
         return timeConfig.Amount + ' ' + timeConfig.Period.toLocaleLowerCase() + (timeConfig.Amount == 1 ? '' : 's') + (timeConfig.IsPastDate ? ' ago' : '');
     }
 
-    getSchema(id: number) {
-        return this.schemaList.find(d => d.Id == id);
+    /**
+     * Get schema by id
+     * @param schemaId Schema id
+     * @returns Return schema
+     */
+    getSchema(schemaId: number) {
+        return this.schemaList.find(d => d.Id == schemaId);
     }
-
-    getSchemaDetail(id: number) {
-        return this.schemaDetailList.filter(d => d.IDSchema == id);
-    }
-
-
 
     /**
-     * get report data from raw dataset
-     * @param reportConfig The report configurations to get data from raw dataset
-     * @returns Return friendly data to view and serves as a data source for charts
+     * Get schema details by schema id
+     * @param schemaId Schema id
+     * @returns Schema detail list
      */
-    regReportTrackingData(reportConfig: ReportConfig, checkNewData: boolean = false): Subject<any> {
-        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
-        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
-
-        if (localDataset && trackingData) {
-            return trackingData.tracking;
-        }
-
-        localDataset = { id: reportConfig.Schema.Id, data: null };
-        trackingData = { id: reportConfig.Schema.Id };
-        trackingData.tracking = new Subject<any>();
-        this.datasetList.push(localDataset);
-        this.trackingList.push(trackingData);
-
-        return trackingData.tracking;
-    }
-
-    getReportData(reportConfig: ReportConfig, checkNewData: boolean = false) {
-        this.getDatasetFromLocal(reportConfig, checkNewData);
+    getSchemaDetail(schemaId: number) {
+        return this.schemaDetailList.filter(d => d.IDSchema == schemaId);
     }
 
 
-    /**
-     * Get local dataset
-     * @param schema Get local dataset by schema
-     * @param checkNewData Check if has new data
-     */
-    getDatasetFromLocal(reportConfig: ReportConfig, checkNewData: boolean = false) {
-        //Check in memory data
-        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
-        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
-        if (!(localDataset && trackingData)) {
-            console.log('Need to regReportTrackingData first');
-        }
-
-        if (localDataset.data) {
-            trackingData.tracking.next(localDataset);
-        }
-
-
-        //if there is no data => check local storage
-        if (checkNewData || !localDataset.data) {
-
-            if (!localDataset.data) {
-                this.env.getStorage('BI-Dataset-' + reportConfig.Schema.Id).then(storageDataset => {
-                    if (storageDataset) {
-                        localDataset.data = storageDataset.data;
-                        trackingData.tracking.next(localDataset);
-                    }
-                });
-            }
-
-            // if there is no data OR need to checkNewData then go to check new data availble
-            if (checkNewData || !localDataset.data)
-                this.checkNewDataAvailble(reportConfig);
-        }
-
-
-    }
-
-    getDatasetFromServer(reportConfig: ReportConfig) {
-        let localDataset = this.datasetList.find(d => d.id == reportConfig.Schema.Id);
-        let trackingData = this.trackingList.find(d => d.id == reportConfig.Schema.Id);
-        if (!(localDataset && trackingData)) {
-            console.log('Need to regReportTrackingData first');
-        }
-
-        reportConfig.Schema.LastDataModifiedDate = localDataset.lastData;
-        reportConfig.TimeFrame.From.Value = this.calcTimeValue(reportConfig.TimeFrame.From);
-        reportConfig.TimeFrame.To.Value = this.calcTimeValue(reportConfig.TimeFrame.To, true);
-
-        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
-            .subscribe((resp: any) => {
-                if (!resp.Message) {
-                    localDataset.lastData = resp.LastModifiedDate;
-                    localDataset.data = resp.Data;
-                    trackingData.tracking.next(localDataset);
-                    this.env.showTranslateMessage('You just loaded the latest data!', 'success');
-                    this.env.setStorage('BI-Dataset-' + reportConfig.Schema.Id, localDataset);
-                }
-                else {
-                    this.env.showTranslateMessage(resp.Message);
-                }
-
-
-
-            }, error => { console.log(error); });
-    }
-
-
-    /**
-     * Call the api with the dataset's information to check if there is new data
-     * @param schema Schema to check
-     */
-    checkNewDataAvailble(reportConfig: ReportConfig) {
-        //if has new data => call update
-        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig)
-            .subscribe((resp: any) => {
-                if (resp == 'Yes') {
-                    this.getDatasetFromServer(reportConfig);
-                }
-                else {
-                    this.env.showTranslateMessage('You are viewing the latest data', 'success');
-                }
-            }, error => { console.log(error); });
-    }
 
     groupByArray(xs, key) {
         return xs.reduce(function (rv, x) {
@@ -418,6 +614,42 @@ export class ReportService {
         });
         return map;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -785,7 +1017,7 @@ export class ReportService {
     };
 
 
-
+    public reportEventTracking = new Subject<any>();
     publishChange(data: any) {
         this.reportEventTracking.next(data);
     }

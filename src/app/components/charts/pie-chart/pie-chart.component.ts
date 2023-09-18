@@ -5,7 +5,7 @@ import { lib } from 'src/app/services/static/global-functions';
 type EChartsOption = echarts.EChartsOption;
 
 @Component({
-	selector: 'app-pie-chart',
+	selector: 'app-pie-chart-old',
 	templateUrl: './pie-chart.component.html',
 	styleUrls: ['./pie-chart.component.scss'],
 })

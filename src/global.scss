@@ -74,6 +74,13 @@ ion-icon {
 	}
 }
 
+ion-segment{
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px !important;
+    }
+}
+
 ion-segment-button {
 	min-width: auto !important;
 	// --color-checked: var(--ion-color-primary);
@@ -156,6 +163,10 @@ app-detail-toolbar {
 			--padding-start: 40px;
 		}
 	}
+}
+
+[hidden] {
+	display: none !important;
 }
 
 swiper-container {
