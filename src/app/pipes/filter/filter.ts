@@ -79,7 +79,7 @@ export class searchNoAccents implements PipeTransform {
             for (let field in conditions) {
                 let keyword = conditions[field];
                 keyword = this.removeAccents(keyword);
-                item[field] = this.removeAccents(item['Name']);
+                item[field] = this.removeAccents(item['Name'] + ' ' + (item.ForeignName || ''));
                 if (keyword === 'all' || keyword === '') return true;
                 if (item[field].toLowerCase().indexOf(keyword) == -1) {
                     return false;
