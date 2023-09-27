@@ -10,35 +10,39 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
+@use "@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@use "@ionic/angular/css/normalize.css";
+@use "@ionic/angular/css/structure.css";
+@use "@ionic/angular/css/typography.css";
+@use '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@use "@ionic/angular/css/padding.css";
+@use "@ionic/angular/css/float-elements.css";
+@use "@ionic/angular/css/text-alignment.css";
+@use "@ionic/angular/css/text-transformation.css";
+@use "@ionic/angular/css/flex-utils.css";
 
-@import "~intro.js/introjs.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
+//@use "intro.js/introjs.css";
+@use "@ng-select/ng-select/themes/default.theme.css";
 
-@import "./theme/_default-theme.scss";
+@use "./theme/_default-theme.scss";
 
-@import "./theme/dpr-query.scss";
-@import "./theme/common.scss";
-@import "./theme/data-table.scss";
-@import "./theme/form-control.scss";
-@import "./theme/introjs.scss";
-@import "./theme/ng-select.scss";
-@import "./theme/fullcalendar.scss";
-@import "./theme/angular-tree-component.scss";
-@import "./theme/print.scss";
+@use "./theme/_inholding-theme.scss";
+@use "./theme/_gem-theme.scss";
+@use "./theme/_the-log-theme.scss";
+
+@use "./theme/dpr-query.scss";
+@use "./theme/common.scss";
+@use "./theme/data-table.scss";
+@use "./theme/form-control.scss";
+@use "./theme/introjs.scss";
+@use "./theme/ng-select.scss";
+@use "./theme/fullcalendar.scss";
+@use "./theme/angular-tree-component.scss";
+@use "./theme/print.scss";
 
 
 html {

@@ -181,11 +181,7 @@ export class AppComponent implements OnInit {
 		let title = 'ERP';
 		let relIcon = 'assets/icons/icon-512x512.png';
 
-		if (environment.appDomain.indexOf('artlogistics') > -1) {
-			this.appTheme = 'artdistribution-theme';
-		} else if (environment.appDomain.indexOf('art.appcenter.vn') > -1) {
-			this.appTheme = 'artdistribution-theme';
-		} else {
+		if (environment.appDomain.indexOf('inholdings.vn') > -1) {
 
 			if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
 				this.appTheme = 'thelog-theme';
@@ -196,6 +192,12 @@ export class AppComponent implements OnInit {
 			} else if (window.location.host.indexOf('inholdings') > -1) {
 				this.appTheme = 'inholdings-theme';
 			}
+			else {
+				this.appTheme = 'inholdings-theme';
+			}
+		}
+		else{
+			this.appTheme = 'inholdings-theme';
 		}
 
 		let link: any = document.querySelector("link[rel~='icon']");
