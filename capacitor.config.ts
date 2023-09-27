@@ -1,10 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'vn.codeart.art.dms',
-  appName: 'ART-DMS',
-  //appId: 'vn.inholdings.erpdemo',
-  //appName: 'In-Holdings',
+  appId: 'vn.mekongsun.app',
+  appName: 'MKS ERP',
   webDir: 'www',
   bundledWebRuntime: false,
   server: {

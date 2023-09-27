@@ -185,8 +185,11 @@ export class AppComponent implements OnInit {
 			this.appTheme = 'artdistribution-theme';
 		} else if (environment.appDomain.indexOf('art.appcenter.vn') > -1) {
 			this.appTheme = 'artdistribution-theme';
+		} else if (environment.appDomain.indexOf('mekongsun.vn') > -1) {
+			this.appTheme = 'mks-theme';
+			title = 'MeKong Sun';
+			relIcon = '/assets/logos/logo-mks.png';
 		} else {
-
 			if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
 				this.appTheme = 'thelog-theme';
 			} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
