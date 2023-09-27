@@ -187,15 +187,7 @@ export class AppComponent implements OnInit {
 			this.appTheme = 'artdistribution-theme';
 		} else {
 
-			if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
-				this.appTheme = 'thelog-theme';
-			} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
-				this.appTheme = 'gem-theme';
-				title = 'GEM Café';
-				relIcon = '/assets/logos/logo-gem-center-small.png';
-			} else if (window.location.host.indexOf('inholdings') > -1) {
-				this.appTheme = 'inholdings-theme';
-			}
+		
 		}
 
 		let link: any = document.querySelector("link[rel~='icon']");
