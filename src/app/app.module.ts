@@ -96,7 +96,7 @@ export function createTranslateLoader(http: HttpClient) {
     //BarcodeScanner,
     //Geolocation,
     //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    //{ provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent]
 })

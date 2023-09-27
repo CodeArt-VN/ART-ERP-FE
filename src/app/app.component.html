@@ -1,7 +1,7 @@
 <ion-app [class]="appTheme" [ngClass]="{'dark': (env?.user?.UserSetting?.IsDarkTheme?.Value), 'showScrollbar': showScrollbar}">
 	<div id="ng-select-holder" style="position: absolute; z-index: 30005;"></div>
 	<ion-split-pane contentId="main-content">
-		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env?.user?.UserSetting?.IsCompactMenu?.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu">
+		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env?.user?.UserSetting?.IsCompactMenu?.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu" *ngIf="showMenu">
 			<ion-header>
 				<div class="close-menu">
 					<ion-toolbar>
@@ -17,7 +17,7 @@
 						<!-- {{countForm}} -->
 
 
-						<ng-select appendTo="#ng-select-holder" [(ngModel)]="env.selectedBranch" [searchFn]="searchShowAllChildren" (change)="changeBranch()" class="c-input" [clearable]="false" #IDBranch labelForId="IDBranch" [items]="env.branchList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'Select unit...' | translate}}">
+						<ng-select appendTo="#ng-select-holder" [(ngModel)]="env.selectedBranch" [searchFn]="searchShowAllChildren" (change)="changeBranch()" class="c-input" [clearable]="false" #IDBranch labelForId="IDBranch" [items]="env.branchList" [virtualScroll]="false" bindLabel="Name" bindValue="Id" placeholder="{{'Select unit...' | translate}}">
 							<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 								<div *ngIf="i">
 									<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text></div>
@@ -187,7 +187,7 @@
 		</ion-menu>
 
 		<ion-router-outlet id="main-content" main [swipeGesture]="false">
-			<ion-header class="menu-toogle-btn" *ngIf="(env.user && env.user.Id)">
+			<ion-header class="menu-toogle-btn" *ngIf="(env.user && env.user.Id) && showMenu">
 				<ion-toolbar>
 					<ion-buttons slot="start">
 						<ion-back-button *ngIf="canGoBack"></ion-back-button>
@@ -212,13 +212,19 @@
 
 						</div>
 						<div class="detail">
-							<a href=".">
-								<ion-text *ngIf="isConnectFail" color="danger">
-									{{'Cannot connect to server.' | translate}}
-									<br> {{'Please try again.' | translate}}
-								</ion-text>
-							</a>
+							<br>
+							<ion-text color="danger" *ngIf="isConnectFail">
+								{{'Cannot connect to server.' | translate}}
+								<br> {{'Please try again.' | translate}}
 
+								<br>
+								
+								<ion-button size="small" fill="outline" href=".">
+									<ion-icon slot="start" name="refresh"></ion-icon>
+									{{'Reload' | translate}}
+								</ion-button>
+							</ion-text>
+							
 							<span *ngIf="!isConnectFail" class="info">
 								{{'Connecting to server' | translate}}
 								<br> {{'Please wait for a few moments' | translate}}

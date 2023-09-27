@@ -1,0 +1,12 @@
+{
+  "translationFiles": [
+    {
+      "lang": "vi-VN",
+      "uri": "src/assets/i18n/vi-VN.json"
+    },
+    {
+      "lang": "en-US",
+      "uri": "src/assets/i18n/en-US.json"
+    }
+  ]
+}

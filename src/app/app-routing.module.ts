@@ -309,7 +309,7 @@ let allRoutes = [...BIRoutes,  ...routes ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules, useHash: true })
   ],
   exports: [RouterModule]
 })

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { ReportConfig } from 'src/app/models/options-interface';
+import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { ReportService } from 'src/app/services/report.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ReportService } from 'src/app/services/report.service';
 })
 export class ReportConfigComponent implements OnInit {
 	form: FormGroup;
-	_reportConfig: ReportConfig;
+	_reportConfig: BIReport;
 
 	_dataset: any;
 
@@ -34,8 +34,8 @@ export class ReportConfigComponent implements OnInit {
 				this.form = this.buildForm(this._reportConfig);
 			}
 
-			this._schema = this.rpt.getSchema(this._reportConfig.Schema.Id);
-			this._schemaDetails = this.rpt.getSchemaDetail(this._reportConfig.Schema.Id);
+			this._schema = this.rpt.getSchema(this._reportConfig.DataConfig.Schema.Id);
+			this._schemaDetails = this.rpt.getSchemaDetail(this._reportConfig.DataConfig.Schema.Id);
 			this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
 
 			this._timePeriodList.forEach(p => {

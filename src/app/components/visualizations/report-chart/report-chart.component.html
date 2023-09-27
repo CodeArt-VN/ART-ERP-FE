@@ -64,13 +64,13 @@
   </div>
 
   <div class="statistic-row" *ngIf="viewMode == 'full'">
-    <app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" *ngFor="let m of _reportConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
+    <app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" *ngFor="let m of _reportConfig.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
   </div>
 
-  <ng-container [ngSwitch]="_reportConfig.ReprotInfo.Type" *ngIf="_chartOption && rptLoaded">
-    <app-pie-chart class="app-chart" *ngSwitchCase="'pie'" [reportId]="reportId" [chartOption]="_chartOption" [dataset]="_dataset"></app-pie-chart>
-    <app-bar-chart class="app-chart" *ngSwitchCase="'bar'" [reportId]="reportId" [chartOption]="_chartOption" [dataset]="_dataset"></app-bar-chart>
-  </ng-container>
+  
+    <app-pie-chart class="app-chart" *ngIf="_chartOption && rptLoaded" [chartType]="_reportConfig.DataConfig.ReprotInfo.Type" [reportId]="reportId" [chartOption]="_chartOption" [viewMode]="viewMode" [dataset]="_dataset"></app-pie-chart>
+    
+  
 
   <ion-item lines="none" *ngIf="viewMode == 'full'">
     <ion-icon name="server-outline" color="success" slot="start"></ion-icon>

@@ -3261,8 +3261,12 @@ var res = [
 
 const options = {
     files: [
-        'src/app/pages/OST/**/*.html',
-        'src/app/pages/OST/**/*.ts',
+        //'src/app/pages/OST/**/*.html',
+        //'src/app/pages/OST/**/*.ts',
+        //   'src/app/pages/POS/pos-order/*.html',
+        //   'src/app/pages/POS/pos-order/*.ts',
+          'src/app/pages/POS/**/*.html',
+          'src/app/pages/POS/**/*.ts',
     ],
     from: res.map(m => new RegExp("'"+m.From+"'", 'g')),
     to: res.map(m => "'"+m.To+"'" ),
@@ -3273,7 +3277,7 @@ const options = {
 
 try {
     const results = replace.sync(options);
-    //console.log('Replacement results:', results);
+    console.log('Replacement results:', results);
 }
 catch (error) {
     console.error('Error occurred:', error);

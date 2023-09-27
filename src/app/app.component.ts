@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
 	showScrollbar = false;
 	showAppMenu = true;
 	countForm = 0;
+	showMenu = true;
 	randomImg = './assets/undraw_art_museum_8or4.svg';
 
 	isShowSearch = false;
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
 		public env: EnvService,
 		public accountService: AccountService,
 		public platform: Platform,
-		
+
 	) {
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
@@ -103,6 +104,9 @@ export class AppComponent implements OnInit {
 
 					if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
 						this.countForm = this.env.user.Forms.filter(d => d.Type == 1).length;
+						if (this.countForm == 1 && this.env.branchList.filter(d => !d.disabled).length == 1) {
+							this.showMenu = false;
+						}
 						this.loadPinnedMenu();
 						this.updateStatusbar();
 					}

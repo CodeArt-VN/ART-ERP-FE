@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ReportConfig } from 'src/app/models/options-interface';
+import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ReportService } from 'src/app/services/report.service';
 
@@ -20,7 +20,7 @@ export class ReportChartComponent implements OnInit {
 	_subscriptions: Subscription[] = [];
 
 	/** Report config AND chart option */
-	_reportConfig: ReportConfig = null;
+	_reportConfig: BIReport = null;
 	_chartOption: echarts.EChartsOption;
 	_dataset = {
 		dimensions: [],
@@ -89,16 +89,14 @@ export class ReportChartComponent implements OnInit {
 	}
 
 	/**
-	 * Set chart option by viewMode AND update chart
+	 * Update chart
 	 */
 	updateChartOption() {
 		if (!this._chartOption)
 			this._chartOption = {};
 		
-		Object.assign(this._chartOption, this.viewMode == "mini" ? this.rpt.pieChartMiniOption : this.rpt.pieChartOption);
-
 		if (this.viewDimension) {
-			this._dataset.dimensions = [this._reportConfig.CompareBy[0].Property, this.viewDimension];
+			this._dataset.dimensions = [this._reportConfig.DataConfig.CompareBy[0].Property, this.viewDimension];
 			this._chartOption.dataset = this._dataset;
 		}
 		this._chartOption = {...this._chartOption};
@@ -114,7 +112,7 @@ export class ReportChartComponent implements OnInit {
 		this._dataset.source = ds.data;
 		this._dataset = {...this._dataset};
 
-		this._reportConfig.MeasureBy.forEach((m) => {
+		this._reportConfig.DataConfig.MeasureBy.forEach((m) => {
 			m.Value = this._dataset.source.map(x => x[(m.Title || m.Property)]).reduce((a, b) => (+a) + (+b), 0);
 		});
 	}
@@ -158,8 +156,6 @@ export class ReportChartComponent implements OnInit {
 		else {
 			this.viewMode = 'mini';
 		}
-
-		this.updateChartOption();
 	}
 
 	/** Open report handle in dashboard */

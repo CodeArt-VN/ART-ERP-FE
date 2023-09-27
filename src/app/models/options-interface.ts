@@ -1,5 +1,10 @@
-export interface ReportConfig {
-	ReprotInfo: BIReport;
+import { EChartsOption } from "echarts/types/dist/echarts";
+export interface BIReport extends Schema { 
+	DataConfig?: ReportDataConfig;
+	ChartConfig?: EChartsOption;
+}
+
+export interface ReportDataConfig {
 	TimeFrame: TimeFrame;
 	CompareTo?: TimeConfig;
 	Schema: Schema;
@@ -9,7 +14,9 @@ export interface ReportConfig {
 	MeasureBy: SchemaDetail[];
 }
 
-export interface BIReport extends Schema { }
+export interface ReportGlobalOptions{
+	TimeFrame?: TimeFrame;
+};
 
 export interface Schema {
 	Type?: string;
@@ -24,7 +31,7 @@ export interface Schema {
 }
 
 export interface TimeFrame {
-	Dimension: string;
+	Dimension?: string;
 	From?: TimeConfig;
 	To?: TimeConfig;
 }

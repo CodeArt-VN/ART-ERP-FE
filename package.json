@@ -12,7 +12,8 @@
 		"test": "ng test",
 		"lint": "ng lint",
 		"updateBuild": "node ./replace.build.js",
-		"build-prod": "npm version patch && node ./replace.build.js && ionic cap sync --prod"
+		"build-prod": "npm version patch && node ./replace.build.js && ionic cap sync --prod",
+		"live-android": "ionic cap run android -l --external --target R58RC47AGEW"
 	},
 	"private": true,
 	"dependencies": {

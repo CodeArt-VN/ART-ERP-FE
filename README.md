@@ -6,6 +6,13 @@ node ./replace.translate.js
 ## Init project
 ```
 npm i
+
+npm run build-prod / ionic cap sync --prod
+ionic cap build ios --no-build
+ionic cap build android --no-build
+ionic capacitor open ios
+ionic capacitor open android
+
 ```
 
 

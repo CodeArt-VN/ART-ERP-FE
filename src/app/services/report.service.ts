@@ -6,17 +6,30 @@ import { Observable, Subscription } from 'rxjs';
 import { lib } from './static/global-functions';
 import { EnvService } from './core/env.service';
 import { Subject } from 'rxjs';
-import { ReportConfig, Schema, TimeConfig } from '../models/options-interface';
+import { BIReport, ReportDataConfig, ReportGlobalOptions, Schema, TimeConfig } from '../models/options-interface';
 import { EChartsOption } from 'echarts';
+import { EChartDefaultOption } from '../components/visualizations/types/e-chart-option';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReportService {
+
     public reportDataTracking = new Subject<any>();
     public reportConfigTracking = new Subject<any>();
 
-    //In memory
+
+
+    /* #region In memory */
+    globalOptions: ReportGlobalOptions = {
+        TimeFrame: {
+            From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+            To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+        },
+    };
+    
+
+
 
     commonOptions = {
         timeConfigType: [
@@ -126,8 +139,9 @@ export class ReportService {
             { code: 'count', name: 'Miscellaneous', remark: '', icon: '' },
         ],
 
-        dayOfWeek: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
-        monthOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+        hoursOfDay: Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')),
+        daysOfWeek: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+        monthsOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
     };
 
     schemaList: Schema[] = [
@@ -159,168 +173,178 @@ export class ReportService {
         // },
     ];
 
-    reportList: ReportConfig[] = [
-        {
-            ReprotInfo: { Id: 1, Code: 'BillStatusReport', Name: 'POS SO Status', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'bar' },
-            TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
-            CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
-            Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
-            Transform: {
-                Filter: {
-                    Dimension: 'logical', Operator: 'AND',
-                    Logicals: [
-                        { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
-                        { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
-                        { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
-                        // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
-                        // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
-                        {
-                            Dimension: 'logical', Operator: 'OR', Logicals: [
-                                { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
-                                // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
-                            ]
-                        },
-                    ]
-                },
-            },
-            Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
-            CompareBy: [
-                //{ Property: 'IDBranch' },
-                { Property: 'Status' },
-            ],
-            //isGroupByCompareProperties: true, //=> chưa dùng đến
-            MeasureBy: [
-                { Property: 'Id', Method: 'count', Title: 'Count' },
 
-                // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
-                // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
-                // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
-                // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
-                // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
-                // { Property: 'Received', Method: 'sum', Title: 'Received' },
-                // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
-                // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
-                { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
-            ]
+
+    reportList: BIReport[] = [
+        {
+            Id: 1, Code: 'SalesByTimeOfDay', Name: 'Sales by time of day',
+            Remark: 'This report shows the sales made during each hour of the day over a given time period. It can help you identify peak sales hours and adjust your staffing and inventory accordingly.',
+            Icon: 'stopwatch', Color: 'success', Type: 'bar',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 180 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            //{ Dimension: 'Status', Operator: '=', Value: 'Done' },
+                            {
+                                Dimension: 'logical', Operator: 'OR', Logicals: [
+                                    { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                                    // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
+                                ]
+                            },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'DayOfWeek', Title: 'DayOfWeek' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {}
         },
-        {
-            ReprotInfo: { Id: 2, Code: 'BillStatusReport', Name: 'POS SO Status', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'pie' },
-            TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 2 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
-            CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
-            Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
-            Transform: {
-                Filter: {
-                    Dimension: 'logical', Operator: 'AND',
-                    Logicals: [
-                        { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
-                        { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
-                        { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
-                        // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
-                        // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
-                        {
-                            Dimension: 'logical', Operator: 'OR', Logicals: [
-                                { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
-                                // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
-                            ]
-                        },
-                    ]
-                },
-            },
-            Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
-            CompareBy: [
-                //{ Property: 'IDBranch' },
-                { Property: 'Status' },
-            ],
-            //isGroupByCompareProperties: true, //=> chưa dùng đến
-            MeasureBy: [
-                { Property: 'Id', Method: 'count', Title: 'Count' },
 
-                // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
-                // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
-                // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
-                // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
-                // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
-                // { Property: 'Received', Method: 'sum', Title: 'Received' },
-                // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
-                // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
-                { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
-            ]
-        }
+        /*
+        Sales by product: This report shows the sales made for each product over a given time period. It can help you identify which products are the most popular and adjust your inventory and marketing strategies accordingly.
+        
+        Sales by category: This report shows the sales made for each product category over a given time period. It can help you identify which categories are the most popular and adjust your inventory and marketing strategies accordingly.
+        
+        Sales by employee: This report shows the sales made by each employee over a given time period. It can help you identify your top-performing employees and reward them accordingly.
+        
+        Sales by location: This report shows the sales made at each location over a given time period. It can help you identify which locations are the most profitable and adjust your staffing and inventory accordingly.
+        
+        Sales by payment method: This report shows the sales made for each payment method over a given time period. It can help you identify which payment methods are the most popular and adjust your payment processing accordingly.
+        
+        Sales by customer: This report shows the sales made by each customer over a given time period. It can help you identify your top customers and tailor your marketing strategies to their needs.
+        
+        Sales by promotion: This report shows the sales made for each promotion over a given time period. It can help you identify which promotions are the most effective and adjust your marketing strategies accordingly.
+        
+        Sales by discount: This report shows the sales made for each discount over a given time period. It can help you identify which discounts are the most effective and adjust your pricing strategies accordingly.
+        
+        Sales by tax: This report shows the sales made for each tax rate over a given time period. It can help you identify which tax rates are the most common and adjust your tax processing accordingly.
+        */
+
+
+
+        // {
+        //     ReprotInfo: { Id: 11, Code: 'BillStatusReport', Name: 'Bar test', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'bar' },
+        //     TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
+        //     CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+        //     Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+        //     Transform: {
+        //         Filter: {
+        //             Dimension: 'logical', Operator: 'AND',
+        //             Logicals: [
+        //                 { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+        //                 { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+        //                 { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
+        //                 // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
+        //                 // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
+        //                 {
+        //                     Dimension: 'logical', Operator: 'OR', Logicals: [
+        //                         { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+        //                         // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
+        //                     ]
+        //                 },
+        //             ]
+        //         },
+        //     },
+        //     Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
+        //     CompareBy: [
+        //         //{ Property: 'IDBranch' },
+        //         { Property: 'Status' },
+        //     ],
+        //     //isGroupByCompareProperties: true, //=> chưa dùng đến
+        //     MeasureBy: [
+        //         { Property: 'Id', Method: 'count', Title: 'Count' },
+
+        //         // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
+        //         // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
+        //         // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
+        //         // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
+        //         // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
+        //         // { Property: 'Received', Method: 'sum', Title: 'Received' },
+        //         // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
+        //         // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
+        //         { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+        //     ]
+        // },
+        // {
+        //     ReprotInfo: { Id: 2, Code: 'BillStatusReport', Name: 'Pie test', Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Icon: 'restaurant', Color: 'danger', Type: 'pie' },
+        //     TimeFrame: { Dimension: 'OrderDate', From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 2 }, To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 } },
+        //     CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+        //     Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+        //     Transform: {
+        //         Filter: {
+        //             Dimension: 'logical', Operator: 'AND',
+        //             Logicals: [
+        //                 { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+        //                 { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+        //                 { Dimension: 'CalcTotal', Operator: '>', Value: '0' },
+        //                 // { Dimension: 'OrderDate', Operator: '>=', Value: '2023-08-19' }, auto from timeframe
+        //                 // { Dimension: 'OrderDate', Operator: '<=', Value: new Date() },
+        //                 {
+        //                     Dimension: 'logical', Operator: 'OR', Logicals: [
+        //                         { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+        //                         // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
+        //                     ]
+        //                 },
+        //             ]
+        //         },
+        //     },
+        //     Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate-Hour' },
+        //     CompareBy: [
+        //         //{ Property: 'IDBranch' },
+        //         { Property: 'Status' },
+        //     ],
+        //     //isGroupByCompareProperties: true, //=> chưa dùng đến
+        //     MeasureBy: [
+        //         { Property: 'Id', Method: 'count', Title: 'Count' },
+
+        //         // { Property: 'TotalBeforeDiscount', Method: 'sum', Title: 'BeforeDiscount' },
+        //         // { Property: 'TotalDiscount', Method: 'sum', Title: 'TotalDiscount' },
+        //         // { Property: 'TotalAfterDiscount', Method: 'sum', Title: 'AfterDiscount' },
+        //         // { Property: 'Tax', Method: 'sum', Title: 'Tax' },
+        //         // { Property: 'TotalAfterTax', Method: 'sum', Title: 'TotalAfterTax' },
+        //         // { Property: 'Received', Method: 'sum', Title: 'Received' },
+        //         // { Property: 'Debt', Method: 'sum', Title: 'Debt' },
+        //         // { Property: 'CalcTotalAdditions', Method: 'sum', Title: 'Additions' },
+        //         { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+        //     ]
+        // }
 
     ];
 
     reportDataTrackingList = [
         // {
-        //     schemaId: Number
+        //     Id: Number //Report Id
         //     tracking: Subject
         // }
     ];
 
-    eChartsOption: EChartsOption = {
-        backgroundColor: lib.getCssVariableValue('--ion-color-tint'),
-        textStyle: {
-            color: lib.getCssVariableValue('--ion-color-dark'),
-        },
-        legend: {
-            show: true, 
-            bottom: 0,
-            type: "scroll",
-            padding: [16, 16, 16, 16],
-            icon: "circle",
-            textStyle: { color: lib.getCssVariableValue('--ion-color-dark') }
-        },
-        tooltip: {
-            appendToBody: true,
-            extraCssText: 'width:auto; max-width: 250px; white-space:pre-wrap;',
-            textStyle: {
-                color: lib.getCssVariableValue('--ion-color-dark'),
-            },
-        },
-        toolbox: {
-            show: false,
-            orient: "vertical",
-            right: 16,
-            itemSize: 20,
-            feature: {
-                magicType: { type: ["line", "bar", "stack"] },
-                saveAsImage: {}
-            },
-            iconStyle: {
-                color: lib.getCssVariableValue('--ion-color-primary'),
-                borderColor: lib.getCssVariableValue('--ion-color-primary'),
-            }
-        }
-    }
+    /* #endregion */
 
-    pieChartOption: EChartsOption = {
-        legend: {
-            show: false,
-        },
-        series: {
-            type: 'pie',
-            label: { show: true },
-            radius: ['40%', '60%'],
-            itemStyle: { borderRadius: 6, borderColor: 'transparent', borderWidth: 1 }
-        }
-    };
-
-    pieChartMiniOption: EChartsOption = {
-        toolbox: {show: false},
-        legend: { show: false },
-        series: {
-            type: 'pie',
-            label: { show: false },
-            radius: ['50%', '80%'],
-            itemStyle: { borderRadius: 2, borderColor: 'transparent', borderWidth: 1 }
-        }
-    };
 
     constructor(
         public commonService: CommonService,
         public env: EnvService,
 
+        public echartDefaultOption: EChartDefaultOption,
+
     ) {
-        Object.assign(this.pieChartOption, this.eChartsOption);
+
 
         // TODO
         // Set up SignalR to receive update data mart / data set
@@ -359,8 +383,8 @@ export class ReportService {
      * @param reportId Repport id
      * @returns Report config
      */
-    getReportConfig(reportId: number): ReportConfig {
-        let reportConfig = this.reportList.find(d => d.ReprotInfo.Id == reportId);
+    getReportConfig(reportId: number): BIReport {
+        let reportConfig = this.reportList.find(d => d.Id == reportId);
         if (!reportConfig && !reportId)
             this.env.showTranslateMessage('Report with Id=' + reportId + ' not found!', 'danger');
 
@@ -371,13 +395,14 @@ export class ReportService {
      * Save report config
      * @param config Report config value
      */
-    saveReportConfig(config: ReportConfig) {
-        let reportConfig = this.getReportConfig(config.ReprotInfo.Id) || {};
+    saveReportConfig(config: BIReport) {
+        let reportConfig = this.getReportConfig(config.Id) || {};
         Object.assign(reportConfig, config);
 
         //TODO: save to db
     }
 
+    //Report data functions
     /**
      * Check report has view data
      * @param reportId Report id
@@ -386,7 +411,7 @@ export class ReportService {
         //if has new data => call update
         let reportConfig = this.getReportConfig(reportId);
 
-        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig)
+        this.commonService.connect('POST', 'BI/Schema/CheckNewDataAvailble', reportConfig.DataConfig)
             .subscribe((resp: any) => {
                 if (resp == 'Yes') {
                     this.getDatasetFromServer(reportId);
@@ -445,9 +470,9 @@ export class ReportService {
             console.log('Need to regReportTrackingData first');
         }
 
-        reportConfig.Schema.DataFetchDate = localDataset.dataFetchDate;
+        reportConfig.DataConfig.Schema.DataFetchDate = localDataset.dataFetchDate;
 
-        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig)
+        this.commonService.connect('POST', 'BI/Schema/QueryReportData', reportConfig.DataConfig)
             .subscribe((resp: any) => {
                 if (!resp.Message) {
                     localDataset.dataFetchDate = resp.LastModifiedDate;
@@ -462,8 +487,7 @@ export class ReportService {
             }, error => { console.log(error); });
     }
 
-
-    runTestReport(config: ReportConfig){
+    runTestReport(config: ReportDataConfig) {
         return this.commonService.connect('POST', 'BI/Schema/QueryReportData', config);
     }
 
