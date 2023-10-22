@@ -1,4 +1,20 @@
 export var lib = {
+	deepAssign(target: any, ...sources: any[]): any {
+		sources.forEach(source => {
+			Object.keys(source).forEach(key => {
+				if (typeof source[key] === 'object' && source[key] !== null) {
+					if (!target[key]) {
+						Object.assign(target, { [key]: {} });
+					}
+					lib.deepAssign(target[key], source[key]);
+				} else {
+					Object.assign(target, { [key]: source[key] });
+				}
+			});
+		});
+		return target;
+	},
+
 	copyPropertiesValue(fromItem, toItem) {
 		for (let x in fromItem) {
 			if (x != '_isChecked') {
@@ -25,7 +41,7 @@ export var lib = {
 		});
 		return uuid;
 	},
-	generateCode(radix = 36){
+	generateCode(radix = 36) {
 		var d = (new Date);
 		return d.getTime().toString(radix);
 	},
@@ -44,7 +60,7 @@ export var lib = {
 		if (!date) {
 			return failReturn;
 		}
-		if (date.indexOf && date.indexOf('-') > 0 && date.indexOf('T') ==-1) {
+		if (date.indexOf && date.indexOf('-') > 0 && date.indexOf('T') == -1) {
 			date = date.replace(/-/g, "/");
 		}
 		let value = new Date(date);
@@ -262,10 +278,10 @@ export var lib = {
 		return result;
 	},
 	getStartEndDates(start, end) {
-		if (end.indexOf && end.indexOf('-') > 0 && end.indexOf('T') ==-1) {
+		if (end.indexOf && end.indexOf('-') > 0 && end.indexOf('T') == -1) {
 			end = end.replace(/-/g, "/");
 		}
-		if (start.indexOf && start.indexOf('-') > 0 && start.indexOf('T') ==-1) {
+		if (start.indexOf && start.indexOf('-') > 0 && start.indexOf('T') == -1) {
 			start = start.replace(/-/g, "/");
 		}
 
@@ -548,5 +564,133 @@ export var lib = {
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 		const d = R * c; // in metres
+	},
+
+	/**
+	 * Tạo code chuyển tiền theo tiêu chuẩn TCCS TCVN 03:2018
+	 * @param bankCode Mã ngân hàng
+	 * @param bankAccount Tài khoản ngân hàng
+	 * @param amount Số tiền
+	 * @param message Nội dung chuyển tiền
+	 * @returns Trả về code để tạo mã QR
+	 */
+	genBankTransferQRCode(bankCode:string, bankAccount:string, amount: number, message:string){
+		//Mô tả thông tin QR Code trong y tế căn cứ theo TCCS TCVN 03:2018
+		//https://pcbinhthuan.evnspc.vn/Portals/0/TinTucVaSuKien/PhongKinhDoanh/5_%20Ap%20dung%20Tieu%20chuan%20QR%20Code%20cua%20NHNN.pdf
+		const bankIdByCode = {
+			'vcb': 			'970436',
+			'mb': 			'970422',
+			'vietinbank': 	'970415'
+		  };
+
+		let messPart = '08'
+		+ message.length.toString().padStart(2, '0') 
+		+ message;
+
+		let code =
+		'000201'		 		//Phiên bản đặc tả QRCode
+		+'010212'				//Phương thức khởi tạo. 11 = QR tĩnh; 12 = QR động
+		+'3854'					//Thông tin tài khoản nhận tiền
+			+'0010A000000727'
+			+'0124'
+				+'0006' + bankIdByCode[bankCode] 	 //Id ngân hàng
+				+'01' + bankAccount.length.toString().padStart(2, '0')	//Số tài khoản
+				+bankAccount					
+			+'0208QRIBFTTA' 
+		+'5303704'				//Mã tiền tệ - 3 ký tự - 704 = vnd
+		+'54'					//Số tiền giao dịch - 7 ký tự - amount 1000000
+		  	+ (amount+'').length.toString().padStart(2, '0')
+			+ amount
+		+'5802VN'          		//Mã quốc gia
+		+'62' 					//Thông tin bổ sung
+			+ messPart.length.toString().padStart(2, '0')
+			+ messPart
+		+ '6304'; 	//Checksum
+
+		let crc = lib.calcCRC(code);
+		code = code + crc.toString(16).toUpperCase().padStart(4, '0');
+
+		return code;
+	},
+
+	getCharacterByteArrayFromString(str) {
+		var i, charVal;
+		var bytes = [];
+		for (i = 0; i < str.length; i++) {
+			charVal = str.charCodeAt(i);
+			if (charVal < 256) {
+				bytes[i] = str.charCodeAt(i);
+			}
+		}
+		return bytes;
+	},
+
+	calcCRC(input){
+		//http://www.sunshine2k.de/articles/coding/crc/understanding_crc.html
+		//var input = '00020101021238540010A00000072701240006970422011009080611190208QRIBFTTA530370454061871105802VN62120808SO2552636304';
+		var bytes = lib.getCharacterByteArrayFromString(input);
+			
+		
+		var crcModel = {
+			width : 16,
+			maxVal : 0xFFFFFFFF >>> (32 - 16),
+			initial : 0xFFFF,
+			polynomial : 0x1021,
+			finalXor : 0x0
+		};
+		
+		var crcTable = new Array(256);
+		var castMask = 0xFFFF;
+		var msbMask = 0x01 << (crcModel.width - 1);
+		
+		for (var divident = 0; divident < 256; divident++) {
+			var currByte = (divident << (crcModel.width - 8)) & castMask;
+			for (var bit = 0; bit < 8; bit++) {
+				if ((currByte & msbMask) != 0) {
+					currByte <<= 1;
+					currByte ^= crcModel.polynomial;
+				}
+				else {
+					currByte <<= 1;
+				}
+			}
+			crcTable[divident] = (currByte & castMask);
+		}
+		
+		var crc = crcModel.initial;
+			for (var i = 0; i < bytes.length; i++) {
+		
+				var curByte = bytes[i] & 0xFF;
+		
+			
+		
+				/* update the MSB of crc value with next input byte */
+				crc = (crc ^ (curByte << (crcModel.width - 8))) & castMask;
+				/* this MSB byte value is the index into the lookup table */
+				var pos = (crc >> (crcModel.width - 8)) & 0xFF;
+				/* shift out this index */
+				crc = (crc << 8) & castMask;
+				/* XOR-in remainder from lookup table using the calculated index */
+				crc = (crc ^ crcTable[pos]) & castMask;
+			}
+		
+			
+		return ((crc ^ crcModel.finalXor) & castMask);
+	},
+	
+	/**
+	 * Mở app ngân hàng
+	 * @param openApp Mã ứng dụng ngân hàng cần mở
+	 * @param bankCode Mã ngân hàng
+	 * @param bankAccount Tài khoản ngân hàng
+	 * @param amount Số tiền
+	 * @param message Nội dung chuyển tiền
+	 * @returns Trả về link để mở app ngân hàng
+	 */
+	genVietQRDeeplink(openApp: string, bankCode:string, bankAccount:string, amount: number, message:string ){
+		let ba = bankAccount+'@'+bankCode; //Định tài khoản nhận tiền
+		let am = amount + ''; //Số tiền chuyển
+		
+		return 'https://dl.vietqr.io/pay?ba='+ba+'&am='+am+'&tn='+message+'&app='+openApp;
 	}
 }

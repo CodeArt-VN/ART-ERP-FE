@@ -28,6 +28,10 @@ export class ScrollbarThemeDirective {
       background: var(--menu-right-border-color);
       background: transprent;
     }
+
+    ::-webkit-scrollbar-corner {
+      background: var(--menu-right-border-color);
+    }
     
     .scroll-y::-webkit-scrollbar-thumb {
       border-radius: 0px;

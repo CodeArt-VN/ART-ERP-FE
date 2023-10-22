@@ -59,4 +59,13 @@
 		justify-content: center;
 		align-items: center;
 	}
+
+	.updatedtime{
+		transition: all 500ms linear 0s;
+	}
+	
+	.blink{
+		color: var(--ion-color-danger);
+		font-weight: bold;
+	}
 }

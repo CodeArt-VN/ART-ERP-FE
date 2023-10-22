@@ -31,7 +31,7 @@ export class ReportConfigComponent implements OnInit {
 			this._reportId = v;
 			this._reportConfig = this.rpt.getReportConfig(this._reportId);
 			if (this._reportConfig) {
-				this.form = this.buildForm(this._reportConfig);
+				this.form = this.buildForm(this._reportConfig.DataConfig);
 			}
 
 			this._schema = this.rpt.getSchema(this._reportConfig.DataConfig.Schema.Id);

@@ -20,7 +20,7 @@ export class ListToolbarComponent implements OnInit {
 	@Input() ShowArchive = true;
 	@Input() ShowExport = true;
 	@Input() ShowImport = true;
-	@Input() ShowHelp = true;
+	@Input() ShowHelp = false;
 	@Input() ShowFeature = true;
 	@Input() ShowPopover = false;
 	@Input() NoBorder = false;

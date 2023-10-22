@@ -13,7 +13,8 @@
 		"lint": "ng lint",
 		"updateBuild": "node ./replace.build.js",
 		"build-prod": "npm version patch && node ./replace.build.js && ionic cap sync --prod",
-		"live-android": "ionic cap run android -l --external --target R58RC47AGEW"
+		"live-android": "ionic cap run android -l --external --target R58RC47AGEW",
+		"dev": "ionic serve --external --no-open --ssl"
 	},
 	"private": true,
 	"dependencies": {

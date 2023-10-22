@@ -20,15 +20,13 @@ export class ReportService {
 
 
 
-    /* #region In memory */
+    /* #region static */
     globalOptions: ReportGlobalOptions = {
         TimeFrame: {
             From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
             To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
         },
     };
-    
-
 
 
     commonOptions = {
@@ -144,9 +142,15 @@ export class ReportService {
         monthsOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
     };
 
+    /* #endregion */
+
+
+    /* #region load in memory*/
+
     schemaList: Schema[] = [
         { Id: 1, Code: 'SaleOrder', Name: 'Sale orders', Type: 'Dataset', ModifiedDate: '2023-01-01' },
-        { Id: 1, Code: 'ARInvoice', Name: 'A/R Invoice dataset', Type: 'Dataset', ModifiedDate: '2023-01-01' },
+        { Id: 2, Code: 'ARInvoice', Name: 'A/R Invoice dataset', Type: 'Dataset', ModifiedDate: '2023-01-01' },
+        { Id: 3, Code: 'ARInvoice', Name: 'A/R Invoice dataset', Type: 'Dataset', ModifiedDate: '2023-01-01' },
     ];
 
     schemaDetailList = [
@@ -176,14 +180,15 @@ export class ReportService {
 
 
     reportList: BIReport[] = [
+        //Sales by hour of day
         {
-            Id: 1, Code: 'SalesByTimeOfDay', Name: 'Sales by time of day',
+            Id: 1, Code: 'sales-by-hour-of-day', Name: 'Sales by hour of day',
             Remark: 'This report shows the sales made during each hour of the day over a given time period. It can help you identify peak sales hours and adjust your staffing and inventory accordingly.',
-            Icon: 'stopwatch', Color: 'success', Type: 'bar',
+            Icon: 'stopwatch', Color: 'danger',
             DataConfig: {
                 TimeFrame: {
                     Dimension: 'OrderDate',
-                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 180 },
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 },
                     To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
                 },
                 CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
@@ -193,13 +198,45 @@ export class ReportService {
                         Dimension: 'logical', Operator: 'AND',
                         Logicals: [
                             { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
-                            //{ Dimension: 'Status', Operator: '=', Value: 'Done' },
-                            {
-                                Dimension: 'logical', Operator: 'OR', Logicals: [
-                                    { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
-                                    // { Dimension: 'Type', Operator: '=', Value: 'FMCG' },
-                                ]
-                            },
+                            { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'HourOfDay', Title: 'Order time' },
+                CompareBy: [
+                    { Property: 'Status', Title: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {},
+            Dimensions: ['OrderDate', 'Status', 'CalcTotal'],
+            viewDimension: 'CalcTotal',
+        },
+        //Sales by day of week
+        {
+            Id: 2, Code: 'sales-by-day-of-week', Name: 'Sales by day of week',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'calendar', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'Cancelled', 'InDelivery']) }, //'Splitted', 'Merged',
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
                         ]
                     },
                 },
@@ -213,8 +250,2035 @@ export class ReportService {
                     { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
                 ]
             },
-            ChartConfig: {}
+            viewDimension: 'CalcTotal',
         },
+        //SO status
+        {
+            Id: 3, Code: 'bill-status-report', Name: 'SO status',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'pie-chart', Color: 'warning',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            viewDimension: 'Count',
+        },
+
+        //boxplot demo
+        {
+            Id: 4, Code: 'payment-methods', Name: 'Payment methods',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'wallet-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'Total' },
+                ]
+            },
+            ChartConfig: {
+                dataset: [
+                    {
+                        id: 'since_year',
+                        source: [
+                            ['TypeName', 'Minimum', 'Q1', 'Median', 'Q3', 'Maximum', 'Count'],
+                            ['ATM ', 164430, 192780, 198450, 204120, 481950, 5],
+                            ['CC ', 73710, 158760, 215460, 373086, 708750, 9],
+                            ['ZalopayApp ', 59535, 107730, 204120, 396900, 1060290, 69],
+                            ['Cash ', 9390, 107730, 215460, 462672, 5358620, 2353],
+                            ['Transfer MB', 22113, 141750, 222264, 493290, 3475710, 883],
+                            ['Card MB', 36855, 158760, 362880, 578340, 2194290, 34],
+                            ['Transfer VCB', 11907, 124740, 277830, 584010, 3583440, 176],
+                            ['Card VCB', 25515, 187110, 368550, 635040, 8368920, 2377]
+                        ]
+                    },
+                    {
+                        id: 'income_aggregate',
+                        fromDatasetId: 'since_year',
+                        transform: [
+                            {
+                                type: 'sort',
+                                config: {
+                                    dimension: 'Q3',
+                                    order: 'asc'
+                                }
+                            }
+                        ]
+                    }
+                ],
+                tooltip: {
+                    trigger: 'axis',
+                    confine: true
+                },
+                xAxis: {
+                    nameGap: 30,
+                    scale: true
+                },
+                yAxis: {
+                    type: 'category'
+                },
+                legend: { show: false },
+
+                series: [
+                    {
+                        name: 'Distribution',
+                        type: 'boxplot',
+                        datasetId: 'income_aggregate',
+                        itemStyle: {
+                            color: '#b8c5f2'
+                        },
+                        encode: {
+                            x: ['Minimum', 'Q1', 'Median', 'Q3', 'Maximum'],
+                            y: 'TypeName',
+                            itemName: ['TypeName'],
+                            tooltip: ['Minimum', 'Q1', 'Median', 'Q3', 'Maximum', 'Count']
+                        }
+                    }
+                ]
+            },
+            viewDimension: 'Count',
+        },
+
+        //gauge demo
+        {
+            Id: 5, Code: 'bills-vs-target', Name: 'Bills vs target',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'speedometer-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+                series: [
+                    {
+                        type: 'gauge',
+                        axisLine: {
+                            lineStyle: {
+                                width: 20,
+                                color: [
+                                    [0.3, '#67e0e3'],
+                                    [0.7, '#37a2da'],
+                                    [1, '#fd666d']
+                                ]
+                            }
+                        },
+                        pointer: {
+                            itemStyle: {
+                                color: 'auto'
+                            }
+                        },
+                        axisTick: {
+                            distance: -20,
+                            length: 8,
+                            lineStyle: {
+                                color: '#fff',
+                                width: 2
+                            }
+                        },
+                        splitLine: {
+                            distance: -20,
+                            length: 25,
+                            lineStyle: {
+                                color: '#fff',
+                                width: 4
+                            }
+                        },
+                        axisLabel: {
+                            color: 'inherit',
+                            distance: 20,
+                            //fontSize: 20
+                        },
+                        detail: {
+                            valueAnimation: true,
+                            formatter: '{value} bills',
+                            color: 'inherit',
+                            fontSize: 20
+                        },
+                        data: [
+                            {
+                                value: 70
+                            }
+                        ]
+                    }
+                ]
+            },
+        },
+
+        //Waterfall
+        {
+            Id: 6, Code: 'income-n-expenses', Name: 'Income & expenses',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'cash', Color: 'warning',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    formatter: function (params) {
+                        let tar;
+                        if (params[1] && params[1].value !== '-') {
+                            tar = params[1];
+                        } else {
+                            tar = params[2];
+                        }
+                        return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: (function () {
+                        let list = [];
+                        for (let i = 1; i <= 11; i++) {
+                            list.push('Nov ' + i);
+                        }
+                        return list;
+                    })()
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Placeholder',
+                        type: 'bar',
+                        stack: 'Total',
+                        silent: true,
+                        itemStyle: {
+                            borderColor: 'transparent',
+                            color: 'transparent'
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                borderColor: 'transparent',
+                                color: 'transparent'
+                            }
+                        },
+                        data: [0, 900, 1245, 1530, 1376, 1376, 1511, 1689, 1856, 1495, 1292]
+                    },
+                    {
+                        name: 'Income',
+                        type: 'bar',
+                        stack: 'Total',
+                        label: {
+                            show: true,
+                            position: 'top'
+                        },
+                        data: [900, 345, 393, '-', '-', 135, 178, 286, '-', '-', '-']
+                    },
+                    {
+                        name: 'Expenses',
+                        type: 'bar',
+                        stack: 'Total',
+                        label: {
+                            show: true,
+                            position: 'bottom'
+                        },
+                        data: ['-', '-', '-', 108, 154, '-', '-', '-', 119, 361, 203]
+                    }
+                ]
+            },
+        },
+
+        //Heatmap
+        {
+            Id: 7, Code: 'bills-by-days', Name: 'Bills days',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'flame-outline', Color: 'danger',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+                visualMap: {
+                    type: 'piecewise',
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: 16,
+                },
+                calendar: {
+                    top: 16, right: 16, bottom: 46, left: 16,
+                    cellSize: ['auto', 40],
+                    range: ['2023-09-01', '2023-09-30'],
+                    itemStyle: {
+                        borderWidth: 0.5
+                    },
+                },
+                dataset: [{
+                    source: [
+                        { Date: '2023-09-20', Value: 6 },
+                        { Date: '2023-09-27', Value: 59 },
+                        { Date: '2023-09-30', Value: 80 },
+                    ]
+                }],
+                series: {
+                    type: 'heatmap',
+                    coordinateSystem: 'calendar',
+                }
+            },
+        },
+
+        //sankey
+        {
+            Id: 8, Code: 'demo', Name: 'Sankey demo',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'speedometer-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+                series: {
+                    type: 'sankey',
+                    top: 16, bottom: 16, left: 16,
+                    emphasis: {
+                        focus: 'adjacency'
+                    },
+                    data: [
+                        {
+                            name: 'a'
+                        },
+                        {
+                            name: 'b'
+                        },
+                        {
+                            name: 'a1'
+                        },
+                        {
+                            name: 'a2'
+                        },
+                        {
+                            name: 'b1'
+                        },
+                        {
+                            name: 'c'
+                        }
+                    ],
+                    links: [
+                        {
+                            source: 'a',
+                            target: 'a1',
+                            value: 5
+                        },
+                        {
+                            source: 'a',
+                            target: 'a2',
+                            value: 3
+                        },
+                        {
+                            source: 'b',
+                            target: 'b1',
+                            value: 8
+                        },
+                        {
+                            source: 'a',
+                            target: 'b1',
+                            value: 3
+                        },
+                        {
+                            source: 'b1',
+                            target: 'a1',
+                            value: 1
+                        },
+                        {
+                            source: 'b1',
+                            target: 'c',
+                            value: 2
+                        }
+                    ]
+                }
+            },
+        },
+
+        //Funnel
+        {
+            Id: 9, Code: 'demo', Name: 'Funnel demo',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'funnel', Color: 'warning',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c}%'
+                },
+                legend: {
+                    show: false,
+                    data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+                },
+                series: [
+                    {
+                        name: 'Expected',
+                        type: 'funnel',
+                        left: '10%',
+                        width: '70%',
+                        label: {
+                            formatter: '{b}Expected'
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            opacity: 0.7
+                        },
+                        emphasis: {
+                            label: {
+                                position: 'inside',
+                                formatter: '{b}Expected: {c}%'
+                            }
+                        },
+                        data: [
+                            { value: 60, name: 'Visit' },
+                            { value: 40, name: 'Inquiry' },
+                            { value: 20, name: 'Order' },
+                            { value: 80, name: 'Click' },
+                            { value: 100, name: 'Show' }
+                        ]
+                    },
+                    {
+                        name: 'Actual',
+                        type: 'funnel',
+                        left: '10%',
+                        width: '70%',
+                        maxSize: '70%',
+                        label: {
+                            position: 'inside',
+                            formatter: '{c}%',
+                            color: '#fff'
+                        },
+                        itemStyle: {
+                            opacity: 0.5,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        emphasis: {
+                            label: {
+                                position: 'inside',
+                                formatter: '{b}Actual: {c}%'
+                            }
+                        },
+                        data: [
+                            { value: 30, name: 'Visit' },
+                            { value: 10, name: 'Inquiry' },
+                            { value: 5, name: 'Order' },
+                            { value: 50, name: 'Click' },
+                            { value: 80, name: 'Show' }
+                        ],
+                        // Ensure outer shape will not be over inner shape when hover.
+                        z: 100
+                    }
+                ]
+            },
+        },
+
+        //Radar
+        {
+            Id: 10, Code: 'cancellation-reason', Name: 'Lý do hủy',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'pie-chart-outline', Color: 'danger',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartScript: `
+            let data = [
+                { CancellationReason: 'ChangesMind', BillCount: 180, Total: 108946005 },
+                { CancellationReason: 'Other', BillCount: 36, Total: 33883353 }
+              ];
+              let reasons = [
+                { name: 'ChangesMind' },
+                { name: 'TakingTooLong' },
+                { name: 'BadQuality' },
+                { name: 'FindOutGoodOffer' },
+                { name: 'InsufficientFunds' },
+                { name: 'Other' }
+              ];
+              
+              Object.assign(option, {
+                tooltip: {
+                  trigger: 'item'
+                },
+                radar: {
+                  //shape: 'circle',
+                  radius: ["0%", "60%"],
+                  indicator: reasons,
+                },
+                series: [
+                  {
+                    type: 'radar',
+                    emphasis: {
+                      areaStyle: {
+                        color: 'rgba(0,250,0,0.3)'
+                      }
+                    },
+                    data: [
+                      {
+                        value: reasons.map((r) => {
+                          return data.find((f) => f.CancellationReason == r.name)?.Total || 0;
+                        }),
+                        name: 'GEM Cafe'
+                      }
+                    ]
+                  }
+                ]
+              });
+              
+            `
+        },
+
+        //Chart script demo
+        {
+            Id: 11, Code: 'cancellation-reason-by-staff', Name: 'Lý do hủy theo nhân viên',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'pie-chart-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {},
+            ChartScript: `
+            let reasons = [
+                { name: 'ChangesMind' },
+                { name: 'TakingTooLong' },
+                { name: 'BadQuality' },
+                { name: 'FindOutGoodOffer' },
+                { name: 'InsufficientFunds' },
+                { name: 'Other' }
+              ];
+              
+              let data = [{"CreatedBy":"Anonymous","CancellationReason":"ChangesMind","BillCount":15,"Total":3260250},{"CreatedBy":"Anonymous","CancellationReason":"Other","BillCount":5,"Total":8323560},{"CreatedBy":"baomi.le@inholdings.vn","CancellationReason":"ChangesMind","BillCount":3,"Total":10489500},{"CreatedBy":"huynhhuy.nguyen@inholdings.vn","CancellationReason":"ChangesMind","BillCount":24,"Total":15688890},{"CreatedBy":"huynhhuy.nguyen@inholdings.vn","CancellationReason":"Other","BillCount":1,"Total":357210},{"CreatedBy":"kimnhung.nguyen@inholdings.vn","CancellationReason":"ChangesMind","BillCount":7,"Total":1517355},{"CreatedBy":"kimnhung.nguyen@inholdings.vn","CancellationReason":"Other","BillCount":1,"Total":7881300},{"CreatedBy":"ngoc.tran@inholdings.vn","CancellationReason":"ChangesMind","BillCount":1,"Total":907200},{"CreatedBy":"phuonganh.nguyen@inholdings.vn","CancellationReason":"ChangesMind","BillCount":3,"Total":901530},{"CreatedBy":"phuonganh.nguyen@inholdings.vn","CancellationReason":"Other","BillCount":1,"Total":73710},{"CreatedBy":"pos.gemcafe@inholdings.vn","CancellationReason":"ChangesMind","BillCount":101,"Total":48693120},{"CreatedBy":"pos.gemcafe@inholdings.vn","CancellationReason":"Other","BillCount":22,"Total":10551870},{"CreatedBy":"tanduy.nguyen@inholdings.vn","CancellationReason":"ChangesMind","BillCount":17,"Total":10240020},{"CreatedBy":"tanduy.nguyen@inholdings.vn","CancellationReason":"Other","BillCount":3,"Total":5550930},{"CreatedBy":"uyenkhanh.pham@inhospitality.vn","CancellationReason":"ChangesMind","BillCount":10,"Total":18155340},{"CreatedBy":"uyenkhanh.pham@inhospitality.vn","CancellationReason":"Other","BillCount":3,"Total":1144773}];
+              
+              let bys = [...new Set(data.map(item => item.CreatedBy))];
+              
+              // Set the chart options
+              Object.assign(option,
+              {
+                radar: {
+                  radius: ["0%", "60%"],
+                  indicator: reasons
+                },
+                series: [
+                  {
+                    type: 'radar',
+                    data: bys.map(function (c) {
+                      return {
+                        name: c,
+                        value: reasons.map(function (r) {
+                          return (
+                            data.find(
+                              (d) => d.CreatedBy == c && d.CancellationReason == r.name
+                            )?.Total || 0
+                          );
+                        })
+                      };
+                    })
+                  }
+                ]
+              });
+              
+              
+            `
+        },
+
+        //sunburst
+        {
+            Id: 12, Code: 'demo', Name: 'sunburst demo',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'speedometer-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartScript: `
+            var data = [
+                {
+                  name: 'Flora',
+                  itemStyle: {
+                    color: '#da0d68'
+                  },
+                  children: [
+                    {
+                      name: 'Black Tea',
+                      value: 1,
+                      itemStyle: {
+                        color: '#975e6d'
+                      }
+                    },
+                    {
+                      name: 'Floral',
+                      itemStyle: {
+                        color: '#e0719c'
+                      },
+                      children: [
+                        {
+                          name: 'Chamomile',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f99e1c'
+                          }
+                        },
+                        {
+                          name: 'Rose',
+                          value: 1,
+                          itemStyle: {
+                            color: '#ef5a78'
+                          }
+                        },
+                        {
+                          name: 'Jasmine',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f7f1bd'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Fruity',
+                  itemStyle: {
+                    color: '#da1d23'
+                  },
+                  children: [
+                    {
+                      name: 'Berry',
+                      itemStyle: {
+                        color: '#dd4c51'
+                      },
+                      children: [
+                        {
+                          name: 'Blackberry',
+                          value: 1,
+                          itemStyle: {
+                            color: '#3e0317'
+                          }
+                        },
+                        {
+                          name: 'Raspberry',
+                          value: 1,
+                          itemStyle: {
+                            color: '#e62969'
+                          }
+                        },
+                        {
+                          name: 'Blueberry',
+                          value: 1,
+                          itemStyle: {
+                            color: '#6569b0'
+                          }
+                        },
+                        {
+                          name: 'Strawberry',
+                          value: 1,
+                          itemStyle: {
+                            color: '#ef2d36'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Dried Fruit',
+                      itemStyle: {
+                        color: '#c94a44'
+                      },
+                      children: [
+                        {
+                          name: 'Raisin',
+                          value: 1,
+                          itemStyle: {
+                            color: '#b53b54'
+                          }
+                        },
+                        {
+                          name: 'Prune',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a5446f'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Other Fruit',
+                      itemStyle: {
+                        color: '#dd4c51'
+                      },
+                      children: [
+                        {
+                          name: 'Coconut',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f2684b'
+                          }
+                        },
+                        {
+                          name: 'Cherry',
+                          value: 1,
+                          itemStyle: {
+                            color: '#e73451'
+                          }
+                        },
+                        {
+                          name: 'Pomegranate',
+                          value: 1,
+                          itemStyle: {
+                            color: '#e65656'
+                          }
+                        },
+                        {
+                          name: 'Pineapple',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f89a1c'
+                          }
+                        },
+                        {
+                          name: 'Grape',
+                          value: 1,
+                          itemStyle: {
+                            color: '#aeb92c'
+                          }
+                        },
+                        {
+                          name: 'Apple',
+                          value: 1,
+                          itemStyle: {
+                            color: '#4eb849'
+                          }
+                        },
+                        {
+                          name: 'Peach',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f68a5c'
+                          }
+                        },
+                        {
+                          name: 'Pear',
+                          value: 1,
+                          itemStyle: {
+                            color: '#baa635'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Citrus Fruit',
+                      itemStyle: {
+                        color: '#f7a128'
+                      },
+                      children: [
+                        {
+                          name: 'Grapefruit',
+                          value: 1,
+                          itemStyle: {
+                            color: '#f26355'
+                          }
+                        },
+                        {
+                          name: 'Orange',
+                          value: 1,
+                          itemStyle: {
+                            color: '#e2631e'
+                          }
+                        },
+                        {
+                          name: 'Lemon',
+                          value: 1,
+                          itemStyle: {
+                            color: '#fde404'
+                          }
+                        },
+                        {
+                          name: 'Lime',
+                          value: 1,
+                          itemStyle: {
+                            color: '#7eb138'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Sour Fermented',
+                  itemStyle: {
+                    color: '#ebb40f'
+                  },
+                  children: [
+                    {
+                      name: 'Sour',
+                      itemStyle: {
+                        color: '#e1c315'
+                      },
+                      children: [
+                        {
+                          name: 'Sour Aromatics',
+                          value: 1,
+                          itemStyle: {
+                            color: '#9ea718'
+                          }
+                        },
+                        {
+                          name: 'Acetic Acid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#94a76f'
+                          }
+                        },
+                        {
+                          name: 'Butyric Acid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#d0b24f'
+                          }
+                        },
+                        {
+                          name: 'Isovaleric Acid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#8eb646'
+                          }
+                        },
+                        {
+                          name: 'Citric Acid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#faef07'
+                          }
+                        },
+                        {
+                          name: 'Malic Acid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#c1ba07'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Alcohol Fremented',
+                      itemStyle: {
+                        color: '#b09733'
+                      },
+                      children: [
+                        {
+                          name: 'Winey',
+                          value: 1,
+                          itemStyle: {
+                            color: '#8f1c53'
+                          }
+                        },
+                        {
+                          name: 'Whiskey',
+                          value: 1,
+                          itemStyle: {
+                            color: '#b34039'
+                          }
+                        },
+                        {
+                          name: 'Fremented',
+                          value: 1,
+                          itemStyle: {
+                            color: '#ba9232'
+                          }
+                        },
+                        {
+                          name: 'Overripe',
+                          value: 1,
+                          itemStyle: {
+                            color: '#8b6439'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Green Vegetative',
+                  itemStyle: {
+                    color: '#187a2f'
+                  },
+                  children: [
+                    {
+                      name: 'Olive Oil',
+                      value: 1,
+                      itemStyle: {
+                        color: '#a2b029'
+                      }
+                    },
+                    {
+                      name: 'Raw',
+                      value: 1,
+                      itemStyle: {
+                        color: '#718933'
+                      }
+                    },
+                    {
+                      name: 'Green Vegetative',
+                      itemStyle: {
+                        color: '#3aa255'
+                      },
+                      children: [
+                        {
+                          name: 'Under-ripe',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a2bb2b'
+                          }
+                        },
+                        {
+                          name: 'Peapod',
+                          value: 1,
+                          itemStyle: {
+                            color: '#62aa3c'
+                          }
+                        },
+                        {
+                          name: 'Fresh',
+                          value: 1,
+                          itemStyle: {
+                            color: '#03a653'
+                          }
+                        },
+                        {
+                          name: 'Dark Green',
+                          value: 1,
+                          itemStyle: {
+                            color: '#038549'
+                          }
+                        },
+                        {
+                          name: 'Vegetative',
+                          value: 1,
+                          itemStyle: {
+                            color: '#28b44b'
+                          }
+                        },
+                        {
+                          name: 'Hay-like',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a3a830'
+                          }
+                        },
+                        {
+                          name: 'Herb-like',
+                          value: 1,
+                          itemStyle: {
+                            color: '#7ac141'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Beany',
+                      value: 1,
+                      itemStyle: {
+                        color: '#5e9a80'
+                      }
+                    }
+                  ]
+                },
+                {
+                  name: 'Other',
+                  itemStyle: {
+                    color: '#0aa3b5'
+                  },
+                  children: [
+                    {
+                      name: 'Papery/Musty',
+                      itemStyle: {
+                        color: '#9db2b7'
+                      },
+                      children: [
+                        {
+                          name: 'Stale',
+                          value: 1,
+                          itemStyle: {
+                            color: '#8b8c90'
+                          }
+                        },
+                        {
+                          name: 'Cardboard',
+                          value: 1,
+                          itemStyle: {
+                            color: '#beb276'
+                          }
+                        },
+                        {
+                          name: 'Papery',
+                          value: 1,
+                          itemStyle: {
+                            color: '#fefef4'
+                          }
+                        },
+                        {
+                          name: 'Woody',
+                          value: 1,
+                          itemStyle: {
+                            color: '#744e03'
+                          }
+                        },
+                        {
+                          name: 'Moldy/Damp',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a3a36f'
+                          }
+                        },
+                        {
+                          name: 'Musty/Dusty',
+                          value: 1,
+                          itemStyle: {
+                            color: '#c9b583'
+                          }
+                        },
+                        {
+                          name: 'Musty/Earthy',
+                          value: 1,
+                          itemStyle: {
+                            color: '#978847'
+                          }
+                        },
+                        {
+                          name: 'Animalic',
+                          value: 1,
+                          itemStyle: {
+                            color: '#9d977f'
+                          }
+                        },
+                        {
+                          name: 'Meaty Brothy',
+                          value: 1,
+                          itemStyle: {
+                            color: '#cc7b6a'
+                          }
+                        },
+                        {
+                          name: 'Phenolic',
+                          value: 1,
+                          itemStyle: {
+                            color: '#db646a'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Chemical',
+                      itemStyle: {
+                        color: '#76c0cb'
+                      },
+                      children: [
+                        {
+                          name: 'Bitter',
+                          value: 1,
+                          itemStyle: {
+                            color: '#80a89d'
+                          }
+                        },
+                        {
+                          name: 'Salty',
+                          value: 1,
+                          itemStyle: {
+                            color: '#def2fd'
+                          }
+                        },
+                        {
+                          name: 'Medicinal',
+                          value: 1,
+                          itemStyle: {
+                            color: '#7a9bae'
+                          }
+                        },
+                        {
+                          name: 'Petroleum',
+                          value: 1,
+                          itemStyle: {
+                            color: '#039fb8'
+                          }
+                        },
+                        {
+                          name: 'Skunky',
+                          value: 1,
+                          itemStyle: {
+                            color: '#5e777b'
+                          }
+                        },
+                        {
+                          name: 'Rubber',
+                          value: 1,
+                          itemStyle: {
+                            color: '#120c0c'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Roasted',
+                  itemStyle: {
+                    color: '#c94930'
+                  },
+                  children: [
+                    {
+                      name: 'Pipe Tobacco',
+                      value: 1,
+                      itemStyle: {
+                        color: '#caa465'
+                      }
+                    },
+                    {
+                      name: 'Tobacco',
+                      value: 1,
+                      itemStyle: {
+                        color: '#dfbd7e'
+                      }
+                    },
+                    {
+                      name: 'Burnt',
+                      itemStyle: {
+                        color: '#be8663'
+                      },
+                      children: [
+                        {
+                          name: 'Acrid',
+                          value: 1,
+                          itemStyle: {
+                            color: '#b9a449'
+                          }
+                        },
+                        {
+                          name: 'Ashy',
+                          value: 1,
+                          itemStyle: {
+                            color: '#899893'
+                          }
+                        },
+                        {
+                          name: 'Smoky',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a1743b'
+                          }
+                        },
+                        {
+                          name: 'Brown, Roast',
+                          value: 1,
+                          itemStyle: {
+                            color: '#894810'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Cereal',
+                      itemStyle: {
+                        color: '#ddaf61'
+                      },
+                      children: [
+                        {
+                          name: 'Grain',
+                          value: 1,
+                          itemStyle: {
+                            color: '#b7906f'
+                          }
+                        },
+                        {
+                          name: 'Malt',
+                          value: 1,
+                          itemStyle: {
+                            color: '#eb9d5f'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Spices',
+                  itemStyle: {
+                    color: '#ad213e'
+                  },
+                  children: [
+                    {
+                      name: 'Pungent',
+                      value: 1,
+                      itemStyle: {
+                        color: '#794752'
+                      }
+                    },
+                    {
+                      name: 'Pepper',
+                      value: 1,
+                      itemStyle: {
+                        color: '#cc3d41'
+                      }
+                    },
+                    {
+                      name: 'Brown Spice',
+                      itemStyle: {
+                        color: '#b14d57'
+                      },
+                      children: [
+                        {
+                          name: 'Anise',
+                          value: 1,
+                          itemStyle: {
+                            color: '#c78936'
+                          }
+                        },
+                        {
+                          name: 'Nutmeg',
+                          value: 1,
+                          itemStyle: {
+                            color: '#8c292c'
+                          }
+                        },
+                        {
+                          name: 'Cinnamon',
+                          value: 1,
+                          itemStyle: {
+                            color: '#e5762e'
+                          }
+                        },
+                        {
+                          name: 'Clove',
+                          value: 1,
+                          itemStyle: {
+                            color: '#a16c5a'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Nutty Cocoa',
+                  itemStyle: {
+                    color: '#a87b64'
+                  },
+                  children: [
+                    {
+                      name: 'Nutty',
+                      itemStyle: {
+                        color: '#c78869'
+                      },
+                      children: [
+                        {
+                          name: 'Peanuts',
+                          value: 1,
+                          itemStyle: {
+                            color: '#d4ad12'
+                          }
+                        },
+                        {
+                          name: 'Hazelnut',
+                          value: 1,
+                          itemStyle: {
+                            color: '#9d5433'
+                          }
+                        },
+                        {
+                          name: 'Almond',
+                          value: 1,
+                          itemStyle: {
+                            color: '#c89f83'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Cocoa',
+                      itemStyle: {
+                        color: '#bb764c'
+                      },
+                      children: [
+                        {
+                          name: 'Chocolate',
+                          value: 1,
+                          itemStyle: {
+                            color: '#692a19'
+                          }
+                        },
+                        {
+                          name: 'Dark Chocolate',
+                          value: 1,
+                          itemStyle: {
+                            color: '#470604'
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Sweet',
+                  itemStyle: {
+                    color: '#e65832'
+                  },
+                  children: [
+                    {
+                      name: 'Brown Sugar',
+                      itemStyle: {
+                        color: '#d45a59'
+                      },
+                      children: [
+                        {
+                          name: 'Molasses',
+                          value: 1,
+                          itemStyle: {
+                            color: '#310d0f'
+                          }
+                        },
+                        {
+                          name: 'Maple Syrup',
+                          value: 1,
+                          itemStyle: {
+                            color: '#ae341f'
+                          }
+                        },
+                        {
+                          name: 'Caramelized',
+                          value: 1,
+                          itemStyle: {
+                            color: '#d78823'
+                          }
+                        },
+                        {
+                          name: 'Honey',
+                          value: 1,
+                          itemStyle: {
+                            color: '#da5c1f'
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      name: 'Vanilla',
+                      value: 1,
+                      itemStyle: {
+                        color: '#f89a80'
+                      }
+                    },
+                    {
+                      name: 'Vanillin',
+                      value: 1,
+                      itemStyle: {
+                        color: '#f37674'
+                      }
+                    },
+                    {
+                      name: 'Overall Sweet',
+                      value: 1,
+                      itemStyle: {
+                        color: '#e75b68'
+                      }
+                    },
+                    {
+                      name: 'Sweet Aromatics',
+                      value: 1,
+                      itemStyle: {
+                        color: '#d0545f'
+                      }
+                    }
+                  ]
+                }
+              ];
+              option = {
+              
+                series: {
+                  type: 'sunburst',
+                  data: data,
+                  radius: [0, '95%'],
+                  emphasis: {
+                    focus: 'ancestor'
+                  },
+                  levels: [
+                    {},
+                    {
+                      r0: '15%',
+                      r: '35%',
+                      itemStyle: {
+                        borderWidth: 2
+                      },
+                      label: {
+                        rotate: 'tangential'
+                      }
+                    },
+                    {
+                      r0: '35%',
+                      r: '70%',
+                      label: {
+                        align: 'right'
+                      }
+                    },
+                    {
+                      r0: '70%',
+                      r: '72%',
+                      label: {
+                        position: 'outside',
+                        padding: 3,
+                        silent: false
+                      },
+                      itemStyle: {
+                        borderWidth: 3
+                      }
+                    }
+                  ]
+                }
+              };
+            `
+        },
+
+        
+        //Top 10
+        {
+            Id: 13, Code: 'demo', Name: 'Demo top 10',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'speedometer-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'IDBranch', Title: 'Branch' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartScript: `
+            // prettier-ignore
+            let dataAxis = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321].sort();
+            // prettier-ignore
+            let data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321].sort();
+
+
+
+            option = {
+              grid: { top: 16, right: 16, bottom: 16, left: 16, containLabel: true },
+              yAxis: {
+                data: dataAxis,
+                axisLabel: {
+                  inside: true,
+                  color: '#fff'
+                },
+                axisTick: {
+                  show: false
+                },
+                axisLine: {
+                  show: false
+                },
+                z: 10
+              },
+              xAxis: {
+                axisLine: {
+                  show: false
+                },
+                axisTick: {
+                  show: false
+                },
+              },
+
+              series: [
+                {
+                  type: 'bar',
+                  showBackground: true,
+                  itemStyle: {
+                  
+                  },
+                  
+                  data: data
+                }
+              ]
+            };
+            `
+        },
+        //polar-roundCap
+        {
+          Id: 14, Code: 'demo', Name: 'Demo polar roundCap',
+          Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          Icon: 'speedometer-outline', Color: 'success',
+          DataConfig: {
+              TimeFrame: {
+                  Dimension: 'OrderDate',
+                  From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                  To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+              },
+              CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+              Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+              Transform: {
+                  Filter: {
+                      Dimension: 'logical', Operator: 'AND',
+                      Logicals: [
+                          { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                          { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                      ]
+                  },
+              },
+              Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+              CompareBy: [
+                  { Property: 'Status' },
+              ],
+              MeasureBy: [
+                  { Property: 'Id', Method: 'count', Title: 'Count' },
+                  { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                  { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+              ]
+          },
+          ChartScript: `
+          option = {
+            angleAxis: {
+              max: 2,
+              startAngle: 30,
+              splitLine: {
+                show: false
+              }
+            },
+            radiusAxis: {
+              type: 'category',
+              data: ['v', 'w', 'x', 'y', 'z'],
+              z: 10
+            },
+            polar: {},
+            series: [
+              {
+                type: 'bar',
+                data: [4, 3, 2, 1, 0],
+                coordinateSystem: 'polar',
+                name: 'Without Round Cap',
+                itemStyle: {
+                  borderColor: 'red',
+                  opacity: 0.8,
+                  borderWidth: 1
+                }
+              },
+              {
+                type: 'bar',
+                data: [4, 3, 2, 1, 0],
+                coordinateSystem: 'polar',
+                name: 'With Round Cap',
+                roundCap: true,
+                itemStyle: {
+                  borderColor: 'green',
+                  opacity: 0.8,
+                  borderWidth: 1
+                }
+              }
+            ],
+          };
+          `
+        },
+         //bar-polar-stack-radial
+         {
+          Id: 15, Code: 'demo', Name: 'Demo Stacked Bar Chart on Polar',
+          Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          Icon: 'speedometer-outline', Color: 'success',
+          DataConfig: {
+              TimeFrame: {
+                  Dimension: 'OrderDate',
+                  From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                  To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+              },
+              CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+              Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+              Transform: {
+                  Filter: {
+                      Dimension: 'logical', Operator: 'AND',
+                      Logicals: [
+                          { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                          { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                      ]
+                  },
+              },
+              Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+              CompareBy: [
+                  { Property: 'Status' },
+              ],
+              MeasureBy: [
+                  { Property: 'Id', Method: 'count', Title: 'Count' },
+                  { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                  { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+              ]
+          },
+          ChartScript: `
+          option = {
+            angleAxis: {},
+            radiusAxis: {
+              type: 'category',
+              data: ['Mon', 'Tue', 'Wed', 'Thu'],
+              z: 10
+            },
+            polar: {},
+            series: [
+              {
+                type: 'bar',
+                data: [1, 2, 3, 4],
+                coordinateSystem: 'polar',
+                name: 'A',
+                stack: 'a',
+                emphasis: {
+                  focus: 'series'
+                }
+              },
+              {
+                type: 'bar',
+                data: [2, 4, 6, 8],
+                coordinateSystem: 'polar',
+                name: 'B',
+                stack: 'a',
+                emphasis: {
+                  focus: 'series'
+                }
+              },
+              {
+                type: 'bar',
+                data: [1, 2, 3, 4],
+                coordinateSystem: 'polar',
+                name: 'C',
+                stack: 'a',
+                emphasis: {
+                  focus: 'series'
+                }
+              }
+            ],
+            legend: {
+              show: true,
+              data: ['A', 'B', 'C']
+            }
+          };
+          `
+      },
+
+       //Waterfall
+       {
+        Id: 16, Code: 'demo', Name: 'Demo Nightingale Chart',
+        Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+        Icon: 'speedometer-outline', Color: 'success',
+        DataConfig: {
+            TimeFrame: {
+                Dimension: 'OrderDate',
+                From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+            },
+            CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+            Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+            Transform: {
+                Filter: {
+                    Dimension: 'logical', Operator: 'AND',
+                    Logicals: [
+                        { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                        { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                    ]
+                },
+            },
+            Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+            CompareBy: [
+                { Property: 'Status' },
+            ],
+            MeasureBy: [
+                { Property: 'Id', Method: 'count', Title: 'Count' },
+                { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+            ]
+        },
+        ChartScript: `
+        option = {
+          
+          series: [
+            {
+              name: 'Nightingale Chart',
+              type: 'pie',
+              radius: [20, 150],
+              center: ['50%', '50%'],
+              roseType: 'area',
+              itemStyle: {
+                borderRadius: 8
+              },
+              data: [
+                { value: 40, name: 'rose 1' },
+                { value: 38, name: 'rose 2' },
+                { value: 32, name: 'rose 3' },
+                { value: 30, name: 'rose 4' },
+                { value: 28, name: 'rose 5' },
+                { value: 26, name: 'rose 6' },
+                { value: 22, name: 'rose 7' },
+                { value: 18, name: 'rose 8' }
+              ]
+            }
+          ]
+        };
+        `
+    },
+
+        //treemap
+        {
+          Id: 17, Code: 'demo', Name: 'Demo treemap',
+          Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+          Icon: 'speedometer-outline', Color: 'success',
+          DataConfig: {
+              TimeFrame: {
+                  Dimension: 'OrderDate',
+                  From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                  To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+              },
+              CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+              Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+              Transform: {
+                  Filter: {
+                      Dimension: 'logical', Operator: 'AND',
+                      Logicals: [
+                          { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                          { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                      ]
+                  },
+              },
+              Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+              CompareBy: [
+                  { Property: 'Status' },
+              ],
+              MeasureBy: [
+                  { Property: 'Id', Method: 'count', Title: 'Count' },
+                  { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                  { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+              ]
+          },
+          ChartScript: `
+          option = {
+            series: [
+              {
+                type: 'treemap',
+                data: [
+                  {
+                    name: 'nodeA',
+                    value: 10,
+                    children: [
+                      {
+                        name: 'nodeAa',
+                        value: 4
+                      },
+                      {
+                        name: 'nodeAb',
+                        value: 6
+                      }
+                    ]
+                  },
+                  {
+                    name: 'nodeB',
+                    value: 20,
+                    children: [
+                      {
+                        name: 'nodeBa',
+                        value: 20,
+                        children: [
+                          {
+                            name: 'nodeBa1',
+                            value: 20
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          };
+          `
+      },
+
+        /*
+        //Waterfall
+        {
+            Id: 18, Code: '', Name: 'Bills vs target',
+            Remark: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+            Icon: 'speedometer-outline', Color: 'success',
+            DataConfig: {
+                TimeFrame: {
+                    Dimension: 'OrderDate',
+                    From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 },
+                    To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
+                },
+                CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
+                Schema: { Id: 1, Type: 'None', Code: 'BANK_IncomingPayment', Name: 'Sale orders' },
+                Transform: {
+                    Filter: {
+                        Dimension: 'logical', Operator: 'AND',
+                        Logicals: [
+                            { Dimension: 'IDBranch', Operator: 'IN', Value: this.env.selectedBranchAndChildren },
+                            { Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
+                        ]
+                    },
+                },
+                Interval: { Property: 'OrderDate', Type: 'Day', Title: 'OrderDate' },
+                CompareBy: [
+                    { Property: 'Status' },
+                ],
+                MeasureBy: [
+                    { Property: 'Id', Method: 'count', Title: 'Count' },
+                    { Property: 'NumberOfGuests', Method: 'count', Title: 'NumberOfGuests' },
+                    { Property: 'CalcTotal', Method: 'sum', Title: 'CalcTotal' },
+                ]
+            },
+            ChartConfig: {
+
+            },
+        },
+        */
+
+
+
+
+
 
         /*
         Sales by product: This report shows the sales made for each product over a given time period. It can help you identify which products are the most popular and adjust your inventory and marketing strategies accordingly.
@@ -383,8 +2447,8 @@ export class ReportService {
      * @param reportId Repport id
      * @returns Report config
      */
-    getReportConfig(reportId: number): BIReport {
-        let reportConfig = this.reportList.find(d => d.Id == reportId);
+    getReportConfig(reportId: number, reportCode: string = ''): BIReport {
+        let reportConfig = this.reportList.find(d => d.Id == reportId || d.Code == reportCode);
         if (!reportConfig && !reportId)
             this.env.showTranslateMessage('Report with Id=' + reportId + ' not found!', 'danger');
 
@@ -429,19 +2493,23 @@ export class ReportService {
      */
     getReportData(reportId: number, checkNewData: boolean = false) {
         //Check in memory data
+        let reportConfig = this.getReportConfig(reportId);
         let localDataset = this.reportDatasetList.find(d => d.id == reportId);
         let trackingData = this.reportDataTrackingList.find(d => d.id == reportId);
         if (!(localDataset && trackingData)) {
             console.log('Need to regReportTrackingData first');
         }
 
-        if (localDataset.data) {
+        if (!checkNewData && localDataset.data) {
             trackingData.tracking.next(localDataset);
         }
 
+        if (reportConfig.DataConfig.Schema.Type == 'None') {
+            trackingData.tracking.next(null);
+        }
 
         //if there is no data => check local storage
-        if (checkNewData || !localDataset.data) {
+        else if (checkNewData || !localDataset.data) {
 
             if (!localDataset.data) {
                 this.env.getStorage('ReportDataset-' + reportId).then(storageDataset => {
@@ -566,6 +2634,9 @@ export class ReportService {
      * @returns Return text
      */
     formatTimeConfig(timeConfig: TimeConfig, isPrevious = false) {
+        if (!timeConfig) return '';
+
+
         if (isPrevious) {
             if (timeConfig.Amount == 0)
                 return 'Today';

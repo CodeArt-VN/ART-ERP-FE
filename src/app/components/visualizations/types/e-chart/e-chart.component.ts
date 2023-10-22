@@ -1,55 +1,36 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ReportDataConfig } from 'src/app/models/options-interface';
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import * as echarts from 'echarts';
 @Component({
 	selector: 'app-pie-chart',
 	template: '<div style="height: 100%;" [id]="elId"></div>',
-	changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class EChartComponent implements OnInit {
-	@Input() chartType: 'pie' | 'donut' | 'bar' = 'pie';
+	elId: string = ''; //Chart element Id
+	chart = null; //Chart object
+
+	@Input() chartType: string = 'auto';
+	@Input() viewMode: 'full' | 'mini' | 'dashboard';
 	@Input() chartOption: echarts.EChartsOption = {};
+	@Input() dimensions: string[] = [];
+	@Input() dataIntervalProperty: string;
+	@Input() dataIntervalType: string;
 
-	/** Chart element Id */
-	elId: string = '';
-
-	/** Chart object */
-	chart = null;
-
-
+	@Input() chartScript: string;
 	
+	@Input() data: any[] = [];
 
-	
-	
-
-	/** Chart dataset */
+	/** Chart dataset 
+	 * @deprecated	Not use anymore
+	*/
 	@Input() set dataset(v: any[]) {
-		this.chartOption.dataset = v;
-		this.updateChart();
-	}
-
-	/** Chart view mode */
-	_viewMode: 'full' | 'mini' | 'dashboard' = 'dashboard';
-	@Input() set viewMode(v: 'full' | 'mini' | 'dashboard') {
-		this._viewMode = v;
-		this.getChartOption();
-		this.updateChart();
-	}
-
-	/** get chart option by view mode */
-	getChartOption() {
-		let defaultOption = this.rpt.echartDefaultOption.getChartOption(this.chartType, this._viewMode);
-
-		if (this.chartOption) {
-			Object.assign(defaultOption, this.chartOption);
+		if (v) {
+			this.chartOption.dataset = v;
+			this.updateChart();	
 		}
-
-		this.chartOption = { ...defaultOption };
 	}
-
 
 	constructor(public rpt: ReportService) {
 		this.elId = lib.generateCode();
@@ -70,10 +51,14 @@ export class EChartComponent implements OnInit {
 	}
 
 	ngOnChanges(changes: any) {
-		if (changes.chartOption) {
-			Object.assign(this.chartOption, changes.chartOption.currentValue);
-			this.updateChart();
+		console.log(changes);
+		
+		if (changes.chartOption && changes.chartOption.currentValue) {
+			Object.assign(this.chartOption, changes.chartOption.currentValue);	
 		}
+
+
+		this.updateChart();
 	}
 
 	ngOnDestroy() {
@@ -81,9 +66,37 @@ export class EChartComponent implements OnInit {
 	}
 
 	updateChart() {
-		if (this.chartOption?.dataset) {
-			this.rpt.echartDefaultOption.updateSeriesByDimension(this.chartOption, this.chartType, this.chartOption.dataset['dimensions']);
-			this.chart?.setOption(this.chartOption);
+		let finalChartOption = {};
+		switch (this.chartType) {
+			case 'auto':
+				if (this.data.length) {
+					finalChartOption = this.rpt.echartDefaultOption.getChartOption(this.chartType, this.viewMode, this.dataIntervalProperty, this.dataIntervalType, this.dimensions, this.data);
+				}
+				break;
+
+			case 'bar':
+			case 'line':
+				this.rpt.echartDefaultOption.updateSeriesByDimension(this.chartOption, this.chartType, this.chartOption.dataset['dimensions']);
+				finalChartOption = this.chartOption;
+				break;
+			case 'fixed':
+				finalChartOption = this.rpt.echartDefaultOption.mergeDefaultChartOption(this.chartOption, this.viewMode);
+				break;
+		};
+
+		if (this.chartScript) {
+			finalChartOption = this.calcChartOption(finalChartOption, this.chartScript);
 		}
+
+		console.log('finalChartOption', finalChartOption);
+		 
+		this.chart?.setOption(finalChartOption, true);
+
+
+	}
+
+	calcChartOption(option : echarts.EChartsOption, js: string ): echarts.EChartsOption{
+		eval(js);
+		return option;
 	}
 }

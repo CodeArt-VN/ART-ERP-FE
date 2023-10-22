@@ -15,10 +15,10 @@ export class PageMessageComponent implements OnInit {
 
   ngOnInit() {
     if (!this.message) {
-      this.message = 'Không có dữ liệu';
+      this.message = 'No data available';
     }
     if (!this.subMessage) {
-      this.subMessage = 'Vui lòng kiểm tra lại...';
+      this.subMessage = 'Please check again';
     }
   }
 

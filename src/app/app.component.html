@@ -251,7 +251,7 @@
 		<a class="text" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" *ngIf="(env.user && env.user.Id)">{{env.user.UserName}}</a>
 		<a class="text" href=".">{{appVersion}} </a>
 		<span class="text float-right">
-			<ion-icon [color]="env.networkInfo.isOnline? 'success': 'danger'" [name]="env.networkInfo.isOnline? 'wifi': 'alert-circle'"></ion-icon>
+			<ion-icon [color]="env.networkInfo.isOnline? 'success': 'danger'" name="wifi"></ion-icon>
 			<!-- <span *ngIf="!env.networkInfo.isOnline"> rớt mạng...</span> -->
 		</span>
 		<span *ngIf="!env.language.isDefault" (click)="changeLanguage('vi-VN')" class="text float-right" style="font-size: x-large"><b>🇻🇳</b></span>

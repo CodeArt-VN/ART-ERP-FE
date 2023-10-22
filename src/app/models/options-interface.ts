@@ -2,6 +2,10 @@ import { EChartsOption } from "echarts/types/dist/echarts";
 export interface BIReport extends Schema { 
 	DataConfig?: ReportDataConfig;
 	ChartConfig?: EChartsOption;
+	ChartScript?: string;
+	MockDataAPI?: string,
+	Dimensions?: string[];
+	viewDimension?: string;
 }
 
 export interface ReportDataConfig {
