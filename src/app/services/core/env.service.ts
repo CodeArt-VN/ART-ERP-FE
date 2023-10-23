@@ -172,6 +172,21 @@ export class EnvService {
             else if (e.code == 'POSSupport') {
                 this.publishEvent({ Code: 'app:POSSupport', Data: e });
             }
+            else if (e.code == 'POSCallToPay') {
+                this.publishEvent({ Code: 'app:POSCallToPay', Data: e });
+            }
+            else if (e.code == 'POSLockOrderFromStaff') {
+                this.publishEvent({ Code: 'app:POSLockOrderFromStaff', Data: e });
+            }
+            else if (e.code == 'POSLockOrderFromCustomer') {
+                this.publishEvent({ Code: 'app:POSLockOrderFromCustomer', Data: e });
+            }
+            else if (e.code == 'POSLockOrder') {
+                this.publishEvent({ Code: 'app:POSLockOrder', Data: e });
+            }
+            else if (e.code == 'POSUnlockOrder') {
+                this.publishEvent({ Code: 'app:POSUnlockOrder', Data: e });
+            }
             else if (e.code == 'SystemMessage') {
                 this.showMessage(e.value, e.name);
             }
