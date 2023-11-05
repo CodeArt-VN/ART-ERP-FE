@@ -408,6 +408,46 @@ export class EnvService {
     }
 
     /**
+     * Set cookie value
+     * @param name Name of cookie
+     * @param value The value to save
+     * @param days Number of days to save
+     */
+    setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+
+    /**
+     * Get cookie value
+     * @param name Name of cookie
+     * @returns Cookie value
+     */
+    getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    /**
+     * Clear cookie value
+     * @param name Name of cookie
+     */
+    clearCookie(name) {   
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    /**
      * Build branch tree from rawBranchList
      * @returns Return promise
      */
