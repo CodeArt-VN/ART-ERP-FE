@@ -42,7 +42,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import { POSOrderLinesCancelModalPage } from './pages/POS/pos-orderlines-cancel-modal/pos-orderlines-cancel-modal.page';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -54,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent, PopoverPage,
     SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage,
     ARInvoiceSplitModalPage, ARInvoiceMergeModalPage,
-    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSMemoModalPage, POSAddContactModalPage, POSCancelModalPage, POSOrderLinesCancelModalPage, POSNotifyModalPage],
+    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSMemoModalPage, POSAddContactModalPage, POSCancelModalPage, POSNotifyModalPage],
   imports: [
     BrowserModule,
     TranslateModule.forRoot({
