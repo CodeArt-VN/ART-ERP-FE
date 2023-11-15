@@ -75,14 +75,18 @@ export class MyPipe implements PipeTransform {
 export class searchNoAccents implements PipeTransform {
     transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
         return items.filter(item => {
-
             for (let field in conditions) {
                 let keyword = conditions[field];
-                keyword = this.removeAccents(keyword);
-                item[field] = this.removeAccents(item['Name'] + ' ' + (item.ForeignName || ''));
-                if (keyword === 'all' || keyword === '') return true;
-                if (item[field].toLowerCase().indexOf(keyword) == -1) {
-                    return false;
+                if (keyword == 'deals') {
+                    return item.UoMs.some(uom => uom.PriceList.some(price => price.NewPrice !== undefined))
+                }
+                else {
+                    keyword = this.removeAccents(keyword);
+                    item[field] = this.removeAccents(item['Name'] + ' ' + (item.ForeignName || ''));
+                    if (keyword === 'all' || keyword === '') return true;
+                    if (item[field].toLowerCase().indexOf(keyword) == -1) {
+                        return false;
+                    }
                 }
             }
             return true;
