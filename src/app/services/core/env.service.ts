@@ -181,6 +181,12 @@ export class EnvService {
             else if (e.code == 'POSLockOrderFromCustomer') {
                 this.publishEvent({ Code: 'app:POSLockOrderFromCustomer', Data: e });
             }
+            else if (e.code == 'POSUnlockOrderFromStaff') {
+                this.publishEvent({ Code: 'app:POSUnlockOrderFromStaff', Data: e });
+            }
+            else if (e.code == 'POSUnlockOrderFromCustomer') {
+                this.publishEvent({ Code: 'app:POSUnlockOrderFromCustomer', Data: e });
+            }
             else if (e.code == 'POSLockOrder') {
                 this.publishEvent({ Code: 'app:POSLockOrder', Data: e });
             }
