@@ -341,18 +341,25 @@ export class EnvService {
      */
     showPrompt(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
         return new Promise((resolve, reject) => {
-
             let option: any = {
                 header: header,
                 subHeader: subHeader,
                 message: message,
-                buttons: [
+                buttons: []
+            };
+
+            if (cancelText) 
+                option.buttons.push(
                     {
                         text: cancelText, role: 'cancel',
                         handler: () => {
                             reject(false);
                         }
-                    },
+                    }
+                );
+
+            if (okText) {
+                option.buttons.push(
                     {
                         text: okText,
                         cssClass: 'danger-btn',
@@ -360,12 +367,12 @@ export class EnvService {
                             resolve(alertData);
                         }
                     }
-                ]
-            };
-
-            if (inputs) {
-                option.inputs = inputs;
+                );
             }
+            
+
+            if (inputs) 
+                option.inputs = inputs;
 
             this.alertCtrl.create(option).then(alert => {
                 alert.present();
