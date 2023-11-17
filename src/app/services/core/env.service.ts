@@ -134,6 +134,7 @@ export class EnvService {
         this._storage = await this.storage.create();
         this.publishEvent({ Code: 'app:loadLang' });
         Network.addListener('networkStatusChange', status => {
+            this.publishEvent({ Code: 'app:networkStatusChange', status});
             console.log('Network status changed', status);
         });
 
@@ -192,6 +193,12 @@ export class EnvService {
             }
             else if (e.code == 'POSUnlockOrder') {
                 this.publishEvent({ Code: 'app:POSUnlockOrder', Data: e });
+            }
+            else if (e.code == 'POSOrderSplittedFromStaff') {
+                this.publishEvent({ Code: 'app:POSOrderSplittedFromStaff', Data: e });
+            }
+            else if (e.code == 'POSOrderMergedFromStaff') {
+                this.publishEvent({ Code: 'app:POSOrderMergedFromStaff', Data: e });
             }
             else if (e.code == 'SystemMessage') {
                 this.showMessage(e.value, e.name);
