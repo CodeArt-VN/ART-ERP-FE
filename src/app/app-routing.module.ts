@@ -76,8 +76,8 @@ const routes: Routes = [
 
 
   //PURCHASE
-  { path: 'purchase-request', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },
-  { path: 'purchase-request/:id', loadChildren: () => import('./pages/PURCHASE/purchase-order-detail/purchase-order-detail.module').then(m => m.PurchaseOrderDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'purchase-request', loadChildren: () => import('./pages/PURCHASE/purchase-request/purchase-request.module').then(m => m.PurchaseRequestPageModule), canActivate: [AuthGuard] },
+  { path: 'purchase-request/:id', loadChildren: () => import('./pages/PURCHASE/purchase-request-detail/purchase-request-detail.module').then(m => m.PurchaseRequestDetailPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-quotation', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-quotation/:id', loadChildren: () => import('./pages/PURCHASE/purchase-order-detail/purchase-order-detail.module').then(m => m.PurchaseOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-order', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },

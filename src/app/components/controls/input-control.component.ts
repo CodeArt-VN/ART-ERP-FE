@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { InputControlField } from './controls.interface';
 
@@ -9,7 +9,7 @@ import { InputControlField } from './controls.interface';
 export class InputControlComponent implements OnInit {
 	@Output() inputChange = new EventEmitter();
 	@Output() nav = new EventEmitter();
-
+	@Input() disabled : boolean;
 	@Input() set field(f: InputControlField) {
         if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
@@ -22,12 +22,11 @@ export class InputControlComponent implements OnInit {
 		if (f.multiple) this.multiple = f.multiple;
 		if (f.clearable) this.clearable = f.clearable;
 		if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
-
     }
 	
     @Input() form: FormGroup;
 
-    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' = 'text';
+    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' | 'checkbox'= 'text';
 
     @Input() id: string;
 
@@ -51,8 +50,11 @@ export class InputControlComponent implements OnInit {
    
 	constructor() { }
 
-	ngOnInit() {}
-
+	ngOnInit() {
+		if(this.disabled){
+			this.form.controls[this.id].disable()
+		}
+	}
 	onInputChange(event) {
 		this.inputChange.emit(event);
 	}
