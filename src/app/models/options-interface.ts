@@ -1,4 +1,33 @@
 import { EChartsOption } from "echarts/types/dist/echarts";
+
+//Wiget interface
+//{"x":0,"y":4,"cols":3,"rows":1,"IDReport":7,"Id":0, WidgetConfig: { ViewDimension: 'CalcTotal'}},
+export interface Widget {
+	x?: number;
+	y?: number;
+	cols?: number;
+	rows?: number;
+	Id?: number;
+	IDReport?: number;
+	WidgetConfig? : WidgetConfig;
+}
+
+//Widget config interface
+export interface WidgetConfig {
+	ViewDimension: string;
+	Statistic?: StatisticConfig;
+	
+}
+
+export interface StatisticConfig {
+	ShowInFull: boolean;
+	ShowInDashboard: boolean;
+	DashboardMeasureList: string[];
+
+}
+
+
+
 export interface BIReport extends Schema { 
 	DataConfig?: ReportDataConfig;
 	ChartConfig?: EChartsOption;
@@ -32,6 +61,8 @@ export interface Schema {
 	Color?: string;
 	ModifiedDate?: number | string | Date;
 	DataFetchDate?: number | string | Date;
+
+	Fields?: SchemaDetail[];
 }
 
 export interface TimeFrame {
@@ -87,9 +118,29 @@ export interface FilterConfig {
 }
 
 export interface SchemaDetail {
+	IDSchema?: number;
+	Id?: number;
+	PropertyType?: string;
+	DataType?: string;
+	Format?: string;
+	Aggregate?: string;
+	Icon?: string;
+	Color?: string;
+	Code?: string;
+	Name?: string;
+	Remark?: string;
+	
+	Sort?: number;
+
+
+	//For UI only
 	Title?: string;
 	Property?: string;
 	Type?: string;
 	Method?: string;
-	Value?: any;
+
+
+	Value?: any; //To show in UI only
+
+
 }

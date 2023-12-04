@@ -40,12 +40,12 @@
 					</span>
 				</div>
 
-				<div class="c-control">
+				<!-- <div class="c-control">
 					<label class="c-label">{{'Cpmmpare to' | translate}}</label>
 					<span class="c-input">
 						<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
 					</span>
-				</div>
+				</div> -->
 
 				<!-- datepicker -->
 				<ion-popover #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
@@ -88,16 +88,20 @@
 			
 			-->
 
-				<div class="c-control">
+			<app-filter>
+				
+			</app-filter>
 
-					<ion-button size="small" (click)="onRunReport()" color="success">
+				<div class="c-control">
+					
+					<ion-button (click)="onRunReport()" color="success" expand="block">
 						<ion-icon slot="start" name="caret-forward-outline"></ion-icon>
 						{{'Run' | translate}}
 					</ion-button>
 
-					<ion-button size="small" (click)="onSave()" color="primary">
+					<!-- <ion-button size="small" (click)="onSave()" color="primary">
 						{{'Save' | translate}}
-					</ion-button>
+					</ion-button> -->
 				</div>
 
 			</ion-col>
@@ -117,4 +121,6 @@
 			</div>
 		</ng-container> -->
 	</form>
+
+
 </ion-grid>

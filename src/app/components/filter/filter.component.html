@@ -1,0 +1,12 @@
+
+<form [formGroup]="form" (submit)="onFormSubmit($event)">
+  <app-form-control 
+  [form]="form" 
+  type="ng-select" 
+  id="Dimension" 
+  label="Dimension" 
+  placeholder="Select dimension..." 
+  [dataSource]="schema.Fields" 
+  bindLabel="Name" 
+  (inputChange)="onChange($event)"></app-form-control>
+</form>

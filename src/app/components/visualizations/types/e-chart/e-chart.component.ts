@@ -15,6 +15,7 @@ export class EChartComponent implements OnInit {
 	@Input() viewMode: 'full' | 'mini' | 'dashboard';
 	@Input() chartOption: echarts.EChartsOption = {};
 	@Input() dimensions: string[] = [];
+	@Input() viewDimension:string;
 	@Input() dataIntervalProperty: string;
 	@Input() dataIntervalType: string;
 
@@ -96,6 +97,8 @@ export class EChartComponent implements OnInit {
 	}
 
 	calcChartOption(option : echarts.EChartsOption, js: string ): echarts.EChartsOption{
+		
+		let li = lib;
 		eval(js);
 		return option;
 	}

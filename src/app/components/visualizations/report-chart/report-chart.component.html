@@ -62,20 +62,28 @@
 		<ion-spinner color="primary" name="dots"></ion-spinner>
 	</div>
 
-	<!-- || ( viewMode == 'dashboard' && _gridItem?.rows == 1) -->
-	<div class="statistic-row" *ngIf="viewMode == 'full' ">
-		<app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" *ngFor="let m of reportConfig.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
+	<!-- || (  && _gridItem?.rows == 1) -->
+	<div class="statistic-row" *ngIf="viewMode == 'full'">
+		<app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" 
+		*ngFor="let m of reportConfig.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
 	</div>
 
-	
+	<div class="statistic-row" *ngIf="viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics as ls">
+		 <ng-container *ngFor="let s of ls">
+			<ng-container *ngFor="let m of reportConfig.DataConfig.MeasureBy">
+				<app-card-multi-row *ngIf="m.Title == s" class="selected" [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" ></app-card-multi-row>		
+			</ng-container>
+		 </ng-container>
+	</div>
 
-	<app-pie-chart class="app-chart" *ngIf="rptLoaded && (rawData.length || reportConfig.DataConfig.Schema.Type == 'Static' || reportConfig.DataConfig.Schema.Type == 'None')" 
+	<app-pie-chart class="app-chart" *ngIf="!(viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics) && rptLoaded && (rawData.length || reportConfig.DataConfig.Schema.Type == 'Static' || reportConfig.DataConfig.Schema.Type == 'None')" 
 	[reportId]="reportId" 
 	[viewMode]="viewMode" 
 	[chartType]="chartType"
 	[chartScript]="chartScript"
 	[chartOption]="chartOption"
 	[dimensions] = "dimensions" 
+	[viewDimension]="viewDimension"
 	[dataIntervalProperty]="dataIntervalProperty"
 	[dataIntervalType]="dataIntervalType"
 	[data]="rawData"></app-pie-chart>

@@ -51,8 +51,7 @@ export class ReportConfigComponent implements OnInit {
 		console.log(this.form.getRawValue());
 	}
 
-	buildForm(c: any) {
-
+	buildForm(c: ReportDataConfig) {
 		let notGroupList = ['MeasureBy', 'CompareBy', 'Interval', 'Transform', 'Schema', 'ReprotInfo'];
 
 		let keys = Object.keys(c);
@@ -118,10 +117,10 @@ export class ReportConfigComponent implements OnInit {
 			return;
 
 		if (!apply) {
-			this.form.patchValue(this._reportConfig);
+			this.form.patchValue(this._reportConfig.DataConfig);
 		}
 		else {
-			this._reportConfig = this.form.getRawValue();
+			this._reportConfig.DataConfig = this.form.getRawValue();
 			this.onRunReport();
 		}
 		this.isOpenDatePicker = false;

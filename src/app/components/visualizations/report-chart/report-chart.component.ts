@@ -43,7 +43,7 @@ export class ReportChartComponent implements OnInit {
 			this.dimensions = this.reportConfig.Dimensions;
 			this.viewDimension = this.reportConfig.viewDimension || this.reportConfig.DataConfig.MeasureBy[0].Title || this.reportConfig.DataConfig.MeasureBy[0].Property;
 			this.chartScript = this.reportConfig.ChartScript;
-			if (this.reportConfig.DataConfig.Schema.Type == 'None') {
+			if (this.reportConfig.DataConfig.Schema.Type == 'None' || this.reportConfig?.ChartConfig?.series) {
 				this.chartType = 'fixed';
 			}
 			if (this.reportConfig.ChartConfig) {
@@ -80,6 +80,10 @@ export class ReportChartComponent implements OnInit {
 	_gridItem: any;
 	@Input() set gridItem(v){
 		this._gridItem = v;
+		console.log('gridItem', v);
+		if (this._gridItem?.WidgetConfig?.ViewDimension) {
+			this.viewDimension = this._gridItem.WidgetConfig.ViewDimension;
+		}
 	}
 
 	/** switch between Dimensions */
