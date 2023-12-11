@@ -1,0 +1,6 @@
+<ion-searchbar #reportSearch placeholder="Search" [debounce]="300" [(ngModel)]="keyword"></ion-searchbar>
+<div class="ion-text-center">
+	<ion-button fill="clear" *ngFor="let r of items | searchNoAccent:{Tags:keyword}" (click)="onSelected(r)">
+		<ion-icon [name]="r.Name" slot="icon-only"></ion-icon>
+	</ion-button>
+</div>
