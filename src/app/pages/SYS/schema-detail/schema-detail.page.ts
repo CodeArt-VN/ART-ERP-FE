@@ -15,6 +15,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 })
 export class SchemaDetailPage extends PageBase {
     dataTypes;
+    public isDisabled = true;
     constructor(
         public pageProvider: WMS_ZoneProvider,
         public branchProvider: BRA_BranchProvider,
@@ -106,6 +107,10 @@ export class SchemaDetailPage extends PageBase {
         }).catch(_ => { });
     }
     
+    segmentView = 's1';
+    segmentChanged(ev: any) {
+        this.segmentView = ev.detail.value;
+    }
 
     async saveChange() {
         super.saveChange2();
@@ -128,4 +133,8 @@ export class SchemaDetailPage extends PageBase {
         fields.value[ev.detail.to].Sort = tempIndex;
         ev.detail.complete();
       }
+
+    toggleReorder() {
+    this.isDisabled = !this.isDisabled;
+    }
 }
