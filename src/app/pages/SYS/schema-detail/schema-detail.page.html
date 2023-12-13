@@ -1,0 +1,150 @@
+<ion-header>
+	<app-detail-toolbar [page]="this"></app-detail-toolbar>
+</ion-header>
+<!-- *ngIf="item && pageConfig.showSpinner==false" -->
+<ion-content appScrollbarTheme class="ion-padding">
+	<app-page-title 
+	[icon]="formGroup.get('Icon').value" 
+	[color]="formGroup.get('Color').value"
+	[title]="formGroup.get('Name').value" 
+	[remark]="formGroup.get('Remark').value">
+	</app-page-title>
+	<div class="main-view">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row class="hr-group">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Schema' | translate}}</ion-label>
+						</ion-list-header>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }" (change)="saveChange()">
+						</app-form-control>
+						<div class="c-control ">
+							<label class="c-label name-label">
+								{{'Name' | translate}}
+								<div class="ion-text-center modal color-modal">
+									<ion-button [color]="formGroup.get('Color').value"  size="small" (click)="formGroup.get('IsColorModalOpened').setValue(true)">
+										{{formGroup.get('Color').value || 'Color'}}
+									</ion-button>
+								</div>
+								<ion-modal #modal [isOpen]="formGroup.get('IsColorModalOpened').value" (willDismiss)="formGroup.get('IsColorModalOpened').setValue(false); " [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+									<ng-template>
+										<ion-content>
+											<app-color-picker (selected)="onSelectColor($event,formGroup)"></app-color-picker>
+										</ion-content>
+									</ng-template>
+								</ion-modal>
+		
+								<div class="ion-text-center modal icon-modal">
+									<ion-button  size="small" (click)="formGroup.get('IsIconModalOpened').setValue(true)">
+										<ion-icon  [name]="formGroup.get('Icon').value" ></ion-icon>
+									</ion-button>
+								</div>
+								<ion-modal #modal [isOpen]="formGroup.get('IsIconModalOpened').value" (willDismiss)="formGroup.get('IsIconModalOpened').setValue(false); " [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+									<ng-template>
+										<ion-content>
+											<app-icon-picker (selected)="onSelectIcon($event,formGroup)"></app-icon-picker>
+										</ion-content>
+									</ng-template>
+								</ion-modal>
+							</label>
+							<app-input-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"></app-input-control>
+						</div>
+						<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()">
+						</app-form-control>	
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : formGroup }" (change)="saveChange()">
+						</app-form-control>
+						<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
+					</ion-col>
+					
+				</ion-row>
+
+			</form>
+		</ion-grid>
+	</div>
+	<!-- <app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message> -->
+	<section class="table-contain">
+		<div class="table responsive">
+			<ion-list>
+				<ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+						<div *ngFor="let g of formGroup.get('Fields')['controls']; let idx = index;" order="g.get('Sort').value" class="row" style="flex-wrap: wrap;">
+							<ion-reorder class="cell col-reorder">
+								<ion-reorder slot="start"></ion-reorder>
+								<!-- <ion-icon name="reorder-two-outline"></ion-icon> -->
+							</ion-reorder>
+							<div class="col-icon cell head-icon" >
+								<ion-icon [name]="g.get('Icon').value" slot="icon-only"  [color]="g.get('IsExpanded').value?'primary':''" (click)="g.get('IsExpanded').setValue(!g.get('IsExpanded').value)"></ion-icon>
+							</div>
+							<div class="col-name cell" (click)="g.get('IsExpanded').setValue(!g.get('IsExpanded').value)">
+								<b>{{g.get('Name').value}}</b> <span *ngIf="g.get('Remark').value"> - {{g.get('Remark').value}}</span>
+							</div>
+							<a class="cell col-icon removeBtn" (click)="removeField(idx)">
+								<ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
+							</a>
+						
+							<form [formGroup]="g" [ngClass]="{'transition':show}"  [hidden]="!g.get('IsExpanded').value"  class="form-expand">
+								<ion-row class="hr-group">
+									<ion-col size="12" size-sm size-xl="4">
+										<app-form-control [field]="{id:'Id', label: 'Id', type : 'number', form : g }" (change)="saveChange()">
+										</app-form-control>
+										<div class="c-control ">
+											<label class="c-label name-label" [attr.for]="Id">
+												{{'Name' | translate}}
+												<div class="ion-text-center modal color-modal">
+													<ion-button [color]="g.get('Color').value"  size="small" (click)="g.get('IsColorModalOpened').setValue(true)">
+														{{g.get('Color').value || 'Color'}}
+													</ion-button>
+												</div>
+												<ion-modal #modal [isOpen]="g.get('IsColorModalOpened').value" (willDismiss)="g.get('IsColorModalOpened').setValue(false); " [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+													<ng-template>
+														<ion-content>
+															<app-color-picker (selected)="onSelectColor($event,g)"></app-color-picker>
+														</ion-content>
+													</ng-template>
+												</ion-modal>
+						
+												<div class="ion-text-center modal icon-modal">
+													<ion-button  size="small" (click)="g.get('IsIconModalOpened').setValue(true)">
+														<ion-icon  [name]="g.get('Icon').value" ></ion-icon>
+													</ion-button>
+												</div>
+												<ion-modal #modal [isOpen]="g.get('IsIconModalOpened').value" (willDismiss)="g.get('IsIconModalOpened').setValue(false); " [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+													<ng-template>
+														<ion-content >
+															<app-icon-picker (selected)="onSelectIcon($event,g)"></app-icon-picker>
+														</ion-content>
+													</ng-template>
+												</ion-modal>
+											</label>
+											<app-input-control [field]="{id:'Name', label: 'Name', type : 'text', form : g }"></app-input-control>
+										</div>
+										<app-form-control [field]="{id:'DataType', label: 'DataType', type : 'select', dataSource:dataTypes, bindValue:'Name',bindLabel:'Name',form : g }" (change)="saveChange()">
+										</app-form-control>
+									</ion-col>
+									<ion-col size="12" size-sm size-xl="4">
+										<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : g }" (change)="saveChange()">
+										</app-form-control>
+										<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : g }" (change)="saveChange()">
+										</app-form-control>
+										<app-form-control [field]="{id:'Aggregate', label: 'Aggregate', type : 'text', form : g }" (change)="saveChange()">
+										</app-form-control>
+										</ion-col>
+									<ion-col size="12" size-sm size-xl="4">
+										<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : g }" (change)="saveChange()"></app-form-control>
+									</ion-col>
+								</ion-row>
+							</form>
+							
+						</div>
+				</ion-reorder-group>
+			</ion-list>
+		</div>
+	</section>
+
+</ion-content>
+
+					
