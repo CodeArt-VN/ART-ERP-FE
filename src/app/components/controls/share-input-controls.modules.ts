@@ -13,6 +13,9 @@ import { GroupControlComponent } from "../group-control/group-control.component"
 import { FieldControlComponent } from "./field-control.component";
 import { FormControlComponent } from "./form-control.component";
 import { InputControlComponent } from "./input-control.component";
+import { IconPickerComponent } from "./icon-picker/icon-picker.component";
+import { PipesModule } from "src/app/pipes/pipes.module";
+import { ColorPickerComponent } from "./color-picker/color-picker.component";
 
 @NgModule({
 	imports: [
@@ -25,6 +28,7 @@ import { InputControlComponent } from "./input-control.component";
 		NgSelectModule,
 		NgOptionHighlightModule,
 		FileUploadModule,
+		PipesModule
 	],
 	providers: [provideNgxMask()],
 
@@ -35,6 +39,8 @@ import { InputControlComponent } from "./input-control.component";
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
+		IconPickerComponent,
+		ColorPickerComponent
 	],
 	exports: [
 		
@@ -43,6 +49,8 @@ import { InputControlComponent } from "./input-control.component";
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
+		IconPickerComponent,
+		ColorPickerComponent,
 
 		NgxMaskDirective,  NgxMaskPipe,
 	],
