@@ -81,15 +81,13 @@ export class CommonService {
 			if (data) {
 				let params: HttpParams = new HttpParams();
 				for (const key of Object.keys(data)) {
-					if (data[key]) {
-						if (data[key] instanceof Array) {
-							console.log(data);
-							
+					//if (data[key]) {
+						if (data[key] && data[key] instanceof Array) {
 							params = params.append(key.toString(), JSON.stringify(data[key]));
 						} else {
 							params = params.append(key.toString(), data[key]);
 						}
-					}
+					//}
 				}
 				options.params = params;
 			}
