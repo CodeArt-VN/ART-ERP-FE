@@ -1,13 +1,7 @@
-import { CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
-import { CdkDragDrop, CdkDragEnter, moveItemInArray, transferArrayItem, CdkDropList, CdkDragHandle} from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output,QueryList,ViewChild, ViewChildren} from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl, FormArray,} from '@angular/forms';
-import { BehaviorSubject, Subject, asapScheduler, catchError, combineLatest, concat, distinctUntilChanged, of, switchMap, tap,} from 'rxjs';
-import { FilterConfig, Schema } from 'src/app/models/options-interface';
-import { EnvService } from 'src/app/services/core/env.service';
-import { CRM_ContactProvider} from 'src/app/services/static/services.service';
-import { CommonService } from 'src/app/services/core/common.service';
-
+import { CdkDragDrop, moveItemInArray, transferArrayItem, } from '@angular/cdk/drag-drop';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormArray, } from '@angular/forms';
+import { Schema } from 'src/app/models/options-interface';
 
 @Component({
 	selector: 'app-filter',
@@ -17,7 +11,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 export class FilterComponent implements OnInit {
 	form: FormGroup;
 	connectionList = [];
-	
+
 	transformOperators = [
 		{ code: 'TextGroup', name: 'Text', icon: '', disabled: true },
 		{ code: '=', name: 'is', icon: '' },
@@ -54,75 +48,38 @@ export class FilterComponent implements OnInit {
 
 	constructor(
 		public formBuilder: FormBuilder,
-		public cdr: ChangeDetectorRef,
+		public cdr: ChangeDetectorRef
 	) {}
-	
+
 	ngOnInit() {
-		if (!this.item) {	
+		if (!this.item) {
 			this.item = {
 				Dimension: 'logical',
 				Operator: 'AND',
 				Logicals: [{ Dimension: null, Operator: null, Value: null }],
 			};
-		
-			this.form = this.buildForm(this.item);
-		} else {
-			debugger
-			this.form = this.formBuilder.group({
-				Dimension: [this.item.Dimension, Validators.required],
-				Operator: [this.item.Operator, Validators.required],
-				Value: [
-					this.item.Dimension !== 'logical' ? this.item.Value : null,
-					this.item.Dimension !== 'logical'
-						? [Validators.required]
-						: [],
-				],
-				Logicals: this.formBuilder.array([]),
-				UniqueId: [{ value: this.generateUniqueId(), disabled: true }],
-			});
-
-			this.item.Logicals.forEach((x) => this.addForm(this.form, x))
-			
-			this.updateConnectionList(this.form.controls.UniqueId.value);
 		}
+
+		this.form = this.formBuilder.group({
+			Dimension: [this.item.Dimension, Validators.required],
+			Operator: [this.item.Operator, Validators.required],
+			Value: [
+				this.item.Dimension !== 'logical' ? this.item.Value : null,
+				this.item.Dimension !== 'logical'
+					? [Validators.required]
+					: [],
+			],
+			Logicals: this.formBuilder.array([]),
+			UniqueId: [{ value: this.generateUniqueId(), disabled: true }],
+		});
+
+		this.item.Logicals.forEach((x) => this.addForm(this.form, x));
+
+		this.updateConnectionList(this.form.controls.UniqueId.value);
 	}
 
 	ngAfterViewChecked() {
 		this.cdr.detectChanges();
-	}
-	
-	buildForm(c: FilterConfig) {
-		let notGroupList = [
-			'MeasureBy',
-			'CompareBy',
-			'Interval',
-			'Transform',
-			'Schema',
-			'ReprotInfo',
-		];
-		let keys = Object.keys(c);
-		let group: any = {};
-		keys.forEach((key) => {
-			if (
-				typeof c[key] === 'object' &&
-				notGroupList.findIndex((d) => d == key) == -1
-			) {
-				if (Array.isArray(c[key])) {
-					for (let idx = 0; idx < c[key].length; idx++) {
-						const cObject = c[key][idx];
-						let cGroup = this.buildForm(cObject);
-						group[key] = new FormArray([]);
-						group[key].push(cGroup);
-					}
-				} else {
-					group[key] = this.buildForm(c[key]);
-				}
-			} else {
-				group[key] = new FormControl(c[key]);
-			}
-		});
-
-		return new FormGroup(group);
 	}
 
 	@Output() message = new EventEmitter();
@@ -133,11 +90,16 @@ export class FilterComponent implements OnInit {
 	@Output() submit = new EventEmitter();
 	onFormSubmit(e) {
 		if (!this.form.valid) {
-		
-			this.getMessage({message:'erp.app.app-component.page-bage.check-red-above',logLevel:'warning'});
+			this.getMessage({
+				message: 'erp.app.app-component.page-bage.check-red-above',
+				logLevel: 'warning',
+			});
 			return;
 		}
-		this.getMessage({message:'erp.app.app-component.page-bage.save-complete',logLevel:'success'});
+		this.getMessage({
+			message: 'erp.app.app-component.page-bage.save-complete',
+			logLevel: 'success',
+		});
 		this.submit.emit(this.form.value);
 	}
 
@@ -150,20 +112,16 @@ export class FilterComponent implements OnInit {
 			data = {};
 		}
 		let groups = <FormArray>fg.controls.Logicals;
-		let selected = null;
-		if(data.Dimension=='ApprovedBy'){
-			selected= [data?.Value];
-		}
 
 		let group = this.formBuilder.group({
-	//		_staffDataSource :[{value:this.initSearchStaff(selected),disabled: true}],
+			//		_staffDataSource :[{value:this.initSearchStaff(selected),disabled: true}],
 			UniqueId: [{ value: this.generateUniqueId(), disabled: true }],
 			Dimension: [data.Dimension, [Validators.required]],
 			Operator: [data.Operator, [Validators.required]],
 			Value: [data.Value, [Validators.required]],
 			Logicals: this.formBuilder.array([]),
 		});
-		if(group.get('Dimension')?.value=='logical'){
+		if (group.get('Dimension')?.value == 'logical') {
 			group.get('Value').setValidators([]);
 			group.get('Value').updateValueAndValidity();
 		}
@@ -171,10 +129,9 @@ export class FilterComponent implements OnInit {
 		data.Logicals?.forEach((x) => this.addForm(group, x));
 
 		this.updateConnectionList(group.controls.UniqueId.value);
-		if(data.Dimension==null){
-			groups.insert(0,group);
-		}
-		else{
+		if (data.Dimension == null) {
+			groups.insert(0, group);
+		} else {
 			groups.push(group);
 		}
 		this.checkDisableDimenson(fg);
@@ -249,8 +206,9 @@ export class FilterComponent implements OnInit {
 		this.connectionList.push(uniqueId);
 	}
 
-	getSchemaDetailType(form){
-		return this.schema.Fields.find(x=>x.Code == form.get('Dimension')?.value).Type;
+	getSchemaDetailType(form) {
+		return this.schema?.Fields.find(
+			(x) => x.Code == form.get('Dimension')?.value
+		).Type;
 	}
-
 }

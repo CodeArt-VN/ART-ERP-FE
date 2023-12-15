@@ -16,6 +16,7 @@ import { CardMultiRowComponent } from './card-multi-row/card-multi-row.component
 import { ReportChartComponent } from './report-chart/report-chart.component';
 import { EChartComponent } from './types/e-chart/e-chart.component';
 import { FilterComponent } from '../filter/filter.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -30,6 +31,7 @@ import { FilterComponent } from '../filter/filter.component';
 		IonicModule,
 		TranslateModule,
 		ShareInputControlsModule,
+		DragDropModule
 	],
 	declarations: [
 		FilterComponent,

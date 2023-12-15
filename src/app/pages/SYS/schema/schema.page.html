@@ -20,10 +20,8 @@
 				<ion-icon class="min-btn" *ngIf="sort.Id" [name]="sort.Id == 'Id'?'arrow-down': 'arrow-up'"></ion-icon>
 				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id" name="search" color="primary"></ion-icon>
 			</div>
-			<div class="col-icon cell" (click)="sortToggle('Id')">
+			<div class="col-icon cell">
 				{{'Icon' | translate}}
-				<ion-icon class="min-btn" *ngIf="sort.Icon" [name]="sort.Icon == 'Icon'?'arrow-down': 'arrow-up'"></ion-icon>
-				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Icon" name="search" color="primary"></ion-icon>
 			</div>
 			<div class="col-name cell" (click)="sortToggle('Name')">
 				{{'Name' | translate}}
