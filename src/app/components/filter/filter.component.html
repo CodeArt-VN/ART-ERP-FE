@@ -1,8 +1,8 @@
-<section class="table responsive form-container">
+<section class="table responsive form-container" *ngIf="schema">
   <ng-container [ngTemplateOutlet]="recursiveTemplate" [ngTemplateOutletContext]="{ form: form }"></ng-container>
 </section>
 <ng-template #recursiveTemplate let-parent="parent" let-form="form">
-  <form [formGroup]="form" cdkDropListGroup>
+  <form [formGroup]="form" cdkDropListGroup (submit)="onFormSubmit()">
     <div class="row drag-box">
       <div class="cell col-name">
         <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Dimension" label="Dimension"
@@ -17,7 +17,7 @@
 
       </div>
       <div class="cell col-value">
-        <app-input-control [field]="{id:'Value', label: 'Value', type : 'text', form : form }"
+        <app-input-control [field]="{id:'Value', label: 'Value', type : getSchemaDetailType(form), form : form }"
           *ngIf="form.get('Dimension')?.value != 'logical'"></app-input-control>
       </div>
       <a class="cell col-icon addBtn" (click)="addForm(form)" *ngIf="form.get('Dimension')?.value=='logical'">

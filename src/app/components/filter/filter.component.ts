@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem, } from '@angular/cdk/d
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, } from '@angular/forms';
 import { Schema } from 'src/app/models/options-interface';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
 	selector: 'app-filter',
@@ -70,7 +71,7 @@ export class FilterComponent implements OnInit {
 					: [],
 			],
 			Logicals: this.formBuilder.array([]),
-			UniqueId: [{ value: this.generateUniqueId(), disabled: true }],
+			UniqueId: [{ value: lib.generateUID(), disabled: true }],
 		});
 
 		this.item.Logicals.forEach((x) => this.addForm(this.form, x));
@@ -88,7 +89,7 @@ export class FilterComponent implements OnInit {
 	}
 
 	@Output() submit = new EventEmitter();
-	onFormSubmit(e) {
+	onFormSubmit() {
 		if (!this.form.valid) {
 			this.getMessage({
 				message: 'erp.app.app-component.page-bage.check-red-above',
@@ -96,10 +97,6 @@ export class FilterComponent implements OnInit {
 			});
 			return;
 		}
-		this.getMessage({
-			message: 'erp.app.app-component.page-bage.save-complete',
-			logLevel: 'success',
-		});
 		this.submit.emit(this.form.value);
 	}
 
@@ -115,7 +112,7 @@ export class FilterComponent implements OnInit {
 
 		let group = this.formBuilder.group({
 			//		_staffDataSource :[{value:this.initSearchStaff(selected),disabled: true}],
-			UniqueId: [{ value: this.generateUniqueId(), disabled: true }],
+			UniqueId: [{ value: lib.generateUID() , disabled: true }],
 			Dimension: [data.Dimension, [Validators.required]],
 			Operator: [data.Operator, [Validators.required]],
 			Value: [data.Value, [Validators.required]],
@@ -198,17 +195,12 @@ export class FilterComponent implements OnInit {
 		}
 	}
 
-	generateUniqueId(): string {
-		return Math.random().toString(36).slice(2, 5);
-	}
-
 	updateConnectionList(uniqueId) {
 		this.connectionList.push(uniqueId);
 	}
 
 	getSchemaDetailType(form) {
-		return this.schema?.Fields.find(
-			(x) => x.Code == form.get('Dimension')?.value
-		).Type;
+		let field =  this.schema.Fields.find((x) => x.Code == form.get('Dimension')?.value);
+		return field?.DataType;
 	}
 }
