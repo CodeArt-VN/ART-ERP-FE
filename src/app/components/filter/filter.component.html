@@ -1,12 +1,47 @@
+<section class="table responsive form-container" *ngIf="schema">
+  <ng-container [ngTemplateOutlet]="recursiveTemplate" [ngTemplateOutletContext]="{ form: form }"></ng-container>
+</section>
+<ng-template #recursiveTemplate let-parent="parent" let-form="form">
+  <form [formGroup]="form" cdkDropListGroup (submit)="onFormSubmit()">
+    <div class="row drag-box">
+      <div class="cell col-name">
+        <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Dimension" label="Dimension"
+          placeholder="Select dimension..." [dataSource]="schema.Fields" bindLabel="Name" bindValue="Code"
+          (inputChange)="changeDimension(form)"></app-input-control>
+      </div>
+      <div class="cell col-code">
+        <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Operator" label="Operator"
+          placeholder="Select operator..."
+          [dataSource]="form.get('Dimension')?.value == 'logical'?logicalOperators:transformOperators" bindLabel="name"
+          bindValue="name"></app-input-control>
 
-<form [formGroup]="form" (submit)="onFormSubmit($event)">
-  <app-form-control 
-  [form]="form" 
-  type="ng-select" 
-  id="Dimension" 
-  label="Dimension" 
-  placeholder="Select dimension..." 
-  [dataSource]="schema.Fields" 
-  bindLabel="Name" 
-  (inputChange)="onChange($event)"></app-form-control>
-</form>
+      </div>
+      <div class="cell col-value">
+        <app-input-control [field]="{id:'Value', label: 'Value', type : getSchemaDetailType(form), form : form }"
+          *ngIf="form.get('Dimension')?.value != 'logical'"></app-input-control>
+      </div>
+      <a class="cell col-icon addBtn" (click)="addForm(form)" *ngIf="form.get('Dimension')?.value=='logical'">
+        <ion-icon color="success" class="min-btn" name="add-outline"></ion-icon>
+      </a>
+      <a class="cell col-icon removeBtn" (click)="removeForm(form,parent)"
+        *ngIf="parent && form.get('Dimension')?.value!='logical'">
+        <ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
+      </a>
+      <div class="cell col-reorder">
+        <ion-icon name="reorder-two-outline"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Recursively render child forms  -->
+    <ng-container>
+      <div class="drag-list" [id]="form.controls.UniqueId.value" [cdkDropListConnectedTo]="connectionList" cdkDropList
+        [cdkDropListData]="form.controls.Logicals" (cdkDropListDropped)="drop($event)"
+        *ngIf="form.controls.Logicals && form.controls.Logicals.controls.length">
+        <div cdkDrag style="padding-left:15px" *ngFor="let c of form.controls.Logicals.controls; let i = index">
+          <ng-container [ngTemplateOutlet]="recursiveTemplate" [ngTemplateOutletContext]="{ form: c,parent:form }">
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+</ng-template>
