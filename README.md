@@ -3,6 +3,10 @@
 node ./replace.translate.js
 
 
+git submodule foreach 'git checkout main || :'
+git submodule foreach git pull origin main
+
+
 ## Init project
 ```
 npm i
