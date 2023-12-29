@@ -83,6 +83,13 @@ export class AC_PostingPeriodProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class APPROVAL_AutoApprovalRuleProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_AutoApprovalRule, SearchConfig.getSearchFields('APPROVAL_AutoApprovalRule'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class APPROVAL_ChangelogProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_Changelog, SearchConfig.getSearchFields('APPROVAL_Changelog'), commonService);
@@ -97,6 +104,13 @@ export class APPROVAL_CommentProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class APPROVAL_ConfigProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_Config, SearchConfig.getSearchFields('APPROVAL_Config'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class APPROVAL_RequestProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_Request, SearchConfig.getSearchFields('APPROVAL_Request'), commonService);
@@ -107,6 +121,13 @@ export class APPROVAL_RequestProvider extends exService {
 export class APPROVAL_RequestApproverProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_RequestApprover, SearchConfig.getSearchFields('APPROVAL_RequestApprover'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class APPROVAL_TemplateProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_Template, SearchConfig.getSearchFields('APPROVAL_Template'), commonService);
 	}
 }
 
@@ -1252,6 +1273,13 @@ export class SHIP_VehicleProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class SYS_ActionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_Action, SearchConfig.getSearchFields('SYS_Action'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class SYS_AppleAppRedemptionProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_AppleAppRedemption, SearchConfig.getSearchFields('SYS_AppleAppRedemption'), commonService);
@@ -1311,6 +1339,34 @@ export class SYS_FormGroupProvider extends exService {
 export class SYS_GlobalConfigProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_GlobalConfig, SearchConfig.getSearchFields('SYS_GlobalConfig'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_IntegrationConfigProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationConfig, SearchConfig.getSearchFields('SYS_IntegrationConfig'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_IntegrationConfigOptionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationConfigOption, SearchConfig.getSearchFields('SYS_IntegrationConfigOption'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_IntegrationProviderProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationProvider, SearchConfig.getSearchFields('SYS_IntegrationProvider'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_IntegrationReferenceIdentityProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationReferenceIdentity, SearchConfig.getSearchFields('SYS_IntegrationReferenceIdentity'), commonService);
 	}
 }
 
@@ -1395,6 +1451,34 @@ export class SYS_SyncJobProvider extends exService {
 export class SYS_TranslateProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_Translate, SearchConfig.getSearchFields('SYS_Translate'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_Trigger, SearchConfig.getSearchFields('SYS_Trigger'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerAction, SearchConfig.getSearchFields('SYS_TriggerAction'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionConfigProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerActionConfig, SearchConfig.getSearchFields('SYS_TriggerActionConfig'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionDataMappingProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerActionDataMapping, SearchConfig.getSearchFields('SYS_TriggerActionDataMapping'), commonService);
 	}
 }
 
@@ -1836,34 +1920,6 @@ export class WMS_WavePlanningProvider extends exService {
 export class WMS_ZoneProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.WMS_Zone, SearchConfig.getSearchFields('WMS_Zone'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class vw_BANK_IncomingPaymentProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.vw_BANK_IncomingPayment, SearchConfig.getSearchFields('vw_BANK_IncomingPayment'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class vw_POS_SALE_OrderProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.vw_POS_SALE_Order, SearchConfig.getSearchFields('vw_POS_SALE_Order'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class vw_POS_SALE_OrderDetailProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.vw_POS_SALE_OrderDetail, SearchConfig.getSearchFields('vw_POS_SALE_OrderDetail'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class vw_POS_SALE_OrderDetailFullProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.vw_POS_SALE_OrderDetailFull, SearchConfig.getSearchFields('vw_POS_SALE_OrderDetailFull'), commonService);
 	}
 }
 
