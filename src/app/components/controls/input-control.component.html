@@ -86,6 +86,25 @@
         </ng-template>
     </ng-select>
 
+      <!-- ng-select-schema -->
+    <ng-select *ngSwitchCase="'ng-select-schema'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" >
+        <ng-template ng-label-tmp let-i="item">
+            <div *ngIf="i.Id">
+                <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/schema/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
+                <span [title]="i.Name">
+                    <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{i.Code}}</b>
+                    {{i.Name}}
+                </span>
+            </div>
+        </ng-template>
+        <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+            <div *ngIf="i">
+                <div><span [ngOptionHighlight]="search">{{i.Name}}</span></div>
+                <small>#<b><span [ngClass]="{'no-check-dirty': noCheckDirty}" class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b></small>
+            </div>
+        </ng-template>
+    </ng-select>
+
     <!-- textarea -->
     <textarea *ngSwitchCase="'textarea'" type="textarea" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input remark" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)" rows="3"></textarea>
 
