@@ -265,6 +265,10 @@ const routes: Routes = [
   { path: 'system-type', loadChildren: () => import('./pages/SYS/system-type/system-type.module').then(m => m.SystemTypePageModule), canActivate: [AuthGuard] },
   { path: 'system-type/:id', loadChildren: () => import('./pages/SYS/system-type-detail/system-type-detail.module').then(m => m.SystemTypeDetailPageModule), canActivate: [AuthGuard] },
 
+  //schema
+  { path: 'schema', loadChildren: () => import('./pages/SYS/schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
+  { path: 'schema/:id', loadChildren: () => import('./pages/SYS/schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
+ 
   // Request
   { path: 'request', loadChildren: () => import('./pages/APPROVAL/request/request.module').then(m => m.RequestPageModule), canActivate: [AuthGuard] },
   { path: 'request/:id', loadChildren: () => import('./pages/APPROVAL/request-detail/request-detail.module').then(m => m.RequestDetailPageModule), canActivate: [AuthGuard] },
