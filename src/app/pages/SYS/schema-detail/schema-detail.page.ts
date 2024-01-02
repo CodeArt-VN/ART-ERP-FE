@@ -54,20 +54,20 @@ export class SchemaDetailPage extends PageBase {
     }
     preLoadData(event){
         this.dataTypes = [
-            { Name: 'Text' },
-            { Name: 'Number' },
-            { Name: 'Dataset' },
+            { Name: 'text' },
+            { Name: 'number' },
+            { Name: 'dataset' },
             { Name: 'select' },
             { Name: 'ng-select-staff' }
           ];
           this.item = { Id: 1, Code: 'SaleOrder', Name: 'Sale orders', Type: 'Dataset', ModifiedDate: '2023-01-01', Icon: 'star', Color: 'success',Remark:'Đơn hàng',Sort:1  },
 
           this.item.Fields = [
-          { IDitem: 1, Id: 1, Code: 'OrderDate', Name: 'Ngày lên đơn', DataType: 'Text', Icon: 'star', Aggregate: '', Sort: 0, Remark: '',Color:'blue' },
-          { IDitem: 1, Id: 2, Code: 'Status', Name: 'Status', DataType: 'Text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' ,Color:'red'},
-          { IDitem: 1, Id: 3, Code: 'Count', Name: 'Count of documents', DataType: 'Number', Icon: 'star', Aggregate: '', Sort: 2, Remark: '' ,Color:'pink'},
-          { IDitem: 1, Id: 4, Code: 'Total', Name: 'Sum of total', DataType: 'Number', Icon: 'star', Aggregate: '', Sort: 3, Remark: '',Color:'secondary' },
-          { IDitem: 1, Id: 5, Code: 'Discount', Name: 'Sum of discount', DataType: 'Number', Icon: 'star', Aggregate: '', Sort: 4, Remark: '',Color:'success' },
+            { IDitem: 1, Id: 1, Code: 'OrderDate', Name: 'Ngày lên đơn', DataType: 'text', Icon: 'star', Aggregate: '', Sort: 0, Remark: '',Color:'blue' },
+            { IDitem: 1, Id: 2, Code: 'Status', Name: 'Status', DataType: 'text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' ,Color:'red'},
+            { IDitem: 1, Id: 3, Code: 'Count', Name: 'Count of documents', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 2, Remark: '' ,Color:'pink'},
+            { IDitem: 1, Id: 4, Code: 'Total', Name: 'Sum of total', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 3, Remark: '',Color:'secondary' },
+            { IDitem: 1, Id: 5, Code: 'Discount', Name: 'Sum of discount', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 4, Remark: '',Color:'success' },
           ]
           super.preLoadData(event);
          
