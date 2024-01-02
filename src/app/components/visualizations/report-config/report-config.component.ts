@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { Subject, concat, of, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { ReportService } from 'src/app/services/report.service';
+import { ApiSetting } from 'src/app/services/static/api-setting';
+import { SYS_SchemaDetailProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-report-config',
@@ -11,17 +14,96 @@ import { ReportService } from 'src/app/services/report.service';
 export class ReportConfigComponent implements OnInit {
 	form: FormGroup;
 	_reportConfig: BIReport;
-
+	selectedSchema: any;
 	_dataset: any;
-
-	_schema: any;
-	_schemaDetails: any[] = [];
-
+	_schemaList: any;
+	_schemaDetailsList: any[] = [];
 	_timePeriodList: any[] = [];
+	_IDSchemaDataSource: any = {
+		searchProvider: this.schemaService,
+		loading: false,
+		input$: new Subject<string>(),
+		selected: [],
+		items$: null,
+		initSearch() {
+			this.loading = false;
+			this.items$ = concat(
+				of(this.selected),
+				this.input$.pipe(
+					distinctUntilChanged(),
+					tap(() => this.loading = true),
+					switchMap(term => this.searchProvider.search({ Take: 20, Skip: 0, Term: term }).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => this.loading = false)
+					))
 
-	constructor(public rpt: ReportService) { }
+				)
+			);
+		}
+	}
+	constructor(public rpt: ReportService,
+		public schemaService: SYS_SchemaProvider,
+		public formBuilder: FormBuilder,
+	) { }
 
-	ngOnInit() { }
+	ngOnInit() {
+		this.form = this.formBuilder.group({
+			TimeFrame: this.formBuilder.group({
+				Dimension: [''],
+				From: this.formBuilder.group({
+					Type: [''],
+					IsPastDate: [true],
+					Period: [''],
+					Amount: [0],
+				}),
+				To: this.formBuilder.group({
+					Type: [''],
+					IsPastDate: [true],
+					Period: [''],
+					Amount: [0],
+				}),
+			}),
+			CompareTo: this.formBuilder.group({
+				Type: ['Relative'],
+				IsPastDate: [true],
+				Period: ['Week'],
+				Amount: [1],
+			}),
+			Schema: this.formBuilder.group({
+				Id: [0],
+				Type: [''],
+				Code: [''],
+				Name: [''],
+			}),
+			Transform: this.formBuilder.group({
+				Filter: ['']
+			}),
+			Interval: this.formBuilder.group({
+				Property: ['OrderDate'],
+				Type: ['HourOfDay'],
+				Title: ['Order time'],
+			}),
+			CompareBy: this.formBuilder.array([
+				this.formBuilder.group({
+					Property: ['Status'],
+					Title: ['Status'],
+				}),
+			]),
+			MeasureBy: this.formBuilder.array([
+				this.formBuilder.group({
+					Property: ['Id'],
+					Method: ['cont'],
+					Title: ['Count'],
+				}),
+				this.formBuilder.group({
+					Property: ['NumberOfGuests'],
+					Method: ['count'],
+					Title: ['NumberOfGuests'],
+				}),
+			]),
+		});
+		this._IDSchemaDataSource.initSearch()
+	}
 
 
 	/** Report Id to find report config */
@@ -31,11 +113,9 @@ export class ReportConfigComponent implements OnInit {
 			this._reportId = v;
 			this._reportConfig = this.rpt.getReportConfig(this._reportId);
 			if (this._reportConfig) {
-				this.form = this.buildForm(this._reportConfig.DataConfig);
+				//this.form = this.buildForm(this._reportConfig.DataConfig);
 			}
-
-			this._schema = this.rpt.getSchema(this._reportConfig.DataConfig.Schema.Id);
-			this._schemaDetails = this.rpt.getSchemaDetail(this._reportConfig.DataConfig.Schema.Id);
+		//	this._schemaDetailsList = this.rpt.getSchemaDetail(this._reportConfig.DataConfig.Schema.Id);
 			this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
 
 			this._timePeriodList.forEach(p => {
@@ -45,11 +125,28 @@ export class ReportConfigComponent implements OnInit {
 		}
 	}
 
+	changeSchema(e) {
+		this.form.get('Schema').setValue({
+			Id: e.Id,
+			Type: e.Type,
+			Code: e.Code,
+			Name: e.Name
+		});
+		this.schemaService.getAnItem(e.Id).then(data => {
+			this.selectedSchema = data;
+			this._schemaDetailsList = e.Fields;
+		})
+	}
 
+	saveConfig(filter) {
+		this.form.get('Transform').setValue({ Filter: filter });
+		console.log(this.form.getRawValue())
+	}
 
 	onChange(event) {
 		console.log(this.form.getRawValue());
 	}
+
 
 	buildForm(c: ReportDataConfig) {
 		let notGroupList = ['MeasureBy', 'CompareBy', 'Interval', 'Transform', 'Schema', 'ReprotInfo'];
@@ -75,7 +172,6 @@ export class ReportConfigComponent implements OnInit {
 				group[key] = new FormControl(c[key]);
 			}
 		});
-
 		return new FormGroup(group);
 	}
 
@@ -128,6 +224,8 @@ export class ReportConfigComponent implements OnInit {
 
 	@Output() runReport = new EventEmitter();
 	onRunReport() {
+		console.log(this.form);
+		this._reportConfig.DataConfig = this.form.getRawValue()
 		this.runReport.emit(this._reportConfig);
 	}
 
