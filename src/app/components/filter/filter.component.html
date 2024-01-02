@@ -13,7 +13,7 @@
         <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Operator" label="Operator"
           placeholder="Select operator..."
           [dataSource]="form.get('Dimension')?.value == 'logical'?logicalOperators:transformOperators" bindLabel="name"
-          bindValue="name"></app-input-control>
+          bindValue="code" ></app-input-control>
 
       </div>
       <div class="cell col-value">

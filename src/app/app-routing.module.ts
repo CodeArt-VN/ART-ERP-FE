@@ -268,6 +268,10 @@ const routes: Routes = [
   // Request
   { path: 'request', loadChildren: () => import('./pages/APPROVAL/request/request.module').then(m => m.RequestPageModule), canActivate: [AuthGuard] },
   { path: 'request/:id', loadChildren: () => import('./pages/APPROVAL/request-detail/request-detail.module').then(m => m.RequestDetailPageModule), canActivate: [AuthGuard] },
+  //Auto Approval Rule
+  { path: 'approval-rule', loadChildren: () => import('./pages/APPROVAL/approval-rule/approval-rule.module').then(m => m.ApprovalRulePageModule), canActivate: [AuthGuard] },
+  { path: 'approval-rule/:id', loadChildren: () => import('./pages/APPROVAL/approval-rule-detail/approval-rule-detail.module').then(m => m.ApprovalRuleDetailPageModule), canActivate: [AuthGuard] },
+
 
   // // User Device
   { path: 'user-device', loadChildren: () => import('./pages/HRM/user-device/user-device.module').then(m => m.UserDevicePageModule), canActivate: [AuthGuard] },

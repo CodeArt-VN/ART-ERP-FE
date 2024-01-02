@@ -97,7 +97,7 @@ export class FilterComponent implements OnInit {
 			});
 			return;
 		}
-		this.submit.emit(this.form.value);
+		this.submit.emit(this.form.getRawValue());
 	}
 
 	//Sau Khi Init => addForm => check Disable Dimension
