@@ -15,6 +15,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 })
 export class SchemaDetailPage extends PageBase {
     dataTypes;
+    openedFields;
     public isDisabled = true;
     constructor(
         public pageProvider: SYS_SchemaProvider,
@@ -47,7 +48,8 @@ export class SchemaDetailPage extends PageBase {
             ModifiedBy: new FormControl({ value: '', disabled: true }),
             ModifiedDate: new FormControl({ value: '', disabled: true }),
             IsColorModalOpened:[{value: false,disabled:true}],
-            IsIconModalOpened:[{value: false,disabled:true}]
+            IsIconModalOpened:[{value: false,disabled:true}],
+            DeletedFields: [[]],
         });
 
     
@@ -58,22 +60,18 @@ export class SchemaDetailPage extends PageBase {
             { Name: 'number' },
             { Name: 'dataset' },
             { Name: 'select' },
-            { Name: 'ng-select-staff' }
+            { Name: 'ng-select-staff' },
+            { Name: 'logical' }
           ];
-          this.item = { Id: 1, Code: 'SaleOrder', Name: 'Sale orders', Type: 'Dataset', ModifiedDate: '2023-01-01', Icon: 'star', Color: 'success',Remark:'Đơn hàng',Sort:1  },
-
-          this.item.Fields = [
-            { IDitem: 1, Id: 1, Code: 'OrderDate', Name: 'Ngày lên đơn', DataType: 'text', Icon: 'star', Aggregate: '', Sort: 0, Remark: '',Color:'blue' },
-            { IDitem: 1, Id: 2, Code: 'Status', Name: 'Status', DataType: 'text', Icon: 'star', Aggregate: '', Sort: 1, Remark: '' ,Color:'red'},
-            { IDitem: 1, Id: 3, Code: 'Count', Name: 'Count of documents', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 2, Remark: '' ,Color:'pink'},
-            { IDitem: 1, Id: 4, Code: 'Total', Name: 'Sum of total', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 3, Remark: '',Color:'secondary' },
-            { IDitem: 1, Id: 5, Code: 'Discount', Name: 'Sum of discount', DataType: 'number', Icon: 'star', Aggregate: '', Sort: 4, Remark: '',Color:'success' },
-          ]
           super.preLoadData(event);
          
     }
     loadedData(event?: any, ignoredFromGroup?: boolean): void {
+        if(!this.item.Id){
+            this.segmentView='s2';
+        }
         // this.item.Fields.forEach(x=> this.addField(x));
+        this.item.Fields=this.item.Fields?.sort((a, b) => a.Sort - b.Sort)
         super.loadedData(event, ignoredFromGroup);
         this.patchFormValue();
     }
@@ -92,9 +90,7 @@ export class SchemaDetailPage extends PageBase {
     private patchFieldsValue() {
         this.formGroup.controls.Fields = new FormArray([]);
         if (this.item.Fields?.length) {
-            for (let i of this.item.Fields) {
-                this.addField(i);
-            }
+            this.item.Fields.forEach(i => this.addField(i));
         }
 
         if (!this.pageConfig.canEdit || this.item.IDSaleOrder || this.item._HasChild) {
@@ -102,15 +98,27 @@ export class SchemaDetailPage extends PageBase {
         }
     }
    
-    private addField(field:any, markAsDirty = false) {
+    addField(field:any, markAsDirty = false) {
+        if(Object.keys(field).length === 0) field.IsExpanded = true;
+        if(this.openedFields?.length){
+            this.openedFields = this.openedFields.filter(x => {
+                if (x.get('Code').value === field.Code) {
+                  field.IsExpanded = true;
+                  return false; 
+                }
+                return true;
+              });
+        }
+      
         let groups = <FormArray>this.formGroup.controls.Fields;
         let group = this.formBuilder.group({
-            IDSchema: new FormControl({ value: this.item.Id}),
+            IDSchema:  [this.item.Id] ,
             Id: new FormControl({ value: field.Id, disabled: true }),
             Code: [field.Code],
             Name: [field.Name, Validators.required],
             Remark: [field.Remark],
             DataType: [field.DataType || "Text"],
+            PropertyType: [field.PropertyType || "Field"],
             Aggregate: [field.Aggregate],
             Sort: [field.Sort],
             Icon: [field.Icon || "star"],
@@ -121,10 +129,11 @@ export class SchemaDetailPage extends PageBase {
             CreatedDate: new FormControl({ value: field.CreatedDate, disabled: true }),
             ModifiedBy: new FormControl({ value: field.ModifiedBy, disabled: true }),
             ModifiedDate: new FormControl({ value:  field.ModifiedDate, disabled: true }),
-            IsExpanded : [{value:false,disabled:true}],
+            IsExpanded : [{value : field.IsExpanded || false,disabled:true}],
             IsColorModalOpened:[{value: false,disabled:true}],
             IsIconModalOpened:[{value: false,disabled:true}]
         })
+        console.log(field);
         groups.push(group);
         
         if (markAsDirty) {
@@ -132,16 +141,29 @@ export class SchemaDetailPage extends PageBase {
             group.get('Icon').markAsDirty();
             group.get('Color').markAsDirty();
             group.get('DataType').markAsDirty();
+            group.get('PropertyType').markAsDirty();
 
         }
     }
     
 
-    removeField(idx){
+    removeField(g,index){
         this.env.showPrompt('Bạn có chắc muốn xóa?', null, 'Xóa Schema Detail').then(_ => {
             let groups = <FormArray>this.formGroup.controls.Fields;
-            groups.removeAt(idx);
+            //groups.controls[index].get('IsDeleted').setValue(true);
+            groups.removeAt(index);
+            this.item.Fields.splice(index, 1);
+            let deletedFields = this.formGroup.get('DeletedFields').value;
+            let deletedId = g.controls.Id.value;
+            deletedFields.push(deletedId);
+
+            this.formGroup.get('DeletedFields').setValue(deletedFields);
+            this.formGroup.get('DeletedFields').markAsDirty();
+          //  groups.controls[index].markAsDirty();
+           // groups.controls[index].get('IsDeleted').markAsDirty()
+            this.saveChange();
         }).catch(_ => { });
+
     }
     
     segmentView = 's1';
@@ -150,26 +172,44 @@ export class SchemaDetailPage extends PageBase {
     }
 
     async saveChange() {
+        let submitItem = this.getDirtyValues(this.formGroup);
         super.saveChange2();
     }
 
+    savedChange(savedItem?: any, form?: FormGroup<any>): void {
+       //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
+        let groups = <FormArray>this.formGroup.controls.Fields;
+
+        this.openedFields = groups.controls.filter((field:FormGroup) =>field.get('IsExpanded').value)
+
+        super.savedChange(savedItem, form);
+        this.item = savedItem;
+        this.loadedData();
+ 
+    }
     onSelectColor(e,fg){
         fg.get('Color').setValue(e.Code);
         fg.get('IsColorModalOpened').setValue(false);
-    }
+        fg.get('Color').markAsDirty();
+        this.saveChange()
+      }
 
     onSelectIcon(e,fg){
        fg.get('Icon').setValue(e.Name);
        fg.get('IsIconModalOpened').setValue(false);
+       fg.get('Icon').markAsDirty();
+       this.saveChange()
     }
 
-    handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-        const fields = this.formGroup.get('Fields') as FormArray;
-        let tempIndex =  fields.value[ev.detail.from].Sort;
-        fields.value[ev.detail.from].Sort =  fields.value[ev.detail.to].Sort
-        fields.value[ev.detail.to].Sort = tempIndex;
-        ev.detail.complete();
-      }
+    doReorder(ev, groups) {
+        groups = ev.detail.complete(groups);
+        for (let i = 0; i < groups.length; i++) {
+            const g = groups[i];
+            g.controls.Sort.setValue(i+1);
+            g.controls.Sort.markAsDirty();
+        }
+        this.saveChange()
+    }
 
     toggleReorder() {
     this.isDisabled = !this.isDisabled;
