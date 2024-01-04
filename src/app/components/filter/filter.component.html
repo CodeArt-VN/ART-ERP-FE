@@ -1,4 +1,4 @@
-<section class="table responsive form-container" *ngIf="schema">
+<section class="table responsive form-container" [ngClass]="{'small-width': smallWidth === true}" *ngIf="schema">
   <ng-container [ngTemplateOutlet]="recursiveTemplate" [ngTemplateOutletContext]="{ form: form }"></ng-container>
 </section>
 <ng-template #recursiveTemplate let-parent="parent" let-form="form">

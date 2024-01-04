@@ -44,6 +44,9 @@ export class FilterComponent implements OnInit {
 	];
 	//item sample
 	_item: FilterConfig;
+	
+	@Input() smallWidth = false;
+
 	@Input() set item(i: FilterConfig) {
 		if (i == null) {
 			i = {
@@ -65,7 +68,9 @@ constructor(
 	public cdr: ChangeDetectorRef
 ) { }
 
-ngOnInit() {}
+ngOnInit() {
+	this.buildForm();
+}
 
 buildForm(){
 	this.form = this.formBuilder.group({

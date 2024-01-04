@@ -15,6 +15,7 @@ export class ReportConfigComponent implements OnInit {
 	form: FormGroup;
 	_reportConfig: BIReport;
 	selectedSchema: any;
+	config:any;
 	_dataset: any;
 	_schemaList: any;
 	_schemaDetailsList: any[] = [];
@@ -49,7 +50,7 @@ export class ReportConfigComponent implements OnInit {
 	ngOnInit() {
 		this.form = this.formBuilder.group({
 			TimeFrame: this.formBuilder.group({
-				Dimension: [''],
+				Dimension: ['OrderDate'],
 				From: this.formBuilder.group({
 					Type: [''],
 					IsPastDate: [true],
@@ -92,7 +93,7 @@ export class ReportConfigComponent implements OnInit {
 			MeasureBy: this.formBuilder.array([
 				this.formBuilder.group({
 					Property: ['Id'],
-					Method: ['cont'],
+					Method: ['count'],
 					Title: ['Count'],
 				}),
 				this.formBuilder.group({
@@ -132,9 +133,10 @@ export class ReportConfigComponent implements OnInit {
 			Code: e.Code,
 			Name: e.Name
 		});
-		this.schemaService.getAnItem(e.Id).then(data => {
+		this.schemaService.getAnItem(e.Id).then((data:any) => {
 			this.selectedSchema = data;
-			this._schemaDetailsList = e.Fields;
+			this._schemaDetailsList = data.Fields;
+			this.config = null;
 		})
 	}
 
