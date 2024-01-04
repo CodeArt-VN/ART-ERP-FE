@@ -8,7 +8,7 @@
 		</ion-row>
 		<ion-row  *ngIf="selectedSchema">
 			<ion-col size="12">
-				<app-filter #appFilter [schema]="selectedSchema" (change)="appFilter.onFormSubmit($event)" (submit)='saveConfig($event)'></app-filter>
+				<app-filter [smallWidth]="true" [item]="config" #appFilter [schema]="selectedSchema" (change)="appFilter.onFormSubmit($event)" (submit)='saveConfig($event)'></app-filter>
 			</ion-col>
 		</ion-row>
 		<ion-row class="hr-group" formGroupName="TimeFrame">
@@ -86,9 +86,9 @@
 
 
 
-<!-- 								
-				<app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetails" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
-				 -->
+								
+				<!-- <app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control> -->
+				
 				<!-- <div formGroupName="From">
 					<app-form-control [form]="form.controls.TimeFrame.controls.From" type="radio" id="Type" label="Type" placeholder="Please enter data.." [dataSource]="rpt.commonOptions.timeConfigType" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-form-control>
 				</div> 

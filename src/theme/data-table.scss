@@ -562,8 +562,10 @@ app-data-table,.table {
 		.show-small-inline {
 			display: none;
 		}
-
-		@media screen and (max-width: calc(1164px + 0px)) {
+		
+		
+		@mixin smallWidth(){
+			
 			background-color: transparent;
 			min-width: unset !important;
 
@@ -789,6 +791,13 @@ app-data-table,.table {
 					white-space: pre-line !important;
 				}
 			}
+		}
+		
+		&.small-width{
+			@include smallWidth;
+		}
+		@media screen and (max-width: calc(1164px + 0px)){
+			@include smallWidth;
 		}
 	}
 }

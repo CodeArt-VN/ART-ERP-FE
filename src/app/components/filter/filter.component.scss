@@ -1,10 +1,7 @@
-.form-container{
+.table.responsive {
     max-width: 100%;
    // width: max-content;
     margin: 0 auto;
-  }
-
-  .table.responsive{
     .cell{
       &.col-value{  
         // max-width: 165px;
@@ -28,68 +25,11 @@
       }
     }
 
-}
-  .drag-list {
-      // background: white;
-      border-radius: 4px;
-      display: block;
-    }
-    .drag-box {
-      background: var(--table-header-background);
-      border-bottom: solid 1px #ccc;
-      color: rgba(0, 0, 0, 0.87);
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      box-sizing: border-box;
-      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-                  0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                  0 1px 5px 0 rgba(0, 0, 0, 0.12);
-      cursor: move;
-      .col-icon{
-        cursor: pointer;
-      }
-      
-    }
-  .cdk-drag-preview {
-    height: fit-content !important;
-    background: #ccc;
-    border: dotted 3px #999;
-    padding-left:0 !important;
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-               
-    }
-
-    .cdk-drag-placeholder {
-      border: solid 1px #999;
-      padding-left:0 !important;
-      opacity:.5;
-       background: var(--table-header-background);
-      // border: dotted 3px #999;
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-      form{
-        height:100%;
-        opacity:0;
-      }
-    }
-    
-   
-    .cdk-drag-animating {
-      transition: transform 100ms cubic-bezier(0, 0, 0.2, 1);
-    }
-    .drag-list.cdk-drop-list-dragging .drag-box {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-      
- 
-      @media screen and (max-width: calc(1164px + 0px)) {
-      .table.responsive .row{
-        padding:0 !important;
+    @mixin smallWidth() {
+      .row{
+        &.drag-box{
+          padding:0 !important;
+        }
         margin: 8px !important;
         .cell{
           padding:0 !important;
@@ -149,3 +89,74 @@
       }
         
     }
+
+
+    &.small-width{
+			@include smallWidth;
+		}
+		@media screen and (max-width: calc(1164px + 0px)){
+			@include smallWidth;
+		}
+
+  }
+
+
+  .drag-list {
+      // background: white;
+      border-radius: 4px;
+      display: block;
+    }
+    .drag-box {
+      background: var(--table-header-background);
+      border-bottom: solid 1px #ccc;
+      color: rgba(0, 0, 0, 0.87);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      box-sizing: border-box;
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+                  0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      cursor: move;
+      .col-icon{
+        cursor: pointer;
+      }
+      
+    }
+  .cdk-drag-preview {
+    height: fit-content !important;
+    background: #ccc;
+    border: dotted 3px #999;
+    padding-left:0 !important;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+               
+    }
+
+    .cdk-drag-placeholder {
+      border: solid 1px #999;
+      padding-left:0 !important;
+      opacity:.5;
+       background: var(--table-header-background);
+      // border: dotted 3px #999;
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      form{
+        height:100%;
+        opacity:0;
+      }
+    }
+    
+   
+    .cdk-drag-animating {
+      transition: transform 100ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    .drag-list.cdk-drop-list-dragging .drag-box {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+ 
+    
+    
