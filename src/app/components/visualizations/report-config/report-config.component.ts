@@ -20,6 +20,7 @@ export class ReportConfigComponent implements OnInit {
 	_schemaList: any;
 	_schemaDetailsList: any[] = [];
 	_timePeriodList: any[] = [];
+	_intervalDataSource:any[] = [];
 	_IDSchemaDataSource: any = {
 		searchProvider: this.schemaService,
 		loading: false,
@@ -48,6 +49,17 @@ export class ReportConfigComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this._intervalDataSource =  [
+			{ Code: 'Hour', Name: 'Hour' },
+			{ Code: 'HourOfDay', Name: 'Hour of Day' },
+			{ Code: 'Day', Name: 'Day' },
+			{ Code: 'DayOfWeek', Name: 'Day of Week' },
+			{ Code: 'Week', Name: 'Week' },
+			{ Code: 'Month', Name: 'Month' },
+			{ Code: 'Quater', Name: 'Quater' },
+			{ Code: 'Year', Name: 'Year' },
+		],
+
 		this.form = this.formBuilder.group({
 			TimeFrame: this.formBuilder.group({
 				Dimension: ['OrderDate'],
@@ -114,7 +126,7 @@ export class ReportConfigComponent implements OnInit {
 			this._reportId = v;
 			this._reportConfig = this.rpt.getReportConfig(this._reportId);
 			if (this._reportConfig) {
-				//this.form = this.buildForm(this._reportConfig.DataConfig);
+			//	this.form = this.buildForm(this._reportConfig.DataConfig);
 			}
 		//	this._schemaDetailsList = this.rpt.getSchemaDetail(this._reportConfig.DataConfig.Schema.Id);
 			this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
@@ -134,9 +146,13 @@ export class ReportConfigComponent implements OnInit {
 			Name: e.Name
 		});
 		this.schemaService.getAnItem(e.Id).then((data:any) => {
-			this.selectedSchema = data;
-			this._schemaDetailsList = data.Fields;
-			this.config = null;
+			if(data){
+				this.selectedSchema = data;
+				this._schemaDetailsList = data.Fields;
+				this.config = null;
+				//this.form.get('Interval').setValue({'Property':this.})
+			}
+			
 		})
 	}
 

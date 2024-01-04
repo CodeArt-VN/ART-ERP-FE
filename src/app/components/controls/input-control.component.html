@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="type" [formGroup]="form">
     <!-- text -->
-    <input *ngSwitchCase="'text'" type="text" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
+    <input *ngSwitchDefault type="text" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
 
     <!-- number -->
     <input *ngSwitchCase="'number'" type="number" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
