@@ -39,6 +39,20 @@
 					</div>
 				</ng-container>
 
+				<ng-container formGroupName="CompareTo">
+					<div class="c-control">
+						<label class="c-label">{{'Compare to' | translate}}</label>
+						<span class="c-input">
+							<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
+						</span>
+					</div>
+					<app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
+					<div formGroupName="From">
+						<app-form-control [form]="form.controls.TimeFrame.controls.From" type="radio" id="Type" label="Type" placeholder="Please enter data.." [dataSource]="rpt.commonOptions.timeConfigType" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-form-control>
+					</div>
+					{{rpt.calcTimeValue(form.controls.TimeFrame.controls.From.getRawValue())}}
+				</ng-container>
+
 				<ng-container formGroupName="Interval">
 					<ion-list-header>
 						<ion-label>{{'Interval' | translate}}</ion-label>
@@ -49,20 +63,7 @@
 					<app-form-control
 						[field]="{id:'Type', label:'Type', type : 'ng-select',dataSource:_intervalDataSource, bindValue:'Code', bindLabel:'Name', form :  form.controls.Interval}"></app-form-control> -->
 				</ng-container>
-				<ng-container formGroupName="CompareTo">
-					<div class="c-control">
-						<label class="c-label">{{'Cpmmpare to' | translate}}</label>
-						<span class="c-input">
-							<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
-						</span>
-					</div>
-					<app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
-					<div formGroupName="From">
-						<app-form-control [form]="form.controls.TimeFrame.controls.From" type="radio" id="Type" label="Type" placeholder="Please enter data.." [dataSource]="rpt.commonOptions.timeConfigType" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-form-control>
-					</div>
-					rpt.calcTimeValue(form.controls.TimeFrame.controls.From.getRawValue())
-				</ng-container>
-
+			
 				<ng-container formGroupName="CompareBy">
 					<ion-list-header>
 						<ion-label>{{'Compare By' | translate}}</ion-label>
