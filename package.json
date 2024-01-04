@@ -14,7 +14,10 @@
 		"updateBuild": "node ./replace.build.js",
 		"build-prod": "npm version patch && node ./replace.build.js && ionic cap sync --prod",
 		"live-android": "ionic cap run android -l --external --target R58RC47AGEW",
-		"dev": "ionic serve --external --no-open --ssl"
+		"dev": "ionic serve --external --no-open --ssl",
+		"gittag": "git tag -a v$npm_package_version -m \"v$npm_package_version\" && git push origin v$npm_package_version",
+		"git-submodules-checkout-main": "git submodule foreach 'git checkout main || :'",
+		"git-submodules-pull-main": "git submodule foreach git pull origin main"
 	},
 	"private": true,
 	"dependencies": {

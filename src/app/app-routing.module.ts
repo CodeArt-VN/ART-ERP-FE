@@ -111,7 +111,11 @@ const routes: Routes = [
   { path: 'shipment', loadChildren: () => import('./pages/SHIP/shipment/shipment.module').then(m => m.ShipmentPageModule), canActivate: [AuthGuard] },
   { path: 'shipment/:id', loadChildren: () => import('./pages/SHIP/shipment-detail/shipment-detail.module').then(m => m.ShipmentDetailPageModule), canActivate: [AuthGuard] },
 
+  { path: 'shipping-route', loadChildren: () => import('./pages/SHIP/shipping-route/shipping-route.module').then(m => m.ShippingRoutePageModule), canActivate: [AuthGuard] },
+  { path: 'shipping-route/:id', loadChildren: () => import('./pages/SHIP/shipping-route-detail/shipping-route-detail.module').then(m => m.ShippingRouteDetailPageModule), canActivate: [AuthGuard] },
 
+
+  
 
 
 
@@ -265,10 +269,6 @@ const routes: Routes = [
   { path: 'system-type', loadChildren: () => import('./pages/SYS/system-type/system-type.module').then(m => m.SystemTypePageModule), canActivate: [AuthGuard] },
   { path: 'system-type/:id', loadChildren: () => import('./pages/SYS/system-type-detail/system-type-detail.module').then(m => m.SystemTypeDetailPageModule), canActivate: [AuthGuard] },
 
-  //schema
-  { path: 'schema', loadChildren: () => import('./pages/SYS/schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
-  { path: 'schema/:id', loadChildren: () => import('./pages/SYS/schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
- 
   // Request
   { path: 'request', loadChildren: () => import('./pages/APPROVAL/request/request.module').then(m => m.RequestPageModule), canActivate: [AuthGuard] },
   { path: 'request/:id', loadChildren: () => import('./pages/APPROVAL/request-detail/request-detail.module').then(m => m.RequestDetailPageModule), canActivate: [AuthGuard] },

@@ -42,6 +42,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -53,6 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent, PopoverPage,
     SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage,
     ARInvoiceSplitModalPage, ARInvoiceMergeModalPage,
+    MCPCustomerPickerModalPage,
     POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSMemoModalPage, POSAddContactModalPage, POSCancelModalPage, POSNotifyModalPage],
   imports: [
     BrowserModule,
