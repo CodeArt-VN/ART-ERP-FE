@@ -23,6 +23,22 @@
 					</div>
 				</ng-container>
 				
+				<ng-container  formGroupName="Interval">
+					<app-form-control
+						[field]="{id:'Property', label:'Property', type : 'ng-select',dataSource:_schemaDetailsList, bindValue:'Code', bindLabel:'Name', form :  form.controls.Interval}"></app-form-control>
+					<app-form-control
+						[field]="{id:'Type', label:'Type', type : 'ng-select',dataSource:_intervalDataSource, bindValue:'Code', bindLabel:'Name', form :  form.controls.Interval}"></app-form-control>
+				</ng-container>
+
+				<ng-container  formGroupName="CompareBy">
+					<div *ngFor="let c of  form.controls.CompareBy.controls">
+							<app-form-control
+								[field]="{id:'Property', label:'Property', type : 'text', form : c}"></app-form-control>
+						
+							<app-form-control [field]="{id:'Title', label:'Title', type : 'text', form : c}"></app-form-control>
+					</div>
+				</ng-container>
+
 				<ng-container  formGroupName="MeasureBy">
 					<div *ngFor="let c of form.controls.MeasureBy.controls">
 						<app-form-control
@@ -32,6 +48,7 @@
 						<app-form-control [field]="{id:'Title', label:'Title', type : 'text', form : c}"></app-form-control>
 					</div>
 				</ng-container>
+
 				<ng-container  formGroupName="CompareTo">
 					<app-form-control
 						[field]="{id:'Type', label:'Type', type : 'text', form : form.controls.CompareTo}"></app-form-control>
@@ -46,35 +63,35 @@
 						[field]="{id:'Amount', label:'Amount', type : 'number', form : form.controls.CompareTo}"></app-form-control>
 				
 				</ng-container>
-				<ng-container  formGroupName="Interval">
-					<app-form-control
-						[field]="{id:'Property', label:'Property', type : 'ng-select',dataSource:_schemaDetailsList, bindValue:'Code', bindLabel:'Name', form :  form.controls.Interval}"></app-form-control>
-					<app-form-control
-						[field]="{id:'Type', label:'Type', type : 'ng-select',dataSource:_intervalDataSource, bindValue:'Code', bindLabel:'Name', form :  form.controls.Interval}"></app-form-control>
-				</ng-container>
-				<ng-container  formGroupName="CompareBy">
-					<div *ngFor="let c of  form.controls.CompareBy.controls">
-							<app-form-control
-								[field]="{id:'Property', label:'Property', type : 'text', form : c}"></app-form-control>
-						
-							<app-form-control [field]="{id:'Title', label:'Title', type : 'text', form : c}"></app-form-control>
-					</div>
-				</ng-container>
+				
+			
 				<ng-container  formGroupName="Transform" *ngIf="selectedSchema">
 						<app-filter  [smallWidth]="true" [item]="config" #appFilter [schema]="selectedSchema"
 								(change)="appFilter.onFormSubmit($event)" (submit)='saveConfig($event)'></app-filter>
 				</ng-container>
 
 
-				<!-- <app-form-control [form]="form" type="ng-select" id="Schema" label="Schema" placeholder="Please enter data.." [dataSource]="rpt.schemaList" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control> -->
-			
 
-				<!-- <div class="c-control">
-					<label class="c-label">{{'Cpmmpare to' | translate}}</label>
-					<span class="c-input">
-						<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
-					</span>
-				</div> -->
+				<!-- MesureBy -->
+				<ion-popover #popover [isOpen]="isOpenCompareBy">
+					<ng-template>
+						<ion-content>
+							<ion-list>
+								
+								<ion-item>
+									<app-input-control
+										style="position: absolute; right: 1rem; margin: 1rem; z-index: 1;"
+										[form]="pickerControl" type="select" id="Period" [dataSource]="_timePeriodList"
+										bindValue="code" bindLabel="name"
+										(inputChange)="onChange($event)"></app-input-control>
+									<app-form-control [form]="pickerControl" type="number" id="Amount"
+										(inputChange)="onChange($event)"></app-form-control>
+								</ion-item>
+							</ion-list>
+							<ion-button size="small" expand="block" (click)="dismissDatePicker(true)">Apply</ion-button>
+						</ion-content>
+					</ng-template>
+				</ion-popover>
 
 				<!-- datepicker -->
 				<ion-popover #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
@@ -82,7 +99,7 @@
 						<ion-content>
 							<ion-list>
 								<ng-container *ngIf="pickerGroupName == 'CompareTo'">
-									<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.compareTo"
+												<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.compareTo"
 										(click)="pickDate(i.timeConfig)">
 										<ion-icon name="timer-outline" slot="start"></ion-icon>
 										<ion-label>{{i.name}}</ion-label>
@@ -111,6 +128,15 @@
 				</ion-popover>
 
 
+						<!-- <app-form-control [form]="form" type="ng-select" id="Schema" label="Schema" placeholder="Please enter data.." [dataSource]="rpt.schemaList" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control> -->
+								
+					
+									<!-- <div class="c-control">
+										<label class="c-label">{{'Cpmmpare to' | translate}}</label>
+										<span class="c-input">
+											<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}</ion-button>
+										</span>
+									</div> -->
 
 
 				<!-- <app-form-control [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Dimension" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control> -->

@@ -196,7 +196,7 @@ export class ReportConfigComponent implements OnInit {
 
 	@ViewChild('popover') popover;
 	isOpenDatePicker = false;
-
+	isOpenCompareBy = false;
 	pickerControl: any;
 	pickerGroupName: string;
 	presentDatePicker(event, control, groupName) {
