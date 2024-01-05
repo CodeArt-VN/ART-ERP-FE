@@ -16,13 +16,12 @@ export class ReportConfigComponent implements OnInit {
 	form: FormGroup;
 	_reportConfig: BIReport;
 	selectedSchema: any;
-	config:any;
 	_dataset: any;
 	_schemaList: any;
 	_schemaDetailsList: any[] = [];
 	_timePeriodList: any[] = [];
-	_intervalDataSource:any[] = [];
-	_measureMethodDataSource:any[] = [];
+	_intervalDataSource: any[] = [];
+	_measureMethodDataSource: any[] = [];
 	_IDSchemaDataSource: any = {
 		searchProvider: this.schemaService,
 		loading: false,
@@ -48,10 +47,10 @@ export class ReportConfigComponent implements OnInit {
 	constructor(public rpt: ReportService,
 		public schemaService: SYS_SchemaProvider,
 		public formBuilder: FormBuilder,
-			) { }
+	) { }
 
 	ngOnInit() {
-		this._intervalDataSource =  [
+		this._intervalDataSource = [
 			{ Code: 'Hour', Name: 'Hour' },
 			{ Code: 'HourOfDay', Name: 'Hour of Day' },
 			{ Code: 'Day', Name: 'Day' },
@@ -61,7 +60,7 @@ export class ReportConfigComponent implements OnInit {
 			{ Code: 'Quater', Name: 'Quater' },
 			{ Code: 'Year', Name: 'Year' },
 		];
-		this._measureMethodDataSource= [
+		this._measureMethodDataSource = [
 			{ Code: 'count', Name: 'Count {0}', icon: '' },
 			{ Code: 'sum', Name: 'Sum of {0}', icon: '' },
 			{ Code: 'max', Name: 'Max of {0}', icon: '' },
@@ -77,16 +76,16 @@ export class ReportConfigComponent implements OnInit {
 		if (v) {
 			this._reportId = v;
 			this._reportConfig = this.rpt.getReportConfig(this._reportId);
-	
+
 			this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
 
 			this._timePeriodList.forEach(p => {
 				p.name = p.name.toLowerCase() + ' ago';
 			});
 		}
-		this.buildForm(	this._reportConfig.DataConfig);
+		this.buildForm(this._reportConfig.DataConfig);
 		let schema = this._reportConfig?.DataConfig?.Schema;
-		if(schema){
+		if (schema) {
 			this._IDSchemaDataSource.selected.push(schema);
 			this._IDSchemaDataSource.initSearch();
 			this.changeSchema(schema);
@@ -100,8 +99,8 @@ export class ReportConfigComponent implements OnInit {
 			Code: e.Code,
 			Name: e.Name
 		});
-		this.schemaService.getAnItem(e.Id).then((data:any) => {
-			if(data){
+		this.schemaService.getAnItem(e.Id).then((data: any) => {
+			if (data) {
 				this.selectedSchema = data;
 				this._schemaDetailsList = data.Fields;
 			}
@@ -116,23 +115,36 @@ export class ReportConfigComponent implements OnInit {
 	onChange(event) {
 		console.log(this.form.getRawValue());
 	}
-	
-	PatchFormArrayValue(array){
-		let groups=  new FormArray([]);
-		if(array){
-			array.forEach(c=>{
-				let group :any ={};
+
+	PatchFormArrayValue(array, type) {
+		let groups = new FormArray([]);
+		let group: any = {};
+		if (array) {
+			array.forEach(c => {
+				if (type == 'MeasureBy') {
+					group = this.formBuilder.group({
+						Property: [''],
+						Method: [''],
+						Title: ['']
+					})
+				}
+				else if (type == 'CompareBy') {
+					group = this.formBuilder.group({
+						Property: [''],
+						Title: ['']
+					})
+				}
 				let keys = Object.keys(c);
 				keys.forEach(key => {
-						group[key] = new FormControl(c[key]);
-					})
-				groups.push( new FormGroup(group))
-				});
-			}
-			return groups;
+					if (group.get(key)) group.get(key).setValue(c[key])
+				})
+				groups.push(group)
+			});
+		}
+		return groups;
 	}
 	buildForm(c: ReportDataConfig) {//c: ReportDataConfig
-		if(!c){
+		if (!c) {
 			c = {
 				TimeFrame: {
 					Dimension: 'OrderDate',
@@ -190,19 +202,19 @@ export class ReportConfigComponent implements OnInit {
 				Name: [c.Schema?.Name],
 			}),
 			Transform: this.formBuilder.group({
-				Filter: this.formBuilder.group({
-					
-				})
+				Filter: ['']
 			}),
 			Interval: this.formBuilder.group({
 				Property: [c.Interval?.Property],
 				Type: [c.Interval?.Type],
 				Title: [c.Interval?.Title],
 			}),
-			CompareBy: this.PatchFormArrayValue(c.CompareBy),
-			MeasureBy: this.PatchFormArrayValue(c.MeasureBy)
+			CompareBy: this.PatchFormArrayValue(c.CompareBy, 'CompareBy'),
+			MeasureBy: this.PatchFormArrayValue(c.MeasureBy, 'MeasureBy')
 		});
-	
+		let filter = this._reportConfig.DataConfig?.Transform?.Filter;
+		if (filter) this.form.get('Transform.Filter').setValue(filter);
+		console.log(this.form.getRawValue());
 		// let notGroupList = ['MeasureBy', 'CompareBy', 'Interval', 'Transform', 'Schema', 'ReprotInfo'];
 
 		// let keys = Object.keys(c);
@@ -274,21 +286,49 @@ export class ReportConfigComponent implements OnInit {
 
 	}
 
-	segmentTimeframeView='s1';
-	segmentTimeframeChanged(e){
-		this.segmentTimeframeView=e.detail.value;
+	segmentTimeframeView = 's1';
+	segmentTimeframeChanged(e) {
+		this.segmentTimeframeView = e.detail.value;
 	}
-	addMeasureByForm(e){
+
+	addNewForm(e, type) {
 		let group = this.formBuilder.group({
 			Property: [''],
-			Method: [''],
 			Title: [''],
 		});
-		let measureBy = this.form.get('MeasureBy') as FormArray;
-		measureBy.push(group);
-		this.presentPopover(e,group,'MeasureBy');
+		if (type == 'MeasureBy') {
+			let groupMeasure = this.formBuilder.group({
+				...group.controls,
+				Method: [''],
+			});
+			let measureBy = this.form.get('MeasureBy') as FormArray;
+			measureBy.push(groupMeasure);
+			this.presentPopover(e, groupMeasure, 'MeasureBy');
+		}
+		else if (type == 'CompareBy') {
+			let compareBy = this.form.get('CompareBy') as FormArray;
+			compareBy.push(group);
+			this.presentPopover(e, group, 'CompareBy');
+		}
 	}
-	changeDateTime(e,key){
+
+	removeForm(e,fg, parentForm): void {
+		e.preventDefault()
+		if (parentForm instanceof FormArray) {
+			let index = parentForm.controls?.indexOf(fg);
+			if (index !== -1) {
+				parentForm.removeAt(index);
+			}
+		}
+		else{
+			let index = parentForm.indexOf(fg);
+			if (index !== -1) {
+				parentForm.removeAt(index);
+			}
+		}
+	}
+
+	changeDateTime(e, key) {
 		this.tempForm.get(key).setValue()
 		console.log(e.detail.value);
 		this.form.get('')
@@ -308,12 +348,14 @@ export class ReportConfigComponent implements OnInit {
 		this.isOpenDatePicker = false;
 	}
 
-	dismissPopoverPub(apply: boolean = false) {
+	dismissPopover(apply: boolean = false) {
 		if (!this.isOpenPopover)
 			return;
 
 		if (!apply) {
-			this.form.patchValue(this._reportConfig.DataConfig);
+			// this.form.patchValue(this._reportConfig.DataConfig);
+			this.buildForm(this._reportConfig.DataConfig);
+
 		}
 		else {
 			this._reportConfig.DataConfig = this.form.getRawValue();

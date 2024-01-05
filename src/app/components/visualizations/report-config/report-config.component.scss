@@ -8,3 +8,9 @@
         --padding-end: 0;
     }
 }
+.content-btn ion-icon{
+    display:none;
+}
+.content-btn:hover > ion-icon{
+    display:block;
+}
