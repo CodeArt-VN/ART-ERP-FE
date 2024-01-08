@@ -104,9 +104,9 @@ export class APPROVAL_CommentProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
-export class APPROVAL_ConfigProvider extends exService {
+export class APPROVAL_ManualApprovalRuleProvider extends exService {
 	constructor(public commonService: CommonService) {
-		super(APIList.APPROVAL_Config, SearchConfig.getSearchFields('APPROVAL_Config'), commonService);
+		super(APIList.APPROVAL_ManualApprovalRule, SearchConfig.getSearchFields('APPROVAL_ManualApprovalRule'), commonService);
 	}
 }
 

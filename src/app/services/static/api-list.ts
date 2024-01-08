@@ -683,51 +683,51 @@ export var APIListBase = {
 		
 	},
 
-	APPROVAL_Config:{
+	APPROVAL_ManualApprovalRule:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config/Search")}  
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/Search")}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config")}  
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule")}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config/Export")}  
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/Export")}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config/Import")}  
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/Import")}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Config/") + id} 
+            url: function(id){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/") + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Config/") + id} 
+            url: function(id){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/") + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Config/Disable/") + id} 
+            url: function(id){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/Disable/") + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Config/Enable/") + id} 
+            url: function(id){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/Enable/") + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config")}
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule")}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Config/ChangeBranch")} 
+            url: function(){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/ChangeBranch")} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Config/") + id} 
+            url: function(id){return ApiSetting.apiDomain("APPROVAL/ManualApprovalRule/") + id} 
         }
 		
 	},
