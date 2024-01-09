@@ -13,12 +13,12 @@
         <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Operator" label="Operator"
           placeholder="Select operator..."
           [dataSource]="form.get('Dimension')?.value == 'logical'?logicalOperators:transformOperators" bindLabel="name"
-          bindValue="code" ></app-input-control>
+          bindValue="code"(change)="onInputChange()" ></app-input-control>
 
       </div>
       <div class="cell col-value">
         <app-input-control [field]="{id:'Value', label: 'Value', type : getSchemaDetailType(form), form : form }"
-          *ngIf="form.get('Dimension')?.value != 'logical'"></app-input-control>
+          *ngIf="form.get('Dimension')?.value != 'logical'" (change)="onInputChange()"></app-input-control>
       </div>
       <a class="cell col-icon addBtn" (click)="addForm(form)" *ngIf="form.get('Dimension')?.value=='logical'">
         <ion-icon color="success" class="min-btn" name="add-outline"></ion-icon>

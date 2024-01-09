@@ -55,6 +55,15 @@ export class FilterComponent implements OnInit {
 				Logicals: [{ Dimension: null, Operator: null, Value: null }],
 			};
 		}
+		else{
+			if(i.Dimension!= 'logical'){
+				i = {
+					Dimension: 'logical',
+					Operator: 'AND',
+					Logicals: [i],
+				};
+			}
+		}
 		this._item = i;
 		this.buildForm();
 	}
@@ -101,6 +110,19 @@ checkAndUpdateView() {
 getMessage(e) {
 	this.message.emit(e);
 }
+
+@Output() inputChange = new EventEmitter();
+onInputChange() {
+	if (!this.form.valid) {
+		this.getMessage({
+			message: 'erp.app.app-component.page-bage.check-red-above',
+			logLevel: 'warning',
+		});
+		return;
+	}
+	this.inputChange.emit(this.form.getRawValue());
+}
+
 
 @Output() submit = new EventEmitter();
 onFormSubmit() {
@@ -159,6 +181,7 @@ changeDimension(fg: any) {
 	}
 	fg.get('Value').updateValueAndValidity();
 	this.checkDisableDimenson(fg);
+	this.onInputChange();
 }
 
 //nếu Dimension=='logical' và  Logicals có child thì Disable Form Control Dimension

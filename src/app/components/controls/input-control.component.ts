@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { InputControlField } from './controls.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-input-control',
@@ -47,7 +48,7 @@ export class InputControlComponent implements OnInit {
 
     @Input() noCheckDirty: boolean = false;
   
-
+	imgPath = environment.staffAvatarsServer;
    
 	constructor() { }
 
