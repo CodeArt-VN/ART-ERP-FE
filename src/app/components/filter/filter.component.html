@@ -5,7 +5,7 @@
   <form [formGroup]="form" cdkDropListGroup (submit)="onFormSubmit()">
     <div class="row drag-box">
       <div class="cell col-name">
-        <app-input-control appendTo="#ng-select-holder" [form]="form" type="select" id="Dimension" label="Dimension"
+        <app-input-control appendTo="#ng-select-holder" [form]="form" type="ng-select" id="Dimension" label="Dimension"
           placeholder="Select dimension..." [dataSource]="schema.Fields" bindLabel="Name" bindValue="Code"
           (inputChange)="changeDimension(form)"></app-input-control>
       </div>
