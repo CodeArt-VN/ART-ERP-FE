@@ -105,6 +105,23 @@
         </ng-template>
     </ng-select>
 
+     <!-- ng-select-staff -->
+     <ng-select *ngSwitchCase="'ng-select-staff'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" >
+        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <ion-chip *ngFor="let i of items">
+                <ion-avatar ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+                <ion-label>{{i.FullName}}</ion-label>
+                <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
+            </ion-chip>
+        </ng-template>
+        <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+            <div *ngIf="i">
+                <ion-avatar ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+                <span [ngOptionHighlight]="search">{{i.FullName}}</span><br>
+                <small>#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b> <span *ngIf="i.Phone"> | điện thoại: <b [ngOptionHighlight]="search">{{i.Phone}}</b></span></small>
+            </div>
+        </ng-template>
+    </ng-select>
     <!-- textarea -->
     <textarea *ngSwitchCase="'textarea'" type="textarea" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input remark" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)" rows="3"></textarea>
 
