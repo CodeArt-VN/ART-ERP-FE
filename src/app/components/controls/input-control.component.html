@@ -25,7 +25,9 @@
         </ng-container>
     </ng-container>
 
-
+    <ng-container *ngSwitchCase="'checkbox'">
+        <input type="checkbox"  class="c-checkbox" [name]="id" [formControlName]="id" (change)="onInputChange($event);">
+    </ng-container>
 
 
 
