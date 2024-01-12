@@ -83,9 +83,16 @@ export class AC_PostingPeriodProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
-export class APPROVAL_AutoApprovalRuleProvider extends exService {
+export class APPROVAL_ApprovalRuleProvider extends exService {
 	constructor(public commonService: CommonService) {
-		super(APIList.APPROVAL_AutoApprovalRule, SearchConfig.getSearchFields('APPROVAL_AutoApprovalRule'), commonService);
+		super(APIList.APPROVAL_ApprovalRule, SearchConfig.getSearchFields('APPROVAL_ApprovalRule'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class APPROVAL_ApprovalRuleApproverProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_ApprovalRuleApprover, SearchConfig.getSearchFields('APPROVAL_ApprovalRuleApprover'), commonService);
 	}
 }
 
@@ -100,13 +107,6 @@ export class APPROVAL_ChangelogProvider extends exService {
 export class APPROVAL_CommentProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_Comment, SearchConfig.getSearchFields('APPROVAL_Comment'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class APPROVAL_ManualApprovalRuleProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.APPROVAL_ManualApprovalRule, SearchConfig.getSearchFields('APPROVAL_ManualApprovalRule'), commonService);
 	}
 }
 
@@ -1922,4 +1922,3 @@ export class WMS_ZoneProvider extends exService {
 		super(APIList.WMS_Zone, SearchConfig.getSearchFields('WMS_Zone'), commonService);
 	}
 }
-
