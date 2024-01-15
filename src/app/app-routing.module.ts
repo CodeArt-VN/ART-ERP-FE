@@ -276,6 +276,9 @@ const routes: Routes = [
   { path: 'approval-rule', loadChildren: () => import('./pages/APPROVAL/approval-rule/approval-rule.module').then(m => m.ApprovalRulePageModule), canActivate: [AuthGuard] },
   { path: 'approval-rule/:id', loadChildren: () => import('./pages/APPROVAL/approval-rule-detail/approval-rule-detail.module').then(m => m.ApprovalRuleDetailPageModule), canActivate: [AuthGuard] },
 
+  { path: 'approval-template', loadChildren: () => import('./pages/APPROVAL/approval-template/approval-template.module').then(m => m.ApprovalTemplatePageModule), canActivate: [AuthGuard] },
+  { path: 'approval-template/:id', loadChildren: () => import('./pages/APPROVAL/approval-template-detail/approval-template-detail.module').then(m => m.ApprovalTemplateDetailPageModule), canActivate: [AuthGuard] },
+
 
   // // User Device
   { path: 'user-device', loadChildren: () => import('./pages/HRM/user-device/user-device.module').then(m => m.UserDevicePageModule), canActivate: [AuthGuard] },
