@@ -222,46 +222,46 @@ export class ListToolbarComponent implements OnInit {
 
 			this.selectedItems.forEach(i => {
 				// Draft	Nháp
-				// PORequestUnapproved	Không duyệt
-				// PORequestSubmitted	Chờ duyệt
-				// PORequestApproved	Đã duyệt
-				// Submitted	Đã đặt mua
+				// Unapproved	Không duyệt
+				// Submitted	Chờ duyệt
+				// Approved	Đã duyệt
+				// Ordered	Đã đặt mua
 
 				// PORequestQuotation	Chờ báo giá
-				// POConfirmed	NCC đã xác nhận
-				// POIsShipping	Đang vận chuyển
-				// POPartiallyReceived	Đã nhận một phần 
-				// POReceived	Đã nhận hàng
-				// POCancelled	Đã Hủy
+				// Confirmed	NCC đã xác nhận
+				// Shipping	Đang vận chuyển
+				// PartiallyReceived	Đã nhận một phần 
+				// Received	Đã nhận hàng
+				// Cancelled	Đã Hủy
 
-				//['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 
-				let notShowSubmitOrdersForApproval = ['Submitted', 'PORequestSubmitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowSubmitOrdersForApproval = ['Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 				if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
 					this.showSubmitOrdersForApproval = false;
 				}
 
-				let notShowApproveOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowApproveOrders = ['Draft', 'Unapproved', 'Ordered', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 				if (notShowApproveOrders.indexOf(i.Status) > -1) {
 					this.showApproveOrders = false;
 				}
 
-				let notShowDisapproveOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowDisapproveOrders = ['Draft', 'Unapproved', 'Ordered', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 				if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
 					this.showDisapproveOrders = false;
 				}
 
-				let notShowCancelOrders = ['Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowCancelOrders = ['Ordered', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 				if (notShowCancelOrders.indexOf(i.Status) > -1) {
 					this.showCancelOrders = false;
 				}
 
-				let notShowSubmitOrders = ['Draft', 'PORequestUnapproved', 'Submitted', 'PORequestSubmitted', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived', 'POCancelled'];
+				let notShowSubmitOrders = ['Draft', 'Unapproved', 'Ordered', 'Submitted', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 				if (notShowSubmitOrders.indexOf(i.Status) > -1) {
 					this.showSubmitOrders = false;
 				}
 
-				let notShowDelete = ['Submitted', 'PORequestApproved', 'PORequestQuotation', 'POConfirmed', 'POIsShipping', 'POPartiallyReceived', 'POReceived'];
+				let notShowDelete = ['Ordered', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received'];
 				if (notShowDelete.indexOf(i.Status) > -1) {
 					this.showDelete = false;
 				}
