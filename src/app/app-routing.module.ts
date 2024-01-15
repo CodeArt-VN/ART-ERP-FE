@@ -76,8 +76,8 @@ const routes: Routes = [
 
 
   //PURCHASE
-  { path: 'purchase-request', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },
-  { path: 'purchase-request/:id', loadChildren: () => import('./pages/PURCHASE/purchase-order-detail/purchase-order-detail.module').then(m => m.PurchaseOrderDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'purchase-request', loadChildren: () => import('./pages/PURCHASE/purchase-request/purchase-request.module').then(m => m.PurchaseRequestPageModule), canActivate: [AuthGuard] },
+  { path: 'purchase-request/:id', loadChildren: () => import('./pages/PURCHASE/purchase-request-detail/purchase-request-detail.module').then(m => m.PurchaseRequestDetailPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-quotation', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-quotation/:id', loadChildren: () => import('./pages/PURCHASE/purchase-order-detail/purchase-order-detail.module').then(m => m.PurchaseOrderDetailPageModule), canActivate: [AuthGuard] },
   { path: 'purchase-order', loadChildren: () => import('./pages/PURCHASE/purchase-order/purchase-order.module').then(m => m.PurchaseOrderPageModule), canActivate: [AuthGuard] },
@@ -111,8 +111,8 @@ const routes: Routes = [
   { path: 'shipment', loadChildren: () => import('./pages/SHIP/shipment/shipment.module').then(m => m.ShipmentPageModule), canActivate: [AuthGuard] },
   { path: 'shipment/:id', loadChildren: () => import('./pages/SHIP/shipment-detail/shipment-detail.module').then(m => m.ShipmentDetailPageModule), canActivate: [AuthGuard] },
 
-  { path: 'shipping-route', loadChildren: () => import('./pages/SHIP/shipping-route/shipping-route.module').then(m => m.ShippingRoutePageModule), canActivate: [AuthGuard] },
-  { path: 'shipping-route/:id', loadChildren: () => import('./pages/SHIP/shipping-route-detail/shipping-route-detail.module').then(m => m.ShippingRouteDetailPageModule), canActivate: [AuthGuard] },
+  // { path: 'shipping-route', loadChildren: () => import('./pages/SHIP/shipping-route/shipping-route.module').then(m => m.ShippingRoutePageModule), canActivate: [AuthGuard] },
+  // { path: 'shipping-route/:id', loadChildren: () => import('./pages/SHIP/shipping-route-detail/shipping-route-detail.module').then(m => m.ShippingRouteDetailPageModule), canActivate: [AuthGuard] },
 
 
   
