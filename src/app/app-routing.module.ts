@@ -111,8 +111,8 @@ const routes: Routes = [
   { path: 'shipment', loadChildren: () => import('./pages/SHIP/shipment/shipment.module').then(m => m.ShipmentPageModule), canActivate: [AuthGuard] },
   { path: 'shipment/:id', loadChildren: () => import('./pages/SHIP/shipment-detail/shipment-detail.module').then(m => m.ShipmentDetailPageModule), canActivate: [AuthGuard] },
 
-  // { path: 'shipping-route', loadChildren: () => import('./pages/SHIP/shipping-route/shipping-route.module').then(m => m.ShippingRoutePageModule), canActivate: [AuthGuard] },
-  // { path: 'shipping-route/:id', loadChildren: () => import('./pages/SHIP/shipping-route-detail/shipping-route-detail.module').then(m => m.ShippingRouteDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'shipping-route', loadChildren: () => import('./pages/SHIP/shipping-route/shipping-route.module').then(m => m.ShippingRoutePageModule), canActivate: [AuthGuard] },
+  { path: 'shipping-route/:id', loadChildren: () => import('./pages/SHIP/shipping-route-detail/shipping-route-detail.module').then(m => m.ShippingRouteDetailPageModule), canActivate: [AuthGuard] },
 
 
   
