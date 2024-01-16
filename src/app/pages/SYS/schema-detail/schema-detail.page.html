@@ -180,6 +180,8 @@
 
 								<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()">
 								</app-form-control>
+								<app-form-control [field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: schemaTypeList ,bindLabel:'Name', bindValue:'Code', form : formGroup }" (inputChange)="saveChange()">
+								</app-form-control>
 							</ion-col>
 							<ion-col size="12" size-sm size-xl="4">
 								<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : formGroup }" (change)="saveChange()">
