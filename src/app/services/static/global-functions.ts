@@ -431,7 +431,7 @@ export var lib = {
 				needCalcItems.forEach(c => {
 					let fomular = c.Code.split('=')[1];
 					let groups = fomular.match(/(\([0-9]+\))/g);
-					groups.forEach(g => {
+					groups?.forEach(g => {
 						fomular = fomular.split(g).join('treeItems.find(i=> i.Code && i.Code.indexOf("' + g + '")==0)["' + h + '"]');
 					});
 					try {

@@ -69,8 +69,6 @@ export class SchemaDetailPage extends PageBase {
 
         ]).then((values: any) => {
             this.schemaTypeList = values[0];
-            //hardcode
-            this.schemaTypeList = [{ Name: 'Dataset', Code: 'Dataset' }, { Name: 'ApprovalRequest', Code: 'ApprovalRequest' }, { Name: 'DBView', Code: 'DBView' }, { Name: 'DBTable', Code: 'DBTable' }];
             super.preLoadData(event);
         });
     }
