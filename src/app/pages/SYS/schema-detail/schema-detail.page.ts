@@ -3,7 +3,7 @@ import { NavController, LoadingController, AlertController, ItemReorderEventDeta
 import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
-import { BRA_BranchProvider, SYS_SchemaProvider, WMS_ZoneProvider,  } from 'src/app/services/static/services.service';
+import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 
@@ -16,6 +16,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 export class SchemaDetailPage extends PageBase {
     dataTypes;
     openedFields;
+    schemaTypeList: any;
     public isDisabled = true;
     constructor(
         public pageProvider: SYS_SchemaProvider,
@@ -47,14 +48,14 @@ export class SchemaDetailPage extends PageBase {
             CreatedDate: new FormControl({ value: '', disabled: true }),
             ModifiedBy: new FormControl({ value: '', disabled: true }),
             ModifiedDate: new FormControl({ value: '', disabled: true }),
-            IsColorModalOpened:[{value: false,disabled:true}],
-            IsIconModalOpened:[{value: false,disabled:true}],
+            IsColorModalOpened: [{ value: false, disabled: true }],
+            IsIconModalOpened: [{ value: false, disabled: true }],
             DeletedFields: [[]],
         });
 
     
     }
-    preLoadData(event){
+    preLoadData(event) {
         this.dataTypes = [
             { Name: 'text' },
             { Name: 'number' },
@@ -62,16 +63,23 @@ export class SchemaDetailPage extends PageBase {
             { Name: 'select' },
             { Name: 'ng-select-staff' },
             { Name: 'logical' }
-          ];
-          super.preLoadData(event);
-         
+        ];
+        Promise.all([
+            this.env.getType('SchemaType'),
+
+        ]).then((values: any) => {
+            this.schemaTypeList = values[0];
+            //hardcode
+            this.schemaTypeList = [{ Name: 'Dataset', Code: 'Dataset' }, { Name: 'ApprovalRequest', Code: 'ApprovalRequest' }, { Name: 'DBView', Code: 'DBView' }, { Name: 'DBTable', Code: 'DBTable' }];
+            super.preLoadData(event);
+        });
     }
     loadedData(event?: any, ignoredFromGroup?: boolean): void {
-        if(!this.item.Id){
-            this.segmentView='s2';
+        if (!this.item.Id) {
+            this.segmentView = 's2';
         }
         // this.item.Fields.forEach(x=> this.addField(x));
-        this.item.Fields=this.item.Fields?.sort((a, b) => a.Sort - b.Sort)
+        this.item.Fields = this.item.Fields?.sort((a, b) => a.Sort - b.Sort)
         super.loadedData(event, ignoredFromGroup);
         this.patchFormValue();
     }
@@ -103,16 +111,16 @@ export class SchemaDetailPage extends PageBase {
         if(this.openedFields?.length){
             this.openedFields = this.openedFields.filter(x => {
                 if (x.get('Code').value === field.Code) {
-                  field.IsExpanded = true;
-                  return false; 
+                    field.IsExpanded = true;
+                    return false;
                 }
                 return true;
-              });
+            });
         }
       
         let groups = <FormArray>this.formGroup.controls.Fields;
         let group = this.formBuilder.group({
-            IDSchema:  [this.item.Id] ,
+            IDSchema: [this.item.Id],
             Id: new FormControl({ value: field.Id, disabled: true }),
             Code: [field.Code],
             Name: [field.Name, Validators.required],
@@ -128,10 +136,10 @@ export class SchemaDetailPage extends PageBase {
             CreatedBy: new FormControl({ value: field.CreatedBy, disabled: true }),
             CreatedDate: new FormControl({ value: field.CreatedDate, disabled: true }),
             ModifiedBy: new FormControl({ value: field.ModifiedBy, disabled: true }),
-            ModifiedDate: new FormControl({ value:  field.ModifiedDate, disabled: true }),
-            IsExpanded : [{value : field.IsExpanded || false,disabled:true}],
-            IsColorModalOpened:[{value: false,disabled:true}],
-            IsIconModalOpened:[{value: false,disabled:true}]
+            ModifiedDate: new FormControl({ value: field.ModifiedDate, disabled: true }),
+            IsExpanded: [{ value: field.IsExpanded || false, disabled: true }],
+            IsColorModalOpened: [{ value: false, disabled: true }],
+            IsIconModalOpened: [{ value: false, disabled: true }]
         })
         console.log(field);
         groups.push(group);
@@ -147,7 +155,7 @@ export class SchemaDetailPage extends PageBase {
     }
     
 
-    removeField(g,index){
+    removeField(g, index) {
         this.env.showPrompt('Bạn có chắc muốn xóa?', null, 'Xóa Schema Detail').then(_ => {
             let groups = <FormArray>this.formGroup.controls.Fields;
             //groups.controls[index].get('IsDeleted').setValue(true);
@@ -159,8 +167,8 @@ export class SchemaDetailPage extends PageBase {
 
             this.formGroup.get('DeletedFields').setValue(deletedFields);
             this.formGroup.get('DeletedFields').markAsDirty();
-          //  groups.controls[index].markAsDirty();
-           // groups.controls[index].get('IsDeleted').markAsDirty()
+            //  groups.controls[index].markAsDirty();
+            // groups.controls[index].get('IsDeleted').markAsDirty()
             this.saveChange();
         }).catch(_ => { });
 
@@ -177,41 +185,41 @@ export class SchemaDetailPage extends PageBase {
     }
 
     savedChange(savedItem?: any, form?: FormGroup<any>): void {
-       //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
+        //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
         let groups = <FormArray>this.formGroup.controls.Fields;
 
-        this.openedFields = groups.controls.filter((field:FormGroup) =>field.get('IsExpanded').value)
+        this.openedFields = groups.controls.filter((field: FormGroup) => field.get('IsExpanded').value)
 
         super.savedChange(savedItem, form);
         this.item = savedItem;
         this.loadedData();
  
     }
-    onSelectColor(e,fg){
+    onSelectColor(e, fg) {
         fg.get('Color').setValue(e.Code);
         fg.get('IsColorModalOpened').setValue(false);
         fg.get('Color').markAsDirty();
         this.saveChange()
-      }
+    }
 
-    onSelectIcon(e,fg){
-       fg.get('Icon').setValue(e.Name);
-       fg.get('IsIconModalOpened').setValue(false);
-       fg.get('Icon').markAsDirty();
-       this.saveChange()
+    onSelectIcon(e, fg) {
+        fg.get('Icon').setValue(e.Name);
+        fg.get('IsIconModalOpened').setValue(false);
+        fg.get('Icon').markAsDirty();
+        this.saveChange()
     }
 
     doReorder(ev, groups) {
         groups = ev.detail.complete(groups);
         for (let i = 0; i < groups.length; i++) {
             const g = groups[i];
-            g.controls.Sort.setValue(i+1);
+            g.controls.Sort.setValue(i + 1);
             g.controls.Sort.markAsDirty();
         }
         this.saveChange()
     }
 
     toggleReorder() {
-    this.isDisabled = !this.isDisabled;
+        this.isDisabled = !this.isDisabled;
     }
 }

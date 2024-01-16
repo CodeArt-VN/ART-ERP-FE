@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem, } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, } from '@angular/forms';
-import { FilterConfig, ReportDataConfig, Schema } from 'src/app/models/options-interface';
+import { FilterConfig, Schema } from 'src/app/models/options-interface';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
@@ -120,7 +120,15 @@ onInputChange() {
 		});
 		return;
 	}
-	this.inputChange.emit(this.form.getRawValue());
+	var i = this.form.getRawValue();
+	if(i.Dimension != 'logical'){
+		i = {
+			Dimension: 'logical',
+			Operator: 'AND',
+			Logicals: [i],
+		};
+	}
+	this.inputChange.emit(i);
 }
 
 
@@ -133,7 +141,15 @@ onFormSubmit() {
 		});
 		return;
 	}
-	this.submit.emit(this.form.getRawValue());
+	var i = this.form.getRawValue();
+	if(i.Dimension != 'logical'){
+		i = {
+			Dimension: 'logical',
+			Operator: 'AND',
+			Logicals: [i],
+		};
+	}
+	this.submit.emit(i);
 }
 
 //Sau Khi Init => addForm => check Disable Dimension
