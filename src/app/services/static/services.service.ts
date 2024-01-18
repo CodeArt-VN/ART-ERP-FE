@@ -1721,6 +1721,41 @@ export class WMS_CartonGroupProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class WMS_CycleCountProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCount, SearchConfig.getSearchFields('WMS_CycleCount'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDetail, SearchConfig.getSearchFields('WMS_CycleCountDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDetailByCounterProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDetailByCounter, SearchConfig.getSearchFields('WMS_CycleCountDetailByCounter'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDeterminationProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDetermination, SearchConfig.getSearchFields('WMS_CycleCountDetermination'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDeterminationDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDeterminationDetail, SearchConfig.getSearchFields('WMS_CycleCountDeterminationDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class WMS_ItemProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.WMS_Item, SearchConfig.getSearchFields('WMS_Item'), commonService);
