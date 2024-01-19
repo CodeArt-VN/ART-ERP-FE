@@ -79,6 +79,9 @@ export class FilterComponent implements OnInit {
 
 	ngOnInit() {
 		this.buildForm();
+		if (this.schema) {
+			this.schema.Fields.unshift({ Code: 'logical', Name: 'Logical'})
+		}
 	}
 
 	buildForm() {
