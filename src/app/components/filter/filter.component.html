@@ -37,7 +37,7 @@
       <div class="drag-list" [id]="form.controls.UniqueId.value" [cdkDropListConnectedTo]="connectionList" cdkDropList
         [cdkDropListData]="form.controls.Logicals" (cdkDropListDropped)="drop($event)"
         *ngIf="form.controls.Logicals && form.controls.Logicals.controls.length">
-        <div cdkDrag style="padding-left:15px" *ngFor="let c of form.controls.Logicals.controls; let i = index">
+        <div cdkDrag style="padding-left:15px; border-left: solid 1px var(--menu-right-border-color);" *ngFor="let c of form.controls.Logicals.controls; let i = index">
           <ng-container [ngTemplateOutlet]="recursiveTemplate" [ngTemplateOutletContext]="{ form: c,parent:form }">
           </ng-container>
         </div>
