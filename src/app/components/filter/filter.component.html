@@ -24,7 +24,7 @@
         <ion-icon color="success" class="min-btn" name="add-outline"></ion-icon>
       </a>
       <a class="cell col-icon removeBtn" (click)="removeForm(form,parent)"
-        *ngIf="(parent && form.get('Dimension')?.value!='logical') ||(parent && form.controls.Logicals.controls.length== 0)" >
+        *ngIf="parent && (form.get('Dimension')?.value!='logical' || form.controls.Logicals.controls.length == 0)" >
         <ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
       </a>
       <div class="cell col-reorder">
