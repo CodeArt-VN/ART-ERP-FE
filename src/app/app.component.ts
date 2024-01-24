@@ -37,6 +37,9 @@ export class AppComponent implements OnInit {
 	isShowSearch = false;
 	queryMenu = '';
 	foundMenu = [];
+	
+	pageConfigPageName = '';
+	showHelp = false;
 
 	@ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
@@ -81,6 +84,10 @@ export class AppComponent implements OnInit {
 					break;
 				case 'app:ShowMenu':
 					this.showAppMenu = data.Value;
+					break;
+				case 'app:ShowHelp':
+					this.showHelp = true;
+					this.pageConfigPageName = data.Value;
 					break;
 				case 'app:ChangeTheme':
 					this.updateStatusbar();
@@ -355,6 +362,10 @@ export class AppComponent implements OnInit {
 
 	changeLanguage(lang = null) {
 		this.env.setLang(lang);
+	}
+
+	closeHelp(){
+		this.showHelp = false;
 	}
 }
 

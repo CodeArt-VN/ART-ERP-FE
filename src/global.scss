@@ -40,7 +40,16 @@
 @import "./theme/angular-tree-component.scss";
 @import "./theme/print.scss";
 
+/* Quill */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
 
+
+[contenteditable] {
+	-webkit-user-select: text;
+	user-select: text;
+}
+  
 html {
 	font-size: 10px !important;
 
