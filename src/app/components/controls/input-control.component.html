@@ -25,25 +25,24 @@
         </ng-container>
     </ng-container>
 
+    <!-- checkbox -->
     <ng-container *ngSwitchCase="'checkbox'">
-        <input type="checkbox"  class="c-checkbox" [name]="id" [formControlName]="id" (change)="onInputChange($event);">
+        <input type="checkbox"  class="c-checkbox" [id]="id"   [name]="id" [formControlName]="id" (change)="onInputChange($event);">
     </ng-container>
-
-
 
     <!-- select -->
     <select *ngSwitchCase="'select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input c-dropdown" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
-        <option *ngFor="let i of dataSource" [value]="i[bindValue]">{{i[bindLabel] | translate}}</option>
+        <option *ngFor="let i of dataSource" [value]="i[bindValue]" [disabled] = "i.disabled">{{i[bindLabel] | translate}}</option>
     </select>
 
     <!-- ng-select -->
-    <ng-select *ngSwitchCase="'ng-select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [bindLabel]="bindLabel" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)">
+    <ng-select *ngSwitchCase="'ng-select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [bindLabel]="bindLabel" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)" appendTo="#ng-select-holder">
     </ng-select>
 
     <!-- ng-select-status -->
-    <ng-select *ngSwitchCase="'ng-select-status'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)">
+    <ng-select *ngSwitchCase="'ng-select-status'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource" [bindValue]="bindValue" [multiple]="multiple" [clearable]="clearable" (change)="onInputChange($event)" appendTo="#ng-select-holder">
         <ng-template ng-label-tmp let-i="item">
-            <b><ion-text [color]="i.Color">ss{{i.Name | translate}}</ion-text></b>
+            <b><ion-text [color]="i.Color">{{i.Name | translate}}</ion-text></b>
         </ng-template>
         <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i"><ion-text [color]="i.Color" [ngOptionHighlight]="search">{{i.Name | translate}}</ion-text></div>
@@ -51,7 +50,7 @@
     </ng-select>
 
     <!-- ng-select-bp -->
-    <ng-select *ngSwitchCase="'ng-select-bp'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)">
+    <ng-select *ngSwitchCase="'ng-select-bp'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#ng-select-holder">
         <ng-template ng-label-tmp let-i="item">
             <div *ngIf="i.Id">
                 <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/business-partner/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a>
@@ -70,7 +69,7 @@
     </ng-select>
 
     <!-- ng-select-item -->
-    <ng-select *ngSwitchCase="'ng-select-item'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#order-detail-page">
+    <ng-select *ngSwitchCase="'ng-select-item'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#ng-select-holder">
         <ng-template ng-label-tmp let-i="item">
             <div *ngIf="i.Id">
                 <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/item/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
@@ -89,7 +88,7 @@
     </ng-select>
 
       <!-- ng-select-schema -->
-    <ng-select *ngSwitchCase="'ng-select-schema'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" >
+    <ng-select *ngSwitchCase="'ng-select-schema'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#ng-select-holder">
         <ng-template ng-label-tmp let-i="item">
             <div *ngIf="i.Id">
                 <a [ngClass]="{'no-check-dirty': noCheckDirty}" class="clickable" (click)="nav('/schema/'+i.Id)" (mousedown)="$event.stopPropagation()">#{{i.Id}} <ion-icon name="open-outline"></ion-icon></a> &nbsp;
@@ -108,7 +107,7 @@
     </ng-select>
 
      <!-- ng-select-staff -->
-     <ng-select *ngSwitchCase="'ng-select-staff'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" >
+     <ng-select *ngSwitchCase="'ng-select-staff'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input" [formControlName]="id" [labelForId]="id" [items]="dataSource.items$ | async" [typeahead]="dataSource.input$" [loading]="dataSource.loading" [multiple]="multiple" [clearable]="clearable" [bindValue]="bindValue" placeholder="{{placeholder | translate}}" (change)="onInputChange($event)" appendTo="#ng-select-holder">
         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <ion-chip *ngFor="let i of items">
                 <ion-avatar ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>

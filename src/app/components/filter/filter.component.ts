@@ -21,7 +21,7 @@ export class FilterComponent implements OnInit {
 		// { code: 'ends with', name: 'ends with', icon: '' },
 		{ code: '<>', name: '≠ does not equal', icon: '' },
 		{ code: 'IN', name: 'in', icon: '' },
-		
+
 		// { code: 'Text', name: 'does not contain', icon: '' },
 		// { code: 'Text', name: 'does not start with', icon: '' },
 		// { code: 'Text', name: 'does not end with', icon: '' },
@@ -70,8 +70,6 @@ export class FilterComponent implements OnInit {
 		this.buildForm();
 	}
 
-
-
 	@Input() schema: Schema;
 
 	constructor(
@@ -81,8 +79,8 @@ export class FilterComponent implements OnInit {
 
 	ngOnInit() {
 		this.buildForm();
-		if (this.schema) {
-			this.schema.Fields.unshift({ Code: 'logical', Name: 'Logical'})
+		if (this.schema.Fields.findIndex(d=>d.Code == 'logical') === -1) {
+			this.schema.Fields.unshift({ Code: 'logical', Name: 'Logical' })
 		}
 	}
 
@@ -101,6 +99,7 @@ export class FilterComponent implements OnInit {
 		});
 
 		this._item.Logicals.forEach((x) => this.addForm(this.form, x));
+		this.connectionList = [];
 		this.updateConnectionList(this.form.controls.UniqueId.value);
 	}
 
@@ -223,13 +222,7 @@ export class FilterComponent implements OnInit {
 			if (index !== -1) {
 				parentForm.controls.Logicals.removeAt(index);
 				[
-					...this.connectionList.filter(
-						(x) =>
-							x !=
-							this.connectionList.indexOf(
-								fg.controls.UniqueId.value
-							)
-					),
+					...this.connectionList.filter((x) => x != this.connectionList.indexOf(fg.controls.UniqueId.value)),
 				];
 			}
 		}
@@ -237,9 +230,9 @@ export class FilterComponent implements OnInit {
 		this.onInputChange();
 	}
 
-	drop(event: CdkDragDrop<FormArray>) {
+	onDrop(event: CdkDragDrop<FormArray>) {
 		console.log(event);
-		
+
 		if (event.previousContainer === event.container) {
 			moveItemInArray(
 				event.container.data.controls,

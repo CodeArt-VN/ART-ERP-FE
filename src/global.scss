@@ -105,6 +105,11 @@ ion-picker {
 }
 
 ion-popover {
+	&.w300 {
+		--min-width: 260px;
+		--width: 300px;
+		--max-width: 400px;
+	}
 	&.delivery-review-filter {
 		--width: 260px !important;
 		--max-width: 400px;
