@@ -259,4 +259,15 @@ export class DynamicScriptLoaderService {
       document.body.appendChild(script);
     });
   }
+  
+  loadStyle(url: string) {
+    return new Promise((resolve, reject) => {
+      const styleElement = document.createElement('link');
+      styleElement.href = url;
+      styleElement.type = 'text/css';
+      styleElement.rel = 'stylesheet';
+      styleElement.onload = resolve;
+      document.head.appendChild(styleElement);
+    });
+  }
 }

@@ -685,6 +685,9 @@ export abstract class PageBase implements OnInit {
             this.id = this.route.snapshot?.paramMap?.get('id');
             pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
         }
+        else if(this.pageConfig.pageCode != 'help'){
+            pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
+        }
         else {
             pageUrl = this.pageConfig.pageCode + '/';
         }

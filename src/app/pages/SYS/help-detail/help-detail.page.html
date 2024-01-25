@@ -9,18 +9,18 @@
 
 		</ion-buttons>
 		<ion-buttons slot="end">
-			<ion-button *ngIf="pageConfig.canAdd && isShowAdd" title="{{'Add' | translate}}" (click)="add()">
+			<ion-button *ngIf="pageConfig.canAdd && isShowAdd && !showEditorContent" title="{{'Add' | translate}}" (click)="add()">
 				<ion-icon size="medium" slot="icon-only" name="add-outline"></ion-icon>
 			</ion-button>
-			<ion-button title="{{'Update' | translate}}" *ngIf="pageConfig.canEdit && isShowEdit"
+			<ion-button title="{{'Update' | translate}}" *ngIf="pageConfig.canEdit && isShowEdit && !showEditorContent"
 				(click)="edit()">
 				<ion-icon size="medium" color="success" slot="icon-only" name="create-outline"></ion-icon>
 			</ion-button>
+			<ion-button title="{{'Preview' | translate}}" *ngIf="showEditorContent && !isShowAdd" (click)="preView()">
+				<ion-icon size="medium" name="eye-outline"></ion-icon>
+			</ion-button>
 			<ion-button title="{{'Delete' | translate}}" *ngIf="pageConfig.canDelete && !isShowAdd" (click)="delete()">
 				<ion-icon size="medium" color="danger" slot="icon-only" name="trash-outline"></ion-icon>
-			</ion-button>
-			<ion-button title="{{'Preview' | translate}}" *ngIf="showEditorContent" (click)="preView()">
-				<ion-icon size="medium" name="eye-outline"></ion-icon>
 			</ion-button>
 			<ion-button title="{{'Close' | translate}}" (click)="emit('closeHelp')">
 				<ion-icon size="large" name="close-outline"></ion-icon>
@@ -30,7 +30,7 @@
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding" style="height: 100vh;">
 	<div *ngIf="!showEditorContent && item">
-		<div [innerHtml]="content | safeHtml"></div>
+		<div [innerHtml]="content | safeHtml" class="ql-editor"></div>
 	</div>
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false && showEditorContent">
 		<ion-grid fixed>
@@ -58,10 +58,9 @@
 			</ion-toolbar>
 			<form [formGroup]="formGroup">
 				<div class="ion-padding" *ngIf="segmentView == 's1'">
-					<quill-editor id="Content" (onBlur)="getEditorInstance($event)"  formControlName="Content"
-						class="content-editor" [placeholder]="'Typing ...'" [styles]="{'min-height': '120px'}"
-						[modules]="customModules">
-					</quill-editor>
+					<!-- Create the editor container -->
+					<div #quillEditor style="min-height: 200px;" id="editor" [innerHTML]="formGroup.controls.Content.value | safeHtml" (focusout)="saveChange()">	
+					</div>
 				</div>
 			</form>
 

@@ -14,7 +14,6 @@ import { PipesModule } from './pipes/pipes.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
-import { QuillModule } from 'ngx-quill';
 
 import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
 import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
@@ -91,8 +90,7 @@ export function createTranslateLoader(http: HttpClient) {
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    }),
-    QuillModule.forRoot()
+    })
   ],
   exports: [],
   providers: [
