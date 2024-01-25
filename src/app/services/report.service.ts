@@ -2665,6 +2665,10 @@ export class ReportService {
 	 * @returns Return text
 	 */
 	formatTimeConfig(timeConfig: TimeConfig, isPrevious = false) {
+		if (timeConfig.Type == 'Absolute') {
+			return lib.dateFormat(timeConfig.Value, 'dd/mm/yy hh:MM');
+		}
+		
 		if (!timeConfig) return '';
 
 

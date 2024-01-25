@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
-import { PopoverController } from '@ionic/angular';
-import { Subject, concat, of, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Subject, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
+import { EnvService } from 'src/app/services/core/env.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
 import { ReportService } from 'src/app/services/report.service';
-import { ApiSetting } from 'src/app/services/static/api-setting';
-import { SYS_SchemaDetailProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
+import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
+
+declare var ace: any;
 
 @Component({
 	selector: 'app-report-config',
@@ -45,8 +47,10 @@ export class ReportConfigComponent implements OnInit {
 		}
 	}
 	constructor(public rpt: ReportService,
+		public env: EnvService,
 		public schemaService: SYS_SchemaProvider,
 		public formBuilder: FormBuilder,
+		public dynamicScriptLoaderService: DynamicScriptLoaderService
 	) { }
 
 	ngOnInit() {
@@ -67,6 +71,23 @@ export class ReportConfigComponent implements OnInit {
 			{ Code: 'min', Name: 'Min of {0}', icon: '' },
 			{ Code: 'average', Name: 'Average {0}', icon: '' },
 		];
+		
+	}
+
+	ngAfterViewInit() {
+		// The DOM is fully loaded here
+		// You can access DOM elements and run your code
+		this.loadAceEditor();
+	}
+
+	//destroy before leave
+	ngOnDestroy() {
+		this.dismissDatePicker();
+		this.dismissPopover();
+		
+		this.editor?.destroy();
+		this.editor?.container.remove();
+
 	}
 
 
@@ -107,9 +128,8 @@ export class ReportConfigComponent implements OnInit {
 		})
 	}
 
-	saveConfig(filter) {
+	setTransform(filter) {
 		this.form.get('Transform').setValue({ Filter: filter });
-		console.log(this.form.getRawValue())
 	}
 
 	onChange(event) {
@@ -174,6 +194,12 @@ export class ReportConfigComponent implements OnInit {
 			}
 		}
 		this.form = this.formBuilder.group({
+			Schema: this.formBuilder.group({
+				Id: [c.Schema?.Id],
+				Type: [c.Schema?.Type],
+				Code: [c.Schema?.Code],
+				Name: [c.Schema?.Name],
+			}),
 			TimeFrame: this.formBuilder.group({
 				Dimension: [c.TimeFrame?.Dimension],
 				From: this.formBuilder.group({
@@ -181,12 +207,14 @@ export class ReportConfigComponent implements OnInit {
 					IsPastDate: [c.TimeFrame?.From?.IsPastDate],
 					Period: [c.TimeFrame?.From?.Period],
 					Amount: [c.TimeFrame?.From?.Amount],
+					Value: [c.TimeFrame?.From?.Value],
 				}),
 				To: this.formBuilder.group({
 					Type: [c.TimeFrame?.To?.Type],
 					IsPastDate: [c.TimeFrame?.To?.IsPastDate],
 					Period: [c.TimeFrame?.To?.Period],
 					Amount: [c.TimeFrame?.To?.Amount],
+					Value: [c.TimeFrame?.To?.Value],
 				}),
 			}),
 			CompareTo: this.formBuilder.group({
@@ -194,15 +222,7 @@ export class ReportConfigComponent implements OnInit {
 				IsPastDate: [c.CompareTo?.IsPastDate],
 				Period: [c.CompareTo?.Period],
 				Amount: [c.CompareTo?.Amount],
-			}),
-			Schema: this.formBuilder.group({
-				Id: [c.Schema?.Id],
-				Type: [c.Schema?.Type],
-				Code: [c.Schema?.Code],
-				Name: [c.Schema?.Name],
-			}),
-			Transform: this.formBuilder.group({
-				Filter: ['']
+				Value: [c.CompareTo?.Value],
 			}),
 			Interval: this.formBuilder.group({
 				Property: [c.Interval?.Property],
@@ -210,7 +230,10 @@ export class ReportConfigComponent implements OnInit {
 				Title: [c.Interval?.Title],
 			}),
 			CompareBy: this.PatchFormArrayValue(c.CompareBy, 'CompareBy'),
-			MeasureBy: this.PatchFormArrayValue(c.MeasureBy, 'MeasureBy')
+			MeasureBy: this.PatchFormArrayValue(c.MeasureBy, 'MeasureBy'),
+			Transform: this.formBuilder.group({
+				Filter: ['']
+			}),
 		});
 		let filter = this._reportConfig.DataConfig?.Transform?.Filter;
 		if (filter) this.form.get('Transform.Filter').setValue(filter);
@@ -243,10 +266,10 @@ export class ReportConfigComponent implements OnInit {
 
 	@ViewChild('popoverPub') popoverPub;
 	isOpenPopover = false;
-	listControls:any;
-	formGroup:any;
-	tempForm:any;
-	presentPopover(event,fg, groupName) {
+	listControls: any;
+	formGroup: any;
+	tempForm: any;
+	presentPopover(event, fg, groupName) {
 		this.pickerGroupName = groupName;
 		this.formGroup = fg;
 		this.isOpenPopover = true;
@@ -263,7 +286,17 @@ export class ReportConfigComponent implements OnInit {
 		this.pickerGroupName = groupName;
 		this.pickerControl = control;
 		this.popover.event = event;
+		this.calcAbsoluteDate(groupName== 'TimeFrame-To');
 		this.isOpenDatePicker = true;
+	}
+
+	calcAbsoluteDate(isFullfillDate = false){
+		if(this.pickerControl.controls.Type.value == 'Relative' ){
+			let tempDate = this.rpt.calcTimeValue(this.pickerControl.getRawValue(), isFullfillDate);
+			if(tempDate){
+				this.pickerControl.controls.Value.value = tempDate.toJSON();
+			}
+		}
 	}
 
 	pickDate(pDate) {
@@ -271,24 +304,34 @@ export class ReportConfigComponent implements OnInit {
 			this.pickerControl.controls.Type.setValue(pDate.Type);
 			this.pickerControl.controls.Type.markAsDirty();
 		}
-		if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
-			this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
-			this.pickerControl.controls.IsPastDate.markAsDirty();
+
+		if(pDate.Type == 'Relative' ){
+			
+			if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
+				this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
+				this.pickerControl.controls.IsPastDate.markAsDirty();
+			}
+			if (this.pickerControl.controls.Period.value != pDate.Period) {
+				this.pickerControl.controls.Period.setValue(pDate.Period);
+				this.pickerControl.controls.Period.markAsDirty();
+			}
+			if (this.pickerControl.controls.Amount.value != pDate.Amount) {
+				this.pickerControl.controls.Amount.setValue(pDate.Amount);
+				this.pickerControl.controls.Amount.markAsDirty();
+			}
+			this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To' );
 		}
-		if (this.pickerControl.controls.Period.value != pDate.Period) {
-			this.pickerControl.controls.Period.setValue(pDate.Period);
-			this.pickerControl.controls.Period.markAsDirty();
-		}
-		if (this.pickerControl.controls.Amount.value != pDate.Amount) {
-			this.pickerControl.controls.Amount.setValue(pDate.Amount);
-			this.pickerControl.controls.Amount.markAsDirty();
+		else{
+			if (this.pickerControl.controls.Value.value != pDate.Value.detail.value) {
+				this.pickerControl.controls.Value.setValue(pDate.Value.detail.value);
+				this.pickerControl.controls.Value.markAsDirty();
+			}
 		}
 
 	}
 
-	segmentTimeframeView = 's1';
 	segmentTimeframeChanged(e) {
-		this.segmentTimeframeView = e.detail.value;
+		this.pickerControl.controls.Type.value = e.detail.value;
 	}
 
 	addNewForm(e, type) {
@@ -312,7 +355,7 @@ export class ReportConfigComponent implements OnInit {
 		}
 	}
 
-	removeForm(e,fg, parentForm): void {
+	removeForm(e, fg, parentForm): void {
 		e.preventDefault()
 		if (parentForm instanceof FormArray) {
 			let index = parentForm.controls?.indexOf(fg);
@@ -320,7 +363,7 @@ export class ReportConfigComponent implements OnInit {
 				parentForm.removeAt(index);
 			}
 		}
-		else{
+		else {
 			let index = parentForm.indexOf(fg);
 			if (index !== -1) {
 				parentForm.removeAt(index);
@@ -330,7 +373,6 @@ export class ReportConfigComponent implements OnInit {
 
 	changeDateTime(e, key) {
 		this.tempForm.get(key).setValue()
-		console.log(e.detail.value);
 		this.form.get('')
 	}
 
@@ -366,15 +408,48 @@ export class ReportConfigComponent implements OnInit {
 
 	@Output() runReport = new EventEmitter();
 	onRunReport() {
-		console.log(this.form);
 		this._reportConfig.DataConfig = this.form.getRawValue()
 		this.runReport.emit(this._reportConfig);
+
+		if (this.editor) {
+			let value = this.editor.getValue();
+			console.log(value); // print
+			
+		}
 	}
 
 	@Output() save = new EventEmitter();
 	onSave() {
 		this.save.emit(this._reportConfig);
 	}
+
+	loadAceEditor() {
+		if (typeof ace !== 'undefined')  this.initAce(); 
+		else 
+		this.dynamicScriptLoaderService.loadScript('https://ace.c9.io/build/src/ace.js')
+		.then(() => this.initAce())
+		.catch(error => console.error('Error loading script', error));
+
+	}
+
+	editor
+	initAce() {
+		console.log('initAce');
+		
+		this.editor = ace.edit("aceEditor");
+		// editor.setTheme("ace/theme/monokai");
+		this.editor.session.setMode("ace/mode/javascript");
+
+		this.editor.session.on('change', function(delta) {
+			console.log(delta);
+			
+			// delta.start, delta.end, delta.lines, delta.action
+		});
+
+		
+	}
+
+	
 
 
 }

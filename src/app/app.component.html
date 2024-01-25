@@ -1,4 +1,4 @@
-<ion-app [class]="appTheme" [ngClass]="{'dark': (env?.user?.UserSetting?.IsDarkTheme?.Value), 'showScrollbar': showScrollbar}">
+<ion-app class="default-palette" [class]="appTheme" [ngClass]="{'dark': (env?.user?.UserSetting?.IsDarkTheme?.Value), 'showScrollbar': showScrollbar}">
 	<div id="ng-select-holder" style="position: absolute; z-index: 30005;"></div>
 	<ion-split-pane contentId="main-content">
 		<ion-menu contentId="main-content" type="overlay" [ngClass]="{small: countForm>=7, min: (env?.user?.UserSetting?.IsCompactMenu?.Value)}" [hidden]="!showAppMenu || !(env.user && env.user.Id)" id="app-menu" menuId="appMenu" *ngIf="showMenu">

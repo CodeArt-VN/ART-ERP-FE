@@ -27,7 +27,7 @@ export class FormControlComponent implements OnInit {
 	
     @Input() form: FormGroup;
 
-    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' = 'text';
+    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'checkbox' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' = 'text';
 
     @Input() id: string;
 

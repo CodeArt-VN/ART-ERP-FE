@@ -245,3 +245,18 @@ export class POS_ForCustomerProvider extends exService {
 		super(APIList.POS_ForCustomer, SearchConfig.getSearchFields('POS_ForCustomer'), commonService);
 	}
 }
+
+
+
+@Injectable({ providedIn: 'root' })
+export class DynamicScriptLoaderService {
+  loadScript(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => resolve();
+      script.onerror = (error) => reject(error);
+      document.body.appendChild(script);
+    });
+  }
+}
