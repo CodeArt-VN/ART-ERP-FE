@@ -569,6 +569,7 @@ export abstract class PageBase implements OnInit {
                     this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
                     this.env.publishEvent({ Code: publishEventCode });
 
+                    this.deleted();
                     this.closeModal();
 
                 }).catch(err => {
@@ -576,6 +577,10 @@ export abstract class PageBase implements OnInit {
                 })
             }).catch(e => { });
         }
+    }
+
+    deleted(){
+
     }
 
     submitForApproval(){
@@ -673,21 +678,31 @@ export abstract class PageBase implements OnInit {
     }
 
     ngOnInit() {
-        if (this.route) {
+        let pageUrl = '';
+        
+        if (this.route && !this.pageConfig.pageCode ) {
             this.pageConfig.pageCode = this.route.snapshot?.routeConfig?.component?.name;
             this.id = this.route.snapshot?.paramMap?.get('id');
+            pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
+        }
+        else if(this.pageConfig.pageCode != 'help'){
+            pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
+        }
+        else {
+            pageUrl = this.pageConfig.pageCode + '/';
         }
 
 
         if (this.navCtrl && this.env.user && this.env.user.Forms) {
 
             //console.log('snapshot.url', this.navCtrl.router.routerState.snapshot.url);
-            let currentForm = this.env.user.Forms.find(d => (this.navCtrl.router.routerState.snapshot.url + '/').indexOf(d.Code + '/') > -1 && (d.Type == 0 || d.Type == 1 || d.Type == 2));
+            let currentForm = this.env.user.Forms.find(d => pageUrl.indexOf(d.Code + '/') > -1 && (d.Type == 0 || d.Type == 1 || d.Type == 2));
             if (currentForm) {
                 this.pageConfig.pageName = currentForm.Code;
                 this.pageConfig.pageTitle = currentForm.Name;
                 this.pageConfig.pageIcon = currentForm.Icon;
                 this.pageConfig.pageRemark = currentForm.Remark;
+                this.pageConfig.canEditHelpContent = true;
                 
                 let permissionList = this.env.user.Forms.filter(d => d.IDParent == currentForm.Id);
                 if (permissionList.length) {
@@ -763,19 +778,8 @@ export abstract class PageBase implements OnInit {
     }
 
     help() {
-        debugger;
-        //console.log(this.navCtrl.router.url, this);
-        console.log(this);
-        this.intro();
-    }
-
-    intro() {
-        const intro = introJs();
-        let options = GlobalData.IntroApp.getIntroByPage(this.pageConfig.pageName);
-        if (options) {
-            intro.setOptions(options.intro);
-            intro.start();
-        }
+        let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
+        this.env.publishEvent({ Code: 'app:ShowHelp', Value: code});
     }
 
     async changeBranch(ev: any) {

@@ -237,6 +237,9 @@
 				</div>
 			</div>
 		</ion-router-outlet>
+		<ion-menu id="help-detail-side" side="end" [swipeGesture]="false" contentId="main-content" [hidden]="!showHelp">
+				<app-help-detail *ngIf="(env.user && env.user.Id) && pageConfigPageName && showHelp" [helpCode]="pageConfigPageName" (closeHelp)="closeHelp()"></app-help-detail>
+		</ion-menu>
 
 		<!-- <ion-menu id="noty-side" side="end" [swipeGesture]="false" contentId="main-content">
 			<ion-content class="ion-padding" appScrollbarTheme>
