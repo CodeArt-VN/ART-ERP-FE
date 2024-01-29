@@ -50,6 +50,8 @@ export class FilterComponent implements OnInit {
 	@Input() smallWidth = false;
 
 	@Input() set item(i: FilterConfig) {
+		console.log(i);
+		
 		if (i == null) {
 			i = {
 				Dimension: 'logical',
@@ -70,7 +72,15 @@ export class FilterComponent implements OnInit {
 		this.buildForm();
 	}
 
-	@Input() schema: Schema;
+	_schema: Schema;
+	@Input() set schema(s: Schema) {
+		if (!s) return;
+		
+		this._schema = s;
+		if (this._schema.Fields.findIndex(d=>d.Code == 'logical') === -1) {
+			this._schema.Fields.unshift({ Code: 'logical', Name: 'Logical' })
+		}
+	}
 
 	constructor(
 		public formBuilder: FormBuilder,
@@ -79,20 +89,16 @@ export class FilterComponent implements OnInit {
 
 	ngOnInit() {
 		this.buildForm();
-		if (this.schema.Fields.findIndex(d=>d.Code == 'logical') === -1) {
-			this.schema.Fields.unshift({ Code: 'logical', Name: 'Logical' })
-		}
+		
 	}
 
 	buildForm() {
 		this.form = this.formBuilder.group({
-			Dimension: [this._item.Dimension, Validators.required],
+			Dimension: [{ value: this._item.Dimension, disabled: true }, Validators.required],
 			Operator: [this._item.Operator, Validators.required],
 			Value: [
 				this._item.Dimension !== 'logical' ? this._item.Value : null,
-				this._item.Dimension !== 'logical'
-					? [Validators.required]
-					: [],
+				this._item.Dimension !== 'logical' ? [Validators.required] : [],
 			],
 			Logicals: this.formBuilder.array([]),
 			UniqueId: [{ value: lib.generateUID(), disabled: true }],
@@ -107,9 +113,6 @@ export class FilterComponent implements OnInit {
 		this.cdr.detectChanges();
 	}
 
-	checkAndUpdateView() {
-		console.log('aaa')
-	}
 	@Output() message = new EventEmitter();
 	getMessage(e) {
 		this.message.emit(e);
@@ -117,9 +120,11 @@ export class FilterComponent implements OnInit {
 
 	@Output() inputChange = new EventEmitter();
 	onInputChange() {
+		console.log('onInputChange');
+		
 		if (!this.form.valid) {
 			this.getMessage({
-				message: 'erp.app.app-component.page-bage.check-red-above',
+				message: 'Please recheck information highlighted in red above',
 				logLevel: 'warning',
 			});
 			return;
@@ -140,7 +145,7 @@ export class FilterComponent implements OnInit {
 	onFormSubmit() {
 		if (!this.form.valid) {
 			this.getMessage({
-				message: 'erp.app.app-component.page-bage.check-red-above',
+				message: 'Please recheck information highlighted in red above',
 				logLevel: 'warning',
 			});
 			return;
@@ -208,7 +213,7 @@ export class FilterComponent implements OnInit {
 	checkDisableDimenson(fg: any) {
 		var dimension = fg.get('Dimension').value;
 		if (dimension == 'logical') {
-			if (fg.get('Logicals').controls.length > 0) {
+			if (fg.get('Logicals').controls.length > 0 || fg.get('UniqueId').value == this.connectionList[0]) {
 				fg.get('Dimension').disable();
 			} else {
 				fg.get('Dimension').enable();
@@ -217,6 +222,8 @@ export class FilterComponent implements OnInit {
 	}
 
 	removeForm(fg: FormGroup, parentForm: FormGroup): void {
+		console.log(fg, parentForm);
+		
 		if (parentForm && parentForm.controls?.Logicals instanceof FormArray) {
 			const index = parentForm.controls.Logicals?.controls.indexOf(fg);
 			if (index !== -1) {
@@ -254,7 +261,7 @@ export class FilterComponent implements OnInit {
 	}
 
 	getSchemaDetailType(form) {
-		let field = this.schema.Fields.find((x) => x.Code == form.get('Dimension')?.value);
+		let field = this._schema.Fields.find((x) => x.Code == form.get('Dimension')?.value);
 		return field?.DataType;
 	}
 }

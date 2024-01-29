@@ -21,14 +21,14 @@
 				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id" name="search" color="primary"></ion-icon>
 			</div>
 			<div class="col-icon cell">
-				{{'Icon' | translate}}
+				
 			</div>
 			<div class="col-name cell" (click)="sortToggle('Name')">
 				{{'Name' | translate}}
 				<ion-icon class="min-btn" *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
 				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Name" name="search" color="primary"></ion-icon>
 			</div>
-			<div class="col-icon cell"></div>
+			
 		
 		</header>
 		<form (keydown.enter)="refresh()" (submit)="refresh()" action="#">
@@ -46,7 +46,7 @@
 					<input (keydown.enter)="refresh()" [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Name" class="c-input" [ngClass]="{active: query.Name}" type="search">
 					<ion-icon class="min-btn" (click)="query.Name=''; refresh()" *ngIf="query.Name" name="close-circle-outline"></ion-icon>
 				</div>
-				<div class="col-icon cell"></div>
+				
 				<button mat-raised-button type="submit" style="display:none">Search</button>
 			</header>
 		</form>
@@ -61,16 +61,15 @@
 				<a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
 			</div>
 			<div class="col-icon cell">
-				<ion-icon [name]="i.Icon" slot="icon-only"></ion-icon>
+				<ion-icon [color]="i.Color" [name]="i.Icon" slot="icon-only"></ion-icon>
 			</div>
 			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-name cell">
-				<b>{{i.Name}}</b> <span *ngIf="i.Remark"> - {{i.Remark}}</span>
-			</div>
-			<div class="col-icon cell">
-				<ion-icon name="star" slot="icon-only"></ion-icon>
+				<span>
+					<b>{{i.Code}}</b> {{i.Name}} 
+					<span *ngIf="i.Remark"><br> <ion-note>{{i.Remark}}</ion-note></span>
+				</span>
 			</div>
 		</div>
-
 	</section>
 
 	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
