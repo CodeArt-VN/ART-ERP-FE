@@ -237,7 +237,7 @@
 				</div>
 			</div>
 		</ion-router-outlet>
-		<ion-menu id="help-detail-side" side="end" [swipeGesture]="false" contentId="main-content" [hidden]="!showHelp">
+		<ion-menu contentId="main-content" type="overlay" id="help-detail-side" side="end" menuId="appHelpDetail" [swipeGesture]="false" [hidden]="!showHelp" *ngIf="showAppMenuHelp">
 				<app-help-detail *ngIf="(env.user && env.user.Id) && pageConfigPageName && showHelp" [helpCode]="pageConfigPageName" (closeHelp)="closeHelp()"></app-help-detail>
 		</ion-menu>
 

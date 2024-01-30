@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
 	
 	pageConfigPageName = '';
 	showHelp = false;
+	showAppMenuHelp = true;
 
 	@ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
@@ -88,6 +89,7 @@ export class AppComponent implements OnInit {
 				case 'app:ShowHelp':
 					this.showHelp = true;
 					this.pageConfigPageName = data.Value;
+					this.openHelp();
 					break;
 				case 'app:ChangeTheme':
 					this.updateStatusbar();
@@ -365,7 +367,19 @@ export class AppComponent implements OnInit {
 	}
 
 	closeHelp(){
-		this.showHelp = false;
+		if(this.platform.is("mobile")){
+			this.menu.close('appHelpDetail');
+		}
+		else {
+			this.showHelp = false;
+		}
 	}
+
+	openHelp() {
+		if(this.platform.is("mobile")){
+			this.menu.open('appHelpDetail');
+		}
+	}
+
 }
 
