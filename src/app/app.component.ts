@@ -367,18 +367,12 @@ export class AppComponent implements OnInit {
 	}
 
 	closeHelp(){
-		if(this.platform.is("mobile")){
-			this.menu.close('appHelpDetail');
-		}
-		else {
-			this.showHelp = false;
-		}
+		this.menu.close('appHelpDetail');
+		this.showHelp = false;
 	}
 
 	openHelp() {
-		if(this.platform.is("mobile")){
-			this.menu.open('appHelpDetail');
-		}
+		this.menu.open('appHelpDetail');
 	}
 
 }
