@@ -1,0 +1,36 @@
+<div class="row-full shadow full-screen">
+  <ion-toolbar color="primary">
+    <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView" style="margin-top: 10px;">
+      <ion-segment-button value="s1">
+        <ion-label>{{'App color'| translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="s2">
+        <ion-label>{{'Palettes' | translate}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!-- App Color -->
+  <div class="ion-padding" *ngIf="segmentView == 's1'">
+    <ion-searchbar #reportSearch placeholder="Search" [debounce]="300" [(ngModel)]="keyword"></ion-searchbar>
+    <div class="ion-padding ion-text-center scroll-y-color">
+      <ion-list>
+        <ion-item *ngFor="let r of items | searchNoAccent:{Name:keyword}">
+          <ion-button [color]="r.Code" class="button-color" (click)="onSelected(r)">
+            {{r.Name}}
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <!-- Palettes -->
+  <div *ngIf="segmentView == 's2'">
+    <div>
+      <div>
+        <input type="color" value="#3880ff">
+      </div>
+    </div>
+  
+  </div>
+</div>
