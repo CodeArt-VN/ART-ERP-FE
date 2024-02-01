@@ -7,6 +7,27 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class IconPickerComponent implements OnInit {
 	items = [
+
+		{ Name: 'address-book', Tags: 'address,book' },
+		{ Name: 'address-card', Tags: 'address,card' },
+		{ Name: 'city', Tags: 'city' },
+		{ Name: 'clipboard-list', Tags: 'clipboard,list' },
+		{ Name: 'contract', Tags: 'contract' },
+		{ Name: 'industry', Tags: 'industry' },
+
+		{ Name: 'inventory', Tags: 'inventory,wms,warehouse' },
+		{ Name: 'landmark', Tags: 'landmark,store' },
+		{ Name: 'money-check', Tags: 'money,check,card' },
+		{ Name: 'moto', Tags: 'moto' },
+		{ Name: 'pallet', Tags: 'pallet' },
+		{ Name: 'shipping-fast', Tags: 'shipping,van,truck' },
+		{ Name: 'signature', Tags: 'signature' },
+		{ Name: 'sitemap', Tags: 'sitemap' },
+		{ Name: 'truck-outline', Tags: 'truck,van' },
+		{ Name: 'truck', Tags: 'truck,van' },
+		{ Name: 'user-tie', Tags: 'user,tie' },
+		{ Name: 'warehouse', Tags: 'warehouse,inventory,wms' },
+
 		{ Name: 'accessibility', Tags: 'accessibility' },
 		{ Name: 'add', Tags: 'add,circle,include,invite,plus' },
 		{ Name: 'add-circle', Tags: 'add,circle,include,invite,plus' },

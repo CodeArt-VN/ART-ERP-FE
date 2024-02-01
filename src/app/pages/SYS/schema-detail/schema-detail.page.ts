@@ -190,7 +190,7 @@ export class SchemaDetailPage extends PageBase {
 
         super.savedChange(savedItem, form);
         this.item = savedItem;
-        this.loadedData();
+        //this.loadedData();
  
     }
     onSelectColor(e, fg) {

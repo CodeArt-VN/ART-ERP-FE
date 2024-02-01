@@ -14,6 +14,28 @@
 			font-family: univia-pro;
 			color: var(--ion-color-medium);
 			margin: -3px 16px 0 0;
+
+
+			@media screen and (max-width: calc(1024px)) {
+				margin-right: 0;
+				font-size: 2rem;
+			}
+
+			@media screen and (max-width: calc(768px)) {
+				margin-right: 0;
+				font-size: 1.6rem;
+			}
+
+			@media screen and (max-width: calc(425px)) {
+				margin-right: 0;
+				font-size: 1.4rem;
+			}
+
+			@media screen and (max-width: calc(320px)) {
+				margin-right: 0;
+				font-size: 1.3rem;
+			}
+
 		}
 		p{
 			font-size: 1.6rem;

@@ -174,14 +174,14 @@
 			<ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
 		</ion-button>
 		<ion-button title="{{'Update EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('updateEInvoice')">
-			<ion-icon color="success" slot="icon-only" name="create-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="Ký hóa đơn" *ngIf="pageConfig.canSignEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('signEInvoice')">
-			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Sync EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('syncEInvoice')">
 			<ion-icon color="success" slot="icon-only" name="sync"></ion-icon>
 		</ion-button>
+		<ion-button title="Ký hóa đơn" *ngIf="pageConfig.canSignEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('signEInvoice')">
+			<ion-icon color="danger" slot="icon-only" name="signature"></ion-icon>
+		</ion-button>
+		<!-- <ion-button title="{{'Sync EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('syncEInvoice')">
+			<ion-icon color="success" slot="icon-only" name="sync"></ion-icon>
+		</ion-button> -->
 
 		<ion-button title="{{'Submit for approval' | translate}}" *ngIf="pageConfig.canSubmitInvoicesForApproval && showSubmitARsForApproval" (click)="emit('submitInvoicesForApproval')">
 			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
