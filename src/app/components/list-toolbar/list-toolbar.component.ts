@@ -181,7 +181,7 @@ export class ListToolbarComponent implements OnInit {
 					this.showApproveOrders = false;
 				}
 
-				let notShowDisapproveOrders = [101, 102, 103, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
+				let notShowDisapproveOrders = [101, 102, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
 				if (notShowDisapproveOrders.indexOf(i._Status.IDStatus) > -1) {
 					this.showDisapproveOrders = false;
 				}

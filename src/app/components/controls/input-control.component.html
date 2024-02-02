@@ -129,6 +129,9 @@
     <!-- branch-breadcrumbs -->
     <app-branch-breadcrumbs *ngSwitchCase="'branch-breadcrumbs'" [maxItems]="3" [Id]="form.controls[id].value" [Items]="dataSource" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input disable breadcrumbs"></app-branch-breadcrumbs>
 
+    <!-- span-text -->
+    <span *ngSwitchCase="'span-text'" class="c-input disable">{{form.controls[id].value}}</span>
+
     <!-- span-number -->
     <span *ngSwitchCase="'span-number'" class="c-input disable">{{form.controls[id].value | number:'1.0-0'}}</span>
 

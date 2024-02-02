@@ -1,7 +1,11 @@
-ion-reorder-group{
-    ion-item{
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: flex-start;
-    }
+// ion-reorder-group{
+//     ion-item{
+//         display: flex;
+//         flex-direction: column-reverse;
+//         align-items: flex-start;
+//     }
+// }
+
+ion-accordion{
+    background-color: unset;
 }

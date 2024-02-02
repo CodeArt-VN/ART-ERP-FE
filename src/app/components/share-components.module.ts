@@ -23,6 +23,7 @@ import { ShareDataTableModule } from './data-table/share-data-table.module';
 //import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ShareInputControlsModule } from './controls/share-input-controls.modules';
 import { ShareVisualizationsModule } from './visualizations/share-visualizations.modules';
+import { SharePrintingModule } from './printing/share-printing.module';
 
 @NgModule({
 	imports: [
@@ -41,6 +42,7 @@ import { ShareVisualizationsModule } from './visualizations/share-visualizations
 		ShareDataTableModule,
 		ShareVisualizationsModule,
 		ShareDirectivesModule,
+		SharePrintingModule
 	],
 	// providers: [provideNgxMask()],
 
@@ -60,6 +62,7 @@ import { ShareVisualizationsModule } from './visualizations/share-visualizations
 		ShareInputControlsModule,
 		ShareDataTableModule,
 		ShareVisualizationsModule,
+		SharePrintingModule,
 		ShareDirectivesModule,
 		CommonModule,
 		FormsModule,
