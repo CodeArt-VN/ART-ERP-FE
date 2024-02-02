@@ -7,24 +7,24 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class ColorComponent  implements OnInit {
 	items = [
-		{Code:"primary", Name: "Primary", BaseColor: "#005ce6"},
-		{Code:"secondary", Name: "Secondary", BaseColor: "#e1150b"},
-		{Code:"tertiary", Name: "Tertiary", BaseColor: "#ffffff"},
+		{Code:"primary", Name: "Primary"},
+		{Code:"secondary", Name: "Secondary"},
+		{Code:"tertiary", Name: "Tertiary"},
 
-		{Code:"success", Name: "Success", BaseColor: "#2dd36f"},
-		{Code:"warning", Name: "Warning", BaseColor: "#ffc409"},
-		{Code:"danger", Name: "Danger", BaseColor: "#eb445a"},
+		{Code:"success", Name: "Success"},
+		{Code:"warning", Name: "Warning"},
+		{Code:"danger", Name: "Danger"},
 
-		{Code:"red", Name: "Red", BaseColor: "#f44336"},
-		{Code:"pink", Name: "Pink", BaseColor: "#e91e63"},
-		{Code:"purple", Name: "Purple", BaseColor: "#9c27b0"},
+		{Code:"red", Name: "Red"},
+		{Code:"pink", Name: "Pink"},
+		{Code:"purple", Name: "Purple"},
 
-    	{Code:"blue", Name: "Blue", BaseColor: "#03a9f4"},
-		{Code:"bluegreen", Name: "Bluegreen", BaseColor: "#00bcd4"},
+    	{Code:"blue", Name: "Blue"},
+		{Code:"bluegreen", Name: "Bluegreen"},
 
-		{Code:"dark", Name: "Dark", BaseColor: "#26292c"},
-		{Code:"medium", Name: "Medium", BaseColor: "#394951"},
-		{Code:"light", Name: "Light", BaseColor: "#f4f5f8"},
+		{Code:"dark", Name: "Dark"},
+		{Code:"medium", Name: "Medium"},
+		{Code:"light", Name: "Light"},
 
 	];
 	@Output() selected = new EventEmitter();
