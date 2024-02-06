@@ -58,6 +58,7 @@ export abstract class PageBase implements OnInit {
         showSpinner: true,
         isEndOfData: false,
         didEnter: false,
+        mainPageActive:true,
 
         sort: []
 
@@ -775,6 +776,18 @@ export abstract class PageBase implements OnInit {
 
     toggleFeature() {
         this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
+        if(this.pageConfig.isShowFeature) {
+            this.pageConfig.mainPageActive = false;
+        }
+        else
+        {
+            this.pageConfig.mainPageActive = true;
+        }
+    }
+    
+    backSubPage() {
+        this.pageConfig.mainPageActive =  true;
+        this.pageConfig.isShowFeature = false;
     }
 
     help() {
