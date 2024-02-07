@@ -257,6 +257,59 @@
 			<ion-icon [color]="env.networkInfo.isOnline? 'success': 'danger'" name="wifi"></ion-icon>
 			<!-- <span *ngIf="!env.networkInfo.isOnline"> rớt mạng...</span> -->
 		</span>
+		<span class="text float-right">
+			<ion-icon id="bell" name="notifications-outline" ></ion-icon> 
+			<ion-popover trigger="bell" side="top" alignment="center" class="w300">
+				<ng-template>
+				  <ion-header>
+					<ion-toolbar color="pink" class="title-popover-bell">
+						<div class="avatar-title-bell" *ngIf="segmentView == 'home'">
+							<ion-avatar slot="end" *ngIf="segmentView == 'home'">
+								<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+							</ion-avatar>
+						</div>
+					  <ion-title *ngIf="segmentView == 'message'">Message</ion-title>
+					</ion-toolbar>
+				  </ion-header>
+			  
+				  <ion-content class="ion-padding" style="min-height: 300px;">
+					<div *ngIf="segmentView == 'home'">
+
+					</div>
+
+					<div *ngIf="segmentView == 'message'">
+					  <ion-list lines="full">
+						<ion-item  button>
+							<ion-label>
+								<ion-avatar>
+									<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+								</ion-avatar>
+							</ion-label>
+							<ion-label>Message</ion-label>
+						</ion-item>
+					</ion-list>		
+					</div>
+				  </ion-content>
+				  
+				  <ion-footer>
+					<ion-toolbar class="bell-segment">
+						<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView" class="center-segment-bell">
+						  <ion-segment-button value="home" class="bell-segment">
+							<ion-icon name="home"></ion-icon>
+							<ion-label>Home</ion-label>
+						  </ion-segment-button>
+						  <ion-segment-button value="message" class="bell-segment">
+							<ion-icon name="chatbubble-ellipses-outline" ></ion-icon>
+							<ion-label>Message</ion-label>
+						  </ion-segment-button>
+						</ion-segment>
+					  </ion-toolbar>
+				  </ion-footer>
+
+				</ng-template>
+			  </ion-popover>
+			  
+		</span>
 		<span *ngIf="!env.language.isDefault" (click)="changeLanguage('vi-VN')" class="text float-right" style="font-size: x-large"><b>🇻🇳</b></span>
 		<span *ngIf="env.language.isDefault" (click)="changeLanguage('en-US')" class="text float-right" style="font-size: x-large"><b>🇺🇸</b></span>
 

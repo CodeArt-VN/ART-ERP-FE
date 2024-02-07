@@ -397,3 +397,32 @@ ion-split-pane {
         vertical-align: middle;
     }
 }
+.avatar-title-bell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: row-reverse;
+  }
+  .center-segment-bell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0.6;
+    height: 70px;
+    --background: none;
+  }
+
+  .title-popover-bell {
+    min-height: 60px; 
+    display: flex; 
+    align-items: center;
+  }
+  
+  ion-toolbar.bell-segment ion-segment-button.segment-button-checked {
+    --color-checked: #005ce6;
+    --ion-background-color: none;
+    --indicator-box-shadow: none;
+  }
+
+  
