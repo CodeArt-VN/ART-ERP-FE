@@ -44,16 +44,16 @@
 
 							<tr>
 								<td>{{'erp.app.pages.shipping.delivery-note.customer-name' | translate}}:</td>
-								<td class="bol">{{item._Customer.Code? item._Customer.Code: item._Customer.Id}} - {{item._Customer.Name}} <span *ngIf="item._Customer.WorkPhone"> - {{item._Customer.WorkPhone}} </span></td>
+								<td class="bol">{{item._Customer?.Code? item._Customer?.Code: item._Customer?.Id}} - {{item._Customer?.Name}} <span *ngIf="item._Customer?.WorkPhone"> - {{item._Customer?.WorkPhone}} </span></td>
 								<!-- <td class="bol num" colspan="2">SH: {{s.Id}}-{{s.Vehicle}} </td> -->
 							</tr>
 							<tr>
 								<td colspan="4" class="">
-									<span *ngIf="item._Customer.Address.AddressLine1">{{item._Customer.Address.AddressLine1}}</span>
-									<span *ngIf="item._Customer.Address.Ward">, {{item._Customer.Address.Ward}}</span>
-									<span *ngIf="item._Customer.Address.District">, {{item._Customer.Address.District}}</span>
-									<span *ngIf="item._Customer.Address.Province">, {{item._Customer.Address.Province}}</span>
-									<span *ngIf="item._Customer.Address.AddressLine2"><br> {{item._Customer.Address.AddressLine2}}</span>
+									<span *ngIf="item._Customer?.Address?.AddressLine1">{{item._Customer.Address.AddressLine1}}</span>
+									<span *ngIf="item._Customer?.Address?.Ward">, {{item._Customer.Address.Ward}}</span>
+									<span *ngIf="item._Customer?.Address?.District">, {{item._Customer.Address.District}}</span>
+									<span *ngIf="item._Customer?.Address?.Province">, {{item._Customer.Address.Province}}</span>
+									<span *ngIf="item._Customer?.Address?.AddressLine2"><br> {{item._Customer.Address.AddressLine2}}</span>
 								</td>
 							</tr>
 						</tbody>

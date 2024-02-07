@@ -69,7 +69,7 @@ export class SaleOrderNoteComponent extends PageBase {
             QRCode.toDataURL('SO:' + this.item.Id, { errorCorrectionLevel: 'H', version: 2, width: 500, scale: 20, type: 'image/webp' }, function (err, url) {
                 that.item.QRC = url;
             })
-           this.item.OrderLines.forEach(i=>{
+           this.item.OrderLines?.forEach(i=>{
             i.UoMPriceText =  lib.formatMoney(i.UoMPrice, 0)
             i.OriginalTotalDiscountText = lib.formatMoney(i.OriginalTotalDiscount, 0);
             i.OriginalTotalAfterDiscountText =  lib.formatMoney(i.OriginalTotalAfterDiscount, 0);
