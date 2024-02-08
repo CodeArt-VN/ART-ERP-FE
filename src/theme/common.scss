@@ -911,3 +911,49 @@ ion-content.cameraFrame {
 		--width: 700px;
 	}
 }
+
+@media screen and (max-width: 767px) {
+    .titleMainPageActive {
+        display: block !important;
+    }
+
+    .titleSubPageActive {
+        display: none !important;
+    }
+
+    .featureMainPageActive {
+        display: flex !important;
+    }
+
+    .featureSubPageActive {
+        display: none !important;
+    }
+
+    .backSubPageActive {
+        display: block !important;
+    }
+
+    .childViewActive {
+        left: 0 !important;
+
+        .feature {
+            display: none;
+        }
+    }
+    
+    .label-back {
+        font-size: 17px !important;
+    }
+}
+
+.titleMainPageActive {
+    display: block;
+}
+
+.titleSubPageActive {
+    display: block;
+}
+
+.backSubPageActive {
+    display: none;
+}
