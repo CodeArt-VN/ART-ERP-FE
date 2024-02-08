@@ -1,5 +1,5 @@
 <ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}">
-	<ion-buttons slot="start" [collapse]="true">
+	<ion-buttons slot="start" [collapse]="true" [ngClass]="{titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive}">
 		<ion-back-button></ion-back-button>
 		<ion-button color="dark" *ngIf="!selectedItems.length" class="ion-hide-sm-down_">
 			{{pageConfig.pageTitle | translate}}
@@ -9,9 +9,16 @@
 		</ion-button>
 		<ng-content select="[title]"></ng-content>
 	</ion-buttons>
+	<ion-buttons slot="start" [collapse]="true" *ngIf="!pageConfig.isMainPageActive" [ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}" (click)="page.backSubPage()">
+		<ion-button class="toggle" >
+			<ion-icon slot="icon-only" name="chevron-back-outline">
+			</ion-icon>
+			<ion-label color="dark" class="label-back">{{'Back' | translate}}</ion-label>
+		</ion-button>
+	</ion-buttons>
 
 
-	<ion-buttons [collapse]="true" slot="end" *ngIf="!(selectedItems.length && canSelect)">
+	<ion-buttons [ngClass]="{featureSubPageActive: !pageConfig.isMainPageActive, featureMainPageActive: pageConfig.isMainPageActive}" [collapse]="true" slot="end" *ngIf="!(selectedItems.length && canSelect)">
 		<ion-button *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled" (click)="emit('add')" title="{{'Add' | translate}}">
 			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
 		</ion-button>
@@ -63,12 +70,12 @@
 		<ion-button *ngIf="ShowHelp" title="{{'Help' | translate}}" (click)="emit('help')">
 			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
 		</ion-button>
-		<ion-button *ngIf="ShowFeature" title="{{'ShowFeature' | translate}}" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+		<ion-button *ngIf="ShowFeature" title="{{'ShowFeature' | translate}}" (click)="page.toggleFeature()">
 			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'"></ion-icon>
 		</ion-button>
 
 	</ion-buttons>
-	<ion-buttons slot="end" *ngIf="selectedItems.length && canSelect">
+	<ion-buttons [ngClass]="{featureSubPageActive: !pageConfig.isMainPageActive, featureMainPageActive: pageConfig.isMainPageActive}" slot="end" *ngIf="selectedItems.length && canSelect">
 
 		<ion-button title="{{'Unselect' | translate}}" (click)="emit('unselect')">
 			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -216,7 +223,7 @@
 			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
 		</ion-button>
 		<span class="split ion-hide-sm-down">|</span>
-		<ion-button *ngIf="ShowFeature" title="{{'Show feature' | translate}}" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+		<ion-button *ngIf="ShowFeature" title="{{'Show feature' | translate}}" (click)="page.toggleFeature()">
 			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
 			</ion-icon>
 		</ion-button>
