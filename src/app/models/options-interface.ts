@@ -31,6 +31,7 @@ export interface StatisticConfig {
 export interface BIReport extends Schema { 
 	DataConfig?: ReportDataConfig;
 	ChartConfig?: EChartsOption;
+	ChartConfigScript?: string;
 	ChartScript?: string;
 	MockDataAPI?: string,
 	Dimensions?: string[];

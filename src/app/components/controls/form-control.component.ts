@@ -51,7 +51,9 @@ export class FormControlComponent implements OnInit {
 
 	constructor() { }
 
-	ngOnInit() { }
+	ngOnInit() { 
+		if (!this.label) this.label = this.id;
+	}
 
 	onInputChange(e){
 		this.inputChange.emit(e);

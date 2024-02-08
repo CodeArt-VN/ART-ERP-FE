@@ -43,12 +43,12 @@ export class RegisterPage extends PageBase {
     
 
     register(){
-        this.translate.get('erp.app.pages.sys.register.message.please').subscribe((result: string) => {
+        this.translate.get('Please input password again to reconfirm').subscribe((result: string) => {
             let message = result
 
             let validateMessage = [];
             if(!this.item.FullName){
-                this.translate.get('erp.app.pages.sys.register.message.full-name').subscribe((result: string) => {
+                this.translate.get('Full name').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
@@ -56,27 +56,27 @@ export class RegisterPage extends PageBase {
             //     validateMessage.push('ngày sinh');
             // }
             if(!this.item.EmailAddress){
-                this.translate.get('erp.app.pages.sys.register.message.email').subscribe((result: string) => {
+                this.translate.get('email').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
             if(!this.item.PhoneNumber){
-                this.translate.get('erp.app.pages.sys.register.message.phone-number').subscribe((result: string) => {
+                this.translate.get('Phone number').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
             if(!this.item.Password){
-                this.translate.get('erp.app.pages.sys.register.message.password').subscribe((result: string) => {
+                this.translate.get('Password').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
             if(!this.item.ConfirmPassword){
-                this.translate.get('erp.app.pages.sys.register.message.confirm-password').subscribe((result: string) => {
+                this.translate.get('Password verified').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
             if(this.item.Password && this.item.ConfirmPassword && this.item.Password != this.item.ConfirmPassword){
-                this.translate.get('erp.app.pages.sys.register.message.please-confirm-password').subscribe((result: string) => {
+                this.translate.get('Please input password again to reconfirm').subscribe((result: string) => {
                     validateMessage.push(result);
                 });
             }
@@ -102,10 +102,10 @@ export class RegisterPage extends PageBase {
 			.catch(err => {
 				loading.dismiss();
 				if (err.error && err.error.ModelState[""] && err.error.ModelState[""].toString().indexOf("already taken")) {
-                    this.env.showTranslateMessage('erp.app.pages.sys.register.message.already-register-with-value','', this.item.EmailAddress);
+                    this.env.showTranslateMessage('Email {{value}} has been registered. Please log in or register with another email.','', this.item.EmailAddress);
 				}
 				else{
-                    this.env.showTranslateMessage('erp.app.pages.sys.register.message.can-not-register');
+                    this.env.showTranslateMessage('Registration failed. Please try again.');
 				}
             });
             

@@ -45,7 +45,8 @@ export abstract class PageBase implements OnInit {
         pageName: '',
         pageTitle: '',
         pageRemark: '',
-        pageIcon: '',
+        pageIcon: 'star',
+        pageColor: 'primary',
 
         isDetailPage: false,
         isShowMore: false,
@@ -119,7 +120,7 @@ export abstract class PageBase implements OnInit {
                             this.env.showMessage(err.message, 'danger');
                         }
                         else {
-                            this.env.showTranslateMessage('erp.app.pages.bi.sales-report.message.can-not-get-data','danger');
+                            this.env.showTranslateMessage('Cannot extract data','danger');
                         }
 
                         this.loadedData(event);
@@ -262,7 +263,7 @@ export abstract class PageBase implements OnInit {
                 this.env.showLoading('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
                 .then(_ => {
                     this.removeSelectedItems();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.showTranslateMessage('Deleted!','success');
                     this.env.publishEvent({ Code: publishEventCode });
                 }).catch(err => {
                     this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
@@ -275,10 +276,10 @@ export abstract class PageBase implements OnInit {
     archiveItems() {
         this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
             if (this.query.IsDisabled == true) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.open-number-line','success', this.selectedItems.length);
+                this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
             }
             else {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.archive-number-line','success', this.selectedItems.length);
+                this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
             }
             this.removeSelectedItems();
         });
@@ -324,7 +325,7 @@ export abstract class PageBase implements OnInit {
                 }).catch(e => { });
             }
             else {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+                this.env.showTranslateMessage('Import completed!','success');
             }
         })
         .catch(err => {
@@ -430,7 +431,7 @@ export abstract class PageBase implements OnInit {
             this.formGroup.updateValueAndValidity();
 
             if (!this.formGroup.valid) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.check-red-above','warning');
+                this.env.showTranslateMessage('Please recheck information highlighted in red above','warning');
             }
             else if (this.submitAttempt == false) {
                 this.submitAttempt = true;
@@ -478,7 +479,7 @@ export abstract class PageBase implements OnInit {
                     }
 
                     // if (loading) loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+                    this.env.showTranslateMessage('Import completed!','success');
                     this.formGroup.markAsPristine();
                     this.cdr.detectChanges();
                     resolve(savedItem.Id);
@@ -486,7 +487,7 @@ export abstract class PageBase implements OnInit {
                     this.savedChange(savedItem);
                 }).catch(err => {
                     // if (loading) loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.can-not-save','danger');
+                    this.env.showTranslateMessage('Cannot save, please try again','danger');
                     this.cdr.detectChanges();
                     this.submitAttempt = false;
                     reject(err);
@@ -500,7 +501,7 @@ export abstract class PageBase implements OnInit {
         return new Promise((resolve, reject) => {
             this.formGroup.updateValueAndValidity();
             if (!form.valid) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.check-red-above','warning');
+                this.env.showTranslateMessage('Please recheck information highlighted in red above','warning');
             }
             else if (this.submitAttempt == false) {
                 this.submitAttempt = true;
@@ -512,7 +513,7 @@ export abstract class PageBase implements OnInit {
                     if (publishEventCode)
                         this.env.publishEvent({ Code: publishEventCode });
                 }).catch(err => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.can-not-save','danger');
+                    this.env.showTranslateMessage('Cannot save, please try again','danger');
                     this.cdr.detectChanges();
                     this.submitAttempt = false;
                     reject(err);
@@ -539,7 +540,7 @@ export abstract class PageBase implements OnInit {
         form.markAsPristine();
         this.cdr.detectChanges();
         this.submitAttempt = false;
-        this.env.showTranslateMessage('erp.app.app-component.page-bage.save-complete','success');
+        this.env.showTranslateMessage('Saving completed!','success');
     }
 
     alwaysReturnProps = ['Id', 'IDBranch'];
@@ -567,7 +568,7 @@ export abstract class PageBase implements OnInit {
         if (this.pageConfig.canDelete) {
             this.env.showPrompt('Bạn chắc muốn xóa' + (this.item.Name ? ' ' + this.item.Name : '') + '?').then(_=>{
                 this.pageProvider.delete(this.item).then(() => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.showTranslateMessage('Deleted!','success');
                     this.env.publishEvent({ Code: publishEventCode });
 
                     this.deleted();
@@ -823,7 +824,7 @@ export abstract class PageBase implements OnInit {
                     Ids: this.selectedItems.map(m => m.Id),
                     IDBranch: result.data.branch.Id
                 }).then(_ => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.unit-change-complete','success');
+                    this.env.showTranslateMessage('Unit changed','success');
                     this.refresh();
                 })
             }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { em } from '@fullcalendar/core/internal-common';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -376,6 +377,16 @@ export class ListToolbarComponent implements OnInit {
 			});
 		}
 
+	}
+
+
+	toggleFeature() {
+		if(this.page){
+			this.page.toggleFeature();
+		}
+		else{
+			this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature
+		}
 	}
 
 }

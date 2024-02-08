@@ -1,15 +1,15 @@
-<div *ngIf="reportConfig" class="chart-holder" [class]="[viewMode]" [ngClass]="{'box-shadow': viewMode!='mini'}">
+<div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{'box-shadow': viewMode!='mini'}">
 
 	<ion-item lines="none" *ngIf="viewMode == 'dashboard'">
-		<ion-icon [name]="reportConfig.Icon || 'stats-chart'" [color]="reportConfig.Color || 'primary'" slot="start"></ion-icon>
+		<ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>
 		<ion-label color="primary" (click)="isToolPopoverOpen = false; onOpenReport()" class="clickable">
-			<h2>{{reportConfig.Name}}</h2>
+			<h2>{{report.Name}}</h2>
 			<p>
 				<small>
-					{{rpt.formatTimeConfig(reportConfig.DataConfig?.TimeFrame.From)}}
-					<span *ngIf="! compareObjects (reportConfig.DataConfig?.TimeFrame.From, reportConfig.DataConfig?.TimeFrame.To)"> → {{rpt.formatTimeConfig(reportConfig.DataConfig?.TimeFrame.To)}} </span>
+					{{rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From)}}
+					<span *ngIf="! compareObjects (report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)"> → {{rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To)}} </span>
 					
-					<span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label'+reportConfig.Id">
+					<span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label'+report.Id">
 						{{'Updated' | translate}}: {{dataFetchDate | date:'HH:mm dd/MM'}}
 					</span>
 				</small>
@@ -65,18 +65,18 @@
 	<!-- || (  && _gridItem?.rows == 1) -->
 	<div class="statistic-row" *ngIf="viewMode == 'full'">
 		<app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" 
-		*ngFor="let m of reportConfig.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
+		*ngFor="let m of report.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
 	</div>
 
 	<div class="statistic-row" *ngIf="viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics as ls">
 		 <ng-container *ngFor="let s of ls">
-			<ng-container *ngFor="let m of reportConfig.DataConfig.MeasureBy">
+			<ng-container *ngFor="let m of report.DataConfig.MeasureBy">
 				<app-card-multi-row *ngIf="m.Title == s" class="selected" [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" ></app-card-multi-row>		
 			</ng-container>
 		 </ng-container>
 	</div>
 
-	<app-pie-chart class="app-chart" *ngIf="!(viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics) && rptLoaded && (rawData.length || reportConfig.DataConfig.Schema.Type == 'Static' || reportConfig.DataConfig.Schema.Type == 'None')" 
+	<app-e-chart class="app-chart" *ngIf="!(viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics) && rptLoaded && (rawData.length || report.DataConfig.Schema.Id == null)" 
 	[reportId]="reportId" 
 	[viewMode]="viewMode" 
 	[chartType]="chartType"
@@ -86,7 +86,8 @@
 	[viewDimension]="viewDimension"
 	[dataIntervalProperty]="dataIntervalProperty"
 	[dataIntervalType]="dataIntervalType"
-	[data]="rawData"></app-pie-chart>
+	[data]="rawData"
+	(chartClick)="onChartClick($event)"></app-e-chart>
 
 
 
@@ -94,10 +95,10 @@
 		<ion-icon name="server-outline" color="success" slot="start"></ion-icon>
 		<ion-label color="primary">
 			<p>
-				{{rpt.formatTimeConfig(reportConfig.DataConfig?.TimeFrame.From)}}
-				<span *ngIf="! compareObjects (reportConfig.DataConfig?.TimeFrame.From, reportConfig.DataConfig?.TimeFrame.To)"> → {{rpt.formatTimeConfig(reportConfig.DataConfig?.TimeFrame.To)}} </span>
+				{{rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From)}}
+				<span *ngIf="! compareObjects (report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)"> → {{rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To)}} </span>
 					
-				<span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label'+reportConfig.Id">
+				<span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label'+report.Id">
 					<small>{{'Updated' | translate}}: {{dataFetchDate | date:'HH:mm dd/MM'}}</small>
 				</span>
 			</p>

@@ -275,7 +275,7 @@ export class EChartDefaultOption {
                                 type: type,
                                 emphasis: { focus: 'series' },
                                 data: xData.map(x => {
-                                    const item = items.find(item => item[legendProperty] === legend && item[intervalProperty].toLowerCase() === x.toLowerCase());
+                                    const item = items.find(item => item[legendProperty] === legend && item[intervalProperty].toString().toLowerCase() === x.toString().toLowerCase());
                                     return item ? item[valueProperty] : 0;
                                 })
                             }

@@ -75,7 +75,7 @@
 																<ion-col size="12" size-xl="6">
 																	<app-form-control [field]="{id:'Id', label: 'Id', type : 'number', form : g }"></app-form-control>
 
-																	<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : g }">
+																	<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : g }" (change)="saveChange()">
 																		<small label>
 																			<a class="clickable" (click)="g.get('IsColorModalOpened').setValue(true)">{{'Change color' | translate}}</a>
 																			&nbsp;

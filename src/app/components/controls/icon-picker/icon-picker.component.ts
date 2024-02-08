@@ -8,6 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class IconPickerComponent implements OnInit {
 	items = [
 
+		{ Name: 'radar', Tags: 'radar,chart,web' },
 		{ Name: 'address-book', Tags: 'address,book' },
 		{ Name: 'address-card', Tags: 'address,card' },
 		{ Name: 'city', Tags: 'city' },

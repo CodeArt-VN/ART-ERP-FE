@@ -9,7 +9,7 @@
 		</ion-button>
 		<ng-content select="[title]"></ng-content>
 	</ion-buttons>
-	<ion-buttons slot="start" [collapse]="true" *ngIf="!pageConfig.isMainPageActive" [ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}" (click)="page.backSubPage()">
+	<ion-buttons slot="start" [collapse]="true" *ngIf="page && !pageConfig.isMainPageActive" [ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}" (click)="page.backSubPage()">
 		<ion-button class="toggle" >
 			<ion-icon slot="icon-only" name="chevron-back-outline">
 			</ion-icon>
@@ -70,7 +70,7 @@
 		<ion-button *ngIf="ShowHelp" title="{{'Help' | translate}}" (click)="emit('help')">
 			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
 		</ion-button>
-		<ion-button *ngIf="ShowFeature" title="{{'ShowFeature' | translate}}" (click)="page.toggleFeature()">
+		<ion-button *ngIf="ShowFeature" title="{{'ShowFeature' | translate}}" (click)="toggleFeature()">
 			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'"></ion-icon>
 		</ion-button>
 
@@ -223,7 +223,7 @@
 			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
 		</ion-button>
 		<span class="split ion-hide-sm-down">|</span>
-		<ion-button *ngIf="ShowFeature" title="{{'Show feature' | translate}}" (click)="page.toggleFeature()">
+		<ion-button *ngIf="ShowFeature" title="{{'Show feature' | translate}}" (click)="toggleFeature()">
 			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
 			</ion-icon>
 		</ion-button>

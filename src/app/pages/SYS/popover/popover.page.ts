@@ -50,23 +50,23 @@ export class PopoverPage {
         public popoverCtrl: PopoverController,
         public translate: TranslateService
     ) {
-        this.translate.get('erp.app.pages.sys.popover.single-date-label').subscribe((message: string) => {
+        this.translate.get('single-date-label').subscribe((message: string) => {
             this._popConfig.singleDateLabel = message;
         });
 
-        this.translate.get('erp.app.pages.sys.popover.date-range-label').subscribe((message: string) => {
+        this.translate.get('date-range-label').subscribe((message: string) => {
             this._popConfig.dateRangeLabel = message;
         });
 
-        this.translate.get('erp.app.pages.sys.popover.staff-select-label').subscribe((message: string) => {
+        this.translate.get('staff-select-label').subscribe((message: string) => {
             this._popConfig.staffSelectLabel = message;
         });
         
-        this.translate.get('erp.app.pages.sys.popover.sale-order-status-select-label').subscribe((message: string) => {
+        this.translate.get('sale-order-status-select-label').subscribe((message: string) => {
             this._popConfig.saleOrderStatusSelectLabel = message;
         });
         
-        this.translate.get('erp.app.pages.sys.popover.submit-button-label').subscribe((message: string) => {
+        this.translate.get('submit-button-label').subscribe((message: string) => {
             this._popConfig.submitButtonLabel = message;
         });
     }
@@ -86,7 +86,7 @@ export class PopoverPage {
         if (this.popConfig.isShowBranchSelect) {
             this.branchList = JSON.parse(JSON.stringify(this.env.branchList));
             let translateResult;
-            this.translate.get('erp.app.pages.sys.popover.all-unit').subscribe((message: string) => {
+            this.translate.get('all-unit').subscribe((message: string) => {
                 translateResult = message;
             });
             this.branchList.unshift({ Id: null, Name: translateResult});
@@ -99,19 +99,19 @@ export class PopoverPage {
     initSaleOrderStatus() {
         this.env.getStatus('SalesOrder').then(data=>{
             this.saleOrderStatusList = data;
-            this.translate.get('erp.app.pages.sys.popover.not-shipping').subscribe((message: string) => {
+            this.translate.get('not-shipping').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'[101,102,103,104,110]', Name: message, Color:'primary'});
             });
 
-            this.translate.get('erp.app.pages.sys.popover.wating-allocation').subscribe((message: string) => {
+            this.translate.get('wating-allocation').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'[104,113]', Name: message, Color:'success'});
             });
 
-            this.translate.get('erp.app.pages.sys.popover.pending-approve').subscribe((message: string) => {
+            this.translate.get('pending-approve').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'[103,110]', Name: message, Color:'warning'});
             });
 
-            this.translate.get('erp.app.pages.sys.popover.all').subscribe((message: string) => {
+            this.translate.get('all').subscribe((message: string) => {
                 this.saleOrderStatusList.unshift({Id:'', Name: message, Color:'primary'});
             });
         })

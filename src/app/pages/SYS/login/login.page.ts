@@ -95,18 +95,18 @@ export class LoginPage extends PageBase {
             this.accountService.forgotPassword(this.email)
                 .then(data => {
                     loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.pages.sys.login.message.forgot-password','danger', null, 0, true);
+                    this.env.showTranslateMessage('System has sent email for changing password, please check and follow instruction.','danger', null, 0, true);
                 })
                 .catch(err => {
                     loading.dismiss();
 
                     if (err.error && typeof (err.error.loaded) == 'number' && err.error.loaded == 0) {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-connect');
+                        this.env.showTranslateMessage('Cannot connect to server, please recheck');
                     } else if (err.status == 404) {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-find-email');
+                        this.env.showTranslateMessage('Cannot find email, please recheck');
                     }
                     else {
-                        this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-send-email');
+                        this.env.showTranslateMessage('Unable to send email, please try again');
                     }
                 });
         })
@@ -128,14 +128,14 @@ export class LoginPage extends PageBase {
         })
         .catch(err => {
             if (err.error && typeof (err.error.loaded) == 'number' && err.error.loaded == 0) {
-                this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-connect','danger');
+                this.env.showTranslateMessage('Cannot connect to server, please recheck','danger');
             } else if (err.error && err.error.error_description && err.error.error_description.indexOf("locked out") > -1) {
-                this.env.showTranslateMessage('erp.app.pages.sys.login.message.lock-or-not-active','danger');
+                this.env.showTranslateMessage('Account is not activated or being locked','danger');
             } else if (err.error && err.error.error_description && err.error.error_description.indexOf("user name or password is incorrect") > -1) {
-                this.env.showTranslateMessage('erp.app.pages.sys.login.message.username-password-incorrect','danger');
+                this.env.showTranslateMessage('Username or password is incorrect, please check again.','danger');
             }
             else {
-                this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login','danger');
+                this.env.showTranslateMessage('Unable to log in, please try again','danger');
             }
         });
     }
@@ -153,7 +153,7 @@ export class LoginPage extends PageBase {
                 })
                 .catch(err => {
                     loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login');
+                    this.env.showTranslateMessage('Unable to log in, please try again');
                 });
         })
     }
@@ -189,7 +189,7 @@ export class LoginPage extends PageBase {
                 })
                 .catch(err => {
                     loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login','danger');
+                    this.env.showTranslateMessage('Unable to log in, please try again','danger');
                 });
         });
     }
@@ -215,7 +215,7 @@ export class LoginPage extends PageBase {
                 })
                 .catch(err => {
                     loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.pages.sys.login.message.can-not-login');
+                    this.env.showTranslateMessage('Unable to log in, please try again');
                 });
         });
     }

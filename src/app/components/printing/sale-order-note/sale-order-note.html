@@ -1,4 +1,4 @@
-<table *ngIf="item">
+<table *ngIf="item?.Id">
 	<thead>
 		<tr>
 			<td>
@@ -49,11 +49,11 @@
 							</tr>
 							<tr>
 								<td colspan="4" class="">
-									<span *ngIf="item._Customer.Address.AddressLine1">{{item._Customer.Address.AddressLine1}}</span>
-									<span *ngIf="item._Customer.Address.Ward">, {{item._Customer.Address.Ward}}</span>
-									<span *ngIf="item._Customer.Address.District">, {{item._Customer.Address.District}}</span>
-									<span *ngIf="item._Customer.Address.Province">, {{item._Customer.Address.Province}}</span>
-									<span *ngIf="item._Customer.Address.AddressLine2"><br> {{item._Customer.Address.AddressLine2}}</span>
+									<span *ngIf="item._Customer.Address?.AddressLine1">{{item._Customer.Address.AddressLine1}}</span>
+									<span *ngIf="item._Customer.Address?.Ward">, {{item._Customer.Address.Ward}}</span>
+									<span *ngIf="item._Customer.Address?.District">, {{item._Customer.Address.District}}</span>
+									<span *ngIf="item._Customer.Address?.Province">, {{item._Customer.Address.Province}}</span>
+									<span *ngIf="item._Customer.Address?.AddressLine2"><br> {{item._Customer.Address.AddressLine2}}</span>
 								</td>
 							</tr>
 						</tbody>

@@ -43,7 +43,10 @@ export class SaleOrderNoteComponent extends PageBase {
     }
     loadedData(event) {
         super.loadedData(event)
-        this.loadDeliveryNote();
+        if (this.item.Id) {
+            this.loadDeliveryNote();
+        }
+        
     }
 
 

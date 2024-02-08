@@ -1,11 +1,10 @@
 <div class="page-title">
-  <ion-icon [color]="color? color : 'primary' " [name]="icon"></ion-icon>
+  <ion-icon [color]="color || 'primary' " [name]="icon || 'layers'"></ion-icon>
   <div class="content">
-    <h1>{{title | translate}}</h1>
+    <h1>{{title?title:'Untitled' | translate}}</h1>
     <p>
       {{remark | translate}}
     </p>
   </div>
   <ng-content select="[rightContent]"></ng-content>
-  
 </div>

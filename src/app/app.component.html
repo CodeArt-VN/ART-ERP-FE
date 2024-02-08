@@ -141,13 +141,13 @@
 
 			<ion-footer *ngIf="(env.user && env.user.Id)">
 
-				<a style="height: 56px; line-height: 56px;" (click)="goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env?.user?.UserSetting?.IsCompactMenu?.Value)">
+				<a style="height: 56px; line-height: 56px;" (click)="presentUserCPPopover($event)" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
 				</a>
 
-				<ion-item id="right-end" lines="none" detail="true" [routerLinkActive]="['is-active']" *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
+				<ion-item (click)="presentUserCPPopover($event)" lines="none" button [routerLinkActive]="['is-active']" *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
@@ -159,34 +159,41 @@
 						<!-- <p><i>{{'Version: ' + this.env.version}}</i></p> -->
 					</ion-label>
 				</ion-item>
-				<ion-popover trigger="right-end" side="right" alignment="end" class="w300" [dismissOnSelect]="true">
+				<ion-popover #userCPPopover [isOpen]="isUserCPOpen" side="right" alignment="end" class="w300" [dismissOnSelect]="true" (didDismiss)="isUserCPOpen = false">
 					<ng-template>
 						<ion-content scroll-y="false">
 							<ion-list lines="full">
-								<ion-item [routerLinkActive]="['is-active']" *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
+								<ion-item [routerLinkActive]="['is-active']" [routerLink]="['/profile']" button detail="false">
 									<ion-avatar slot="start">
 										<ion-img #img [src]="env.user.Avatar"
 											(ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 									</ion-avatar>
 									<ion-label>
-										<h3>
-											<ion-text color="primary">{{env.user.FullName}}</ion-text>
+										<h3 >
+											<ion-text class="bold" color="dark">{{env.user.FullName}}</ion-text>
 										</h3>
 										<p>{{env.user.UserName}}</p>
 									</ion-label>
 								</ion-item>
-								<ion-item lines="none" [button]="true" [detail]="false" [routerLink]="['/profile']">
-									<ion-label >{{'Profile' |
-											translate}}</ion-label>
+								<!-- <ion-item lines="none" button detail="false" [routerLink]="['/profile']">
+									<ion-label >{{'Profile' | translate}}</ion-label>
+								</ion-item> -->
+								
+								<ion-item lines="none" button detail="false">
+									<ion-icon color="warning" name="notifications" slot="start"></ion-icon>
+									<ion-label>{{'Notifications' | translate}}</ion-label>
 								</ion-item>
 								<ion-item lines="none" button detail="false">
+									<ion-icon color="pink" name="bulb" slot="start"></ion-icon>
 									<ion-label>{{'Give feed back' | translate}}</ion-label>
 								</ion-item>
 								<ion-item lines="full" button detail="false">
+									<ion-icon color="blue" name="help-circle" slot="start"></ion-icon>
 									<ion-label> {{'Help & Support' | translate}}</ion-label>
 								</ion-item>
 								<ion-item lines="none" (click)="logout()" button detail="false">
-									<ion-label>{{'Sign Out' | translate}}</ion-label>
+									<ion-icon color="bluegreen" name="log-out" slot="start"></ion-icon>
+									<ion-label>{{'Sign out' | translate}}</ion-label>
 								</ion-item>
 							</ion-list>				
 						</ion-content>

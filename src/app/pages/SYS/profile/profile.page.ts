@@ -141,7 +141,7 @@ export class ProfilePage extends PageBase {
 
 	async changePassword() {
 		if (!this.changePasswordForm.valid) {
-			this.env.showTranslateMessage('erp.app.pages.sys.profile.messsage.check-password','warning');
+			this.env.showTranslateMessage('Please recheck password','warning');
 		}
 		else {
 			const loading = await this.loadingController.create({
@@ -156,7 +156,7 @@ export class ProfilePage extends PageBase {
 					this.changePasswordForm.controls.newPassword.value,
 					this.changePasswordForm.controls.confirmPassword.value)
 					.then((savedItem: any) => {
-						this.env.showTranslateMessage('erp.app.pages.sys.profile.messsage.password-changed','warning');
+						this.env.showTranslateMessage('Password changed','warning');
 						this.changePasswordForm.reset();
 						this.cdr.detectChanges();
 						this.changePasswordForm.markAsPristine();
@@ -172,7 +172,7 @@ export class ProfilePage extends PageBase {
 							this.env.showTranslateMessage('erp.app.pages.sys.profile.message.least-6-char','danger');
 						}
 						else if (err.error && err.error.Message.indexOf('The request is invalid.') > -1) {
-							this.env.showTranslateMessage('erp.app.pages.sys.profile.messsage.invalid-request','danger');
+							this.env.showTranslateMessage('Password incorrect, please recheck','danger');
 						}
 						else {
 							this.env.showTranslateMessage('erp.app.pages.sys.profile.message.can-not-save','danger');

@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
 	canGoBack = false;
 	showScrollbar = false;
 	showAppMenu = true;
+
 	countForm = 0;
 	showMenu = true;
 	randomImg = './assets/undraw_art_museum_8or4.svg';
@@ -97,7 +98,7 @@ export class AppComponent implements OnInit {
 				case 'app:logout':
 					accountService.logout().then(_ => {
 						this.router.navigateByUrl('/login');
-						this.env.showTranslateMessage('erp.app.app-component.log-out', 'danger');
+						this.env.showTranslateMessage('You have log out of the system', 'danger');
 						setTimeout(() => {
 							location.reload();
 						}, 1000);
@@ -374,6 +375,16 @@ export class AppComponent implements OnInit {
 	openHelp() {
 		this.menu.open('appHelpDetail');
 	}
+
+	
+
+	@ViewChild('userCPPopover') userCPPopover;
+	isUserCPOpen = false;
+	presentUserCPPopover(e: any) {
+		this.userCPPopover.event = e;
+		this.isUserCPOpen = true;
+	}
+
 
 }
 

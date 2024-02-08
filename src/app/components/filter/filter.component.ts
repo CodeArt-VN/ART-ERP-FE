@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem, } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, } from '@angular/forms';
+import { J } from '@fullcalendar/core/internal-common';
 import { FilterConfig, Schema } from 'src/app/models/options-interface';
 import { lib } from 'src/app/services/static/global-functions';
 
@@ -50,13 +51,11 @@ export class FilterComponent implements OnInit {
 	@Input() smallWidth = false;
 
 	@Input() set item(i: FilterConfig) {
-		console.log(i);
-		
-		if (i == null) {
+		if (!i) {
 			i = {
 				Dimension: 'logical',
 				Operator: 'AND',
-				Logicals: [{ Dimension: null, Operator: null, Value: null }],
+				Logicals: [],
 			};
 		}
 		else {
@@ -75,9 +74,11 @@ export class FilterComponent implements OnInit {
 	_schema: Schema;
 	@Input() set schema(s: Schema) {
 		if (!s) return;
-		
-		this._schema = s;
-		if (this._schema.Fields.findIndex(d=>d.Code == 'logical') === -1) {
+
+		let temp = s;
+
+		this._schema = JSON.parse(JSON.stringify(temp));
+		if (this._schema.Fields.findIndex(d => d.Code == 'logical') === -1) {
 			this._schema.Fields.unshift({ Code: 'logical', Name: 'Logical' })
 		}
 	}
@@ -89,7 +90,6 @@ export class FilterComponent implements OnInit {
 
 	ngOnInit() {
 		this.buildForm();
-		
 	}
 
 	buildForm() {
@@ -120,8 +120,6 @@ export class FilterComponent implements OnInit {
 
 	@Output() inputChange = new EventEmitter();
 	onInputChange() {
-		console.log('onInputChange');
-		
 		if (!this.form.valid) {
 			this.getMessage({
 				message: 'Please recheck information highlighted in red above',
@@ -222,8 +220,6 @@ export class FilterComponent implements OnInit {
 	}
 
 	removeForm(fg: FormGroup, parentForm: FormGroup): void {
-		console.log(fg, parentForm);
-		
 		if (parentForm && parentForm.controls?.Logicals instanceof FormArray) {
 			const index = parentForm.controls.Logicals?.controls.indexOf(fg);
 			if (index !== -1) {
@@ -238,8 +234,6 @@ export class FilterComponent implements OnInit {
 	}
 
 	onDrop(event: CdkDragDrop<FormArray>) {
-		console.log(event);
-
 		if (event.previousContainer === event.container) {
 			moveItemInArray(
 				event.container.data.controls,

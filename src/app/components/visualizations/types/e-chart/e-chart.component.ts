@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import * as echarts from 'echarts';
 @Component({
-	selector: 'app-pie-chart',
+	selector: 'app-e-chart',
 	template: '<div style="height: 100%;" [id]="elId"></div>',
 
 })
@@ -42,8 +42,8 @@ export class EChartComponent implements OnInit {
 	ngAfterViewInit() {
 		var chartDom = document.getElementById(this.elId);
 		this.chart = echarts.init(chartDom);
-		this.chart.on('click', function (params) {
-			console.log(params.name);
+		this.chart.on('click',  (params) =>{
+			this.onChartClick(params);
 		});
 		setTimeout(() => {
 			this.updateChart();
@@ -52,13 +52,9 @@ export class EChartComponent implements OnInit {
 	}
 
 	ngOnChanges(changes: any) {
-		console.log(changes);
-		
 		if (changes.chartOption && changes.chartOption.currentValue) {
 			Object.assign(this.chartOption, changes.chartOption.currentValue);	
 		}
-
-
 		this.updateChart();
 	}
 
@@ -101,5 +97,10 @@ export class EChartComponent implements OnInit {
 		let li = lib;
 		eval(js);
 		return option;
+	}
+
+	@Output() chartClick = new EventEmitter();
+	onChartClick(e) {
+		this.chartClick.emit(e);
 	}
 }

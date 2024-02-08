@@ -5,6 +5,7 @@ import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
 import { ReportService } from 'src/app/services/report.service';
+import { lib } from 'src/app/services/static/global-functions';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 
 declare var ace: any;
@@ -15,8 +16,11 @@ declare var ace: any;
 	styleUrls: ['./report-config.component.scss'],
 })
 export class ReportConfigComponent implements OnInit {
+	@Input() canEdit = false;
+	@Input() canChangeReportConfig = false;
+	@Input() canEditScript = false;
 	form: FormGroup;
-	_reportConfig: BIReport;
+	_report: BIReport;
 	selectedSchema: any;
 	_dataset: any;
 	_schemaList: any;
@@ -66,12 +70,13 @@ export class ReportConfigComponent implements OnInit {
 		];
 		this._measureMethodDataSource = [
 			{ Code: 'count', Name: 'Count {0}', icon: '' },
+			{ Code: 'count distinct', Name: 'Count DISTINCT {0}', icon: '' },
 			{ Code: 'sum', Name: 'Sum of {0}', icon: '' },
 			{ Code: 'max', Name: 'Max of {0}', icon: '' },
 			{ Code: 'min', Name: 'Min of {0}', icon: '' },
 			{ Code: 'average', Name: 'Average {0}', icon: '' },
 		];
-		
+
 	}
 
 	ngAfterViewInit() {
@@ -84,9 +89,12 @@ export class ReportConfigComponent implements OnInit {
 	ngOnDestroy() {
 		this.dismissDatePicker();
 		this.dismissPopover();
-		
-		this.editor?.destroy();
-		this.editor?.container.remove();
+
+		this.chartConfigEditor?.destroy();
+		this.chartConfigEditor?.container.remove();
+
+		this.chartScriptEditor?.destroy();
+		this.chartScriptEditor?.container.remove();
 
 	}
 
@@ -96,36 +104,48 @@ export class ReportConfigComponent implements OnInit {
 	@Input() set reportId(v: number) {
 		if (v) {
 			this._reportId = v;
-			this._reportConfig = this.rpt.getReportConfig(this._reportId);
+			let temp = this.rpt.getReport(this._reportId);
+			if (temp) {
+				this._report = JSON.parse(JSON.stringify(temp));
 
-			this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
+				this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
 
-			this._timePeriodList.forEach(p => {
-				p.name = p.name.toLowerCase() + ' ago';
-			});
+				this._timePeriodList.forEach(p => {
+					p.name = p.name.toLowerCase() + ' ago';
+				});
+			}
+
 		}
-		this.buildForm(this._reportConfig.DataConfig);
-		let schema = this._reportConfig?.DataConfig?.Schema;
-		if (schema) {
+		this.buildForm(this._report?.DataConfig);
+		let schema = this._report?.DataConfig?.Schema;
+		if (schema?.Id) {
 			this._IDSchemaDataSource.selected.push(schema);
-			this._IDSchemaDataSource.initSearch();
 			this.changeSchema(schema);
 		}
+		this._IDSchemaDataSource.initSearch();
 	}
 
 	changeSchema(e) {
-		this.form.get('Schema').setValue({
-			Id: e.Id,
-			Type: e.Type,
-			Code: e.Code,
-			Name: e.Name
-		});
-		this.schemaService.getAnItem(e.Id).then((data: any) => {
-			if (data) {
-				this.selectedSchema = data;
-				this._schemaDetailsList = data.Fields;
-			}
-		})
+		
+		if (e?.Id) {
+			this.form.get('Schema').setValue({
+				Id: e?.Id,
+				Type: e?.Type,
+				Code: e?.Code,
+				Name: e?.Name
+			});
+			this.schemaService.getAnItem(e.Id).then((data: any) => {
+				if (data) {
+					this.selectedSchema = data;
+					this._schemaDetailsList = data.Fields;
+				}
+			})
+		}
+		else {
+			this.selectedSchema = null;
+			this._schemaDetailsList = [];
+			this.buildForm(null);
+		}
 	}
 
 	setTransform(filter) {
@@ -167,29 +187,22 @@ export class ReportConfigComponent implements OnInit {
 		if (!c) {
 			c = {
 				TimeFrame: {
-					Dimension: 'OrderDate',
 					From: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 1 },
 					To: { Type: 'Relative', IsPastDate: true, Period: 'Day', Amount: 0 }
 				},
 				CompareTo: { Type: 'Relative', IsPastDate: true, Period: 'Week', Amount: 1 },
-				Schema: { Id: 1, Code: 'SALE_Order', Name: 'Sale orders', Type: 'DBTable' },
+				Schema: null,
 				Transform: {
 					Filter: {
 						Dimension: 'logical', Operator: 'AND',
-						Logicals: [
-							{ Dimension: 'Status', Operator: 'IN', Value: JSON.stringify(['New', 'Confirmed', 'Scheduled', 'Picking', 'Delivered', 'Done', 'InDelivery']) }, //'Cancelled', 'Splitted', 'Merged',
-							{ Dimension: 'Type', Operator: '=', Value: 'POSOrder' },
-						]
 					},
 				},
-				Interval: { Property: 'OrderDate', Type: 'HourOfDay', Title: 'Order time' },
+
 				CompareBy: [
-					{ Property: 'Status', Title: 'Status' },
+
 				],
 				MeasureBy: [
-					{ Property: 'Id', Method: 'count', Title: 'Count' },
-					{ Property: 'NumberOfGuests', Method: 'count', Title: 'Guests' },
-					{ Property: 'CalcTotal', Method: 'sum', Title: 'Total' },
+
 				]
 			}
 		}
@@ -235,7 +248,7 @@ export class ReportConfigComponent implements OnInit {
 				Filter: ['']
 			}),
 		});
-		let filter = this._reportConfig.DataConfig?.Transform?.Filter;
+		let filter = this._report?.DataConfig?.Transform?.Filter;
 		if (filter) this.form.get('Transform.Filter').setValue(filter);
 		console.log(this.form.getRawValue());
 		// let notGroupList = ['MeasureBy', 'CompareBy', 'Interval', 'Transform', 'Schema', 'ReprotInfo'];
@@ -286,14 +299,14 @@ export class ReportConfigComponent implements OnInit {
 		this.pickerGroupName = groupName;
 		this.pickerControl = control;
 		this.popover.event = event;
-		this.calcAbsoluteDate(groupName== 'TimeFrame-To');
+		this.calcAbsoluteDate(groupName == 'TimeFrame-To');
 		this.isOpenDatePicker = true;
 	}
 
-	calcAbsoluteDate(isFullfillDate = false){
-		if(this.pickerControl.controls.Type.value == 'Relative' ){
+	calcAbsoluteDate(isFullfillDate = false) {
+		if (this.pickerControl.controls.Type.value == 'Relative') {
 			let tempDate = this.rpt.calcTimeValue(this.pickerControl.getRawValue(), isFullfillDate);
-			if(tempDate){
+			if (tempDate) {
 				this.pickerControl.controls.Value.value = tempDate.toJSON();
 			}
 		}
@@ -305,8 +318,8 @@ export class ReportConfigComponent implements OnInit {
 			this.pickerControl.controls.Type.markAsDirty();
 		}
 
-		if(pDate.Type == 'Relative' ){
-			
+		if (pDate.Type == 'Relative') {
+
 			if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
 				this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
 				this.pickerControl.controls.IsPastDate.markAsDirty();
@@ -319,9 +332,9 @@ export class ReportConfigComponent implements OnInit {
 				this.pickerControl.controls.Amount.setValue(pDate.Amount);
 				this.pickerControl.controls.Amount.markAsDirty();
 			}
-			this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To' );
+			this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To');
 		}
-		else{
+		else {
 			if (this.pickerControl.controls.Value.value != pDate.Value.detail.value) {
 				this.pickerControl.controls.Value.setValue(pDate.Value.detail.value);
 				this.pickerControl.controls.Value.markAsDirty();
@@ -381,10 +394,10 @@ export class ReportConfigComponent implements OnInit {
 			return;
 
 		if (!apply) {
-			this.form.patchValue(this._reportConfig.DataConfig);
+			this.form.patchValue(this._report?.DataConfig);
 		}
 		else {
-			this._reportConfig.DataConfig = this.form.getRawValue();
+			this._report.DataConfig = this.form.getRawValue();
 			this.onRunReport();
 		}
 		this.isOpenDatePicker = false;
@@ -395,12 +408,12 @@ export class ReportConfigComponent implements OnInit {
 			return;
 
 		if (!apply) {
-			// this.form.patchValue(this._reportConfig.DataConfig);
-			this.buildForm(this._reportConfig.DataConfig);
+			// this.form.patchValue(this._reportConfig?.DataConfig);
+			this.buildForm(this._report?.DataConfig);
 
 		}
 		else {
-			this._reportConfig.DataConfig = this.form.getRawValue();
+			this._report.DataConfig = this.form.getRawValue();
 			this.onRunReport();
 		}
 		this.isOpenPopover = false;
@@ -408,48 +421,68 @@ export class ReportConfigComponent implements OnInit {
 
 	@Output() runReport = new EventEmitter();
 	onRunReport() {
-		this._reportConfig.DataConfig = this.form.getRawValue()
-		this.runReport.emit(this._reportConfig);
-
-		if (this.editor) {
-			let value = this.editor.getValue();
-			console.log(value); // print
-			
-		}
+		this.updateDataConfig();
+		this.runReport.emit(this._report);
 	}
 
 	@Output() save = new EventEmitter();
 	onSave() {
-		this.save.emit(this._reportConfig);
+		this.updateDataConfig();
+		this.save.emit(this._report);
+	}
+
+	updateDataConfig() {
+		this._report.DataConfig = this.form.getRawValue();
+		if (this.chartConfigEditor) {
+			let value = this.chartConfigEditor.getValue();
+			this.rpt.updateChartConfigFromScript(this._report, value);
+		}
+
+		if (this.chartScriptEditor) {
+			let value = this.chartScriptEditor.getValue();
+			this._report.ChartScript = value;
+
+		}
+
+
 	}
 
 	loadAceEditor() {
-		if (typeof ace !== 'undefined')  this.initAce(); 
-		else 
-		this.dynamicScriptLoaderService.loadScript('https://ace.c9.io/build/src/ace.js')
-		.then(() => this.initAce())
-		.catch(error => console.error('Error loading script', error));
+		if (typeof ace !== 'undefined') this.initAce();
+		else
+			this.dynamicScriptLoaderService.loadScript('https://ace.c9.io/build/src/ace.js')
+				.then(() => this.initAce())
+				.catch(error => console.error('Error loading script', error));
 
 	}
 
-	editor
+	chartConfigId = 'chartConfigEditor' + lib.generateUID();
+	chartConfigEditor;
+	chartScriptId = 'chartScriptEditor' + lib.generateUID();
+	chartScriptEditor;
 	initAce() {
-		console.log('initAce');
-		
-		this.editor = ace.edit("aceEditor");
-		// editor.setTheme("ace/theme/monokai");
-		this.editor.session.setMode("ace/mode/javascript");
 
-		this.editor.session.on('change', function(delta) {
-			console.log(delta);
-			
-			// delta.start, delta.end, delta.lines, delta.action
-		});
 
-		
+
+		if (document.querySelector('#' + this.chartConfigId) != null) {
+			this.chartConfigEditor = ace.edit(this.chartConfigId);
+			this.chartConfigEditor.maxLines = Infinity;
+			this.chartConfigEditor.session.setMode("ace/mode/javascript");
+
+			this.chartConfigEditor.session.on('change', function (delta) {
+				console.log(delta);
+				// delta.start, delta.end, delta.lines, delta.action
+			});
+		}
+
+		if (document.querySelector('#' + this.chartScriptId) != null) {
+			this.chartScriptEditor = ace.edit(this.chartScriptId);
+			this.chartScriptEditor.session.setMode("ace/mode/javascript");
+			this.chartScriptEditor.maxLines = Infinity;
+			this.chartScriptEditor.session.on('change', function (delta) {
+				console.log(delta);
+				// delta.start, delta.end, delta.lines, delta.action
+			});
+		}
 	}
-
-	
-
-
 }

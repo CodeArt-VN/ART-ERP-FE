@@ -18,7 +18,7 @@ export class ReportChartComponent implements OnInit {
 	dataIntervalType: string; //To pass to chart component
 	rawData: any[] = []; //Raw data from services
 	
-	reportConfig: BIReport = null; //Report config
+	report: BIReport = null; //Report config
 	chartType: string = 'auto'; //Chart type
 	chartScript: string; //Chart script
 	chartOption: echarts.EChartsOption = null; //Chart option
@@ -37,32 +37,25 @@ export class ReportChartComponent implements OnInit {
 	@Input() set reportId(v: number) {
 		if (v) {
 			this._reportId = v;
-			this.reportConfig = this.rpt.getReportConfig(this._reportId);
-			this.dataIntervalProperty = this.reportConfig.DataConfig.Interval.Title || this.reportConfig.DataConfig.Interval.Property;
-			this.dataIntervalType = this.reportConfig.DataConfig.Interval.Type;
-			this.dimensions = this.reportConfig.Dimensions;
-			this.viewDimension = this.reportConfig.viewDimension || this.reportConfig.DataConfig.MeasureBy[0].Title || this.reportConfig.DataConfig.MeasureBy[0].Property;
-			this.chartScript = this.reportConfig.ChartScript;
-			if (this.reportConfig.DataConfig.Schema.Type == 'None' || this.reportConfig?.ChartConfig?.series) {
+			this.report = this.rpt.getReport(this._reportId);
+			this.dataIntervalProperty = this.report.DataConfig.Interval?.Title || this.report.DataConfig.Interval?.Property;
+			this.dataIntervalType = this.report.DataConfig.Interval.Type;
+			this.dimensions = this.report.Dimensions;
+			this.viewDimension = this.report.viewDimension || this.report.DataConfig.MeasureBy[0]?.Title || this.report.DataConfig.MeasureBy[0]?.Property;
+			this.chartScript = this.report.ChartScript;
+
+			if(!this.report.DataConfig.Schema.Id){
+				this.rptLoaded = true;
+				this.isLoading = false;
+			}
+
+			if (this.report.DataConfig.Schema.Type == 'None' || this.report?.ChartConfig?.series) {
 				this.chartType = 'fixed';
 			}
-			if (this.reportConfig.ChartConfig) {
-				this.chartOption = this.reportConfig.ChartConfig;	
+			if (this.report.ChartConfig) {
+				this.chartOption = this.report.ChartConfig;	
 			}
 			
-			
-
-			this.subscriptions.push(
-				this.rpt.regReportTrackingData(this._reportId).subscribe(ds => {
-					this.updateDataset(ds);
-					this.rptLoaded = true;
-					this.isLoading = false;
-	
-					console.log('report chart component regReportTrackingData');
-					
-				})
-			);
-
 			setTimeout(() => {
 				this.rpt.getReportData(this._reportId);
 				this.updateDimensions();
@@ -99,7 +92,27 @@ export class ReportChartComponent implements OnInit {
 	constructor(private env: EnvService, public rpt: ReportService) {
 	}
 
-	ngOnInit() { }
+	ngOnInit() { 
+		this.subscriptions.push(
+			this.rpt.regReportTrackingData(this._reportId).subscribe(ds => {
+				this.updateDataset(ds);
+				this.rptLoaded = true;
+				this.isLoading = false;
+
+				console.log('report chart component regReportTrackingData');
+				
+			})
+		);
+
+		this.subscriptions.push(
+			this.rpt.reportConfigTracking.subscribe((reportId) => {
+				if (reportId == this._reportId || !this._reportId) {
+					this.reportId = reportId;
+				}
+				
+			})
+		);
+	}
 
 	
 	ngAfterViewInit() {}
@@ -112,11 +125,11 @@ export class ReportChartComponent implements OnInit {
 	
 	dimensions: string[] = [];
 	updateDimensions() {
-		if (this.viewDimension) {
-			this.dimensions = [this.reportConfig.DataConfig.CompareBy[0].Property, this.viewDimension];
+		if (this.viewDimension && this.report.DataConfig.CompareBy.length > 0) {
+			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), this.viewDimension];
 		}
-		else {
-			this.dimensions = [this.reportConfig.DataConfig.CompareBy[0].Property, this.reportConfig.DataConfig.MeasureBy[0].Property];
+		else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0){
+			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), (this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property)];
 		}
 	}
 
@@ -126,7 +139,7 @@ export class ReportChartComponent implements OnInit {
 	 */
 	updateDataset(ds){
 		if (!ds) return;
-		let elements = document.querySelectorAll('.updatedtime-label'+this.reportConfig.Id);
+		let elements = document.querySelectorAll('.updatedtime-label'+this.report.Id);
 		elements.forEach(element => {
 			//element.scrollIntoView({ behavior: "smooth", block: "center" });
             element.classList.add('blink');
@@ -137,7 +150,7 @@ export class ReportChartComponent implements OnInit {
 		this.dataFetchDate = ds.dataFetchDate;
 		this.rawData = ds.data;
 
-		this.reportConfig?.DataConfig.MeasureBy.forEach((m) => {
+		this.report?.DataConfig.MeasureBy.forEach((m) => {
 			m.Value = this.rawData.map(x => x[(m.Title || m.Property)]).reduce((a, b) => (+a) + (+b), 0);
 		});
 	}
@@ -188,7 +201,7 @@ export class ReportChartComponent implements OnInit {
 	onOpenReport() {
 		this.isToolPopoverOpen = false;
 		setTimeout(() => {
-			this.openReport.emit(this.reportConfig);	
+			this.openReport.emit(this.report);	
 		}, 0);
 		
 	}
@@ -201,5 +214,10 @@ export class ReportChartComponent implements OnInit {
 
 	compareObjects(o1: any, o2: any): boolean {
 		return JSON.stringify(o1) == JSON.stringify(o2);
+	}
+
+	@Output() chartClick = new EventEmitter();
+	onChartClick(e) {
+		this.chartClick.emit(e);
 	}
 }
