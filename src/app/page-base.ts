@@ -703,6 +703,7 @@ export abstract class PageBase implements OnInit {
                 this.pageConfig.pageName = currentForm.Code;
                 this.pageConfig.pageTitle = currentForm.Name;
                 this.pageConfig.pageIcon = currentForm.Icon;
+                this.pageConfig.pageColor = currentForm.BadgeColor;
                 this.pageConfig.pageRemark = currentForm.Remark;
                 this.pageConfig.canEditHelpContent = true;
                 

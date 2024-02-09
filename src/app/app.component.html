@@ -141,13 +141,13 @@
 
 			<ion-footer *ngIf="(env.user && env.user.Id)">
 
-				<a style="height: 56px; line-height: 56px;" (click)="presentUserCPPopover($event)" [routerLink]="['/profile']" [routerLinkActive]="['is-active']" class="menu-item" *ngIf="(env?.user?.UserSetting?.IsCompactMenu?.Value)">
+				<a style="height: 56px; line-height: 56px;" (click)="presentUserCPPopover($event)" class="menu-item" *ngIf="(env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
 				</a>
 
-				<ion-item (click)="presentUserCPPopover($event)" lines="none" button [routerLinkActive]="['is-active']" *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
+				<ion-item (click)="presentUserCPPopover($event)" lines="none" button  *ngIf="(!env?.user?.UserSetting?.IsCompactMenu?.Value)">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
