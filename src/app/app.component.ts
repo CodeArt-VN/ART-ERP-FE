@@ -385,6 +385,10 @@ export class AppComponent implements OnInit {
 		this.isUserCPOpen = true;
 	}
 
+	segmentView = 'home';
+    segmentChanged(ev: any) {
+        this.segmentView = ev.detail.value;
+    }
 
 }
 
