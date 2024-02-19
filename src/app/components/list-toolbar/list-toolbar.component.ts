@@ -377,6 +377,43 @@ export class ListToolbarComponent implements OnInit {
 			});
 		}
 
+		if (this.pageConfig.pageName == 'request') {
+			this.showApproveOrders = false;
+			this.showDisapproveOrders = false;
+			this.showCancelOrders = true;
+			this.showDelete = false;
+			this.showSubmitOrdersForApproval = true;
+			this.selectedItems.forEach(i => {
+				// Draft	Nháp
+				// Unapproved	Không duyệt
+				// Submitted	Chờ duyệt
+				// Approved	Đã duyệt
+				// Ordered	Đã đặt mua
+
+				// PORequestQuotation	Chờ báo giá
+				// Confirmed	NCC đã xác nhận
+				// Shipping	Đang vận chuyển
+				// PartiallyReceived	Đã nhận một phần 
+				// Received	Đã nhận hàng
+				// Cancelled	Đã Hủy
+
+				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+
+				let notShowSubmitOrdersForApproval = ['Pending','Approved','InProgress','Forward','Denied','Cancelled'];
+				if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1 || !i.canSubmitOrdersForApproval) {
+					this.showSubmitOrdersForApproval = false;
+				}
+				// let notShowDisapproveOrders = ['Draft', 'Unapproved','Cancelled'];
+				// if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
+				// 	this.showDisapproveOrders = false;
+				// }
+
+				let notShowCancelOrders = ['Cancelled','Draft'];
+				if (notShowCancelOrders.indexOf(i.Status) > -1) {
+					this.showCancelOrders = false;
+				}
+			});
+		}
 	}
 
 
