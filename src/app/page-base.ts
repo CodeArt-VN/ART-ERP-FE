@@ -440,7 +440,7 @@ export abstract class PageBase implements OnInit {
                 // this.item.Id = this.id;
                 Object.assign(this.item, this.formGroup.value);
                 Object.keys(this.item).forEach(k => {
-                    if (this.item[k] === null || this.item[k] === undefined || this.item[k] === '')
+                    if (this.item[k] === undefined)
                         delete this.item[k];
 
                 });
@@ -698,7 +698,7 @@ export abstract class PageBase implements OnInit {
         if (this.navCtrl && this.env.user && this.env.user.Forms) {
 
             //console.log('snapshot.url', this.navCtrl.router.routerState.snapshot.url);
-            let currentForm = this.env.user.Forms.find(d => pageUrl.indexOf(d.Code + '/') > -1 && (d.Type == 0 || d.Type == 1 || d.Type == 2));
+            let currentForm = this.env.user.Forms.find(d => pageUrl.startsWith('/'+d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2));
             if (currentForm) {
                 this.pageConfig.pageName = currentForm.Code;
                 this.pageConfig.pageTitle = currentForm.Name;

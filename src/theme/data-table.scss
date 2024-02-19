@@ -42,7 +42,7 @@ app-data-table,.table {
 	>header.bold,
 	>form,
 	.sticky-header {
-		position: sticky;
+		position: sticky !important;
 		top: 0;
 		padding: 0;
 		z-index: 10;
@@ -376,13 +376,14 @@ app-data-table,.table {
 			background-image: url('./../assets/ddown.svg'), none;
 			background-repeat: no-repeat;
 			background-size: 2.6rem;
-			background-position: right center;
+			background-position-x: right !important;
+    		background-position-y: center;
 		}
 
 		
 
 		.c-dropdown{
-			padding-right: 1.6rem !important;
+			padding-right: 2.6rem !important;
 		}
 		.date{
 			padding-right: 0.5rem !important;

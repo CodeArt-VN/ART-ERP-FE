@@ -17,16 +17,16 @@ export class ReportChartComponent implements OnInit {
 	dataIntervalProperty: string; //To pass to chart component
 	dataIntervalType: string; //To pass to chart component
 	rawData: any[] = []; //Raw data from services
-	
+
 	report: BIReport = null; //Report config
 	chartType: string = 'auto'; //Chart type
 	chartScript: string; //Chart script
 	chartOption: echarts.EChartsOption = null; //Chart option
-	
-	
+
+
 
 	/** Set data directly to the component without going through the data subscription */
-	@Input() set data(ds){
+	@Input() set data(ds) {
 		if (ds) {
 			this.updateDataset(ds);
 		}
@@ -36,15 +36,32 @@ export class ReportChartComponent implements OnInit {
 	_reportId: number;
 	@Input() set reportId(v: number) {
 		if (v) {
+			if (!this._reportId || this._reportId != v) {
+				setTimeout(() => {
+					if (this.viewDimension) this.changeViewDimension.emit(this.viewDimension);
+					this.rpt.getReportData(this._reportId);
+				}, 300);
+			}
+
 			this._reportId = v;
-			this.report = this.rpt.getReport(this._reportId);
+			let temp = this.rpt.getReport(this._reportId);
+			this.report = JSON.parse(JSON.stringify(temp));
 			this.dataIntervalProperty = this.report.DataConfig.Interval?.Title || this.report.DataConfig.Interval?.Property;
 			this.dataIntervalType = this.report.DataConfig.Interval.Type;
-			this.dimensions = this.report.Dimensions;
-			this.viewDimension = this.report.viewDimension || this.report.DataConfig.MeasureBy[0]?.Title || this.report.DataConfig.MeasureBy[0]?.Property;
+			
+			if (this.report.Dimensions?.length > 0) 
+				this.dimensions = this.report.Dimensions;
+			else 
+				this.updateDimensions();
+			
+			if (!this.viewDimension || !this.dimensions.includes(this.viewDimension)) {
+				this.viewDimension = this.report.viewDimension || this.report.DataConfig.MeasureBy[0]?.Title || this.report.DataConfig.MeasureBy[0]?.Property;	
+			}
+			
+			
 			this.chartScript = this.report.ChartScript;
 
-			if(!this.report.DataConfig.Schema.Id){
+			if (!this.report.DataConfig.Schema.Id) {
 				this.rptLoaded = true;
 				this.isLoading = false;
 			}
@@ -53,25 +70,14 @@ export class ReportChartComponent implements OnInit {
 				this.chartType = 'fixed';
 			}
 			if (this.report.ChartConfig) {
-				this.chartOption = this.report.ChartConfig;	
-			}
-			
-			setTimeout(() => {
-				this.rpt.getReportData(this._reportId);
-				this.updateDimensions();
-			}, 300);
-			if (this.viewDimension) {
-				setTimeout(() => {
-					this.changeViewDimension.emit(this.viewDimension);	
-				}, 0);
-				
+				this.chartOption = this.report.ChartConfig;
 			}
 		}
 	}
 
 	/** grid item in dashboard - to set UI responsive */
 	_gridItem: any;
-	@Input() set gridItem(v){
+	@Input() set gridItem(v) {
 		this._gridItem = v;
 		console.log('gridItem', v);
 		if (this._gridItem?.WidgetConfig?.ViewDimension) {
@@ -92,7 +98,7 @@ export class ReportChartComponent implements OnInit {
 	constructor(private env: EnvService, public rpt: ReportService) {
 	}
 
-	ngOnInit() { 
+	ngOnInit() {
 		this.subscriptions.push(
 			this.rpt.regReportTrackingData(this._reportId).subscribe(ds => {
 				this.updateDataset(ds);
@@ -100,35 +106,35 @@ export class ReportChartComponent implements OnInit {
 				this.isLoading = false;
 
 				console.log('report chart component regReportTrackingData');
-				
+
 			})
 		);
 
 		this.subscriptions.push(
 			this.rpt.reportConfigTracking.subscribe((reportId) => {
 				if (reportId == this._reportId || !this._reportId) {
+					
 					this.reportId = reportId;
 				}
-				
 			})
 		);
 	}
 
-	
-	ngAfterViewInit() {}
+
+	ngAfterViewInit() { }
 
 	ngOnDestroy() {
 		//Unsubscribe all
 		this.subscriptions.forEach(subscription => subscription.unsubscribe());
 	}
 
-	
+
 	dimensions: string[] = [];
 	updateDimensions() {
 		if (this.viewDimension && this.report.DataConfig.CompareBy.length > 0) {
 			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), this.viewDimension];
 		}
-		else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0){
+		else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0) {
 			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), (this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property)];
 		}
 	}
@@ -137,15 +143,15 @@ export class ReportChartComponent implements OnInit {
 	 * Set dataset data
 	 * @param ds Data form services
 	 */
-	updateDataset(ds){
+	updateDataset(ds) {
 		if (!ds) return;
-		let elements = document.querySelectorAll('.updatedtime-label'+this.report.Id);
+		let elements = document.querySelectorAll('.updatedtime-label' + this.report.Id);
 		elements.forEach(element => {
 			//element.scrollIntoView({ behavior: "smooth", block: "center" });
-            element.classList.add('blink');
-            setTimeout(() => {
-                element.classList.remove('blink');
-            }, 2000);
+			element.classList.add('blink');
+			setTimeout(() => {
+				element.classList.remove('blink');
+			}, 2000);
 		});
 		this.dataFetchDate = ds.dataFetchDate;
 		this.rawData = ds.data;
@@ -155,7 +161,7 @@ export class ReportChartComponent implements OnInit {
 		});
 	}
 
-	
+
 
 	/**	Control tool popover */
 	isToolPopoverOpen = false;
@@ -180,7 +186,7 @@ export class ReportChartComponent implements OnInit {
 		setTimeout(() => {
 			this.changeViewDimension.emit(v);
 		}, 0);
-		
+
 	}
 	@Output() changeViewDimension = new EventEmitter();
 
@@ -201,13 +207,13 @@ export class ReportChartComponent implements OnInit {
 	onOpenReport() {
 		this.isToolPopoverOpen = false;
 		setTimeout(() => {
-			this.openReport.emit(this.report);	
+			this.openReport.emit(this.report);
 		}, 0);
-		
+
 	}
 
 	/** Reload data */
-	onReloadData(){
+	onReloadData() {
 		this.isLoading = true;
 		this.rpt.getReportData(this._reportId, true);
 	}

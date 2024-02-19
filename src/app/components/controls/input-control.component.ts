@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
@@ -8,9 +8,6 @@ import { environment } from 'src/environments/environment';
 	templateUrl: './input-control.component.html',
 })
 export class InputControlComponent implements OnInit {
-	@Output() inputChange = new EventEmitter();
-	@Output() nav = new EventEmitter();
-
 	@Input() set field(f: InputControlField) {
         if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
@@ -28,11 +25,13 @@ export class InputControlComponent implements OnInit {
 	
     @Input() form: FormGroup;
 
-    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' = 'text';
+    @Input() type : string = 'text';
 
     @Input() id: string;
 
     @Input() label: string;
+
+	@Input() color: string = 'dark';
 
     @Input() placeholder?: string;
 
@@ -54,8 +53,14 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {}
 
+	@Output() change = new EventEmitter();
+	@Output() inputChange = new EventEmitter();
+
 	onInputChange(event) {
 		this.inputChange.emit(event);
+		if ('|ng-select|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon'.includes(this.type)) {
+			this.change.emit(event);
+		}
 	}
 
 	onKeydown(event) {
@@ -64,8 +69,33 @@ export class InputControlComponent implements OnInit {
 		}
 	}
 
+	@Output() nav = new EventEmitter();
 	onNav(to) {
 		this.nav.emit(to);
+	}
+
+	isOpenPicker = false;
+	@ViewChild('popover') popover;
+	presentPicker(event){
+		this.popover.event = event;
+		this.isOpenPicker = true;
+	}
+	presentPopupPicker(){
+		this.isOpenPicker = true;
+	}
+
+	onSelectIcon(icon, control){
+		control.setValue(icon.Name);
+        control.markAsDirty();
+		this.isOpenPicker = false;
+		this.onInputChange(control);
+	}
+
+	onSelectColor(color, control){
+		control.setValue(color.Code);
+		control.markAsDirty();
+		this.isOpenPicker = false;
+		this.onInputChange(control);
 	}
 
 }

@@ -914,7 +914,7 @@ ion-content.cameraFrame {
 
 @media screen and (max-width: 767px) {
     .titleMainPageActive {
-        display: block !important;
+        display: flex !important;
     }
 
     .titleSubPageActive {
@@ -930,7 +930,7 @@ ion-content.cameraFrame {
     }
 
     .backSubPageActive {
-        display: block !important;
+        display: flex !important;
     }
 
     .childViewActive {
@@ -947,11 +947,11 @@ ion-content.cameraFrame {
 }
 
 .titleMainPageActive {
-    display: block;
+    display: flex;
 }
 
 .titleSubPageActive {
-    display: block;
+    display: flex;
 }
 
 .backSubPageActive {

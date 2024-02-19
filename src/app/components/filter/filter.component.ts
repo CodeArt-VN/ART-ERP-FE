@@ -118,7 +118,7 @@ export class FilterComponent implements OnInit {
 		this.message.emit(e);
 	}
 
-	@Output() inputChange = new EventEmitter();
+	@Output() change = new EventEmitter();
 	onInputChange() {
 		if (!this.form.valid) {
 			this.getMessage({
@@ -135,7 +135,7 @@ export class FilterComponent implements OnInit {
 				Logicals: [i],
 			};
 		}
-		this.inputChange.emit(i);
+		this.change.emit(i);
 	}
 
 

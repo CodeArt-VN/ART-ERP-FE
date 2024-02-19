@@ -9,6 +9,7 @@
     [type]="type"
     [id]="id"
     [label]="label"
+    [color]="color"
     [placeholder]="placeholder"
     [dataSource]="dataSource"
     [bindValue]="bindValue"
@@ -16,7 +17,7 @@
     [multiple]="multiple"
     [clearable]="clearable"
     [noCheckDirty]="noCheckDirty"
-
+    (change)="onChange($event)"
     (inputChange)="onInputChange($event)"
     (nav) = "onNav($event)"
     ></app-input-control>

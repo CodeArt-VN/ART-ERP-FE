@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-icon-picker',
@@ -6,8 +6,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 	styleUrls: ['./icon-picker.component.scss'],
 })
 export class IconPickerComponent implements OnInit {
-	items = [
+	@Input() icon: string;
+	@Input() color: string;
 
+	items = [
 		{ Name: 'radar', Tags: 'radar,chart,web' },
 		{ Name: 'address-book', Tags: 'address,book' },
 		{ Name: 'address-card', Tags: 'address,card' },
@@ -607,7 +609,8 @@ export class IconPickerComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit() {}
-	onSelected(event) {
-		this.selected.emit(event);
+	onSelected(i) {
+		this.icon = i.Name;
+		this.selected.emit(i);
 	}
 }

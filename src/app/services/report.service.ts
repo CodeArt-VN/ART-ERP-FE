@@ -224,6 +224,10 @@ export class ReportService extends BI_ReportProvider {
 	}
 
 	updateChartConfigFromScript(report: BIReport, chartConfig) {
+		if (report.ChartConfigScript == chartConfig) {
+			return;
+		}
+		
 		let option = {};
 		try {
 			eval(chartConfig);
@@ -279,6 +283,10 @@ export class ReportService extends BI_ReportProvider {
 	 */
 	saveReportConfig(config: BIReport) {
 		let report = this.getReport(config.Id) || {};
+		if (JSON.stringify(report) == JSON.stringify(config)) {
+			return;
+		}
+
 		Object.assign(report, config);
 		this.reportConfigTracking.next(report.Id);
 	}

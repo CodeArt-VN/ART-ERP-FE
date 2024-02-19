@@ -141,6 +141,14 @@
             }
             
         }
+        &.btns{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            padding-left: 0;
+            
+        }
     }
 
     .c-checkbox{
@@ -150,7 +158,8 @@
         height: 2rem;
         margin-top: 0.25em;
         vertical-align: top;
-        background-color: transparent; //var(--ion-color-primary-contrast);
+        //background-color: transparent; //var(--ion-color-primary-contrast);
+        background-color: var(--menu-background-bottom);
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;

@@ -16,7 +16,7 @@ import { InputControlComponent } from "./input-control.component";
 import { IconPickerComponent } from "./icon-picker/icon-picker.component";
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { ColorPickerComponent } from "./color-picker/color-picker.component";
-import { ColorComponent } from "./color/color.component";
+
 
 
 @NgModule({
@@ -43,7 +43,7 @@ import { ColorComponent } from "./color/color.component";
 		BranchBreadcrumbsComponent,
 		IconPickerComponent,
 		ColorPickerComponent,
-		ColorComponent
+		
 	],
 	exports: [
 		
@@ -54,7 +54,7 @@ import { ColorComponent } from "./color/color.component";
 		BranchBreadcrumbsComponent,
 		IconPickerComponent,
 		ColorPickerComponent,
-		ColorComponent,
+		
 
 		NgxMaskDirective,  NgxMaskPipe,
 	],

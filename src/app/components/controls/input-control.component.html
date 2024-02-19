@@ -32,7 +32,7 @@
 
     <!-- select -->
     <select *ngSwitchCase="'select'" [ngClass]="{'no-check-dirty': noCheckDirty}" class="c-input c-dropdown" [id]="id" placeholder="{{placeholder | translate}}" [formControlName]="id" (change)="onInputChange($event);" (keydown)="onKeydown($event)">
-        <option *ngFor="let i of dataSource" [value]="i[bindValue]" [disabled] = "i.disabled">{{i[bindLabel] | translate}}</option>
+        <option *ngFor="let i of dataSource" [ngValue]="i[bindValue]" [disabled] = "i.disabled">{{i[bindLabel] | translate}}</option>
     </select>
 
     <!-- ng-select -->
@@ -141,6 +141,40 @@
     <!-- span-datetime -->
     <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{form.controls[id].value | date:'yyyy/MM/dd HH:mm'}}</span>
 
-    
-    
+    <!-- color -->
+    <span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{disable: form.controls[id].disabled}">
+        
+        <ion-button [color]="form.controls[id].value || color" fill="clear" size="small" (click)="presentPicker($event)">
+            <ion-icon slot="start" name="radio-button-on"></ion-icon>
+            {{(form.controls[id].value || 'Change color') | translate}}
+        </ion-button>
+
+        <ion-popover class="w300" #popover [isOpen]="isOpenPicker" (didDismiss)="isOpenPicker = false">
+            <ng-template>
+                <ion-content>
+                    <app-color-picker (selected)="onSelectColor($event, form.controls[id])" [color]="form.controls[id].value || 'dark'"></app-color-picker>
+                </ion-content>
+            </ng-template>
+        </ion-popover>
+    </span>
+
+    <!-- icon -->
+    <span *ngSwitchCase="'icon'" class="c-input btns" [ngClass]="{disable: form.controls[id].disabled}">
+        <ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
+            <ion-icon [color]="color" slot="start" [name]="form.controls[id].value || 'layers'"></ion-icon>
+            {{(form.controls[id].value || 'Change icon') | translate}}
+        </ion-button>
+
+        <ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
+            <ng-template>
+                <ion-content>
+                    <app-icon-picker (selected)="onSelectIcon($event, form.controls[id])" [color]="color" [icon]="form.controls[id].value"></app-icon-picker>
+                    <div style="padding-top: 25vh;"></div>
+                </ion-content>
+            </ng-template>
+        </ion-modal>
+    </span>
+
+     
+
 </ng-container>

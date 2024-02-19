@@ -6,19 +6,21 @@
 			</ion-item>
 			<div class="ion-padding" slot="content" style="background: transparent;">
 				<ng-container formGroupName="Schema" *ngIf="canChangeReportConfig">
-					<app-form-control appendTo="#ng-select-holder" [field]="{id:'Id', label: 'Data from', type : 'ng-select-schema', dataSource:_IDSchemaDataSource, clearable: 'true', bindLabel:'Name',bindValue:'Id' , form : form.controls.Schema}" (inputChange)="changeSchema($event)"></app-form-control>
+					<app-form-control appendTo="#ng-select-holder" [field]="{id:'Id', label: 'Data from', type : 'ng-select-schema', dataSource:_IDSchemaDataSource, clearable: 'true', bindLabel:'Name',bindValue:'Id' , form : form.controls.Schema}" (change)="changeSchema($event)"></app-form-control>
 				</ng-container>
-				<app-form-control *ngIf="canChangeReportConfig" [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Time field" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (inputChange)="onChange($event)"></app-form-control>
+				<app-form-control *ngIf="canChangeReportConfig" [form]="form.controls.TimeFrame" type="ng-select" id="Dimension" label="Time field" placeholder="Please enter data.." [dataSource]="_schemaDetailsList" bindValue="Code" bindLabel="Name" (change)="onChange($event)"></app-form-control>
 				<ng-container formGroupName="TimeFrame">
 					<div class="c-control">
 						<label class="c-label">{{'Time range' | translate}}</label>
-						<span class="c-input">
-							<ion-icon name="calendar-outline"></ion-icon>
+						<span class="c-input btns">
+							
 							<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')">
+								<ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
 								{{rpt.formatTimeConfig(form.controls.TimeFrame.controls.From.getRawValue())}}
 							</ion-button>
-							<ion-icon name="arrow-forward"></ion-icon>
+							
 							<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')">
+								<ion-icon color="dark" slot="start" name="arrow-forward"></ion-icon>
 								{{rpt.formatTimeConfig(form.controls.TimeFrame.controls.To.getRawValue())}}
 							</ion-button>
 						</span>
@@ -26,10 +28,10 @@
 				</ng-container>
 		
 				<div class="c-control">
-					<label class="c-label">{{'Cpmmpare to' | translate}}</label>
-					<span class="c-input">
-						<ion-icon name="timer-outline"></ion-icon>
+					<label class="c-label">{{'Commpare to' | translate}}</label>
+					<span class="c-input btns">
 						<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')">
+							<ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
 							{{rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true)}}
 						</ion-button>
 					</span>
@@ -38,11 +40,13 @@
 				<ng-container formGroupName="Interval" *ngIf="canChangeReportConfig">
 					<div class="c-control">
 						<label class="c-label">{{'Time interval for the chart' | translate}}</label>
-						<span class="c-input">
-							<ion-icon name="bar-chart-outline"></ion-icon>
+						<span class="c-input btns">
+							
 							<ion-button fill="clear" size="small" (click)="presentPopover($event,form.controls.Interval,'Interval')">
+								<ion-icon color="dark" slot="start" name="bar-chart-outline"></ion-icon>
+
 								{{form.controls.Interval?.controls.Title?.value || form.controls.Interval?.controls.Property?.value}}
-								<ion-text color="dark">&nbsp; {{' by ' | translate}} &nbsp;</ion-text>
+								<ion-text color="dark">&nbsp; {{'by' | translate}} &nbsp;</ion-text>
 								{{form.controls.Interval?.controls.Type?.value}}
 							</ion-button>
 						</span>
@@ -79,7 +83,7 @@
 					<div class="c-control">
 						<label class="c-label">{{'Query builder' | translate}}</label>
 						<!-- <span class="c-input" style="flex-wrap: wrap;height: auto;"></span> -->
-						<app-filter [smallWidth]="true" [item]="form.get('Transform.Filter').value" #appFilter [schema]="selectedSchema" (inputChange)="appFilter.onFormSubmit($event)" (submit)='setTransform($event)'></app-filter>
+						<app-filter [smallWidth]="true" [item]="form.get('Transform.Filter').value" #appFilter [schema]="selectedSchema" (change)="appFilter.onFormSubmit($event)" (submit)='setTransform($event)'></app-filter>
 					</div>
 				</ng-container>
 			</div>
@@ -202,8 +206,8 @@
 						</ng-container>
 					</div>
 					<ion-item>
-						<app-input-control style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 16px;" [form]="pickerControl" type="select" id="Period" [dataSource]="_timePeriodList" bindValue="code" bindLabel="name" (inputChange)="onChange($event)"></app-input-control>
-						<app-form-control style="width: 100%;" [form]="pickerControl" type="number" id="Amount" (inputChange)="onChange($event)"></app-form-control>
+						<app-input-control style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 16px;" [form]="pickerControl" type="select" id="Period" [dataSource]="_timePeriodList" bindValue="code" bindLabel="name" (change)="onChange($event)"></app-input-control>
+						<app-form-control style="width: 100%;" [form]="pickerControl" type="number" id="Amount" (change)="onChange($event)"></app-form-control>
 					</ion-item>
 				</ion-list>
 

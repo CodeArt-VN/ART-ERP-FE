@@ -1124,6 +1124,55 @@ export var APIListBase = {
 		
 	},
 
+	BI_CSVData:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/CSVData/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("BI/CSVData/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("BI/CSVData/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+        }
+		
+	},
+
 	BI_Daily_Balance:{
         getSearchList:{
             method: "GET",
@@ -2982,6 +3031,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+        }
+		
+	},
+
+	CRM_PartnerTaxInfo:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
         }
 		
 	},

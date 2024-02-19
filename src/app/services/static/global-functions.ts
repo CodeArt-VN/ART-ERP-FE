@@ -574,43 +574,73 @@ export var lib = {
 	 * @param message Nội dung chuyển tiền
 	 * @returns Trả về code để tạo mã QR
 	 */
-	genBankTransferQRCode(bankCode:string, bankAccount:string, amount: number, message:string){
+	genBankTransferQRCode(bankCode: string, bankAccount: string, amount: number, message: string) {
 		//Mô tả thông tin QR Code trong y tế căn cứ theo TCCS TCVN 03:2018
 		//https://pcbinhthuan.evnspc.vn/Portals/0/TinTucVaSuKien/PhongKinhDoanh/5_%20Ap%20dung%20Tieu%20chuan%20QR%20Code%20cua%20NHNN.pdf
 		const bankIdByCode = {
-			'vcb': 			'970436',
-			'mb': 			'970422',
-			'vietinbank': 	'970415'
-		  };
+			'vcb': '970436',
+			'mb': '970422',
+			'vietinbank': '970415'
+		};
 
 		let messPart = '08'
-		+ message.length.toString().padStart(2, '0') 
-		+ message;
+			+ message.length.toString().padStart(2, '0')
+			+ message;
 
 		let code =
-		'000201'		 		//Phiên bản đặc tả QRCode
-		+'010212'				//Phương thức khởi tạo. 11 = QR tĩnh; 12 = QR động
-		+'3854'					//Thông tin tài khoản nhận tiền
-			+'0010A000000727'
-			+'0124'
-				+'0006' + bankIdByCode[bankCode] 	 //Id ngân hàng
-				+'01' + bankAccount.length.toString().padStart(2, '0')	//Số tài khoản
-				+bankAccount					
-			+'0208QRIBFTTA' 
-		+'5303704'				//Mã tiền tệ - 3 ký tự - 704 = vnd
-		+'54'					//Số tiền giao dịch - 7 ký tự - amount 1000000
-		  	+ (amount+'').length.toString().padStart(2, '0')
+			'000201'		 		//Phiên bản đặc tả QRCode
+			+ '010212'				//Phương thức khởi tạo. 11 = QR tĩnh; 12 = QR động
+			+ '3854'					//Thông tin tài khoản nhận tiền
+			+ '0010A000000727'
+			+ '0124'
+			+ '0006' + bankIdByCode[bankCode] 	 //Id ngân hàng
+			+ '01' + bankAccount.length.toString().padStart(2, '0')	//Số tài khoản
+			+ bankAccount
+			+ '0208QRIBFTTA'
+			+ '5303704'				//Mã tiền tệ - 3 ký tự - 704 = vnd
+			+ '54'					//Số tiền giao dịch - 7 ký tự - amount 1000000
+			+ (amount + '').length.toString().padStart(2, '0')
 			+ amount
-		+'5802VN'          		//Mã quốc gia
-		+'62' 					//Thông tin bổ sung
+			+ '5802VN'          		//Mã quốc gia
+			+ '62' 					//Thông tin bổ sung
 			+ messPart.length.toString().padStart(2, '0')
 			+ messPart
-		+ '6304'; 	//Checksum
+			+ '6304'; 	//Checksum
 
 		let crc = lib.calcCRC(code);
 		code = code + crc.toString(16).toUpperCase().padStart(4, '0');
 
 		return code;
+	},
+
+	readVietQRCode(code) {
+		//00020101021238540010A0000007270124000697042201100908061119 0208QRIBFTTA 53037045403 120 5802VN62 130809 SO1193743 6304B779
+		let result = {
+			bankCode: '',
+			bankAccount: '',
+			amount: 0,
+			message: ''
+		};
+		const bankIdByCode = {
+			'vcb': '970436',
+			'mb': '970422',
+			'vietinbank': '970415'
+		};
+
+		let bankId = code.substring(38, 38 + 6);
+		result.bankCode = Object.keys(bankIdByCode).find(key => bankIdByCode[key] === bankId);
+
+		let bankAccountLength = parseInt(code.substring(46, 48));
+		result.bankAccount = code.substring(48, 48 + bankAccountLength);
+
+		code = code.split('0208QRIBFTTA')[1];
+		let amountLength = parseInt(code.substring(9, 11));
+		result.amount = parseInt(code.substring(11, 11 + amountLength));
+
+		code = code.split('5802VN62')[1];
+		let messageLength = parseInt(code.substring(4, 6));
+		result.message = code.substring(6, 6 + messageLength);
+		return result;
 	},
 
 	getCharacterByteArrayFromString(str) {
@@ -625,24 +655,24 @@ export var lib = {
 		return bytes;
 	},
 
-	calcCRC(input){
+	calcCRC(input) {
 		//http://www.sunshine2k.de/articles/coding/crc/understanding_crc.html
 		//var input = '00020101021238540010A00000072701240006970422011009080611190208QRIBFTTA530370454061871105802VN62120808SO2552636304';
 		var bytes = lib.getCharacterByteArrayFromString(input);
-			
-		
+
+
 		var crcModel = {
-			width : 16,
-			maxVal : 0xFFFFFFFF >>> (32 - 16),
-			initial : 0xFFFF,
-			polynomial : 0x1021,
-			finalXor : 0x0
+			width: 16,
+			maxVal: 0xFFFFFFFF >>> (32 - 16),
+			initial: 0xFFFF,
+			polynomial: 0x1021,
+			finalXor: 0x0
 		};
-		
+
 		var crcTable = new Array(256);
 		var castMask = 0xFFFF;
 		var msbMask = 0x01 << (crcModel.width - 1);
-		
+
 		for (var divident = 0; divident < 256; divident++) {
 			var currByte = (divident << (crcModel.width - 8)) & castMask;
 			for (var bit = 0; bit < 8; bit++) {
@@ -656,28 +686,28 @@ export var lib = {
 			}
 			crcTable[divident] = (currByte & castMask);
 		}
-		
+
 		var crc = crcModel.initial;
-			for (var i = 0; i < bytes.length; i++) {
-		
-				var curByte = bytes[i] & 0xFF;
-		
-			
-		
-				/* update the MSB of crc value with next input byte */
-				crc = (crc ^ (curByte << (crcModel.width - 8))) & castMask;
-				/* this MSB byte value is the index into the lookup table */
-				var pos = (crc >> (crcModel.width - 8)) & 0xFF;
-				/* shift out this index */
-				crc = (crc << 8) & castMask;
-				/* XOR-in remainder from lookup table using the calculated index */
-				crc = (crc ^ crcTable[pos]) & castMask;
-			}
-		
-			
+		for (var i = 0; i < bytes.length; i++) {
+
+			var curByte = bytes[i] & 0xFF;
+
+
+
+			/* update the MSB of crc value with next input byte */
+			crc = (crc ^ (curByte << (crcModel.width - 8))) & castMask;
+			/* this MSB byte value is the index into the lookup table */
+			var pos = (crc >> (crcModel.width - 8)) & 0xFF;
+			/* shift out this index */
+			crc = (crc << 8) & castMask;
+			/* XOR-in remainder from lookup table using the calculated index */
+			crc = (crc ^ crcTable[pos]) & castMask;
+		}
+
+
 		return ((crc ^ crcModel.finalXor) & castMask);
 	},
-	
+
 	/**
 	 * Mở app ngân hàng
 	 * @param openApp Mã ứng dụng ngân hàng cần mở
@@ -687,10 +717,131 @@ export var lib = {
 	 * @param message Nội dung chuyển tiền
 	 * @returns Trả về link để mở app ngân hàng
 	 */
-	genVietQRDeeplink(openApp: string, bankCode:string, bankAccount:string, amount: number, message:string ){
-		let ba = bankAccount+'@'+bankCode; //Định tài khoản nhận tiền
+	genVietQRDeeplink(openApp: string, bankCode: string, bankAccount: string, amount: number, message: string) {
+		let ba = bankAccount + '@' + bankCode; //Định tài khoản nhận tiền
 		let am = amount + ''; //Số tiền chuyển
-		
-		return 'https://dl.vietqr.io/pay?ba='+ba+'&am='+am+'&tn='+message+'&app='+openApp;
+
+		return 'https://dl.vietqr.io/pay?ba=' + ba + '&am=' + am + '&tn=' + message + '&app=' + openApp;
+	},
+
+	DocTienBangChu(SoTien) {
+		var Tien = new Array("", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+
+		var lan = 0;
+		var i = 0;
+		var so = 0;
+		var KetQua = "";
+		var tmp = "";
+		var ViTri = new Array();
+		if (SoTien < 0) return "Số tiền âm !";
+		if (SoTien == 0) return "Không đồng !";
+		if (SoTien > 0) {
+			so = SoTien;
+		}
+		else {
+			so = -SoTien;
+		}
+		if (SoTien > 8999999999999999) {
+			//SoTien = 0;
+			return "Số quá lớn!";
+		}
+		ViTri[5] = Math.floor(so / 1000000000000000);
+		if (isNaN(ViTri[5]))
+			ViTri[5] = "0";
+		so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+		ViTri[4] = Math.floor(so / 1000000000000);
+		if (isNaN(ViTri[4]))
+			ViTri[4] = "0";
+		so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+		ViTri[3] = Math.floor(so / 1000000000);
+		if (isNaN(ViTri[3]))
+			ViTri[3] = "0";
+		so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+		ViTri[2] = parseInt((so / 1000000) + '');
+		if (isNaN(ViTri[2]))
+			ViTri[2] = "0";
+		ViTri[1] = parseInt(((so % 1000000) / 1000) + '');
+		if (isNaN(ViTri[1]))
+			ViTri[1] = "0";
+		ViTri[0] = parseInt((so % 1000) + '');
+		if (isNaN(ViTri[0]))
+			ViTri[0] = "0";
+		if (ViTri[5] > 0) {
+			lan = 5;
+		}
+		else if (ViTri[4] > 0) {
+			lan = 4;
+		}
+		else if (ViTri[3] > 0) {
+			lan = 3;
+		}
+		else if (ViTri[2] > 0) {
+			lan = 2;
+		}
+		else if (ViTri[1] > 0) {
+			lan = 1;
+		}
+		else {
+			lan = 0;
+		}
+		for (i = lan; i >= 0; i--) {
+			tmp = lib.DocSo3ChuSo(ViTri[i]);
+			KetQua += tmp;
+			if (ViTri[i] > 0) KetQua += Tien[i];
+			if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+		}
+		if (KetQua.substring(KetQua.length - 1) == ',') {
+			KetQua = KetQua.substring(0, KetQua.length - 1);
+		}
+		KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2) + ' đồng';
+		return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+	},
+
+	DocSo3ChuSo(baso) {
+		var ChuSo = new Array(" không ", " một ", " hai ", " ba ", " bốn ", " năm ", " sáu ", " bảy ", " tám ", " chín ");
+
+		var tram;
+		var chuc;
+		var donvi;
+		var KetQua = "";
+		tram = parseInt((baso / 100) + '');
+		chuc = parseInt(((baso % 100) / 10) + '');
+		donvi = baso % 10;
+		if (tram == 0 && chuc == 0 && donvi == 0) return "";
+		if (tram != 0) {
+			KetQua += ChuSo[tram] + " trăm ";
+			if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+		}
+		if ((chuc != 0) && (chuc != 1)) {
+			KetQua += ChuSo[chuc] + " mươi";
+			if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+		}
+		if (chuc == 1) KetQua += " mười ";
+		switch (donvi) {
+			case 1:
+				if ((chuc != 0) && (chuc != 1)) {
+					KetQua += " mốt ";
+				}
+				else {
+					KetQua += ChuSo[donvi];
+				}
+				break;
+			case 5:
+				if (chuc == 0) {
+					KetQua += ChuSo[donvi];
+				}
+				else {
+					KetQua += " lăm ";
+				}
+				break;
+			default:
+				if (donvi != 0) {
+					KetQua += ChuSo[donvi];
+				}
+				break;
+		}
+		return KetQua;
 	}
+
+
 }

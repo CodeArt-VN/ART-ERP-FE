@@ -7,14 +7,14 @@ import { FormGroup } from '@angular/forms';
 	templateUrl: './form-control.component.html',
 })
 export class FormControlComponent implements OnInit {
-	@Output() inputChange = new EventEmitter();
-	@Output() nav = new EventEmitter();
+
 
 	@Input() set field(f: InputControlField) {
         if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
 		if (f.id) this.id = f.id;
 		if (f.label) this.label = f.label;
+		if (f.color) this.color = f.color;
 		if (f.placeholder) this.placeholder = f.placeholder;
 		if (f.dataSource) this.dataSource = f.dataSource;
 		if (f.bindValue) this.bindValue = f.bindValue;
@@ -27,11 +27,12 @@ export class FormControlComponent implements OnInit {
 	
     @Input() form: FormGroup;
 
-    @Input() type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'checkbox' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-text' | 'span-number' | 'span-date' | 'span-datetime' = 'text';
+    @Input() type : string = 'text';
 
     @Input() id: string;
 
     @Input() label: string;
+	@Input() color: string;
 
     @Input() placeholder?: string;
 
@@ -55,10 +56,18 @@ export class FormControlComponent implements OnInit {
 		if (!this.label) this.label = this.id;
 	}
 
-	onInputChange(e){
-		this.inputChange.emit(e);
+	@Output() change = new EventEmitter();
+	onChange(e){
+		this.change.emit(e);
 	}
 
+	@Output() controlChange = new EventEmitter();
+	onInputChange(e){
+		this.controlChange.emit(e);
+	}
+
+
+	@Output() nav = new EventEmitter();
 	onNav(to){
 		this.nav.emit(to);
 	}

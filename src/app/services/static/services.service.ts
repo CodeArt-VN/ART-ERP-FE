@@ -167,6 +167,13 @@ export class BC_RevenueExpenditureRefCodeProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class BI_CSVDataProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.BI_CSVData, SearchConfig.getSearchFields('BI_CSVData'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class BI_Daily_BalanceProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.BI_Daily_Balance, SearchConfig.getSearchFields('BI_Daily_Balance'), commonService);
@@ -429,6 +436,13 @@ export class CRM_PartnerAddressProvider extends exService {
 export class CRM_PartnerBankAccountProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.CRM_PartnerBankAccount, SearchConfig.getSearchFields('CRM_PartnerBankAccount'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class CRM_PartnerTaxInfoProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.CRM_PartnerTaxInfo, SearchConfig.getSearchFields('CRM_PartnerTaxInfo'), commonService);
 	}
 }
 

@@ -15,23 +15,14 @@ export class EChartComponent implements OnInit {
 	@Input() viewMode: 'full' | 'mini' | 'dashboard';
 	@Input() chartOption: echarts.EChartsOption = {};
 	@Input() dimensions: string[] = [];
-	@Input() viewDimension:string;
+	@Input() viewDimension: string;
 	@Input() dataIntervalProperty: string;
 	@Input() dataIntervalType: string;
 
 	@Input() chartScript: string;
-	
+
 	@Input() data: any[] = [];
 
-	/** Chart dataset 
-	 * @deprecated	Not use anymore
-	*/
-	@Input() set dataset(v: any[]) {
-		if (v) {
-			this.chartOption.dataset = v;
-			this.updateChart();	
-		}
-	}
 
 	constructor(public rpt: ReportService) {
 		this.elId = lib.generateCode();
@@ -40,9 +31,11 @@ export class EChartComponent implements OnInit {
 	ngOnInit() { }
 
 	ngAfterViewInit() {
+		console.log('ngAfterViewInit', this.elId);
+
 		var chartDom = document.getElementById(this.elId);
 		this.chart = echarts.init(chartDom);
-		this.chart.on('click',  (params) =>{
+		this.chart.on('click', (params) => {
 			this.onChartClick(params);
 		});
 		setTimeout(() => {
@@ -52,10 +45,12 @@ export class EChartComponent implements OnInit {
 	}
 
 	ngOnChanges(changes: any) {
-		if (changes.chartOption && changes.chartOption.currentValue) {
-			Object.assign(this.chartOption, changes.chartOption.currentValue);	
+		if (this.chart) {
+			if (changes.chartOption && changes.chartOption.currentValue) {
+				Object.assign(this.chartOption, changes.chartOption.currentValue);
+			}
+			this.updateChart();
 		}
-		this.updateChart();
 	}
 
 	ngOnDestroy() {
@@ -86,14 +81,14 @@ export class EChartComponent implements OnInit {
 		}
 
 		console.log('finalChartOption', finalChartOption);
-		 
+
 		this.chart?.setOption(finalChartOption, true);
 
 
 	}
 
-	calcChartOption(option : echarts.EChartsOption, js: string ): echarts.EChartsOption{
-		
+	calcChartOption(option: echarts.EChartsOption, js: string): echarts.EChartsOption {
+
 		let li = lib;
 		eval(js);
 		return option;
