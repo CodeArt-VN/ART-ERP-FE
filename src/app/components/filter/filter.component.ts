@@ -22,6 +22,7 @@ export class FilterComponent implements OnInit {
 		// { code: 'ends with', name: 'ends with', icon: '' },
 		{ code: '<>', name: '≠ does not equal', icon: '' },
 		{ code: 'IN', name: 'in', icon: '' },
+		{ code: 'NOT IN', name: 'not in', icon: '' },
 
 		// { code: 'Text', name: 'does not contain', icon: '' },
 		// { code: 'Text', name: 'does not start with', icon: '' },

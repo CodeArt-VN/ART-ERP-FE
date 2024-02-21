@@ -42,25 +42,27 @@ export class EChartDefaultOption {
                 textStyle: { color: lib.getCssVariableValue('--ion-color-dark') }
             },
             tooltip: {
-                //appendToBody: true,
+                appendToBody: true,
                 extraCssText: 'width:auto; max-width: 250px; white-space:pre-wrap;',
                 textStyle: { color: lib.getCssVariableValue('--ion-color-dark') },
                 borderColor: lib.getCssVariableValue('--menu-right-border-color'),
                 backgroundColor: lib.getCssVariableValue('--main-background-top'),
+                confine: true
 
             },
             toolbox: {
                 show: false,
-                orient: "vertical",
+                orient: "vertical",//"vertical","horizontal"
                 right: 16,
-                itemSize: 20,
+                //itemSize: 25,
                 feature: {
                     magicType: { type: ["line", "bar", "stack"] },
-                    saveAsImage: {}
+                    //saveAsImage: {}
                 },
+                emphasis: { iconStyle: { borderColor: lib.getCssVariableValue('--ion-color-primary') } },
                 iconStyle: {
-                    color: lib.getCssVariableValue('--ion-color-primary'),
-                    borderColor: lib.getCssVariableValue('--ion-color-primary'),
+                    //color: lib.getCssVariableValue('--ion-color-primary'),
+                    borderColor: lib.getCssVariableValue('--ion-color-dark'),
                 }
             },
 
@@ -111,12 +113,45 @@ export class EChartDefaultOption {
             case 'bar':
             case 'line':
                 fullOption = Object.assign({
-                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, },
+                    toolbox: { show: true },
+                    tooltip: {
+                        trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: function (params) {
+                            var output = '<div class="e-tooltip"><span class="bold">'+params[0].axisValueLabel + '</span><br/>';
+                            output += '<table class="w-full">';
+                            params.reverse().forEach(function (param) {
+                                const value = param.value;
+                                if (value !== 0) {
+                                    output += `<tr><td>${param.marker}</td><td>${param.seriesName}</td><td class="e-value">${lib.currencyFormatFriendly(value)}</td></tr>`;
+                                }
+                            });
+                            return output + '</table></div>';
+                        }
+                    },
+
                     xAxis: {},
-                    yAxis: { show: true, axisLine: { show: false } },
+                    yAxis: {
+                        show: true, axisLine: { show: false }, axisLabel: {
+                            formatter: function (value, index) {
+                                return lib.currencyFormatFriendly(value);
+                            }
+                        },
+                    },
                 }, fullOption);
+                Object.assign(fullOption.toolbox, this.eChartsOption.toolbox);
+                Object.assign(fullOption.toolbox, { show: true });
                 Object.assign(fullOption.tooltip, this.eChartsOption.tooltip);
                 Object.assign(fullOption.xAxis, { show: true, type: 'category', axisLine: { show: false } });
+
+                switch (viewMode) {
+                    case 'dashboard':
+
+                        break;
+                    case 'mini':
+                        Object.assign(fullOption.toolbox, { show: false });
+                        Object.assign(fullOption.tooltip, { show: false });
+                        break;
+                }
+
                 break;
         }
 
@@ -215,11 +250,13 @@ export class EChartDefaultOption {
         const numLegends = new Set(items.map(item => item[legendProperty])).size;
         const numDataPoints = items.length;
 
-        if (numLegends === numDataPoints && numIntervals === 1 && numDataPoints <= 10) {
-            return 'pie';
-        } else if (numDataPoints <= 50 && numLegends <= 10) {
+        if (dimensions.length > 2) {
             return 'bar';
-        } else if (numDataPoints > 100 || numLegends <= 50) {
+        } else if (numLegends === numDataPoints && numIntervals === 1) {
+            return 'pie';
+        } else if (numDataPoints <= 50) {
+            return 'bar';
+        } else {
             return 'line';
         }
     }
@@ -227,8 +264,8 @@ export class EChartDefaultOption {
     suggestDataSeries(fullOption: EChartsOption, type: string, intervalProperty: string, intervalType: string, dimensions: string[], items: any[]) {
         if (dimensions?.length) {
 
-            const legendProperty = dimensions[0];
-            const valueProperty = dimensions[1];
+            let legendProperty = dimensions[0];
+            const valueProperty = dimensions[dimensions.length - 1];
             switch (type) {
                 case 'pie':
                     fullOption.series = {
@@ -243,15 +280,25 @@ export class EChartDefaultOption {
                     break;
                 case 'bar':
                 case 'line':
-                    const numIntervals = new Set(items.map(item => item[intervalProperty])).size;
+
+                    const numInterval = new Set(items.map(item => item[intervalProperty])).size;
+
+                    let categoryProperty = intervalProperty;
+
+                    if (numInterval == 1 && dimensions.length > 2) {
+                        legendProperty = dimensions[1];
+                        categoryProperty = dimensions[0];
+                    }
+
+                    const numCategories = new Set(items.map(item => item[categoryProperty])).size;
                     const legendData = Array.from(new Set(items.map(item => item[legendProperty])));
 
                     let xData: any[] = [];
                     let series = [];
-                    if (numIntervals > 1) {
+                    if (numCategories > 0) {
                         switch (intervalType) {
                             case 'HourOfDay':
-                                xData = [...new Set(items.map(item => item[intervalProperty]))]; //Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
+                                xData = [...new Set(items.map(item => item[categoryProperty]))]; //Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
                                 break;
 
                             case 'DayOfWeek':
@@ -263,7 +310,7 @@ export class EChartDefaultOption {
                                 break;
 
                             default:
-                                xData = [...new Set(items.map(item => item[intervalProperty]))];
+                                xData = [...new Set(items.map(item => item[categoryProperty]))];
                                 break;
                         }
 
@@ -275,8 +322,16 @@ export class EChartDefaultOption {
                                 type: type,
                                 emphasis: { focus: 'series' },
                                 data: xData.map(x => {
-                                    const item = items.find(item => item[legendProperty] === legend && item[intervalProperty].toString().toLowerCase() === x.toString().toLowerCase());
-                                    return item ? item[valueProperty] : 0;
+
+                                    //if dimensions.length > 2 then filter by legend and category and sum value
+                                    if (dimensions.length > 2) {
+                                        const its = items.filter(item => item[legendProperty] === legend && item[categoryProperty].toString().toLowerCase() === x.toString().toLowerCase());
+                                        return its.reduce((a, b) => a + b[valueProperty], 0);
+                                    }
+                                    else {
+                                        const item = items.find(item => item[legendProperty] === legend && item[categoryProperty].toString().toLowerCase() === x.toString().toLowerCase());
+                                        return item ? item[valueProperty] : 0;
+                                    }
                                 })
                             }
                         });

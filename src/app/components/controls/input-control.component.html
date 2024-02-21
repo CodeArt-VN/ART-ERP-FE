@@ -151,7 +151,7 @@
 
         <ion-popover class="w300" #popover [isOpen]="isOpenPicker" (didDismiss)="isOpenPicker = false">
             <ng-template>
-                <ion-content>
+                <ion-content scroll-y="false">
                     <app-color-picker (selected)="onSelectColor($event, form.controls[id])" [color]="form.controls[id].value || 'dark'"></app-color-picker>
                 </ion-content>
             </ng-template>
@@ -167,7 +167,7 @@
 
         <ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
             <ng-template>
-                <ion-content>
+                <ion-content appScrollbarTheme>
                     <app-icon-picker (selected)="onSelectIcon($event, form.controls[id])" [color]="color" [icon]="form.controls[id].value"></app-icon-picker>
                     <div style="padding-top: 25vh;"></div>
                 </ion-content>

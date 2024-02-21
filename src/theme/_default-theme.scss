@@ -113,11 +113,11 @@
 		}
 	}
 
-	ion-segment-button {
-		--ion-background-color: var(--ion-color-secondary); //segment selected background
-		--ion-background-color-rgb: var(--ion-color-secondary-rgb);
-		--color-checked: var(--ion-color-secondary-contrast);
-	}
+	// ion-segment-button {
+	// 	--ion-background-color: var(--ion-color-secondary); //segment selected background
+	// 	--ion-background-color-rgb: var(--ion-color-secondary-rgb);
+	// 	--color-checked: var(--ion-color-secondary-contrast);
+	// }
 
 	&.dark {
 		// #region ionic colors

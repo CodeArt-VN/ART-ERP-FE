@@ -118,6 +118,15 @@ export class ReportChartComponent implements OnInit {
 				}
 			})
 		);
+
+
+		this.subscriptions.push(
+            this.env.getEvents().subscribe((data) => {
+                if (data.Code == 'changeBranch') {
+					this.onReloadData();
+                }
+            })
+        );
 	}
 
 
@@ -131,12 +140,30 @@ export class ReportChartComponent implements OnInit {
 
 	dimensions: string[] = [];
 	updateDimensions() {
-		if (this.viewDimension && this.report.DataConfig.CompareBy.length > 0) {
-			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), this.viewDimension];
+		if (this.report.DataConfig.CompareBy.length > 0) {
+			this.dimensions = this.report.DataConfig.CompareBy.map(x => x.Title || x.Property);
+			if (this.viewDimension) {
+				this.dimensions.push(this.viewDimension);
+			}
+			else if(this.report.DataConfig.MeasureBy.length){
+				this.dimensions.push(this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property);
+			}
 		}
-		else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0) {
-			this.dimensions = [(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), (this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property)];
-		}
+
+
+		
+		// if (this.viewDimension && this.report.DataConfig.CompareBy.length > 0) {
+		// 	this.dimensions = [
+		// 		(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), 
+		// 		this.viewDimension
+		// 	];
+		// }
+		// else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0) {
+		// 	this.dimensions = [
+		// 		(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property), 
+		// 		(this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property)
+		// 	];
+		// }
 	}
 
 	/**

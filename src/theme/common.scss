@@ -773,6 +773,22 @@ ion-content.cameraFrame {
 	}
 }
 
+.e-tooltip{
+	min-width: 200px;
+	.w-full{
+		width: 100%;
+		line-height: 1.5rem;
+		td{
+			padding: 5px 0;
+		}
+		.e-value{
+			text-align: right;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+	}
+}
+
 
 .blink {
 	animation: blinker 1s linear infinite;
