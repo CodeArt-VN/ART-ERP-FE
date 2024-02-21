@@ -173,13 +173,13 @@ export var lib = {
 		if (this.isNumeric(amount)) {
 			let result = '';
 			if (amount >= 10 ** 9) {
-				result = (Math.round(amount / 10 ** 8) / 10) + ' B';
+				result = (Math.round(amount / 10 ** 8) / 10) + 'B';
 			}
 			else if (amount >= 10 ** 6) {
-				result = (Math.round(amount / 10 ** 5) / 10) + ' M';
+				result = (Math.round(amount / 10 ** 5) / 10) + 'M';
 			}
 			else if (amount >= 10 ** 3) {
-				result = (Math.round(amount / 10 ** 2) / 10) + ' K';
+				result = (Math.round(amount / 10 ** 2) / 10) + 'K';
 			}
 			else {
 				result = (Math.round(amount * 10) / 10) + '';

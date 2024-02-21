@@ -81,7 +81,7 @@ export class ReportChartComponent implements OnInit {
 		this._gridItem = v;
 		console.log('gridItem', v);
 		if (this._gridItem?.WidgetConfig?.ViewDimension) {
-			this.viewDimension = this._gridItem.WidgetConfig.ViewDimension;
+			this.onViewDimensionChange(this._gridItem.WidgetConfig.ViewDimension);
 		}
 	}
 
