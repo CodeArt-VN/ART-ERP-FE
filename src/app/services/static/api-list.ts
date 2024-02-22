@@ -12198,55 +12198,6 @@ export var APIListBase = {
 		
 	},
 
-	WMS_CycleCountDetailByCounter:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/Search")}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter")}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/Export")}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/Import")}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/") + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/") + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/Disable/") + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/Enable/") + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter")}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/ChangeBranch")} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetailByCounter/") + id} 
-        }
-		
-	},
-
 	WMS_CycleCountDetermination:{
         getSearchList:{
             method: "GET",
@@ -12341,6 +12292,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/") + id} 
+        }
+		
+	},
+
+	WMS_CycleCountTask:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+        }
+		
+	},
+
+	WMS_CycleCountTaskDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Search")}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail")}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Export")}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Import")}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Disable/") + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Enable/") + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail")}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/ChangeBranch")} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
         }
 		
 	},
