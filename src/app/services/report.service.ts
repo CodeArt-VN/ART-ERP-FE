@@ -269,13 +269,24 @@ export class ReportService extends BI_ReportProvider {
 	 * @param reportId Repport id
 	 * @returns Report config
 	 */
-	getReport(reportId: number, reportCode: string = ''): BIReport {
+	getReport(reportId: number, reportCode: string = '', forceReload = false): BIReport {
 		let report = this.items.find(d => d.Id == reportId || (d.Code == reportCode && reportCode));
 		if (!report && !reportId)
 			this.env.showTranslateMessage('Report with Id=' + reportId + ' not found!', 'danger');
+		if(report && forceReload){
+			this.getAnItem(report.Id).then((resp:any) => {
+				let originalReport = resp;
+				originalReport.DataConfig = JSON.parse(originalReport.DataConfig);
+				if (originalReport.ChartConfig) this.updateChartConfigFromScript(originalReport, originalReport.ChartConfig);
 
+				this.saveReportConfig(originalReport);
+				
+			});
+		}
 		return report;
 	}
+
+	
 
 	/**
 	 * Save report config

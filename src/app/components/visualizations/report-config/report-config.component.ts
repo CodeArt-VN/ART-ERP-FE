@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
+import { Subject, Subscription, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
@@ -16,6 +16,7 @@ declare var ace: any;
 	styleUrls: ['./report-config.component.scss'],
 })
 export class ReportConfigComponent implements OnInit {
+	subscriptions: Subscription[] = []; //Subscriptions	
 	@Input() canEdit = false;
 	@Input() canChangeReportConfig = false;
 	@Input() canEditScript = false;
@@ -76,7 +77,6 @@ export class ReportConfigComponent implements OnInit {
 			{ Code: 'min', Name: 'Min of {0}', icon: '' },
 			{ Code: 'average', Name: 'Average {0}', icon: '' },
 		];
-
 	}
 
 	ngAfterViewInit() {
@@ -95,6 +95,9 @@ export class ReportConfigComponent implements OnInit {
 
 		this.chartScriptEditor?.destroy();
 		this.chartScriptEditor?.container.remove();
+
+		//Unsubscribe all
+		this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
 	}
 
@@ -123,6 +126,10 @@ export class ReportConfigComponent implements OnInit {
 			this.changeSchema(schema);
 		}
 		this._IDSchemaDataSource.initSearch();
+	}
+
+	refresh(){
+		this.reportId = this._reportId;
 	}
 
 	changeSchema(e) {
