@@ -163,7 +163,8 @@ app-page-title{
 
 ion-header,
 app-list-toolbar,
-app-detail-toolbar {
+app-detail-toolbar,
+app-toolbar {
 	>ion-toolbar:not(.no-padding) {
 		--padding-start: 40px;
 

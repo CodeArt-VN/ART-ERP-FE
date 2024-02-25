@@ -585,7 +585,7 @@ export abstract class PageBase implements OnInit {
 
     }
 
-    submitForApproval(){
+    submit(){
 
     }
 
@@ -601,6 +601,15 @@ export abstract class PageBase implements OnInit {
         
     }
 
+    copy(){
+
+    }
+    merge(){
+
+    }
+    split(){
+        
+    }
     async closeModal() {
         try {
             if (!this.modalController) {
@@ -903,5 +912,9 @@ export abstract class PageBase implements OnInit {
 		}
 		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
 	}
+
+    closePopListToolBar(){
+        this.env.publishEvent({ Code: 'app:closePopListToolBar'});
+    }
 
 }
