@@ -212,7 +212,7 @@
 				</ion-list>
 
 				<div *ngIf="pickerControl.controls.Type.value=='Absolute'">
-					<ion-datetime [locale]="env.language.current" [value] = "pickerControl.controls.Value.value" [firstDayOfWeek]="1" (ionChange)="pickDate({ Type: 'Absolute', Value: $event })" mode="ios"></ion-datetime>
+					<ion-datetime [locale]="env.language.current" [value] = "pickerControl.controls.Value.value" [firstDayOfWeek]="1" (ionChange)="pickDate({ Type: 'Absolute', Value: $event })" mode="ios" format="YYYY-MM-DDTHH:mm:ssZ"></ion-datetime>
 				</div>
 
 			</ion-content>

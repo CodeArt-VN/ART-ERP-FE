@@ -11,7 +11,6 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { FileUploadModule } from 'ng2-file-upload';
 
 //Custom component
-import { ShareDirectivesModule } from '../directives/share-directives.module';
 import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
 import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.component';
 import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
@@ -41,7 +40,6 @@ import { SharePrintingModule } from './printing/share-printing.module';
 		ShareInputControlsModule,
 		ShareDataTableModule,
 		ShareVisualizationsModule,
-		ShareDirectivesModule,
 		SharePrintingModule
 	],
 	// providers: [provideNgxMask()],
@@ -63,7 +61,6 @@ import { SharePrintingModule } from './printing/share-printing.module';
 		ShareDataTableModule,
 		ShareVisualizationsModule,
 		SharePrintingModule,
-		ShareDirectivesModule,
 		CommonModule,
 		FormsModule,
 		ScrollingModule,

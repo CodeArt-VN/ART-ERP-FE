@@ -449,7 +449,7 @@ export class ReportService extends BI_ReportProvider {
 		let date = new Date();
 
 		if (isFullfillDate) {
-			return new Date(
+			return new Date(Date.UTC(
 				date.getFullYear() + addYears,
 				date.getMonth() + addMonths,
 				date.getDate() + addDays,
@@ -457,11 +457,11 @@ export class ReportService extends BI_ReportProvider {
 				(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getMinutes() + addMinutes) : 59,
 				(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getSeconds() : 59,
 				(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getMilliseconds() : 999
-			);
+			));
 		}
 
 
-		return new Date(
+		return new Date(Date.UTC(
 			date.getFullYear() + addYears,
 			date.getMonth() + addMonths,
 			date.getDate() + addDays,
@@ -469,7 +469,7 @@ export class ReportService extends BI_ReportProvider {
 			(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? (date.getMinutes() + addMinutes) : 0,
 			(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getSeconds() : 0,
 			(timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour') ? date.getMilliseconds() : 0
-		);
+		));
 	}
 
 	/**

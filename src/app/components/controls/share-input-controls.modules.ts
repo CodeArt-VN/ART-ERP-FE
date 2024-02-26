@@ -16,6 +16,7 @@ import { InputControlComponent } from "./input-control.component";
 import { IconPickerComponent } from "./icon-picker/icon-picker.component";
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { ColorPickerComponent } from "./color-picker/color-picker.component";
+import { ShareDirectivesModule } from "src/app/directives/share-directives.module";
 
 
 
@@ -25,17 +26,17 @@ import { ColorPickerComponent } from "./color-picker/color-picker.component";
 		FormsModule,
 		ReactiveFormsModule,
 		IonicModule,
-		NgxMaskDirective,  NgxMaskPipe,
+		NgxMaskDirective, NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
 		NgOptionHighlightModule,
 		FileUploadModule,
+		ShareDirectivesModule,
 		PipesModule
 	],
 	providers: [provideNgxMask()],
 
 	declarations: [
-		
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
@@ -43,10 +44,10 @@ import { ColorPickerComponent } from "./color-picker/color-picker.component";
 		BranchBreadcrumbsComponent,
 		IconPickerComponent,
 		ColorPickerComponent,
-		
+
 	],
 	exports: [
-		
+
 		GroupControlComponent,
 		FieldControlComponent,
 		FormControlComponent,
@@ -54,9 +55,9 @@ import { ColorPickerComponent } from "./color-picker/color-picker.component";
 		BranchBreadcrumbsComponent,
 		IconPickerComponent,
 		ColorPickerComponent,
-		
+		ShareDirectivesModule,
 
-		NgxMaskDirective,  NgxMaskPipe,
+		NgxMaskDirective, NgxMaskPipe,
 	],
 })
 export class ShareInputControlsModule { }
