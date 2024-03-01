@@ -59,14 +59,15 @@ export class AccountService {
 							"token_type": "",
 							"refresh_token": "no token"
 						};
-
-						this.env.setStorage('UserToken', GlobalData.Token).then(() => {
-							this.env.user = null;
-							this.env.setStorage('UserProfile', null).then(() => {
-								this.env.setStorage('appVersion', this.env.version).then(() => {
-									location.reload();
-									//resolve(this.env.version);
-								})
+						this.env.clearStorage().then(_ => {
+							this.env.setStorage('UserToken', GlobalData.Token).then(() => {
+								this.env.user = null;
+								this.env.setStorage('UserProfile', null).then(() => {
+									this.env.setStorage('appVersion', this.env.version).then(() => {
+										location.reload();
+										//resolve(this.env.version);
+									})
+								});
 							});
 						});
 					}
@@ -471,6 +472,7 @@ export class AccountService {
 	logout() {
 		var that = this;
 		var curentUsername = this.env?.user?.UserName;
+		
 		var currentVersion = this.env?.version;
 		return new Promise(function (resolve, reject) {
 			that.env.clearStorage().then(_ => {
@@ -478,7 +480,10 @@ export class AccountService {
 
 				that.setToken(null);
 				that.setProfile(null).then(_ => {
-					that.env.setStorage('Username', curentUsername).then(() => {
+					Promise.all([
+						that.loadSavedProfile(),
+						that.env.setStorage('Username', curentUsername)
+					]).then(() => {
 						that.env.publishEvent({ Code: 'app:updatedUser' });
 						resolve(true);
 					})

@@ -99,9 +99,7 @@ export class AppComponent implements OnInit {
 					accountService.logout().then(_ => {
 						this.router.navigateByUrl('/login');
 						this.env.showTranslateMessage('You have log out of the system', 'danger');
-						setTimeout(() => {
-							location.reload();
-						}, 1000);
+						
 					});
 					break;
 				case 'app:silentlogout':
@@ -298,6 +296,7 @@ export class AppComponent implements OnInit {
 		event.preventDefault();
 		event.stopPropagation();
 		this.menu.close();
+		this.isUserCPOpen = false;
 		this.env.publishEvent({ Code: 'app:logout' });
 	}
 
