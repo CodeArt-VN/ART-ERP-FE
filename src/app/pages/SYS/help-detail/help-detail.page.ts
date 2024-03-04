@@ -54,7 +54,7 @@ export class HelpDetailPage extends PageBase {
         this.pageConfig.pageCode = 'help';
         //this.id = this.route.snapshot?.paramMap?.get('id');
         this.formGroup = formBuilder.group({
-          IDBranch: [''],
+          IDBranch: [this.env.selectedBranch],
           IDCategory: [''],
           IDParent: [''],
           Id: new FormControl({ value: '', disabled: true }),

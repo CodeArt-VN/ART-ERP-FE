@@ -90,7 +90,7 @@
 							</div>
 
 							<a class="menu-item" *ngIf="((f.isShowDetail && f.isShowForm) || countForm < 7) && f.Type ==1" (click)="goToPage('/'+f.Code, $event)" [routerLink]="['/'+f.Code]" [routerLinkActive]="['is-active']">
-								<ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
+								<ion-icon class="menu-icon" [color]="f.BadgeColor" [name]="f.Icon"></ion-icon>
 								<span class="menu-title">{{f.Name | translate}}</span>
 								<ion-icon class="menu-icon pin" [name]="f.isPinned?'close-circle-outline':'pin-outline'" *ngIf="countForm>=7" (click)="menuPin(f, $event)"></ion-icon>
 								<ion-text class="menu-icon badge" [color]="f.BadgeColor" *ngIf="f.BadgeNum">{{f.BadgeNum}}</ion-text>
