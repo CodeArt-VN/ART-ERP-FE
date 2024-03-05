@@ -256,7 +256,8 @@ const routes: Routes = [
   { path: 'config/:segment/:id', loadChildren: () => import('./pages/ADMIN/config/config.module').then(m => m.ConfigPageModule), canActivate: [AuthGuard] },
   { path: 'price-list', loadChildren: () => import('./pages/ADMIN/price-list/price-list.module').then(m => m.PriceListPageModule), canActivate: [AuthGuard] },
   { path: 'price-list/:id', loadChildren: () => import('./pages/ADMIN/price-list-detail/price-list-detail.module').then(m => m.PriceListDetailPageModule), canActivate: [AuthGuard] },
- 
+  { path: 'sync-job', loadChildren: () => import('./pages/ADMIN/sync-job/sync-job.module').then(m => m.SyncJobPageModule), canActivate: [AuthGuard] },
+  
   //schema
  { path: 'schema', loadChildren: () => import('./pages/SYS/schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
  { path: 'schema/:id', loadChildren: () => import('./pages/SYS/schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
