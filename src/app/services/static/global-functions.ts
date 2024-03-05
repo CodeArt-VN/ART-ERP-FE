@@ -413,7 +413,7 @@ export var lib = {
 
 				currentParent = treeItems.find(d => d.Id == i.IDParent);
 
-				let f = treeState.find(d => d.Id == i.Id);
+				let f = treeState?.find(d => d.Id == i.Id);
 				if (f) {
 					i.show = !currentParent ? true : ((currentParent.showdetail && f.show) ? true : false);
 					i.showdetail = f.showdetail ? true : false;
