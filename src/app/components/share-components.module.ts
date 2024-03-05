@@ -14,6 +14,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
 import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.component';
 import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { PageTitleComponent } from './page-title/page-title.component';
@@ -47,6 +48,7 @@ import { SharePrintingModule } from './printing/share-printing.module';
 	declarations: [
 		ListToolbarComponent,
 		DetailToolbarComponent,
+		ToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
@@ -54,6 +56,7 @@ import { SharePrintingModule } from './printing/share-printing.module';
 	exports: [
 		ListToolbarComponent,
 		DetailToolbarComponent,
+		ToolbarComponent,
 		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
