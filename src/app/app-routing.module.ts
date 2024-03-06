@@ -118,7 +118,6 @@ const routes: Routes = [
   
 
 
-
   //WMS
   { path: 'warehouse', loadChildren: () => import('./pages/WMS/warehouse/warehouse.module').then(m => m.WarehousePageModule), canActivate: [AuthGuard] },
   { path: 'warehouse/:segment/:id', loadChildren: () => import('./pages/WMS/warehouse/warehouse.module').then(m => m.WarehousePageModule), canActivate: [AuthGuard] },
@@ -147,7 +146,14 @@ const routes: Routes = [
   { path: 'serial-label', loadChildren: () => import('./pages/WMS/serial-label/serial-label.module').then(m => m.SerialLabelPageModule), canActivate: [AuthGuard] },
   { path: 'item-uom-label', loadChildren: () => import('./pages/WMS/item-uom-label/item-uom-label.module').then(m => m.ItemUomLabelPageModule), canActivate: [AuthGuard] },
   { path: 'pos-table-label', loadChildren: () => import('./pages/WMS/pos-table-label/pos-table-label.module').then(m => m.POSTableLabelPageModule), canActivate: [AuthGuard] },
-  
+
+  { path: 'cycle-count', loadChildren: () => import('./pages/WMS/cycle-count/cycle-count.module').then(m => m.CycleCountPageModule), canActivate: [AuthGuard] },
+  { path: 'cycle-count/:id', loadChildren: () => import('./pages/WMS/cycle-count-detail/cycle-count-detail.module').then(m => m.CycleCountDetailPageModule), canActivate: [AuthGuard] },
+  { path: 'cycle-count-note', loadChildren: () => import('./pages/WMS/cycle-count-note/cycle-count-note.module').then(m => m.CycleCountNotePageModule), canActivate: [AuthGuard] },
+  // { path: 'adjustment', loadChildren: () => import('./pages/WMS/adjustment/adjustment.module').then(m => m.AdjustmentPageModule), canActivate: [AuthGuard]},
+  // { path: 'adjustment/:id', loadChildren: () => import('./pages/WMS/adjustment-detail/adjustment-detail.module').then(m => m.AdjustmentDetailPageModule), canActivate: [AuthGuard]},
+ 
+
 
 
   //OST
