@@ -8,25 +8,9 @@ import { SaleOrderNoteComponent } from '../printing/sale-order-note/sale-order-n
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-
-
-
-
 @NgModule({
-	imports: [
-		CommonModule,
-		ScrollingModule, ExperimentalScrollingModule,
-		IonicModule,
-		TranslateModule,
-
-	],
-	declarations: [
-		PurchaseOrderNoteComponent,
-		SaleOrderNoteComponent,
-	],
-	exports: [
-		PurchaseOrderNoteComponent,
-		SaleOrderNoteComponent,
-	],
+  imports: [CommonModule, ScrollingModule, ExperimentalScrollingModule, IonicModule, TranslateModule],
+  declarations: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
+  exports: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
 })
-export class SharePrintingModule { }
+export class SharePrintingModule {}

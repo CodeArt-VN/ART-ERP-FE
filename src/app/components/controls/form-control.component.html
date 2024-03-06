@@ -1,11 +1,13 @@
 <div class="c-control">
-    <label class="c-label" [attr.for]="id" *ngIf="type != 'checkbox' && type != 'radio' && label">
-        {{label | translate}}
-        <ng-content select="[label]"></ng-content>
-        <ion-text *ngIf="!form.controls[id].valid && !form.controls[id].pending && form.controls[id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
-    </label>
-    <app-input-control 
-    [form]="form" 
+  <label class="c-label" [attr.for]="id" *ngIf="type != 'checkbox' && type != 'radio' && label">
+    {{ label | translate }}
+    <ng-content select="[label]"></ng-content>
+    <ion-text *ngIf="!form.controls[id].valid && !form.controls[id].pending && form.controls[id].dirty" color="danger"
+      >(*<ng-content select="[message]"></ng-content>)</ion-text
+    >
+  </label>
+  <app-input-control
+    [form]="form"
     [type]="type"
     [id]="id"
     [label]="label"
@@ -19,11 +21,13 @@
     [noCheckDirty]="noCheckDirty"
     (change)="onChange($event)"
     (inputChange)="onInputChange($event)"
-    (nav) = "onNav($event)"
-    ></app-input-control>
-    <label class="c-label checkbox" [attr.for]="id" *ngIf="(type == 'checkbox') && label">
-        {{label | translate}}
-        <ng-content select="[label]"></ng-content>
-        <ion-text *ngIf="!form.controls[id].valid && !form.controls[id].pending && form.controls[id].dirty" color="danger">(*<ng-content select="[message]"></ng-content>)</ion-text>
-    </label>
+    (nav)="onNav($event)"
+  ></app-input-control>
+  <label class="c-label checkbox" [attr.for]="id" *ngIf="type == 'checkbox' && label">
+    {{ label | translate }}
+    <ng-content select="[label]"></ng-content>
+    <ion-text *ngIf="!form.controls[id].valid && !form.controls[id].pending && form.controls[id].dirty" color="danger"
+      >(*<ng-content select="[message]"></ng-content>)</ion-text
+    >
+  </label>
 </div>

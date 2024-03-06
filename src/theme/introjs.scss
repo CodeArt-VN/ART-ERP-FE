@@ -1,12 +1,12 @@
 //fix position error
 .introjs-helperLayer {
-    background: transparent;
-    border: none !important;
-    box-shadow: 0 1px 16px rgba(var(--ion-color-primary-rgb,0,0,0),.4);
+  background: transparent;
+  border: none !important;
+  box-shadow: 0 1px 16px rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.4);
 }
 .introjs-overlay {
-    opacity: 0 !important;
+  opacity: 0 !important;
 }
-.introjs-tooltip{
-    box-shadow: 0 1px 16px rgba(var(--ion-color-primary-rgb,0,0,0),.4);
+.introjs-tooltip {
+  box-shadow: 0 1px 16px rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.4);
 }

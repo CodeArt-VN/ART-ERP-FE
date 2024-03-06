@@ -9,8 +9,8 @@ describe('ColorPickerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ColorPickerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ColorPickerComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ColorPickerComponent);

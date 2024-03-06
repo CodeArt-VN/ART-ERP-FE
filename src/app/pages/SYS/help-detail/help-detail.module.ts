@@ -5,8 +5,7 @@
 // import { IonicModule } from '@ionic/angular';
 // import { ShareModule } from 'src/app/share.module';
 // import { HelpDetailPage } from './help-detail.page';
-// import { FileUploadModule } from 'ng2-file-upload';
-// import { QuillModule } from 'ngx-quill';
+// // import { QuillModule } from 'ngx-quill';
 
 // const routes: Routes = [
 //   {
@@ -21,8 +20,7 @@
 //     FormsModule,
 //     IonicModule,
 //     ReactiveFormsModule,
-//     FileUploadModule,
-//     ShareModule,
+//     //     ShareModule,
 //     RouterModule.forChild(routes),
 //     QuillModule.forRoot()
 //   ],

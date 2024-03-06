@@ -1,232 +1,429 @@
-<ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}">
-	<ion-buttons slot="start" [collapse]="true" [ngClass]="{titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive}">
-		<ion-back-button></ion-back-button>
-		<ion-button color="dark" *ngIf="!selectedItems.length" class="ion-hide-sm-down_">
-			{{pageConfig.pageTitle | translate}}
-		</ion-button>
-		<ion-button color="dark" *ngIf="selectedItems.length" (click)="emit('unselect')">
-			{{selectedTitle || selectedItems.length +' dòng'}}
-		</ion-button>
-		<ng-content select="[title]"></ng-content>
-	</ion-buttons>
-	<ion-buttons slot="start" [collapse]="true" *ngIf="page && !pageConfig.isMainPageActive" [ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}" (click)="page.backSubPage()">
-		<ion-button class="toggle" >
-			<ion-icon slot="icon-only" name="chevron-back-outline">
-			</ion-icon>
-			<ion-label color="dark" class="label-back">{{'Back' | translate}}</ion-label>
-		</ion-button>
-	</ion-buttons>
+<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }">
+  <ion-buttons
+    slot="start"
+    [collapse]="true"
+    [ngClass]="{
+      titleSubPageActive: !pageConfig.isMainPageActive,
+      titleMainPageActive: pageConfig.isMainPageActive
+    }"
+  >
+    <ion-back-button></ion-back-button>
+    <ion-button color="dark" *ngIf="!selectedItems.length" class="ion-hide-sm-down_">
+      {{ pageConfig.pageTitle | translate }}
+    </ion-button>
+    <ion-button color="dark" *ngIf="selectedItems.length" (click)="emit('unselect')">
+      {{ selectedTitle || selectedItems.length + ' dòng' }}
+    </ion-button>
+    <ng-content select="[title]"></ng-content>
+  </ion-buttons>
+  <ion-buttons
+    slot="start"
+    [collapse]="true"
+    *ngIf="page && !pageConfig.isMainPageActive"
+    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+    (click)="page.backSubPage()"
+  >
+    <ion-button class="toggle">
+      <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
+      <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
+    </ion-button>
+  </ion-buttons>
 
+  <ion-buttons
+    [ngClass]="{
+      featureSubPageActive: !pageConfig.isMainPageActive,
+      featureMainPageActive: pageConfig.isMainPageActive
+    }"
+    [collapse]="true"
+    slot="end"
+    *ngIf="!(selectedItems.length && canSelect)"
+  >
+    <ion-button
+      *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled"
+      (click)="emit('add')"
+      title="{{ 'Add' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
 
-	<ion-buttons [ngClass]="{featureSubPageActive: !pageConfig.isMainPageActive, featureMainPageActive: pageConfig.isMainPageActive}" [collapse]="true" slot="end" *ngIf="!(selectedItems.length && canSelect)">
-		<ion-button *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled" (click)="emit('add')" title="{{'Add' | translate}}">
-			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
-		</ion-button>
+    <ng-content></ng-content>
 
-		<ng-content></ng-content>
+    <ion-button
+      *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval"
+      (click)="emit('submitOrdersForApproval')"
+      title="{{ 'Submit for approval' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      *ngIf="pageConfig.canSubmitBusinessPartnerForApproval"
+      (click)="emit('submitBusinessPartner')"
+      title="{{ 'Submit Business Partner' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval" (click)="emit('submitOrdersForApproval')" title="{{'Submit for approval' | translate}}">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canSubmitBusinessPartnerForApproval" (click)="emit('submitBusinessPartner')" title="{{'Submit Business Partner' | translate}}">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval">|</span>
 
-		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval">|</span>
+    <ion-button
+      *ngIf="ShowSearch"
+      title="{{ 'Search' | translate }}"
+      (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+    >
+      <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      *ngIf="ShowRefresh"
+      (click)="emit('refresh')"
+      title="{{ 'Refresh' | translate }}"
+      class="ion-hide-sm-down"
+    >
+      <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Create E-Invoice' | translate }}"
+      *ngIf="pageConfig.canCreateEInvoice && !query.IsDisabled"
+      (click)="emit('createEInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      *ngIf="ShowPopover"
+      outline="true"
+      color="primary"
+      (click)="emit('presentPopover')"
+      title="{{ 'Open filter' | translate }}"
+    >
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label color="medium">{{ query.OrderDate }}</ion-label>
+    </ion-button>
 
-		<ion-button *ngIf="ShowSearch" title="{{'Search' | translate}}" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch">
-			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowRefresh" (click)="emit('refresh')" title="{{'Refresh' | translate}}" class="ion-hide-sm-down">
-			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Create E-Invoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && !query.IsDisabled" (click)="emit('createEInvoice')">
-			<ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowPopover" outline="true" color="primary" (click)="emit('presentPopover')" title="{{'Open filter' | translate}}">
-			<ion-icon name="calendar-outline"></ion-icon>
-			<ion-label color="medium">{{query.OrderDate}}</ion-label>
-		</ion-button>
+    <ion-button
+      title="{{ 'Collection' | translate }}"
+      *ngIf="pageConfig.canCreateReceipt"
+      (click)="emit('createReceipt')"
+    >
+      <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{'Collection' | translate}}" *ngIf="pageConfig.canCreateReceipt" (click)="emit('createReceipt')">
-			<ion-icon slot="icon-only" name="cash-outline"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport">|</span>
 
-		<span class="split ion-hide-sm-down" *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport">|</span>
+    <ion-button
+      class="ion-hide-sm-down"
+      *ngIf="ShowExport && pageConfig.canExport"
+      (click)="emit('export')"
+      title="{{ 'Export' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      class="ion-hide-sm-down"
+      *ngIf="ShowImport && pageConfig.canImport"
+      (click)="onClickImport()"
+      title="{{ 'Import' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
+    </ion-button>
+    <input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
 
-		<ion-button class="ion-hide-sm-down" *ngIf="ShowExport && pageConfig.canExport" (click)="emit('export')" title="{{'Export' | translate}}">
-			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
-		</ion-button>
-		<ion-button class="ion-hide-sm-down" *ngIf="ShowImport && pageConfig.canImport" (click)="onClickImport()" title="{{'Import' | translate}}">
-			<ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
-		</ion-button>
-		<input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
+    <span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
 
-		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
+    <ion-button
+      class="ion-hide-sm-down_"
+      *ngIf="ShowArchive"
+      (click)="query.IsDisabled = !query.IsDisabled; emit('refresh')"
+      title="{{ 'View archived items' | translate }}"
+    >
+      <ion-icon slot="icon-only" [name]="query.IsDisabled ? 'archive' : 'archive-outline'"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="ShowHelp" title="{{ 'Help' | translate }}" (click)="emit('help')">
+      <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="ShowFeature" title="{{ 'ShowFeature' | translate }}" (click)="toggleFeature()">
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons
+    [ngClass]="{
+      featureSubPageActive: !pageConfig.isMainPageActive,
+      featureMainPageActive: pageConfig.isMainPageActive
+    }"
+    slot="end"
+    *ngIf="selectedItems.length && canSelect"
+  >
+    <ion-button title="{{ 'Unselect' | translate }}" (click)="emit('unselect')">
+      <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button class="ion-hide-sm-down_" *ngIf="ShowArchive" (click)="query.IsDisabled = !query.IsDisabled; emit('refresh');" title="{{'View archived items' | translate}}">
-			<ion-icon slot="icon-only" [name]="query.IsDisabled ? 'archive' : 'archive-outline'"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowHelp" title="{{'Help' | translate}}" (click)="emit('help')">
-			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowFeature" title="{{'ShowFeature' | translate}}" (click)="toggleFeature()">
-			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'"></ion-icon>
-		</ion-button>
+    <ion-button *ngIf="pageConfig.canSubmitDealForApproval" (click)="emit('submitDealForApproval')" title="Gửi Duyệt">
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canDisapproveDeal" (click)="emit('disapproveDeal')" title="Không Duyệt">
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canApproveDeal" (click)="emit('approveDeal')" title="Duyệt">
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
 
-	</ion-buttons>
-	<ion-buttons [ngClass]="{featureSubPageActive: !pageConfig.isMainPageActive, featureMainPageActive: pageConfig.isMainPageActive}" slot="end" *ngIf="selectedItems.length && canSelect">
+    <ion-button
+      *ngIf="pageConfig.canSubmitVoucherForApproval"
+      (click)="emit('submitVoucherForApproval')"
+      title="Gửi Duyệt"
+    >
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canDisapproveVoucher" (click)="emit('disapproveVoucher')" title="Không Duyệt">
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canApproveVoucher" (click)="emit('approveVoucher')" title="Duyệt">
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{'Unselect' | translate}}" (click)="emit('unselect')">
-			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      *ngIf="pageConfig.canSubmitDiscountForApproval"
+      (click)="emit('submitDiscountForApproval')"
+      title="Gửi Duyệt"
+    >
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canDisapproveDiscount" (click)="emit('disapproveDiscount')" title="Không Duyệt">
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="pageConfig.canApproveDiscount" (click)="emit('approveDiscount')" title="Duyệt">
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button *ngIf="pageConfig.canSubmitDealForApproval" (click)="emit('submitDealForApproval')" title="Gửi Duyệt">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canDisapproveDeal" (click)="emit('disapproveDeal')" title="Không Duyệt">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canApproveDeal" (click)="emit('approveDeal')" title="Duyệt">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
+    <ion-button *ngIf="pageConfig.canCopy" title="Copy" (click)="emit('copy')">
+      <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button *ngIf="pageConfig.canSubmitVoucherForApproval" (click)="emit('submitVoucherForApproval')" title="Gửi Duyệt">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canDisapproveVoucher" (click)="emit('disapproveVoucher')" title="Không Duyệt">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canApproveVoucher" (click)="emit('approveVoucher')" title="Duyệt">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
 
-		<ion-button *ngIf="pageConfig.canSubmitDiscountForApproval" (click)="emit('submitDiscountForApproval')" title="Gửi Duyệt">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canDisapproveDiscount" (click)="emit('disapproveDiscount')" title="Không Duyệt">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="pageConfig.canApproveDiscount" (click)="emit('approveDiscount')" title="Duyệt">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
+    <ng-content select="[selected]"></ng-content>
+    <ion-button
+      *ngIf="pageConfig.canChangeBranch"
+      (click)="emit('changeBranch')"
+      title="{{ 'Change Branch' | translate }}"
+    >
+      <ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
+    </ion-button>
 
-		<ion-button *ngIf="pageConfig.canCopy" title="Copy" (click)="emit('copy')">
-			<ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      *ngIf="pageConfig.canReceive && !query.IsDisabled"
+      (click)="emit('submitReceipt')"
+      title="{{ 'Goods receipt' | translate }}"
+    >
+      <ion-icon color="success" slot="icon-only" name="bag-check-outline"></ion-icon>
+    </ion-button>
 
-		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
+    <ion-button
+      *ngIf="pageConfig.canSubmitOrdersForApproval && showSubmitOrdersForApproval && !query.IsDisabled"
+      (click)="emit('submitOrdersForApproval')"
+      title="{{ 'Submit for approval' | translate }}"
+    >
+      <ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
 
-		<ng-content select="[selected]"></ng-content>
-		<ion-button *ngIf="pageConfig.canChangeBranch" (click)="emit('changeBranch')" title="{{'Change Branch' | translate}}">
-			<ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitOrdersForApproval">|</span>
 
-		<ion-button *ngIf="pageConfig.canReceive &&  !query.IsDisabled" (click)="emit('submitReceipt')" title="{{'Goods receipt' | translate}}">
-			<ion-icon color="success" slot="icon-only" name="bag-check-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Order submitted' | translate }}"
+      *ngIf="pageConfig.canSubmitOrders && showSubmitOrders && !query.IsDisabled"
+      (click)="emit('submitOrders')"
+    >
+      <ion-icon color="success" slot="icon-only" name="cart-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Approve Order' | translate }}"
+      *ngIf="pageConfig.canApprove && showApproveOrders && !query.IsDisabled"
+      (click)="emit('approveOrders')"
+    >
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Disaaprove order' | translate }}"
+      *ngIf="pageConfig.canApprove && showDisapproveOrders && !query.IsDisabled"
+      (click)="emit('disapproveOrders')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Cancel order' | translate }}"
+      *ngIf="pageConfig.canCancel && showCancelOrders && !query.IsDisabled"
+      (click)="emit('cancelOrders')"
+    >
+      <ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button *ngIf="pageConfig.canSubmitOrdersForApproval && showSubmitOrdersForApproval && !query.IsDisabled" (click)="emit('submitOrdersForApproval')" title="{{'Submit for approval' | translate}}">
-			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitBusinessPartnerForApproval">|</span>
 
-		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitOrdersForApproval">|</span>
+    <ion-button
+      title="{{ 'Submit Business Partner' | translate }}"
+      *ngIf="pageConfig.canSubmitBusinessPartnerForApproval && showSubmitBusinessPartner && !query.IsDisabled"
+      (click)="emit('submitBusinessPartner')"
+    >
+      <ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Approve Business Partner' | translate }}"
+      *ngIf="pageConfig.canApprove && showApproveBusinessPartner && !query.IsDisabled"
+      (click)="emit('approveBusinessPartner')"
+    >
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Disapprove Business Partner' | translate }}"
+      *ngIf="pageConfig.canDisapprove && showDisapproveBusinessPartner && !query.IsDisabled"
+      (click)="emit('disapproveBusinessPartner')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{'Order submitted' | translate}}" *ngIf="pageConfig.canSubmitOrders && showSubmitOrders && !query.IsDisabled" (click)="emit('submitOrders')">
-			<ion-icon color="success" slot="icon-only" name="cart-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Approve Order' | translate}}" *ngIf="pageConfig.canApprove && showApproveOrders && !query.IsDisabled" (click)="emit('approveOrders')">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Disaaprove order' | translate}}" *ngIf="pageConfig.canApprove && showDisapproveOrders && !query.IsDisabled" (click)="emit('disapproveOrders')">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Cancel order' | translate}}" *ngIf="pageConfig.canCancel && showCancelOrders && !query.IsDisabled" (click)="emit('cancelOrders')">
-			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Create receipt' | translate }}"
+      *ngIf="pageConfig.canCreateReceipt"
+      (click)="emit('createReceipt')"
+    >
+      <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+    </ion-button>
 
-		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitBusinessPartnerForApproval">|</span>
-
-		<ion-button title="{{'Submit Business Partner' | translate}}" *ngIf="pageConfig.canSubmitBusinessPartnerForApproval && showSubmitBusinessPartner && !query.IsDisabled" (click)="emit('submitBusinessPartner')">
-			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Approve Business Partner' | translate}}" *ngIf="pageConfig.canApprove && showApproveBusinessPartner && !query.IsDisabled" (click)="emit('approveBusinessPartner')">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Disapprove Business Partner' | translate}}" *ngIf="pageConfig.canDisapprove && showDisapproveBusinessPartner && !query.IsDisabled" (click)="emit('disapproveBusinessPartner')">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-
-		<ion-button title="{{'Create receipt' | translate}}" *ngIf="pageConfig.canCreateReceipt" (click)="emit('createReceipt')">
-			<ion-icon slot="icon-only" name="cash-outline"></ion-icon>
-		</ion-button>
-
-		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canApprove || pageConfig.canCancel">|</span>
-		<ion-button title="{{'createARInvoice' | translate}}" *ngIf="pageConfig.canAddARInvoice && selectedItems.length>=1 && !query.IsDisabled" (click)="emit('createARInvoice')">
-			<ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Create merged invoice' | translate}}" *ngIf="pageConfig.canMergeARInvoice && selectedItems.length>=2 && !query.IsDisabled" (click)="emit('createMergeARInvoice')">
-			<ion-icon color="success" slot="icon-only" name="git-pull-request"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Create split invoice' | translate}}" *ngIf="pageConfig.canSplitARInvoices && selectedItems.length<=1 && !query.IsDisabled" (click)="emit('createSplitARInvoices')">
-			<ion-icon color="success" slot="icon-only" name="git-branch"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Merge Invoice' | translate}}" *ngIf="pageConfig.canMergeInvoice && selectedItems.length>=2 && !query.IsDisabled && showMerge" (click)="emit('mergeARInvoice')">
-			<ion-icon color="success" slot="icon-only" name="git-pull-request"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'splitARInvoice' | translate}}" *ngIf="pageConfig.canSplitInvoice && selectedItems.length<=1 && !query.IsDisabled && showSplit" (click)="emit('splitARInvoice')">
-			<ion-icon color="success" slot="icon-only" name="git-branch"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Create E-Invoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showCreateEInvoice" (click)="emit('createEInvoice')">
-			<ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Update EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('updateEInvoice')">
-			<ion-icon color="success" slot="icon-only" name="sync"></ion-icon>
-		</ion-button>
-		<ion-button title="Ký hóa đơn" *ngIf="pageConfig.canSignEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('signEInvoice')">
-			<ion-icon color="danger" slot="icon-only" name="signature"></ion-icon>
-		</ion-button>
-		<!-- <ion-button title="{{'Sync EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('syncEInvoice')">
+    <span class="split ion-hide-sm-down" *ngIf="pageConfig.canApprove || pageConfig.canCancel">|</span>
+    <ion-button
+      title="{{ 'createARInvoice' | translate }}"
+      *ngIf="pageConfig.canAddARInvoice && selectedItems.length >= 1 && !query.IsDisabled"
+      (click)="emit('createARInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Create merged invoice' | translate }}"
+      *ngIf="pageConfig.canMergeARInvoice && selectedItems.length >= 2 && !query.IsDisabled"
+      (click)="emit('createMergeARInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="git-pull-request"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Create split invoice' | translate }}"
+      *ngIf="pageConfig.canSplitARInvoices && selectedItems.length <= 1 && !query.IsDisabled"
+      (click)="emit('createSplitARInvoices')"
+    >
+      <ion-icon color="success" slot="icon-only" name="git-branch"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Merge Invoice' | translate }}"
+      *ngIf="pageConfig.canMergeInvoice && selectedItems.length >= 2 && !query.IsDisabled && showMerge"
+      (click)="emit('mergeARInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="git-pull-request"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'splitARInvoice' | translate }}"
+      *ngIf="pageConfig.canSplitInvoice && selectedItems.length <= 1 && !query.IsDisabled && showSplit"
+      (click)="emit('splitARInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="git-branch"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Create E-Invoice' | translate }}"
+      *ngIf="pageConfig.canCreateEInvoice && selectedItems.length >= 1 && !query.IsDisabled && showCreateEInvoice"
+      (click)="emit('createEInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="receipt-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Update EInvoice' | translate }}"
+      *ngIf="pageConfig.canCreateEInvoice && selectedItems.length >= 1 && !query.IsDisabled && showUpdateEInvoice"
+      (click)="emit('updateEInvoice')"
+    >
+      <ion-icon color="success" slot="icon-only" name="sync"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="Ký hóa đơn"
+      *ngIf="pageConfig.canSignEInvoice && selectedItems.length >= 1 && !query.IsDisabled && showUpdateEInvoice"
+      (click)="emit('signEInvoice')"
+    >
+      <ion-icon color="danger" slot="icon-only" name="signature"></ion-icon>
+    </ion-button>
+    <!-- <ion-button title="{{'Sync EInvoice' | translate}}" *ngIf="pageConfig.canCreateEInvoice && selectedItems.length>=1 && !query.IsDisabled && showUpdateEInvoice" (click)="emit('syncEInvoice')">
 			<ion-icon color="success" slot="icon-only" name="sync"></ion-icon>
 		</ion-button> -->
 
-		<ion-button title="{{'Submit for approval' | translate}}" *ngIf="pageConfig.canSubmitInvoicesForApproval && showSubmitARsForApproval" (click)="emit('submitInvoicesForApproval')">
-			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Approve Invoice' | translate}}" *ngIf="pageConfig.canApproveInvoice && !query.IsDisabled && showApproveARs" (click)="emit('approveInvoices')">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Disapprove invoice' | translate}}" *ngIf="pageConfig.canApproveInvoice && !query.IsDisabled && showDisapproveARs" (click)="emit('disapproveInvoices')">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Cancel Invoice' | translate}}" *ngIf="pageConfig.canCancelInvoice  && !query.IsDisabled && showCancelARs" (click)="emit('cancelInvoices')">
-			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Submit for approval' | translate }}"
+      *ngIf="pageConfig.canSubmitInvoicesForApproval && showSubmitARsForApproval"
+      (click)="emit('submitInvoicesForApproval')"
+    >
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Approve Invoice' | translate }}"
+      *ngIf="pageConfig.canApproveInvoice && !query.IsDisabled && showApproveARs"
+      (click)="emit('approveInvoices')"
+    >
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Disapprove invoice' | translate }}"
+      *ngIf="pageConfig.canApproveInvoice && !query.IsDisabled && showDisapproveARs"
+      (click)="emit('disapproveInvoices')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Cancel Invoice' | translate }}"
+      *ngIf="pageConfig.canCancelInvoice && !query.IsDisabled && showCancelARs"
+      (click)="emit('cancelInvoices')"
+    >
+      <ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{'Change Table' | translate}}" *ngIf="pageConfig.canChangeTable && selectedItems.length==1 && !query.IsDisabled" (click)="emit('changeTable')">
-			<ion-icon color="warning" slot="icon-only" name="git-compare"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Merge order' | translate}}" *ngIf="pageConfig.canMerge && selectedItems.length>1 && !query.IsDisabled" (click)="emit('mergeOrders')">
-			<ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Split Order' | translate}}" *ngIf="pageConfig.canSplit && selectedItems.length==1 && !query.IsDisabled" (click)="emit('splitOrder')">
-			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Cancel order' | translate}}" *ngIf="pageConfig.canCancelOrder && selectedItems.length==1 && !query.IsDisabled" (click)="emit('cancelOrder')">
-			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Change Table' | translate }}"
+      *ngIf="pageConfig.canChangeTable && selectedItems.length == 1 && !query.IsDisabled"
+      (click)="emit('changeTable')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="git-compare"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Merge order' | translate }}"
+      *ngIf="pageConfig.canMerge && selectedItems.length > 1 && !query.IsDisabled"
+      (click)="emit('mergeOrders')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Split Order' | translate }}"
+      *ngIf="pageConfig.canSplit && selectedItems.length == 1 && !query.IsDisabled"
+      (click)="emit('splitOrder')"
+    >
+      <ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Cancel order' | translate }}"
+      *ngIf="pageConfig.canCancelOrder && selectedItems.length == 1 && !query.IsDisabled"
+      (click)="emit('cancelOrder')"
+    >
+      <ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{query.IsDisabled?'Reopen' : 'Archive' | translate}}" *ngIf="pageConfig.canArchive" (click)="emit('archiveItems')">
-			<ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled? 'arrow-undo':'archive'"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Delete' | translate}}" *ngIf="pageConfig.canDelete  && showDelete" (click)="emit('deleteItems')">
-			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
-		</ion-button>
-		<span class="split ion-hide-sm-down">|</span>
-		<ion-button *ngIf="ShowFeature" title="{{'Show feature' | translate}}" (click)="toggleFeature()">
-			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
-			</ion-icon>
-		</ion-button>
-
-	</ion-buttons>
+    <ion-button
+      title="{{ query.IsDisabled ? 'Reopen' : ('Archive' | translate) }}"
+      *ngIf="pageConfig.canArchive"
+      (click)="emit('archiveItems')"
+    >
+      <ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled ? 'arrow-undo' : 'archive'"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Delete' | translate }}"
+      *ngIf="pageConfig.canDelete && showDelete"
+      (click)="emit('deleteItems')"
+    >
+      <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
+    <span class="split ion-hide-sm-down">|</span>
+    <ion-button *ngIf="ShowFeature" title="{{ 'Show feature' | translate }}" (click)="toggleFeature()">
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'">
+      </ion-icon>
+    </ion-button>
+  </ion-buttons>
 </ion-toolbar>

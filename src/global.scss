@@ -10,264 +10,32 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
 
-@import "~intro.js/introjs.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'intro.js/introjs.css';
+@import '@ng-select/ng-select/themes/default.theme.css';
 
-@import "./theme/_default-theme.scss";
+@import './theme/_default-theme.scss';
 
-@import "./theme/dpr-query.scss";
-@import "./theme/common.scss";
-@import "./theme/data-table.scss";
-@import "./theme/form-control.scss";
-@import "./theme/introjs.scss";
-@import "./theme/ng-select.scss";
-@import "./theme/fullcalendar.scss";
-@import "./theme/angular-tree-component.scss";
-@import "./theme/print.scss";
-
-  
-html {
-	font-size: 10px !important;
-
-	&.mobile-font {
-		font-size: 12px !important;
-	}
-}
-
-body {
-	font-size: 1.3rem;
-}
-
-a {
-	text-decoration: none;
-}
-
-select {
-    background-color: transparent;
-    border: none;
-}
-
-ion-app {
-	background-color: var(--ion-background-color);
-}
-
-ion-icon {
-	.fa-secondary {
-		fill: var(--ion-color-primary);
-		opacity: 0.4;
-
-	}
-}
-
-ion-segment{
-    &::-webkit-scrollbar {
-        width: 6px;
-        height: 6px !important;
-    }
-}
-
-ion-segment-button {
-	min-width: auto !important;
-	// --color-checked: var(--ion-color-primary);
-}
-
-ion-content {
-	--background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
-}
-
-ion-virtual-scroll,
-ion-item {
-	user-select: text;
-}
-
-ion-item,
-ion-label{
-	font-size: 1.3rem !important;
-}
-
-ion-picker {
-	--background: var(--main-background-bottom) !important;
-}
-
-ion-popover {
-	&.w300 {
-		--min-width: 260px;
-		--width: 300px;
-		--max-width: 400px;
-	}
-	&.delivery-review-filter {
-		--width: 260px !important;
-		--max-width: 400px;
-	}
-
-	&.pos-detail-payment {
-		--width: 275px !important;
-		--max-width: 400px;
-
-		.popover-wrapper {
-			.popover-content {
-				left: calc(100vw - 303px) !important;
-				width: 280px;
-				max-width: 400px;
-			}
-		}
-	}
-
-	&.branch-breadcrumbs {
-		--width: 275px !important;
-		--max-width: 400px;
-	}
-
-	// ion-backdrop{
-	// opacity: 0.5 !important;
-	// }    
-	.popover-wrapper {
-		.popover-arrow {
-			display: block !important;
-			position: absolute;
-			left: calc(100vw - 35px) !important;
-			right: 16px !important;
-			top: calc(0vh + 40px) !important;
-		}
-
-		.popover-content {
-			position: absolute;
-			left: calc(100vw - 280px) !important;
-			right: 16px !important;
-			top: calc(0vh + 50px) !important;
-			width: 70vw;
-			max-width: 270px;
-			transform-origin: right top !important;
-		}
-	}
-}
-
-app-page-title{
-	display: block;
-}
-
-ion-header,
-app-list-toolbar,
-app-detail-toolbar,
-app-toolbar {
-	>ion-toolbar:not(.no-padding) {
-		--padding-start: 40px;
-
-		@media screen and (max-width: 991px) {
-			--padding-start: 40px;
-		}
-	}
-}
-
-[hidden] {
-	display: none !important;
-}
-
-swiper-container {
-	--swiper-pagination-bullet-inactive-color: var(--ion-color-step-200, #cccccc);
-	--swiper-pagination-color: var(--ion-color-primary, #3880ff);
-	--swiper-pagination-progressbar-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.25);
-	--swiper-scrollbar-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
-	--swiper-scrollbar-drag-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.5);
-  }
-  
-  swiper-slide {
-	display: flex;
-	position: relative;
-  
-	flex-direction: column;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-  
-	width: 100%;
-	height: 100%;
-  
-	font-size: 18px;
-  
-	text-align: center;
-	box-sizing: border-box;
-  }
-  
-  swiper-slide img {
-	width: auto;
-	max-width: 100%;
-	height: auto;
-	max-height: 100%;
-  }
-
-
-//hide the HTML5 number input’s spin box
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-	/* display: none; <- Crashes Chrome on hover */
-	-webkit-appearance: none;
-	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-	-moz-appearance:textfield; /* Firefox */
-}
-
-// input, select{
-//     -webkit-appearance: none;
-// }
-
-.cdk-virtual-scroll-content-wrapper{
-	width: 100%;
-}
-
-::-webkit-scrollbar {
-	width: 6px;
-	height: 16px;
-}
-
-::-webkit-scrollbar-track {
-	
-	background: var(--menu-right-border-color);
-
-	&:hover{
-		background: var(--menu-right-border-color);
-	}
-}
-
-::-webkit-scrollbar-corner {
-	background: var(--menu-right-border-color);
-}
-
-
-::-webkit-scrollbar-thumb {
-	border-radius: 0px;
-	background: var(--ion-color-primary);
-	background: linear-gradient(var(--menu-background-top), var(--main-background-top));
-	border: 1px solid rgba(var(--ion-color-primary-rgb, 0, 0, 0), .25);
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: linear-gradient(var(--ion-color-primary), var(--ion-color-primary));
-}
-
-/*
-::-webkit-scrollbar the scrollbar.
-::-webkit-scrollbar-button the buttons on the scrollbar (arrows pointing upwards and downwards).
-::-webkit-scrollbar-thumb the draggable scrolling handle.
-::-webkit-scrollbar-track the track (progress bar) of the scrollbar.
-::-webkit-scrollbar-track-piece the track (progress bar) NOT covered by the handle.
-::-webkit-scrollbar-corner the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet.
-::-webkit-resizer the draggable resizing handle that appears at the bottom corner of some elements.
-*/
+@import './theme/dpr-query.scss';
+@import './theme/common.scss';
+@import './theme/data-table.scss';
+@import './theme/form-control.scss';
+@import './theme/introjs.scss';
+@import './theme/ng-select.scss';
+@import './theme/fullcalendar.scss';
+@import './theme/angular-tree-component.scss';
+@import './theme/print.scss';

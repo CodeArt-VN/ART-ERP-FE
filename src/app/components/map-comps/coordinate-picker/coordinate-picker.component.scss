@@ -1,17 +1,15 @@
 .marker {
-
-    height: 28.2rem;
-    padding: 0;
-
+  height: calc(10/16 * 28.2rem);
+  padding: 0;
 }
 
 .coordinate {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    ion-icon {
-        transform: scale(1.5);
-        cursor: pointer;
-    }
+  ion-icon {
+    transform: scale(1.5);
+    cursor: pointer;
+  }
 }

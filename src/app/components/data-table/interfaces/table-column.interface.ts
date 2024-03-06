@@ -2,106 +2,102 @@
  * Column Type
  */
 export interface TableColumn {
-	/**
-	 * Header template ref
-	 * @memberOf TableColumn
-	 */
-	headerTemplate?: any;
+  /**
+   * Header template ref
+   * @memberOf TableColumn
+   */
+  headerTemplate?: any;
 
-	/**
-	 * Filter template ref
-	 * @memberOf TableColumn
-	 */
-	filterTemplate?: any;
+  /**
+   * Filter template ref
+   * @memberOf TableColumn
+   */
+  filterTemplate?: any;
 
+  /**
+   * Cell template ref
+   * @memberOf TableColumn
+   */
+  cellTemplate?: any;
 
-	/**
-	 * Cell template ref
-	 * @memberOf TableColumn
-	 */
-	cellTemplate?: any;
+  /**
+   * CSS Classes for the cell
+   * @memberOf TableColumn
+   */
+  class?: string | ((data: any) => string | any);
 
+  /**
+   * CSS Classes for the cell
+   * @memberOf TableColumn
+   */
+  cellClass?: string | ((data: any) => string | any);
 
+  /**
+   * CSS classes for the header
+   * @memberOf TableColumn
+   */
+  filterClass?: string | ((data: any) => string | any);
 
-	/**
-	 * CSS Classes for the cell
-	 * @memberOf TableColumn
-	 */
-	class?: string | ((data: any) => string | any);
+  /**
+   * CSS classes for the header
+   * @memberOf TableColumn
+   */
+  headerClass?: string | ((data: any) => string | any);
 
-	/**
-	 * CSS Classes for the cell
-	 * @memberOf TableColumn
-	 */
-	cellClass?: string | ((data: any) => string | any);
+  /**
+   * Column name or label
+   *
+   * @memberOf TableColumn
+   */
+  name?: string;
 
-	/**
-	 * CSS classes for the header
-	 * @memberOf TableColumn
-	 */
-	filterClass?: string | ((data: any) => string | any);
+  /**
+   * Property to bind to the row. Example:
+   *
+   * `someField` or `some.field.nested`, 0 (numeric)
+   *
+   * If left blank, will use the name as camel case conversion
+   *
+   * @memberOf TableColumn
+   */
+  property?: string;
 
-	/**
-	 * CSS classes for the header
-	 * @memberOf TableColumn
-	 */
-	headerClass?: string | ((data: any) => string | any);
+  /**
+   * Min width of the column
+   *
+   * @memberOf TableColumn
+   */
+  minWidth?: number;
 
-	/**
-	 * Column name or label
-	 *
-	 * @memberOf TableColumn
-	 */
-	name?: string;
+  /**
+   * Max width of the column
+   *
+   * @memberOf TableColumn
+   */
+  maxWidth?: number;
 
-	/**
-	 * Property to bind to the row. Example:
-	 *
-	 * `someField` or `some.field.nested`, 0 (numeric)
-	 *
-	 * If left blank, will use the name as camel case conversion
-	 *
-	 * @memberOf TableColumn
-	 */
-	property?: string;
+  /**
+   * The default width of the column, in pixels
+   *
+   * @memberOf TableColumn
+   */
+  width?: number;
 
-	/**
-	 * Min width of the column
-	 *
-	 * @memberOf TableColumn
-	 */
-	minWidth?: number;
+  /**
+   * Header checkbox enabled
+   *
+   * @memberOf TableColumn
+   */
+  headerCheckboxable?: boolean;
 
-	/**
-	 * Max width of the column
-	 *
-	 * @memberOf TableColumn
-	 */
-	maxWidth?: number;
+  checkbox?: boolean;
 
-	/**
-	 * The default width of the column, in pixels
-	 *
-	 * @memberOf TableColumn
-	 */
-	width?: number;
+  sticky?: boolean;
 
-	/**
-	 * Header checkbox enabled
-	 *
-	 * @memberOf TableColumn
-	 */
-	headerCheckboxable?: boolean;
+  format?: string;
 
-	checkbox?: boolean;
+  filterControlType?: string;
 
-	sticky?: boolean;
-
-	format?: string;
-
-	filterControlType?:string;
-
-	canFilter?: boolean;
-	canSort?: boolean;
-
+  canFilter?: boolean;
+  canSort?: boolean;
 }

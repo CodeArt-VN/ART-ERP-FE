@@ -9,8 +9,8 @@ describe('TreemapChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TreemapChartComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TreemapChartComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TreemapChartComponent);

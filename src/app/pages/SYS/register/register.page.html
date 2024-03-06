@@ -19,20 +19,26 @@
 </ion-header>
 
 <ion-content appScrollbarTheme class="gray">
-  <ion-fab class="fake-header-bg" vertical="top" horizontal="left" slot="fixed">
-  </ion-fab>
+  <ion-fab class="fake-header-bg" vertical="top" horizontal="left" slot="fixed"> </ion-fab>
   <div class="main-content">
-
     <div class="summary">
       <div class="time">{{'Register' | translate}}</div>
       <div class="date">{{'ART Shipper account' | translate}}</div>
     </div>
     <ion-grid>
       <ion-row>
-        <ion-col size="12" size-sm="10" push-sm="1" size-md="8" push-md="2" size-lg="8" push-lg="2" size-xl="6"
-          push-xl="3">
+        <ion-col
+          size="12"
+          size-sm="10"
+          push-sm="1"
+          size-md="8"
+          push-md="2"
+          size-lg="8"
+          push-lg="2"
+          size-xl="6"
+          push-xl="3"
+        >
           <ion-card no-margin class="booking">
-
             <div class="logo"></div>
 
             <ion-card-header>
@@ -48,9 +54,15 @@
 
             <ion-card-content>
               <ion-item>
-                <ion-label color="primary" position="stacked">{{'Full name' | translate}} <ion-text color="danger">(*)</ion-text>
+                <ion-label color="primary" position="stacked"
+                  >{{'Full name' | translate}}
+                  <ion-text color="danger">(*)</ion-text>
                 </ion-label>
-                <ion-input required="true" [(ngModel)]="item.FullName" placeholder="{{'Please input full name' | translate}}">
+                <ion-input
+                  required="true"
+                  [(ngModel)]="item.FullName"
+                  placeholder="{{'Please input full name' | translate}}"
+                >
                 </ion-input>
               </ion-item>
 
@@ -60,38 +72,63 @@
               </ion-item> -->
 
               <ion-item>
-                <ion-label color="primary" position="stacked">{{'Email' | translate}} <ion-text color="danger">(*)</ion-text>
+                <ion-label color="primary" position="stacked"
+                  >{{'Email' | translate}}
+                  <ion-text color="danger">(*)</ion-text>
                 </ion-label>
-                <ion-input [(ngModel)]="item.EmailAddress" inputmode="email" type="email"
-                  placeholder="{{'email-address-placeholder' | translate}}"></ion-input>
+                <ion-input
+                  [(ngModel)]="item.EmailAddress"
+                  inputmode="email"
+                  type="email"
+                  placeholder="{{'email-address-placeholder' | translate}}"
+                ></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-label color="primary" position="stacked">{{'Telephone' | translate}} <ion-text color="danger">(*)</ion-text>
+                <ion-label color="primary" position="stacked"
+                  >{{'Telephone' | translate}}
+                  <ion-text color="danger">(*)</ion-text>
                 </ion-label>
-                <ion-input [(ngModel)]="item.PhoneNumber" required="true" inputmode="tel" type="tel"
-                  placeholder="{{'Please input telephone number' | translate}}"></ion-input>
+                <ion-input
+                  [(ngModel)]="item.PhoneNumber"
+                  required="true"
+                  inputmode="tel"
+                  type="tel"
+                  placeholder="{{'Please input telephone number' | translate}}"
+                ></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-label color="primary" position="stacked">{{'Password' | translate}} <ion-text color="danger">(*)</ion-text>
+                <ion-label color="primary" position="stacked"
+                  >{{'Password' | translate}}
+                  <ion-text color="danger">(*)</ion-text>
                 </ion-label>
-                <ion-input [(ngModel)]="item.Password" required="true" inputmode="password" type="password"
-                  placeholder="{{'Please choose passwords with minimum of 6 characters' | translate}}"></ion-input>
+                <ion-input
+                  [(ngModel)]="item.Password"
+                  required="true"
+                  inputmode="password"
+                  type="password"
+                  placeholder="{{'Please choose passwords with minimum of 6 characters' | translate}}"
+                ></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-label color="primary" position="stacked">{{'Confirm password' | translate}} <ion-text color="danger">(*)</ion-text>
+                <ion-label color="primary" position="stacked"
+                  >{{'Confirm password' | translate}}
+                  <ion-text color="danger">(*)</ion-text>
                 </ion-label>
-                <ion-input [(ngModel)]="item.ConfirmPassword" required="true" inputmode="password" type="password"
-                  placeholder="{{'Please confirm above password' | translate}}"></ion-input>
+                <ion-input
+                  [(ngModel)]="item.ConfirmPassword"
+                  required="true"
+                  inputmode="password"
+                  type="password"
+                  placeholder="{{'Please confirm above password' | translate}}"
+                ></ion-input>
               </ion-item>
 
               <div class="ion-padding"></div>
               <div text-center text-md-right>
-                <ion-button shape="round" (click)="register()">
-                  {{'Account registration' | translate}}
-                </ion-button>
+                <ion-button shape="round" (click)="register()"> {{'Account registration' | translate}} </ion-button>
               </div>
 
               <div class="ion-padding"></div>
@@ -100,8 +137,5 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </div>
-
-
 </ion-content>

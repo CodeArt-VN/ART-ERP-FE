@@ -1,3 +1,16 @@
-<app-input-control *ngIf="!column.filterTemplate && column.canFilter && field.id" [field]="field" (change)="onFilterInputChange($event)"></app-input-control>
-<ion-icon *ngIf="!column.filterTemplate && column.canFilter && field.id && field.form.controls[field.id].value" class="min-btn" (click)="onFilterFieldReset()" name="close-circle-outline"></ion-icon>
-<ng-template *ngIf="column.filterTemplate && column.canFilter" [ngTemplateOutlet]="column.filterTemplate" [ngTemplateOutletContext]="_column"></ng-template>
+<app-input-control
+  *ngIf="!column.filterTemplate && column.canFilter && field.id"
+  [field]="field"
+  (change)="onFilterInputChange($event)"
+></app-input-control>
+<ion-icon
+  *ngIf="!column.filterTemplate && column.canFilter && field.id && field.form.controls[field.id].value"
+  class="min-btn"
+  (click)="onFilterFieldReset()"
+  name="close-circle-outline"
+></ion-icon>
+<ng-template
+  *ngIf="column.filterTemplate && column.canFilter"
+  [ngTemplateOutlet]="column.filterTemplate"
+  [ngTemplateOutletContext]="_column"
+></ng-template>

@@ -1,53 +1,50 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-	selector: 'datatable-body-row',
-	templateUrl: './datatable-body-row.component.html',
+  selector: 'datatable-body-row',
+  templateUrl: './datatable-body-row.component.html',
 })
 export class DataTablBodyRowComponent implements OnInit {
-	_columns: any[];
-	@Input() set columns(val: any[]) {
-		this._columns = val;
+  _columns: any[];
+  @Input() set columns(val: any[]) {
+    this._columns = val;
+  }
 
-	}
+  get columns(): any[] {
+    return this._columns;
+  }
 
-	get columns(): any[] {
-		return this._columns;
-	}
+  _row: any[];
+  @Input() set row(val: any[]) {
+    this._row = val;
+  }
 
-	_row: any[];
-	@Input() set row(val: any[]) {
-		this._row = val;
+  get row(): any[] {
+    return this._row;
+  }
 
-	}
+  _isSelected: boolean;
+  @Input() set isSelected(val: boolean) {
+    this._isSelected = val;
+  }
 
-	get row(): any[] {
-		return this._row;
-	}
+  get isSelected(): boolean {
+    return this._isSelected;
+  }
 
-	_isSelected: boolean;
-	@Input() set isSelected(val: boolean) {
-		this._isSelected = val;
-	}
+  @Input() rowIndex: number;
 
-	get isSelected(): boolean {
-		return this._isSelected;
-	}
+  constructor(element: ElementRef) {
+    this._element = element.nativeElement;
+  }
 
-	@Input() rowIndex: number;
+  ngOnInit() {}
 
-	constructor(element: ElementRef) {
-		this._element = element.nativeElement;
-	}
-
-	ngOnInit() { }
-
-	@Output() activate: EventEmitter<any> = new EventEmitter();
-	_element: any;
-	onActivate(event: any, index: number): void {
-		event.cellIndex = index;
-		event.rowElement = this._element;
-		this.activate.emit(event);
-	}
-
+  @Output() activate: EventEmitter<any> = new EventEmitter();
+  _element: any;
+  onActivate(event: any, index: number): void {
+    event.cellIndex = index;
+    event.rowElement = this._element;
+    this.activate.emit(event);
+  }
 }

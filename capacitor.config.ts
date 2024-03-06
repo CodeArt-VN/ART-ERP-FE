@@ -5,23 +5,22 @@ const config: CapacitorConfig = {
   appName: 'ART-DMS',
   //appId: 'vn.inholdings.erpdemo',
   //appName: 'In-Holdings',
-  webDir: 'www',
+  webDir: 'www/browser',
   bundledWebRuntime: false,
   server: {
-    cleartext: true
+    cleartext: true,
   },
   plugins: {
     PushNotifications: {
-      presentationOptions: ["badge", "sound", "alert"],
+      presentationOptions: ['badge', 'sound', 'alert'],
     },
-  }
-  ,
+  },
   android: {
     buildOptions: {
-        keystorePath: 'undefined',
-        keystoreAlias: 'undefined',
-    }
-  }
-  };
+      keystorePath: 'undefined',
+      keystoreAlias: 'undefined',
+    },
+  },
+};
 
 export default config;

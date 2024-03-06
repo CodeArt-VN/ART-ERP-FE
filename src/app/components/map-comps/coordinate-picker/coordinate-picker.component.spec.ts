@@ -9,8 +9,8 @@ describe('CoordinatePickerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoordinatePickerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [CoordinatePickerComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CoordinatePickerComponent);

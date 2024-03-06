@@ -21,7 +21,7 @@ export class MapViewComponent extends PageBase {
   addressList = [];
   @Input() set CoordinateList(value) {
     this.addressList = value;
-  };
+  }
 
   @Output() savePosition = new EventEmitter();
 
@@ -35,22 +35,24 @@ export class MapViewComponent extends PageBase {
     mapTypeControl: false,
     controlSize: 30,
     zoom: 16,
-    styles: [{
-      "featureType": "poi",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    },
-    {
-      "featureType": "transit",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    }]
+    styles: [
+      {
+        featureType: 'poi',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'transit',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+    ],
   };
 
   constructor(
@@ -68,37 +70,40 @@ export class MapViewComponent extends PageBase {
 
     this.formGroup = formBuilder.group({
       Id: new FormControl({ value: '', disabled: true }),
-      Addresses: this.formBuilder.array([])
+      Addresses: this.formBuilder.array([]),
     });
 
     if (!this.env.isMapLoaded) {
-      this.mapLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyAtyM-Th784YwQUTquYa0WlFIj8C6RB2uM', 'callback')
-        .pipe(map(() => {
-          this.env.isMapLoaded = true;
-          this.initMap();
-          return true;
-        }), catchError((err) => {
-          console.log(err);
-          return of(false)
-        }));
-    }
-    else {
+      this.mapLoaded = httpClient
+        .jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyAtyM-Th784YwQUTquYa0WlFIj8C6RB2uM', 'callback')
+        .pipe(
+          map(() => {
+            this.env.isMapLoaded = true;
+            this.initMap();
+            return true;
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of(false);
+          }),
+        );
+    } else {
       this.initMap();
     }
   }
 
   loadedData() {
     this.items = this.addressList;
-    
-    this.intervalFitBound = setInterval(()=>{
+
+    this.intervalFitBound = setInterval(() => {
       if (this.map && google) {
         let j = 1;
         this.items.forEach((i: any) => {
           i.Lat = i.Coordinate[0].Lat;
           i.Long = i.Coordinate[0].Long;
-          let lat: number = + i.Lat;
-          let long: number = + i.Long;
-    
+          let lat: number = +i.Lat;
+          let long: number = +i.Long;
+
           if (lat && long) {
             let markerOption: google.maps.MarkerOptions = {
               draggable: true,
@@ -106,9 +111,9 @@ export class MapViewComponent extends PageBase {
               position: { lat: lat, lng: long },
               animation: google.maps.Animation.DROP,
             };
-    
+
             this.bounds.extend({ lat: lat, lng: long });
-    
+
             i.option = markerOption;
           }
         });
@@ -116,8 +121,7 @@ export class MapViewComponent extends PageBase {
         this.map.fitBounds(this.bounds, 100);
         clearInterval(this.intervalFitBound);
       }
-    },500)
-    
+    }, 500);
   }
 
   intervalFitBound = null;
@@ -139,26 +143,26 @@ export class MapViewComponent extends PageBase {
     this.item.Country = content._Contact._Addresses[0].Country;
     this.item.AddressLine2 = content._Contact._Addresses[0].AddressLine2;
 
-    this.infoWindow.open(marker)
+    this.infoWindow.open(marker);
   }
 
   changePosition(marker: MapMarker, content: any) {
-
-    this.alertCtrl.create({
-      message: 'Bạn có chắc muốn di chuyển đến vị trí này?',
-      buttons: [
-        { text: 'Không', role: 'cancel' },
-        {
-          text: 'Đồng ý',
-          cssClass: 'danger-btn',
-          handler: () => {
-            this.savePosition.emit({ marker, content });
-          }
-        }
-      ]
-    }).then(alert => {
-      alert.present();
-    })
+    this.alertCtrl
+      .create({
+        message: 'Bạn có chắc muốn di chuyển đến vị trí này?',
+        buttons: [
+          { text: 'Không', role: 'cancel' },
+          {
+            text: 'Đồng ý',
+            cssClass: 'danger-btn',
+            handler: () => {
+              this.savePosition.emit({ marker, content });
+            },
+          },
+        ],
+      })
+      .then((alert) => {
+        alert.present();
+      });
   }
-
 }

@@ -9,8 +9,8 @@ describe('DataTableHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataTableHeaderComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [DataTableHeaderComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataTableHeaderComponent);

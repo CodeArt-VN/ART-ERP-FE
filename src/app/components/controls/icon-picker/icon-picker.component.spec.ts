@@ -9,8 +9,8 @@ describe('IconPickerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IconPickerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [IconPickerComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(IconPickerComponent);

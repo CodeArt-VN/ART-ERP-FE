@@ -9,8 +9,8 @@ describe('ModalDetailToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalDetailToolbarComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ModalDetailToolbarComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ModalDetailToolbarComponent);

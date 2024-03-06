@@ -9,8 +9,8 @@ describe('QueryFilterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ QueryFilterComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [QueryFilterComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QueryFilterComponent);

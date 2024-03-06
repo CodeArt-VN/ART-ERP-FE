@@ -8,13 +8,11 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-import { FileUploadModule } from 'ng2-file-upload';
-
+//
 //Custom component
 import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
 import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.component';
 import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { PageTitleComponent } from './page-title/page-title.component';
@@ -26,54 +24,51 @@ import { ShareVisualizationsModule } from './visualizations/share-visualizations
 import { SharePrintingModule } from './printing/share-printing.module';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		ScrollingModule,
-		IonicModule,
-		//NgxMaskDirective,  NgxMaskPipe,
-		TranslateModule,
-		NgSelectModule,
-		NgOptionHighlightModule,
-		FileUploadModule,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    IonicModule,
+    //NgxMaskDirective,  NgxMaskPipe,
+    TranslateModule,
+    NgSelectModule,
+    NgOptionHighlightModule,
+    //
+    ShareInputControlsModule,
+    ShareDataTableModule,
+    ShareVisualizationsModule,
+    SharePrintingModule,
+  ],
+  // providers: [provideNgxMask()],
 
-		ShareInputControlsModule,
-		ShareDataTableModule,
-		ShareVisualizationsModule,
-		SharePrintingModule
-	],
-	// providers: [provideNgxMask()],
-
-	declarations: [
-		ListToolbarComponent,
-		DetailToolbarComponent,
-		ToolbarComponent,
-		ModalDetailToolbarComponent,
-		PageTitleComponent,
-		QueryFilterComponent,
-	],
-	exports: [
-		ListToolbarComponent,
-		DetailToolbarComponent,
-		ToolbarComponent,
-		ModalDetailToolbarComponent,
-		PageTitleComponent,
-		QueryFilterComponent,
-		ShareInputControlsModule,
-		ShareDataTableModule,
-		ShareVisualizationsModule,
-		SharePrintingModule,
-		CommonModule,
-		FormsModule,
-		ScrollingModule,
-		IonicModule,
-		ReactiveFormsModule,
-		//NgxMaskDirective,  NgxMaskPipe,
-		TranslateModule,
-		NgSelectModule,
-		NgOptionHighlightModule,
-		FileUploadModule
-	],
+  declarations: [
+    ListToolbarComponent,
+    DetailToolbarComponent,
+    ModalDetailToolbarComponent,
+    PageTitleComponent,
+    QueryFilterComponent,
+  ],
+  exports: [
+    ListToolbarComponent,
+    DetailToolbarComponent,
+    ModalDetailToolbarComponent,
+    PageTitleComponent,
+    QueryFilterComponent,
+    ShareInputControlsModule,
+    ShareDataTableModule,
+    ShareVisualizationsModule,
+    SharePrintingModule,
+    CommonModule,
+    FormsModule,
+    ScrollingModule,
+    IonicModule,
+    ReactiveFormsModule,
+    //NgxMaskDirective,  NgxMaskPipe,
+    TranslateModule,
+    NgSelectModule,
+    NgOptionHighlightModule,
+    //FileUploadModule
+  ],
 })
-export class ShareComponentsModule { }
+export class ShareComponentsModule {}

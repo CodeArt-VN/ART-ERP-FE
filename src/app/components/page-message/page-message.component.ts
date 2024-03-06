@@ -10,8 +10,8 @@ export class PageMessageComponent implements OnInit {
   @Input() showSpinner;
   @Input() message;
   @Input() subMessage;
-  
-  constructor() { }
+
+  constructor() {}
 
   ngOnInit() {
     if (!this.message) {
@@ -21,5 +21,4 @@ export class PageMessageComponent implements OnInit {
       this.subMessage = 'Please check again';
     }
   }
-
 }

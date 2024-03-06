@@ -12,10 +12,9 @@ export class BranchBreadcrumbsComponent implements OnInit {
   @Input() maxItems;
   breadcrumbs = [];
 
-
   isOpen = false;
   collapsedBreadcrumbs: HTMLIonBreadcrumbElement[] = [];
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     if (this.Items && this.Id > -1) {
@@ -25,7 +24,7 @@ export class BranchBreadcrumbsComponent implements OnInit {
   }
 
   addParent(id) {
-    let parent = this.Items.find(d => d.Id == id);
+    let parent = this.Items.find((d) => d.Id == id);
 
     if (parent) {
       this.breadcrumbs.unshift(parent);
@@ -40,5 +39,4 @@ export class BranchBreadcrumbsComponent implements OnInit {
 
     this.isOpen = true;
   }
-
 }

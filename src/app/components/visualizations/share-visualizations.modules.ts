@@ -8,7 +8,6 @@ import { ScrollingModule as ExperimentalScrollingModule } from '@angular/cdk-exp
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-
 //Custom component
 import { ShareInputControlsModule } from '../controls/share-input-controls.modules';
 import { ReportConfigComponent } from './report-config/report-config.component';
@@ -18,35 +17,19 @@ import { EChartComponent } from './types/e-chart/e-chart.component';
 import { FilterComponent } from '../filter/filter.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
-
-
-
 @NgModule({
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		ScrollingModule, ExperimentalScrollingModule,
-		IonicModule,
-		TranslateModule,
-		ShareInputControlsModule,
-		DragDropModule
-	],
-	declarations: [
-		FilterComponent,
-        ReportConfigComponent,
-        ReportChartComponent,
-        CardMultiRowComponent,
-		EChartComponent,
-
-	],
-	exports: [
-		FilterComponent,
-        ReportConfigComponent,
-        ReportChartComponent,
-        CardMultiRowComponent,
-		EChartComponent,
-	],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    ExperimentalScrollingModule,
+    IonicModule,
+    TranslateModule,
+    ShareInputControlsModule,
+    DragDropModule,
+  ],
+  declarations: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
+  exports: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
 })
-export class ShareVisualizationsModule { }
+export class ShareVisualizationsModule {}

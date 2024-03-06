@@ -1,291 +1,479 @@
-<ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}">
-	<!-- left-tool-bar -->
-	<ion-buttons slot="start" [collapse]="true"
-		[ngClass]="{titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive}">
-		<ion-back-button *ngIf="!pageConfig.isDetailPage"></ion-back-button>
-		<ion-back-button *ngIf="pageConfig.isDetailPage" [defaultHref]="BackHref? BackHref : page.pageConfig.pageName"
-			[text]="(pageConfig.pageTitle? pageConfig.pageTitle : 'Back') | translate "> </ion-back-button>
+<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }">
+  <!-- left-tool-bar -->
+  <ion-buttons
+    slot="start"
+    [collapse]="true"
+    [ngClass]="{ titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive }"
+  >
+    <ion-back-button *ngIf="!pageConfig.isDetailPage"></ion-back-button>
+    <ion-back-button
+      *ngIf="pageConfig.isDetailPage"
+      [defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
+      [text]="(pageConfig.pageTitle ? pageConfig.pageTitle : 'Back') | translate"
+    >
+    </ion-back-button>
 
-		<ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems.length" class="ion-hide-sm-down_">
-			{{pageConfig.pageTitle | translate}}
-		</ion-button>
-		<ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems.length" (click)="page.unselect()">
-			{{selectedTitle || selectedItems.length +' dòng'}}
-		</ion-button>
-		<ng-content select="[leftTitle]"></ng-content>
-	</ion-buttons>
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems.length" class="ion-hide-sm-down_">
+      {{ pageConfig.pageTitle | translate }}
+    </ion-button>
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems.length" (click)="page.unselect()">
+      {{ selectedTitle || selectedItems.length + ' dòng' }}
+    </ion-button>
+    <ng-content select="[leftTitle]"></ng-content>
+  </ion-buttons>
 
-	<ion-buttons slot="start" [collapse]="true" *ngIf="page && !pageConfig.isMainPageActive"
-		[ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}">
-		<ion-button class="toggle" (click)="pageConfig.isDetailPage ? page.showMainView() : page.backSubPage()">
-			<ion-icon slot="icon-only" name="chevron-back-outline">
-			</ion-icon>
-			<ion-label color="dark" class="label-back">{{'Back' | translate}}</ion-label>
-		</ion-button>
-	</ion-buttons>
+  <ion-buttons
+    slot="start"
+    [collapse]="true"
+    *ngIf="page && !pageConfig.isMainPageActive"
+    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+  >
+    <ion-button class="toggle" (click)="pageConfig.isDetailPage ? page.showMainView() : page.backSubPage()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
+      <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
+    </ion-button>
+  </ion-buttons>
 
-	<!-- center-tool-bar -->
-	<ion-title *ngIf="pageConfig.isDetailPage && title">
-		{{title}}
-	</ion-title>
+  <!-- center-tool-bar -->
+  <ion-title *ngIf="pageConfig.isDetailPage && title">
+    {{ title }}
+  </ion-title>
 
-	<!-- right-tool-bar-pc -->
-	<ion-buttons class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
-		<ion-button title="{{'Add' | translate}}"
-			*ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage" (click)="page.add()">
-			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
-		</ion-button>
+  <!-- right-tool-bar-pc -->
+  <ion-buttons class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+    <ion-button
+      title="{{ 'Add' | translate }}"
+      *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
+      (click)="page.add()"
+    >
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
 
-		<span class="split ion-hide-sm-down"
-			*ngIf="pageConfig.canSubmitSalesmanOrdersForApproval && !pageConfig.isDetailPage">|</span>
+    <span
+      class="split ion-hide-sm-down"
+      *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval && !pageConfig.isDetailPage"
+      >|</span
+    >
 
-		<ion-button title="{{'Search' | translate}}" *ngIf="ShowSearch && !pageConfig.isDetailPage"
-			(click)="(pageConfig.isShowSearch = !pageConfig.isShowSearch)">
-			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Refresh' | translate}}" *ngIf="ShowRefresh" (click)="page.refresh()"
-			class="ion-hide-sm-down">
-			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Search' | translate }}"
+      *ngIf="ShowSearch && !pageConfig.isDetailPage"
+      (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+    >
+      <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Refresh' | translate }}"
+      *ngIf="ShowRefresh"
+      (click)="page.refresh()"
+      class="ion-hide-sm-down"
+    >
+      <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+    </ion-button>
 
-		<ng-content select="[rightScreen]"></ng-content>
+    <ng-content select="[rightScreen]"></ng-content>
 
-		<span class="split ion-hide-sm-down"
-			*ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport && !pageConfig.isDetailPage">|</span>
+    <span
+      class="split ion-hide-sm-down"
+      *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport && !pageConfig.isDetailPage"
+      >|</span
+    >
 
-		<ion-button title="{{'Export' | translate}}" class="ion-hide-sm-down"
-			*ngIf="ShowExport && pageConfig.canExport && !pageConfig.isDetailPage" (click)="page.export()">
-			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Import' | translate}}" class="ion-hide-sm-down"
-			*ngIf="ShowImport && pageConfig.canImport && !pageConfig.isDetailPage" (click)="onClickImport()">
-			<ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
-		</ion-button>
-		<input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
+    <ion-button
+      title="{{ 'Export' | translate }}"
+      class="ion-hide-sm-down"
+      *ngIf="ShowExport && pageConfig.canExport && !pageConfig.isDetailPage"
+      (click)="page.export()"
+    >
+      <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Import' | translate }}"
+      class="ion-hide-sm-down"
+      *ngIf="ShowImport && pageConfig.canImport && !pageConfig.isDetailPage"
+      (click)="onClickImport()"
+    >
+      <ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
+    </ion-button>
+    <input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
 
-		<span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
-		
-		<ion-button title="{{'Help' | translate}}" *ngIf="ShowHelp" (click)="page.help()">
-			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'ShowFeature' | translate}}" *ngIf="ShowFeature" (click)="toggleFeature()">
-			<ion-icon slot="icon-only"
-				[name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'"></ion-icon>
-		</ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
 
-	</ion-buttons>
-	<ion-buttons class="ion-hide-sm-down" [collapse]="true" slot="end"
-		*ngIf="selectedItems.length || pageConfig.isDetailPage">
-		<ion-button title="{{'Unselect' | translate}}" (click)="page.unselect()" *ngIf="!pageConfig.isDetailPage">
-			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
-		</ion-button>
+    <ion-button title="{{ 'Help' | translate }}" *ngIf="ShowHelp" (click)="page.help()">
+      <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button title="{{ 'ShowFeature' | translate }}" *ngIf="ShowFeature" (click)="toggleFeature()">
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons
+    class="ion-hide-sm-down"
+    [collapse]="true"
+    slot="end"
+    *ngIf="selectedItems.length || pageConfig.isDetailPage"
+  >
+    <ion-button title="{{ 'Unselect' | translate }}" (click)="page.unselect()" *ngIf="!pageConfig.isDetailPage">
+      <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
 
-		<ng-content select="[selected]"></ng-content>
+    <ng-content select="[selected]"></ng-content>
 
-		<ion-button title="Gửi Duyệt"
-			*ngIf="pageConfig.canSubmit && !pageConfig.isDetailPage && (showSubmit && !query.IsDisabled) "
-			(click)="page.submit()">
-			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="Gửi Duyệt"
+      *ngIf="pageConfig.canSubmit && !pageConfig.isDetailPage && showSubmit && !query.IsDisabled"
+      (click)="page.submit()"
+    >
+      <ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="Không Duyệt"
-			*ngIf="(pageConfig.canDisapprove && !pageConfig.isDetailPage && (showDisapprove && !query.IsDisabled)) || (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)"
-			(click)="page.disapprove()">
-			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="Không Duyệt"
+      *ngIf="
+        (pageConfig.canDisapprove && !pageConfig.isDetailPage && showDisapprove && !query.IsDisabled) ||
+        (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)
+      "
+      (click)="page.disapprove()"
+    >
+      <ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="Duyệt"
-			*ngIf="pageConfig.canApprove && !pageConfig.isDetailPage && (showApprove && !query.IsDisabled)"
-			(click)="page.approve()">
-			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="Duyệt"
+      *ngIf="pageConfig.canApprove && !pageConfig.isDetailPage && showApprove && !query.IsDisabled"
+      (click)="page.approve()"
+    >
+      <ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="Copy" *ngIf="pageConfig.canCopy && !pageConfig.isDetailPage" (click)="page.copy()">
-			<ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
-		</ion-button>
+    <ion-button title="Copy" *ngIf="pageConfig.canCopy && !pageConfig.isDetailPage" (click)="page.copy()">
+      <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
+    </ion-button>
 
-		<span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
+    <span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
 
-		<ion-button title="{{'Change Branch' | translate}}" *ngIf="pageConfig.canChangeBranch"
-			(click)="page.changeBranch()">
-			<ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Change Branch' | translate }}"
+      *ngIf="pageConfig.canChangeBranch"
+      (click)="page.changeBranch()"
+    >
+      <ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
+    </ion-button>
 
-		<span class="split ion-hide-sm-down"
-			*ngIf="(pageConfig.canApprove || pageConfig.canCancel) && !pageConfig.isDetailPage">|</span>
+    <span
+      class="split ion-hide-sm-down"
+      *ngIf="(pageConfig.canApprove || pageConfig.canCancel) && !pageConfig.isDetailPage"
+      >|</span
+    >
 
-		<ion-button title="{{'Merge' | translate}}"
-			*ngIf="pageConfig.canMerge && selectedItems.length>=2 && !query.IsDisabled && !pageConfig.isDetailPage"
-			(click)="page.merge()">
-			<ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Split' | translate}}"
-			*ngIf="pageConfig.canSplit && selectedItems.length<=1 && !query.IsDisabled && !pageConfig.isDetailPage"
-			(click)="page.split()">
-			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Merge' | translate }}"
+      *ngIf="pageConfig.canMerge && selectedItems.length >= 2 && !query.IsDisabled && !pageConfig.isDetailPage"
+      (click)="page.merge()"
+    >
+      <ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Split' | translate }}"
+      *ngIf="pageConfig.canSplit && selectedItems.length <= 1 && !query.IsDisabled && !pageConfig.isDetailPage"
+      (click)="page.split()"
+    >
+      <ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{'Cancel' | translate}}"
-			*ngIf="pageConfig.canCancel && ((selectedItems.length==1 && showCancel) || showCancel) && !query.IsDisabled && !pageConfig.isDetailPage"
-			(click)="page.cancel()">
-			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ 'Cancel' | translate }}"
+      *ngIf="
+        pageConfig.canCancel &&
+        ((selectedItems.length == 1 && showCancel) || showCancel) &&
+        !query.IsDisabled &&
+        !pageConfig.isDetailPage
+      "
+      (click)="page.cancel()"
+    >
+      <ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+    </ion-button>
 
-		<ion-button title="{{query.IsDisabled ? 'Reopen' : 'Archive' | translate}}"
-			*ngIf="pageConfig.canArchive && !pageConfig.isDetailPage" (click)="page.archiveItems()">
-			<ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled? 'arrow-undo':'archive'"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Delete' | translate}}" *ngIf="pageConfig.canDelete  && showDelete" (click)="deleteItem()">
-			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
-		</ion-button>
-		<span class="split ion-hide-sm-down">|</span>
-		<ion-button *ngIf="ShowFeature && !pageConfig.isDetailPage" title="{{'Show feature' | translate}}"
-			(click)="toggleFeature()">
-			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
-			</ion-icon>
-		</ion-button>
+    <ion-button
+      title="{{ query.IsDisabled ? 'Reopen' : ('Archive' | translate) }}"
+      *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage"
+      (click)="page.archiveItems()"
+    >
+      <ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled ? 'arrow-undo' : 'archive'"></ion-icon>
+    </ion-button>
+    <ion-button title="{{ 'Delete' | translate }}" *ngIf="pageConfig.canDelete && showDelete" (click)="deleteItem()">
+      <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
+    <span class="split ion-hide-sm-down">|</span>
+    <ion-button
+      *ngIf="ShowFeature && !pageConfig.isDetailPage"
+      title="{{ 'Show feature' | translate }}"
+      (click)="toggleFeature()"
+    >
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'">
+      </ion-icon>
+    </ion-button>
+  </ion-buttons>
 
-	</ion-buttons>
+  <!-- right-tool-bar-mb -->
+  <ion-buttons class="ion-hide-sm-up" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+    <ion-button
+      title="{{ 'Add' | translate }}"
+      *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
+      (click)="page.add()"
+    >
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      title="{{ 'Search' | translate }}"
+      *ngIf="ShowSearch && !pageConfig.isDetailPage"
+      (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+    >
+      <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      (click)="presentToolBarPopover($event)"
+      *ngIf="!pageConfig.isDetailPage"
+      size="small"
+      fill="clear"
+      slot="end"
+      class="gridster-item-content dot-toolbar"
+    >
+      <ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons
+    class="ion-hide-sm-up"
+    [collapse]="true"
+    slot="end"
+    *ngIf="selectedItems.length || pageConfig.isDetailPage"
+  >
+    <ion-button title="{{ 'Unselect' | translate }}" *ngIf="!pageConfig.isDetailPage" (click)="page.unselect()">
+      <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
 
-	<!-- right-tool-bar-mb -->
-	<ion-buttons class="ion-hide-sm-up" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
-		<ion-button title="{{'Add' | translate}}"
-			*ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled  && !pageConfig.isDetailPage"
-			(click)="page.add()">
-			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Search' | translate}}" *ngIf="ShowSearch  && !pageConfig.isDetailPage"
-			(click)="pageConfig.isShowSearch = !pageConfig.isShowSearch">
-			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
-		</ion-button>
-		<ion-button (click)="presentToolBarPopover($event)" *ngIf="!pageConfig.isDetailPage" size="small" fill="clear"
-			slot="end" class="gridster-item-content dot-toolbar">
-			<ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
-		</ion-button>
+    <ng-content select="selectedSmUp"></ng-content>
 
-	</ion-buttons>
-	<ion-buttons class="ion-hide-sm-up" [collapse]="true" slot="end"
-		*ngIf="selectedItems.length || pageConfig.isDetailPage">
-		<ion-button title="{{'Unselect' | translate}}" *ngIf="!pageConfig.isDetailPage" (click)="page.unselect()">
-			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
-		</ion-button>
+    <ion-button title="Copy" *ngIf="pageConfig.canCopy && !pageConfig.isDetailPage" (click)="page.copy()">
+      <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
+    </ion-button>
+    <ion-button title="{{ 'Delete' | translate }}" *ngIf="pageConfig.canDelete && showDelete" (click)="deleteItem()">
+      <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      (click)="presentToolBarPopover($event)"
+      size="small"
+      fill="clear"
+      slot="end"
+      class="gridster-item-content dot-toolbar"
+    >
+      <ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
+    </ion-button>
+  </ion-buttons>
 
-		<ng-content select="selectedSmUp"></ng-content>
+  <!-- popover -->
+  <ion-popover
+    class="ion-hide-sm-up"
+    #toolBarPopover
+    [isOpen]="isToolBarPopoverOpen"
+    (didDismiss)="isToolBarPopoverOpen = false"
+    [dismissOnSelect]="true"
+    [backdropDismiss]="true"
+  >
+    <ng-template>
+      <ion-content scroll-y="false">
+        <ion-list>
+          <ng-content select="[rightScreenPop]"></ng-content>
 
-		<ion-button title="Copy" *ngIf="pageConfig.canCopy && !pageConfig.isDetailPage" (click)="page.copy()">
-			<ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
-		</ion-button>
-		<ion-button title="{{'Delete' | translate}}" *ngIf="pageConfig.canDelete  && showDelete" (click)="deleteItem()">
-			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
-		</ion-button>
-		<ion-button (click)="presentToolBarPopover($event)" size="small" fill="clear" slot="end"
-			class="gridster-item-content dot-toolbar">
-			<ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
-		</ion-button>
+          <ion-item
+            title="{{ 'Refresh' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="ShowRefresh && !selectedItems.length"
+            (click)="isToolBarPopoverOpen = false; page.refresh()"
+          >
+            <ion-icon color="primary" slot="start" name="reload-outline"></ion-icon>
+            <ion-label> {{ 'Refresh' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Export' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="ShowExport && pageConfig.canExport && !selectedItems.length && !pageConfig.isDetailPage"
+            (click)="isToolBarPopoverOpen = false; page.export()"
+          >
+            <ion-icon color="primary" slot="start" name="cloud-download-outline"></ion-icon>
+            <ion-label> {{ 'Export' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Import' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="ShowImport && pageConfig.canImport && !selectedItems.length && !pageConfig.isDetailPage"
+            (click)="isToolBarPopoverOpen = false; onClickImport()"
+          >
+            <ion-icon color="primary" slot="start" name="cloud-upload-outline"></ion-icon>
+            <ion-label> {{ 'Import' | translate }}</ion-label>
+          </ion-item>
 
-	</ion-buttons>
+          <ion-item
+            title="{{ 'Help' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="ShowHelp && !selectedItems.length"
+            (click)="isToolBarPopoverOpen = false; page.help()"
+          >
+            <ion-icon color="primary" slot="start" name="help-circle-outline"></ion-icon>
+            <ion-label> {{ 'Help' | translate }}</ion-label>
+          </ion-item>
 
-	<!-- popover -->
-	<ion-popover class="ion-hide-sm-up" #toolBarPopover [isOpen]="isToolBarPopoverOpen"
-		(didDismiss)="isToolBarPopoverOpen = false" [dismissOnSelect]="true" [backdropDismiss]="true">
-		<ng-template>
-			<ion-content scroll-y="false">
-				<ion-list>
+          <ion-item
+            title="{{ 'Gửi Duyệt' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              pageConfig.canSubmit &&
+              !pageConfig.isDetailPage &&
+              showSubmit && !query.IsDisabled &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.submit()"
+          >
+            <ion-icon color="success" slot="start" name="send-outline"></ion-icon>
+            <ion-label> {{ 'Gửi Duyệt' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Không Duyệt' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              ((pageConfig.canDisapprove && !pageConfig.isDetailPage && showDisapprove && !query.IsDisabled) ||
+                (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)) &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.disapprove()"
+          >
+            <ion-icon color="warning" slot="start" name="thumbs-down-outline"></ion-icon>
+            <ion-label> {{ 'Không Duyệt' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Duyệt' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              pageConfig.canApprove &&
+              !pageConfig.isDetailPage &&
+              showApprove && !query.IsDisabled &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.approve()"
+          >
+            <ion-icon color="success" slot="start" name="thumbs-up-outline"></ion-icon>
+            <ion-label> {{ 'Duyệt' | translate }}</ion-label>
+          </ion-item>
 
-					<ng-content select="[rightScreenPop]"></ng-content>
+          <ion-item
+            title="{{ 'Change Branch' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="pageConfig.canChangeBranch && (selectedItems.length || pageConfig.isDetailPage)"
+            (click)="isToolBarPopoverOpen = false; page.changeBranch()"
+          >
+            <ion-icon color="warning" slot="start" name="sitemap"></ion-icon>
+            <ion-label> {{ 'Change Branch' | translate }}</ion-label>
+          </ion-item>
 
-					<ion-item title="{{'Refresh' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="ShowRefresh && !selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.refresh()">
-						<ion-icon color="primary" slot="start" name="reload-outline"></ion-icon>
-						<ion-label> {{'Refresh' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Export' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="ShowExport && pageConfig.canExport && !selectedItems.length && !pageConfig.isDetailPage"
-						(click)="isToolBarPopoverOpen = false; page.export()">
-						<ion-icon color="primary" slot="start" name="cloud-download-outline"></ion-icon>
-						<ion-label> {{'Export' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Import' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="ShowImport && pageConfig.canImport && !selectedItems.length && !pageConfig.isDetailPage"
-						(click)="isToolBarPopoverOpen = false; onClickImport()">
-						<ion-icon color="primary" slot="start" name="cloud-upload-outline"></ion-icon>
-						<ion-label> {{'Import' | translate}}</ion-label>
-					</ion-item>
+          <ion-item
+            title="{{ 'Merge' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              pageConfig.canMerge &&
+              selectedItems.length >= 2 &&
+              showMerge &&
+              !query.IsDisabled &&
+              selectedItems.length &&
+              !pageConfig.isDetailPage &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.merge()"
+          >
+            <ion-icon color="warning" slot="start" name="git-pull-request"></ion-icon>
+            <ion-label> {{ 'Merge' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Split' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              pageConfig.canSplit &&
+              selectedItems.length <= 1 &&
+              showSplit &&
+              !query.IsDisabled &&
+              !pageConfig.isDetailPage &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.split()"
+          >
+            <ion-icon color="warning" slot="start" name="git-branch"></ion-icon>
+            <ion-label> {{ 'Split' | translate }}</ion-label>
+          </ion-item>
 
-					<ion-item title="{{'Help' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="ShowHelp && !selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.help()">
-						<ion-icon color="primary" slot="start" name="help-circle-outline"></ion-icon>
-						<ion-label> {{'Help' | translate}}</ion-label>
-					</ion-item>
+          <ion-item
+            title="{{ 'Cancel' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="
+              pageConfig.canCancel &&
+              showCancel &&
+              !query.IsDisabled &&
+              !pageConfig.isDetailPage &&
+              selectedItems.length
+            "
+            (click)="isToolBarPopoverOpen = false; page.cancel()"
+          >
+            <ion-icon color="danger" slot="start" name="ban-outline"></ion-icon>
+            <ion-label> {{ 'Cancel' | translate }}</ion-label>
+          </ion-item>
 
-					<ion-item title="{{'Gửi Duyệt' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canSubmit && !pageConfig.isDetailPage && (showSubmit && !query.IsDisabled) && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.submit()">
-						<ion-icon color="success" slot="start" name="send-outline"></ion-icon>
-						<ion-label> {{'Gửi Duyệt' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Không Duyệt' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="((pageConfig.canDisapprove && !pageConfig.isDetailPage && (showDisapprove && !query.IsDisabled)) 
-						 || (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)) && selectedItems.length" 
-					 	(click)="isToolBarPopoverOpen = false; page.disapprove()">
-						<ion-icon color="warning" slot="start" name="thumbs-down-outline"></ion-icon>
-						<ion-label> {{'Không Duyệt' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Duyệt' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canApprove && !pageConfig.isDetailPage && (showApprove && !query.IsDisabled) && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.approve()">
-						<ion-icon color="success" slot="start" name="thumbs-up-outline"></ion-icon>
-						<ion-label> {{'Duyệt' | translate}}</ion-label>
-					</ion-item>
-
-					<ion-item title="{{'Change Branch' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canChangeBranch && (selectedItems.length || pageConfig.isDetailPage) "
-						(click)="isToolBarPopoverOpen = false; page.changeBranch()">
-						<ion-icon color="warning" slot="start" name="sitemap"></ion-icon>
-						<ion-label> {{'Change Branch' | translate}}</ion-label>
-					</ion-item>
-
-					<ion-item title="{{'Merge' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canMerge && selectedItems.length>=2 && showMerge && !query.IsDisabled && selectedItems.length && !pageConfig.isDetailPage && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.merge()">
-						<ion-icon color="warning" slot="start" name="git-pull-request"></ion-icon>
-						<ion-label> {{'Merge' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Split' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canSplit && selectedItems.length<=1 && showSplit && !query.IsDisabled && !pageConfig.isDetailPage && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.split()">
-						<ion-icon color="warning" slot="start" name="git-branch"></ion-icon>
-						<ion-label> {{'Split' | translate}}</ion-label>
-					</ion-item>
-
-					<ion-item title="{{'Cancel' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="pageConfig.canCancel && showCancel && !query.IsDisabled && !pageConfig.isDetailPage && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.cancel()">
-						<ion-icon color="danger" slot="start" name="ban-outline"></ion-icon>
-						<ion-label> {{'Cancel' | translate}}</ion-label>
-					</ion-item>
-
-					<ion-item title="{{query.IsDisabled ? 'Reopen' : 'Archive' | translate}}" lines="full"
-						[button]="true" [detail]="false"
-						*ngIf="pageConfig.canArchive &&  !pageConfig.isDetailPage && selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; page.archiveItems()">
-						<ion-icon color="warning" slot="start"
-							[name]="query.IsDisabled ? 'arrow-undo':'archive'"></ion-icon>
-						<ion-label> {{'Disapprove invoice' | translate}}</ion-label>
-					</ion-item>
-					<ion-item title="{{'Show feature' | translate}}" lines="full" [button]="true" [detail]="false"
-						*ngIf="ShowFeature && !pageConfig.isDetailPage &&  !selectedItems.length"
-						(click)="isToolBarPopoverOpen = false; toggleFeature()">
-						<ion-icon color="primary" slot="start"
-							[name]="pageConfig.isShowFeature ? 'close-outline':'list-circle-outline'"></ion-icon>
-						<ion-label> {{'Show feature' | translate}}</ion-label>
-					</ion-item>
-
-				</ion-list>
-			</ion-content>
-		</ng-template>
-	</ion-popover>
-
+          <ion-item
+            title="{{ query.IsDisabled ? 'Reopen' : ('Archive' | translate) }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage && selectedItems.length"
+            (click)="isToolBarPopoverOpen = false; page.archiveItems()"
+          >
+            <ion-icon color="warning" slot="start" [name]="query.IsDisabled ? 'arrow-undo' : 'archive'"></ion-icon>
+            <ion-label> {{ 'Disapprove invoice' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            title="{{ 'Show feature' | translate }}"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+            *ngIf="ShowFeature && !pageConfig.isDetailPage && !selectedItems.length"
+            (click)="isToolBarPopoverOpen = false; toggleFeature()"
+          >
+            <ion-icon
+              color="primary"
+              slot="start"
+              [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"
+            ></ion-icon>
+            <ion-label> {{ 'Show feature' | translate }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 </ion-toolbar>

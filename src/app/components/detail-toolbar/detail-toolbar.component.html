@@ -1,30 +1,58 @@
-<ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}" *ngIf="page">
-	<ion-buttons slot="start" [ngClass]="{titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive}">
-		<ion-back-button [defaultHref]="BackHref? BackHref : page.pageConfig.pageName" [text]="(pageConfig.pageTitle? pageConfig.pageTitle : 'Back') | translate "> </ion-back-button>
-		<ng-content select="[startTitle]"></ng-content>
-	</ion-buttons>
-	<ion-buttons slot="start" *ngIf="!pageConfig.isMainPageActive" [ngClass]="{backSubPageActive: !pageConfig.isMainPageActive}">
-		<ion-button class="toggle" (click)="page.showMainView()">
-			<ion-icon slot="icon-only" name="chevron-back-outline">
-			</ion-icon>
-			<ion-label color="dark" class="label-back">{{'Back' | translate}}</ion-label>
-		</ion-button>
-	</ion-buttons>
-    <ion-title *ngIf="title" [ngClass]="{titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive}">
-        <!-- <ion-button class="title" text-center fill="clear" expand="full" size="small"> -->
-            {{title}}
-        <!-- </ion-button> -->
-    </ion-title>
-	<ion-buttons slot="end" [ngClass]="{featureSubPageActive: !pageConfig.isMainPageActive, featureMainPageActive: pageConfig.isMainPageActive}">
-		<ng-content></ng-content>
+<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
+  <ion-buttons
+    slot="start"
+    [ngClass]="{
+      titleSubPageActive: !pageConfig.isMainPageActive,
+      titleMainPageActive: pageConfig.isMainPageActive
+    }"
+  >
+    <ion-back-button
+      [defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
+      [text]="(pageConfig.pageTitle ? pageConfig.pageTitle : 'Back') | translate"
+    >
+    </ion-back-button>
+    <ng-content select="[startTitle]"></ng-content>
+  </ion-buttons>
+  <ion-buttons
+    slot="start"
+    *ngIf="!pageConfig.isMainPageActive"
+    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+  >
+    <ion-button class="toggle" (click)="page.showMainView()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
+      <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
+    </ion-button>
+  </ion-buttons>
+  <ion-title
+    *ngIf="title"
+    [ngClass]="{
+      titleSubPageActive: !pageConfig.isMainPageActive,
+      titleMainPageActive: pageConfig.isMainPageActive
+    }"
+  >
+    <!-- <ion-button class="title" text-center fill="clear" expand="full" size="small"> -->
+    {{ title }}
+    <!-- </ion-button> -->
+  </ion-title>
+  <ion-buttons
+    slot="end"
+    [ngClass]="{
+      featureSubPageActive: !pageConfig.isMainPageActive,
+      featureMainPageActive: pageConfig.isMainPageActive
+    }"
+  >
+    <ng-content></ng-content>
 
-		<ion-button *ngIf="page.pageConfig.canChangeBranch" (click)="page.changeBranch()" title="{{'Change Branch' | translate}}">
-			<ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
-		</ion-button>
-		<span class="split ion-hide-sm-down" *ngIf="page.pageConfig.canChangeBranch ">|</span>
+    <ion-button
+      *ngIf="page.pageConfig.canChangeBranch"
+      (click)="page.changeBranch()"
+      title="{{ 'Change Branch' | translate }}"
+    >
+      <ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
+    </ion-button>
+    <span class="split ion-hide-sm-down" *ngIf="page.pageConfig.canChangeBranch">|</span>
 
-
-        <!-- <ion-button title="{{'Submit Business Partner' | translate}}" *ngIf="page.pageConfig.canSubmitForApproval && !page.Item?.IsDisabled" (click)="page.submitForApproval()">
+    <!-- <ion-button title="{{'Submit Business Partner' | translate}}" *ngIf="page.pageConfig.canSubmitForApproval && !page.Item?.IsDisabled" (click)="page.submitForApproval()">
 			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
 		</ion-button>
 		<ion-button title="{{'Approve Business Partner' | translate}}" *ngIf="page.pageConfig.canApprove && !page.Item?.IsDisabled" (click)="page.approve()">
@@ -38,20 +66,22 @@
 		</ion-button>
         <span class="split ion-hide-sm-down" *ngIf="(page.pageConfig.canSubmitForApproval || page.pageConfig.canApprove || page.pageConfig.canDisapprove || page.pageConfig.canCancel) && !page.Item?.IsDisabled ">|</span> -->
 
-
-		<ion-button *ngIf="ShowRefresh" title="{{'Refresh' | translate}}" (click)="page.refresh()">
-			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowDelete && page.item && page.item.Id && page.pageConfig.canDelete" (click)="page.delete()" title="{{'Delete' | translate}}">
-			<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowHelp" title="{{'Help' | translate}}" (click)="page.help()">
-			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
-		</ion-button>
-		<ion-button *ngIf="ShowFeature" title="{{'Expanded function' | translate}}" (click)="page.toggleFeature()">
-			<ion-icon slot="icon-only" [name]="page.pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
-			</ion-icon>
-		</ion-button>
-	</ion-buttons>
+    <ion-button *ngIf="ShowRefresh" title="{{ 'Refresh' | translate }}" (click)="page.refresh()">
+      <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+    </ion-button>
+    <ion-button
+      *ngIf="ShowDelete && page.item && page.item.Id && page.pageConfig.canDelete"
+      (click)="page.delete()"
+      title="{{ 'Delete' | translate }}"
+    >
+      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="ShowHelp" title="{{ 'Help' | translate }}" (click)="page.help()">
+      <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="ShowFeature" title="{{ 'Expanded function' | translate }}" (click)="page.toggleFeature()">
+      <ion-icon slot="icon-only" [name]="page.pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'">
+      </ion-icon>
+    </ion-button>
+  </ion-buttons>
 </ion-toolbar>
- 
