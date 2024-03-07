@@ -5,3 +5,5 @@ src/app/app-routing.module.ts
 src/app/page-base.ts
 src/theme/print.scss
 src/index.html
+
+**/routing.module.ts
