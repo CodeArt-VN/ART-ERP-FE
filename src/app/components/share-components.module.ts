@@ -22,6 +22,7 @@ import { ShareDataTableModule } from './data-table/share-data-table.module';
 import { ShareInputControlsModule } from './controls/share-input-controls.modules';
 import { ShareVisualizationsModule } from './visualizations/share-visualizations.modules';
 import { SharePrintingModule } from './printing/share-printing.module';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { SharePrintingModule } from './printing/share-printing.module';
   declarations: [
     ListToolbarComponent,
     DetailToolbarComponent,
+    ToolbarComponent,
     ModalDetailToolbarComponent,
     PageTitleComponent,
     QueryFilterComponent,
@@ -52,6 +54,7 @@ import { SharePrintingModule } from './printing/share-printing.module';
   exports: [
     ListToolbarComponent,
     DetailToolbarComponent,
+    ToolbarComponent,
     ModalDetailToolbarComponent,
     PageTitleComponent,
     QueryFilterComponent,
