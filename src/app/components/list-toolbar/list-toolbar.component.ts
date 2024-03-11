@@ -551,6 +551,24 @@ export class ListToolbarComponent implements OnInit {
         }
       });
     }
+    
+    if (this.pageConfig.pageName == 'adjustment') {
+      this.showApproveOrders = true;
+      this.showDisapproveOrders = true;
+      this.showApproveBusinessPartner = false;
+      this.showDisapproveBusinessPartner = false;
+      let notShowApproveOrders = ["Done"];
+      let notshowDisapproveOrders = ["Unapproved","New","Pending"];
+      this.selectedItems.forEach((i) => {
+        if (notShowApproveOrders.indexOf(i.Status) > -1 ) {
+          this.showApproveOrders = false;
+        }
+        if (notshowDisapproveOrders.indexOf(i.Status) > -1 ) {
+          this.showDisapproveOrders = false;
+        }
+      })
+    
+    }
   }
 
   toggleFeature() {
