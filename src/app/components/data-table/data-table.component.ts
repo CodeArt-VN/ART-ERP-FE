@@ -163,11 +163,24 @@ export class DataTableComponent implements OnInit {
   }
 
   @Output() sort: EventEmitter<any> = new EventEmitter();
-  @Output() sortLocal: EventEmitter<any> = new EventEmitter();
   onSort(event) {
-    if(this.isQueryLocalOnly) {
-      this.sortLocal.emit(event);
-    }else {
+    if (this.isQueryLocalOnly) {
+      let sortedRows = [...this._rows];
+      event.forEach((e) => {
+        sortedRows.sort((a, b) => {
+          if (e.Order === 'ASC') {
+            if (a[e.Dimension] > b[e.Dimension]) return 1;
+            if (a[e.Dimension] < b[e.Dimension]) return -1;
+            return 0;
+          } else {
+            if (a[e.Dimension] < b[e.Dimension]) return 1;
+            if (a[e.Dimension] > b[e.Dimension]) return -1;
+            return 0;
+          }
+        });
+      });
+      this._rows = sortedRows;
+    } else {
       this.sort.emit(event);
     }
   }
