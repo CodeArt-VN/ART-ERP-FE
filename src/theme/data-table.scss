@@ -808,7 +808,7 @@ app-data-table,
     &.small-width {
       @include smallWidth;
     }
-    @media screen and (max-width: var(--grid-md) ) {
+    @media screen and (max-width: calc(1164px + 0px)) {
       @include smallWidth;
     }
   }
