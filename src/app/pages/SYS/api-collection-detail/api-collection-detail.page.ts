@@ -4,20 +4,11 @@ import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
-import {
-  BRA_BranchProvider,
-  CRM_ContactProvider,
-  SYS_APICollectionProvider,
-} from 'src/app/services/static/services.service';
+import { SYS_APICollectionProvider, } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, FormArray, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
-import { Subject, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
-import {
-  BANK_IncomingPayment,
-  BANK_IncomingPaymentDetail,
-  SYS_APICollection,
-} from 'src/app/models/model-list-interface';
-import { getDateMeta } from '@fullcalendar/core/internal';
+import {SYS_APICollection, } from 'src/app/models/model-list-interface';
+
 @Component({
   selector: 'app-api-collection-detail',
   templateUrl: './api-collection-detail.page.html',
@@ -37,12 +28,10 @@ export class APICollectionDetailPage extends PageBase {
   constructor(
     public pageProvider: SYS_APICollectionProvider,
     // public APICollectionDetailservice: SYS_APICollectionDetailProvider,
-    public branchProvider: BRA_BranchProvider,
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
     public modalController: ModalController,
-    public contactProvider: CRM_ContactProvider,
     public alertCtrl: AlertController,
     public formBuilder: FormBuilder,
     public cdr: ChangeDetectorRef,
