@@ -788,11 +788,11 @@ export abstract class PageBase implements OnInit {
     toggleFeature() {
         this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
         if(this.pageConfig.isShowFeature) {
-            this.pageConfig.isMainPageActive = false;
+            this.pageConfig.isMainPageActive = true;
         }
         else
         {
-            this.pageConfig.isMainPageActive = true;
+            this.pageConfig.isMainPageActive = false;
         }
     }
 
@@ -802,7 +802,7 @@ export abstract class PageBase implements OnInit {
     
     backSubPage() {
         this.pageConfig.isMainPageActive =  true;
-        this.pageConfig.isShowFeature = false;
+        this.pageConfig.isShowFeature = true;
     }
 
     help() {
