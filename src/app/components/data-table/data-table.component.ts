@@ -91,6 +91,7 @@ export class DataTableComponent implements OnInit {
 
   @Input() showSpinner: boolean;
   @Input() showFilter: boolean;
+  @Input() isQueryLocalOnly: boolean;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -163,6 +164,17 @@ export class DataTableComponent implements OnInit {
 
   @Output() sort: EventEmitter<any> = new EventEmitter();
   onSort(event) {
-    this.sort.emit(event);
+    if (this.isQueryLocalOnly) {
+      this._rows.sort((a, b) => {
+        for (const e of event) {
+            const comparison = e.Order === 'ASC' ? 1 : -1;
+            if (a[e.Dimension] > b[e.Dimension]) return comparison;
+            if (a[e.Dimension] < b[e.Dimension]) return -comparison;
+        }
+        return 0;
+      });
+    } else {
+      this.sort.emit(event);
+    }
   }
 }
