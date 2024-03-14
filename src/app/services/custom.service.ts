@@ -21,15 +21,11 @@ export class CustomService extends exService {
     super(APIList.ACCOUNT_ApplicationUser, SearchConfig.getSearchFields('ACCOUNT_ApplicationUser'), commonService);
   }
 
-  //apiDomain = 'http://hungvq-w10.local:54009';
-  //apiDomain = 'https://pqc.appcenter.vn';
-  //apiDomain = 'http://wg.appcenter.vn';
-  apiDomain = environment.appDomain;
 
   API_connect(URL, query, method = 'GET') {
     let that = this;
 
-    URL = this.apiDomain + URL;
+    URL = environment.appDomain + URL;
 
     return new Promise(function (resolve, reject) {
       let headers = new HttpHeaders({

@@ -12,6 +12,7 @@ import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserDeviceProvider } from './
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
+import { environment } from 'src/environments/environment';
 declare var window: any;
 
 @Injectable({
@@ -49,9 +50,18 @@ export class AccountService {
     console.log('check version');
 
     return new Promise((resolve) => {
-      this.env?.ready
-        ?.then((_) => {
-          this.env.getStorage('appVersion').then((version) => {
+      this.env?.ready?.then((_) => {
+        console.log('app - ready');
+
+        Promise.all([this.env.getStorage('appDomain'), this.env.getStorage('appVersion')])
+          .then((values) => {
+            let appDomain = values[0];
+            let version = values[1];
+
+            if (appDomain && appDomain != environment.appDomain) {
+              environment.appDomain = appDomain;
+            }
+
             if (this.env.version != version) {
               GlobalData.Token = {
                 access_token: 'no token',
@@ -73,11 +83,11 @@ export class AccountService {
             } else {
               resolve(this.env.version);
             }
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      });
     });
   }
 
@@ -276,7 +286,7 @@ export class AccountService {
             data.Avatar = data.Avatar
               ? data.Avatar.indexOf('http') != -1
                 ? data.Avatar
-                : ApiSetting.mainService.base + data.Avatar
+                : environment.appDomain + data.Avatar
               : null;
 
             lib.buildFlatTree(data.Forms, data.Forms, true).then((resp: any) => {

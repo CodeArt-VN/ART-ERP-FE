@@ -309,6 +309,25 @@ app-data-table,
           padding: calc(10/16 * 0.5rem);
         }
       }
+      &.breadcrumbs{
+        
+          
+          padding: 0px !important;
+          display: flex;
+          flex-wrap: nowrap;
+          font-size: 13px;
+
+          ion-breadcrumbs {
+            display: flex;
+            flex-wrap: nowrap;
+            
+
+            ion-breadcrumb{
+              font-size: calc(10/16 * 1.3rem);
+            }
+          }
+      
+      }
     }
 
     .c-checkbox {
@@ -404,6 +423,16 @@ app-data-table,
       height: 17px;
       width: 17px;
     }
+
+    &.large {
+      max-width: 50px;
+      min-width: 50px;
+
+      ion-icon {
+        height: calc(10/16 * 3rem);
+        width: calc(10/16 * 3rem);
+      }
+    }
   }
 
   .col-reorder {
@@ -412,8 +441,8 @@ app-data-table,
   }
 
   .col-id {
-    max-width: 60px;
-    min-width: 60px;
+    max-width: calc(10/16 * 6rem);
+    min-width: calc(10/16 * 6rem);
     justify-content: center;
     //font-weight: bold;
     white-space: nowrap;
@@ -551,6 +580,7 @@ app-data-table,
 
     @mixin smallWidth() {
       background-color: transparent;
+      box-shadow: none;
       min-width: unset !important;
 
       .show-small-inline {
@@ -778,7 +808,7 @@ app-data-table,
     &.small-width {
       @include smallWidth;
     }
-    @media screen and (max-width: calc(1164px + 0px)) {
+    @media screen and (max-width: var(--grid-md) ) {
       @include smallWidth;
     }
   }
@@ -812,7 +842,7 @@ app-data-table,
   .data-code {
     width: 70px;
     text-align: center;
-    font-size: 13px;
+    font-size: calc(10/16 * 1.3rem);
     color: var(--ion-color-medium);
 
     .bold {
@@ -825,7 +855,7 @@ app-data-table,
   .data-sub-sub-title {
     padding: 5px 16px;
     width: 100%;
-    font-size: 12px;
+    font-size: calc(10/16 * 1.2rem);
     color: var(--ion-color-dark);
     white-space: nowrap;
 
@@ -871,7 +901,7 @@ app-data-table,
     }
 
     & ion-icon {
-      font-size: 14px;
+      font-size: calc(10/16 * 1.4rem);
       vertical-align: bottom;
     }
   }
@@ -882,7 +912,7 @@ app-data-table,
 
     .min-btn {
       margin-right: -5px;
-      font-size: 14px;
+      font-size: calc(10/16 * 1.4rem);
       vertical-align: bottom;
     }
   }
@@ -911,7 +941,7 @@ app-data-table,
     padding-left: 16px;
     color: var(--ion-color-dark);
     white-space: nowrap;
-    font-size: 13px;
+    font-size: calc(10/16 * 1.3rem);
   }
 
   .bold {

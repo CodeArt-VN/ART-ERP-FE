@@ -10,6 +10,10 @@ export class IconPickerComponent implements OnInit {
   @Input() color: string;
 
   items = [
+    
+    { Name: 'panel-right-active', Tags: 'panel,right,active' },
+    { Name: 'panel-right', Tags: 'panel,right' },
+    
     { Name: 'radar', Tags: 'radar,chart,web' },
     { Name: 'address-book', Tags: 'address,book' },
     { Name: 'address-card', Tags: 'address,card' },
