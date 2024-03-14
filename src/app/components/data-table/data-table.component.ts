@@ -91,6 +91,7 @@ export class DataTableComponent implements OnInit {
 
   @Input() showSpinner: boolean;
   @Input() showFilter: boolean;
+  @Input() isQueryLocalOnly: boolean;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -162,7 +163,12 @@ export class DataTableComponent implements OnInit {
   }
 
   @Output() sort: EventEmitter<any> = new EventEmitter();
+  @Output() sortLocal: EventEmitter<any> = new EventEmitter();
   onSort(event) {
-    this.sort.emit(event);
+    if(this.isQueryLocalOnly) {
+      this.sortLocal.emit(event);
+    }else {
+      this.sort.emit(event);
+    }
   }
 }
