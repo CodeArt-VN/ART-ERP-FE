@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EnvService } from 'src/app/services/core/env.service';
-
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
   @ViewChild('importfile') importfile: any;
 
   @Input() pageTitle;
@@ -41,12 +42,17 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageConfig.isMainPageActive = true;
+    if(this.page?.pageConfig && !this.pageConfig){
+      this.pageConfig = this.page.pageConfig
+    }
+    // this.pageConfig.isMainPageActive = true;
     if (this.pageConfig.pageTitle)
       this.translate.get(this.pageConfig.pageTitle).subscribe((text: string) => {
         this.pageTitle = text;
         window.document.title = text;
       });
+      console.log(this.pageConfig)
+  
   }
 
   onClickImport() {
@@ -68,7 +74,7 @@ export class ToolbarComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('check');
-    if (this.pageConfig.pageName == 'sale-order') {
+    if (this.pageConfig?.pageName == 'sale-order') {
       this.showSubmit = true;
       this.showApprove = true;
       this.showDisapprove = true;
@@ -131,7 +137,7 @@ export class ToolbarComponent implements OnInit {
       });
     }
 
-    if (this.pageConfig.pageName == 'purchase-order') {
+    if (this.pageConfig?.pageName == 'purchase-order') {
       this.showSubmit = true;
       this.showApprove = true;
       this.showDisapprove = true;
@@ -246,7 +252,7 @@ export class ToolbarComponent implements OnInit {
       });
     }
 
-    if (this.pageConfig.pageName == 'arinvoice') {
+    if (this.pageConfig?.pageName == 'arinvoice') {
       this.showSubmit = true;
       this.showApprove = true;
       this.showDisapprove = true;
@@ -366,9 +372,9 @@ export class ToolbarComponent implements OnInit {
     }
 
     if (
-      this.pageConfig.pageName == 'business-partner' ||
-      this.pageConfig.pageName == 'outlet' ||
-      this.pageConfig.pageName == 'contact-mobile'
+      this.pageConfig?.pageName == 'business-partner' ||
+      this.pageConfig?.pageName == 'outlet' ||
+      this.pageConfig?.pageName == 'contact-mobile'
     ) {
       this.showSubmit = true;
       this.showApprove = true;
@@ -389,7 +395,7 @@ export class ToolbarComponent implements OnInit {
       });
     }
 
-    if (this.pageConfig.pageName == 'request') {
+    if (this.pageConfig?.pageName == 'request') {
       this.showApprove = false;
       this.showDisapprove = false;
       this.showCancel = true;
@@ -426,6 +432,11 @@ export class ToolbarComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    // Perform cleanup operations here
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleFeature() {

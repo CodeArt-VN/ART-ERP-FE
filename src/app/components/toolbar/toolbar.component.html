@@ -13,11 +13,11 @@
     >
     </ion-back-button>
 
-    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems.length" class="ion-hide-sm-down_">
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems?.length" class="ion-hide-sm-down_">
       {{ pageConfig.pageTitle | translate }}
     </ion-button>
-    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems.length" (click)="page.unselect()">
-      {{ selectedTitle || selectedItems.length + ' dòng' }}
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems?.length" (click)="page.unselect()">
+      {{ selectedTitle || selectedItems?.length + ' dòng' }}
     </ion-button>
     <ng-content select="[leftTitle]"></ng-content>
   </ion-buttons>
@@ -43,7 +43,7 @@
 
   <!-- right-tool-bar-pc -->
   <ion-buttons [ngClass] = "{hiddenMd: page.isSubActive}"
-  class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems?.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -113,7 +113,8 @@
     class="ion-hide-sm-down"
     [collapse]="true"
     slot="end"
-    *ngIf="selectedItems.length || pageConfig.isDetailPage"
+    [ngClass] = "{hiddenMd: page.isSubActive}"
+    *ngIf="selectedItems?.length || pageConfig.isDetailPage"
   >
     <ion-button title="{{ 'Unselect' | translate }}" (click)="page.unselect()" *ngIf="!pageConfig.isDetailPage">
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -170,14 +171,14 @@
 
     <ion-button
       title="{{ 'Merge' | translate }}"
-      *ngIf="pageConfig.canMerge && selectedItems.length >= 2 && !query.IsDisabled && !pageConfig.isDetailPage"
+      *ngIf="pageConfig.canMerge && selectedItems?.length >= 2 && !query.IsDisabled && !pageConfig.isDetailPage"
       (click)="page.merge()"
     >
       <ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
     </ion-button>
     <ion-button
       title="{{ 'Split' | translate }}"
-      *ngIf="pageConfig.canSplit && selectedItems.length <= 1 && !query.IsDisabled && !pageConfig.isDetailPage"
+      *ngIf="pageConfig.canSplit && selectedItems?.length <= 1 && !query.IsDisabled && !pageConfig.isDetailPage"
       (click)="page.split()"
     >
       <ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
@@ -187,7 +188,7 @@
       title="{{ 'Cancel' | translate }}"
       *ngIf="
         pageConfig.canCancel &&
-        ((selectedItems.length == 1 && showCancel) || showCancel) &&
+        ((selectedItems?.length == 1 && showCancel) || showCancel) &&
         !query.IsDisabled &&
         !pageConfig.isDetailPage
       "
@@ -219,7 +220,7 @@
 
   <!-- right-tool-bar-mb -->
   <ion-buttons class="ion-hide-sm-up" 
-  [ngClass] = "{hiddenMd: page.isSubActive}"[collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  [ngClass] = "{hiddenMd: page.isSubActive}"[collapse]="true" slot="end" *ngIf="!selectedItems?.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -249,7 +250,7 @@
     class="ion-hide-sm-up"
     [collapse]="true"
     slot="end"
-    *ngIf="selectedItems.length || pageConfig.isDetailPage"
+    *ngIf="selectedItems?.length || pageConfig.isDetailPage"
   >
     <ion-button title="{{ 'Unselect' | translate }}" *ngIf="!pageConfig.isDetailPage" (click)="page.unselect()">
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -293,7 +294,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowRefresh && !selectedItems.length"
+            *ngIf="ShowRefresh && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.refresh()"
           >
             <ion-icon color="primary" slot="start" name="reload-outline"></ion-icon>
@@ -304,7 +305,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowExport && pageConfig.canExport && !selectedItems.length && !pageConfig.isDetailPage"
+            *ngIf="ShowExport && pageConfig.canExport && !selectedItems?.length && !pageConfig.isDetailPage"
             (click)="isToolBarPopoverOpen = false; page.export()"
           >
             <ion-icon color="primary" slot="start" name="cloud-download-outline"></ion-icon>
@@ -315,7 +316,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowImport && pageConfig.canImport && !selectedItems.length && !pageConfig.isDetailPage"
+            *ngIf="ShowImport && pageConfig.canImport && !selectedItems?.length && !pageConfig.isDetailPage"
             (click)="isToolBarPopoverOpen = false; onClickImport()"
           >
             <ion-icon color="primary" slot="start" name="cloud-upload-outline"></ion-icon>
@@ -327,7 +328,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowHelp && !selectedItems.length"
+            *ngIf="ShowHelp && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.help()"
           >
             <ion-icon color="primary" slot="start" name="help-circle-outline"></ion-icon>
@@ -343,7 +344,7 @@
               pageConfig.canSubmit &&
               !pageConfig.isDetailPage &&
               showSubmit && !query.IsDisabled &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.submit()"
           >
@@ -358,7 +359,7 @@
             *ngIf="
               ((pageConfig.canDisapprove && !pageConfig.isDetailPage && showDisapprove && !query.IsDisabled) ||
                 (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)) &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.disapprove()"
           >
@@ -374,7 +375,7 @@
               pageConfig.canApprove &&
               !pageConfig.isDetailPage &&
               showApprove && !query.IsDisabled &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.approve()"
           >
@@ -387,7 +388,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="pageConfig.canChangeBranch && (selectedItems.length || pageConfig.isDetailPage)"
+            *ngIf="pageConfig.canChangeBranch && (selectedItems?.length || pageConfig.isDetailPage)"
             (click)="isToolBarPopoverOpen = false; page.changeBranch()"
           >
             <ion-icon color="warning" slot="start" name="sitemap"></ion-icon>
@@ -401,12 +402,12 @@
             [detail]="false"
             *ngIf="
               pageConfig.canMerge &&
-              selectedItems.length >= 2 &&
+              selectedItems?.length >= 2 &&
               showMerge &&
               !query.IsDisabled &&
-              selectedItems.length &&
+              selectedItems?.length &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.merge()"
           >
@@ -420,11 +421,11 @@
             [detail]="false"
             *ngIf="
               pageConfig.canSplit &&
-              selectedItems.length <= 1 &&
+              selectedItems?.length <= 1 &&
               showSplit &&
               !query.IsDisabled &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.split()"
           >
@@ -442,7 +443,7 @@
               showCancel &&
               !query.IsDisabled &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.cancel()"
           >
@@ -455,7 +456,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage && selectedItems.length"
+            *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage && selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.archiveItems()"
           >
             <ion-icon color="warning" slot="start" [name]="query.IsDisabled ? 'arrow-undo' : 'archive'"></ion-icon>
@@ -466,7 +467,7 @@
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowFeature && !pageConfig.isDetailPage && !selectedItems.length"
+            *ngIf="ShowFeature && !pageConfig.isDetailPage && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; toggleFeature()"
           >
             <ion-icon
