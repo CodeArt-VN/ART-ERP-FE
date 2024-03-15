@@ -1,7 +1,7 @@
 <ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
   <ion-buttons
     slot="start"
-    [ngClass] = "{hiddenMd: page.isSubActive}"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <ion-back-button
       [defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
@@ -13,7 +13,7 @@
   <ion-buttons 
     slot="start"
     *ngIf="page.isSubActive"
-    [ngClass] = "{hiddenMd: !page.isSubActive}"
+    [ngClass] = "{'ion-hide-md-down': !page.isSubActive}"
   >
     <ion-button class="toggle" (click)="page.backSubPage()">
       <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
@@ -22,7 +22,7 @@
   </ion-buttons>
   <ion-title
     *ngIf="title"
-    [ngClass] = "{hiddenMd: page.isSubActive}"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <!-- <ion-button class="title" text-center fill="clear" expand="full" size="small"> -->
     {{ title }}
@@ -30,7 +30,7 @@
   </ion-title>
   <ion-buttons
     slot="end"
-    [ngClass] = "{hiddenMd: page.isSubActive}"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <ng-content></ng-content>
 
