@@ -3,7 +3,7 @@
   <ion-buttons
     slot="start"
     [collapse]="true"
-    [ngClass]="{ titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive }"
+    [ngClass] = "{hiddenMd: page.isSubActive}"
   >
     <ion-back-button *ngIf="!pageConfig.isDetailPage"></ion-back-button>
     <ion-back-button
@@ -25,22 +25,25 @@
   <ion-buttons
     slot="start"
     [collapse]="true"
-    *ngIf="page && !pageConfig.isMainPageActive"
-    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+    class="ion-hide-md-up"
+    *ngIf="page.isSubActive"
   >
-    <ion-button class="toggle" (click)="pageConfig.isDetailPage ? page.showMainView() : page.backSubPage()">
+    <ion-button class="toggle" (click)="page.backSubPage()">
       <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
       <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
     </ion-button>
   </ion-buttons>
 
   <!-- center-tool-bar -->
-  <ion-title *ngIf="pageConfig.isDetailPage && title">
+  <ion-title 
+  [ngClass] = "{hiddenMd: page.isSubActive}"
+  *ngIf="pageConfig.isDetailPage && title">
     {{ title }}
   </ion-title>
 
   <!-- right-tool-bar-pc -->
-  <ion-buttons class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  <ion-buttons [ngClass] = "{hiddenMd: page.isSubActive}"
+  class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -215,7 +218,8 @@
   </ion-buttons>
 
   <!-- right-tool-bar-mb -->
-  <ion-buttons class="ion-hide-sm-up" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  <ion-buttons class="ion-hide-sm-up" 
+  [ngClass] = "{hiddenMd: page.isSubActive}"[collapse]="true" slot="end" *ngIf="!selectedItems.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -223,14 +227,14 @@
     >
       <ion-icon slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
-    <ion-button
+    <ion-button [ngClass] = "{hiddenMd: page.isSubActive}"
       title="{{ 'Search' | translate }}"
       *ngIf="ShowSearch && !pageConfig.isDetailPage"
       (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
     >
       <ion-icon slot="icon-only" name="search-outline"></ion-icon>
     </ion-button>
-    <ion-button
+    <ion-button [ngClass] = "{hiddenMd: page.isSubActive}"
       (click)="presentToolBarPopover($event)"
       *ngIf="!pageConfig.isDetailPage"
       size="small"
@@ -241,7 +245,7 @@
       <ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons
+  <ion-buttons [ngClass] = "{hiddenMd: page.isSubActive}"
     class="ion-hide-sm-up"
     [collapse]="true"
     slot="end"
@@ -271,7 +275,7 @@
   </ion-buttons>
 
   <!-- popover -->
-  <ion-popover
+  <ion-popover [ngClass] = "{hiddenMd: page.isSubActive}"
     class="ion-hide-sm-up"
     #toolBarPopover
     [isOpen]="isToolBarPopoverOpen"
