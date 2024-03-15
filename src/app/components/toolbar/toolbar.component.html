@@ -3,7 +3,7 @@
   <ion-buttons
     slot="start"
     [collapse]="true"
-    [ngClass]="{ titleSubPageActive: !pageConfig.isMainPageActive, titleMainPageActive: pageConfig.isMainPageActive }"
+    [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
   >
     <ion-back-button *ngIf="!pageConfig.isDetailPage"></ion-back-button>
     <ion-back-button
@@ -13,11 +13,11 @@
     >
     </ion-back-button>
 
-    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems.length" class="ion-hide-sm-down_">
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && !selectedItems?.length">
       {{ pageConfig.pageTitle | translate }}
     </ion-button>
-    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems.length" (click)="page.unselect()">
-      {{ selectedTitle || selectedItems.length + ' dòng' }}
+    <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems?.length" (click)="page.unselect()">
+      {{ selectedTitle || selectedItems?.length + ' dòng' }}
     </ion-button>
     <ng-content select="[leftTitle]"></ng-content>
   </ion-buttons>
@@ -25,22 +25,24 @@
   <ion-buttons
     slot="start"
     [collapse]="true"
-    *ngIf="page && !pageConfig.isMainPageActive"
-    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+    class="ion-hide-md-up"
+    *ngIf="pageConfig.isSubActive"
   >
-    <ion-button class="toggle" (click)="pageConfig.isDetailPage ? page.showMainView() : page.backSubPage()">
+    <ion-button class="toggle" (click)="page.backSubPage()">
       <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
       <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
     </ion-button>
   </ion-buttons>
 
   <!-- center-tool-bar -->
-  <ion-title *ngIf="pageConfig.isDetailPage && title">
+  <ion-title 
+  [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
+  *ngIf="pageConfig.isDetailPage && title">
     {{ title }}
   </ion-title>
 
-  <!-- right-tool-bar-pc -->
-  <ion-buttons class="ion-hide-sm-down" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  <!-- right-tool-bar md up-->
+  <ion-buttons class="ion-hide-md-down" [collapse]="true" slot="end" *ngIf="!selectedItems?.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -49,11 +51,7 @@
       <ion-icon slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
 
-    <span
-      class="split ion-hide-sm-down"
-      *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval && !pageConfig.isDetailPage"
-      >|</span
-    >
+    <span class="split ion-hide-md-down" *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval && !pageConfig.isDetailPage" >|</span >
 
     <ion-button
       title="{{ 'Search' | translate }}"
@@ -66,7 +64,7 @@
       title="{{ 'Refresh' | translate }}"
       *ngIf="ShowRefresh"
       (click)="page.refresh()"
-      class="ion-hide-sm-down"
+      class="ion-hide-md-down"
     >
       <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
     </ion-button>
@@ -74,14 +72,14 @@
     <ng-content select="[rightScreen]"></ng-content>
 
     <span
-      class="split ion-hide-sm-down"
+      class="split ion-hide-md-down"
       *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport && !pageConfig.isDetailPage"
       >|</span
     >
 
     <ion-button
       title="{{ 'Export' | translate }}"
-      class="ion-hide-sm-down"
+      class="ion-hide-md-down"
       *ngIf="ShowExport && pageConfig.canExport && !pageConfig.isDetailPage"
       (click)="page.export()"
     >
@@ -89,7 +87,7 @@
     </ion-button>
     <ion-button
       title="{{ 'Import' | translate }}"
-      class="ion-hide-sm-down"
+      class="ion-hide-md-down"
       *ngIf="ShowImport && pageConfig.canImport && !pageConfig.isDetailPage"
       (click)="onClickImport()"
     >
@@ -97,21 +95,18 @@
     </ion-button>
     <input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
 
-    <span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
+    <span class="split ion-hide-md-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
 
     <ion-button title="{{ 'Help' | translate }}" *ngIf="ShowHelp" (click)="page.help()">
       <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
     </ion-button>
     <ion-button title="{{ 'ShowFeature' | translate }}" *ngIf="ShowFeature" (click)="toggleFeature()">
-      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"></ion-icon>
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'panel-right-active' : 'panel-right'"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons
-    class="ion-hide-sm-down"
-    [collapse]="true"
-    slot="end"
-    *ngIf="selectedItems.length || pageConfig.isDetailPage"
-  >
+
+  <!-- selected-group md up-->
+  <ion-buttons class="ion-hide-md-down" [collapse]="true" slot="end" *ngIf="selectedItems?.length || pageConfig.isDetailPage" >
     <ion-button title="{{ 'Unselect' | translate }}" (click)="page.unselect()" *ngIf="!pageConfig.isDetailPage">
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
@@ -149,7 +144,7 @@
       <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
     </ion-button>
 
-    <span class="split ion-hide-sm-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
+    <span class="split ion-hide-md-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
 
     <ion-button
       title="{{ 'Change Branch' | translate }}"
@@ -160,21 +155,21 @@
     </ion-button>
 
     <span
-      class="split ion-hide-sm-down"
+      class="split ion-hide-md-down"
       *ngIf="(pageConfig.canApprove || pageConfig.canCancel) && !pageConfig.isDetailPage"
       >|</span
     >
 
     <ion-button
       title="{{ 'Merge' | translate }}"
-      *ngIf="pageConfig.canMerge && selectedItems.length >= 2 && !query.IsDisabled && !pageConfig.isDetailPage"
+      *ngIf="pageConfig.canMerge && selectedItems?.length >= 2 && !query.IsDisabled && !pageConfig.isDetailPage"
       (click)="page.merge()"
     >
       <ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
     </ion-button>
     <ion-button
       title="{{ 'Split' | translate }}"
-      *ngIf="pageConfig.canSplit && selectedItems.length <= 1 && !query.IsDisabled && !pageConfig.isDetailPage"
+      *ngIf="pageConfig.canSplit && selectedItems?.length <= 1 && !query.IsDisabled && !pageConfig.isDetailPage"
       (click)="page.split()"
     >
       <ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
@@ -184,7 +179,7 @@
       title="{{ 'Cancel' | translate }}"
       *ngIf="
         pageConfig.canCancel &&
-        ((selectedItems.length == 1 && showCancel) || showCancel) &&
+        ((selectedItems?.length == 1 && showCancel) || showCancel) &&
         !query.IsDisabled &&
         !pageConfig.isDetailPage
       "
@@ -203,19 +198,17 @@
     <ion-button title="{{ 'Delete' | translate }}" *ngIf="pageConfig.canDelete && showDelete" (click)="deleteItem()">
       <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
     </ion-button>
-    <span class="split ion-hide-sm-down">|</span>
-    <ion-button
-      *ngIf="ShowFeature && !pageConfig.isDetailPage"
-      title="{{ 'Show feature' | translate }}"
-      (click)="toggleFeature()"
-    >
-      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'">
+    <span class="split ion-hide-md-down">|</span>
+
+    <ion-button *ngIf="ShowFeature" title="{{ 'Show feature' | translate }}" (click)="toggleFeature()" >
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'panel-right-active' : 'panel-right'">
       </ion-icon>
     </ion-button>
   </ion-buttons>
 
-  <!-- right-tool-bar-mb -->
-  <ion-buttons class="ion-hide-sm-up" [collapse]="true" slot="end" *ngIf="!selectedItems.length">
+  <!-- right-tool-bar- md down -->
+  <ion-buttons class="ion-hide-md-up" 
+  [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"[collapse]="true" slot="end" *ngIf="!selectedItems?.length">
     <ion-button
       title="{{ 'Add' | translate }}"
       *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled && !pageConfig.isDetailPage"
@@ -223,14 +216,14 @@
     >
       <ion-icon slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
-    <ion-button
+    <ion-button [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
       title="{{ 'Search' | translate }}"
       *ngIf="ShowSearch && !pageConfig.isDetailPage"
       (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
     >
       <ion-icon slot="icon-only" name="search-outline"></ion-icon>
     </ion-button>
-    <ion-button
+    <ion-button [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
       (click)="presentToolBarPopover($event)"
       *ngIf="!pageConfig.isDetailPage"
       size="small"
@@ -241,11 +234,12 @@
       <ion-icon color="primary" slot="icon-only" name="ellipsis-vertical"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons
-    class="ion-hide-sm-up"
+
+  <ion-buttons [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
+    class="ion-hide-md-up"
     [collapse]="true"
     slot="end"
-    *ngIf="selectedItems.length || pageConfig.isDetailPage"
+    *ngIf="selectedItems?.length || pageConfig.isDetailPage"
   >
     <ion-button title="{{ 'Unselect' | translate }}" *ngIf="!pageConfig.isDetailPage" (click)="page.unselect()">
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -271,8 +265,8 @@
   </ion-buttons>
 
   <!-- popover -->
-  <ion-popover
-    class="ion-hide-sm-up"
+  <ion-popover [ngClass] = "{'ion-hide-md-down': pageConfig.isSubActive}"
+    class="ion-hide-md-up"
     #toolBarPopover
     [isOpen]="isToolBarPopoverOpen"
     (didDismiss)="isToolBarPopoverOpen = false"
@@ -283,55 +277,57 @@
       <ion-content scroll-y="false">
         <ion-list>
           <ng-content select="[rightScreenPop]"></ng-content>
-
+          <!-- Refresh -->
           <ion-item
             title="{{ 'Refresh' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowRefresh && !selectedItems.length"
+            *ngIf="ShowRefresh && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.refresh()"
           >
             <ion-icon color="primary" slot="start" name="reload-outline"></ion-icon>
             <ion-label> {{ 'Refresh' | translate }}</ion-label>
           </ion-item>
+          <!-- Export -->
           <ion-item
             title="{{ 'Export' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowExport && pageConfig.canExport && !selectedItems.length && !pageConfig.isDetailPage"
+            *ngIf="ShowExport && pageConfig.canExport && !selectedItems?.length && !pageConfig.isDetailPage"
             (click)="isToolBarPopoverOpen = false; page.export()"
           >
             <ion-icon color="primary" slot="start" name="cloud-download-outline"></ion-icon>
             <ion-label> {{ 'Export' | translate }}</ion-label>
           </ion-item>
+          <!-- Import -->
           <ion-item
             title="{{ 'Import' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowImport && pageConfig.canImport && !selectedItems.length && !pageConfig.isDetailPage"
+            *ngIf="ShowImport && pageConfig.canImport && !selectedItems?.length && !pageConfig.isDetailPage"
             (click)="isToolBarPopoverOpen = false; onClickImport()"
           >
             <ion-icon color="primary" slot="start" name="cloud-upload-outline"></ion-icon>
             <ion-label> {{ 'Import' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Help -->
           <ion-item
             title="{{ 'Help' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowHelp && !selectedItems.length"
+            *ngIf="ShowHelp && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.help()"
           >
             <ion-icon color="primary" slot="start" name="help-circle-outline"></ion-icon>
             <ion-label> {{ 'Help' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Submit for approval-->
           <ion-item
-            title="{{ 'Gửi Duyệt' | translate }}"
+            title="{{ 'Submit for approval' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
@@ -339,30 +335,32 @@
               pageConfig.canSubmit &&
               !pageConfig.isDetailPage &&
               showSubmit && !query.IsDisabled &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.submit()"
           >
             <ion-icon color="success" slot="start" name="send-outline"></ion-icon>
             <ion-label> {{ 'Gửi Duyệt' | translate }}</ion-label>
           </ion-item>
+          <!-- Disapprove -->
           <ion-item
-            title="{{ 'Không Duyệt' | translate }}"
+            title="{{ 'Disapprove' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
             *ngIf="
               ((pageConfig.canDisapprove && !pageConfig.isDetailPage && showDisapprove && !query.IsDisabled) ||
                 (pageConfig.canApprove && showDisapprove && !query.IsDisabled && !pageConfig.isDetailPage)) &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.disapprove()"
           >
             <ion-icon color="warning" slot="start" name="thumbs-down-outline"></ion-icon>
             <ion-label> {{ 'Không Duyệt' | translate }}</ion-label>
           </ion-item>
+          <!-- Approve -->
           <ion-item
-            title="{{ 'Duyệt' | translate }}"
+            title="{{ 'Approve' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
@@ -370,26 +368,26 @@
               pageConfig.canApprove &&
               !pageConfig.isDetailPage &&
               showApprove && !query.IsDisabled &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.approve()"
           >
             <ion-icon color="success" slot="start" name="thumbs-up-outline"></ion-icon>
             <ion-label> {{ 'Duyệt' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Change Branch -->
           <ion-item
             title="{{ 'Change Branch' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="pageConfig.canChangeBranch && (selectedItems.length || pageConfig.isDetailPage)"
+            *ngIf="pageConfig.canChangeBranch && (selectedItems?.length || pageConfig.isDetailPage)"
             (click)="isToolBarPopoverOpen = false; page.changeBranch()"
           >
             <ion-icon color="warning" slot="start" name="sitemap"></ion-icon>
             <ion-label> {{ 'Change Branch' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Merge -->
           <ion-item
             title="{{ 'Merge' | translate }}"
             lines="full"
@@ -397,18 +395,19 @@
             [detail]="false"
             *ngIf="
               pageConfig.canMerge &&
-              selectedItems.length >= 2 &&
+              selectedItems?.length >= 2 &&
               showMerge &&
               !query.IsDisabled &&
-              selectedItems.length &&
+              selectedItems?.length &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.merge()"
           >
             <ion-icon color="warning" slot="start" name="git-pull-request"></ion-icon>
             <ion-label> {{ 'Merge' | translate }}</ion-label>
           </ion-item>
+          <!-- Split -->
           <ion-item
             title="{{ 'Split' | translate }}"
             lines="full"
@@ -416,18 +415,18 @@
             [detail]="false"
             *ngIf="
               pageConfig.canSplit &&
-              selectedItems.length <= 1 &&
+              selectedItems?.length <= 1 &&
               showSplit &&
               !query.IsDisabled &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.split()"
           >
             <ion-icon color="warning" slot="start" name="git-branch"></ion-icon>
             <ion-label> {{ 'Split' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Cancel -->
           <ion-item
             title="{{ 'Cancel' | translate }}"
             lines="full"
@@ -438,40 +437,61 @@
               showCancel &&
               !query.IsDisabled &&
               !pageConfig.isDetailPage &&
-              selectedItems.length
+              selectedItems?.length
             "
             (click)="isToolBarPopoverOpen = false; page.cancel()"
           >
             <ion-icon color="danger" slot="start" name="ban-outline"></ion-icon>
             <ion-label> {{ 'Cancel' | translate }}</ion-label>
           </ion-item>
-
+          <!-- Archive -->
           <ion-item
-            title="{{ query.IsDisabled ? 'Reopen' : ('Archive' | translate) }}"
+            title="{{ (query.IsDisabled ? 'Reopen' : 'Archive') | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage && selectedItems.length"
+            *ngIf="pageConfig.canArchive && !pageConfig.isDetailPage && selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; page.archiveItems()"
           >
             <ion-icon color="warning" slot="start" [name]="query.IsDisabled ? 'arrow-undo' : 'archive'"></ion-icon>
-            <ion-label> {{ 'Disapprove invoice' | translate }}</ion-label>
+            <ion-label> {{ (query.IsDisabled ? 'Reopen' : 'Archive') | translate }}</ion-label>
+
           </ion-item>
+          <!-- Show Feature -->
           <ion-item
             title="{{ 'Show feature' | translate }}"
             lines="full"
             [button]="true"
             [detail]="false"
-            *ngIf="ShowFeature && !pageConfig.isDetailPage && !selectedItems.length"
+            [ngClass]="{'ion-hide-md-down' :pageConfig.isShowFeature}"
+            *ngIf="ShowFeature && !selectedItems?.length"
             (click)="isToolBarPopoverOpen = false; toggleFeature()"
           >
             <ion-icon
               color="primary"
               slot="start"
-              [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"
+              [name]="pageConfig.isShowFeature ? 'panel-right-active' : 'panel-right'"
             ></ion-icon>
             <ion-label> {{ 'Show feature' | translate }}</ion-label>
           </ion-item>
+
+          <ion-item
+          title="{{ 'Show feature' | translate }}"
+          lines="full"
+          class="ion-hide-md-up" 
+          [button]="true"
+          [detail]="false"
+          *ngIf="ShowFeature && !selectedItems?.length && !pageConfig.isSubActive &&pageConfig.isShowFeature"
+          (click)="isToolBarPopoverOpen = false; pageConfig.isSubActive = true"
+        >
+          <ion-icon
+            color="primary"
+            slot="start"
+            [name]="pageConfig.isShowFeature ? 'panel-right' : 'panel-right-active' "
+          ></ion-icon>
+          <!-- panel-right-active -->
+          <ion-label> {{ 'Show feature' | translate }}</ion-label>
+        </ion-item>
         </ion-list>
       </ion-content>
     </ng-template>

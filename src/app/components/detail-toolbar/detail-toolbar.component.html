@@ -1,10 +1,7 @@
 <ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
   <ion-buttons
     slot="start"
-    [ngClass]="{
-      titleSubPageActive: !pageConfig.isMainPageActive,
-      titleMainPageActive: pageConfig.isMainPageActive
-    }"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <ion-back-button
       [defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
@@ -13,22 +10,19 @@
     </ion-back-button>
     <ng-content select="[startTitle]"></ng-content>
   </ion-buttons>
-  <ion-buttons
+  <ion-buttons 
     slot="start"
-    *ngIf="!pageConfig.isMainPageActive"
-    [ngClass]="{ backSubPageActive: !pageConfig.isMainPageActive }"
+    *ngIf="page.isSubActive"
+    [ngClass] = "{'ion-hide-md-down': !page.isSubActive}"
   >
-    <ion-button class="toggle" (click)="page.showMainView()">
+    <ion-button class="toggle" (click)="page.backSubPage()">
       <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
       <ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
     </ion-button>
   </ion-buttons>
   <ion-title
     *ngIf="title"
-    [ngClass]="{
-      titleSubPageActive: !pageConfig.isMainPageActive,
-      titleMainPageActive: pageConfig.isMainPageActive
-    }"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <!-- <ion-button class="title" text-center fill="clear" expand="full" size="small"> -->
     {{ title }}
@@ -36,10 +30,7 @@
   </ion-title>
   <ion-buttons
     slot="end"
-    [ngClass]="{
-      featureSubPageActive: !pageConfig.isMainPageActive,
-      featureMainPageActive: pageConfig.isMainPageActive
-    }"
+    [ngClass] = "{'ion-hide-md-down': page.isSubActive}"
   >
     <ng-content></ng-content>
 

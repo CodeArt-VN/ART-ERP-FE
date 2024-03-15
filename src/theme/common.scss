@@ -567,13 +567,14 @@ input[type='number'] {
   @media screen and (max-width: calc(767px)) {
     .feature {
       right: 0;
-      left: 0;
+      left: 0 !important;
       width: 100%;
     }
 
     width: 100% !important;
     right: 0;
-    left: 0;
+    left: 0 !important;
+
   }
 }
 
@@ -1172,6 +1173,9 @@ ion-content.cameraFrame {
 }
 
 @media screen and (max-width: 767px) {
+  .hiddenMd {
+    display:none !important;
+  }
   .titleMainPageActive {
     display: flex !important;
   }

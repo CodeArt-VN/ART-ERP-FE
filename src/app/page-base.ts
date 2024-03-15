@@ -61,10 +61,12 @@ export abstract class PageBase implements OnInit {
         isEndOfData: false,
         didEnter: false,
         isMainPageActive:true,
-
+        isSubActive: false,
+        isFeatureAsMain: false,
         sort: []
 
     }
+
 
     subscriptions: Subscription[] = [];
 
@@ -791,22 +793,14 @@ export abstract class PageBase implements OnInit {
 
     toggleFeature() {
         this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
-        if(this.pageConfig.isShowFeature) {
-            this.pageConfig.isMainPageActive = true;
-        }
-        else
-        {
-            this.pageConfig.isMainPageActive = false;
+        if(!this.pageConfig.isFeatureAsMain){
+            this.pageConfig.isSubActive =   this.pageConfig.isShowFeature;
         }
     }
 
-    showMainView(){
-        this.pageConfig.isMainPageActive =  true;
-    }
     
     backSubPage() {
-        this.pageConfig.isMainPageActive =  true;
-        this.pageConfig.isShowFeature = true;
+      this.pageConfig.isSubActive = false;
     }
 
     help() {
