@@ -56,7 +56,7 @@ export class CommonService {
     }
 
     if (URL.indexOf('http') != 0) {
-      URL = ApiSetting.apiDomain(URL);
+      URL = pmethod != 'Login'? ApiSetting.apiDomain(URL) :  ApiSetting.appDomain(URL) ;
     }
 
     if (

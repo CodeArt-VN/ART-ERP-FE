@@ -45,6 +45,8 @@ export class AppComponent implements OnInit {
 
   @ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
+  _environment = environment;
+
   constructor(
     public router: Router,
     public navCtrl: NavController,
@@ -309,6 +311,12 @@ export class AppComponent implements OnInit {
     this.menu.close();
     this.isUserCPOpen = false;
     this.env.publishEvent({ Code: 'app:logout' });
+  }
+
+  changeServer(server) {
+    environment.appDomain = server.Code;
+    this.env.setStorage('appDomain', server.Code);
+    this._environment = environment;
   }
 
   logo = '';

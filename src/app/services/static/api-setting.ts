@@ -2,11 +2,12 @@ import { environment } from 'src/environments/environment';
 
 export var ApiSetting = {
   //Review API URL
-  mainService: {
-    base: environment.appDomain,
-    api: environment.apiVersion,
+  appDomain: function (api) {
+    console.log('appDomain', environment.appDomain);
+    
+    return environment.appDomain + api;
   },
   apiDomain: function (api) {
-    return this.mainService.base + this.mainService.api + api;
+    return environment.appDomain + environment.apiVersion + api;
   },
 };

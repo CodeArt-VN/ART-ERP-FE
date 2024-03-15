@@ -189,7 +189,7 @@ export class LoginPage extends PageBase {
           .then((data: [any]) => {
             var it = data.filter((ite) => ite.Name == 'Facebook');
             if (it.length) {
-              let ExternalLoginURL = ApiSetting.mainService.base + it[0].Url;
+              let ExternalLoginURL = environment.appDomain + it[0].Url;
               window.location.replace(ExternalLoginURL);
               //Sau khi pass chalenge lấy fragment từ URL redirect về và gọi ObtainLocalAccessToken(string provider, string externalAccessToken) để lấy token.
               //xem tiếp preLoadData()
@@ -217,7 +217,7 @@ export class LoginPage extends PageBase {
           .then((data: [any]) => {
             var it = data.filter((ite) => ite.Name == 'Google');
             if (it.length) {
-              let ExternalLoginURL = ApiSetting.mainService.base + it[0].Url;
+              let ExternalLoginURL = environment.appDomain + it[0].Url;
               window.location.replace(ExternalLoginURL);
               //Sau khi pass chalenge lấy fragment từ URL redirect về và gọi ObtainLocalAccessToken(string provider, string externalAccessToken) để lấy token.
               //xem tiếp preLoadData()

@@ -6,41 +6,42 @@
 // 
 //------------------------------------------------------------------------------
 
+import { environment } from 'src/environments/environment';
 import { ApiSetting } from './api-setting';
 
 export var APIListBase = {
     ACCOUNT: {
         register: {
             method: "POST",
-            url: ApiSetting.mainService.base + ApiSetting.mainService.api + "Account/Register"
+            url: "Account/Register"
         },
         registerFB: {
             method: "POST",
-            url: ApiSetting.mainService.base + ApiSetting.mainService.api + "Account/RegisterExternal"
+            url: "Account/RegisterExternal"
         },
         token: {
             method: "POST",
-            url: ApiSetting.mainService.base + "token"
+            url: "token"
         },
         forgotPassword: {
             method: "POST",
-            url: ApiSetting.mainService.base + ApiSetting.mainService.api + "Account/ForgotPassword"
+            url: "Account/ForgotPassword"
         },
         getUserData: {
             method: "GET",
-            url: ApiSetting.apiDomain("Account/UserInfo")
+            url: "Account/UserInfo"
         },
         postUserData: {
             method: "POST",
-            url: ApiSetting.mainService.base + ApiSetting.mainService.api + ""
+            url: ""
         },
         getExternalLogins: {
             method: "GET",
-            url: ApiSetting.apiDomain("Account/ExternalLogins?returnUrl=/BOOKING/login&generateState=true")
+            url: "Account/ExternalLogins?returnUrl=/BOOKING/login&generateState=true"
         },
         getObtainLocalAccessToken: {
             method: "GET",
-            url: ApiSetting.apiDomain("Account/ObtainLocalAccessToken")
+            url: "Account/ObtainLocalAccessToken"
         },
     },
 
@@ -49,48 +50,48 @@ export var APIListBase = {
 	AC_APInvoice:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice/Search")}  
+            url: function(){return "AC/APInvoice/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice")}  
+            url: function(){return "AC/APInvoice"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice/Export")}  
+            url: function(){return "AC/APInvoice/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice/Import")}  
+            url: function(){return "AC/APInvoice/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id){return "AC/APInvoice/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id){return "AC/APInvoice/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/Disable/") + id} 
+            url: function(id){return "AC/APInvoice/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/Enable/") + id} 
+            url: function(id){return "AC/APInvoice/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice")}
+            url: function(){return "AC/APInvoice"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoice/ChangeBranch")} 
+            url: function(){return "AC/APInvoice/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoice/") + id} 
+            url: function(id){return "AC/APInvoice/" + id} 
         }
 		
 	},
@@ -98,48 +99,48 @@ export var APIListBase = {
 	AC_APInvoiceDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail/Search")}  
+            url: function(){return "AC/APInvoiceDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail")}  
+            url: function(){return "AC/APInvoiceDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail/Export")}  
+            url: function(){return "AC/APInvoiceDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail/Import")}  
+            url: function(){return "AC/APInvoiceDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id){return "AC/APInvoiceDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id){return "AC/APInvoiceDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/Disable/") + id} 
+            url: function(id){return "AC/APInvoiceDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/Enable/") + id} 
+            url: function(id){return "AC/APInvoiceDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail")}
+            url: function(){return "AC/APInvoiceDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/APInvoiceDetail/ChangeBranch")} 
+            url: function(){return "AC/APInvoiceDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/APInvoiceDetail/") + id} 
+            url: function(id){return "AC/APInvoiceDetail/" + id} 
         }
 		
 	},
@@ -147,48 +148,48 @@ export var APIListBase = {
 	AC_ARInvoice:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice/Search")}  
+            url: function(){return "AC/ARInvoice/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice")}  
+            url: function(){return "AC/ARInvoice"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice/Export")}  
+            url: function(){return "AC/ARInvoice/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice/Import")}  
+            url: function(){return "AC/ARInvoice/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id){return "AC/ARInvoice/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id){return "AC/ARInvoice/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/Disable/") + id} 
+            url: function(id){return "AC/ARInvoice/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/Enable/") + id} 
+            url: function(id){return "AC/ARInvoice/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice")}
+            url: function(){return "AC/ARInvoice"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoice/ChangeBranch")} 
+            url: function(){return "AC/ARInvoice/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoice/") + id} 
+            url: function(id){return "AC/ARInvoice/" + id} 
         }
 		
 	},
@@ -196,48 +197,48 @@ export var APIListBase = {
 	AC_ARInvoiceContent:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent/Search")}  
+            url: function(){return "AC/ARInvoiceContent/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent")}  
+            url: function(){return "AC/ARInvoiceContent"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent/Export")}  
+            url: function(){return "AC/ARInvoiceContent/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent/Import")}  
+            url: function(){return "AC/ARInvoiceContent/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceContent/") + id} 
+            url: function(id){return "AC/ARInvoiceContent/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceContent/") + id} 
+            url: function(id){return "AC/ARInvoiceContent/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceContent/Disable/") + id} 
+            url: function(id){return "AC/ARInvoiceContent/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceContent/Enable/") + id} 
+            url: function(id){return "AC/ARInvoiceContent/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent")}
+            url: function(){return "AC/ARInvoiceContent"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceContent/ChangeBranch")} 
+            url: function(){return "AC/ARInvoiceContent/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceContent/") + id} 
+            url: function(id){return "AC/ARInvoiceContent/" + id} 
         }
 		
 	},
@@ -245,48 +246,48 @@ export var APIListBase = {
 	AC_ARInvoiceDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Search")}  
+            url: function(){return "AC/ARInvoiceDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail")}  
+            url: function(){return "AC/ARInvoiceDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Export")}  
+            url: function(){return "AC/ARInvoiceDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Import")}  
+            url: function(){return "AC/ARInvoiceDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id){return "AC/ARInvoiceDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id){return "AC/ARInvoiceDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Disable/") + id} 
+            url: function(id){return "AC/ARInvoiceDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/Enable/") + id} 
+            url: function(id){return "AC/ARInvoiceDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail")}
+            url: function(){return "AC/ARInvoiceDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceDetail/ChangeBranch")} 
+            url: function(){return "AC/ARInvoiceDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceDetail/") + id} 
+            url: function(id){return "AC/ARInvoiceDetail/" + id} 
         }
 		
 	},
@@ -294,48 +295,48 @@ export var APIListBase = {
 	AC_ARInvoiceSODetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Search")}  
+            url: function(){return "AC/ARInvoiceSODetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail")}  
+            url: function(){return "AC/ARInvoiceSODetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Export")}  
+            url: function(){return "AC/ARInvoiceSODetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Import")}  
+            url: function(){return "AC/ARInvoiceSODetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id){return "AC/ARInvoiceSODetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id){return "AC/ARInvoiceSODetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Disable/") + id} 
+            url: function(id){return "AC/ARInvoiceSODetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/Enable/") + id} 
+            url: function(id){return "AC/ARInvoiceSODetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail")}
+            url: function(){return "AC/ARInvoiceSODetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/ChangeBranch")} 
+            url: function(){return "AC/ARInvoiceSODetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/ARInvoiceSODetail/") + id} 
+            url: function(id){return "AC/ARInvoiceSODetail/" + id} 
         }
 		
 	},
@@ -343,48 +344,48 @@ export var APIListBase = {
 	AC_Case:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/Case/Search")}  
+            url: function(){return "AC/Case/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/Case")}  
+            url: function(){return "AC/Case"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/Case/Export")}  
+            url: function(){return "AC/Case/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/Case/Import")}  
+            url: function(){return "AC/Case/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id){return "AC/Case/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id){return "AC/Case/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/Disable/") + id} 
+            url: function(id){return "AC/Case/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/Enable/") + id} 
+            url: function(id){return "AC/Case/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/Case")}
+            url: function(){return "AC/Case"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/Case/ChangeBranch")} 
+            url: function(){return "AC/Case/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/Case/") + id} 
+            url: function(id){return "AC/Case/" + id} 
         }
 		
 	},
@@ -392,48 +393,48 @@ export var APIListBase = {
 	AC_JournalEntry:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry/Search")}  
+            url: function(){return "AC/JournalEntry/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry")}  
+            url: function(){return "AC/JournalEntry"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry/Export")}  
+            url: function(){return "AC/JournalEntry/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry/Import")}  
+            url: function(){return "AC/JournalEntry/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id){return "AC/JournalEntry/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id){return "AC/JournalEntry/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/Disable/") + id} 
+            url: function(id){return "AC/JournalEntry/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/Enable/") + id} 
+            url: function(id){return "AC/JournalEntry/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry")}
+            url: function(){return "AC/JournalEntry"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntry/ChangeBranch")} 
+            url: function(){return "AC/JournalEntry/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntry/") + id} 
+            url: function(id){return "AC/JournalEntry/" + id} 
         }
 		
 	},
@@ -441,48 +442,48 @@ export var APIListBase = {
 	AC_JournalEntryRow:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow/Search")}  
+            url: function(){return "AC/JournalEntryRow/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow")}  
+            url: function(){return "AC/JournalEntryRow"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow/Export")}  
+            url: function(){return "AC/JournalEntryRow/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow/Import")}  
+            url: function(){return "AC/JournalEntryRow/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id){return "AC/JournalEntryRow/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id){return "AC/JournalEntryRow/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/Disable/") + id} 
+            url: function(id){return "AC/JournalEntryRow/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/Enable/") + id} 
+            url: function(id){return "AC/JournalEntryRow/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow")}
+            url: function(){return "AC/JournalEntryRow"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/JournalEntryRow/ChangeBranch")} 
+            url: function(){return "AC/JournalEntryRow/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/JournalEntryRow/") + id} 
+            url: function(id){return "AC/JournalEntryRow/" + id} 
         }
 		
 	},
@@ -490,48 +491,48 @@ export var APIListBase = {
 	AC_PostingPeriod:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod/Search")}  
+            url: function(){return "AC/PostingPeriod/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod")}  
+            url: function(){return "AC/PostingPeriod"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod/Export")}  
+            url: function(){return "AC/PostingPeriod/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod/Import")}  
+            url: function(){return "AC/PostingPeriod/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id){return "AC/PostingPeriod/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id){return "AC/PostingPeriod/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/Disable/") + id} 
+            url: function(id){return "AC/PostingPeriod/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/Enable/") + id} 
+            url: function(id){return "AC/PostingPeriod/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod")}
+            url: function(){return "AC/PostingPeriod"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("AC/PostingPeriod/ChangeBranch")} 
+            url: function(){return "AC/PostingPeriod/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("AC/PostingPeriod/") + id} 
+            url: function(id){return "AC/PostingPeriod/" + id} 
         }
 		
 	},
@@ -539,48 +540,48 @@ export var APIListBase = {
 	APPROVAL_ApprovalRule:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/Search")}  
+            url: function(){return "APPROVAL/ApprovalRule/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule")}  
+            url: function(){return "APPROVAL/ApprovalRule"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/Export")}  
+            url: function(){return "APPROVAL/ApprovalRule/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/Import")}  
+            url: function(){return "APPROVAL/ApprovalRule/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRule/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRule/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/Disable/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRule/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/Enable/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRule/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule")}
+            url: function(){return "APPROVAL/ApprovalRule"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/ChangeBranch")} 
+            url: function(){return "APPROVAL/ApprovalRule/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRule/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRule/" + id} 
         }
 		
 	},
@@ -588,48 +589,48 @@ export var APIListBase = {
 	APPROVAL_ApprovalRuleApprover:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/Search")}  
+            url: function(){return "APPROVAL/ApprovalRuleApprover/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover")}  
+            url: function(){return "APPROVAL/ApprovalRuleApprover"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/Export")}  
+            url: function(){return "APPROVAL/ApprovalRuleApprover/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/Import")}  
+            url: function(){return "APPROVAL/ApprovalRuleApprover/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRuleApprover/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRuleApprover/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/Disable/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRuleApprover/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/Enable/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRuleApprover/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover")}
+            url: function(){return "APPROVAL/ApprovalRuleApprover"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/ChangeBranch")} 
+            url: function(){return "APPROVAL/ApprovalRuleApprover/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/ApprovalRuleApprover/") + id} 
+            url: function(id){return "APPROVAL/ApprovalRuleApprover/" + id} 
         }
 		
 	},
@@ -637,48 +638,48 @@ export var APIListBase = {
 	APPROVAL_Changelog:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog/Search")}  
+            url: function(){return "APPROVAL/Changelog/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog")}  
+            url: function(){return "APPROVAL/Changelog"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog/Export")}  
+            url: function(){return "APPROVAL/Changelog/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog/Import")}  
+            url: function(){return "APPROVAL/Changelog/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id){return "APPROVAL/Changelog/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id){return "APPROVAL/Changelog/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/Disable/") + id} 
+            url: function(id){return "APPROVAL/Changelog/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/Enable/") + id} 
+            url: function(id){return "APPROVAL/Changelog/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog")}
+            url: function(){return "APPROVAL/Changelog"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Changelog/ChangeBranch")} 
+            url: function(){return "APPROVAL/Changelog/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Changelog/") + id} 
+            url: function(id){return "APPROVAL/Changelog/" + id} 
         }
 		
 	},
@@ -686,48 +687,48 @@ export var APIListBase = {
 	APPROVAL_Comment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment/Search")}  
+            url: function(){return "APPROVAL/Comment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment")}  
+            url: function(){return "APPROVAL/Comment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment/Export")}  
+            url: function(){return "APPROVAL/Comment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment/Import")}  
+            url: function(){return "APPROVAL/Comment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id){return "APPROVAL/Comment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id){return "APPROVAL/Comment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/Disable/") + id} 
+            url: function(id){return "APPROVAL/Comment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/Enable/") + id} 
+            url: function(id){return "APPROVAL/Comment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment")}
+            url: function(){return "APPROVAL/Comment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Comment/ChangeBranch")} 
+            url: function(){return "APPROVAL/Comment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Comment/") + id} 
+            url: function(id){return "APPROVAL/Comment/" + id} 
         }
 		
 	},
@@ -735,48 +736,48 @@ export var APIListBase = {
 	APPROVAL_Request:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request/Search")}  
+            url: function(){return "APPROVAL/Request/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request")}  
+            url: function(){return "APPROVAL/Request"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request/Export")}  
+            url: function(){return "APPROVAL/Request/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request/Import")}  
+            url: function(){return "APPROVAL/Request/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id){return "APPROVAL/Request/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id){return "APPROVAL/Request/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/Disable/") + id} 
+            url: function(id){return "APPROVAL/Request/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/Enable/") + id} 
+            url: function(id){return "APPROVAL/Request/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request")}
+            url: function(){return "APPROVAL/Request"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Request/ChangeBranch")} 
+            url: function(){return "APPROVAL/Request/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Request/") + id} 
+            url: function(id){return "APPROVAL/Request/" + id} 
         }
 		
 	},
@@ -784,48 +785,48 @@ export var APIListBase = {
 	APPROVAL_RequestApprover:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Search")}  
+            url: function(){return "APPROVAL/RequestApprover/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover")}  
+            url: function(){return "APPROVAL/RequestApprover"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Export")}  
+            url: function(){return "APPROVAL/RequestApprover/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Import")}  
+            url: function(){return "APPROVAL/RequestApprover/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id){return "APPROVAL/RequestApprover/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id){return "APPROVAL/RequestApprover/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Disable/") + id} 
+            url: function(id){return "APPROVAL/RequestApprover/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/Enable/") + id} 
+            url: function(id){return "APPROVAL/RequestApprover/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover")}
+            url: function(){return "APPROVAL/RequestApprover"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/RequestApprover/ChangeBranch")} 
+            url: function(){return "APPROVAL/RequestApprover/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/RequestApprover/") + id} 
+            url: function(id){return "APPROVAL/RequestApprover/" + id} 
         }
 		
 	},
@@ -833,48 +834,48 @@ export var APIListBase = {
 	APPROVAL_Template:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template/Search")}  
+            url: function(){return "APPROVAL/Template/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template")}  
+            url: function(){return "APPROVAL/Template"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template/Export")}  
+            url: function(){return "APPROVAL/Template/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template/Import")}  
+            url: function(){return "APPROVAL/Template/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Template/") + id} 
+            url: function(id){return "APPROVAL/Template/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Template/") + id} 
+            url: function(id){return "APPROVAL/Template/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Template/Disable/") + id} 
+            url: function(id){return "APPROVAL/Template/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Template/Enable/") + id} 
+            url: function(id){return "APPROVAL/Template/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template")}
+            url: function(){return "APPROVAL/Template"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("APPROVAL/Template/ChangeBranch")} 
+            url: function(){return "APPROVAL/Template/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("APPROVAL/Template/") + id} 
+            url: function(id){return "APPROVAL/Template/" + id} 
         }
 		
 	},
@@ -882,48 +883,48 @@ export var APIListBase = {
 	BANK_IncomingPayment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment/Search")}  
+            url: function(){return "BANK/IncomingPayment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment")}  
+            url: function(){return "BANK/IncomingPayment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment/Export")}  
+            url: function(){return "BANK/IncomingPayment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment/Import")}  
+            url: function(){return "BANK/IncomingPayment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id){return "BANK/IncomingPayment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id){return "BANK/IncomingPayment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/Disable/") + id} 
+            url: function(id){return "BANK/IncomingPayment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/Enable/") + id} 
+            url: function(id){return "BANK/IncomingPayment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment")}
+            url: function(){return "BANK/IncomingPayment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPayment/ChangeBranch")} 
+            url: function(){return "BANK/IncomingPayment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPayment/") + id} 
+            url: function(id){return "BANK/IncomingPayment/" + id} 
         }
 		
 	},
@@ -931,48 +932,48 @@ export var APIListBase = {
 	BANK_IncomingPaymentDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Search")}  
+            url: function(){return "BANK/IncomingPaymentDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail")}  
+            url: function(){return "BANK/IncomingPaymentDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Export")}  
+            url: function(){return "BANK/IncomingPaymentDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Import")}  
+            url: function(){return "BANK/IncomingPaymentDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id){return "BANK/IncomingPaymentDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id){return "BANK/IncomingPaymentDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Disable/") + id} 
+            url: function(id){return "BANK/IncomingPaymentDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/Enable/") + id} 
+            url: function(id){return "BANK/IncomingPaymentDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail")}
+            url: function(){return "BANK/IncomingPaymentDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/ChangeBranch")} 
+            url: function(){return "BANK/IncomingPaymentDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/IncomingPaymentDetail/") + id} 
+            url: function(id){return "BANK/IncomingPaymentDetail/" + id} 
         }
 		
 	},
@@ -980,48 +981,48 @@ export var APIListBase = {
 	BANK_PaymentTerm:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm/Search")}  
+            url: function(){return "BANK/PaymentTerm/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm")}  
+            url: function(){return "BANK/PaymentTerm"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm/Export")}  
+            url: function(){return "BANK/PaymentTerm/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm/Import")}  
+            url: function(){return "BANK/PaymentTerm/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id){return "BANK/PaymentTerm/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id){return "BANK/PaymentTerm/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/Disable/") + id} 
+            url: function(id){return "BANK/PaymentTerm/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/Enable/") + id} 
+            url: function(id){return "BANK/PaymentTerm/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm")}
+            url: function(){return "BANK/PaymentTerm"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BANK/PaymentTerm/ChangeBranch")} 
+            url: function(){return "BANK/PaymentTerm/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BANK/PaymentTerm/") + id} 
+            url: function(id){return "BANK/PaymentTerm/" + id} 
         }
 		
 	},
@@ -1029,48 +1030,48 @@ export var APIListBase = {
 	BC_RevenueExpenditureComponent:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Search")}  
+            url: function(){return "BC/RevenueExpenditureComponent/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent")}  
+            url: function(){return "BC/RevenueExpenditureComponent"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Export")}  
+            url: function(){return "BC/RevenueExpenditureComponent/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Import")}  
+            url: function(){return "BC/RevenueExpenditureComponent/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id){return "BC/RevenueExpenditureComponent/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id){return "BC/RevenueExpenditureComponent/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Disable/") + id} 
+            url: function(id){return "BC/RevenueExpenditureComponent/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/Enable/") + id} 
+            url: function(id){return "BC/RevenueExpenditureComponent/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent")}
+            url: function(){return "BC/RevenueExpenditureComponent"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/ChangeBranch")} 
+            url: function(){return "BC/RevenueExpenditureComponent/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureComponent/") + id} 
+            url: function(id){return "BC/RevenueExpenditureComponent/" + id} 
         }
 		
 	},
@@ -1078,48 +1079,48 @@ export var APIListBase = {
 	BC_RevenueExpenditureRefCode:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Search")}  
+            url: function(){return "BC/RevenueExpenditureRefCode/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode")}  
+            url: function(){return "BC/RevenueExpenditureRefCode"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Export")}  
+            url: function(){return "BC/RevenueExpenditureRefCode/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Import")}  
+            url: function(){return "BC/RevenueExpenditureRefCode/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id){return "BC/RevenueExpenditureRefCode/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id){return "BC/RevenueExpenditureRefCode/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Disable/") + id} 
+            url: function(id){return "BC/RevenueExpenditureRefCode/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/Enable/") + id} 
+            url: function(id){return "BC/RevenueExpenditureRefCode/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode")}
+            url: function(){return "BC/RevenueExpenditureRefCode"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/ChangeBranch")} 
+            url: function(){return "BC/RevenueExpenditureRefCode/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BC/RevenueExpenditureRefCode/") + id} 
+            url: function(id){return "BC/RevenueExpenditureRefCode/" + id} 
         }
 		
 	},
@@ -1127,48 +1128,48 @@ export var APIListBase = {
 	BI_CSVData:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData/Search")}  
+            url: function(){return "BI/CSVData/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData")}  
+            url: function(){return "BI/CSVData"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData/Export")}  
+            url: function(){return "BI/CSVData/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData/Import")}  
+            url: function(){return "BI/CSVData/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+            url: function(id){return "BI/CSVData/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+            url: function(id){return "BI/CSVData/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/CSVData/Disable/") + id} 
+            url: function(id){return "BI/CSVData/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/CSVData/Enable/") + id} 
+            url: function(id){return "BI/CSVData/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData")}
+            url: function(){return "BI/CSVData"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/CSVData/ChangeBranch")} 
+            url: function(){return "BI/CSVData/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/CSVData/") + id} 
+            url: function(id){return "BI/CSVData/" + id} 
         }
 		
 	},
@@ -1176,48 +1177,48 @@ export var APIListBase = {
 	BI_Daily_Balance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance/Search")}  
+            url: function(){return "BI/Daily/Balance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance")}  
+            url: function(){return "BI/Daily/Balance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance/Export")}  
+            url: function(){return "BI/Daily/Balance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance/Import")}  
+            url: function(){return "BI/Daily/Balance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id){return "BI/Daily/Balance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id){return "BI/Daily/Balance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/Disable/") + id} 
+            url: function(id){return "BI/Daily/Balance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/Enable/") + id} 
+            url: function(id){return "BI/Daily/Balance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance")}
+            url: function(){return "BI/Daily/Balance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Balance/ChangeBranch")} 
+            url: function(){return "BI/Daily/Balance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Balance/") + id} 
+            url: function(id){return "BI/Daily/Balance/" + id} 
         }
 		
 	},
@@ -1225,48 +1226,48 @@ export var APIListBase = {
 	BI_Daily_Debt:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt/Search")}  
+            url: function(){return "BI/Daily/Debt/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt")}  
+            url: function(){return "BI/Daily/Debt"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt/Export")}  
+            url: function(){return "BI/Daily/Debt/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt/Import")}  
+            url: function(){return "BI/Daily/Debt/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id){return "BI/Daily/Debt/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id){return "BI/Daily/Debt/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/Disable/") + id} 
+            url: function(id){return "BI/Daily/Debt/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/Enable/") + id} 
+            url: function(id){return "BI/Daily/Debt/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt")}
+            url: function(){return "BI/Daily/Debt"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Debt/ChangeBranch")} 
+            url: function(){return "BI/Daily/Debt/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Debt/") + id} 
+            url: function(id){return "BI/Daily/Debt/" + id} 
         }
 		
 	},
@@ -1274,48 +1275,48 @@ export var APIListBase = {
 	BI_Daily_General:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General/Search")}  
+            url: function(){return "BI/Daily/General/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General")}  
+            url: function(){return "BI/Daily/General"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General/Export")}  
+            url: function(){return "BI/Daily/General/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General/Import")}  
+            url: function(){return "BI/Daily/General/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id){return "BI/Daily/General/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id){return "BI/Daily/General/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/Disable/") + id} 
+            url: function(id){return "BI/Daily/General/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/Enable/") + id} 
+            url: function(id){return "BI/Daily/General/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General")}
+            url: function(){return "BI/Daily/General"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/General/ChangeBranch")} 
+            url: function(){return "BI/Daily/General/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/General/") + id} 
+            url: function(id){return "BI/Daily/General/" + id} 
         }
 		
 	},
@@ -1323,48 +1324,48 @@ export var APIListBase = {
 	BI_Daily_Revenue:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue/Search")}  
+            url: function(){return "BI/Daily/Revenue/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue")}  
+            url: function(){return "BI/Daily/Revenue"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue/Export")}  
+            url: function(){return "BI/Daily/Revenue/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue/Import")}  
+            url: function(){return "BI/Daily/Revenue/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id){return "BI/Daily/Revenue/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id){return "BI/Daily/Revenue/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/Disable/") + id} 
+            url: function(id){return "BI/Daily/Revenue/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/Enable/") + id} 
+            url: function(id){return "BI/Daily/Revenue/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue")}
+            url: function(){return "BI/Daily/Revenue"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/Revenue/ChangeBranch")} 
+            url: function(){return "BI/Daily/Revenue/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/Revenue/") + id} 
+            url: function(id){return "BI/Daily/Revenue/" + id} 
         }
 		
 	},
@@ -1372,48 +1373,48 @@ export var APIListBase = {
 	BI_Daily_RevenueExpenditure1:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Search")}  
+            url: function(){return "BI/Daily/RevenueExpenditure1/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1")}  
+            url: function(){return "BI/Daily/RevenueExpenditure1"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Export")}  
+            url: function(){return "BI/Daily/RevenueExpenditure1/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Import")}  
+            url: function(){return "BI/Daily/RevenueExpenditure1/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure1/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure1/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Disable/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure1/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/Enable/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure1/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1")}
+            url: function(){return "BI/Daily/RevenueExpenditure1"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/ChangeBranch")} 
+            url: function(){return "BI/Daily/RevenueExpenditure1/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure1/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure1/" + id} 
         }
 		
 	},
@@ -1421,48 +1422,48 @@ export var APIListBase = {
 	BI_Daily_RevenueExpenditure2:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Search")}  
+            url: function(){return "BI/Daily/RevenueExpenditure2/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2")}  
+            url: function(){return "BI/Daily/RevenueExpenditure2"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Export")}  
+            url: function(){return "BI/Daily/RevenueExpenditure2/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Import")}  
+            url: function(){return "BI/Daily/RevenueExpenditure2/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure2/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure2/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Disable/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure2/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/Enable/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure2/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2")}
+            url: function(){return "BI/Daily/RevenueExpenditure2"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/ChangeBranch")} 
+            url: function(){return "BI/Daily/RevenueExpenditure2/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Daily/RevenueExpenditure2/") + id} 
+            url: function(id){return "BI/Daily/RevenueExpenditure2/" + id} 
         }
 		
 	},
@@ -1470,48 +1471,48 @@ export var APIListBase = {
 	BI_Dashboard:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard/Search")}  
+            url: function(){return "BI/Dashboard/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard")}  
+            url: function(){return "BI/Dashboard"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard/Export")}  
+            url: function(){return "BI/Dashboard/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard/Import")}  
+            url: function(){return "BI/Dashboard/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Dashboard/") + id} 
+            url: function(id){return "BI/Dashboard/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Dashboard/") + id} 
+            url: function(id){return "BI/Dashboard/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Dashboard/Disable/") + id} 
+            url: function(id){return "BI/Dashboard/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Dashboard/Enable/") + id} 
+            url: function(id){return "BI/Dashboard/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard")}
+            url: function(){return "BI/Dashboard"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Dashboard/ChangeBranch")} 
+            url: function(){return "BI/Dashboard/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Dashboard/") + id} 
+            url: function(id){return "BI/Dashboard/" + id} 
         }
 		
 	},
@@ -1519,48 +1520,48 @@ export var APIListBase = {
 	BI_DashboardDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail/Search")}  
+            url: function(){return "BI/DashboardDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail")}  
+            url: function(){return "BI/DashboardDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail/Export")}  
+            url: function(){return "BI/DashboardDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail/Import")}  
+            url: function(){return "BI/DashboardDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/DashboardDetail/") + id} 
+            url: function(id){return "BI/DashboardDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/DashboardDetail/") + id} 
+            url: function(id){return "BI/DashboardDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/DashboardDetail/Disable/") + id} 
+            url: function(id){return "BI/DashboardDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/DashboardDetail/Enable/") + id} 
+            url: function(id){return "BI/DashboardDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail")}
+            url: function(){return "BI/DashboardDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/DashboardDetail/ChangeBranch")} 
+            url: function(){return "BI/DashboardDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/DashboardDetail/") + id} 
+            url: function(id){return "BI/DashboardDetail/" + id} 
         }
 		
 	},
@@ -1568,48 +1569,48 @@ export var APIListBase = {
 	BI_Finance_BalanceSheetCategory:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Search")}  
+            url: function(){return "BI/Finance/BalanceSheetCategory/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory")}  
+            url: function(){return "BI/Finance/BalanceSheetCategory"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Export")}  
+            url: function(){return "BI/Finance/BalanceSheetCategory/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Import")}  
+            url: function(){return "BI/Finance/BalanceSheetCategory/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheetCategory/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheetCategory/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Disable/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheetCategory/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/Enable/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheetCategory/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory")}
+            url: function(){return "BI/Finance/BalanceSheetCategory"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/ChangeBranch")} 
+            url: function(){return "BI/Finance/BalanceSheetCategory/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheetCategory/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheetCategory/" + id} 
         }
 		
 	},
@@ -1617,48 +1618,48 @@ export var APIListBase = {
 	BI_Finance_BalanceSheets:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Search")}  
+            url: function(){return "BI/Finance/BalanceSheets/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets")}  
+            url: function(){return "BI/Finance/BalanceSheets"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Export")}  
+            url: function(){return "BI/Finance/BalanceSheets/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Import")}  
+            url: function(){return "BI/Finance/BalanceSheets/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheets/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheets/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Disable/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheets/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/Enable/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheets/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets")}
+            url: function(){return "BI/Finance/BalanceSheets"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/ChangeBranch")} 
+            url: function(){return "BI/Finance/BalanceSheets/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/BalanceSheets/") + id} 
+            url: function(id){return "BI/Finance/BalanceSheets/" + id} 
         }
 		
 	},
@@ -1666,48 +1667,48 @@ export var APIListBase = {
 	BI_Finance_CashFlow:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow/Search")}  
+            url: function(){return "BI/Finance/CashFlow/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow")}  
+            url: function(){return "BI/Finance/CashFlow"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow/Export")}  
+            url: function(){return "BI/Finance/CashFlow/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow/Import")}  
+            url: function(){return "BI/Finance/CashFlow/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id){return "BI/Finance/CashFlow/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id){return "BI/Finance/CashFlow/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/Disable/") + id} 
+            url: function(id){return "BI/Finance/CashFlow/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/Enable/") + id} 
+            url: function(id){return "BI/Finance/CashFlow/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow")}
+            url: function(){return "BI/Finance/CashFlow"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/CashFlow/ChangeBranch")} 
+            url: function(){return "BI/Finance/CashFlow/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/CashFlow/") + id} 
+            url: function(id){return "BI/Finance/CashFlow/" + id} 
         }
 		
 	},
@@ -1715,48 +1716,48 @@ export var APIListBase = {
 	BI_Finance_IncomeStatement:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Search")}  
+            url: function(){return "BI/Finance/IncomeStatement/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement")}  
+            url: function(){return "BI/Finance/IncomeStatement"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Export")}  
+            url: function(){return "BI/Finance/IncomeStatement/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Import")}  
+            url: function(){return "BI/Finance/IncomeStatement/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id){return "BI/Finance/IncomeStatement/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id){return "BI/Finance/IncomeStatement/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Disable/") + id} 
+            url: function(id){return "BI/Finance/IncomeStatement/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/Enable/") + id} 
+            url: function(id){return "BI/Finance/IncomeStatement/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement")}
+            url: function(){return "BI/Finance/IncomeStatement"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/ChangeBranch")} 
+            url: function(){return "BI/Finance/IncomeStatement/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/IncomeStatement/") + id} 
+            url: function(id){return "BI/Finance/IncomeStatement/" + id} 
         }
 		
 	},
@@ -1764,48 +1765,48 @@ export var APIListBase = {
 	BI_Finance_Management:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management/Search")}  
+            url: function(){return "BI/Finance/Management/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management")}  
+            url: function(){return "BI/Finance/Management"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management/Export")}  
+            url: function(){return "BI/Finance/Management/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management/Import")}  
+            url: function(){return "BI/Finance/Management/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id){return "BI/Finance/Management/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id){return "BI/Finance/Management/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/Disable/") + id} 
+            url: function(id){return "BI/Finance/Management/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/Enable/") + id} 
+            url: function(id){return "BI/Finance/Management/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management")}
+            url: function(){return "BI/Finance/Management"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Finance/Management/ChangeBranch")} 
+            url: function(){return "BI/Finance/Management/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Finance/Management/") + id} 
+            url: function(id){return "BI/Finance/Management/" + id} 
         }
 		
 	},
@@ -1813,48 +1814,48 @@ export var APIListBase = {
 	BI_HRM_PayrollPerBranch:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Search")}  
+            url: function(){return "BI/HRM/PayrollPerBranch/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch")}  
+            url: function(){return "BI/HRM/PayrollPerBranch"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Export")}  
+            url: function(){return "BI/HRM/PayrollPerBranch/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Import")}  
+            url: function(){return "BI/HRM/PayrollPerBranch/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id){return "BI/HRM/PayrollPerBranch/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id){return "BI/HRM/PayrollPerBranch/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Disable/") + id} 
+            url: function(id){return "BI/HRM/PayrollPerBranch/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/Enable/") + id} 
+            url: function(id){return "BI/HRM/PayrollPerBranch/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch")}
+            url: function(){return "BI/HRM/PayrollPerBranch"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/ChangeBranch")} 
+            url: function(){return "BI/HRM/PayrollPerBranch/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/HRM/PayrollPerBranch/") + id} 
+            url: function(id){return "BI/HRM/PayrollPerBranch/" + id} 
         }
 		
 	},
@@ -1862,48 +1863,48 @@ export var APIListBase = {
 	BI_Operating_MarketResearch:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Search")}  
+            url: function(){return "BI/Operating/MarketResearch/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch")}  
+            url: function(){return "BI/Operating/MarketResearch"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Export")}  
+            url: function(){return "BI/Operating/MarketResearch/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Import")}  
+            url: function(){return "BI/Operating/MarketResearch/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id){return "BI/Operating/MarketResearch/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id){return "BI/Operating/MarketResearch/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Disable/") + id} 
+            url: function(id){return "BI/Operating/MarketResearch/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/Enable/") + id} 
+            url: function(id){return "BI/Operating/MarketResearch/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch")}
+            url: function(){return "BI/Operating/MarketResearch"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Operating/MarketResearch/ChangeBranch")} 
+            url: function(){return "BI/Operating/MarketResearch/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Operating/MarketResearch/") + id} 
+            url: function(id){return "BI/Operating/MarketResearch/" + id} 
         }
 		
 	},
@@ -1911,48 +1912,48 @@ export var APIListBase = {
 	BI_Oppotunity:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity/Search")}  
+            url: function(){return "BI/Oppotunity/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity")}  
+            url: function(){return "BI/Oppotunity"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity/Export")}  
+            url: function(){return "BI/Oppotunity/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity/Import")}  
+            url: function(){return "BI/Oppotunity/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id){return "BI/Oppotunity/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id){return "BI/Oppotunity/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/Disable/") + id} 
+            url: function(id){return "BI/Oppotunity/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/Enable/") + id} 
+            url: function(id){return "BI/Oppotunity/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity")}
+            url: function(){return "BI/Oppotunity"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Oppotunity/ChangeBranch")} 
+            url: function(){return "BI/Oppotunity/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Oppotunity/") + id} 
+            url: function(id){return "BI/Oppotunity/" + id} 
         }
 		
 	},
@@ -1960,48 +1961,48 @@ export var APIListBase = {
 	BI_Report:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Report/Search")}  
+            url: function(){return "BI/Report/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/Report")}  
+            url: function(){return "BI/Report"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Report/Export")}  
+            url: function(){return "BI/Report/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/Report/Import")}  
+            url: function(){return "BI/Report/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/Report/") + id} 
+            url: function(id){return "BI/Report/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Report/") + id} 
+            url: function(id){return "BI/Report/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Report/Disable/") + id} 
+            url: function(id){return "BI/Report/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/Report/Enable/") + id} 
+            url: function(id){return "BI/Report/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Report")}
+            url: function(){return "BI/Report"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/Report/ChangeBranch")} 
+            url: function(){return "BI/Report/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/Report/") + id} 
+            url: function(id){return "BI/Report/" + id} 
         }
 		
 	},
@@ -2009,48 +2010,48 @@ export var APIListBase = {
 	BI_ReportTemplate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate/Search")}  
+            url: function(){return "BI/ReportTemplate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate")}  
+            url: function(){return "BI/ReportTemplate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate/Export")}  
+            url: function(){return "BI/ReportTemplate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate/Import")}  
+            url: function(){return "BI/ReportTemplate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id){return "BI/ReportTemplate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id){return "BI/ReportTemplate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/Disable/") + id} 
+            url: function(id){return "BI/ReportTemplate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/Enable/") + id} 
+            url: function(id){return "BI/ReportTemplate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate")}
+            url: function(){return "BI/ReportTemplate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplate/ChangeBranch")} 
+            url: function(){return "BI/ReportTemplate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplate/") + id} 
+            url: function(id){return "BI/ReportTemplate/" + id} 
         }
 		
 	},
@@ -2058,48 +2059,48 @@ export var APIListBase = {
 	BI_ReportTemplateDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Search")}  
+            url: function(){return "BI/ReportTemplateDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail")}  
+            url: function(){return "BI/ReportTemplateDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Export")}  
+            url: function(){return "BI/ReportTemplateDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Import")}  
+            url: function(){return "BI/ReportTemplateDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id){return "BI/ReportTemplateDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id){return "BI/ReportTemplateDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Disable/") + id} 
+            url: function(id){return "BI/ReportTemplateDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/Enable/") + id} 
+            url: function(id){return "BI/ReportTemplateDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail")}
+            url: function(){return "BI/ReportTemplateDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BI/ReportTemplateDetail/ChangeBranch")} 
+            url: function(){return "BI/ReportTemplateDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BI/ReportTemplateDetail/") + id} 
+            url: function(id){return "BI/ReportTemplateDetail/" + id} 
         }
 		
 	},
@@ -2107,48 +2108,48 @@ export var APIListBase = {
 	BP_Partner:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BP/Partner/Search")}  
+            url: function(){return "BP/Partner/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BP/Partner")}  
+            url: function(){return "BP/Partner"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BP/Partner/Export")}  
+            url: function(){return "BP/Partner/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BP/Partner/Import")}  
+            url: function(){return "BP/Partner/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id){return "BP/Partner/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id){return "BP/Partner/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/Disable/") + id} 
+            url: function(id){return "BP/Partner/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/Enable/") + id} 
+            url: function(id){return "BP/Partner/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BP/Partner")}
+            url: function(){return "BP/Partner"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BP/Partner/ChangeBranch")} 
+            url: function(){return "BP/Partner/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BP/Partner/") + id} 
+            url: function(id){return "BP/Partner/" + id} 
         }
 		
 	},
@@ -2156,48 +2157,48 @@ export var APIListBase = {
 	BRA_Branch:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch/Search")}  
+            url: function(){return "BRA/Branch/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch")}  
+            url: function(){return "BRA/Branch"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch/Export")}  
+            url: function(){return "BRA/Branch/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch/Import")}  
+            url: function(){return "BRA/Branch/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id){return "BRA/Branch/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id){return "BRA/Branch/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/Disable/") + id} 
+            url: function(id){return "BRA/Branch/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/Enable/") + id} 
+            url: function(id){return "BRA/Branch/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch")}
+            url: function(){return "BRA/Branch"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BRA/Branch/ChangeBranch")} 
+            url: function(){return "BRA/Branch/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BRA/Branch/") + id} 
+            url: function(id){return "BRA/Branch/" + id} 
         }
 		
 	},
@@ -2205,48 +2206,48 @@ export var APIListBase = {
 	BSC_RevenueTarget:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget/Search")}  
+            url: function(){return "BSC/RevenueTarget/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget")}  
+            url: function(){return "BSC/RevenueTarget"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget/Export")}  
+            url: function(){return "BSC/RevenueTarget/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget/Import")}  
+            url: function(){return "BSC/RevenueTarget/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id){return "BSC/RevenueTarget/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id){return "BSC/RevenueTarget/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/Disable/") + id} 
+            url: function(id){return "BSC/RevenueTarget/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/Enable/") + id} 
+            url: function(id){return "BSC/RevenueTarget/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget")}
+            url: function(){return "BSC/RevenueTarget"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("BSC/RevenueTarget/ChangeBranch")} 
+            url: function(){return "BSC/RevenueTarget/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("BSC/RevenueTarget/") + id} 
+            url: function(id){return "BSC/RevenueTarget/" + id} 
         }
 		
 	},
@@ -2254,48 +2255,48 @@ export var APIListBase = {
 	CRM_Activity:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity/Search")}  
+            url: function(){return "CRM/Activity/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity")}  
+            url: function(){return "CRM/Activity"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity/Export")}  
+            url: function(){return "CRM/Activity/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity/Import")}  
+            url: function(){return "CRM/Activity/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id){return "CRM/Activity/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id){return "CRM/Activity/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/Disable/") + id} 
+            url: function(id){return "CRM/Activity/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/Enable/") + id} 
+            url: function(id){return "CRM/Activity/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity")}
+            url: function(){return "CRM/Activity"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Activity/ChangeBranch")} 
+            url: function(){return "CRM/Activity/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Activity/") + id} 
+            url: function(id){return "CRM/Activity/" + id} 
         }
 		
 	},
@@ -2303,48 +2304,48 @@ export var APIListBase = {
 	CRM_Attendance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance/Search")}  
+            url: function(){return "CRM/Attendance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance")}  
+            url: function(){return "CRM/Attendance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance/Export")}  
+            url: function(){return "CRM/Attendance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance/Import")}  
+            url: function(){return "CRM/Attendance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id){return "CRM/Attendance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id){return "CRM/Attendance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/Disable/") + id} 
+            url: function(id){return "CRM/Attendance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/Enable/") + id} 
+            url: function(id){return "CRM/Attendance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance")}
+            url: function(){return "CRM/Attendance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Attendance/ChangeBranch")} 
+            url: function(){return "CRM/Attendance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Attendance/") + id} 
+            url: function(id){return "CRM/Attendance/" + id} 
         }
 		
 	},
@@ -2352,48 +2353,48 @@ export var APIListBase = {
 	CRM_BusinessPartnerGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Search")}  
+            url: function(){return "CRM/BusinessPartnerGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup")}  
+            url: function(){return "CRM/BusinessPartnerGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Export")}  
+            url: function(){return "CRM/BusinessPartnerGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Import")}  
+            url: function(){return "CRM/BusinessPartnerGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id){return "CRM/BusinessPartnerGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id){return "CRM/BusinessPartnerGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Disable/") + id} 
+            url: function(id){return "CRM/BusinessPartnerGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/Enable/") + id} 
+            url: function(id){return "CRM/BusinessPartnerGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup")}
+            url: function(){return "CRM/BusinessPartnerGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/ChangeBranch")} 
+            url: function(){return "CRM/BusinessPartnerGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/BusinessPartnerGroup/") + id} 
+            url: function(id){return "CRM/BusinessPartnerGroup/" + id} 
         }
 		
 	},
@@ -2401,48 +2402,48 @@ export var APIListBase = {
 	CRM_Campaign:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign/Search")}  
+            url: function(){return "CRM/Campaign/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign")}  
+            url: function(){return "CRM/Campaign"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign/Export")}  
+            url: function(){return "CRM/Campaign/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign/Import")}  
+            url: function(){return "CRM/Campaign/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id){return "CRM/Campaign/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id){return "CRM/Campaign/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/Disable/") + id} 
+            url: function(id){return "CRM/Campaign/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/Enable/") + id} 
+            url: function(id){return "CRM/Campaign/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign")}
+            url: function(){return "CRM/Campaign"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Campaign/ChangeBranch")} 
+            url: function(){return "CRM/Campaign/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Campaign/") + id} 
+            url: function(id){return "CRM/Campaign/" + id} 
         }
 		
 	},
@@ -2450,48 +2451,48 @@ export var APIListBase = {
 	CRM_CampaignMember:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember/Search")}  
+            url: function(){return "CRM/CampaignMember/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember")}  
+            url: function(){return "CRM/CampaignMember"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember/Export")}  
+            url: function(){return "CRM/CampaignMember/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember/Import")}  
+            url: function(){return "CRM/CampaignMember/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id){return "CRM/CampaignMember/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id){return "CRM/CampaignMember/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/Disable/") + id} 
+            url: function(id){return "CRM/CampaignMember/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/Enable/") + id} 
+            url: function(id){return "CRM/CampaignMember/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember")}
+            url: function(){return "CRM/CampaignMember"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/CampaignMember/ChangeBranch")} 
+            url: function(){return "CRM/CampaignMember/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/CampaignMember/") + id} 
+            url: function(id){return "CRM/CampaignMember/" + id} 
         }
 		
 	},
@@ -2499,48 +2500,48 @@ export var APIListBase = {
 	CRM_Config:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Config/Search")}  
+            url: function(){return "CRM/Config/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Config")}  
+            url: function(){return "CRM/Config"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Config/Export")}  
+            url: function(){return "CRM/Config/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Config/Import")}  
+            url: function(){return "CRM/Config/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id){return "CRM/Config/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id){return "CRM/Config/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/Disable/") + id} 
+            url: function(id){return "CRM/Config/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/Enable/") + id} 
+            url: function(id){return "CRM/Config/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Config")}
+            url: function(){return "CRM/Config"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Config/ChangeBranch")} 
+            url: function(){return "CRM/Config/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Config/") + id} 
+            url: function(id){return "CRM/Config/" + id} 
         }
 		
 	},
@@ -2548,48 +2549,48 @@ export var APIListBase = {
 	CRM_Contact:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact/Search")}  
+            url: function(){return "CRM/Contact/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact")}  
+            url: function(){return "CRM/Contact"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact/Export")}  
+            url: function(){return "CRM/Contact/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact/Import")}  
+            url: function(){return "CRM/Contact/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id){return "CRM/Contact/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id){return "CRM/Contact/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/Disable/") + id} 
+            url: function(id){return "CRM/Contact/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/Enable/") + id} 
+            url: function(id){return "CRM/Contact/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact")}
+            url: function(){return "CRM/Contact"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Contact/ChangeBranch")} 
+            url: function(){return "CRM/Contact/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contact/") + id} 
+            url: function(id){return "CRM/Contact/" + id} 
         }
 		
 	},
@@ -2597,48 +2598,48 @@ export var APIListBase = {
 	CRM_ContactReference:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference/Search")}  
+            url: function(){return "CRM/ContactReference/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference")}  
+            url: function(){return "CRM/ContactReference"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference/Export")}  
+            url: function(){return "CRM/ContactReference/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference/Import")}  
+            url: function(){return "CRM/ContactReference/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id){return "CRM/ContactReference/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id){return "CRM/ContactReference/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/Disable/") + id} 
+            url: function(id){return "CRM/ContactReference/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/Enable/") + id} 
+            url: function(id){return "CRM/ContactReference/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference")}
+            url: function(){return "CRM/ContactReference"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/ContactReference/ChangeBranch")} 
+            url: function(){return "CRM/ContactReference/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/ContactReference/") + id} 
+            url: function(id){return "CRM/ContactReference/" + id} 
         }
 		
 	},
@@ -2646,48 +2647,48 @@ export var APIListBase = {
 	CRM_Contract:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract/Search")}  
+            url: function(){return "CRM/Contract/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract")}  
+            url: function(){return "CRM/Contract"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract/Export")}  
+            url: function(){return "CRM/Contract/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract/Import")}  
+            url: function(){return "CRM/Contract/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id){return "CRM/Contract/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id){return "CRM/Contract/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/Disable/") + id} 
+            url: function(id){return "CRM/Contract/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/Enable/") + id} 
+            url: function(id){return "CRM/Contract/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract")}
+            url: function(){return "CRM/Contract"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Contract/ChangeBranch")} 
+            url: function(){return "CRM/Contract/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Contract/") + id} 
+            url: function(id){return "CRM/Contract/" + id} 
         }
 		
 	},
@@ -2695,48 +2696,48 @@ export var APIListBase = {
 	CRM_Customer:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer/Search")}  
+            url: function(){return "CRM/Customer/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer")}  
+            url: function(){return "CRM/Customer"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer/Export")}  
+            url: function(){return "CRM/Customer/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer/Import")}  
+            url: function(){return "CRM/Customer/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id){return "CRM/Customer/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id){return "CRM/Customer/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/Disable/") + id} 
+            url: function(id){return "CRM/Customer/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/Enable/") + id} 
+            url: function(id){return "CRM/Customer/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer")}
+            url: function(){return "CRM/Customer"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Customer/ChangeBranch")} 
+            url: function(){return "CRM/Customer/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Customer/") + id} 
+            url: function(id){return "CRM/Customer/" + id} 
         }
 		
 	},
@@ -2744,48 +2745,48 @@ export var APIListBase = {
 	CRM_Lead:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead/Search")}  
+            url: function(){return "CRM/Lead/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead")}  
+            url: function(){return "CRM/Lead"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead/Export")}  
+            url: function(){return "CRM/Lead/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead/Import")}  
+            url: function(){return "CRM/Lead/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id){return "CRM/Lead/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id){return "CRM/Lead/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/Disable/") + id} 
+            url: function(id){return "CRM/Lead/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/Enable/") + id} 
+            url: function(id){return "CRM/Lead/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead")}
+            url: function(){return "CRM/Lead"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Lead/ChangeBranch")} 
+            url: function(){return "CRM/Lead/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Lead/") + id} 
+            url: function(id){return "CRM/Lead/" + id} 
         }
 		
 	},
@@ -2793,48 +2794,48 @@ export var APIListBase = {
 	CRM_MemberCard:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard/Search")}  
+            url: function(){return "CRM/MemberCard/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard")}  
+            url: function(){return "CRM/MemberCard"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard/Export")}  
+            url: function(){return "CRM/MemberCard/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard/Import")}  
+            url: function(){return "CRM/MemberCard/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id){return "CRM/MemberCard/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id){return "CRM/MemberCard/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/Disable/") + id} 
+            url: function(id){return "CRM/MemberCard/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/Enable/") + id} 
+            url: function(id){return "CRM/MemberCard/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard")}
+            url: function(){return "CRM/MemberCard"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/MemberCard/ChangeBranch")} 
+            url: function(){return "CRM/MemberCard/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/MemberCard/") + id} 
+            url: function(id){return "CRM/MemberCard/" + id} 
         }
 		
 	},
@@ -2842,48 +2843,48 @@ export var APIListBase = {
 	CRM_Opportunity:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity/Search")}  
+            url: function(){return "CRM/Opportunity/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity")}  
+            url: function(){return "CRM/Opportunity"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity/Export")}  
+            url: function(){return "CRM/Opportunity/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity/Import")}  
+            url: function(){return "CRM/Opportunity/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id){return "CRM/Opportunity/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id){return "CRM/Opportunity/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/Disable/") + id} 
+            url: function(id){return "CRM/Opportunity/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/Enable/") + id} 
+            url: function(id){return "CRM/Opportunity/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity")}
+            url: function(){return "CRM/Opportunity"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Opportunity/ChangeBranch")} 
+            url: function(){return "CRM/Opportunity/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Opportunity/") + id} 
+            url: function(id){return "CRM/Opportunity/" + id} 
         }
 		
 	},
@@ -2891,48 +2892,48 @@ export var APIListBase = {
 	CRM_Outlets:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets/Search")}  
+            url: function(){return "CRM/Outlets/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets")}  
+            url: function(){return "CRM/Outlets"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets/Export")}  
+            url: function(){return "CRM/Outlets/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets/Import")}  
+            url: function(){return "CRM/Outlets/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id){return "CRM/Outlets/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id){return "CRM/Outlets/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/Disable/") + id} 
+            url: function(id){return "CRM/Outlets/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/Enable/") + id} 
+            url: function(id){return "CRM/Outlets/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets")}
+            url: function(){return "CRM/Outlets"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Outlets/ChangeBranch")} 
+            url: function(){return "CRM/Outlets/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Outlets/") + id} 
+            url: function(id){return "CRM/Outlets/" + id} 
         }
 		
 	},
@@ -2940,48 +2941,48 @@ export var APIListBase = {
 	CRM_PartnerAddress:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress/Search")}  
+            url: function(){return "CRM/PartnerAddress/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress")}  
+            url: function(){return "CRM/PartnerAddress"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress/Export")}  
+            url: function(){return "CRM/PartnerAddress/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress/Import")}  
+            url: function(){return "CRM/PartnerAddress/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id){return "CRM/PartnerAddress/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id){return "CRM/PartnerAddress/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/Disable/") + id} 
+            url: function(id){return "CRM/PartnerAddress/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/Enable/") + id} 
+            url: function(id){return "CRM/PartnerAddress/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress")}
+            url: function(){return "CRM/PartnerAddress"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerAddress/ChangeBranch")} 
+            url: function(){return "CRM/PartnerAddress/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerAddress/") + id} 
+            url: function(id){return "CRM/PartnerAddress/" + id} 
         }
 		
 	},
@@ -2989,48 +2990,48 @@ export var APIListBase = {
 	CRM_PartnerBankAccount:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Search")}  
+            url: function(){return "CRM/PartnerBankAccount/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount")}  
+            url: function(){return "CRM/PartnerBankAccount"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Export")}  
+            url: function(){return "CRM/PartnerBankAccount/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Import")}  
+            url: function(){return "CRM/PartnerBankAccount/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id){return "CRM/PartnerBankAccount/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id){return "CRM/PartnerBankAccount/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Disable/") + id} 
+            url: function(id){return "CRM/PartnerBankAccount/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/Enable/") + id} 
+            url: function(id){return "CRM/PartnerBankAccount/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount")}
+            url: function(){return "CRM/PartnerBankAccount"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerBankAccount/ChangeBranch")} 
+            url: function(){return "CRM/PartnerBankAccount/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerBankAccount/") + id} 
+            url: function(id){return "CRM/PartnerBankAccount/" + id} 
         }
 		
 	},
@@ -3038,48 +3039,48 @@ export var APIListBase = {
 	CRM_PartnerTaxInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Search")}  
+            url: function(){return "CRM/PartnerTaxInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo")}  
+            url: function(){return "CRM/PartnerTaxInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Export")}  
+            url: function(){return "CRM/PartnerTaxInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Import")}  
+            url: function(){return "CRM/PartnerTaxInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
+            url: function(id){return "CRM/PartnerTaxInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
+            url: function(id){return "CRM/PartnerTaxInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Disable/") + id} 
+            url: function(id){return "CRM/PartnerTaxInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/Enable/") + id} 
+            url: function(id){return "CRM/PartnerTaxInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo")}
+            url: function(){return "CRM/PartnerTaxInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/ChangeBranch")} 
+            url: function(){return "CRM/PartnerTaxInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PartnerTaxInfo/") + id} 
+            url: function(id){return "CRM/PartnerTaxInfo/" + id} 
         }
 		
 	},
@@ -3087,48 +3088,48 @@ export var APIListBase = {
 	CRM_PersonInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo/Search")}  
+            url: function(){return "CRM/PersonInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo")}  
+            url: function(){return "CRM/PersonInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo/Export")}  
+            url: function(){return "CRM/PersonInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo/Import")}  
+            url: function(){return "CRM/PersonInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id){return "CRM/PersonInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id){return "CRM/PersonInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/Disable/") + id} 
+            url: function(id){return "CRM/PersonInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/Enable/") + id} 
+            url: function(id){return "CRM/PersonInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo")}
+            url: function(){return "CRM/PersonInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/PersonInfo/ChangeBranch")} 
+            url: function(){return "CRM/PersonInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/PersonInfo/") + id} 
+            url: function(id){return "CRM/PersonInfo/" + id} 
         }
 		
 	},
@@ -3136,48 +3137,48 @@ export var APIListBase = {
 	CRM_Quotation:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation/Search")}  
+            url: function(){return "CRM/Quotation/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation")}  
+            url: function(){return "CRM/Quotation"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation/Export")}  
+            url: function(){return "CRM/Quotation/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation/Import")}  
+            url: function(){return "CRM/Quotation/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id){return "CRM/Quotation/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id){return "CRM/Quotation/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/Disable/") + id} 
+            url: function(id){return "CRM/Quotation/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/Enable/") + id} 
+            url: function(id){return "CRM/Quotation/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation")}
+            url: function(){return "CRM/Quotation"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Quotation/ChangeBranch")} 
+            url: function(){return "CRM/Quotation/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Quotation/") + id} 
+            url: function(id){return "CRM/Quotation/" + id} 
         }
 		
 	},
@@ -3185,48 +3186,48 @@ export var APIListBase = {
 	CRM_Route:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Route/Search")}  
+            url: function(){return "CRM/Route/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Route")}  
+            url: function(){return "CRM/Route"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Route/Export")}  
+            url: function(){return "CRM/Route/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Route/Import")}  
+            url: function(){return "CRM/Route/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id){return "CRM/Route/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id){return "CRM/Route/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/Disable/") + id} 
+            url: function(id){return "CRM/Route/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/Enable/") + id} 
+            url: function(id){return "CRM/Route/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Route")}
+            url: function(){return "CRM/Route"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Route/ChangeBranch")} 
+            url: function(){return "CRM/Route/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Route/") + id} 
+            url: function(id){return "CRM/Route/" + id} 
         }
 		
 	},
@@ -3234,48 +3235,48 @@ export var APIListBase = {
 	CRM_RouteDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail/Search")}  
+            url: function(){return "CRM/RouteDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail")}  
+            url: function(){return "CRM/RouteDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail/Export")}  
+            url: function(){return "CRM/RouteDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail/Import")}  
+            url: function(){return "CRM/RouteDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id){return "CRM/RouteDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id){return "CRM/RouteDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/Disable/") + id} 
+            url: function(id){return "CRM/RouteDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/Enable/") + id} 
+            url: function(id){return "CRM/RouteDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail")}
+            url: function(){return "CRM/RouteDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/RouteDetail/ChangeBranch")} 
+            url: function(){return "CRM/RouteDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/RouteDetail/") + id} 
+            url: function(id){return "CRM/RouteDetail/" + id} 
         }
 		
 	},
@@ -3283,48 +3284,48 @@ export var APIListBase = {
 	CRM_Voucher:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher/Search")}  
+            url: function(){return "CRM/Voucher/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher")}  
+            url: function(){return "CRM/Voucher"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher/Export")}  
+            url: function(){return "CRM/Voucher/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher/Import")}  
+            url: function(){return "CRM/Voucher/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id){return "CRM/Voucher/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id){return "CRM/Voucher/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/Disable/") + id} 
+            url: function(id){return "CRM/Voucher/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/Enable/") + id} 
+            url: function(id){return "CRM/Voucher/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher")}
+            url: function(){return "CRM/Voucher"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("CRM/Voucher/ChangeBranch")} 
+            url: function(){return "CRM/Voucher/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("CRM/Voucher/") + id} 
+            url: function(id){return "CRM/Voucher/" + id} 
         }
 		
 	},
@@ -3332,48 +3333,48 @@ export var APIListBase = {
 	FINANCE_CostCenter:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter/Search")}  
+            url: function(){return "FINANCE/CostCenter/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter")}  
+            url: function(){return "FINANCE/CostCenter"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter/Export")}  
+            url: function(){return "FINANCE/CostCenter/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter/Import")}  
+            url: function(){return "FINANCE/CostCenter/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id){return "FINANCE/CostCenter/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id){return "FINANCE/CostCenter/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/Disable/") + id} 
+            url: function(id){return "FINANCE/CostCenter/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/Enable/") + id} 
+            url: function(id){return "FINANCE/CostCenter/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter")}
+            url: function(){return "FINANCE/CostCenter"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/CostCenter/ChangeBranch")} 
+            url: function(){return "FINANCE/CostCenter/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/CostCenter/") + id} 
+            url: function(id){return "FINANCE/CostCenter/" + id} 
         }
 		
 	},
@@ -3381,48 +3382,48 @@ export var APIListBase = {
 	FINANCE_GeneralLedger:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Search")}  
+            url: function(){return "FINANCE/GeneralLedger/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger")}  
+            url: function(){return "FINANCE/GeneralLedger"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Export")}  
+            url: function(){return "FINANCE/GeneralLedger/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Import")}  
+            url: function(){return "FINANCE/GeneralLedger/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id){return "FINANCE/GeneralLedger/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id){return "FINANCE/GeneralLedger/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Disable/") + id} 
+            url: function(id){return "FINANCE/GeneralLedger/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/Enable/") + id} 
+            url: function(id){return "FINANCE/GeneralLedger/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger")}
+            url: function(){return "FINANCE/GeneralLedger"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/GeneralLedger/ChangeBranch")} 
+            url: function(){return "FINANCE/GeneralLedger/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/GeneralLedger/") + id} 
+            url: function(id){return "FINANCE/GeneralLedger/" + id} 
         }
 		
 	},
@@ -3430,48 +3431,48 @@ export var APIListBase = {
 	FINANCE_TaxDefinition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Search")}  
+            url: function(){return "FINANCE/TaxDefinition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition")}  
+            url: function(){return "FINANCE/TaxDefinition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Export")}  
+            url: function(){return "FINANCE/TaxDefinition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Import")}  
+            url: function(){return "FINANCE/TaxDefinition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id){return "FINANCE/TaxDefinition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id){return "FINANCE/TaxDefinition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Disable/") + id} 
+            url: function(id){return "FINANCE/TaxDefinition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/Enable/") + id} 
+            url: function(id){return "FINANCE/TaxDefinition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition")}
+            url: function(){return "FINANCE/TaxDefinition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("FINANCE/TaxDefinition/ChangeBranch")} 
+            url: function(){return "FINANCE/TaxDefinition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("FINANCE/TaxDefinition/") + id} 
+            url: function(id){return "FINANCE/TaxDefinition/" + id} 
         }
 		
 	},
@@ -3479,48 +3480,48 @@ export var APIListBase = {
 	HRM_DeductionOnSalary:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Search")}  
+            url: function(){return "HRM/DeductionOnSalary/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary")}  
+            url: function(){return "HRM/DeductionOnSalary"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Export")}  
+            url: function(){return "HRM/DeductionOnSalary/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Import")}  
+            url: function(){return "HRM/DeductionOnSalary/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id){return "HRM/DeductionOnSalary/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id){return "HRM/DeductionOnSalary/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Disable/") + id} 
+            url: function(id){return "HRM/DeductionOnSalary/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/Enable/") + id} 
+            url: function(id){return "HRM/DeductionOnSalary/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary")}
+            url: function(){return "HRM/DeductionOnSalary"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/DeductionOnSalary/ChangeBranch")} 
+            url: function(){return "HRM/DeductionOnSalary/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/DeductionOnSalary/") + id} 
+            url: function(id){return "HRM/DeductionOnSalary/" + id} 
         }
 		
 	},
@@ -3528,48 +3529,48 @@ export var APIListBase = {
 	HRM_OpenSchedule:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule/Search")}  
+            url: function(){return "HRM/OpenSchedule/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule")}  
+            url: function(){return "HRM/OpenSchedule"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule/Export")}  
+            url: function(){return "HRM/OpenSchedule/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule/Import")}  
+            url: function(){return "HRM/OpenSchedule/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id){return "HRM/OpenSchedule/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id){return "HRM/OpenSchedule/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/Disable/") + id} 
+            url: function(id){return "HRM/OpenSchedule/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/Enable/") + id} 
+            url: function(id){return "HRM/OpenSchedule/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule")}
+            url: function(){return "HRM/OpenSchedule"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/OpenSchedule/ChangeBranch")} 
+            url: function(){return "HRM/OpenSchedule/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/OpenSchedule/") + id} 
+            url: function(id){return "HRM/OpenSchedule/" + id} 
         }
 		
 	},
@@ -3577,48 +3578,48 @@ export var APIListBase = {
 	HRM_OvertimePolicy:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy/Search")}  
+            url: function(){return "HRM/OvertimePolicy/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy")}  
+            url: function(){return "HRM/OvertimePolicy"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy/Export")}  
+            url: function(){return "HRM/OvertimePolicy/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy/Import")}  
+            url: function(){return "HRM/OvertimePolicy/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id){return "HRM/OvertimePolicy/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id){return "HRM/OvertimePolicy/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/Disable/") + id} 
+            url: function(id){return "HRM/OvertimePolicy/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/Enable/") + id} 
+            url: function(id){return "HRM/OvertimePolicy/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy")}
+            url: function(){return "HRM/OvertimePolicy"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/OvertimePolicy/ChangeBranch")} 
+            url: function(){return "HRM/OvertimePolicy/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/OvertimePolicy/") + id} 
+            url: function(id){return "HRM/OvertimePolicy/" + id} 
         }
 		
 	},
@@ -3626,48 +3627,48 @@ export var APIListBase = {
 	HRM_PayrollElement:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement/Search")}  
+            url: function(){return "HRM/PayrollElement/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement")}  
+            url: function(){return "HRM/PayrollElement"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement/Export")}  
+            url: function(){return "HRM/PayrollElement/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement/Import")}  
+            url: function(){return "HRM/PayrollElement/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id){return "HRM/PayrollElement/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id){return "HRM/PayrollElement/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/Disable/") + id} 
+            url: function(id){return "HRM/PayrollElement/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/Enable/") + id} 
+            url: function(id){return "HRM/PayrollElement/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement")}
+            url: function(){return "HRM/PayrollElement"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollElement/ChangeBranch")} 
+            url: function(){return "HRM/PayrollElement/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollElement/") + id} 
+            url: function(id){return "HRM/PayrollElement/" + id} 
         }
 		
 	},
@@ -3675,48 +3676,48 @@ export var APIListBase = {
 	HRM_PayrollPaySheetMaster:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Search")}  
+            url: function(){return "HRM/PayrollPaySheetMaster/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster")}  
+            url: function(){return "HRM/PayrollPaySheetMaster"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Export")}  
+            url: function(){return "HRM/PayrollPaySheetMaster/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Import")}  
+            url: function(){return "HRM/PayrollPaySheetMaster/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMaster/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMaster/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Disable/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMaster/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/Enable/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMaster/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster")}
+            url: function(){return "HRM/PayrollPaySheetMaster"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/ChangeBranch")} 
+            url: function(){return "HRM/PayrollPaySheetMaster/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMaster/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMaster/" + id} 
         }
 		
 	},
@@ -3724,48 +3725,48 @@ export var APIListBase = {
 	HRM_PayrollPaySheetMasterSalaryDecision:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Search")}  
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision")}  
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Export")}  
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Import")}  
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMasterSalaryDecision/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMasterSalaryDecision/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Disable/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMasterSalaryDecision/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/Enable/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMasterSalaryDecision/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision")}
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/ChangeBranch")} 
+            url: function(){return "HRM/PayrollPaySheetMasterSalaryDecision/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PayrollPaySheetMasterSalaryDecision/") + id} 
+            url: function(id){return "HRM/PayrollPaySheetMasterSalaryDecision/" + id} 
         }
 		
 	},
@@ -3773,48 +3774,48 @@ export var APIListBase = {
 	HRM_PersonalIncomePaymentProcess:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Search")}  
+            url: function(){return "HRM/PersonalIncomePaymentProcess/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess")}  
+            url: function(){return "HRM/PersonalIncomePaymentProcess"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Export")}  
+            url: function(){return "HRM/PersonalIncomePaymentProcess/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Import")}  
+            url: function(){return "HRM/PersonalIncomePaymentProcess/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id){return "HRM/PersonalIncomePaymentProcess/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id){return "HRM/PersonalIncomePaymentProcess/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Disable/") + id} 
+            url: function(id){return "HRM/PersonalIncomePaymentProcess/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/Enable/") + id} 
+            url: function(id){return "HRM/PersonalIncomePaymentProcess/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess")}
+            url: function(){return "HRM/PersonalIncomePaymentProcess"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/ChangeBranch")} 
+            url: function(){return "HRM/PersonalIncomePaymentProcess/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PersonalIncomePaymentProcess/") + id} 
+            url: function(id){return "HRM/PersonalIncomePaymentProcess/" + id} 
         }
 		
 	},
@@ -3822,48 +3823,48 @@ export var APIListBase = {
 	HRM_PolAllowance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance/Search")}  
+            url: function(){return "HRM/PolAllowance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance")}  
+            url: function(){return "HRM/PolAllowance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance/Export")}  
+            url: function(){return "HRM/PolAllowance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance/Import")}  
+            url: function(){return "HRM/PolAllowance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id){return "HRM/PolAllowance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id){return "HRM/PolAllowance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/Disable/") + id} 
+            url: function(id){return "HRM/PolAllowance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/Enable/") + id} 
+            url: function(id){return "HRM/PolAllowance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance")}
+            url: function(){return "HRM/PolAllowance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowance/ChangeBranch")} 
+            url: function(){return "HRM/PolAllowance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowance/") + id} 
+            url: function(id){return "HRM/PolAllowance/" + id} 
         }
 		
 	},
@@ -3871,48 +3872,48 @@ export var APIListBase = {
 	HRM_PolAllowanceApplyFor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Search")}  
+            url: function(){return "HRM/PolAllowanceApplyFor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor")}  
+            url: function(){return "HRM/PolAllowanceApplyFor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Export")}  
+            url: function(){return "HRM/PolAllowanceApplyFor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Import")}  
+            url: function(){return "HRM/PolAllowanceApplyFor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Disable/") + id} 
+            url: function(id){return "HRM/PolAllowanceApplyFor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/Enable/") + id} 
+            url: function(id){return "HRM/PolAllowanceApplyFor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor")}
+            url: function(){return "HRM/PolAllowanceApplyFor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/ChangeBranch")} 
+            url: function(){return "HRM/PolAllowanceApplyFor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolAllowanceApplyFor/") + id} 
+            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
         }
 		
 	},
@@ -3920,48 +3921,48 @@ export var APIListBase = {
 	HRM_PolCompulsoryInsurance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Search")}  
+            url: function(){return "HRM/PolCompulsoryInsurance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance")}  
+            url: function(){return "HRM/PolCompulsoryInsurance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Export")}  
+            url: function(){return "HRM/PolCompulsoryInsurance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Import")}  
+            url: function(){return "HRM/PolCompulsoryInsurance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Disable/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsurance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/Enable/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsurance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance")}
+            url: function(){return "HRM/PolCompulsoryInsurance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/ChangeBranch")} 
+            url: function(){return "HRM/PolCompulsoryInsurance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
         }
 		
 	},
@@ -3969,48 +3970,48 @@ export var APIListBase = {
 	HRM_PolCompulsoryInsuranceApplyFor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Search")}  
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor")}  
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Export")}  
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Import")}  
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Disable/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/Enable/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor")}
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/ChangeBranch")} 
+            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolCompulsoryInsuranceApplyFor/") + id} 
+            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
         }
 		
 	},
@@ -4018,48 +4019,48 @@ export var APIListBase = {
 	HRM_PolicyHoliday:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday/Search")}  
+            url: function(){return "HRM/PolicyHoliday/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday")}  
+            url: function(){return "HRM/PolicyHoliday"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday/Export")}  
+            url: function(){return "HRM/PolicyHoliday/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday/Import")}  
+            url: function(){return "HRM/PolicyHoliday/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id){return "HRM/PolicyHoliday/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id){return "HRM/PolicyHoliday/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/Disable/") + id} 
+            url: function(id){return "HRM/PolicyHoliday/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/Enable/") + id} 
+            url: function(id){return "HRM/PolicyHoliday/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday")}
+            url: function(){return "HRM/PolicyHoliday"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyHoliday/ChangeBranch")} 
+            url: function(){return "HRM/PolicyHoliday/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyHoliday/") + id} 
+            url: function(id){return "HRM/PolicyHoliday/" + id} 
         }
 		
 	},
@@ -4067,48 +4068,48 @@ export var APIListBase = {
 	HRM_PolicyPaidTimeOff:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Search")}  
+            url: function(){return "HRM/PolicyPaidTimeOff/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff")}  
+            url: function(){return "HRM/PolicyPaidTimeOff"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Export")}  
+            url: function(){return "HRM/PolicyPaidTimeOff/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Import")}  
+            url: function(){return "HRM/PolicyPaidTimeOff/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOff/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOff/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Disable/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOff/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/Enable/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOff/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff")}
+            url: function(){return "HRM/PolicyPaidTimeOff"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/ChangeBranch")} 
+            url: function(){return "HRM/PolicyPaidTimeOff/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOff/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOff/" + id} 
         }
 		
 	},
@@ -4116,48 +4117,48 @@ export var APIListBase = {
 	HRM_PolicyPaidTimeOffGrantsByLengthOfServices:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Search")}  
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices")}  
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Export")}  
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Import")}  
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Disable/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Enable/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices")}
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/ChangeBranch")} 
+            url: function(){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolicyPaidTimeOffGrantsByLengthOfServices/") + id} 
+            url: function(id){return "HRM/PolicyPaidTimeOffGrantsByLengthOfServices/" + id} 
         }
 		
 	},
@@ -4165,48 +4166,48 @@ export var APIListBase = {
 	HRM_PolWelfare:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare/Search")}  
+            url: function(){return "HRM/PolWelfare/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare")}  
+            url: function(){return "HRM/PolWelfare"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare/Export")}  
+            url: function(){return "HRM/PolWelfare/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare/Import")}  
+            url: function(){return "HRM/PolWelfare/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id){return "HRM/PolWelfare/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id){return "HRM/PolWelfare/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/Disable/") + id} 
+            url: function(id){return "HRM/PolWelfare/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/Enable/") + id} 
+            url: function(id){return "HRM/PolWelfare/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare")}
+            url: function(){return "HRM/PolWelfare"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfare/ChangeBranch")} 
+            url: function(){return "HRM/PolWelfare/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfare/") + id} 
+            url: function(id){return "HRM/PolWelfare/" + id} 
         }
 		
 	},
@@ -4214,48 +4215,48 @@ export var APIListBase = {
 	HRM_PolWelfareApplyFor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Search")}  
+            url: function(){return "HRM/PolWelfareApplyFor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor")}  
+            url: function(){return "HRM/PolWelfareApplyFor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Export")}  
+            url: function(){return "HRM/PolWelfareApplyFor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Import")}  
+            url: function(){return "HRM/PolWelfareApplyFor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Disable/") + id} 
+            url: function(id){return "HRM/PolWelfareApplyFor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/Enable/") + id} 
+            url: function(id){return "HRM/PolWelfareApplyFor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor")}
+            url: function(){return "HRM/PolWelfareApplyFor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/ChangeBranch")} 
+            url: function(){return "HRM/PolWelfareApplyFor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/PolWelfareApplyFor/") + id} 
+            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
         }
 		
 	},
@@ -4263,48 +4264,48 @@ export var APIListBase = {
 	HRM_Shift:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift/Search")}  
+            url: function(){return "HRM/Shift/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift")}  
+            url: function(){return "HRM/Shift"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift/Export")}  
+            url: function(){return "HRM/Shift/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift/Import")}  
+            url: function(){return "HRM/Shift/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id){return "HRM/Shift/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id){return "HRM/Shift/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/Disable/") + id} 
+            url: function(id){return "HRM/Shift/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/Enable/") + id} 
+            url: function(id){return "HRM/Shift/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift")}
+            url: function(){return "HRM/Shift"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Shift/ChangeBranch")} 
+            url: function(){return "HRM/Shift/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Shift/") + id} 
+            url: function(id){return "HRM/Shift/" + id} 
         }
 		
 	},
@@ -4312,48 +4313,48 @@ export var APIListBase = {
 	HRM_ShiftInTimesheet:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Search")}  
+            url: function(){return "HRM/ShiftInTimesheet/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet")}  
+            url: function(){return "HRM/ShiftInTimesheet"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Export")}  
+            url: function(){return "HRM/ShiftInTimesheet/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Import")}  
+            url: function(){return "HRM/ShiftInTimesheet/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id){return "HRM/ShiftInTimesheet/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id){return "HRM/ShiftInTimesheet/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Disable/") + id} 
+            url: function(id){return "HRM/ShiftInTimesheet/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/Enable/") + id} 
+            url: function(id){return "HRM/ShiftInTimesheet/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet")}
+            url: function(){return "HRM/ShiftInTimesheet"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/ChangeBranch")} 
+            url: function(){return "HRM/ShiftInTimesheet/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/ShiftInTimesheet/") + id} 
+            url: function(id){return "HRM/ShiftInTimesheet/" + id} 
         }
 		
 	},
@@ -4361,48 +4362,48 @@ export var APIListBase = {
 	HRM_Staff:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/Search")}  
+            url: function(){return "HRM/Staff/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff")}  
+            url: function(){return "HRM/Staff"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/Export")}  
+            url: function(){return "HRM/Staff/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/Import")}  
+            url: function(){return "HRM/Staff/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id){return "HRM/Staff/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id){return "HRM/Staff/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/Disable/") + id} 
+            url: function(id){return "HRM/Staff/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/Enable/") + id} 
+            url: function(id){return "HRM/Staff/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff")}
+            url: function(){return "HRM/Staff"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ChangeBranch")} 
+            url: function(){return "HRM/Staff/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/") + id} 
+            url: function(id){return "HRM/Staff/" + id} 
         }
 		
 	},
@@ -4410,48 +4411,48 @@ export var APIListBase = {
 	HRM_Staff_CLApproval:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Search")}  
+            url: function(){return "HRM/Staff/CLApproval/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval")}  
+            url: function(){return "HRM/Staff/CLApproval"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Export")}  
+            url: function(){return "HRM/Staff/CLApproval/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Import")}  
+            url: function(){return "HRM/Staff/CLApproval/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id){return "HRM/Staff/CLApproval/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id){return "HRM/Staff/CLApproval/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Disable/") + id} 
+            url: function(id){return "HRM/Staff/CLApproval/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/Enable/") + id} 
+            url: function(id){return "HRM/Staff/CLApproval/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval")}
+            url: function(){return "HRM/Staff/CLApproval"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/CLApproval/ChangeBranch")} 
+            url: function(){return "HRM/Staff/CLApproval/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/CLApproval/") + id} 
+            url: function(id){return "HRM/Staff/CLApproval/" + id} 
         }
 		
 	},
@@ -4459,48 +4460,48 @@ export var APIListBase = {
 	HRM_Staff_ConcurrentPosition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Search")}  
+            url: function(){return "HRM/Staff/ConcurrentPosition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition")}  
+            url: function(){return "HRM/Staff/ConcurrentPosition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Export")}  
+            url: function(){return "HRM/Staff/ConcurrentPosition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Import")}  
+            url: function(){return "HRM/Staff/ConcurrentPosition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id){return "HRM/Staff/ConcurrentPosition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id){return "HRM/Staff/ConcurrentPosition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Disable/") + id} 
+            url: function(id){return "HRM/Staff/ConcurrentPosition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/Enable/") + id} 
+            url: function(id){return "HRM/Staff/ConcurrentPosition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition")}
+            url: function(){return "HRM/Staff/ConcurrentPosition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/ChangeBranch")} 
+            url: function(){return "HRM/Staff/ConcurrentPosition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Staff/ConcurrentPosition/") + id} 
+            url: function(id){return "HRM/Staff/ConcurrentPosition/" + id} 
         }
 		
 	},
@@ -4508,48 +4509,48 @@ export var APIListBase = {
 	HRM_StaffAcademicLevel:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Search")}  
+            url: function(){return "HRM/StaffAcademicLevel/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel")}  
+            url: function(){return "HRM/StaffAcademicLevel"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Export")}  
+            url: function(){return "HRM/StaffAcademicLevel/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Import")}  
+            url: function(){return "HRM/StaffAcademicLevel/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id){return "HRM/StaffAcademicLevel/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id){return "HRM/StaffAcademicLevel/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Disable/") + id} 
+            url: function(id){return "HRM/StaffAcademicLevel/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/Enable/") + id} 
+            url: function(id){return "HRM/StaffAcademicLevel/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel")}
+            url: function(){return "HRM/StaffAcademicLevel"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/ChangeBranch")} 
+            url: function(){return "HRM/StaffAcademicLevel/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAcademicLevel/") + id} 
+            url: function(id){return "HRM/StaffAcademicLevel/" + id} 
         }
 		
 	},
@@ -4557,48 +4558,48 @@ export var APIListBase = {
 	HRM_StaffAddress:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress/Search")}  
+            url: function(){return "HRM/StaffAddress/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress")}  
+            url: function(){return "HRM/StaffAddress"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress/Export")}  
+            url: function(){return "HRM/StaffAddress/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress/Import")}  
+            url: function(){return "HRM/StaffAddress/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id){return "HRM/StaffAddress/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id){return "HRM/StaffAddress/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/Disable/") + id} 
+            url: function(id){return "HRM/StaffAddress/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/Enable/") + id} 
+            url: function(id){return "HRM/StaffAddress/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress")}
+            url: function(){return "HRM/StaffAddress"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAddress/ChangeBranch")} 
+            url: function(){return "HRM/StaffAddress/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAddress/") + id} 
+            url: function(id){return "HRM/StaffAddress/" + id} 
         }
 		
 	},
@@ -4606,48 +4607,48 @@ export var APIListBase = {
 	HRM_StaffAllowance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance/Search")}  
+            url: function(){return "HRM/StaffAllowance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance")}  
+            url: function(){return "HRM/StaffAllowance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance/Export")}  
+            url: function(){return "HRM/StaffAllowance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance/Import")}  
+            url: function(){return "HRM/StaffAllowance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id){return "HRM/StaffAllowance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id){return "HRM/StaffAllowance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/Disable/") + id} 
+            url: function(id){return "HRM/StaffAllowance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/Enable/") + id} 
+            url: function(id){return "HRM/StaffAllowance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance")}
+            url: function(){return "HRM/StaffAllowance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAllowance/ChangeBranch")} 
+            url: function(){return "HRM/StaffAllowance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAllowance/") + id} 
+            url: function(id){return "HRM/StaffAllowance/" + id} 
         }
 		
 	},
@@ -4655,48 +4656,48 @@ export var APIListBase = {
 	HRM_StaffAnotherSkill:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Search")}  
+            url: function(){return "HRM/StaffAnotherSkill/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill")}  
+            url: function(){return "HRM/StaffAnotherSkill"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Export")}  
+            url: function(){return "HRM/StaffAnotherSkill/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Import")}  
+            url: function(){return "HRM/StaffAnotherSkill/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id){return "HRM/StaffAnotherSkill/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id){return "HRM/StaffAnotherSkill/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Disable/") + id} 
+            url: function(id){return "HRM/StaffAnotherSkill/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/Enable/") + id} 
+            url: function(id){return "HRM/StaffAnotherSkill/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill")}
+            url: function(){return "HRM/StaffAnotherSkill"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/ChangeBranch")} 
+            url: function(){return "HRM/StaffAnotherSkill/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAnotherSkill/") + id} 
+            url: function(id){return "HRM/StaffAnotherSkill/" + id} 
         }
 		
 	},
@@ -4704,48 +4705,48 @@ export var APIListBase = {
 	HRM_StaffAppointDecision:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Search")}  
+            url: function(){return "HRM/StaffAppointDecision/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision")}  
+            url: function(){return "HRM/StaffAppointDecision"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Export")}  
+            url: function(){return "HRM/StaffAppointDecision/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Import")}  
+            url: function(){return "HRM/StaffAppointDecision/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id){return "HRM/StaffAppointDecision/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id){return "HRM/StaffAppointDecision/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Disable/") + id} 
+            url: function(id){return "HRM/StaffAppointDecision/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/Enable/") + id} 
+            url: function(id){return "HRM/StaffAppointDecision/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision")}
+            url: function(){return "HRM/StaffAppointDecision"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffAppointDecision/ChangeBranch")} 
+            url: function(){return "HRM/StaffAppointDecision/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffAppointDecision/") + id} 
+            url: function(id){return "HRM/StaffAppointDecision/" + id} 
         }
 		
 	},
@@ -4753,48 +4754,48 @@ export var APIListBase = {
 	HRM_StaffBank:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank/Search")}  
+            url: function(){return "HRM/StaffBank/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank")}  
+            url: function(){return "HRM/StaffBank"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank/Export")}  
+            url: function(){return "HRM/StaffBank/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank/Import")}  
+            url: function(){return "HRM/StaffBank/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id){return "HRM/StaffBank/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id){return "HRM/StaffBank/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/Disable/") + id} 
+            url: function(id){return "HRM/StaffBank/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/Enable/") + id} 
+            url: function(id){return "HRM/StaffBank/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank")}
+            url: function(){return "HRM/StaffBank"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBank/ChangeBranch")} 
+            url: function(){return "HRM/StaffBank/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBank/") + id} 
+            url: function(id){return "HRM/StaffBank/" + id} 
         }
 		
 	},
@@ -4802,48 +4803,48 @@ export var APIListBase = {
 	HRM_StaffBasicInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Search")}  
+            url: function(){return "HRM/StaffBasicInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo")}  
+            url: function(){return "HRM/StaffBasicInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Export")}  
+            url: function(){return "HRM/StaffBasicInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Import")}  
+            url: function(){return "HRM/StaffBasicInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id){return "HRM/StaffBasicInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id){return "HRM/StaffBasicInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Disable/") + id} 
+            url: function(id){return "HRM/StaffBasicInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/Enable/") + id} 
+            url: function(id){return "HRM/StaffBasicInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo")}
+            url: function(){return "HRM/StaffBasicInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBasicInfo/ChangeBranch")} 
+            url: function(){return "HRM/StaffBasicInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBasicInfo/") + id} 
+            url: function(id){return "HRM/StaffBasicInfo/" + id} 
         }
 		
 	},
@@ -4851,48 +4852,48 @@ export var APIListBase = {
 	HRM_StaffBounusOnSalary:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Search")}  
+            url: function(){return "HRM/StaffBounusOnSalary/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary")}  
+            url: function(){return "HRM/StaffBounusOnSalary"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Export")}  
+            url: function(){return "HRM/StaffBounusOnSalary/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Import")}  
+            url: function(){return "HRM/StaffBounusOnSalary/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id){return "HRM/StaffBounusOnSalary/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id){return "HRM/StaffBounusOnSalary/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Disable/") + id} 
+            url: function(id){return "HRM/StaffBounusOnSalary/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/Enable/") + id} 
+            url: function(id){return "HRM/StaffBounusOnSalary/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary")}
+            url: function(){return "HRM/StaffBounusOnSalary"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/ChangeBranch")} 
+            url: function(){return "HRM/StaffBounusOnSalary/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffBounusOnSalary/") + id} 
+            url: function(id){return "HRM/StaffBounusOnSalary/" + id} 
         }
 		
 	},
@@ -4900,48 +4901,48 @@ export var APIListBase = {
 	HRM_StaffCompulsoryInsurance:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Search")}  
+            url: function(){return "HRM/StaffCompulsoryInsurance/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance")}  
+            url: function(){return "HRM/StaffCompulsoryInsurance"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Export")}  
+            url: function(){return "HRM/StaffCompulsoryInsurance/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Import")}  
+            url: function(){return "HRM/StaffCompulsoryInsurance/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/StaffCompulsoryInsurance/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/StaffCompulsoryInsurance/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Disable/") + id} 
+            url: function(id){return "HRM/StaffCompulsoryInsurance/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/Enable/") + id} 
+            url: function(id){return "HRM/StaffCompulsoryInsurance/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance")}
+            url: function(){return "HRM/StaffCompulsoryInsurance"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/ChangeBranch")} 
+            url: function(){return "HRM/StaffCompulsoryInsurance/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCompulsoryInsurance/") + id} 
+            url: function(id){return "HRM/StaffCompulsoryInsurance/" + id} 
         }
 		
 	},
@@ -4949,48 +4950,48 @@ export var APIListBase = {
 	HRM_StaffConcurrentPosition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Search")}  
+            url: function(){return "HRM/StaffConcurrentPosition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition")}  
+            url: function(){return "HRM/StaffConcurrentPosition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Export")}  
+            url: function(){return "HRM/StaffConcurrentPosition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Import")}  
+            url: function(){return "HRM/StaffConcurrentPosition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentPosition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentPosition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Disable/") + id} 
+            url: function(id){return "HRM/StaffConcurrentPosition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/Enable/") + id} 
+            url: function(id){return "HRM/StaffConcurrentPosition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition")}
+            url: function(){return "HRM/StaffConcurrentPosition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/ChangeBranch")} 
+            url: function(){return "HRM/StaffConcurrentPosition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentPosition/" + id} 
         }
 		
 	},
@@ -4998,48 +4999,48 @@ export var APIListBase = {
 	HRM_StaffConcurrentProbationryPosition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Search")}  
+            url: function(){return "HRM/StaffConcurrentProbationryPosition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition")}  
+            url: function(){return "HRM/StaffConcurrentProbationryPosition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Export")}  
+            url: function(){return "HRM/StaffConcurrentProbationryPosition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Import")}  
+            url: function(){return "HRM/StaffConcurrentProbationryPosition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentProbationryPosition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentProbationryPosition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Disable/") + id} 
+            url: function(id){return "HRM/StaffConcurrentProbationryPosition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/Enable/") + id} 
+            url: function(id){return "HRM/StaffConcurrentProbationryPosition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition")}
+            url: function(){return "HRM/StaffConcurrentProbationryPosition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/ChangeBranch")} 
+            url: function(){return "HRM/StaffConcurrentProbationryPosition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffConcurrentProbationryPosition/") + id} 
+            url: function(id){return "HRM/StaffConcurrentProbationryPosition/" + id} 
         }
 		
 	},
@@ -5047,48 +5048,48 @@ export var APIListBase = {
 	HRM_StaffCurrentWorking:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Search")}  
+            url: function(){return "HRM/StaffCurrentWorking/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking")}  
+            url: function(){return "HRM/StaffCurrentWorking"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Export")}  
+            url: function(){return "HRM/StaffCurrentWorking/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Import")}  
+            url: function(){return "HRM/StaffCurrentWorking/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id){return "HRM/StaffCurrentWorking/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id){return "HRM/StaffCurrentWorking/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Disable/") + id} 
+            url: function(id){return "HRM/StaffCurrentWorking/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/Enable/") + id} 
+            url: function(id){return "HRM/StaffCurrentWorking/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking")}
+            url: function(){return "HRM/StaffCurrentWorking"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/ChangeBranch")} 
+            url: function(){return "HRM/StaffCurrentWorking/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffCurrentWorking/") + id} 
+            url: function(id){return "HRM/StaffCurrentWorking/" + id} 
         }
 		
 	},
@@ -5096,48 +5097,48 @@ export var APIListBase = {
 	HRM_StaffDeductionOnSalary:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Search")}  
+            url: function(){return "HRM/StaffDeductionOnSalary/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary")}  
+            url: function(){return "HRM/StaffDeductionOnSalary"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Export")}  
+            url: function(){return "HRM/StaffDeductionOnSalary/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Import")}  
+            url: function(){return "HRM/StaffDeductionOnSalary/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id){return "HRM/StaffDeductionOnSalary/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id){return "HRM/StaffDeductionOnSalary/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Disable/") + id} 
+            url: function(id){return "HRM/StaffDeductionOnSalary/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/Enable/") + id} 
+            url: function(id){return "HRM/StaffDeductionOnSalary/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary")}
+            url: function(){return "HRM/StaffDeductionOnSalary"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/ChangeBranch")} 
+            url: function(){return "HRM/StaffDeductionOnSalary/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffDeductionOnSalary/") + id} 
+            url: function(id){return "HRM/StaffDeductionOnSalary/" + id} 
         }
 		
 	},
@@ -5145,48 +5146,48 @@ export var APIListBase = {
 	HRM_StaffFamily:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily/Search")}  
+            url: function(){return "HRM/StaffFamily/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily")}  
+            url: function(){return "HRM/StaffFamily"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily/Export")}  
+            url: function(){return "HRM/StaffFamily/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily/Import")}  
+            url: function(){return "HRM/StaffFamily/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id){return "HRM/StaffFamily/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id){return "HRM/StaffFamily/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/Disable/") + id} 
+            url: function(id){return "HRM/StaffFamily/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/Enable/") + id} 
+            url: function(id){return "HRM/StaffFamily/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily")}
+            url: function(){return "HRM/StaffFamily"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffFamily/ChangeBranch")} 
+            url: function(){return "HRM/StaffFamily/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffFamily/") + id} 
+            url: function(id){return "HRM/StaffFamily/" + id} 
         }
 		
 	},
@@ -5194,48 +5195,48 @@ export var APIListBase = {
 	HRM_StaffForeignLanguage:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Search")}  
+            url: function(){return "HRM/StaffForeignLanguage/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage")}  
+            url: function(){return "HRM/StaffForeignLanguage"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Export")}  
+            url: function(){return "HRM/StaffForeignLanguage/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Import")}  
+            url: function(){return "HRM/StaffForeignLanguage/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id){return "HRM/StaffForeignLanguage/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id){return "HRM/StaffForeignLanguage/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Disable/") + id} 
+            url: function(id){return "HRM/StaffForeignLanguage/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/Enable/") + id} 
+            url: function(id){return "HRM/StaffForeignLanguage/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage")}
+            url: function(){return "HRM/StaffForeignLanguage"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/ChangeBranch")} 
+            url: function(){return "HRM/StaffForeignLanguage/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffForeignLanguage/") + id} 
+            url: function(id){return "HRM/StaffForeignLanguage/" + id} 
         }
 		
 	},
@@ -5243,48 +5244,48 @@ export var APIListBase = {
 	HRM_StaffIdentityCardAndPIT:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Search")}  
+            url: function(){return "HRM/StaffIdentityCardAndPIT/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT")}  
+            url: function(){return "HRM/StaffIdentityCardAndPIT"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Export")}  
+            url: function(){return "HRM/StaffIdentityCardAndPIT/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Import")}  
+            url: function(){return "HRM/StaffIdentityCardAndPIT/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id){return "HRM/StaffIdentityCardAndPIT/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id){return "HRM/StaffIdentityCardAndPIT/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Disable/") + id} 
+            url: function(id){return "HRM/StaffIdentityCardAndPIT/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/Enable/") + id} 
+            url: function(id){return "HRM/StaffIdentityCardAndPIT/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT")}
+            url: function(){return "HRM/StaffIdentityCardAndPIT"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/ChangeBranch")} 
+            url: function(){return "HRM/StaffIdentityCardAndPIT/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffIdentityCardAndPIT/") + id} 
+            url: function(id){return "HRM/StaffIdentityCardAndPIT/" + id} 
         }
 		
 	},
@@ -5292,48 +5293,48 @@ export var APIListBase = {
 	HRM_StaffInsurancePaymentProcess:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Search")}  
+            url: function(){return "HRM/StaffInsurancePaymentProcess/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess")}  
+            url: function(){return "HRM/StaffInsurancePaymentProcess"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Export")}  
+            url: function(){return "HRM/StaffInsurancePaymentProcess/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Import")}  
+            url: function(){return "HRM/StaffInsurancePaymentProcess/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id){return "HRM/StaffInsurancePaymentProcess/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id){return "HRM/StaffInsurancePaymentProcess/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Disable/") + id} 
+            url: function(id){return "HRM/StaffInsurancePaymentProcess/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/Enable/") + id} 
+            url: function(id){return "HRM/StaffInsurancePaymentProcess/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess")}
+            url: function(){return "HRM/StaffInsurancePaymentProcess"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/ChangeBranch")} 
+            url: function(){return "HRM/StaffInsurancePaymentProcess/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInsurancePaymentProcess/") + id} 
+            url: function(id){return "HRM/StaffInsurancePaymentProcess/" + id} 
         }
 		
 	},
@@ -5341,48 +5342,48 @@ export var APIListBase = {
 	HRM_StaffInternetAccount:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Search")}  
+            url: function(){return "HRM/StaffInternetAccount/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount")}  
+            url: function(){return "HRM/StaffInternetAccount"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Export")}  
+            url: function(){return "HRM/StaffInternetAccount/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Import")}  
+            url: function(){return "HRM/StaffInternetAccount/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id){return "HRM/StaffInternetAccount/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id){return "HRM/StaffInternetAccount/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Disable/") + id} 
+            url: function(id){return "HRM/StaffInternetAccount/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/Enable/") + id} 
+            url: function(id){return "HRM/StaffInternetAccount/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount")}
+            url: function(){return "HRM/StaffInternetAccount"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffInternetAccount/ChangeBranch")} 
+            url: function(){return "HRM/StaffInternetAccount/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffInternetAccount/") + id} 
+            url: function(id){return "HRM/StaffInternetAccount/" + id} 
         }
 		
 	},
@@ -5390,48 +5391,48 @@ export var APIListBase = {
 	HRM_StaffLaborContract:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract/Search")}  
+            url: function(){return "HRM/StaffLaborContract/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract")}  
+            url: function(){return "HRM/StaffLaborContract"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract/Export")}  
+            url: function(){return "HRM/StaffLaborContract/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract/Import")}  
+            url: function(){return "HRM/StaffLaborContract/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id){return "HRM/StaffLaborContract/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id){return "HRM/StaffLaborContract/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/Disable/") + id} 
+            url: function(id){return "HRM/StaffLaborContract/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/Enable/") + id} 
+            url: function(id){return "HRM/StaffLaborContract/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract")}
+            url: function(){return "HRM/StaffLaborContract"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLaborContract/ChangeBranch")} 
+            url: function(){return "HRM/StaffLaborContract/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLaborContract/") + id} 
+            url: function(id){return "HRM/StaffLaborContract/" + id} 
         }
 		
 	},
@@ -5439,48 +5440,48 @@ export var APIListBase = {
 	HRM_StaffLearningProcess:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Search")}  
+            url: function(){return "HRM/StaffLearningProcess/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess")}  
+            url: function(){return "HRM/StaffLearningProcess"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Export")}  
+            url: function(){return "HRM/StaffLearningProcess/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Import")}  
+            url: function(){return "HRM/StaffLearningProcess/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id){return "HRM/StaffLearningProcess/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id){return "HRM/StaffLearningProcess/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Disable/") + id} 
+            url: function(id){return "HRM/StaffLearningProcess/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/Enable/") + id} 
+            url: function(id){return "HRM/StaffLearningProcess/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess")}
+            url: function(){return "HRM/StaffLearningProcess"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffLearningProcess/ChangeBranch")} 
+            url: function(){return "HRM/StaffLearningProcess/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffLearningProcess/") + id} 
+            url: function(id){return "HRM/StaffLearningProcess/" + id} 
         }
 		
 	},
@@ -5488,48 +5489,48 @@ export var APIListBase = {
 	HRM_StaffPhone:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone/Search")}  
+            url: function(){return "HRM/StaffPhone/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone")}  
+            url: function(){return "HRM/StaffPhone"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone/Export")}  
+            url: function(){return "HRM/StaffPhone/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone/Import")}  
+            url: function(){return "HRM/StaffPhone/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id){return "HRM/StaffPhone/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id){return "HRM/StaffPhone/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/Disable/") + id} 
+            url: function(id){return "HRM/StaffPhone/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/Enable/") + id} 
+            url: function(id){return "HRM/StaffPhone/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone")}
+            url: function(){return "HRM/StaffPhone"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPhone/ChangeBranch")} 
+            url: function(){return "HRM/StaffPhone/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPhone/") + id} 
+            url: function(id){return "HRM/StaffPhone/" + id} 
         }
 		
 	},
@@ -5537,48 +5538,48 @@ export var APIListBase = {
 	HRM_StaffPTOEnrollment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Search")}  
+            url: function(){return "HRM/StaffPTOEnrollment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment")}  
+            url: function(){return "HRM/StaffPTOEnrollment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Export")}  
+            url: function(){return "HRM/StaffPTOEnrollment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Import")}  
+            url: function(){return "HRM/StaffPTOEnrollment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id){return "HRM/StaffPTOEnrollment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id){return "HRM/StaffPTOEnrollment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Disable/") + id} 
+            url: function(id){return "HRM/StaffPTOEnrollment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/Enable/") + id} 
+            url: function(id){return "HRM/StaffPTOEnrollment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment")}
+            url: function(){return "HRM/StaffPTOEnrollment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/ChangeBranch")} 
+            url: function(){return "HRM/StaffPTOEnrollment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffPTOEnrollment/") + id} 
+            url: function(id){return "HRM/StaffPTOEnrollment/" + id} 
         }
 		
 	},
@@ -5586,48 +5587,48 @@ export var APIListBase = {
 	HRM_StaffRecruitmentInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Search")}  
+            url: function(){return "HRM/StaffRecruitmentInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo")}  
+            url: function(){return "HRM/StaffRecruitmentInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Export")}  
+            url: function(){return "HRM/StaffRecruitmentInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Import")}  
+            url: function(){return "HRM/StaffRecruitmentInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id){return "HRM/StaffRecruitmentInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id){return "HRM/StaffRecruitmentInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Disable/") + id} 
+            url: function(id){return "HRM/StaffRecruitmentInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/Enable/") + id} 
+            url: function(id){return "HRM/StaffRecruitmentInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo")}
+            url: function(){return "HRM/StaffRecruitmentInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/ChangeBranch")} 
+            url: function(){return "HRM/StaffRecruitmentInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffRecruitmentInfo/") + id} 
+            url: function(id){return "HRM/StaffRecruitmentInfo/" + id} 
         }
 		
 	},
@@ -5635,48 +5636,48 @@ export var APIListBase = {
 	HRM_StaffResignationInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Search")}  
+            url: function(){return "HRM/StaffResignationInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo")}  
+            url: function(){return "HRM/StaffResignationInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Export")}  
+            url: function(){return "HRM/StaffResignationInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Import")}  
+            url: function(){return "HRM/StaffResignationInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id){return "HRM/StaffResignationInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id){return "HRM/StaffResignationInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Disable/") + id} 
+            url: function(id){return "HRM/StaffResignationInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/Enable/") + id} 
+            url: function(id){return "HRM/StaffResignationInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo")}
+            url: function(){return "HRM/StaffResignationInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffResignationInfo/ChangeBranch")} 
+            url: function(){return "HRM/StaffResignationInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffResignationInfo/") + id} 
+            url: function(id){return "HRM/StaffResignationInfo/" + id} 
         }
 		
 	},
@@ -5684,48 +5685,48 @@ export var APIListBase = {
 	HRM_StaffSalaryDecision:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Search")}  
+            url: function(){return "HRM/StaffSalaryDecision/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision")}  
+            url: function(){return "HRM/StaffSalaryDecision"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Export")}  
+            url: function(){return "HRM/StaffSalaryDecision/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Import")}  
+            url: function(){return "HRM/StaffSalaryDecision/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id){return "HRM/StaffSalaryDecision/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id){return "HRM/StaffSalaryDecision/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Disable/") + id} 
+            url: function(id){return "HRM/StaffSalaryDecision/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/Enable/") + id} 
+            url: function(id){return "HRM/StaffSalaryDecision/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision")}
+            url: function(){return "HRM/StaffSalaryDecision"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/ChangeBranch")} 
+            url: function(){return "HRM/StaffSalaryDecision/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSalaryDecision/") + id} 
+            url: function(id){return "HRM/StaffSalaryDecision/" + id} 
         }
 		
 	},
@@ -5733,48 +5734,48 @@ export var APIListBase = {
 	HRM_StaffSchedule:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule/Search")}  
+            url: function(){return "HRM/StaffSchedule/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule")}  
+            url: function(){return "HRM/StaffSchedule"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule/Export")}  
+            url: function(){return "HRM/StaffSchedule/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule/Import")}  
+            url: function(){return "HRM/StaffSchedule/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id){return "HRM/StaffSchedule/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id){return "HRM/StaffSchedule/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/Disable/") + id} 
+            url: function(id){return "HRM/StaffSchedule/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/Enable/") + id} 
+            url: function(id){return "HRM/StaffSchedule/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule")}
+            url: function(){return "HRM/StaffSchedule"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSchedule/ChangeBranch")} 
+            url: function(){return "HRM/StaffSchedule/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSchedule/") + id} 
+            url: function(id){return "HRM/StaffSchedule/" + id} 
         }
 		
 	},
@@ -5782,48 +5783,48 @@ export var APIListBase = {
 	HRM_StaffSpecializedField:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Search")}  
+            url: function(){return "HRM/StaffSpecializedField/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField")}  
+            url: function(){return "HRM/StaffSpecializedField"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Export")}  
+            url: function(){return "HRM/StaffSpecializedField/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Import")}  
+            url: function(){return "HRM/StaffSpecializedField/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id){return "HRM/StaffSpecializedField/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id){return "HRM/StaffSpecializedField/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Disable/") + id} 
+            url: function(id){return "HRM/StaffSpecializedField/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/Enable/") + id} 
+            url: function(id){return "HRM/StaffSpecializedField/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField")}
+            url: function(){return "HRM/StaffSpecializedField"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedField/ChangeBranch")} 
+            url: function(){return "HRM/StaffSpecializedField/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedField/") + id} 
+            url: function(id){return "HRM/StaffSpecializedField/" + id} 
         }
 		
 	},
@@ -5831,48 +5832,48 @@ export var APIListBase = {
 	HRM_StaffSpecializedSkill:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Search")}  
+            url: function(){return "HRM/StaffSpecializedSkill/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill")}  
+            url: function(){return "HRM/StaffSpecializedSkill"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Export")}  
+            url: function(){return "HRM/StaffSpecializedSkill/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Import")}  
+            url: function(){return "HRM/StaffSpecializedSkill/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id){return "HRM/StaffSpecializedSkill/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id){return "HRM/StaffSpecializedSkill/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Disable/") + id} 
+            url: function(id){return "HRM/StaffSpecializedSkill/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/Enable/") + id} 
+            url: function(id){return "HRM/StaffSpecializedSkill/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill")}
+            url: function(){return "HRM/StaffSpecializedSkill"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/ChangeBranch")} 
+            url: function(){return "HRM/StaffSpecializedSkill/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffSpecializedSkill/") + id} 
+            url: function(id){return "HRM/StaffSpecializedSkill/" + id} 
         }
 		
 	},
@@ -5880,48 +5881,48 @@ export var APIListBase = {
 	HRM_StaffStaffAndFamilyJob:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Search")}  
+            url: function(){return "HRM/StaffStaffAndFamilyJob/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob")}  
+            url: function(){return "HRM/StaffStaffAndFamilyJob"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Export")}  
+            url: function(){return "HRM/StaffStaffAndFamilyJob/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Import")}  
+            url: function(){return "HRM/StaffStaffAndFamilyJob/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id){return "HRM/StaffStaffAndFamilyJob/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id){return "HRM/StaffStaffAndFamilyJob/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Disable/") + id} 
+            url: function(id){return "HRM/StaffStaffAndFamilyJob/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/Enable/") + id} 
+            url: function(id){return "HRM/StaffStaffAndFamilyJob/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob")}
+            url: function(){return "HRM/StaffStaffAndFamilyJob"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/ChangeBranch")} 
+            url: function(){return "HRM/StaffStaffAndFamilyJob/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffStaffAndFamilyJob/") + id} 
+            url: function(id){return "HRM/StaffStaffAndFamilyJob/" + id} 
         }
 		
 	},
@@ -5929,48 +5930,48 @@ export var APIListBase = {
 	HRM_StaffTimesheetEnrollment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Search")}  
+            url: function(){return "HRM/StaffTimesheetEnrollment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment")}  
+            url: function(){return "HRM/StaffTimesheetEnrollment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Export")}  
+            url: function(){return "HRM/StaffTimesheetEnrollment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Import")}  
+            url: function(){return "HRM/StaffTimesheetEnrollment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id){return "HRM/StaffTimesheetEnrollment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id){return "HRM/StaffTimesheetEnrollment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Disable/") + id} 
+            url: function(id){return "HRM/StaffTimesheetEnrollment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/Enable/") + id} 
+            url: function(id){return "HRM/StaffTimesheetEnrollment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment")}
+            url: function(){return "HRM/StaffTimesheetEnrollment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/ChangeBranch")} 
+            url: function(){return "HRM/StaffTimesheetEnrollment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTimesheetEnrollment/") + id} 
+            url: function(id){return "HRM/StaffTimesheetEnrollment/" + id} 
         }
 		
 	},
@@ -5978,48 +5979,48 @@ export var APIListBase = {
 	HRM_StaffTrainingProcess:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Search")}  
+            url: function(){return "HRM/StaffTrainingProcess/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess")}  
+            url: function(){return "HRM/StaffTrainingProcess"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Export")}  
+            url: function(){return "HRM/StaffTrainingProcess/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Import")}  
+            url: function(){return "HRM/StaffTrainingProcess/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcess/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcess/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Disable/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcess/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/Enable/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcess/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess")}
+            url: function(){return "HRM/StaffTrainingProcess"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/ChangeBranch")} 
+            url: function(){return "HRM/StaffTrainingProcess/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcess/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcess/" + id} 
         }
 		
 	},
@@ -6027,48 +6028,48 @@ export var APIListBase = {
 	HRM_StaffTrainingProcessSkill:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Search")}  
+            url: function(){return "HRM/StaffTrainingProcessSkill/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill")}  
+            url: function(){return "HRM/StaffTrainingProcessSkill"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Export")}  
+            url: function(){return "HRM/StaffTrainingProcessSkill/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Import")}  
+            url: function(){return "HRM/StaffTrainingProcessSkill/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcessSkill/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcessSkill/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Disable/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcessSkill/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/Enable/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcessSkill/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill")}
+            url: function(){return "HRM/StaffTrainingProcessSkill"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/ChangeBranch")} 
+            url: function(){return "HRM/StaffTrainingProcessSkill/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffTrainingProcessSkill/") + id} 
+            url: function(id){return "HRM/StaffTrainingProcessSkill/" + id} 
         }
 		
 	},
@@ -6076,48 +6077,48 @@ export var APIListBase = {
 	HRM_StaffWelfare:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare/Search")}  
+            url: function(){return "HRM/StaffWelfare/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare")}  
+            url: function(){return "HRM/StaffWelfare"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare/Export")}  
+            url: function(){return "HRM/StaffWelfare/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare/Import")}  
+            url: function(){return "HRM/StaffWelfare/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id){return "HRM/StaffWelfare/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id){return "HRM/StaffWelfare/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/Disable/") + id} 
+            url: function(id){return "HRM/StaffWelfare/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/Enable/") + id} 
+            url: function(id){return "HRM/StaffWelfare/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare")}
+            url: function(){return "HRM/StaffWelfare"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWelfare/ChangeBranch")} 
+            url: function(){return "HRM/StaffWelfare/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWelfare/") + id} 
+            url: function(id){return "HRM/StaffWelfare/" + id} 
         }
 		
 	},
@@ -6125,48 +6126,48 @@ export var APIListBase = {
 	HRM_StaffWorkExperience:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Search")}  
+            url: function(){return "HRM/StaffWorkExperience/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience")}  
+            url: function(){return "HRM/StaffWorkExperience"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Export")}  
+            url: function(){return "HRM/StaffWorkExperience/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Import")}  
+            url: function(){return "HRM/StaffWorkExperience/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id){return "HRM/StaffWorkExperience/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id){return "HRM/StaffWorkExperience/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Disable/") + id} 
+            url: function(id){return "HRM/StaffWorkExperience/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/Enable/") + id} 
+            url: function(id){return "HRM/StaffWorkExperience/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience")}
+            url: function(){return "HRM/StaffWorkExperience"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkExperience/ChangeBranch")} 
+            url: function(){return "HRM/StaffWorkExperience/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkExperience/") + id} 
+            url: function(id){return "HRM/StaffWorkExperience/" + id} 
         }
 		
 	},
@@ -6174,48 +6175,48 @@ export var APIListBase = {
 	HRM_StaffWorkingDiary:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Search")}  
+            url: function(){return "HRM/StaffWorkingDiary/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary")}  
+            url: function(){return "HRM/StaffWorkingDiary"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Export")}  
+            url: function(){return "HRM/StaffWorkingDiary/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Import")}  
+            url: function(){return "HRM/StaffWorkingDiary/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id){return "HRM/StaffWorkingDiary/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id){return "HRM/StaffWorkingDiary/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Disable/") + id} 
+            url: function(id){return "HRM/StaffWorkingDiary/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/Enable/") + id} 
+            url: function(id){return "HRM/StaffWorkingDiary/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary")}
+            url: function(){return "HRM/StaffWorkingDiary"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/ChangeBranch")} 
+            url: function(){return "HRM/StaffWorkingDiary/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/StaffWorkingDiary/") + id} 
+            url: function(id){return "HRM/StaffWorkingDiary/" + id} 
         }
 		
 	},
@@ -6223,48 +6224,48 @@ export var APIListBase = {
 	HRM_Timesheet:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet/Search")}  
+            url: function(){return "HRM/Timesheet/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet")}  
+            url: function(){return "HRM/Timesheet"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet/Export")}  
+            url: function(){return "HRM/Timesheet/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet/Import")}  
+            url: function(){return "HRM/Timesheet/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id){return "HRM/Timesheet/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id){return "HRM/Timesheet/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/Disable/") + id} 
+            url: function(id){return "HRM/Timesheet/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/Enable/") + id} 
+            url: function(id){return "HRM/Timesheet/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet")}
+            url: function(){return "HRM/Timesheet"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/Timesheet/ChangeBranch")} 
+            url: function(){return "HRM/Timesheet/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/Timesheet/") + id} 
+            url: function(id){return "HRM/Timesheet/" + id} 
         }
 		
 	},
@@ -6272,48 +6273,48 @@ export var APIListBase = {
 	HRM_TimesheetAndHoliday:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Search")}  
+            url: function(){return "HRM/TimesheetAndHoliday/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday")}  
+            url: function(){return "HRM/TimesheetAndHoliday"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Export")}  
+            url: function(){return "HRM/TimesheetAndHoliday/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Import")}  
+            url: function(){return "HRM/TimesheetAndHoliday/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id){return "HRM/TimesheetAndHoliday/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id){return "HRM/TimesheetAndHoliday/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetAndHoliday/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetAndHoliday/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday")}
+            url: function(){return "HRM/TimesheetAndHoliday"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetAndHoliday/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetAndHoliday/") + id} 
+            url: function(id){return "HRM/TimesheetAndHoliday/" + id} 
         }
 		
 	},
@@ -6321,48 +6322,48 @@ export var APIListBase = {
 	HRM_TimesheetCheckInCode:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Search")}  
+            url: function(){return "HRM/TimesheetCheckInCode/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode")}  
+            url: function(){return "HRM/TimesheetCheckInCode"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Export")}  
+            url: function(){return "HRM/TimesheetCheckInCode/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Import")}  
+            url: function(){return "HRM/TimesheetCheckInCode/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id){return "HRM/TimesheetCheckInCode/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id){return "HRM/TimesheetCheckInCode/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetCheckInCode/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetCheckInCode/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode")}
+            url: function(){return "HRM/TimesheetCheckInCode"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetCheckInCode/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCheckInCode/") + id} 
+            url: function(id){return "HRM/TimesheetCheckInCode/" + id} 
         }
 		
 	},
@@ -6370,48 +6371,48 @@ export var APIListBase = {
 	HRM_TimesheetCycle:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle/Search")}  
+            url: function(){return "HRM/TimesheetCycle/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle")}  
+            url: function(){return "HRM/TimesheetCycle"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle/Export")}  
+            url: function(){return "HRM/TimesheetCycle/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle/Import")}  
+            url: function(){return "HRM/TimesheetCycle/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id){return "HRM/TimesheetCycle/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id){return "HRM/TimesheetCycle/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetCycle/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetCycle/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle")}
+            url: function(){return "HRM/TimesheetCycle"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycle/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetCycle/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycle/") + id} 
+            url: function(id){return "HRM/TimesheetCycle/" + id} 
         }
 		
 	},
@@ -6419,48 +6420,48 @@ export var APIListBase = {
 	HRM_TimesheetCycleDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Search")}  
+            url: function(){return "HRM/TimesheetCycleDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail")}  
+            url: function(){return "HRM/TimesheetCycleDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Export")}  
+            url: function(){return "HRM/TimesheetCycleDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Import")}  
+            url: function(){return "HRM/TimesheetCycleDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id){return "HRM/TimesheetCycleDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id){return "HRM/TimesheetCycleDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetCycleDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetCycleDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail")}
+            url: function(){return "HRM/TimesheetCycleDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetCycleDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetCycleDetail/") + id} 
+            url: function(id){return "HRM/TimesheetCycleDetail/" + id} 
         }
 		
 	},
@@ -6468,48 +6469,48 @@ export var APIListBase = {
 	HRM_TimesheetFormula:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula/Search")}  
+            url: function(){return "HRM/TimesheetFormula/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula")}  
+            url: function(){return "HRM/TimesheetFormula"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula/Export")}  
+            url: function(){return "HRM/TimesheetFormula/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula/Import")}  
+            url: function(){return "HRM/TimesheetFormula/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id){return "HRM/TimesheetFormula/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id){return "HRM/TimesheetFormula/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetFormula/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetFormula/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula")}
+            url: function(){return "HRM/TimesheetFormula"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetFormula/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetFormula/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetFormula/") + id} 
+            url: function(id){return "HRM/TimesheetFormula/" + id} 
         }
 		
 	},
@@ -6517,48 +6518,48 @@ export var APIListBase = {
 	HRM_TimesheetLog:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog/Search")}  
+            url: function(){return "HRM/TimesheetLog/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog")}  
+            url: function(){return "HRM/TimesheetLog"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog/Export")}  
+            url: function(){return "HRM/TimesheetLog/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog/Import")}  
+            url: function(){return "HRM/TimesheetLog/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id){return "HRM/TimesheetLog/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id){return "HRM/TimesheetLog/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/Disable/") + id} 
+            url: function(id){return "HRM/TimesheetLog/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/Enable/") + id} 
+            url: function(id){return "HRM/TimesheetLog/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog")}
+            url: function(){return "HRM/TimesheetLog"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("HRM/TimesheetLog/ChangeBranch")} 
+            url: function(){return "HRM/TimesheetLog/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("HRM/TimesheetLog/") + id} 
+            url: function(id){return "HRM/TimesheetLog/" + id} 
         }
 		
 	},
@@ -6566,48 +6567,48 @@ export var APIListBase = {
 	LIST_ContractTemplate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate/Search")}  
+            url: function(){return "LIST/ContractTemplate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate")}  
+            url: function(){return "LIST/ContractTemplate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate/Export")}  
+            url: function(){return "LIST/ContractTemplate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate/Import")}  
+            url: function(){return "LIST/ContractTemplate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id){return "LIST/ContractTemplate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id){return "LIST/ContractTemplate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/Disable/") + id} 
+            url: function(id){return "LIST/ContractTemplate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/Enable/") + id} 
+            url: function(id){return "LIST/ContractTemplate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate")}
+            url: function(){return "LIST/ContractTemplate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/ContractTemplate/ChangeBranch")} 
+            url: function(){return "LIST/ContractTemplate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/ContractTemplate/") + id} 
+            url: function(id){return "LIST/ContractTemplate/" + id} 
         }
 		
 	},
@@ -6615,48 +6616,48 @@ export var APIListBase = {
 	LIST_Country:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Country/Search")}  
+            url: function(){return "LIST/Country/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Country")}  
+            url: function(){return "LIST/Country"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Country/Export")}  
+            url: function(){return "LIST/Country/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Country/Import")}  
+            url: function(){return "LIST/Country/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id){return "LIST/Country/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id){return "LIST/Country/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/Disable/") + id} 
+            url: function(id){return "LIST/Country/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/Enable/") + id} 
+            url: function(id){return "LIST/Country/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Country")}
+            url: function(){return "LIST/Country"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Country/ChangeBranch")} 
+            url: function(){return "LIST/Country/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Country/") + id} 
+            url: function(id){return "LIST/Country/" + id} 
         }
 		
 	},
@@ -6664,48 +6665,48 @@ export var APIListBase = {
 	LIST_District:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/District/Search")}  
+            url: function(){return "LIST/District/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/District")}  
+            url: function(){return "LIST/District"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/District/Export")}  
+            url: function(){return "LIST/District/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/District/Import")}  
+            url: function(){return "LIST/District/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id){return "LIST/District/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id){return "LIST/District/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/Disable/") + id} 
+            url: function(id){return "LIST/District/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/Enable/") + id} 
+            url: function(id){return "LIST/District/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/District")}
+            url: function(){return "LIST/District"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/District/ChangeBranch")} 
+            url: function(){return "LIST/District/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/District/") + id} 
+            url: function(id){return "LIST/District/" + id} 
         }
 		
 	},
@@ -6713,48 +6714,48 @@ export var APIListBase = {
 	LIST_ElementOfSalary:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary/Search")}  
+            url: function(){return "LIST/ElementOfSalary/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary")}  
+            url: function(){return "LIST/ElementOfSalary"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary/Export")}  
+            url: function(){return "LIST/ElementOfSalary/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary/Import")}  
+            url: function(){return "LIST/ElementOfSalary/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id){return "LIST/ElementOfSalary/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id){return "LIST/ElementOfSalary/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/Disable/") + id} 
+            url: function(id){return "LIST/ElementOfSalary/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/Enable/") + id} 
+            url: function(id){return "LIST/ElementOfSalary/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary")}
+            url: function(){return "LIST/ElementOfSalary"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/ElementOfSalary/ChangeBranch")} 
+            url: function(){return "LIST/ElementOfSalary/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/ElementOfSalary/") + id} 
+            url: function(id){return "LIST/ElementOfSalary/" + id} 
         }
 		
 	},
@@ -6762,48 +6763,48 @@ export var APIListBase = {
 	LIST_General:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/General/Search")}  
+            url: function(){return "LIST/General/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/General")}  
+            url: function(){return "LIST/General"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/General/Export")}  
+            url: function(){return "LIST/General/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/General/Import")}  
+            url: function(){return "LIST/General/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id){return "LIST/General/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id){return "LIST/General/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/Disable/") + id} 
+            url: function(id){return "LIST/General/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/Enable/") + id} 
+            url: function(id){return "LIST/General/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/General")}
+            url: function(){return "LIST/General"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/General/ChangeBranch")} 
+            url: function(){return "LIST/General/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/General/") + id} 
+            url: function(id){return "LIST/General/" + id} 
         }
 		
 	},
@@ -6811,48 +6812,48 @@ export var APIListBase = {
 	LIST_PayPeriod:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod/Search")}  
+            url: function(){return "LIST/PayPeriod/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod")}  
+            url: function(){return "LIST/PayPeriod"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod/Export")}  
+            url: function(){return "LIST/PayPeriod/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod/Import")}  
+            url: function(){return "LIST/PayPeriod/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id){return "LIST/PayPeriod/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id){return "LIST/PayPeriod/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/Disable/") + id} 
+            url: function(id){return "LIST/PayPeriod/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/Enable/") + id} 
+            url: function(id){return "LIST/PayPeriod/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod")}
+            url: function(){return "LIST/PayPeriod"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/PayPeriod/ChangeBranch")} 
+            url: function(){return "LIST/PayPeriod/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/PayPeriod/") + id} 
+            url: function(id){return "LIST/PayPeriod/" + id} 
         }
 		
 	},
@@ -6860,48 +6861,48 @@ export var APIListBase = {
 	LIST_Province:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Province/Search")}  
+            url: function(){return "LIST/Province/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Province")}  
+            url: function(){return "LIST/Province"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Province/Export")}  
+            url: function(){return "LIST/Province/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Province/Import")}  
+            url: function(){return "LIST/Province/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id){return "LIST/Province/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id){return "LIST/Province/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/Disable/") + id} 
+            url: function(id){return "LIST/Province/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/Enable/") + id} 
+            url: function(id){return "LIST/Province/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Province")}
+            url: function(){return "LIST/Province"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Province/ChangeBranch")} 
+            url: function(){return "LIST/Province/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Province/") + id} 
+            url: function(id){return "LIST/Province/" + id} 
         }
 		
 	},
@@ -6909,48 +6910,48 @@ export var APIListBase = {
 	LIST_Ward:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward/Search")}  
+            url: function(){return "LIST/Ward/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward")}  
+            url: function(){return "LIST/Ward"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward/Export")}  
+            url: function(){return "LIST/Ward/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward/Import")}  
+            url: function(){return "LIST/Ward/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id){return "LIST/Ward/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id){return "LIST/Ward/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/Disable/") + id} 
+            url: function(id){return "LIST/Ward/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/Enable/") + id} 
+            url: function(id){return "LIST/Ward/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward")}
+            url: function(){return "LIST/Ward"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("LIST/Ward/ChangeBranch")} 
+            url: function(){return "LIST/Ward/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("LIST/Ward/") + id} 
+            url: function(id){return "LIST/Ward/" + id} 
         }
 		
 	},
@@ -6958,48 +6959,48 @@ export var APIListBase = {
 	MR_CompetiorOrder:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder/Search")}  
+            url: function(){return "MR/CompetiorOrder/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder")}  
+            url: function(){return "MR/CompetiorOrder"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder/Export")}  
+            url: function(){return "MR/CompetiorOrder/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder/Import")}  
+            url: function(){return "MR/CompetiorOrder/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id){return "MR/CompetiorOrder/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id){return "MR/CompetiorOrder/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/Disable/") + id} 
+            url: function(id){return "MR/CompetiorOrder/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/Enable/") + id} 
+            url: function(id){return "MR/CompetiorOrder/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder")}
+            url: function(){return "MR/CompetiorOrder"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("MR/CompetiorOrder/ChangeBranch")} 
+            url: function(){return "MR/CompetiorOrder/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("MR/CompetiorOrder/") + id} 
+            url: function(id){return "MR/CompetiorOrder/" + id} 
         }
 		
 	},
@@ -7007,48 +7008,48 @@ export var APIListBase = {
 	MR_TrackingCompetitor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor/Search")}  
+            url: function(){return "MR/TrackingCompetitor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor")}  
+            url: function(){return "MR/TrackingCompetitor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor/Export")}  
+            url: function(){return "MR/TrackingCompetitor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor/Import")}  
+            url: function(){return "MR/TrackingCompetitor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id){return "MR/TrackingCompetitor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id){return "MR/TrackingCompetitor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/Disable/") + id} 
+            url: function(id){return "MR/TrackingCompetitor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/Enable/") + id} 
+            url: function(id){return "MR/TrackingCompetitor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor")}
+            url: function(){return "MR/TrackingCompetitor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("MR/TrackingCompetitor/ChangeBranch")} 
+            url: function(){return "MR/TrackingCompetitor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("MR/TrackingCompetitor/") + id} 
+            url: function(id){return "MR/TrackingCompetitor/" + id} 
         }
 		
 	},
@@ -7056,48 +7057,48 @@ export var APIListBase = {
 	OST_Office:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("OST/Office/Search")}  
+            url: function(){return "OST/Office/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("OST/Office")}  
+            url: function(){return "OST/Office"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("OST/Office/Export")}  
+            url: function(){return "OST/Office/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("OST/Office/Import")}  
+            url: function(){return "OST/Office/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id){return "OST/Office/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id){return "OST/Office/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/Disable/") + id} 
+            url: function(id){return "OST/Office/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/Enable/") + id} 
+            url: function(id){return "OST/Office/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("OST/Office")}
+            url: function(){return "OST/Office"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("OST/Office/ChangeBranch")} 
+            url: function(){return "OST/Office/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("OST/Office/") + id} 
+            url: function(id){return "OST/Office/" + id} 
         }
 		
 	},
@@ -7105,48 +7106,48 @@ export var APIListBase = {
 	OST_OfficeGate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate/Search")}  
+            url: function(){return "OST/OfficeGate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate")}  
+            url: function(){return "OST/OfficeGate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate/Export")}  
+            url: function(){return "OST/OfficeGate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate/Import")}  
+            url: function(){return "OST/OfficeGate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id){return "OST/OfficeGate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id){return "OST/OfficeGate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/Disable/") + id} 
+            url: function(id){return "OST/OfficeGate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/Enable/") + id} 
+            url: function(id){return "OST/OfficeGate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate")}
+            url: function(){return "OST/OfficeGate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("OST/OfficeGate/ChangeBranch")} 
+            url: function(){return "OST/OfficeGate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("OST/OfficeGate/") + id} 
+            url: function(id){return "OST/OfficeGate/" + id} 
         }
 		
 	},
@@ -7154,48 +7155,48 @@ export var APIListBase = {
 	PM_Task:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PM/Task/Search")}  
+            url: function(){return "PM/Task/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PM/Task")}  
+            url: function(){return "PM/Task"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PM/Task/Export")}  
+            url: function(){return "PM/Task/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PM/Task/Import")}  
+            url: function(){return "PM/Task/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id){return "PM/Task/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id){return "PM/Task/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/Disable/") + id} 
+            url: function(id){return "PM/Task/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/Enable/") + id} 
+            url: function(id){return "PM/Task/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PM/Task")}
+            url: function(){return "PM/Task"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PM/Task/ChangeBranch")} 
+            url: function(){return "PM/Task/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PM/Task/") + id} 
+            url: function(id){return "PM/Task/" + id} 
         }
 		
 	},
@@ -7203,48 +7204,48 @@ export var APIListBase = {
 	PM_TaskLink:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink/Search")}  
+            url: function(){return "PM/TaskLink/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink")}  
+            url: function(){return "PM/TaskLink"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink/Export")}  
+            url: function(){return "PM/TaskLink/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink/Import")}  
+            url: function(){return "PM/TaskLink/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id){return "PM/TaskLink/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id){return "PM/TaskLink/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/Disable/") + id} 
+            url: function(id){return "PM/TaskLink/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/Enable/") + id} 
+            url: function(id){return "PM/TaskLink/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink")}
+            url: function(){return "PM/TaskLink"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PM/TaskLink/ChangeBranch")} 
+            url: function(){return "PM/TaskLink/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PM/TaskLink/") + id} 
+            url: function(id){return "PM/TaskLink/" + id} 
         }
 		
 	},
@@ -7252,48 +7253,48 @@ export var APIListBase = {
 	POS_BillTable:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable/Search")}  
+            url: function(){return "POS/BillTable/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable")}  
+            url: function(){return "POS/BillTable"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable/Export")}  
+            url: function(){return "POS/BillTable/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable/Import")}  
+            url: function(){return "POS/BillTable/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id){return "POS/BillTable/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id){return "POS/BillTable/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/Disable/") + id} 
+            url: function(id){return "POS/BillTable/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/Enable/") + id} 
+            url: function(id){return "POS/BillTable/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable")}
+            url: function(){return "POS/BillTable"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/BillTable/ChangeBranch")} 
+            url: function(){return "POS/BillTable/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/BillTable/") + id} 
+            url: function(id){return "POS/BillTable/" + id} 
         }
 		
 	},
@@ -7301,48 +7302,48 @@ export var APIListBase = {
 	POS_Cash:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Cash/Search")}  
+            url: function(){return "POS/Cash/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Cash")}  
+            url: function(){return "POS/Cash"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Cash/Export")}  
+            url: function(){return "POS/Cash/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Cash/Import")}  
+            url: function(){return "POS/Cash/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id){return "POS/Cash/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id){return "POS/Cash/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/Disable/") + id} 
+            url: function(id){return "POS/Cash/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/Enable/") + id} 
+            url: function(id){return "POS/Cash/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Cash")}
+            url: function(){return "POS/Cash"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Cash/ChangeBranch")} 
+            url: function(){return "POS/Cash/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Cash/") + id} 
+            url: function(id){return "POS/Cash/" + id} 
         }
 		
 	},
@@ -7350,48 +7351,48 @@ export var APIListBase = {
 	POS_Kitchen:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen/Search")}  
+            url: function(){return "POS/Kitchen/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen")}  
+            url: function(){return "POS/Kitchen"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen/Export")}  
+            url: function(){return "POS/Kitchen/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen/Import")}  
+            url: function(){return "POS/Kitchen/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id){return "POS/Kitchen/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id){return "POS/Kitchen/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/Disable/") + id} 
+            url: function(id){return "POS/Kitchen/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/Enable/") + id} 
+            url: function(id){return "POS/Kitchen/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen")}
+            url: function(){return "POS/Kitchen"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Kitchen/ChangeBranch")} 
+            url: function(){return "POS/Kitchen/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Kitchen/") + id} 
+            url: function(id){return "POS/Kitchen/" + id} 
         }
 		
 	},
@@ -7399,48 +7400,48 @@ export var APIListBase = {
 	POS_MemberCardPromotion:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion/Search")}  
+            url: function(){return "POS/MemberCardPromotion/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion")}  
+            url: function(){return "POS/MemberCardPromotion"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion/Export")}  
+            url: function(){return "POS/MemberCardPromotion/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion/Import")}  
+            url: function(){return "POS/MemberCardPromotion/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id){return "POS/MemberCardPromotion/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id){return "POS/MemberCardPromotion/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/Disable/") + id} 
+            url: function(id){return "POS/MemberCardPromotion/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/Enable/") + id} 
+            url: function(id){return "POS/MemberCardPromotion/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion")}
+            url: function(){return "POS/MemberCardPromotion"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/MemberCardPromotion/ChangeBranch")} 
+            url: function(){return "POS/MemberCardPromotion/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/MemberCardPromotion/") + id} 
+            url: function(id){return "POS/MemberCardPromotion/" + id} 
         }
 		
 	},
@@ -7448,48 +7449,48 @@ export var APIListBase = {
 	POS_Memo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Memo/Search")}  
+            url: function(){return "POS/Memo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Memo")}  
+            url: function(){return "POS/Memo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Memo/Export")}  
+            url: function(){return "POS/Memo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Memo/Import")}  
+            url: function(){return "POS/Memo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id){return "POS/Memo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id){return "POS/Memo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/Disable/") + id} 
+            url: function(id){return "POS/Memo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/Enable/") + id} 
+            url: function(id){return "POS/Memo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Memo")}
+            url: function(){return "POS/Memo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Memo/ChangeBranch")} 
+            url: function(){return "POS/Memo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Memo/") + id} 
+            url: function(id){return "POS/Memo/" + id} 
         }
 		
 	},
@@ -7497,48 +7498,48 @@ export var APIListBase = {
 	POS_Menu:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Menu/Search")}  
+            url: function(){return "POS/Menu/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Menu")}  
+            url: function(){return "POS/Menu"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Menu/Export")}  
+            url: function(){return "POS/Menu/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Menu/Import")}  
+            url: function(){return "POS/Menu/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id){return "POS/Menu/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id){return "POS/Menu/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/Disable/") + id} 
+            url: function(id){return "POS/Menu/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/Enable/") + id} 
+            url: function(id){return "POS/Menu/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Menu")}
+            url: function(){return "POS/Menu"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Menu/ChangeBranch")} 
+            url: function(){return "POS/Menu/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Menu/") + id} 
+            url: function(id){return "POS/Menu/" + id} 
         }
 		
 	},
@@ -7546,48 +7547,48 @@ export var APIListBase = {
 	POS_MenuDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail/Search")}  
+            url: function(){return "POS/MenuDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail")}  
+            url: function(){return "POS/MenuDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail/Export")}  
+            url: function(){return "POS/MenuDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail/Import")}  
+            url: function(){return "POS/MenuDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id){return "POS/MenuDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id){return "POS/MenuDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/Disable/") + id} 
+            url: function(id){return "POS/MenuDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/Enable/") + id} 
+            url: function(id){return "POS/MenuDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail")}
+            url: function(){return "POS/MenuDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/MenuDetail/ChangeBranch")} 
+            url: function(){return "POS/MenuDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/MenuDetail/") + id} 
+            url: function(id){return "POS/MenuDetail/" + id} 
         }
 		
 	},
@@ -7595,48 +7596,48 @@ export var APIListBase = {
 	POS_Table:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Table/Search")}  
+            url: function(){return "POS/Table/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Table")}  
+            url: function(){return "POS/Table"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Table/Export")}  
+            url: function(){return "POS/Table/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Table/Import")}  
+            url: function(){return "POS/Table/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id){return "POS/Table/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id){return "POS/Table/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/Disable/") + id} 
+            url: function(id){return "POS/Table/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/Enable/") + id} 
+            url: function(id){return "POS/Table/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Table")}
+            url: function(){return "POS/Table"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Table/ChangeBranch")} 
+            url: function(){return "POS/Table/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Table/") + id} 
+            url: function(id){return "POS/Table/" + id} 
         }
 		
 	},
@@ -7644,48 +7645,48 @@ export var APIListBase = {
 	POS_TableGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup/Search")}  
+            url: function(){return "POS/TableGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup")}  
+            url: function(){return "POS/TableGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup/Export")}  
+            url: function(){return "POS/TableGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup/Import")}  
+            url: function(){return "POS/TableGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id){return "POS/TableGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id){return "POS/TableGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/Disable/") + id} 
+            url: function(id){return "POS/TableGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/Enable/") + id} 
+            url: function(id){return "POS/TableGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup")}
+            url: function(){return "POS/TableGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroup/ChangeBranch")} 
+            url: function(){return "POS/TableGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroup/") + id} 
+            url: function(id){return "POS/TableGroup/" + id} 
         }
 		
 	},
@@ -7693,48 +7694,48 @@ export var APIListBase = {
 	POS_TableGroupStaff:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff/Search")}  
+            url: function(){return "POS/TableGroupStaff/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff")}  
+            url: function(){return "POS/TableGroupStaff"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff/Export")}  
+            url: function(){return "POS/TableGroupStaff/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff/Import")}  
+            url: function(){return "POS/TableGroupStaff/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id){return "POS/TableGroupStaff/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id){return "POS/TableGroupStaff/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/Disable/") + id} 
+            url: function(id){return "POS/TableGroupStaff/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/Enable/") + id} 
+            url: function(id){return "POS/TableGroupStaff/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff")}
+            url: function(){return "POS/TableGroupStaff"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/TableGroupStaff/ChangeBranch")} 
+            url: function(){return "POS/TableGroupStaff/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/TableGroupStaff/") + id} 
+            url: function(id){return "POS/TableGroupStaff/" + id} 
         }
 		
 	},
@@ -7742,48 +7743,48 @@ export var APIListBase = {
 	POS_Terminal:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal/Search")}  
+            url: function(){return "POS/Terminal/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal")}  
+            url: function(){return "POS/Terminal"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal/Export")}  
+            url: function(){return "POS/Terminal/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal/Import")}  
+            url: function(){return "POS/Terminal/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id){return "POS/Terminal/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id){return "POS/Terminal/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/Disable/") + id} 
+            url: function(id){return "POS/Terminal/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/Enable/") + id} 
+            url: function(id){return "POS/Terminal/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal")}
+            url: function(){return "POS/Terminal"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/Terminal/ChangeBranch")} 
+            url: function(){return "POS/Terminal/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/Terminal/") + id} 
+            url: function(id){return "POS/Terminal/" + id} 
         }
 		
 	},
@@ -7791,48 +7792,48 @@ export var APIListBase = {
 	POS_WorkOrderCoordinate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Search")}  
+            url: function(){return "POS/WorkOrderCoordinate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate")}  
+            url: function(){return "POS/WorkOrderCoordinate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Export")}  
+            url: function(){return "POS/WorkOrderCoordinate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Import")}  
+            url: function(){return "POS/WorkOrderCoordinate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id){return "POS/WorkOrderCoordinate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id){return "POS/WorkOrderCoordinate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Disable/") + id} 
+            url: function(id){return "POS/WorkOrderCoordinate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/Enable/") + id} 
+            url: function(id){return "POS/WorkOrderCoordinate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate")}
+            url: function(){return "POS/WorkOrderCoordinate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/ChangeBranch")} 
+            url: function(){return "POS/WorkOrderCoordinate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("POS/WorkOrderCoordinate/") + id} 
+            url: function(id){return "POS/WorkOrderCoordinate/" + id} 
         }
 		
 	},
@@ -7840,48 +7841,48 @@ export var APIListBase = {
 	PR_Deal:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/Deal/Search")}  
+            url: function(){return "PR/Deal/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/Deal")}  
+            url: function(){return "PR/Deal"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/Deal/Export")}  
+            url: function(){return "PR/Deal/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/Deal/Import")}  
+            url: function(){return "PR/Deal/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id){return "PR/Deal/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id){return "PR/Deal/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/Disable/") + id} 
+            url: function(id){return "PR/Deal/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/Enable/") + id} 
+            url: function(id){return "PR/Deal/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/Deal")}
+            url: function(){return "PR/Deal"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/Deal/ChangeBranch")} 
+            url: function(){return "PR/Deal/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/Deal/") + id} 
+            url: function(id){return "PR/Deal/" + id} 
         }
 		
 	},
@@ -7889,48 +7890,48 @@ export var APIListBase = {
 	PR_Program:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/Program/Search")}  
+            url: function(){return "PR/Program/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/Program")}  
+            url: function(){return "PR/Program"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/Program/Export")}  
+            url: function(){return "PR/Program/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/Program/Import")}  
+            url: function(){return "PR/Program/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id){return "PR/Program/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id){return "PR/Program/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/Disable/") + id} 
+            url: function(id){return "PR/Program/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/Enable/") + id} 
+            url: function(id){return "PR/Program/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/Program")}
+            url: function(){return "PR/Program"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/Program/ChangeBranch")} 
+            url: function(){return "PR/Program/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/Program/") + id} 
+            url: function(id){return "PR/Program/" + id} 
         }
 		
 	},
@@ -7938,48 +7939,48 @@ export var APIListBase = {
 	PR_ProgramCondition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition/Search")}  
+            url: function(){return "PR/ProgramCondition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition")}  
+            url: function(){return "PR/ProgramCondition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition/Export")}  
+            url: function(){return "PR/ProgramCondition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition/Import")}  
+            url: function(){return "PR/ProgramCondition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id){return "PR/ProgramCondition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id){return "PR/ProgramCondition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/Disable/") + id} 
+            url: function(id){return "PR/ProgramCondition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/Enable/") + id} 
+            url: function(id){return "PR/ProgramCondition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition")}
+            url: function(){return "PR/ProgramCondition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramCondition/ChangeBranch")} 
+            url: function(){return "PR/ProgramCondition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramCondition/") + id} 
+            url: function(id){return "PR/ProgramCondition/" + id} 
         }
 		
 	},
@@ -7987,48 +7988,48 @@ export var APIListBase = {
 	PR_ProgramItem:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem/Search")}  
+            url: function(){return "PR/ProgramItem/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem")}  
+            url: function(){return "PR/ProgramItem"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem/Export")}  
+            url: function(){return "PR/ProgramItem/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem/Import")}  
+            url: function(){return "PR/ProgramItem/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id){return "PR/ProgramItem/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id){return "PR/ProgramItem/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/Disable/") + id} 
+            url: function(id){return "PR/ProgramItem/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/Enable/") + id} 
+            url: function(id){return "PR/ProgramItem/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem")}
+            url: function(){return "PR/ProgramItem"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramItem/ChangeBranch")} 
+            url: function(){return "PR/ProgramItem/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramItem/") + id} 
+            url: function(id){return "PR/ProgramItem/" + id} 
         }
 		
 	},
@@ -8036,48 +8037,48 @@ export var APIListBase = {
 	PR_ProgramPartner:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner/Search")}  
+            url: function(){return "PR/ProgramPartner/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner")}  
+            url: function(){return "PR/ProgramPartner"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner/Export")}  
+            url: function(){return "PR/ProgramPartner/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner/Import")}  
+            url: function(){return "PR/ProgramPartner/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id){return "PR/ProgramPartner/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id){return "PR/ProgramPartner/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/Disable/") + id} 
+            url: function(id){return "PR/ProgramPartner/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/Enable/") + id} 
+            url: function(id){return "PR/ProgramPartner/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner")}
+            url: function(){return "PR/ProgramPartner"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramPartner/ChangeBranch")} 
+            url: function(){return "PR/ProgramPartner/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramPartner/") + id} 
+            url: function(id){return "PR/ProgramPartner/" + id} 
         }
 		
 	},
@@ -8085,48 +8086,48 @@ export var APIListBase = {
 	PR_ProgramReward:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward/Search")}  
+            url: function(){return "PR/ProgramReward/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward")}  
+            url: function(){return "PR/ProgramReward"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward/Export")}  
+            url: function(){return "PR/ProgramReward/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward/Import")}  
+            url: function(){return "PR/ProgramReward/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id){return "PR/ProgramReward/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id){return "PR/ProgramReward/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/Disable/") + id} 
+            url: function(id){return "PR/ProgramReward/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/Enable/") + id} 
+            url: function(id){return "PR/ProgramReward/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward")}
+            url: function(){return "PR/ProgramReward"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/ProgramReward/ChangeBranch")} 
+            url: function(){return "PR/ProgramReward/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/ProgramReward/") + id} 
+            url: function(id){return "PR/ProgramReward/" + id} 
         }
 		
 	},
@@ -8134,48 +8135,48 @@ export var APIListBase = {
 	PR_PromotionTracking:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking/Search")}  
+            url: function(){return "PR/PromotionTracking/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking")}  
+            url: function(){return "PR/PromotionTracking"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking/Export")}  
+            url: function(){return "PR/PromotionTracking/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking/Import")}  
+            url: function(){return "PR/PromotionTracking/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id){return "PR/PromotionTracking/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id){return "PR/PromotionTracking/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/Disable/") + id} 
+            url: function(id){return "PR/PromotionTracking/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/Enable/") + id} 
+            url: function(id){return "PR/PromotionTracking/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking")}
+            url: function(){return "PR/PromotionTracking"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PR/PromotionTracking/ChangeBranch")} 
+            url: function(){return "PR/PromotionTracking/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PR/PromotionTracking/") + id} 
+            url: function(id){return "PR/PromotionTracking/" + id} 
         }
 		
 	},
@@ -8183,48 +8184,48 @@ export var APIListBase = {
 	PROD_BillOfMaterials:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials/Search")}  
+            url: function(){return "PROD/BillOfMaterials/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials")}  
+            url: function(){return "PROD/BillOfMaterials"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials/Export")}  
+            url: function(){return "PROD/BillOfMaterials/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials/Import")}  
+            url: function(){return "PROD/BillOfMaterials/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id){return "PROD/BillOfMaterials/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id){return "PROD/BillOfMaterials/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/Disable/") + id} 
+            url: function(id){return "PROD/BillOfMaterials/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/Enable/") + id} 
+            url: function(id){return "PROD/BillOfMaterials/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials")}
+            url: function(){return "PROD/BillOfMaterials"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterials/ChangeBranch")} 
+            url: function(){return "PROD/BillOfMaterials/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterials/") + id} 
+            url: function(id){return "PROD/BillOfMaterials/" + id} 
         }
 		
 	},
@@ -8232,48 +8233,48 @@ export var APIListBase = {
 	PROD_BillOfMaterialsDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Search")}  
+            url: function(){return "PROD/BillOfMaterialsDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail")}  
+            url: function(){return "PROD/BillOfMaterialsDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Export")}  
+            url: function(){return "PROD/BillOfMaterialsDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Import")}  
+            url: function(){return "PROD/BillOfMaterialsDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id){return "PROD/BillOfMaterialsDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id){return "PROD/BillOfMaterialsDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Disable/") + id} 
+            url: function(id){return "PROD/BillOfMaterialsDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/Enable/") + id} 
+            url: function(id){return "PROD/BillOfMaterialsDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail")}
+            url: function(){return "PROD/BillOfMaterialsDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/ChangeBranch")} 
+            url: function(){return "PROD/BillOfMaterialsDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/BillOfMaterialsDetail/") + id} 
+            url: function(id){return "PROD/BillOfMaterialsDetail/" + id} 
         }
 		
 	},
@@ -8281,48 +8282,48 @@ export var APIListBase = {
 	PROD_ItemInVendor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor/Search")}  
+            url: function(){return "PROD/ItemInVendor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor")}  
+            url: function(){return "PROD/ItemInVendor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor/Export")}  
+            url: function(){return "PROD/ItemInVendor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor/Import")}  
+            url: function(){return "PROD/ItemInVendor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id){return "PROD/ItemInVendor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id){return "PROD/ItemInVendor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/Disable/") + id} 
+            url: function(id){return "PROD/ItemInVendor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/Enable/") + id} 
+            url: function(id){return "PROD/ItemInVendor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor")}
+            url: function(){return "PROD/ItemInVendor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/ItemInVendor/ChangeBranch")} 
+            url: function(){return "PROD/ItemInVendor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/ItemInVendor/") + id} 
+            url: function(id){return "PROD/ItemInVendor/" + id} 
         }
 		
 	},
@@ -8330,48 +8331,48 @@ export var APIListBase = {
 	PROD_MRP:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP/Search")}  
+            url: function(){return "PROD/MRP/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP")}  
+            url: function(){return "PROD/MRP"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP/Export")}  
+            url: function(){return "PROD/MRP/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP/Import")}  
+            url: function(){return "PROD/MRP/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id){return "PROD/MRP/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id){return "PROD/MRP/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/Disable/") + id} 
+            url: function(id){return "PROD/MRP/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/Enable/") + id} 
+            url: function(id){return "PROD/MRP/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP")}
+            url: function(){return "PROD/MRP"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/MRP/ChangeBranch")} 
+            url: function(){return "PROD/MRP/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRP/") + id} 
+            url: function(id){return "PROD/MRP/" + id} 
         }
 		
 	},
@@ -8379,48 +8380,48 @@ export var APIListBase = {
 	PROD_MRPScenario:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario/Search")}  
+            url: function(){return "PROD/MRPScenario/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario")}  
+            url: function(){return "PROD/MRPScenario"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario/Export")}  
+            url: function(){return "PROD/MRPScenario/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario/Import")}  
+            url: function(){return "PROD/MRPScenario/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id){return "PROD/MRPScenario/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id){return "PROD/MRPScenario/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/Disable/") + id} 
+            url: function(id){return "PROD/MRPScenario/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/Enable/") + id} 
+            url: function(id){return "PROD/MRPScenario/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario")}
+            url: function(){return "PROD/MRPScenario"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PROD/MRPScenario/ChangeBranch")} 
+            url: function(){return "PROD/MRPScenario/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PROD/MRPScenario/") + id} 
+            url: function(id){return "PROD/MRPScenario/" + id} 
         }
 		
 	},
@@ -8428,48 +8429,48 @@ export var APIListBase = {
 	PURCHASE_Order:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order/Search")}  
+            url: function(){return "PURCHASE/Order/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order")}  
+            url: function(){return "PURCHASE/Order"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order/Export")}  
+            url: function(){return "PURCHASE/Order/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order/Import")}  
+            url: function(){return "PURCHASE/Order/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id){return "PURCHASE/Order/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id){return "PURCHASE/Order/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/Disable/") + id} 
+            url: function(id){return "PURCHASE/Order/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/Enable/") + id} 
+            url: function(id){return "PURCHASE/Order/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order")}
+            url: function(){return "PURCHASE/Order"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/Order/ChangeBranch")} 
+            url: function(){return "PURCHASE/Order/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/Order/") + id} 
+            url: function(id){return "PURCHASE/Order/" + id} 
         }
 		
 	},
@@ -8477,48 +8478,48 @@ export var APIListBase = {
 	PURCHASE_OrderDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Search")}  
+            url: function(){return "PURCHASE/OrderDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail")}  
+            url: function(){return "PURCHASE/OrderDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Export")}  
+            url: function(){return "PURCHASE/OrderDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Import")}  
+            url: function(){return "PURCHASE/OrderDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id){return "PURCHASE/OrderDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id){return "PURCHASE/OrderDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Disable/") + id} 
+            url: function(id){return "PURCHASE/OrderDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/Enable/") + id} 
+            url: function(id){return "PURCHASE/OrderDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail")}
+            url: function(){return "PURCHASE/OrderDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("PURCHASE/OrderDetail/ChangeBranch")} 
+            url: function(){return "PURCHASE/OrderDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("PURCHASE/OrderDetail/") + id} 
+            url: function(id){return "PURCHASE/OrderDetail/" + id} 
         }
 		
 	},
@@ -8526,48 +8527,48 @@ export var APIListBase = {
 	SALE_Order:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/Order/Search")}  
+            url: function(){return "SALE/Order/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/Order")}  
+            url: function(){return "SALE/Order"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/Order/Export")}  
+            url: function(){return "SALE/Order/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/Order/Import")}  
+            url: function(){return "SALE/Order/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id){return "SALE/Order/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id){return "SALE/Order/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/Disable/") + id} 
+            url: function(id){return "SALE/Order/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/Enable/") + id} 
+            url: function(id){return "SALE/Order/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/Order")}
+            url: function(){return "SALE/Order"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/Order/ChangeBranch")} 
+            url: function(){return "SALE/Order/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/Order/") + id} 
+            url: function(id){return "SALE/Order/" + id} 
         }
 		
 	},
@@ -8575,48 +8576,48 @@ export var APIListBase = {
 	SALE_OrderAddition:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition/Search")}  
+            url: function(){return "SALE/OrderAddition/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition")}  
+            url: function(){return "SALE/OrderAddition"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition/Export")}  
+            url: function(){return "SALE/OrderAddition/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition/Import")}  
+            url: function(){return "SALE/OrderAddition/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id){return "SALE/OrderAddition/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id){return "SALE/OrderAddition/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/Disable/") + id} 
+            url: function(id){return "SALE/OrderAddition/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/Enable/") + id} 
+            url: function(id){return "SALE/OrderAddition/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition")}
+            url: function(){return "SALE/OrderAddition"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderAddition/ChangeBranch")} 
+            url: function(){return "SALE/OrderAddition/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderAddition/") + id} 
+            url: function(id){return "SALE/OrderAddition/" + id} 
         }
 		
 	},
@@ -8624,48 +8625,48 @@ export var APIListBase = {
 	SALE_OrderDeduction:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction/Search")}  
+            url: function(){return "SALE/OrderDeduction/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction")}  
+            url: function(){return "SALE/OrderDeduction"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction/Export")}  
+            url: function(){return "SALE/OrderDeduction/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction/Import")}  
+            url: function(){return "SALE/OrderDeduction/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id){return "SALE/OrderDeduction/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id){return "SALE/OrderDeduction/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/Disable/") + id} 
+            url: function(id){return "SALE/OrderDeduction/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/Enable/") + id} 
+            url: function(id){return "SALE/OrderDeduction/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction")}
+            url: function(){return "SALE/OrderDeduction"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDeduction/ChangeBranch")} 
+            url: function(){return "SALE/OrderDeduction/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDeduction/") + id} 
+            url: function(id){return "SALE/OrderDeduction/" + id} 
         }
 		
 	},
@@ -8673,48 +8674,48 @@ export var APIListBase = {
 	SALE_OrderDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail/Search")}  
+            url: function(){return "SALE/OrderDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail")}  
+            url: function(){return "SALE/OrderDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail/Export")}  
+            url: function(){return "SALE/OrderDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail/Import")}  
+            url: function(){return "SALE/OrderDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id){return "SALE/OrderDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id){return "SALE/OrderDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/Disable/") + id} 
+            url: function(id){return "SALE/OrderDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/Enable/") + id} 
+            url: function(id){return "SALE/OrderDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail")}
+            url: function(){return "SALE/OrderDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SALE/OrderDetail/ChangeBranch")} 
+            url: function(){return "SALE/OrderDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SALE/OrderDetail/") + id} 
+            url: function(id){return "SALE/OrderDetail/" + id} 
         }
 		
 	},
@@ -8722,48 +8723,48 @@ export var APIListBase = {
 	SHIFT_TimeSheet:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet/Search")}  
+            url: function(){return "SHIFT/TimeSheet/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet")}  
+            url: function(){return "SHIFT/TimeSheet"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet/Export")}  
+            url: function(){return "SHIFT/TimeSheet/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet/Import")}  
+            url: function(){return "SHIFT/TimeSheet/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id){return "SHIFT/TimeSheet/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id){return "SHIFT/TimeSheet/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/Disable/") + id} 
+            url: function(id){return "SHIFT/TimeSheet/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/Enable/") + id} 
+            url: function(id){return "SHIFT/TimeSheet/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet")}
+            url: function(){return "SHIFT/TimeSheet"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIFT/TimeSheet/ChangeBranch")} 
+            url: function(){return "SHIFT/TimeSheet/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIFT/TimeSheet/") + id} 
+            url: function(id){return "SHIFT/TimeSheet/" + id} 
         }
 		
 	},
@@ -8771,48 +8772,48 @@ export var APIListBase = {
 	SHIP_Shipment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment/Search")}  
+            url: function(){return "SHIP/Shipment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment")}  
+            url: function(){return "SHIP/Shipment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment/Export")}  
+            url: function(){return "SHIP/Shipment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment/Import")}  
+            url: function(){return "SHIP/Shipment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id){return "SHIP/Shipment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id){return "SHIP/Shipment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/Disable/") + id} 
+            url: function(id){return "SHIP/Shipment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/Enable/") + id} 
+            url: function(id){return "SHIP/Shipment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment")}
+            url: function(){return "SHIP/Shipment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/Shipment/ChangeBranch")} 
+            url: function(){return "SHIP/Shipment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Shipment/") + id} 
+            url: function(id){return "SHIP/Shipment/" + id} 
         }
 		
 	},
@@ -8820,48 +8821,48 @@ export var APIListBase = {
 	SHIP_ShipmentDebt:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Search")}  
+            url: function(){return "SHIP/ShipmentDebt/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt")}  
+            url: function(){return "SHIP/ShipmentDebt"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Export")}  
+            url: function(){return "SHIP/ShipmentDebt/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Import")}  
+            url: function(){return "SHIP/ShipmentDebt/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id){return "SHIP/ShipmentDebt/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id){return "SHIP/ShipmentDebt/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Disable/") + id} 
+            url: function(id){return "SHIP/ShipmentDebt/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/Enable/") + id} 
+            url: function(id){return "SHIP/ShipmentDebt/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt")}
+            url: function(){return "SHIP/ShipmentDebt"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDebt/ChangeBranch")} 
+            url: function(){return "SHIP/ShipmentDebt/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDebt/") + id} 
+            url: function(id){return "SHIP/ShipmentDebt/" + id} 
         }
 		
 	},
@@ -8869,48 +8870,48 @@ export var APIListBase = {
 	SHIP_ShipmentDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Search")}  
+            url: function(){return "SHIP/ShipmentDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail")}  
+            url: function(){return "SHIP/ShipmentDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Export")}  
+            url: function(){return "SHIP/ShipmentDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Import")}  
+            url: function(){return "SHIP/ShipmentDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id){return "SHIP/ShipmentDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id){return "SHIP/ShipmentDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Disable/") + id} 
+            url: function(id){return "SHIP/ShipmentDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/Enable/") + id} 
+            url: function(id){return "SHIP/ShipmentDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail")}
+            url: function(){return "SHIP/ShipmentDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/ShipmentDetail/ChangeBranch")} 
+            url: function(){return "SHIP/ShipmentDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/ShipmentDetail/") + id} 
+            url: function(id){return "SHIP/ShipmentDetail/" + id} 
         }
 		
 	},
@@ -8918,48 +8919,48 @@ export var APIListBase = {
 	SHIP_Vehicle:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle/Search")}  
+            url: function(){return "SHIP/Vehicle/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle")}  
+            url: function(){return "SHIP/Vehicle"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle/Export")}  
+            url: function(){return "SHIP/Vehicle/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle/Import")}  
+            url: function(){return "SHIP/Vehicle/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id){return "SHIP/Vehicle/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id){return "SHIP/Vehicle/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/Disable/") + id} 
+            url: function(id){return "SHIP/Vehicle/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/Enable/") + id} 
+            url: function(id){return "SHIP/Vehicle/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle")}
+            url: function(){return "SHIP/Vehicle"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SHIP/Vehicle/ChangeBranch")} 
+            url: function(){return "SHIP/Vehicle/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SHIP/Vehicle/") + id} 
+            url: function(id){return "SHIP/Vehicle/" + id} 
         }
 		
 	},
@@ -8967,48 +8968,97 @@ export var APIListBase = {
 	SYS_Action:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Action/Search")}  
+            url: function(){return "SYS/Action/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Action")}  
+            url: function(){return "SYS/Action"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Action/Export")}  
+            url: function(){return "SYS/Action/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Action/Import")}  
+            url: function(){return "SYS/Action/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Action/") + id} 
+            url: function(id){return "SYS/Action/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Action/") + id} 
+            url: function(id){return "SYS/Action/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Action/Disable/") + id} 
+            url: function(id){return "SYS/Action/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Action/Enable/") + id} 
+            url: function(id){return "SYS/Action/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Action")}
+            url: function(){return "SYS/Action"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Action/ChangeBranch")} 
+            url: function(){return "SYS/Action/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Action/") + id} 
+            url: function(id){return "SYS/Action/" + id} 
+        }
+		
+	},
+
+	SYS_APICollection:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/APICollection/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/APICollection"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/APICollection/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/APICollection/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/APICollection/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/APICollection/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/APICollection/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/APICollection/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/APICollection"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/APICollection/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/APICollection/" + id} 
         }
 		
 	},
@@ -9016,48 +9066,48 @@ export var APIListBase = {
 	SYS_AppleAppRedemption:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Search")}  
+            url: function(){return "SYS/AppleAppRedemption/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption")}  
+            url: function(){return "SYS/AppleAppRedemption"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Export")}  
+            url: function(){return "SYS/AppleAppRedemption/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Import")}  
+            url: function(){return "SYS/AppleAppRedemption/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id){return "SYS/AppleAppRedemption/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id){return "SYS/AppleAppRedemption/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Disable/") + id} 
+            url: function(id){return "SYS/AppleAppRedemption/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/Enable/") + id} 
+            url: function(id){return "SYS/AppleAppRedemption/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption")}
+            url: function(){return "SYS/AppleAppRedemption"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/AppleAppRedemption/ChangeBranch")} 
+            url: function(){return "SYS/AppleAppRedemption/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/AppleAppRedemption/") + id} 
+            url: function(id){return "SYS/AppleAppRedemption/" + id} 
         }
 		
 	},
@@ -9065,48 +9115,48 @@ export var APIListBase = {
 	SYS_Apps:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps/Search")}  
+            url: function(){return "SYS/Apps/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps")}  
+            url: function(){return "SYS/Apps"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps/Export")}  
+            url: function(){return "SYS/Apps/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps/Import")}  
+            url: function(){return "SYS/Apps/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id){return "SYS/Apps/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id){return "SYS/Apps/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/Disable/") + id} 
+            url: function(id){return "SYS/Apps/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/Enable/") + id} 
+            url: function(id){return "SYS/Apps/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps")}
+            url: function(){return "SYS/Apps"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Apps/ChangeBranch")} 
+            url: function(){return "SYS/Apps/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Apps/") + id} 
+            url: function(id){return "SYS/Apps/" + id} 
         }
 		
 	},
@@ -9114,48 +9164,48 @@ export var APIListBase = {
 	SYS_Config:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Config/Search")}  
+            url: function(){return "SYS/Config/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Config")}  
+            url: function(){return "SYS/Config"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Config/Export")}  
+            url: function(){return "SYS/Config/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Config/Import")}  
+            url: function(){return "SYS/Config/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id){return "SYS/Config/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id){return "SYS/Config/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/Disable/") + id} 
+            url: function(id){return "SYS/Config/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/Enable/") + id} 
+            url: function(id){return "SYS/Config/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Config")}
+            url: function(){return "SYS/Config"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Config/ChangeBranch")} 
+            url: function(){return "SYS/Config/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Config/") + id} 
+            url: function(id){return "SYS/Config/" + id} 
         }
 		
 	},
@@ -9163,48 +9213,48 @@ export var APIListBase = {
 	SYS_ConfigOption:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption/Search")}  
+            url: function(){return "SYS/ConfigOption/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption")}  
+            url: function(){return "SYS/ConfigOption"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption/Export")}  
+            url: function(){return "SYS/ConfigOption/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption/Import")}  
+            url: function(){return "SYS/ConfigOption/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id){return "SYS/ConfigOption/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id){return "SYS/ConfigOption/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/Disable/") + id} 
+            url: function(id){return "SYS/ConfigOption/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/Enable/") + id} 
+            url: function(id){return "SYS/ConfigOption/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption")}
+            url: function(){return "SYS/ConfigOption"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/ConfigOption/ChangeBranch")} 
+            url: function(){return "SYS/ConfigOption/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/ConfigOption/") + id} 
+            url: function(id){return "SYS/ConfigOption/" + id} 
         }
 		
 	},
@@ -9212,48 +9262,48 @@ export var APIListBase = {
 	SYS_Currency:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency/Search")}  
+            url: function(){return "SYS/Currency/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency")}  
+            url: function(){return "SYS/Currency"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency/Export")}  
+            url: function(){return "SYS/Currency/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency/Import")}  
+            url: function(){return "SYS/Currency/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id){return "SYS/Currency/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id){return "SYS/Currency/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/Disable/") + id} 
+            url: function(id){return "SYS/Currency/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/Enable/") + id} 
+            url: function(id){return "SYS/Currency/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency")}
+            url: function(){return "SYS/Currency"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Currency/ChangeBranch")} 
+            url: function(){return "SYS/Currency/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Currency/") + id} 
+            url: function(id){return "SYS/Currency/" + id} 
         }
 		
 	},
@@ -9261,48 +9311,48 @@ export var APIListBase = {
 	SYS_DataPermissionList:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList/Search")}  
+            url: function(){return "SYS/DataPermissionList/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList")}  
+            url: function(){return "SYS/DataPermissionList"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList/Export")}  
+            url: function(){return "SYS/DataPermissionList/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList/Import")}  
+            url: function(){return "SYS/DataPermissionList/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id){return "SYS/DataPermissionList/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id){return "SYS/DataPermissionList/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/Disable/") + id} 
+            url: function(id){return "SYS/DataPermissionList/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/Enable/") + id} 
+            url: function(id){return "SYS/DataPermissionList/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList")}
+            url: function(){return "SYS/DataPermissionList"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/DataPermissionList/ChangeBranch")} 
+            url: function(){return "SYS/DataPermissionList/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/DataPermissionList/") + id} 
+            url: function(id){return "SYS/DataPermissionList/" + id} 
         }
 		
 	},
@@ -9310,48 +9360,48 @@ export var APIListBase = {
 	SYS_Form:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Form/Search")}  
+            url: function(){return "SYS/Form/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Form")}  
+            url: function(){return "SYS/Form"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Form/Export")}  
+            url: function(){return "SYS/Form/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Form/Import")}  
+            url: function(){return "SYS/Form/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id){return "SYS/Form/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id){return "SYS/Form/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/Disable/") + id} 
+            url: function(id){return "SYS/Form/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/Enable/") + id} 
+            url: function(id){return "SYS/Form/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Form")}
+            url: function(){return "SYS/Form"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Form/ChangeBranch")} 
+            url: function(){return "SYS/Form/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Form/") + id} 
+            url: function(id){return "SYS/Form/" + id} 
         }
 		
 	},
@@ -9359,48 +9409,48 @@ export var APIListBase = {
 	SYS_FormGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup/Search")}  
+            url: function(){return "SYS/FormGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup")}  
+            url: function(){return "SYS/FormGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup/Export")}  
+            url: function(){return "SYS/FormGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup/Import")}  
+            url: function(){return "SYS/FormGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id){return "SYS/FormGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id){return "SYS/FormGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/Disable/") + id} 
+            url: function(id){return "SYS/FormGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/Enable/") + id} 
+            url: function(id){return "SYS/FormGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup")}
+            url: function(){return "SYS/FormGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/FormGroup/ChangeBranch")} 
+            url: function(){return "SYS/FormGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/FormGroup/") + id} 
+            url: function(id){return "SYS/FormGroup/" + id} 
         }
 		
 	},
@@ -9408,146 +9458,48 @@ export var APIListBase = {
 	SYS_GlobalConfig:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig/Search")}  
+            url: function(){return "SYS/GlobalConfig/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig")}  
+            url: function(){return "SYS/GlobalConfig"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig/Export")}  
+            url: function(){return "SYS/GlobalConfig/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig/Import")}  
+            url: function(){return "SYS/GlobalConfig/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
+            url: function(id){return "SYS/GlobalConfig/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
+            url: function(id){return "SYS/GlobalConfig/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/Disable/") + id} 
+            url: function(id){return "SYS/GlobalConfig/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/Enable/") + id} 
+            url: function(id){return "SYS/GlobalConfig/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig")}
+            url: function(){return "SYS/GlobalConfig"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/GlobalConfig/ChangeBranch")} 
+            url: function(){return "SYS/GlobalConfig/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/GlobalConfig/") + id} 
-        }
-		
-	},
-
-	SYS_IntegrationConfig:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig/Search")}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig")}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig/Export")}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig/Import")}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfig/") + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfig/") + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfig/Disable/") + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfig/Enable/") + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig")}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfig/ChangeBranch")} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfig/") + id} 
-        }
-		
-	},
-
-	SYS_IntegrationConfigOption:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/Search")}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption")}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/Export")}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/Import")}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/") + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/") + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/Disable/") + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/Enable/") + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption")}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/ChangeBranch")} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationConfigOption/") + id} 
+            url: function(id){return "SYS/GlobalConfig/" + id} 
         }
 		
 	},
@@ -9555,48 +9507,48 @@ export var APIListBase = {
 	SYS_IntegrationProvider:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider/Search")}  
+            url: function(){return "SYS/IntegrationProvider/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider")}  
+            url: function(){return "SYS/IntegrationProvider"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider/Export")}  
+            url: function(){return "SYS/IntegrationProvider/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider/Import")}  
+            url: function(){return "SYS/IntegrationProvider/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationProvider/") + id} 
+            url: function(id){return "SYS/IntegrationProvider/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationProvider/") + id} 
+            url: function(id){return "SYS/IntegrationProvider/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationProvider/Disable/") + id} 
+            url: function(id){return "SYS/IntegrationProvider/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationProvider/Enable/") + id} 
+            url: function(id){return "SYS/IntegrationProvider/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider")}
+            url: function(){return "SYS/IntegrationProvider"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationProvider/ChangeBranch")} 
+            url: function(){return "SYS/IntegrationProvider/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationProvider/") + id} 
+            url: function(id){return "SYS/IntegrationProvider/" + id} 
         }
 		
 	},
@@ -9604,48 +9556,48 @@ export var APIListBase = {
 	SYS_IntegrationReferenceIdentity:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/Search")}  
+            url: function(){return "SYS/IntegrationReferenceIdentity/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity")}  
+            url: function(){return "SYS/IntegrationReferenceIdentity"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/Export")}  
+            url: function(){return "SYS/IntegrationReferenceIdentity/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/Import")}  
+            url: function(){return "SYS/IntegrationReferenceIdentity/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/") + id} 
+            url: function(id){return "SYS/IntegrationReferenceIdentity/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/") + id} 
+            url: function(id){return "SYS/IntegrationReferenceIdentity/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/Disable/") + id} 
+            url: function(id){return "SYS/IntegrationReferenceIdentity/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/Enable/") + id} 
+            url: function(id){return "SYS/IntegrationReferenceIdentity/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity")}
+            url: function(){return "SYS/IntegrationReferenceIdentity"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/ChangeBranch")} 
+            url: function(){return "SYS/IntegrationReferenceIdentity/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/IntegrationReferenceIdentity/") + id} 
+            url: function(id){return "SYS/IntegrationReferenceIdentity/" + id} 
         }
 		
 	},
@@ -9653,48 +9605,48 @@ export var APIListBase = {
 	SYS_Log:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Log/Search")}  
+            url: function(){return "SYS/Log/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Log")}  
+            url: function(){return "SYS/Log"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Log/Export")}  
+            url: function(){return "SYS/Log/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Log/Import")}  
+            url: function(){return "SYS/Log/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id){return "SYS/Log/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id){return "SYS/Log/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/Disable/") + id} 
+            url: function(id){return "SYS/Log/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/Enable/") + id} 
+            url: function(id){return "SYS/Log/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Log")}
+            url: function(){return "SYS/Log"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Log/ChangeBranch")} 
+            url: function(){return "SYS/Log/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Log/") + id} 
+            url: function(id){return "SYS/Log/" + id} 
         }
 		
 	},
@@ -9702,48 +9654,48 @@ export var APIListBase = {
 	SYS_MessageTemplate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate/Search")}  
+            url: function(){return "SYS/MessageTemplate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate")}  
+            url: function(){return "SYS/MessageTemplate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate/Export")}  
+            url: function(){return "SYS/MessageTemplate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate/Import")}  
+            url: function(){return "SYS/MessageTemplate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/MessageTemplate/") + id} 
+            url: function(id){return "SYS/MessageTemplate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/MessageTemplate/") + id} 
+            url: function(id){return "SYS/MessageTemplate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/MessageTemplate/Disable/") + id} 
+            url: function(id){return "SYS/MessageTemplate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/MessageTemplate/Enable/") + id} 
+            url: function(id){return "SYS/MessageTemplate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate")}
+            url: function(){return "SYS/MessageTemplate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/MessageTemplate/ChangeBranch")} 
+            url: function(){return "SYS/MessageTemplate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/MessageTemplate/") + id} 
+            url: function(id){return "SYS/MessageTemplate/" + id} 
         }
 		
 	},
@@ -9751,48 +9703,48 @@ export var APIListBase = {
 	SYS_PermissionList:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList/Search")}  
+            url: function(){return "SYS/PermissionList/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList")}  
+            url: function(){return "SYS/PermissionList"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList/Export")}  
+            url: function(){return "SYS/PermissionList/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList/Import")}  
+            url: function(){return "SYS/PermissionList/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id){return "SYS/PermissionList/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id){return "SYS/PermissionList/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/Disable/") + id} 
+            url: function(id){return "SYS/PermissionList/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/Enable/") + id} 
+            url: function(id){return "SYS/PermissionList/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList")}
+            url: function(){return "SYS/PermissionList"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/PermissionList/ChangeBranch")} 
+            url: function(){return "SYS/PermissionList/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/PermissionList/") + id} 
+            url: function(id){return "SYS/PermissionList/" + id} 
         }
 		
 	},
@@ -9800,48 +9752,48 @@ export var APIListBase = {
 	SYS_Printer:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer/Search")}  
+            url: function(){return "SYS/Printer/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer")}  
+            url: function(){return "SYS/Printer"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer/Export")}  
+            url: function(){return "SYS/Printer/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer/Import")}  
+            url: function(){return "SYS/Printer/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id){return "SYS/Printer/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id){return "SYS/Printer/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/Disable/") + id} 
+            url: function(id){return "SYS/Printer/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/Enable/") + id} 
+            url: function(id){return "SYS/Printer/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer")}
+            url: function(){return "SYS/Printer"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Printer/ChangeBranch")} 
+            url: function(){return "SYS/Printer/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Printer/") + id} 
+            url: function(id){return "SYS/Printer/" + id} 
         }
 		
 	},
@@ -9849,48 +9801,48 @@ export var APIListBase = {
 	SYS_Role:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Role/Search")}  
+            url: function(){return "SYS/Role/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Role")}  
+            url: function(){return "SYS/Role"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Role/Export")}  
+            url: function(){return "SYS/Role/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Role/Import")}  
+            url: function(){return "SYS/Role/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id){return "SYS/Role/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id){return "SYS/Role/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/Disable/") + id} 
+            url: function(id){return "SYS/Role/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/Enable/") + id} 
+            url: function(id){return "SYS/Role/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Role")}
+            url: function(){return "SYS/Role"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Role/ChangeBranch")} 
+            url: function(){return "SYS/Role/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Role/") + id} 
+            url: function(id){return "SYS/Role/" + id} 
         }
 		
 	},
@@ -9898,48 +9850,48 @@ export var APIListBase = {
 	SYS_RuningNo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo/Search")}  
+            url: function(){return "SYS/RuningNo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo")}  
+            url: function(){return "SYS/RuningNo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo/Export")}  
+            url: function(){return "SYS/RuningNo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo/Import")}  
+            url: function(){return "SYS/RuningNo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id){return "SYS/RuningNo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id){return "SYS/RuningNo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/Disable/") + id} 
+            url: function(id){return "SYS/RuningNo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/Enable/") + id} 
+            url: function(id){return "SYS/RuningNo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo")}
+            url: function(){return "SYS/RuningNo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/RuningNo/ChangeBranch")} 
+            url: function(){return "SYS/RuningNo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/RuningNo/") + id} 
+            url: function(id){return "SYS/RuningNo/" + id} 
         }
 		
 	},
@@ -9947,48 +9899,48 @@ export var APIListBase = {
 	SYS_SAP_Databases:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases/Search")}  
+            url: function(){return "SYS/SAP/Databases/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases")}  
+            url: function(){return "SYS/SAP/Databases"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases/Export")}  
+            url: function(){return "SYS/SAP/Databases/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases/Import")}  
+            url: function(){return "SYS/SAP/Databases/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id){return "SYS/SAP/Databases/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id){return "SYS/SAP/Databases/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/Disable/") + id} 
+            url: function(id){return "SYS/SAP/Databases/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/Enable/") + id} 
+            url: function(id){return "SYS/SAP/Databases/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases")}
+            url: function(){return "SYS/SAP/Databases"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SAP/Databases/ChangeBranch")} 
+            url: function(){return "SYS/SAP/Databases/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/SAP/Databases/") + id} 
+            url: function(id){return "SYS/SAP/Databases/" + id} 
         }
 		
 	},
@@ -9996,48 +9948,48 @@ export var APIListBase = {
 	SYS_Schema:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema/Search")}  
+            url: function(){return "SYS/Schema/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema")}  
+            url: function(){return "SYS/Schema"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema/Export")}  
+            url: function(){return "SYS/Schema/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema/Import")}  
+            url: function(){return "SYS/Schema/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Schema/") + id} 
+            url: function(id){return "SYS/Schema/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Schema/") + id} 
+            url: function(id){return "SYS/Schema/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Schema/Disable/") + id} 
+            url: function(id){return "SYS/Schema/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Schema/Enable/") + id} 
+            url: function(id){return "SYS/Schema/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema")}
+            url: function(){return "SYS/Schema"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Schema/ChangeBranch")} 
+            url: function(){return "SYS/Schema/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Schema/") + id} 
+            url: function(id){return "SYS/Schema/" + id} 
         }
 		
 	},
@@ -10045,48 +9997,48 @@ export var APIListBase = {
 	SYS_SchemaDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail/Search")}  
+            url: function(){return "SYS/SchemaDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail")}  
+            url: function(){return "SYS/SchemaDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail/Export")}  
+            url: function(){return "SYS/SchemaDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail/Import")}  
+            url: function(){return "SYS/SchemaDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/SchemaDetail/") + id} 
+            url: function(id){return "SYS/SchemaDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SchemaDetail/") + id} 
+            url: function(id){return "SYS/SchemaDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SchemaDetail/Disable/") + id} 
+            url: function(id){return "SYS/SchemaDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SchemaDetail/Enable/") + id} 
+            url: function(id){return "SYS/SchemaDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail")}
+            url: function(){return "SYS/SchemaDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SchemaDetail/ChangeBranch")} 
+            url: function(){return "SYS/SchemaDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/SchemaDetail/") + id} 
+            url: function(id){return "SYS/SchemaDetail/" + id} 
         }
 		
 	},
@@ -10094,48 +10046,48 @@ export var APIListBase = {
 	SYS_Status:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Status/Search")}  
+            url: function(){return "SYS/Status/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Status")}  
+            url: function(){return "SYS/Status"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Status/Export")}  
+            url: function(){return "SYS/Status/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Status/Import")}  
+            url: function(){return "SYS/Status/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id){return "SYS/Status/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id){return "SYS/Status/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/Disable/") + id} 
+            url: function(id){return "SYS/Status/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/Enable/") + id} 
+            url: function(id){return "SYS/Status/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Status")}
+            url: function(){return "SYS/Status"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Status/ChangeBranch")} 
+            url: function(){return "SYS/Status/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Status/") + id} 
+            url: function(id){return "SYS/Status/" + id} 
         }
 		
 	},
@@ -10143,48 +10095,48 @@ export var APIListBase = {
 	SYS_SyncJob:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob/Search")}  
+            url: function(){return "SYS/SyncJob/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob")}  
+            url: function(){return "SYS/SyncJob"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob/Export")}  
+            url: function(){return "SYS/SyncJob/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob/Import")}  
+            url: function(){return "SYS/SyncJob/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id){return "SYS/SyncJob/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id){return "SYS/SyncJob/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/Disable/") + id} 
+            url: function(id){return "SYS/SyncJob/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/Enable/") + id} 
+            url: function(id){return "SYS/SyncJob/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob")}
+            url: function(){return "SYS/SyncJob"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/SyncJob/ChangeBranch")} 
+            url: function(){return "SYS/SyncJob/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/SyncJob/") + id} 
+            url: function(id){return "SYS/SyncJob/" + id} 
         }
 		
 	},
@@ -10192,48 +10144,48 @@ export var APIListBase = {
 	SYS_Translate:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate/Search")}  
+            url: function(){return "SYS/Translate/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate")}  
+            url: function(){return "SYS/Translate"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate/Export")}  
+            url: function(){return "SYS/Translate/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate/Import")}  
+            url: function(){return "SYS/Translate/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id){return "SYS/Translate/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id){return "SYS/Translate/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/Disable/") + id} 
+            url: function(id){return "SYS/Translate/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/Enable/") + id} 
+            url: function(id){return "SYS/Translate/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate")}
+            url: function(){return "SYS/Translate"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Translate/ChangeBranch")} 
+            url: function(){return "SYS/Translate/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Translate/") + id} 
+            url: function(id){return "SYS/Translate/" + id} 
         }
 		
 	},
@@ -10241,48 +10193,48 @@ export var APIListBase = {
 	SYS_Trigger:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger/Search")}  
+            url: function(){return "SYS/Trigger/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger")}  
+            url: function(){return "SYS/Trigger"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger/Export")}  
+            url: function(){return "SYS/Trigger/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger/Import")}  
+            url: function(){return "SYS/Trigger/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Trigger/") + id} 
+            url: function(id){return "SYS/Trigger/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Trigger/") + id} 
+            url: function(id){return "SYS/Trigger/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Trigger/Disable/") + id} 
+            url: function(id){return "SYS/Trigger/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Trigger/Enable/") + id} 
+            url: function(id){return "SYS/Trigger/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger")}
+            url: function(){return "SYS/Trigger"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Trigger/ChangeBranch")} 
+            url: function(){return "SYS/Trigger/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Trigger/") + id} 
+            url: function(id){return "SYS/Trigger/" + id} 
         }
 		
 	},
@@ -10290,48 +10242,48 @@ export var APIListBase = {
 	SYS_TriggerAction:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction/Search")}  
+            url: function(){return "SYS/TriggerAction/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction")}  
+            url: function(){return "SYS/TriggerAction"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction/Export")}  
+            url: function(){return "SYS/TriggerAction/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction/Import")}  
+            url: function(){return "SYS/TriggerAction/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerAction/") + id} 
+            url: function(id){return "SYS/TriggerAction/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerAction/") + id} 
+            url: function(id){return "SYS/TriggerAction/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerAction/Disable/") + id} 
+            url: function(id){return "SYS/TriggerAction/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerAction/Enable/") + id} 
+            url: function(id){return "SYS/TriggerAction/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction")}
+            url: function(){return "SYS/TriggerAction"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerAction/ChangeBranch")} 
+            url: function(){return "SYS/TriggerAction/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerAction/") + id} 
+            url: function(id){return "SYS/TriggerAction/" + id} 
         }
 		
 	},
@@ -10339,48 +10291,48 @@ export var APIListBase = {
 	SYS_TriggerActionConfig:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig/Search")}  
+            url: function(){return "SYS/TriggerActionConfig/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig")}  
+            url: function(){return "SYS/TriggerActionConfig"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig/Export")}  
+            url: function(){return "SYS/TriggerActionConfig/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig/Import")}  
+            url: function(){return "SYS/TriggerActionConfig/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionConfig/") + id} 
+            url: function(id){return "SYS/TriggerActionConfig/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionConfig/") + id} 
+            url: function(id){return "SYS/TriggerActionConfig/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionConfig/Disable/") + id} 
+            url: function(id){return "SYS/TriggerActionConfig/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionConfig/Enable/") + id} 
+            url: function(id){return "SYS/TriggerActionConfig/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig")}
+            url: function(){return "SYS/TriggerActionConfig"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionConfig/ChangeBranch")} 
+            url: function(){return "SYS/TriggerActionConfig/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionConfig/") + id} 
+            url: function(id){return "SYS/TriggerActionConfig/" + id} 
         }
 		
 	},
@@ -10388,48 +10340,48 @@ export var APIListBase = {
 	SYS_TriggerActionDataMapping:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/Search")}  
+            url: function(){return "SYS/TriggerActionDataMapping/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping")}  
+            url: function(){return "SYS/TriggerActionDataMapping"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/Export")}  
+            url: function(){return "SYS/TriggerActionDataMapping/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/Import")}  
+            url: function(){return "SYS/TriggerActionDataMapping/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/") + id} 
+            url: function(id){return "SYS/TriggerActionDataMapping/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/") + id} 
+            url: function(id){return "SYS/TriggerActionDataMapping/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/Disable/") + id} 
+            url: function(id){return "SYS/TriggerActionDataMapping/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/Enable/") + id} 
+            url: function(id){return "SYS/TriggerActionDataMapping/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping")}
+            url: function(){return "SYS/TriggerActionDataMapping"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/ChangeBranch")} 
+            url: function(){return "SYS/TriggerActionDataMapping/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/TriggerActionDataMapping/") + id} 
+            url: function(id){return "SYS/TriggerActionDataMapping/" + id} 
         }
 		
 	},
@@ -10437,48 +10389,48 @@ export var APIListBase = {
 	SYS_Type:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Type/Search")}  
+            url: function(){return "SYS/Type/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/Type")}  
+            url: function(){return "SYS/Type"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Type/Export")}  
+            url: function(){return "SYS/Type/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/Type/Import")}  
+            url: function(){return "SYS/Type/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id){return "SYS/Type/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id){return "SYS/Type/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/Disable/") + id} 
+            url: function(id){return "SYS/Type/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/Enable/") + id} 
+            url: function(id){return "SYS/Type/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Type")}
+            url: function(){return "SYS/Type"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/Type/ChangeBranch")} 
+            url: function(){return "SYS/Type/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/Type/") + id} 
+            url: function(id){return "SYS/Type/" + id} 
         }
 		
 	},
@@ -10486,48 +10438,48 @@ export var APIListBase = {
 	SYS_UserDevice:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice/Search")}  
+            url: function(){return "SYS/UserDevice/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice")}  
+            url: function(){return "SYS/UserDevice"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice/Export")}  
+            url: function(){return "SYS/UserDevice/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice/Import")}  
+            url: function(){return "SYS/UserDevice/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id){return "SYS/UserDevice/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id){return "SYS/UserDevice/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/Disable/") + id} 
+            url: function(id){return "SYS/UserDevice/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/Enable/") + id} 
+            url: function(id){return "SYS/UserDevice/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice")}
+            url: function(){return "SYS/UserDevice"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserDevice/ChangeBranch")} 
+            url: function(){return "SYS/UserDevice/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserDevice/") + id} 
+            url: function(id){return "SYS/UserDevice/" + id} 
         }
 		
 	},
@@ -10535,48 +10487,48 @@ export var APIListBase = {
 	SYS_UserSetting:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting/Search")}  
+            url: function(){return "SYS/UserSetting/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting")}  
+            url: function(){return "SYS/UserSetting"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting/Export")}  
+            url: function(){return "SYS/UserSetting/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting/Import")}  
+            url: function(){return "SYS/UserSetting/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id){return "SYS/UserSetting/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id){return "SYS/UserSetting/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/Disable/") + id} 
+            url: function(id){return "SYS/UserSetting/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/Enable/") + id} 
+            url: function(id){return "SYS/UserSetting/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting")}
+            url: function(){return "SYS/UserSetting"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserSetting/ChangeBranch")} 
+            url: function(){return "SYS/UserSetting/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserSetting/") + id} 
+            url: function(id){return "SYS/UserSetting/" + id} 
         }
 		
 	},
@@ -10584,48 +10536,48 @@ export var APIListBase = {
 	SYS_UserVoice:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice/Search")}  
+            url: function(){return "SYS/UserVoice/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice")}  
+            url: function(){return "SYS/UserVoice"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice/Export")}  
+            url: function(){return "SYS/UserVoice/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice/Import")}  
+            url: function(){return "SYS/UserVoice/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id){return "SYS/UserVoice/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id){return "SYS/UserVoice/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/Disable/") + id} 
+            url: function(id){return "SYS/UserVoice/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/Enable/") + id} 
+            url: function(id){return "SYS/UserVoice/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice")}
+            url: function(){return "SYS/UserVoice"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/UserVoice/ChangeBranch")} 
+            url: function(){return "SYS/UserVoice/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/UserVoice/") + id} 
+            url: function(id){return "SYS/UserVoice/" + id} 
         }
 		
 	},
@@ -10633,48 +10585,48 @@ export var APIListBase = {
 	SYS_VeifyPhoneNumber:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Search")}  
+            url: function(){return "SYS/VeifyPhoneNumber/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber")}  
+            url: function(){return "SYS/VeifyPhoneNumber"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Export")}  
+            url: function(){return "SYS/VeifyPhoneNumber/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Import")}  
+            url: function(){return "SYS/VeifyPhoneNumber/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id){return "SYS/VeifyPhoneNumber/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id){return "SYS/VeifyPhoneNumber/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Disable/") + id} 
+            url: function(id){return "SYS/VeifyPhoneNumber/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/Enable/") + id} 
+            url: function(id){return "SYS/VeifyPhoneNumber/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber")}
+            url: function(){return "SYS/VeifyPhoneNumber"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/ChangeBranch")} 
+            url: function(){return "SYS/VeifyPhoneNumber/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("SYS/VeifyPhoneNumber/") + id} 
+            url: function(id){return "SYS/VeifyPhoneNumber/" + id} 
         }
 		
 	},
@@ -10682,48 +10634,48 @@ export var APIListBase = {
 	Version:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("Version/Search")}  
+            url: function(){return "Version/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("Version")}  
+            url: function(){return "Version"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("Version/Export")}  
+            url: function(){return "Version/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("Version/Import")}  
+            url: function(){return "Version/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id){return "Version/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id){return "Version/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/Disable/") + id} 
+            url: function(id){return "Version/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("Version/Enable/") + id} 
+            url: function(id){return "Version/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("Version")}
+            url: function(){return "Version"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("Version/ChangeBranch")} 
+            url: function(){return "Version/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("Version/") + id} 
+            url: function(id){return "Version/" + id} 
         }
 		
 	},
@@ -10731,48 +10683,48 @@ export var APIListBase = {
 	WEB_Category:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Category/Search")}  
+            url: function(){return "WEB/Category/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Category")}  
+            url: function(){return "WEB/Category"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Category/Export")}  
+            url: function(){return "WEB/Category/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Category/Import")}  
+            url: function(){return "WEB/Category/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id){return "WEB/Category/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id){return "WEB/Category/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/Disable/") + id} 
+            url: function(id){return "WEB/Category/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/Enable/") + id} 
+            url: function(id){return "WEB/Category/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Category")}
+            url: function(){return "WEB/Category"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Category/ChangeBranch")} 
+            url: function(){return "WEB/Category/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Category/") + id} 
+            url: function(id){return "WEB/Category/" + id} 
         }
 		
 	},
@@ -10780,48 +10732,48 @@ export var APIListBase = {
 	WEB_Content:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Search")}  
+            url: function(){return "WEB/Content/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Content")}  
+            url: function(){return "WEB/Content"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Export")}  
+            url: function(){return "WEB/Content/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Import")}  
+            url: function(){return "WEB/Content/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id){return "WEB/Content/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id){return "WEB/Content/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Disable/") + id} 
+            url: function(id){return "WEB/Content/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Enable/") + id} 
+            url: function(id){return "WEB/Content/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Content")}
+            url: function(){return "WEB/Content"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/ChangeBranch")} 
+            url: function(){return "WEB/Content/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/") + id} 
+            url: function(id){return "WEB/Content/" + id} 
         }
 		
 	},
@@ -10829,48 +10781,48 @@ export var APIListBase = {
 	WEB_Content_Tag:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag/Search")}  
+            url: function(){return "WEB/Content/Tag/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag")}  
+            url: function(){return "WEB/Content/Tag"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag/Export")}  
+            url: function(){return "WEB/Content/Tag/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag/Import")}  
+            url: function(){return "WEB/Content/Tag/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id){return "WEB/Content/Tag/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id){return "WEB/Content/Tag/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/Disable/") + id} 
+            url: function(id){return "WEB/Content/Tag/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/Enable/") + id} 
+            url: function(id){return "WEB/Content/Tag/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag")}
+            url: function(){return "WEB/Content/Tag"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Content/Tag/ChangeBranch")} 
+            url: function(){return "WEB/Content/Tag/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Content/Tag/") + id} 
+            url: function(id){return "WEB/Content/Tag/" + id} 
         }
 		
 	},
@@ -10878,48 +10830,48 @@ export var APIListBase = {
 	WEB_ContentInCategory:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory/Search")}  
+            url: function(){return "WEB/ContentInCategory/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory")}  
+            url: function(){return "WEB/ContentInCategory"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory/Export")}  
+            url: function(){return "WEB/ContentInCategory/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory/Import")}  
+            url: function(){return "WEB/ContentInCategory/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id){return "WEB/ContentInCategory/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id){return "WEB/ContentInCategory/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/Disable/") + id} 
+            url: function(id){return "WEB/ContentInCategory/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/Enable/") + id} 
+            url: function(id){return "WEB/ContentInCategory/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory")}
+            url: function(){return "WEB/ContentInCategory"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/ContentInCategory/ChangeBranch")} 
+            url: function(){return "WEB/ContentInCategory/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/ContentInCategory/") + id} 
+            url: function(id){return "WEB/ContentInCategory/" + id} 
         }
 		
 	},
@@ -10927,48 +10879,48 @@ export var APIListBase = {
 	WEB_Tag:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag/Search")}  
+            url: function(){return "WEB/Tag/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag")}  
+            url: function(){return "WEB/Tag"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag/Export")}  
+            url: function(){return "WEB/Tag/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag/Import")}  
+            url: function(){return "WEB/Tag/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id){return "WEB/Tag/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id){return "WEB/Tag/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/Disable/") + id} 
+            url: function(id){return "WEB/Tag/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/Enable/") + id} 
+            url: function(id){return "WEB/Tag/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag")}
+            url: function(){return "WEB/Tag"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WEB/Tag/ChangeBranch")} 
+            url: function(){return "WEB/Tag/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WEB/Tag/") + id} 
+            url: function(id){return "WEB/Tag/" + id} 
         }
 		
 	},
@@ -10976,48 +10928,48 @@ export var APIListBase = {
 	WH_Branches:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Branches/Search")}  
+            url: function(){return "WH/Branches/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Branches")}  
+            url: function(){return "WH/Branches"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Branches/Export")}  
+            url: function(){return "WH/Branches/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Branches/Import")}  
+            url: function(){return "WH/Branches/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id){return "WH/Branches/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id){return "WH/Branches/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/Disable/") + id} 
+            url: function(id){return "WH/Branches/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/Enable/") + id} 
+            url: function(id){return "WH/Branches/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Branches")}
+            url: function(){return "WH/Branches"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Branches/ChangeBranch")} 
+            url: function(){return "WH/Branches/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Branches/") + id} 
+            url: function(id){return "WH/Branches/" + id} 
         }
 		
 	},
@@ -11025,48 +10977,48 @@ export var APIListBase = {
 	WH_CashFlows:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows/Search")}  
+            url: function(){return "WH/CashFlows/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows")}  
+            url: function(){return "WH/CashFlows"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows/Export")}  
+            url: function(){return "WH/CashFlows/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows/Import")}  
+            url: function(){return "WH/CashFlows/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id){return "WH/CashFlows/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id){return "WH/CashFlows/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/Disable/") + id} 
+            url: function(id){return "WH/CashFlows/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/Enable/") + id} 
+            url: function(id){return "WH/CashFlows/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows")}
+            url: function(){return "WH/CashFlows"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/CashFlows/ChangeBranch")} 
+            url: function(){return "WH/CashFlows/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/CashFlows/") + id} 
+            url: function(id){return "WH/CashFlows/" + id} 
         }
 		
 	},
@@ -11074,48 +11026,48 @@ export var APIListBase = {
 	WH_ContactGroups:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups/Search")}  
+            url: function(){return "WH/ContactGroups/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups")}  
+            url: function(){return "WH/ContactGroups"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups/Export")}  
+            url: function(){return "WH/ContactGroups/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups/Import")}  
+            url: function(){return "WH/ContactGroups/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id){return "WH/ContactGroups/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id){return "WH/ContactGroups/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/Disable/") + id} 
+            url: function(id){return "WH/ContactGroups/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/Enable/") + id} 
+            url: function(id){return "WH/ContactGroups/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups")}
+            url: function(){return "WH/ContactGroups"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ContactGroups/ChangeBranch")} 
+            url: function(){return "WH/ContactGroups/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ContactGroups/") + id} 
+            url: function(id){return "WH/ContactGroups/" + id} 
         }
 		
 	},
@@ -11123,48 +11075,48 @@ export var APIListBase = {
 	WH_Contacts:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts/Search")}  
+            url: function(){return "WH/Contacts/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts")}  
+            url: function(){return "WH/Contacts"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts/Export")}  
+            url: function(){return "WH/Contacts/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts/Import")}  
+            url: function(){return "WH/Contacts/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id){return "WH/Contacts/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id){return "WH/Contacts/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/Disable/") + id} 
+            url: function(id){return "WH/Contacts/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/Enable/") + id} 
+            url: function(id){return "WH/Contacts/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts")}
+            url: function(){return "WH/Contacts"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Contacts/ChangeBranch")} 
+            url: function(){return "WH/Contacts/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Contacts/") + id} 
+            url: function(id){return "WH/Contacts/" + id} 
         }
 		
 	},
@@ -11172,48 +11124,48 @@ export var APIListBase = {
 	WH_GeneralLedgers:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers/Search")}  
+            url: function(){return "WH/GeneralLedgers/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers")}  
+            url: function(){return "WH/GeneralLedgers"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers/Export")}  
+            url: function(){return "WH/GeneralLedgers/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers/Import")}  
+            url: function(){return "WH/GeneralLedgers/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id){return "WH/GeneralLedgers/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id){return "WH/GeneralLedgers/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/Disable/") + id} 
+            url: function(id){return "WH/GeneralLedgers/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/Enable/") + id} 
+            url: function(id){return "WH/GeneralLedgers/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers")}
+            url: function(){return "WH/GeneralLedgers"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/GeneralLedgers/ChangeBranch")} 
+            url: function(){return "WH/GeneralLedgers/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/GeneralLedgers/") + id} 
+            url: function(id){return "WH/GeneralLedgers/" + id} 
         }
 		
 	},
@@ -11221,48 +11173,48 @@ export var APIListBase = {
 	WH_InvoiceRows:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows/Search")}  
+            url: function(){return "WH/InvoiceRows/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows")}  
+            url: function(){return "WH/InvoiceRows"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows/Export")}  
+            url: function(){return "WH/InvoiceRows/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows/Import")}  
+            url: function(){return "WH/InvoiceRows/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id){return "WH/InvoiceRows/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id){return "WH/InvoiceRows/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/Disable/") + id} 
+            url: function(id){return "WH/InvoiceRows/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/Enable/") + id} 
+            url: function(id){return "WH/InvoiceRows/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows")}
+            url: function(){return "WH/InvoiceRows"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/InvoiceRows/ChangeBranch")} 
+            url: function(){return "WH/InvoiceRows/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/InvoiceRows/") + id} 
+            url: function(id){return "WH/InvoiceRows/" + id} 
         }
 		
 	},
@@ -11270,48 +11222,48 @@ export var APIListBase = {
 	WH_Invoices:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices/Search")}  
+            url: function(){return "WH/Invoices/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices")}  
+            url: function(){return "WH/Invoices"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices/Export")}  
+            url: function(){return "WH/Invoices/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices/Import")}  
+            url: function(){return "WH/Invoices/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id){return "WH/Invoices/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id){return "WH/Invoices/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/Disable/") + id} 
+            url: function(id){return "WH/Invoices/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/Enable/") + id} 
+            url: function(id){return "WH/Invoices/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices")}
+            url: function(){return "WH/Invoices"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Invoices/ChangeBranch")} 
+            url: function(){return "WH/Invoices/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Invoices/") + id} 
+            url: function(id){return "WH/Invoices/" + id} 
         }
 		
 	},
@@ -11319,48 +11271,48 @@ export var APIListBase = {
 	WH_ItemGroups:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups/Search")}  
+            url: function(){return "WH/ItemGroups/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups")}  
+            url: function(){return "WH/ItemGroups"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups/Export")}  
+            url: function(){return "WH/ItemGroups/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups/Import")}  
+            url: function(){return "WH/ItemGroups/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id){return "WH/ItemGroups/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id){return "WH/ItemGroups/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/Disable/") + id} 
+            url: function(id){return "WH/ItemGroups/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/Enable/") + id} 
+            url: function(id){return "WH/ItemGroups/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups")}
+            url: function(){return "WH/ItemGroups"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemGroups/ChangeBranch")} 
+            url: function(){return "WH/ItemGroups/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemGroups/") + id} 
+            url: function(id){return "WH/ItemGroups/" + id} 
         }
 		
 	},
@@ -11368,48 +11320,48 @@ export var APIListBase = {
 	WH_ItemPriceLists:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists/Search")}  
+            url: function(){return "WH/ItemPriceLists/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists")}  
+            url: function(){return "WH/ItemPriceLists"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists/Export")}  
+            url: function(){return "WH/ItemPriceLists/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists/Import")}  
+            url: function(){return "WH/ItemPriceLists/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id){return "WH/ItemPriceLists/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id){return "WH/ItemPriceLists/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/Disable/") + id} 
+            url: function(id){return "WH/ItemPriceLists/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/Enable/") + id} 
+            url: function(id){return "WH/ItemPriceLists/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists")}
+            url: function(){return "WH/ItemPriceLists"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemPriceLists/ChangeBranch")} 
+            url: function(){return "WH/ItemPriceLists/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemPriceLists/") + id} 
+            url: function(id){return "WH/ItemPriceLists/" + id} 
         }
 		
 	},
@@ -11417,48 +11369,48 @@ export var APIListBase = {
 	WH_Items:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Items/Search")}  
+            url: function(){return "WH/Items/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Items")}  
+            url: function(){return "WH/Items"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Items/Export")}  
+            url: function(){return "WH/Items/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Items/Import")}  
+            url: function(){return "WH/Items/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id){return "WH/Items/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id){return "WH/Items/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/Disable/") + id} 
+            url: function(id){return "WH/Items/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/Enable/") + id} 
+            url: function(id){return "WH/Items/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Items")}
+            url: function(){return "WH/Items"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Items/ChangeBranch")} 
+            url: function(){return "WH/Items/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Items/") + id} 
+            url: function(id){return "WH/Items/" + id} 
         }
 		
 	},
@@ -11466,48 +11418,48 @@ export var APIListBase = {
 	WH_ItemUoM:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM/Search")}  
+            url: function(){return "WH/ItemUoM/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM")}  
+            url: function(){return "WH/ItemUoM"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM/Export")}  
+            url: function(){return "WH/ItemUoM/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM/Import")}  
+            url: function(){return "WH/ItemUoM/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id){return "WH/ItemUoM/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id){return "WH/ItemUoM/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/Disable/") + id} 
+            url: function(id){return "WH/ItemUoM/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/Enable/") + id} 
+            url: function(id){return "WH/ItemUoM/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM")}
+            url: function(){return "WH/ItemUoM"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/ItemUoM/ChangeBranch")} 
+            url: function(){return "WH/ItemUoM/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/ItemUoM/") + id} 
+            url: function(id){return "WH/ItemUoM/" + id} 
         }
 		
 	},
@@ -11515,48 +11467,48 @@ export var APIListBase = {
 	WH_JournalEntries:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries/Search")}  
+            url: function(){return "WH/JournalEntries/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries")}  
+            url: function(){return "WH/JournalEntries"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries/Export")}  
+            url: function(){return "WH/JournalEntries/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries/Import")}  
+            url: function(){return "WH/JournalEntries/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id){return "WH/JournalEntries/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id){return "WH/JournalEntries/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/Disable/") + id} 
+            url: function(id){return "WH/JournalEntries/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/Enable/") + id} 
+            url: function(id){return "WH/JournalEntries/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries")}
+            url: function(){return "WH/JournalEntries"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntries/ChangeBranch")} 
+            url: function(){return "WH/JournalEntries/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntries/") + id} 
+            url: function(id){return "WH/JournalEntries/" + id} 
         }
 		
 	},
@@ -11564,48 +11516,48 @@ export var APIListBase = {
 	WH_JournalEntryRows:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows/Search")}  
+            url: function(){return "WH/JournalEntryRows/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows")}  
+            url: function(){return "WH/JournalEntryRows"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows/Export")}  
+            url: function(){return "WH/JournalEntryRows/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows/Import")}  
+            url: function(){return "WH/JournalEntryRows/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id){return "WH/JournalEntryRows/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id){return "WH/JournalEntryRows/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/Disable/") + id} 
+            url: function(id){return "WH/JournalEntryRows/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/Enable/") + id} 
+            url: function(id){return "WH/JournalEntryRows/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows")}
+            url: function(){return "WH/JournalEntryRows"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/JournalEntryRows/ChangeBranch")} 
+            url: function(){return "WH/JournalEntryRows/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/JournalEntryRows/") + id} 
+            url: function(id){return "WH/JournalEntryRows/" + id} 
         }
 		
 	},
@@ -11613,48 +11565,48 @@ export var APIListBase = {
 	WH_PostingPeriods:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods/Search")}  
+            url: function(){return "WH/PostingPeriods/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods")}  
+            url: function(){return "WH/PostingPeriods"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods/Export")}  
+            url: function(){return "WH/PostingPeriods/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods/Import")}  
+            url: function(){return "WH/PostingPeriods/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id){return "WH/PostingPeriods/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id){return "WH/PostingPeriods/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/Disable/") + id} 
+            url: function(id){return "WH/PostingPeriods/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/Enable/") + id} 
+            url: function(id){return "WH/PostingPeriods/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods")}
+            url: function(){return "WH/PostingPeriods"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/PostingPeriods/ChangeBranch")} 
+            url: function(){return "WH/PostingPeriods/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/PostingPeriods/") + id} 
+            url: function(id){return "WH/PostingPeriods/" + id} 
         }
 		
 	},
@@ -11662,48 +11614,48 @@ export var APIListBase = {
 	WH_PriceLists:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists/Search")}  
+            url: function(){return "WH/PriceLists/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists")}  
+            url: function(){return "WH/PriceLists"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists/Export")}  
+            url: function(){return "WH/PriceLists/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists/Import")}  
+            url: function(){return "WH/PriceLists/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id){return "WH/PriceLists/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id){return "WH/PriceLists/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/Disable/") + id} 
+            url: function(id){return "WH/PriceLists/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/Enable/") + id} 
+            url: function(id){return "WH/PriceLists/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists")}
+            url: function(){return "WH/PriceLists"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/PriceLists/ChangeBranch")} 
+            url: function(){return "WH/PriceLists/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/PriceLists/") + id} 
+            url: function(id){return "WH/PriceLists/" + id} 
         }
 		
 	},
@@ -11711,48 +11663,48 @@ export var APIListBase = {
 	WH_Staff:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Staff/Search")}  
+            url: function(){return "WH/Staff/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/Staff")}  
+            url: function(){return "WH/Staff"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Staff/Export")}  
+            url: function(){return "WH/Staff/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/Staff/Import")}  
+            url: function(){return "WH/Staff/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id){return "WH/Staff/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id){return "WH/Staff/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/Disable/") + id} 
+            url: function(id){return "WH/Staff/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/Enable/") + id} 
+            url: function(id){return "WH/Staff/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Staff")}
+            url: function(){return "WH/Staff"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/Staff/ChangeBranch")} 
+            url: function(){return "WH/Staff/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/Staff/") + id} 
+            url: function(id){return "WH/Staff/" + id} 
         }
 		
 	},
@@ -11760,48 +11712,48 @@ export var APIListBase = {
 	WH_UoM:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/UoM/Search")}  
+            url: function(){return "WH/UoM/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/UoM")}  
+            url: function(){return "WH/UoM"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/UoM/Export")}  
+            url: function(){return "WH/UoM/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/UoM/Import")}  
+            url: function(){return "WH/UoM/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id){return "WH/UoM/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id){return "WH/UoM/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/Disable/") + id} 
+            url: function(id){return "WH/UoM/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/Enable/") + id} 
+            url: function(id){return "WH/UoM/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/UoM")}
+            url: function(){return "WH/UoM"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/UoM/ChangeBranch")} 
+            url: function(){return "WH/UoM/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/UoM/") + id} 
+            url: function(id){return "WH/UoM/" + id} 
         }
 		
 	},
@@ -11809,48 +11761,48 @@ export var APIListBase = {
 	WH_VTB_Statements:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements/Search")}  
+            url: function(){return "WH/VTB/Statements/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements")}  
+            url: function(){return "WH/VTB/Statements"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements/Export")}  
+            url: function(){return "WH/VTB/Statements/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements/Import")}  
+            url: function(){return "WH/VTB/Statements/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id){return "WH/VTB/Statements/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id){return "WH/VTB/Statements/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/Disable/") + id} 
+            url: function(id){return "WH/VTB/Statements/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/Enable/") + id} 
+            url: function(id){return "WH/VTB/Statements/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements")}
+            url: function(){return "WH/VTB/Statements"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WH/VTB/Statements/ChangeBranch")} 
+            url: function(){return "WH/VTB/Statements/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WH/VTB/Statements/") + id} 
+            url: function(id){return "WH/VTB/Statements/" + id} 
         }
 		
 	},
@@ -11858,48 +11810,48 @@ export var APIListBase = {
 	WMS_Adjustment:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment/Search")}  
+            url: function(){return "WMS/Adjustment/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment")}  
+            url: function(){return "WMS/Adjustment"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment/Export")}  
+            url: function(){return "WMS/Adjustment/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment/Import")}  
+            url: function(){return "WMS/Adjustment/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id){return "WMS/Adjustment/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id){return "WMS/Adjustment/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/Disable/") + id} 
+            url: function(id){return "WMS/Adjustment/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/Enable/") + id} 
+            url: function(id){return "WMS/Adjustment/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment")}
+            url: function(){return "WMS/Adjustment"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Adjustment/ChangeBranch")} 
+            url: function(){return "WMS/Adjustment/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Adjustment/") + id} 
+            url: function(id){return "WMS/Adjustment/" + id} 
         }
 		
 	},
@@ -11907,48 +11859,48 @@ export var APIListBase = {
 	WMS_AdjustmentDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Search")}  
+            url: function(){return "WMS/AdjustmentDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail")}  
+            url: function(){return "WMS/AdjustmentDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Export")}  
+            url: function(){return "WMS/AdjustmentDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Import")}  
+            url: function(){return "WMS/AdjustmentDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id){return "WMS/AdjustmentDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id){return "WMS/AdjustmentDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Disable/") + id} 
+            url: function(id){return "WMS/AdjustmentDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/Enable/") + id} 
+            url: function(id){return "WMS/AdjustmentDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail")}
+            url: function(){return "WMS/AdjustmentDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/AdjustmentDetail/ChangeBranch")} 
+            url: function(){return "WMS/AdjustmentDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/AdjustmentDetail/") + id} 
+            url: function(id){return "WMS/AdjustmentDetail/" + id} 
         }
 		
 	},
@@ -11956,48 +11908,48 @@ export var APIListBase = {
 	WMS_Carrier:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier/Search")}  
+            url: function(){return "WMS/Carrier/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier")}  
+            url: function(){return "WMS/Carrier"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier/Export")}  
+            url: function(){return "WMS/Carrier/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier/Import")}  
+            url: function(){return "WMS/Carrier/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id){return "WMS/Carrier/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id){return "WMS/Carrier/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/Disable/") + id} 
+            url: function(id){return "WMS/Carrier/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/Enable/") + id} 
+            url: function(id){return "WMS/Carrier/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier")}
+            url: function(){return "WMS/Carrier"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Carrier/ChangeBranch")} 
+            url: function(){return "WMS/Carrier/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carrier/") + id} 
+            url: function(id){return "WMS/Carrier/" + id} 
         }
 		
 	},
@@ -12005,48 +11957,48 @@ export var APIListBase = {
 	WMS_Carton:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton/Search")}  
+            url: function(){return "WMS/Carton/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton")}  
+            url: function(){return "WMS/Carton"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton/Export")}  
+            url: function(){return "WMS/Carton/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton/Import")}  
+            url: function(){return "WMS/Carton/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id){return "WMS/Carton/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id){return "WMS/Carton/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/Disable/") + id} 
+            url: function(id){return "WMS/Carton/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/Enable/") + id} 
+            url: function(id){return "WMS/Carton/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton")}
+            url: function(){return "WMS/Carton"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Carton/ChangeBranch")} 
+            url: function(){return "WMS/Carton/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Carton/") + id} 
+            url: function(id){return "WMS/Carton/" + id} 
         }
 		
 	},
@@ -12054,48 +12006,48 @@ export var APIListBase = {
 	WMS_CartonGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup/Search")}  
+            url: function(){return "WMS/CartonGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup")}  
+            url: function(){return "WMS/CartonGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup/Export")}  
+            url: function(){return "WMS/CartonGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup/Import")}  
+            url: function(){return "WMS/CartonGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id){return "WMS/CartonGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id){return "WMS/CartonGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/Disable/") + id} 
+            url: function(id){return "WMS/CartonGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/Enable/") + id} 
+            url: function(id){return "WMS/CartonGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup")}
+            url: function(){return "WMS/CartonGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CartonGroup/ChangeBranch")} 
+            url: function(){return "WMS/CartonGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CartonGroup/") + id} 
+            url: function(id){return "WMS/CartonGroup/" + id} 
         }
 		
 	},
@@ -12103,48 +12055,48 @@ export var APIListBase = {
 	WMS_CycleCount:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount/Search")}  
+            url: function(){return "WMS/CycleCount/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount")}  
+            url: function(){return "WMS/CycleCount"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount/Export")}  
+            url: function(){return "WMS/CycleCount/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount/Import")}  
+            url: function(){return "WMS/CycleCount/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCount/") + id} 
+            url: function(id){return "WMS/CycleCount/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCount/") + id} 
+            url: function(id){return "WMS/CycleCount/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCount/Disable/") + id} 
+            url: function(id){return "WMS/CycleCount/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCount/Enable/") + id} 
+            url: function(id){return "WMS/CycleCount/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount")}
+            url: function(){return "WMS/CycleCount"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCount/ChangeBranch")} 
+            url: function(){return "WMS/CycleCount/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCount/") + id} 
+            url: function(id){return "WMS/CycleCount/" + id} 
         }
 		
 	},
@@ -12152,48 +12104,48 @@ export var APIListBase = {
 	WMS_CycleCountDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail/Search")}  
+            url: function(){return "WMS/CycleCountDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail")}  
+            url: function(){return "WMS/CycleCountDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail/Export")}  
+            url: function(){return "WMS/CycleCountDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail/Import")}  
+            url: function(){return "WMS/CycleCountDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetail/Disable/") + id} 
+            url: function(id){return "WMS/CycleCountDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetail/Enable/") + id} 
+            url: function(id){return "WMS/CycleCountDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail")}
+            url: function(){return "WMS/CycleCountDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetail/ChangeBranch")} 
+            url: function(){return "WMS/CycleCountDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDetail/" + id} 
         }
 		
 	},
@@ -12201,48 +12153,48 @@ export var APIListBase = {
 	WMS_CycleCountDetermination:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination/Search")}  
+            url: function(){return "WMS/CycleCountDetermination/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination")}  
+            url: function(){return "WMS/CycleCountDetermination"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination/Export")}  
+            url: function(){return "WMS/CycleCountDetermination/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination/Import")}  
+            url: function(){return "WMS/CycleCountDetermination/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetermination/") + id} 
+            url: function(id){return "WMS/CycleCountDetermination/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetermination/") + id} 
+            url: function(id){return "WMS/CycleCountDetermination/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetermination/Disable/") + id} 
+            url: function(id){return "WMS/CycleCountDetermination/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetermination/Enable/") + id} 
+            url: function(id){return "WMS/CycleCountDetermination/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination")}
+            url: function(){return "WMS/CycleCountDetermination"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDetermination/ChangeBranch")} 
+            url: function(){return "WMS/CycleCountDetermination/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDetermination/") + id} 
+            url: function(id){return "WMS/CycleCountDetermination/" + id} 
         }
 		
 	},
@@ -12250,48 +12202,48 @@ export var APIListBase = {
 	WMS_CycleCountDeterminationDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/Search")}  
+            url: function(){return "WMS/CycleCountDeterminationDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail")}  
+            url: function(){return "WMS/CycleCountDeterminationDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/Export")}  
+            url: function(){return "WMS/CycleCountDeterminationDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/Import")}  
+            url: function(){return "WMS/CycleCountDeterminationDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDeterminationDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDeterminationDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/Disable/") + id} 
+            url: function(id){return "WMS/CycleCountDeterminationDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/Enable/") + id} 
+            url: function(id){return "WMS/CycleCountDeterminationDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail")}
+            url: function(){return "WMS/CycleCountDeterminationDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/ChangeBranch")} 
+            url: function(){return "WMS/CycleCountDeterminationDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountDeterminationDetail/") + id} 
+            url: function(id){return "WMS/CycleCountDeterminationDetail/" + id} 
         }
 		
 	},
@@ -12299,48 +12251,48 @@ export var APIListBase = {
 	WMS_CycleCountTask:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Search")}  
+            url: function(){return "WMS/CycleCountTask/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask")}  
+            url: function(){return "WMS/CycleCountTask"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Export")}  
+            url: function(){return "WMS/CycleCountTask/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/Import")}  
+            url: function(){return "WMS/CycleCountTask/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+            url: function(id){return "WMS/CycleCountTask/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+            url: function(id){return "WMS/CycleCountTask/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/Disable/") + id} 
+            url: function(id){return "WMS/CycleCountTask/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/Enable/") + id} 
+            url: function(id){return "WMS/CycleCountTask/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask")}
+            url: function(){return "WMS/CycleCountTask"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTask/ChangeBranch")} 
+            url: function(){return "WMS/CycleCountTask/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTask/") + id} 
+            url: function(id){return "WMS/CycleCountTask/" + id} 
         }
 		
 	},
@@ -12348,48 +12300,48 @@ export var APIListBase = {
 	WMS_CycleCountTaskDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Search")}  
+            url: function(){return "WMS/CycleCountTaskDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail")}  
+            url: function(){return "WMS/CycleCountTaskDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Export")}  
+            url: function(){return "WMS/CycleCountTaskDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Import")}  
+            url: function(){return "WMS/CycleCountTaskDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
+            url: function(id){return "WMS/CycleCountTaskDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
+            url: function(id){return "WMS/CycleCountTaskDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Disable/") + id} 
+            url: function(id){return "WMS/CycleCountTaskDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/Enable/") + id} 
+            url: function(id){return "WMS/CycleCountTaskDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail")}
+            url: function(){return "WMS/CycleCountTaskDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/ChangeBranch")} 
+            url: function(){return "WMS/CycleCountTaskDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/CycleCountTaskDetail/") + id} 
+            url: function(id){return "WMS/CycleCountTaskDetail/" + id} 
         }
 		
 	},
@@ -12397,48 +12349,48 @@ export var APIListBase = {
 	WMS_Item:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Item/Search")}  
+            url: function(){return "WMS/Item/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Item")}  
+            url: function(){return "WMS/Item"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Item/Export")}  
+            url: function(){return "WMS/Item/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Item/Import")}  
+            url: function(){return "WMS/Item/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id){return "WMS/Item/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id){return "WMS/Item/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/Disable/") + id} 
+            url: function(id){return "WMS/Item/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/Enable/") + id} 
+            url: function(id){return "WMS/Item/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Item")}
+            url: function(){return "WMS/Item"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Item/ChangeBranch")} 
+            url: function(){return "WMS/Item/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Item/") + id} 
+            url: function(id){return "WMS/Item/" + id} 
         }
 		
 	},
@@ -12446,48 +12398,48 @@ export var APIListBase = {
 	WMS_ItemGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup/Search")}  
+            url: function(){return "WMS/ItemGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup")}  
+            url: function(){return "WMS/ItemGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup/Export")}  
+            url: function(){return "WMS/ItemGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup/Import")}  
+            url: function(){return "WMS/ItemGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id){return "WMS/ItemGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id){return "WMS/ItemGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/Disable/") + id} 
+            url: function(id){return "WMS/ItemGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/Enable/") + id} 
+            url: function(id){return "WMS/ItemGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup")}
+            url: function(){return "WMS/ItemGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemGroup/ChangeBranch")} 
+            url: function(){return "WMS/ItemGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemGroup/") + id} 
+            url: function(id){return "WMS/ItemGroup/" + id} 
         }
 		
 	},
@@ -12495,48 +12447,48 @@ export var APIListBase = {
 	WMS_ItemInLocation:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation/Search")}  
+            url: function(){return "WMS/ItemInLocation/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation")}  
+            url: function(){return "WMS/ItemInLocation"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation/Export")}  
+            url: function(){return "WMS/ItemInLocation/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation/Import")}  
+            url: function(){return "WMS/ItemInLocation/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id){return "WMS/ItemInLocation/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id){return "WMS/ItemInLocation/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/Disable/") + id} 
+            url: function(id){return "WMS/ItemInLocation/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/Enable/") + id} 
+            url: function(id){return "WMS/ItemInLocation/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation")}
+            url: function(){return "WMS/ItemInLocation"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInLocation/ChangeBranch")} 
+            url: function(){return "WMS/ItemInLocation/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInLocation/") + id} 
+            url: function(id){return "WMS/ItemInLocation/" + id} 
         }
 		
 	},
@@ -12544,48 +12496,48 @@ export var APIListBase = {
 	WMS_ItemInWarehouseConfig:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Search")}  
+            url: function(){return "WMS/ItemInWarehouseConfig/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig")}  
+            url: function(){return "WMS/ItemInWarehouseConfig"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Export")}  
+            url: function(){return "WMS/ItemInWarehouseConfig/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Import")}  
+            url: function(){return "WMS/ItemInWarehouseConfig/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id){return "WMS/ItemInWarehouseConfig/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id){return "WMS/ItemInWarehouseConfig/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Disable/") + id} 
+            url: function(id){return "WMS/ItemInWarehouseConfig/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/Enable/") + id} 
+            url: function(id){return "WMS/ItemInWarehouseConfig/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig")}
+            url: function(){return "WMS/ItemInWarehouseConfig"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/ChangeBranch")} 
+            url: function(){return "WMS/ItemInWarehouseConfig/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemInWarehouseConfig/") + id} 
+            url: function(id){return "WMS/ItemInWarehouseConfig/" + id} 
         }
 		
 	},
@@ -12593,48 +12545,48 @@ export var APIListBase = {
 	WMS_ItemUoM:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM/Search")}  
+            url: function(){return "WMS/ItemUoM/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM")}  
+            url: function(){return "WMS/ItemUoM"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM/Export")}  
+            url: function(){return "WMS/ItemUoM/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM/Import")}  
+            url: function(){return "WMS/ItemUoM/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id){return "WMS/ItemUoM/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id){return "WMS/ItemUoM/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/Disable/") + id} 
+            url: function(id){return "WMS/ItemUoM/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/Enable/") + id} 
+            url: function(id){return "WMS/ItemUoM/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM")}
+            url: function(){return "WMS/ItemUoM"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ItemUoM/ChangeBranch")} 
+            url: function(){return "WMS/ItemUoM/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ItemUoM/") + id} 
+            url: function(id){return "WMS/ItemUoM/" + id} 
         }
 		
 	},
@@ -12642,48 +12594,48 @@ export var APIListBase = {
 	WMS_LicencePlateNumber:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Search")}  
+            url: function(){return "WMS/LicencePlateNumber/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber")}  
+            url: function(){return "WMS/LicencePlateNumber"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Export")}  
+            url: function(){return "WMS/LicencePlateNumber/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Import")}  
+            url: function(){return "WMS/LicencePlateNumber/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id){return "WMS/LicencePlateNumber/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id){return "WMS/LicencePlateNumber/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Disable/") + id} 
+            url: function(id){return "WMS/LicencePlateNumber/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/Enable/") + id} 
+            url: function(id){return "WMS/LicencePlateNumber/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber")}
+            url: function(){return "WMS/LicencePlateNumber"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LicencePlateNumber/ChangeBranch")} 
+            url: function(){return "WMS/LicencePlateNumber/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LicencePlateNumber/") + id} 
+            url: function(id){return "WMS/LicencePlateNumber/" + id} 
         }
 		
 	},
@@ -12691,48 +12643,48 @@ export var APIListBase = {
 	WMS_Location:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Location/Search")}  
+            url: function(){return "WMS/Location/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Location")}  
+            url: function(){return "WMS/Location"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Location/Export")}  
+            url: function(){return "WMS/Location/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Location/Import")}  
+            url: function(){return "WMS/Location/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id){return "WMS/Location/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id){return "WMS/Location/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/Disable/") + id} 
+            url: function(id){return "WMS/Location/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/Enable/") + id} 
+            url: function(id){return "WMS/Location/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Location")}
+            url: function(){return "WMS/Location"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Location/ChangeBranch")} 
+            url: function(){return "WMS/Location/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Location/") + id} 
+            url: function(id){return "WMS/Location/" + id} 
         }
 		
 	},
@@ -12740,48 +12692,48 @@ export var APIListBase = {
 	WMS_Lot:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot/Search")}  
+            url: function(){return "WMS/Lot/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot")}  
+            url: function(){return "WMS/Lot"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot/Export")}  
+            url: function(){return "WMS/Lot/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot/Import")}  
+            url: function(){return "WMS/Lot/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id){return "WMS/Lot/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id){return "WMS/Lot/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/Disable/") + id} 
+            url: function(id){return "WMS/Lot/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/Enable/") + id} 
+            url: function(id){return "WMS/Lot/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot")}
+            url: function(){return "WMS/Lot"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Lot/ChangeBranch")} 
+            url: function(){return "WMS/Lot/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Lot/") + id} 
+            url: function(id){return "WMS/Lot/" + id} 
         }
 		
 	},
@@ -12789,48 +12741,48 @@ export var APIListBase = {
 	WMS_LotAttribute:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute/Search")}  
+            url: function(){return "WMS/LotAttribute/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute")}  
+            url: function(){return "WMS/LotAttribute"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute/Export")}  
+            url: function(){return "WMS/LotAttribute/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute/Import")}  
+            url: function(){return "WMS/LotAttribute/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id){return "WMS/LotAttribute/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id){return "WMS/LotAttribute/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/Disable/") + id} 
+            url: function(id){return "WMS/LotAttribute/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/Enable/") + id} 
+            url: function(id){return "WMS/LotAttribute/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute")}
+            url: function(){return "WMS/LotAttribute"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LotAttribute/ChangeBranch")} 
+            url: function(){return "WMS/LotAttribute/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotAttribute/") + id} 
+            url: function(id){return "WMS/LotAttribute/" + id} 
         }
 		
 	},
@@ -12838,48 +12790,48 @@ export var APIListBase = {
 	WMS_LotLPNLocation:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation/Search")}  
+            url: function(){return "WMS/LotLPNLocation/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation")}  
+            url: function(){return "WMS/LotLPNLocation"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation/Export")}  
+            url: function(){return "WMS/LotLPNLocation/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation/Import")}  
+            url: function(){return "WMS/LotLPNLocation/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id){return "WMS/LotLPNLocation/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id){return "WMS/LotLPNLocation/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/Disable/") + id} 
+            url: function(id){return "WMS/LotLPNLocation/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/Enable/") + id} 
+            url: function(id){return "WMS/LotLPNLocation/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation")}
+            url: function(){return "WMS/LotLPNLocation"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/LotLPNLocation/ChangeBranch")} 
+            url: function(){return "WMS/LotLPNLocation/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/LotLPNLocation/") + id} 
+            url: function(id){return "WMS/LotLPNLocation/" + id} 
         }
 		
 	},
@@ -12887,48 +12839,48 @@ export var APIListBase = {
 	WMS_PriceList:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList/Search")}  
+            url: function(){return "WMS/PriceList/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList")}  
+            url: function(){return "WMS/PriceList"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList/Export")}  
+            url: function(){return "WMS/PriceList/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList/Import")}  
+            url: function(){return "WMS/PriceList/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id){return "WMS/PriceList/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id){return "WMS/PriceList/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/Disable/") + id} 
+            url: function(id){return "WMS/PriceList/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/Enable/") + id} 
+            url: function(id){return "WMS/PriceList/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList")}
+            url: function(){return "WMS/PriceList"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceList/ChangeBranch")} 
+            url: function(){return "WMS/PriceList/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceList/") + id} 
+            url: function(id){return "WMS/PriceList/" + id} 
         }
 		
 	},
@@ -12936,48 +12888,48 @@ export var APIListBase = {
 	WMS_PriceListDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail/Search")}  
+            url: function(){return "WMS/PriceListDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail")}  
+            url: function(){return "WMS/PriceListDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail/Export")}  
+            url: function(){return "WMS/PriceListDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail/Import")}  
+            url: function(){return "WMS/PriceListDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id){return "WMS/PriceListDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id){return "WMS/PriceListDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/Disable/") + id} 
+            url: function(id){return "WMS/PriceListDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/Enable/") + id} 
+            url: function(id){return "WMS/PriceListDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail")}
+            url: function(){return "WMS/PriceListDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListDetail/ChangeBranch")} 
+            url: function(){return "WMS/PriceListDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListDetail/") + id} 
+            url: function(id){return "WMS/PriceListDetail/" + id} 
         }
 		
 	},
@@ -12985,48 +12937,48 @@ export var APIListBase = {
 	WMS_PriceListVersion:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion/Search")}  
+            url: function(){return "WMS/PriceListVersion/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion")}  
+            url: function(){return "WMS/PriceListVersion"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion/Export")}  
+            url: function(){return "WMS/PriceListVersion/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion/Import")}  
+            url: function(){return "WMS/PriceListVersion/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id){return "WMS/PriceListVersion/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id){return "WMS/PriceListVersion/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/Disable/") + id} 
+            url: function(id){return "WMS/PriceListVersion/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/Enable/") + id} 
+            url: function(id){return "WMS/PriceListVersion/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion")}
+            url: function(){return "WMS/PriceListVersion"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersion/ChangeBranch")} 
+            url: function(){return "WMS/PriceListVersion/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersion/") + id} 
+            url: function(id){return "WMS/PriceListVersion/" + id} 
         }
 		
 	},
@@ -13034,48 +12986,48 @@ export var APIListBase = {
 	WMS_PriceListVersionDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Search")}  
+            url: function(){return "WMS/PriceListVersionDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail")}  
+            url: function(){return "WMS/PriceListVersionDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Export")}  
+            url: function(){return "WMS/PriceListVersionDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Import")}  
+            url: function(){return "WMS/PriceListVersionDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id){return "WMS/PriceListVersionDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id){return "WMS/PriceListVersionDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Disable/") + id} 
+            url: function(id){return "WMS/PriceListVersionDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/Enable/") + id} 
+            url: function(id){return "WMS/PriceListVersionDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail")}
+            url: function(){return "WMS/PriceListVersionDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/ChangeBranch")} 
+            url: function(){return "WMS/PriceListVersionDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PriceListVersionDetail/") + id} 
+            url: function(id){return "WMS/PriceListVersionDetail/" + id} 
         }
 		
 	},
@@ -13083,48 +13035,48 @@ export var APIListBase = {
 	WMS_PutawayStrategy:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy/Search")}  
+            url: function(){return "WMS/PutawayStrategy/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy")}  
+            url: function(){return "WMS/PutawayStrategy"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy/Export")}  
+            url: function(){return "WMS/PutawayStrategy/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy/Import")}  
+            url: function(){return "WMS/PutawayStrategy/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id){return "WMS/PutawayStrategy/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id){return "WMS/PutawayStrategy/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/Disable/") + id} 
+            url: function(id){return "WMS/PutawayStrategy/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/Enable/") + id} 
+            url: function(id){return "WMS/PutawayStrategy/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy")}
+            url: function(){return "WMS/PutawayStrategy"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategy/ChangeBranch")} 
+            url: function(){return "WMS/PutawayStrategy/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategy/") + id} 
+            url: function(id){return "WMS/PutawayStrategy/" + id} 
         }
 		
 	},
@@ -13132,48 +13084,48 @@ export var APIListBase = {
 	WMS_PutawayStrategyDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Search")}  
+            url: function(){return "WMS/PutawayStrategyDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail")}  
+            url: function(){return "WMS/PutawayStrategyDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Export")}  
+            url: function(){return "WMS/PutawayStrategyDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Import")}  
+            url: function(){return "WMS/PutawayStrategyDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id){return "WMS/PutawayStrategyDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id){return "WMS/PutawayStrategyDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Disable/") + id} 
+            url: function(id){return "WMS/PutawayStrategyDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/Enable/") + id} 
+            url: function(id){return "WMS/PutawayStrategyDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail")}
+            url: function(){return "WMS/PutawayStrategyDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/ChangeBranch")} 
+            url: function(){return "WMS/PutawayStrategyDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/PutawayStrategyDetail/") + id} 
+            url: function(id){return "WMS/PutawayStrategyDetail/" + id} 
         }
 		
 	},
@@ -13181,48 +13133,48 @@ export var APIListBase = {
 	WMS_Receipt:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt/Search")}  
+            url: function(){return "WMS/Receipt/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt")}  
+            url: function(){return "WMS/Receipt"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt/Export")}  
+            url: function(){return "WMS/Receipt/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt/Import")}  
+            url: function(){return "WMS/Receipt/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id){return "WMS/Receipt/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id){return "WMS/Receipt/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/Disable/") + id} 
+            url: function(id){return "WMS/Receipt/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/Enable/") + id} 
+            url: function(id){return "WMS/Receipt/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt")}
+            url: function(){return "WMS/Receipt"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Receipt/ChangeBranch")} 
+            url: function(){return "WMS/Receipt/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Receipt/") + id} 
+            url: function(id){return "WMS/Receipt/" + id} 
         }
 		
 	},
@@ -13230,48 +13182,48 @@ export var APIListBase = {
 	WMS_ReceiptDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail/Search")}  
+            url: function(){return "WMS/ReceiptDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail")}  
+            url: function(){return "WMS/ReceiptDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail/Export")}  
+            url: function(){return "WMS/ReceiptDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail/Import")}  
+            url: function(){return "WMS/ReceiptDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id){return "WMS/ReceiptDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id){return "WMS/ReceiptDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/Disable/") + id} 
+            url: function(id){return "WMS/ReceiptDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/Enable/") + id} 
+            url: function(id){return "WMS/ReceiptDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail")}
+            url: function(){return "WMS/ReceiptDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptDetail/ChangeBranch")} 
+            url: function(){return "WMS/ReceiptDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptDetail/") + id} 
+            url: function(id){return "WMS/ReceiptDetail/" + id} 
         }
 		
 	},
@@ -13279,48 +13231,48 @@ export var APIListBase = {
 	WMS_ReceiptPalletization:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Search")}  
+            url: function(){return "WMS/ReceiptPalletization/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization")}  
+            url: function(){return "WMS/ReceiptPalletization"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Export")}  
+            url: function(){return "WMS/ReceiptPalletization/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Import")}  
+            url: function(){return "WMS/ReceiptPalletization/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id){return "WMS/ReceiptPalletization/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id){return "WMS/ReceiptPalletization/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Disable/") + id} 
+            url: function(id){return "WMS/ReceiptPalletization/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/Enable/") + id} 
+            url: function(id){return "WMS/ReceiptPalletization/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization")}
+            url: function(){return "WMS/ReceiptPalletization"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/ReceiptPalletization/ChangeBranch")} 
+            url: function(){return "WMS/ReceiptPalletization/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/ReceiptPalletization/") + id} 
+            url: function(id){return "WMS/ReceiptPalletization/" + id} 
         }
 		
 	},
@@ -13328,48 +13280,48 @@ export var APIListBase = {
 	WMS_Storer:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer/Search")}  
+            url: function(){return "WMS/Storer/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer")}  
+            url: function(){return "WMS/Storer"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer/Export")}  
+            url: function(){return "WMS/Storer/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer/Import")}  
+            url: function(){return "WMS/Storer/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id){return "WMS/Storer/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id){return "WMS/Storer/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/Disable/") + id} 
+            url: function(id){return "WMS/Storer/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/Enable/") + id} 
+            url: function(id){return "WMS/Storer/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer")}
+            url: function(){return "WMS/Storer"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Storer/ChangeBranch")} 
+            url: function(){return "WMS/Storer/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Storer/") + id} 
+            url: function(id){return "WMS/Storer/" + id} 
         }
 		
 	},
@@ -13377,48 +13329,48 @@ export var APIListBase = {
 	WMS_TaskDispatchStrategy:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Search")}  
+            url: function(){return "WMS/TaskDispatchStrategy/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy")}  
+            url: function(){return "WMS/TaskDispatchStrategy"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Export")}  
+            url: function(){return "WMS/TaskDispatchStrategy/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Import")}  
+            url: function(){return "WMS/TaskDispatchStrategy/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategy/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategy/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Disable/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategy/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/Enable/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategy/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy")}
+            url: function(){return "WMS/TaskDispatchStrategy"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/ChangeBranch")} 
+            url: function(){return "WMS/TaskDispatchStrategy/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategy/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategy/" + id} 
         }
 		
 	},
@@ -13426,48 +13378,48 @@ export var APIListBase = {
 	WMS_TaskDispatchStrategyDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Search")}  
+            url: function(){return "WMS/TaskDispatchStrategyDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail")}  
+            url: function(){return "WMS/TaskDispatchStrategyDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Export")}  
+            url: function(){return "WMS/TaskDispatchStrategyDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Import")}  
+            url: function(){return "WMS/TaskDispatchStrategyDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategyDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategyDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Disable/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategyDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/Enable/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategyDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail")}
+            url: function(){return "WMS/TaskDispatchStrategyDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/ChangeBranch")} 
+            url: function(){return "WMS/TaskDispatchStrategyDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/TaskDispatchStrategyDetail/") + id} 
+            url: function(id){return "WMS/TaskDispatchStrategyDetail/" + id} 
         }
 		
 	},
@@ -13475,48 +13427,48 @@ export var APIListBase = {
 	WMS_Transaction:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction/Search")}  
+            url: function(){return "WMS/Transaction/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction")}  
+            url: function(){return "WMS/Transaction"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction/Export")}  
+            url: function(){return "WMS/Transaction/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction/Import")}  
+            url: function(){return "WMS/Transaction/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id){return "WMS/Transaction/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id){return "WMS/Transaction/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/Disable/") + id} 
+            url: function(id){return "WMS/Transaction/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/Enable/") + id} 
+            url: function(id){return "WMS/Transaction/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction")}
+            url: function(){return "WMS/Transaction"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Transaction/ChangeBranch")} 
+            url: function(){return "WMS/Transaction/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Transaction/") + id} 
+            url: function(id){return "WMS/Transaction/" + id} 
         }
 		
 	},
@@ -13524,48 +13476,48 @@ export var APIListBase = {
 	WMS_UoM:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM/Search")}  
+            url: function(){return "WMS/UoM/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM")}  
+            url: function(){return "WMS/UoM"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM/Export")}  
+            url: function(){return "WMS/UoM/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM/Import")}  
+            url: function(){return "WMS/UoM/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id){return "WMS/UoM/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id){return "WMS/UoM/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/Disable/") + id} 
+            url: function(id){return "WMS/UoM/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/Enable/") + id} 
+            url: function(id){return "WMS/UoM/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM")}
+            url: function(){return "WMS/UoM"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/UoM/ChangeBranch")} 
+            url: function(){return "WMS/UoM/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoM/") + id} 
+            url: function(id){return "WMS/UoM/" + id} 
         }
 		
 	},
@@ -13573,48 +13525,48 @@ export var APIListBase = {
 	WMS_UoMGroup:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup/Search")}  
+            url: function(){return "WMS/UoMGroup/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup")}  
+            url: function(){return "WMS/UoMGroup"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup/Export")}  
+            url: function(){return "WMS/UoMGroup/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup/Import")}  
+            url: function(){return "WMS/UoMGroup/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id){return "WMS/UoMGroup/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id){return "WMS/UoMGroup/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/Disable/") + id} 
+            url: function(id){return "WMS/UoMGroup/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/Enable/") + id} 
+            url: function(id){return "WMS/UoMGroup/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup")}
+            url: function(){return "WMS/UoMGroup"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/UoMGroup/ChangeBranch")} 
+            url: function(){return "WMS/UoMGroup/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/UoMGroup/") + id} 
+            url: function(id){return "WMS/UoMGroup/" + id} 
         }
 		
 	},
@@ -13622,48 +13574,48 @@ export var APIListBase = {
 	WMS_Vendor:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor/Search")}  
+            url: function(){return "WMS/Vendor/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor")}  
+            url: function(){return "WMS/Vendor"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor/Export")}  
+            url: function(){return "WMS/Vendor/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor/Import")}  
+            url: function(){return "WMS/Vendor/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id){return "WMS/Vendor/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id){return "WMS/Vendor/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/Disable/") + id} 
+            url: function(id){return "WMS/Vendor/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/Enable/") + id} 
+            url: function(id){return "WMS/Vendor/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor")}
+            url: function(){return "WMS/Vendor"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Vendor/ChangeBranch")} 
+            url: function(){return "WMS/Vendor/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Vendor/") + id} 
+            url: function(id){return "WMS/Vendor/" + id} 
         }
 		
 	},
@@ -13671,48 +13623,48 @@ export var APIListBase = {
 	WMS_WarehouseInfo:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo/Search")}  
+            url: function(){return "WMS/WarehouseInfo/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo")}  
+            url: function(){return "WMS/WarehouseInfo"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo/Export")}  
+            url: function(){return "WMS/WarehouseInfo/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo/Import")}  
+            url: function(){return "WMS/WarehouseInfo/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id){return "WMS/WarehouseInfo/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id){return "WMS/WarehouseInfo/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/Disable/") + id} 
+            url: function(id){return "WMS/WarehouseInfo/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/Enable/") + id} 
+            url: function(id){return "WMS/WarehouseInfo/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo")}
+            url: function(){return "WMS/WarehouseInfo"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/WarehouseInfo/ChangeBranch")} 
+            url: function(){return "WMS/WarehouseInfo/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/WarehouseInfo/") + id} 
+            url: function(id){return "WMS/WarehouseInfo/" + id} 
         }
 		
 	},
@@ -13720,48 +13672,48 @@ export var APIListBase = {
 	WMS_WavePlanning:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning/Search")}  
+            url: function(){return "WMS/WavePlanning/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning")}  
+            url: function(){return "WMS/WavePlanning"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning/Export")}  
+            url: function(){return "WMS/WavePlanning/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning/Import")}  
+            url: function(){return "WMS/WavePlanning/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id){return "WMS/WavePlanning/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id){return "WMS/WavePlanning/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/Disable/") + id} 
+            url: function(id){return "WMS/WavePlanning/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/Enable/") + id} 
+            url: function(id){return "WMS/WavePlanning/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning")}
+            url: function(){return "WMS/WavePlanning"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/WavePlanning/ChangeBranch")} 
+            url: function(){return "WMS/WavePlanning/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/WavePlanning/") + id} 
+            url: function(id){return "WMS/WavePlanning/" + id} 
         }
 		
 	},
@@ -13769,48 +13721,97 @@ export var APIListBase = {
 	WMS_Zone:{
         getSearchList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone/Search")}  
+            url: function(){return "WMS/Zone/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone")}  
+            url: function(){return "WMS/Zone"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone/Export")}  
+            url: function(){return "WMS/Zone/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone/Import")}  
+            url: function(){return "WMS/Zone/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id){return "WMS/Zone/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id){return "WMS/Zone/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/Disable/") + id} 
+            url: function(id){return "WMS/Zone/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/Enable/") + id} 
+            url: function(id){return "WMS/Zone/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone")}
+            url: function(){return "WMS/Zone"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return ApiSetting.apiDomain("WMS/Zone/ChangeBranch")} 
+            url: function(){return "WMS/Zone/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return ApiSetting.apiDomain("WMS/Zone/") + id} 
+            url: function(id){return "WMS/Zone/" + id} 
+        }
+		
+	},
+
+	vw_SYS_SyncJob:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/SYS/SyncJob/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/SYS/SyncJob"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/SYS/SyncJob/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/SYS/SyncJob/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/SYS/SyncJob/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/SyncJob/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/SyncJob/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/SyncJob/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/SYS/SyncJob"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/SYS/SyncJob/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/SYS/SyncJob/" + id} 
         }
 		
 	},

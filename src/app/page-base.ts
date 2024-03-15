@@ -6,6 +6,7 @@ import introJs from 'intro.js/intro.js';
 import { APIList, GlobalData } from './services/static/global-variable';
 import { PopoverPage } from "./pages/SYS/popover/popover.page";
 import { Subscription } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Component({
     template: '',
@@ -324,7 +325,7 @@ export abstract class PageBase implements OnInit {
                         message += '<br> ' + e.Id + '. Tại dòng ' + e.Line + ': ' + e.Message;
                     }
                 this.env.showPrompt('Có ' + resp.ErrorList.length + ' lỗi khi import:' + message, 'Bạn có muốn xem lại các mục bị lỗi?', 'Có lỗi import dữ liệu').then(_=>{
-                    this.downloadURLContent(ApiSetting.mainService.base + resp.FileUrl);
+                    this.downloadURLContent(resp.FileUrl);
                 }).catch(e => { });
             }
             else {
@@ -336,7 +337,7 @@ export abstract class PageBase implements OnInit {
                 // var contentDispositionHeader = err.headers.get('Content-Disposition');
                 // var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
                 // this.downloadContent(result.replace(/"/g, ''),err._body);
-                this.downloadURLContent(ApiSetting.mainService.base + err._body);
+                this.downloadURLContent(err._body);
             }
         })
 
@@ -348,7 +349,7 @@ export abstract class PageBase implements OnInit {
         this.submitAttempt = true;
         this.env.showLoading('Vui lòng chờ export dữ liệu...', this.pageProvider.export(this.query))
         .then((response: any) => {
-            this.downloadURLContent(ApiSetting.mainService.base + response);
+            this.downloadURLContent(response);
             this.submitAttempt = false;
         }).catch(err => {
             this.submitAttempt = false;
@@ -356,7 +357,7 @@ export abstract class PageBase implements OnInit {
     }
 
     download(url) {
-        this.downloadURLContent(ApiSetting.mainService.base + url);
+        this.downloadURLContent(url);
     }
     private getAPIPathByPageName(pageName) {
         let apiPath = null;
@@ -379,6 +380,9 @@ export abstract class PageBase implements OnInit {
         document.body.removeChild(pom);
     }
     downloadURLContent(url) {
+        if(url.indexOf('http') == -1){
+            url = environment.appDomain + url;
+        }
         var pom = document.createElement('a');
         pom.setAttribute('target', '_blank');
         pom.setAttribute('href', url);

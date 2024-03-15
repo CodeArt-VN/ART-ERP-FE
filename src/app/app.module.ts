@@ -6,7 +6,8 @@ import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/co
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+
 import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ShareModule } from './share.module';
@@ -114,8 +115,9 @@ export function createTranslateLoader(http: HttpClient) {
     //SplashScreen,
     //BarcodeScanner,
     //Geolocation,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     //{ provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: APP_BASE_HREF, useValue: `/` },//{ provide: APP_BASE_HREF, useValue: `/v${environment.appVersion}` },
   ],
   bootstrap: [AppComponent],
 })

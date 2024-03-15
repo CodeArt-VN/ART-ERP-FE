@@ -373,6 +373,40 @@
   </ion-split-pane>
 
   <div class="app-footer">
+    <span id="change-app-server" class="text" *ngIf="!env.user?.Id">
+      <ion-icon color="danger" name="server"></ion-icon>
+      <span>{{ 'Change server' | translate }}</span>
+
+      <!-- environment.appDomain = appDomain; -->
+
+      <ion-popover trigger="change-app-server" triggerAction="click" class="w300" [dismissOnSelect]="true">
+        <ng-template>
+          <ion-content scroll-y="false">
+            <ion-list>
+              <ion-list-header>
+                <ion-label>{{ 'Change server' | translate }}</ion-label>
+              </ion-list-header>
+              <ion-item *ngFor="let s of _environment.appServers" button detail="false" (click)="changeServer(s)">
+                <ion-icon aria-hidden="true" [color]="s.Color" [name]="s.Icon" slot="start" size="small"></ion-icon>
+                <ion-label>
+                  <h2>{{ s.Name }}</h2>
+                  <p>{{ s.Code }}</p>
+                </ion-label>
+                <ion-icon
+                  name="checkmark-circle-outline"
+                  slot="end"
+                  color="success"
+                  *ngIf="_environment.appDomain == s.Code"
+                ></ion-icon>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+  
+    </span>
+
+   
     <a
       class="text"
       (click)="goToPage('/profile', $event, 'forward')"
@@ -381,9 +415,8 @@
       >{{ env.user.UserName }}</a
     >
     <a class="text" href=".">{{ appVersion }} </a>
-    <span class="text float-right">
+    <span class="text float-right" *ngIf="!env.networkInfo.isOnline">
       <ion-icon [color]="env.networkInfo.isOnline ? 'success' : 'danger'" name="wifi"></ion-icon>
-      <!-- <span *ngIf="!env.networkInfo.isOnline"> rớt mạng...</span> -->
     </span>
     <span
       *ngIf="!env.language.isDefault"
@@ -403,10 +436,10 @@
     <!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">
 			<ion-icon color="danger" name="alert-circle"></ion-icon>
 		</span> -->
-    <span class="text float-right">
+    <!-- <span class="text float-right">
       <ion-icon color="warning" name="notifications"></ion-icon>
       <span>10</span>
-    </span>
+    </span> -->
 
     <span class="text float-right" *ngFor="let m of appMessages">
       <ion-icon [ngClass]="{ blink: m.IsBlink }" [color]="m.Color" [name]="m.Icon"></ion-icon>

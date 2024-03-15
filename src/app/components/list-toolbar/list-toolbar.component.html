@@ -140,7 +140,7 @@
       <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
     </ion-button>
     <ion-button *ngIf="ShowFeature" title="{{ 'ShowFeature' | translate }}" (click)="toggleFeature()">
-      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'close-outline' : 'list-circle-outline'"></ion-icon>
+      <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature ? 'panel-right-active' : 'panel-right'"></ion-icon>
     </ion-button>
   </ion-buttons>
   <ion-buttons
