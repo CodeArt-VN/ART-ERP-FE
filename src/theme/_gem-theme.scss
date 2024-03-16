@@ -63,8 +63,8 @@
 	--ion-item-background: transparent;
 	--ion-item-background-activated: transparent;
 
-	$wide-logo-url: "../assets/logos/logo-gem-cafe.png";
-	$small-logo-url: "../assets/logos/logo-gem-center-small.png";
+	$wide-logo-url: "/assets/logos/logo-gem-cafe.png";
+	$small-logo-url: "/assets/logos/logo-gem-center-small.png";
 
 	.login {
 		.logo-contain {
@@ -99,7 +99,7 @@
 			}
 		}
 
-		&.min {
+		&.compact-menu {
 			.app-logo-wrapper {
 				.app-logo {
 					background-image: url($small-logo-url) !important;
@@ -108,11 +108,11 @@
 		}
 	}
 
-	ion-segment-button {
-		--ion-background-color: var(--ion-color-secondary); //segment selected background
-		--ion-background-color-rgb: var(--ion-color-secondary-rgb);
-		--color-checked: var(--ion-color-secondary-contrast);
-	}
+	// ion-segment-button {
+	// 	--ion-background-color: var(--ion-color-secondary); //segment selected background
+	// 	--ion-background-color-rgb: var(--ion-color-secondary-rgb);
+	// 	--color-checked: var(--ion-color-secondary-contrast);
+	// }
 
 	&.dark {
 		// #region ionic colors
@@ -199,7 +199,7 @@
 		--ion-color-step-900: #e6e6e6;
 		--ion-color-step-950: #f2f2f2;
 
-		$wide-logo-url: "../assets/logos/logo-gem-cafe-white.png";
+		$wide-logo-url: "/assets/logos/logo-gem-cafe-white.png";
 
 		.login {
 			.logo {
@@ -214,7 +214,7 @@
 				}
 			}
 
-			&.min {
+			&.compact-menu {
 				.app-logo-wrapper {
 					.app-logo {
 						background-image: url($small-logo-url) !important;
@@ -230,13 +230,13 @@
 	}
 
 	.splash {
-		background: url("../assets/IN-splash.jpg") rgba(148, 148, 148, 0.32);
+		background: url("/assets/IN-splash.jpg") rgba(148, 148, 148, 0.32);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
 		background-blend-mode: soft-light;
 		.random-img {
-			background-image: url("../assets/logos/logo-gem-cafe-white.png") !important;
+			background-image: url("/assets/logos/logo-gem-cafe-white.png") !important;
 			height: 115px;
 			width: 70vw;
 			background-repeat: no-repeat;

@@ -64,8 +64,8 @@
 	--ion-item-background: transparent;
 	--ion-item-background-activated: transparent;
 
-	$wide-logo-url: "../assets/logos/logo-in-holdings.png";
-	$small-logo-url: "../assets/logos/logo-in-square.png";
+	$wide-logo-url: "/assets/logos/logo-in-holdings.png";
+	$small-logo-url: "/assets/logos/logo-in-square.png";
 
 	.login {
 		.logo-contain {
@@ -100,7 +100,7 @@
 			}
 		}
 
-		&.min {
+		&.compact-menu {
 			.app-logo-wrapper {
 				.app-logo {
 					background-image: url($small-logo-url) !important;

@@ -62,8 +62,8 @@
 	--ion-item-background: transparent;
 	--ion-item-background-activated: transparent;
 
-	$wide-logo-url: "../assets/logos/logo-the-log-white.png";
-	$small-logo-url: "../assets/logos/logo-the-log.png";
+	$wide-logo-url: "/assets/logos/logo-the-log-white.png";
+	$small-logo-url: "/assets/logos/logo-the-log.png";
 
 	.login {
 		.logo-contain {
@@ -99,7 +99,7 @@
 			}
 		}
 
-		&.min {
+		&.compact-menu {
 			.app-logo-wrapper {
 				.app-logo {
 					width: 100% !important;
@@ -110,9 +110,9 @@
 		}
 	}
 
-	ion-segment-button {
-		--ion-background-color: var(--ion-color-secondary); //segment selected background
-		--ion-background-color-rgb: var(--ion-color-secondary-rgb);
-		--color-checked: var(--ion-color-secondary-contrast);
-	}
+	// ion-segment-button {
+	// 	--ion-background-color: var(--ion-color-secondary); //segment selected background
+	// 	--ion-background-color-rgb: var(--ion-color-secondary-rgb);
+	// 	--color-checked: var(--ion-color-secondary-contrast);
+	// }
 }
