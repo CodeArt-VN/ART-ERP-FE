@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 export class DetailToolbarComponent implements OnInit {
   @Input() page;
   @Input() title;
-	@Input() BackHref;
+  @Input() BackHref;
   @Input() ShowFeature = false;
   @Input() ShowDelete = true;
   @Input() ShowHelp = true;
@@ -19,21 +19,17 @@ export class DetailToolbarComponent implements OnInit {
   @Output() help = new EventEmitter();
 
   pageConfig = {};
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     console.log(this.page);
     this.pageConfig = this.page?.pageConfig;
   }
-  
+
   emit(eventName) {
-		this[eventName].emit();
-	}
+    this[eventName].emit();
+  }
 }
-
-
-
-
 
 // <ion-buttons slot="end">
 //   <ion-button (click)="refresh()" title="Refresh">

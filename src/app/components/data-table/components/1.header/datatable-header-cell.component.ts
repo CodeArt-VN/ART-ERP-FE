@@ -1,99 +1,95 @@
-
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+} from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
 import { SortConfig } from 'src/app/models/options-interface';
 
-
-
-
-
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'datatable-header-cell',
-    templateUrl: './datatable-header-cell.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'datatable-header-cell',
+  templateUrl: './datatable-header-cell.component.html',
 })
 export class DataTableHeaderCellComponent {
-    _column: TableColumn;
+  _column: TableColumn;
 
-    @Input() set column(column: TableColumn) {
-        this._column = column;
+  @Input() set column(column: TableColumn) {
+    this._column = column;
+  }
+
+  get column(): TableColumn {
+    return this._column;
+  }
+
+  @Input() filterValue: any = {};
+
+  @HostBinding('style.height.px')
+  @Input()
+  headerHeight: number;
+  @Output() select: EventEmitter<any> = new EventEmitter();
+  @Output() columnContextmenu = new EventEmitter<{
+    event: MouseEvent;
+    column: any;
+  }>(false);
+
+  @HostBinding('class')
+  get columnCssClasses(): any {
+    let cls = '';
+    if (this.column.class) {
+      cls += ' ' + this.column.class;
+    }
+    if (this.column.headerClass) {
+      cls += ' ' + this.column.headerClass;
     }
 
+    return cls;
+  }
 
-    get column(): TableColumn {
-        return this._column;
-    }
+  @HostBinding('attr.title')
+  get name(): string {
+    // guaranteed to have a value by setColumnDefaults() in column-helper.ts
+    return this.column.headerTemplate === undefined ? this.column.name : undefined;
+  }
 
-    @Input() filterValue: any = {};
+  @HostBinding('style.minWidth.px')
+  get minWidth(): number {
+    return this.column.minWidth;
+  }
 
-    @HostBinding('style.height.px')
-    @Input() headerHeight: number;
-    @Output() select: EventEmitter<any> = new EventEmitter();
-    @Output() columnContextmenu = new EventEmitter<{ event: MouseEvent; column: any }>(false);
+  @HostBinding('style.maxWidth.px')
+  get maxWidth(): number {
+    return this.column.maxWidth;
+  }
 
-    @HostBinding('class')
-    get columnCssClasses(): any {
-        let cls = '';
-        if (this.column.class) {
-            cls += ' ' + this.column.class;
-        }
-        if (this.column.headerClass) {
-            cls += ' ' + this.column.headerClass;
-        }
+  @HostBinding('style.width.px')
+  get width(): number {
+    return this.column.width;
+  }
 
-        return cls;
-    }
+  constructor(private cd: ChangeDetectorRef) {}
 
-    @HostBinding('attr.title')
-    get name(): string {
-        // guaranteed to have a value by setColumnDefaults() in column-helper.ts
-        return this.column.headerTemplate === undefined ? this.column.name : undefined;
-    }
+  ngOnInit() {}
 
-    @HostBinding('style.minWidth.px')
-    get minWidth(): number {
-        return this.column.minWidth;
-    }
+  @Input() sortOrder: 'ASC' | 'DESC' | '' = '';
 
-    @HostBinding('style.maxWidth.px')
-    get maxWidth(): number {
-        return this.column.maxWidth;
-    }
+  @Output() sort: EventEmitter<any> = new EventEmitter();
 
-    @HostBinding('style.width.px')
-    get width(): number {
-        return this.column.width;
-    }
+  onSort() {
+    if (!this._column.canSort) return;
 
+    if (!this.sortOrder) this.sortOrder = 'ASC';
+    else if (this.sortOrder == 'ASC') this.sortOrder = 'DESC';
+    else this.sortOrder = '';
 
-    constructor(private cd: ChangeDetectorRef) {
-
-    }
-
-    ngOnInit() {
-
-    }
-
-    @Input() sortOrder: 'ASC' | 'DESC' | '' = '';
-
-    @Output() sort: EventEmitter<any> = new EventEmitter();
-
-    onSort() {
-        if (!this._column.canSort) return;
-        
-        if (!this.sortOrder) 
-            this.sortOrder = 'ASC';
-        else if(this.sortOrder == 'ASC')
-            this.sortOrder = 'DESC';
-        else
-            this.sortOrder = '';
-
-        let sortElment: SortConfig = { Dimension: this.column.property, Order: this.sortOrder };
-        this.sort.emit(sortElment);
-        
-    }
-
-
-
-
+    let sortElment: SortConfig = {
+      Dimension: this.column.property,
+      Order: this.sortOrder,
+    };
+    this.sort.emit(sortElment);
+  }
 }

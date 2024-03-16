@@ -24,10 +24,9 @@ export class DataTableHeaderComponent implements OnInit {
   @Input() formGroup: FormGroup;
   @Input() query: any = {};
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
-
+  ngOnInit() {}
 
   @Output() filterInputChange: EventEmitter<any> = new EventEmitter();
   onFilterInputChange(e) {
@@ -35,29 +34,25 @@ export class DataTableHeaderComponent implements OnInit {
   }
 
   @Output() filterFieldReset: EventEmitter<any> = new EventEmitter();
-  onFilterFieldReset(){
-      this.filterFieldReset.emit();
+  onFilterFieldReset() {
+    this.filterFieldReset.emit();
   }
 
   dataTransform: Transform = {
     Filter: {},
-    Sort: []
+    Sort: [],
   };
 
   @Output() sort: EventEmitter<any> = new EventEmitter();
-  onSort(event:SortConfig){
-    let sortElment = this.dataTransform.Sort.find(d=>d.Dimension == event.Dimension);
+  onSort(event: SortConfig) {
+    let sortElment = this.dataTransform.Sort.find((d) => d.Dimension == event.Dimension);
     if (!sortElment) {
       this.dataTransform.Sort.push(event);
-    }
-    else{
+    } else {
       sortElment.Order = event.Order;
     }
-    this.dataTransform.Sort = this.dataTransform.Sort.filter(d=>d.Order != '');
-
+    this.dataTransform.Sort = this.dataTransform.Sort.filter((d) => d.Order != '');
 
     this.sort.emit(this.dataTransform.Sort);
   }
-
-
 }

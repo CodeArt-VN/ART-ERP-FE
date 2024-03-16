@@ -13,13 +13,12 @@ export class CardMultiRowComponent implements OnInit {
   @Input() percent: any;
 
   @Input() selected: any;
-  
-  
-  constructor() { }
+
+  constructor() {}
 
   ngOnInit() {}
 
-  onClick(e){
+  onClick(e) {
     this.onChange.emit(e);
   }
 }

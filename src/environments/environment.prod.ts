@@ -1,16 +1,13 @@
 export const environment = {
   production: true,
-  appVersion: '0.19.32',
-  //appDomain: window.location.origin + '/',
-  //appDomain: 'https://demo.inholdings.vn/',
-  appDomain: 'https://app.inholdings.vn/',
-  //appDomain: 'https://beta.inholdings.vn/',
-  staffAvatarsServer: "https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/",
-  posImagesServer: "https://app.inholdings.vn/",
-  apiVersion: "api/v1/",
+  appVersion: '0.19.59',
+  appDomain: 'https://erp.codeart.vn/',
+  staffAvatarsServer: 'https://erp.codeart.vn/Uploads/HRM/Staffs/Avatars/',
+  posImagesServer: 'https://erp.codeart.vn/',
+  apiVersion: 'api/v1/',
   showScrollbar: true, // (navigator.appVersion.indexOf("Win") > -1)
   signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
-  appStoreURL: 'http://itunes.apple.com/',
-  playStoreURL: 'https://play.google.com/',
-  loginEmail: '@inholdings.vn'
+  appStoreURL: 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8',
+  playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn',
+  loginEmail: '@codeart.vn',
 };

@@ -10,7 +10,6 @@ type EChartsOption = echarts.EChartsOption;
   styleUrls: ['./treemap-chart.component.scss'],
 })
 export class TreemapChartComponent implements OnInit {
-
   containerId = '';
   chartTitle;
   chartSubtext;
@@ -22,9 +21,9 @@ export class TreemapChartComponent implements OnInit {
   chartStyle = {
     width: 300,
     height: 300,
-  }
+  };
 
-  @Input() set ChartInfo(value:any) {
+  @Input() set ChartInfo(value: any) {
     this.containerId = value.Id;
     this.chartTitle = value.Title;
     this.chartSubtext = value.Subtext;
@@ -35,23 +34,29 @@ export class TreemapChartComponent implements OnInit {
     this.chartTooltip = value.Tooltip;
   }
 
-  @Input() set ChartData(value:any) {
+  @Input() set ChartData(value: any) {
     this.chartData = value;
   }
 
-	constructor(
-    public eChartsService: EchartsService,
-  ) { }
+  constructor(public eChartsService: EchartsService) {}
 
   ngOnInit() {}
 
-  
   ngAfterViewInit() {
-    this.buildTreeChart(this.containerId, this.chartTitle, this.chartSubtext, this.chartSeriesName, this.chartData, this.chartType, this.chartLegend, this.chartTooltip);
+    this.buildTreeChart(
+      this.containerId,
+      this.chartTitle,
+      this.chartSubtext,
+      this.chartSeriesName,
+      this.chartData,
+      this.chartType,
+      this.chartLegend,
+      this.chartTooltip,
+    );
   }
 
-	buildTreeChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?, toolTip?) {
-		var chartDom = document.getElementById(divId);
+  buildTreeChart(divId, chartTitle, chartSubtext, chartSeriesName, chartData, chartType?, showLegend?, toolTip?) {
+    var chartDom = document.getElementById(divId);
 
     var myChart = echarts.init(chartDom, null, {
       renderer: 'canvas',
@@ -62,42 +67,41 @@ export class TreemapChartComponent implements OnInit {
 
     new ResizeObserver(() => myChart.resize()).observe(chartDom);
 
-		var option: EChartsOption = {};
+    var option: EChartsOption = {};
     var tempOption = {};
 
     var LegendOption: any;
     var TooltipOption: any;
 
-    if (chartType == 'Treemap'){
+    if (chartType == 'Treemap') {
       Object.assign(this.eChartsService.treeChartOpt, this.eChartsService.treeChartOptionGlobal);
       tempOption = this.eChartsService.treeChartOpt;
     }
 
     if (showLegend) {
-      LegendOption =  { // Tên của các trường dữ liệu
-				orient: 'vertical',
-        bottom: 'bottom'
-			}
-    }
-    else {
+      LegendOption = {
+        // Tên của các trường dữ liệu
+        orient: 'vertical',
+        bottom: 'bottom',
+      };
+    } else {
       LegendOption = null;
     }
 
     if (toolTip == 'Percent') {
       TooltipOption = {
         show: true,
-        formatter: function(d) {
+        formatter: function (d) {
           // return d.name + '  ' + d.value + '(' + d.data.percent + ')';
-          return `${d.name}: <b>${d.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</b> ₫ <b>(${d.data.percent}%)</b>`;
-        }
-      }
-    }
-    else {
+          return `${d.name}: <b>${d.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</b> ₫ <b>(${d.data.percent}%)</b>`;
+        },
+      };
+    } else {
       TooltipOption = null;
     }
     Object.assign(option, tempOption);
 
-    option.title['text'] = chartTitle; 
+    option.title['text'] = chartTitle;
     option.title['subtext'] = chartSubtext;
 
     option.series[0]['name'] = chartSeriesName;
@@ -108,7 +112,6 @@ export class TreemapChartComponent implements OnInit {
       option.tooltip = TooltipOption;
     }
 
-		option && myChart.setOption(option);
-	}
-
+    option && myChart.setOption(option);
+  }
 }

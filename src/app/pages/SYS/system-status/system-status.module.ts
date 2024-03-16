@@ -12,8 +12,8 @@ import { ShareModule } from 'src/app/share.module';
     CommonModule,
     FormsModule,
     ShareModule,
-    RouterModule.forChild([{ path: '', component: SystemStatusPage }])
+    RouterModule.forChild([{ path: '', component: SystemStatusPage }]),
   ],
-  declarations: [SystemStatusPage]
+  declarations: [SystemStatusPage],
 })
 export class SystemStatusPageModule {}

@@ -1,49 +1,83 @@
-<div *ngIf="_reportConfig; let r" class="chart-holder" [class]="[viewMode]" [ngClass]="{'box-shadow': viewMode!='mini'}">
-
-  <ion-item lines="none" *ngIf="viewMode == 'dashboard' && r.ReprotInfo as i">
-    <ion-icon [name]="i.Icon || 'stats-chart'" [color]="i.Color || 'primary'" slot="start"></ion-icon>
-    <ion-label color="primary">
-      <h2>{{i.Name}}</h2>
+<div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{ 'box-shadow': viewMode != 'mini' }">
+  <ion-item lines="none" *ngIf="viewMode == 'dashboard'">
+    <ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>
+    <ion-label color="primary" (click)="isToolPopoverOpen = false; onOpenReport()" class="clickable">
+      <h2>{{ report.Name }}</h2>
       <p>
         <small>
-          {{rpt.formatTimeConfig(r.TimeFrame.From)}}
-          →
-          {{rpt.formatTimeConfig(r.TimeFrame.To)}}
-          <ion-text color="dark" *ngIf="dataFetchDate">
-            {{'Updated' | translate}}: {{dataFetchDate | date:'HH:mm dd/MM'}}
-          </ion-text>
+          {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
+          <span *ngIf="!compareObjects(report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)">
+            →
+            {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To) }}
+          </span>
+
+          <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
+            {{ 'Updated' | translate }}:
+            {{ dataFetchDate | date: 'HH:mm dd/MM' }}
+          </span>
         </small>
       </p>
     </ion-label>
 
-    <ion-button title="{{'Open report' | translate}}" fill="clear" slot="end" (click)="onOpenReport()" *ngIf="_gridItem?.cols > 2" class="ion-hide-sm-down">
+    <ion-button
+      title="{{ 'Open report' | translate }}"
+      fill="clear"
+      slot="end"
+      (click)="onOpenReport()"
+      *ngIf="_gridItem?.cols > 1"
+      class="gridster-item-content ion-hide-sm-down"
+    >
       <ion-icon color="dark" slot="icon-only" name="open-outline"></ion-icon>
     </ion-button>
 
-    <ion-button title="{{'Reload' | translate}}" fill="clear" slot="end" (click)="onReloadData()" *ngIf="_gridItem?.cols > 2" class="ion-hide-sm-down">
+    <ion-button
+      title="{{ 'Reload' | translate }}"
+      fill="clear"
+      slot="end"
+      (click)="onReloadData()"
+      *ngIf="_gridItem?.cols > 1"
+      class="gridster-item-content ion-hide-sm-down"
+    >
       <ion-icon color="dark" slot="icon-only" name="reload-outline"></ion-icon>
     </ion-button>
 
-    <ion-button title="{{'More...'| translate}}" (click)="presentToolPopover($event)" fill="clear" slot="end">
+    <ion-button
+      title="{{ 'More...' | translate }}"
+      (click)="presentToolPopover($event)"
+      fill="clear"
+      slot="end"
+      class="gridster-item-content"
+    >
       <ion-icon color="dark" slot="icon-only" name="ellipsis-vertical"></ion-icon>
     </ion-button>
 
-    <ion-popover #toolPopover [isOpen]="isToolPopoverOpen" (didDismiss)="isToolPopoverOpen = false" [dismissOnSelect]="true" [backdropDismiss]="true">
+    <ion-popover
+      #toolPopover
+      [isOpen]="isToolPopoverOpen"
+      (didDismiss)="isToolPopoverOpen = false"
+      [dismissOnSelect]="true"
+      [backdropDismiss]="true"
+    >
       <ng-template>
         <ion-content scroll-y="false">
           <ion-list>
             <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onOpenReport()">
               <ion-icon color="dark" slot="icon-only" name="open-outline" slot="start"></ion-icon>
-              <ion-text color="dark">{{'Open report' | translate}}</ion-text>
+              <ion-text color="dark">{{ 'Open report' | translate }}</ion-text>
             </ion-item>
             <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onReloadData()">
               <ion-icon color="dark" slot="icon-only" name="reload-outline" slot="start"></ion-icon>
-              <ion-text color="dark">{{'Reload' | translate}}</ion-text>
+              <ion-text color="dark">{{ 'Reload' | translate }}</ion-text>
             </ion-item>
 
-            <ion-item [button]="true" [detail]="false" (click)="isToolPopoverOpen = false; onDeleteClick($event)">
+            <ion-item
+              lines="none"
+              [button]="true"
+              [detail]="false"
+              (click)="isToolPopoverOpen = false; onDeleteClick($event)"
+            >
               <ion-icon color="danger" slot="icon-only" name="trash" slot="start"></ion-icon>
-              <ion-text color="danger">{{'Delete' | translate}}</ion-text>
+              <ion-text color="danger">{{ 'Delete' | translate }}</ion-text>
             </ion-item>
             <!-- <ion-item [button]="true" [detail]="false" routerDirection="forward" [routerLink]="['/'+pageConfig.pageName+'/0/']" (click)="$event.stopPropagation(); this.popoverCtrl.dismiss();">
               <ion-icon color="success" slot="icon-only" name="add-outline" slot="end"></ion-icon>
@@ -55,37 +89,80 @@
     </ion-popover>
   </ion-item>
 
-  <ion-button class="toggle-mini-btn" title="{{'Resize' | translate}}" size="small" fill="clear" slot="end" *ngIf="viewMode != 'dashboard'" (click)="toggleMiniChart()">
+  <ion-button
+    class="toggle-mini-btn"
+    title="{{ 'Resize' | translate }}"
+    size="small"
+    fill="clear"
+    slot="end"
+    *ngIf="viewMode != 'dashboard'"
+    (click)="toggleMiniChart()"
+  >
     <ion-icon color="dark" slot="icon-only" name="resize"></ion-icon>
   </ion-button>
-
   <div class="loading fullfill" *ngIf="isLoading">
     <ion-spinner color="primary" name="dots"></ion-spinner>
   </div>
 
+  <!-- || (  && _gridItem?.rows == 1) -->
   <div class="statistic-row" *ngIf="viewMode == 'full'">
-    <app-card-multi-row [title]="m.Title || m.Property" [value]="m.Value" [percent]="0" [ngClass]="{'selected': viewDimension == (m.Title || m.Property)}" *ngFor="let m of _reportConfig.DataConfig.MeasureBy" (click)="onViewDimensionChange((m.Title || m.Property))"></app-card-multi-row>
+    <app-card-multi-row
+      [title]="m.Title || m.Property"
+      [value]="m.Value"
+      [percent]="0"
+      [ngClass]="{ selected: viewDimension == (m.Title || m.Property) }"
+      *ngFor="let m of report.DataConfig.MeasureBy"
+      (click)="onViewDimensionChange(m.Title || m.Property)"
+    ></app-card-multi-row>
   </div>
 
-  
-    <app-pie-chart class="app-chart" *ngIf="_chartOption && rptLoaded" [chartType]="_reportConfig.DataConfig.ReprotInfo.Type" [reportId]="reportId" [chartOption]="_chartOption" [viewMode]="viewMode" [dataset]="_dataset"></app-pie-chart>
-    
-  
+  <div class="statistic-row" *ngIf="viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics as ls">
+    <ng-container *ngFor="let s of ls">
+      <ng-container *ngFor="let m of report.DataConfig.MeasureBy">
+        <app-card-multi-row
+          *ngIf="m.Title == s"
+          class="selected"
+          [title]="m.Title || m.Property"
+          [value]="m.Value"
+          [percent]="0"
+        ></app-card-multi-row>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <app-e-chart
+    class="app-chart"
+    *ngIf="
+      !(viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics) &&
+      rptLoaded &&
+      (rawData.length || report.DataConfig.Schema.Id == null)
+    "
+    [reportId]="reportId"
+    [viewMode]="viewMode"
+    [chartType]="chartType"
+    [chartScript]="chartScript"
+    [chartOption]="chartOption"
+    [dimensions]="dimensions"
+    [viewDimension]="viewDimension"
+    [dataIntervalProperty]="dataIntervalProperty"
+    [dataIntervalType]="dataIntervalType"
+    [data]="rawData"
+    (chartClick)="onChartClick($event)"
+  ></app-e-chart>
 
   <ion-item lines="none" *ngIf="viewMode == 'full'">
     <ion-icon name="server-outline" color="success" slot="start"></ion-icon>
     <ion-label color="primary">
       <p>
-        {{rpt.formatTimeConfig(r.TimeFrame.From)}}
-        →
-        {{rpt.formatTimeConfig(r.TimeFrame.To)}}
+        {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
+        <span *ngIf="!compareObjects(report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)">
+          →
+          {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To) }}
+        </span>
 
-        <ion-text color="dark" *ngIf="dataFetchDate">
-          <small>
-            {{'Updated' | translate}}: {{dataFetchDate | date:'yyyy-MM-dd HH:mm'}}
-          </small>
-        </ion-text>
-
+        <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
+          <small>{{ 'Updated' | translate }}: {{ dataFetchDate | date: 'HH:mm dd/MM' }}</small>
+        </span>
       </p>
     </ion-label>
   </ion-item>

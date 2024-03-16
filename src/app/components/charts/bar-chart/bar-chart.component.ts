@@ -8,7 +8,6 @@ import { ChartOptionService } from 'src/app/services/chart-option.sevice';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],
 })
-
 export class BarChartComponent implements OnInit {
   Id: any;
   @Input() Title: string;
@@ -20,36 +19,36 @@ export class BarChartComponent implements OnInit {
   chartStyle = {
     width: '100%',
     'min-height': '300px',
-  }
+  };
 
   constructor(public chartservice: ChartOptionService) {
     this.Id = lib.generateUID();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewInit() {
-
-    this.Data.forEach(m => {
+    this.Data.forEach((m) => {
       Object.assign(m, { type: 'bar' });
     });
 
-    this.Option = {}
+    this.Option = {};
     this.Option = this.chartservice.ChartOption;
     Object.assign(this.Option.title, { text: this.Title });
     this.Option.tooltip = {};
     this.Option.legend = {};
 
     if (this.Type == 'background') {
-      this.Data.forEach(m => {
-        Object.assign(m, { showBackground: true, backgroundStyle: { color: 'rgba(180, 180, 180, 0.2)' } });
+      this.Data.forEach((m) => {
+        Object.assign(m, {
+          showBackground: true,
+          backgroundStyle: { color: 'rgba(180, 180, 180, 0.2)' },
+        });
       });
-    }
-    else if (this.Type == 'Horizontal Bar') {
+    } else if (this.Type == 'Horizontal Bar') {
       this.Option.xAxis = { type: 'value' };
       this.Option.yAxis = { type: 'category', data: this.Label };
-    }
-    else {
+    } else {
       this.Option.xAxis = { type: 'category', data: this.Label };
       this.Option.yAxis = { type: 'value' };
     }
@@ -63,7 +62,3 @@ export class BarChartComponent implements OnInit {
     new ResizeObserver(() => myChart.resize()).observe(chartDom);
   }
 }
-
-
-
-

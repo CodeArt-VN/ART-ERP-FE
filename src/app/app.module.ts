@@ -1,11 +1,13 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouteReuseStrategy } from '@angular/router';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+
 import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ShareModule } from './share.module';
@@ -13,7 +15,6 @@ import { PipesModule } from './pipes/pipes.module';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-
 
 import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
 import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
@@ -34,6 +35,7 @@ import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page
 import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
+import { HelpDetailPage } from './pages/SYS/help-detail/help-detail.page';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -42,7 +44,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-
+import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -50,19 +52,38 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent, PopoverPage,
-    SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage, SaleOrderARInvoiceModalPage, SaleOrderMergeARInvoiceModalPage,
-    ARInvoiceSplitModalPage, ARInvoiceMergeModalPage,
-    POSSplitModalPage, POSMergeModalPage, POSChangeTableModalPage, POSPaymentModalPage, POSDiscountModalPage, POSMemoModalPage, POSAddContactModalPage, POSCancelModalPage, POSNotifyModalPage],
+  declarations: [
+    AppComponent,
+    HelpDetailPage,
+    PopoverPage,
+    SaleOrderSplitModalPage,
+    SaleOrderMergeModalPage,
+    SalemanDebtModalPage,
+    SaleOrderMobileAddContactModalPage,
+    SaleOrderARInvoiceModalPage,
+    SaleOrderMergeARInvoiceModalPage,
+    ARInvoiceSplitModalPage,
+    ARInvoiceMergeModalPage,
+    MCPCustomerPickerModalPage,
+    POSSplitModalPage,
+    POSMergeModalPage,
+    POSChangeTableModalPage,
+    POSPaymentModalPage,
+    POSDiscountModalPage,
+    POSMemoModalPage,
+    POSAddContactModalPage,
+    POSCancelModalPage,
+    POSNotifyModalPage,
+  ],
   imports: [
     BrowserModule,
     TranslateModule.forRoot({
       defaultLanguage: 'vi-VN',
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
     }),
     IonicModule.forRoot({
       mode: 'ios',
@@ -78,7 +99,6 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     ShareModule,
     PipesModule,
-
     FullCalendarModule,
     NgSelectModule,
     NgOptionHighlightModule,
@@ -87,7 +107,7 @@ export function createTranslateLoader(http: HttpClient) {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   exports: [],
@@ -95,9 +115,10 @@ export function createTranslateLoader(http: HttpClient) {
     //SplashScreen,
     //BarcodeScanner,
     //Geolocation,
-    //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     //{ provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: APP_BASE_HREF, useValue: `/` },//{ provide: APP_BASE_HREF, useValue: `/v${environment.appVersion}` },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

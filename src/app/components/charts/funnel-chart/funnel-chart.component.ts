@@ -20,18 +20,16 @@ export class FunnelChartComponent implements OnInit {
   chartStyle = {
     width: '100%',
     'min-height': '300px',
-  }
+  };
 
-  constructor(public eChartsService: EchartsService,) {
+  constructor(public eChartsService: EchartsService) {
     this.chartId = lib.generateUID();
   }
 
-
-	ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewInit() {
-
-		var chartDom = document.getElementById(this.chartId);
+    var chartDom = document.getElementById(this.chartId);
 
     var myChart = echarts.init(chartDom, null, {
       renderer: 'canvas',
@@ -42,23 +40,20 @@ export class FunnelChartComponent implements OnInit {
 
     new ResizeObserver(() => myChart.resize()).observe(chartDom);
 
-		var option: EChartsOption = {};
+    var option: EChartsOption = {};
     var tempOption = {};
 
     var LegendOption: any;
 
-    if (this.Type == 'Basic Funnel'){
+    if (this.Type == 'Basic Funnel') {
       Object.assign(this.eChartsService.funnelChartOpt, this.eChartsService.funnelChartOptionGlobal);
       tempOption = this.eChartsService.funnelChartOpt;
     }
 
-
     Object.assign(option, tempOption);
 
-
-
     option.legend['data'] = this.Label;
-    option.title['text'] = this.Title; 
+    option.title['text'] = this.Title;
     option.title['subtext'] = '';
 
     option.series[0]['name'] = '';
@@ -66,7 +61,6 @@ export class FunnelChartComponent implements OnInit {
 
     option.legend = LegendOption;
 
-		option && myChart.setOption(option);
-	}
+    option && myChart.setOption(option);
+  }
 }
-

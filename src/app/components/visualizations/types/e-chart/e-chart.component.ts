@@ -1,89 +1,108 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ReportDataConfig } from 'src/app/models/options-interface';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import * as echarts from 'echarts';
 @Component({
-	selector: 'app-pie-chart',
-	template: '<div style="height: 100%;" [id]="elId"></div>',
-	changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-e-chart',
+  template: '<div style="height: 100%;" [id]="elId"></div>',
 })
 export class EChartComponent implements OnInit {
-	@Input() chartType: 'pie' | 'donut' | 'bar' = 'pie';
-	@Input() chartOption: echarts.EChartsOption = {};
+  elId: string = ''; //Chart element Id
+  chart = null; //Chart object
 
-	/** Chart element Id */
-	elId: string = '';
+  @Input() chartType: string = 'auto';
+  @Input() viewMode: 'full' | 'mini' | 'dashboard';
+  @Input() chartOption: echarts.EChartsOption = {};
+  @Input() dimensions: string[] = [];
+  @Input() viewDimension: string;
+  @Input() dataIntervalProperty: string;
+  @Input() dataIntervalType: string;
 
-	/** Chart object */
-	chart = null;
+  @Input() chartScript: string;
 
+  @Input() data: any[] = [];
 
-	
+  constructor(public rpt: ReportService) {
+    this.elId = lib.generateCode();
+  }
 
-	
-	
+  ngOnInit() {}
 
-	/** Chart dataset */
-	@Input() set dataset(v: any[]) {
-		this.chartOption.dataset = v;
-		this.updateChart();
-	}
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit', this.elId);
 
-	/** Chart view mode */
-	_viewMode: 'full' | 'mini' | 'dashboard' = 'dashboard';
-	@Input() set viewMode(v: 'full' | 'mini' | 'dashboard') {
-		this._viewMode = v;
-		this.getChartOption();
-		this.updateChart();
-	}
+    var chartDom = document.getElementById(this.elId);
+    this.chart = echarts.init(chartDom);
+    this.chart.on('click', (params) => {
+      this.onChartClick(params);
+    });
+    setTimeout(() => {
+      this.updateChart();
+    }, 0);
+    new ResizeObserver(() => this.chart.resize()).observe(chartDom);
+  }
 
-	/** get chart option by view mode */
-	getChartOption() {
-		let defaultOption = this.rpt.echartDefaultOption.getChartOption(this.chartType, this._viewMode);
+  ngOnChanges(changes: any) {
+    if (this.chart) {
+      if (changes.chartOption && changes.chartOption.currentValue) {
+        Object.assign(this.chartOption, changes.chartOption.currentValue);
+      }
+      this.updateChart();
+    }
+  }
 
-		if (this.chartOption) {
-			Object.assign(defaultOption, this.chartOption);
-		}
+  ngOnDestroy() {
+    this.chart?.dispose();
+  }
 
-		this.chartOption = { ...defaultOption };
-	}
+  updateChart() {
+    let finalChartOption = {};
+    switch (this.chartType) {
+      case 'auto':
+        if (this.data.length) {
+          finalChartOption = this.rpt.echartDefaultOption.getChartOption(
+            this.chartType,
+            this.viewMode,
+            this.dataIntervalProperty,
+            this.dataIntervalType,
+            this.dimensions,
+            this.data,
+          );
+        }
+        break;
 
+      case 'bar':
+      case 'line':
+        this.rpt.echartDefaultOption.updateSeriesByDimension(
+          this.chartOption,
+          this.chartType,
+          this.chartOption.dataset['dimensions'],
+        );
+        finalChartOption = this.chartOption;
+        break;
+      case 'fixed':
+        finalChartOption = this.rpt.echartDefaultOption.mergeDefaultChartOption(this.chartOption, this.viewMode);
+        break;
+    }
 
-	constructor(public rpt: ReportService) {
-		this.elId = lib.generateCode();
-	}
+    if (this.chartScript) {
+      finalChartOption = this.calcChartOption(finalChartOption, this.chartScript);
+    }
 
-	ngOnInit() { }
+    console.log('finalChartOption', finalChartOption);
+    setTimeout(() => {
+      this.chart?.setOption(finalChartOption, true);
+    }, 0);
+  }
 
-	ngAfterViewInit() {
-		var chartDom = document.getElementById(this.elId);
-		this.chart = echarts.init(chartDom);
-		this.chart.on('click', function (params) {
-			console.log(params.name);
-		});
-		setTimeout(() => {
-			this.updateChart();
-		}, 0);
-		new ResizeObserver(() => this.chart.resize()).observe(chartDom);
-	}
+  calcChartOption(option: echarts.EChartsOption, js: string): echarts.EChartsOption {
+    let li = lib;
+    eval(js);
+    return option;
+  }
 
-	ngOnChanges(changes: any) {
-		if (changes.chartOption) {
-			Object.assign(this.chartOption, changes.chartOption.currentValue);
-			this.updateChart();
-		}
-	}
-
-	ngOnDestroy() {
-		this.chart?.dispose();
-	}
-
-	updateChart() {
-		if (this.chartOption?.dataset) {
-			this.rpt.echartDefaultOption.updateSeriesByDimension(this.chartOption, this.chartType, this.chartOption.dataset['dimensions']);
-			this.chart?.setOption(this.chartOption);
-		}
-	}
+  @Output() chartClick = new EventEmitter();
+  onChartClick(e) {
+    this.chartClick.emit(e);
+  }
 }

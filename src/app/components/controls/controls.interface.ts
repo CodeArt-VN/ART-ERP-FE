@@ -1,27 +1,46 @@
-import { FormGroup } from "@angular/forms";
+import { FormGroup } from '@angular/forms';
 
 export interface InputControlField {
-    
-    form: FormGroup;
+  form: FormGroup;
 
-    type : 'text' | 'number' | 'email' | 'date' | 'start' | 'datetime-local' | 'radio' | 'select' | 'ng-select' | 'ng-select-status' | 'ng-select-bp' | 'ng-select-item' | 'textarea' | 'branch-breadcrumbs' | 'span-number' | 'span-date' | 'span-datetime' ;
+  type:
+    | 'text'
+    | 'number'
+    | 'email'
+    | 'date'
+    | 'datetime-local'
+    | 'checkbox'
+    | 'radio'
+    | 'select'
+    | 'ng-select'
+    | 'ng-select-status'
+    | 'ng-select-bp'
+    | 'ng-select-item'
+    | 'textarea'
+    | 'branch-breadcrumbs'
+    | 'span-text'
+    | 'span-number'
+    | 'span-date'
+    | 'span-datetime'
+    | 'icon'
+    | 'color';
 
-    id: string;
+  id: string;
 
-    label: string;
+  label: string;
+  color: string;
 
-    placeholder?: string;
+  placeholder?: string;
 
-    dataSource?: any[] | any;
+  dataSource?: any[] | any;
 
-    bindValue?: string;
+  bindValue?: string;
 
-    bindLabel?: string;
+  bindLabel?: string;
 
-    multiple?: boolean;
+  multiple?: boolean;
 
-    clearable?: boolean;
+  clearable?: boolean;
 
-    noCheckDirty?: boolean;
-    
+  noCheckDirty?: boolean;
 }

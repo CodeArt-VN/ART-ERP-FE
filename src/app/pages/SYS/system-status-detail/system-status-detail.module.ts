@@ -9,8 +9,8 @@ import { ShareModule } from 'src/app/share.module';
 const routes: Routes = [
   {
     path: '',
-    component: SystemStatusDetailPage
-  }
+    component: SystemStatusDetailPage,
+  },
 ];
 
 @NgModule({
@@ -21,8 +21,8 @@ const routes: Routes = [
     IonicModule,
     ReactiveFormsModule,
     ShareModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
-  declarations: [SystemStatusDetailPage]
+  declarations: [SystemStatusDetailPage],
 })
 export class SystemStatusDetailPageModule {}

@@ -1,10 +1,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[appRptFilter]'
+  selector: '[appRptFilter]',
 })
 export class RptFilterDirective {
-
-  constructor() { }
-
+  constructor() {}
 }

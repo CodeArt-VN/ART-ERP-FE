@@ -1,12 +1,10 @@
 <ion-header>
-    <ion-toolbar *ngIf="!pageConfig.isShowSearch">
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-            <ion-button color="dark">
-                {{'erp.app.pages.sys.not-found.page-title' | translate}}
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar *ngIf="!pageConfig.isShowSearch">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      <ion-button color="dark"> {{'Cannot find' | translate}} </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <!-- <ion-content appScrollbarTheme>
@@ -25,23 +23,21 @@
 </ion-content> -->
 
 <ion-content appScrollbarTheme scroll-y="false">
-	<!-- <div *ngIf="pageConfig.showSpinner" class="page-loading">
+  <!-- <div *ngIf="pageConfig.showSpinner" class="page-loading">
 		<ion-spinner name="dots"></ion-spinner>
 	</div> -->
-	<div class="empty-message">
-		<div class="icon">
-			<img class="svgcolor" appSvgImage src="./assets/undraw_no_data_qbuo.svg">
-		</div>
-		<div class="message">
-			<div class="title">
-				{{'erp.app.pages.sys.not-found.title' | translate}}
-				<!-- <ion-icon name="shipping-fast"></ion-icon> -->
-			</div>
-			<div class="detail">
-				<ion-text>
-					{{'erp.app.pages.sys.not-found.detail' | translate}}
-				</ion-text>
-			</div>
-		</div>
-	</div>
+  <div class="empty-message">
+    <div class="icon">
+      <img class="svgcolor" appSvgImage src="./assets/undraw_no_data_qbuo.svg" />
+    </div>
+    <div class="message">
+      <div class="title">
+        {{'No data available' | translate}}
+        <!-- <ion-icon name="shipping-fast"></ion-icon> -->
+      </div>
+      <div class="detail">
+        <ion-text> {{'Cannot find relevant data. Please select other sorting conditions!' | translate}} </ion-text>
+      </div>
+    </div>
+  </div>
 </ion-content>

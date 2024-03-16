@@ -2,21 +2,20 @@
   <div *ngIf="showSpinner" class="page-loading">
     <ion-spinner name="dots"></ion-spinner>
   </div>
-  <div class="empty-message" *ngIf="!itemsLength && showSpinner==false">
+  <div class="empty-message" *ngIf="!itemsLength && showSpinner == false">
     <div class="icon">
-      <img appSvgImage style="width: 51vw; max-width: 300px;" src="../../../assets/undraw_no_data_qbuo.svg">
+      <img appSvgImage style="width: 51vw; max-width: 300px" src="../../../assets/undraw_no_data_qbuo.svg" />
     </div>
     <div class="message">
       <div class="title">
-        {{'erp.app.components.page-message.message' | translate}}
+        {{ message | translate }}
       </div>
       <div class="detail">
         <ion-text>
-          {{'erp.app.components.page-message.sub-message' | translate}}
+          {{ subMessage | translate }}
         </ion-text>
         <ng-content></ng-content>
       </div>
     </div>
   </div>
-
 </div>

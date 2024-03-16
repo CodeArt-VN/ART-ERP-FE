@@ -9,7 +9,6 @@ import { EchartsService } from 'src/app/services/echarts.service';
   templateUrl: './stacked-bar-chart.component.html',
   styleUrls: ['./stacked-bar-chart.component.scss'],
 })
-
 export class StackedBarChartComponent implements OnInit {
   Id: any;
   @Input() Title: string;
@@ -21,23 +20,27 @@ export class StackedBarChartComponent implements OnInit {
   chartStyle = {
     width: '100%',
     'min-height': '300px',
-  }
+  };
 
   constructor(
     public chartservice: ChartOptionService,
-    public eChartsService: EchartsService,) {
+    public eChartsService: EchartsService,
+  ) {
     this.Id = lib.generateUID();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewInit() {
-
-    this.Data.forEach(m => {
-      Object.assign(m, { type: 'bar', stack: 'total', emphasis: {focus: 'series'} });
+    this.Data.forEach((m) => {
+      Object.assign(m, {
+        type: 'bar',
+        stack: 'total',
+        emphasis: { focus: 'series' },
+      });
     });
 
-    this.Option = {}
+    this.Option = {};
     // this.Option = this.chartservice.ChartOption;
     this.Option = this.eChartsService.stackedBarChartOptionGlobal;
 
@@ -48,8 +51,7 @@ export class StackedBarChartComponent implements OnInit {
     if (this.Type == 'Horizontal Stacked') {
       this.Option.xAxis = { type: 'value' };
       this.Option.yAxis = { type: 'category', data: this.Label };
-    }
-    else {
+    } else {
       this.Option.xAxis = { type: 'category', data: this.Label };
       this.Option.yAxis = { type: 'value' };
     }
@@ -63,7 +65,3 @@ export class StackedBarChartComponent implements OnInit {
     new ResizeObserver(() => myChart.resize()).observe(chartDom);
   }
 }
-
-
-
-

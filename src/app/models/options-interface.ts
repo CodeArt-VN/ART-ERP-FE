@@ -1,91 +1,138 @@
-import { EChartsOption } from "echarts/types/dist/echarts";
-export interface BIReport extends Schema { 
-	DataConfig?: ReportDataConfig;
-	ChartConfig?: EChartsOption;
+import { EChartsOption } from 'echarts/types/dist/echarts';
+
+//Wiget interface
+//{"x":0,"y":4,"cols":3,"rows":1,"IDReport":7,"Id":0, WidgetConfig: { ViewDimension: 'CalcTotal'}},
+export interface Widget {
+  x?: number;
+  y?: number;
+  cols?: number;
+  rows?: number;
+  Id?: number;
+  IDReport?: number;
+  WidgetConfig?: WidgetConfig;
+}
+
+//Widget config interface
+export interface WidgetConfig {
+  ViewDimension: string;
+  Statistic?: StatisticConfig;
+}
+
+export interface StatisticConfig {
+  ShowInFull: boolean;
+  ShowInDashboard: boolean;
+  DashboardMeasureList: string[];
+}
+
+export interface BIReport extends Schema {
+  DataConfig?: ReportDataConfig;
+  ChartConfig?: EChartsOption;
+  ChartConfigScript?: string;
+  ChartScript?: string;
+  MockDataAPI?: string;
+  Dimensions?: string[];
+  viewDimension?: string;
 }
 
 export interface ReportDataConfig {
-	TimeFrame: TimeFrame;
-	CompareTo?: TimeConfig;
-	Schema: Schema;
-	Transform?: Transform;
-	Interval?: SchemaDetail;
-	CompareBy: SchemaDetail[];
-	MeasureBy: SchemaDetail[];
+  TimeFrame: TimeFrame;
+  CompareTo?: TimeConfig;
+  Schema: Schema;
+  Transform?: Transform;
+  Interval?: SchemaDetail;
+  CompareBy: SchemaDetail[];
+  MeasureBy: SchemaDetail[];
 }
 
-export interface ReportGlobalOptions{
-	TimeFrame?: TimeFrame;
-};
+export interface ReportGlobalOptions {
+  TimeFrame?: TimeFrame;
+}
 
 export interface Schema {
-	Type?: string;
-	Id?: number;
-	Code?: string;
-	Name?: string;
-	Remark?: string;
-	Icon?: string;
-	Color?: string;
-	ModifiedDate?: number | string | Date;
-	DataFetchDate?: number | string | Date;
+  Type?: string;
+  Id?: number;
+  Code?: string;
+  Name?: string;
+  Remark?: string;
+  Icon?: string;
+  Color?: string;
+  ModifiedDate?: number | string | Date;
+  DataFetchDate?: number | string | Date;
+
+  Fields?: SchemaDetail[];
 }
 
 export interface TimeFrame {
-	Dimension?: string;
-	From?: TimeConfig;
-	To?: TimeConfig;
+  Dimension?: string;
+  From?: TimeConfig;
+  To?: TimeConfig;
 }
 
 export interface TimeConfig {
-	/**
-	 * Relative or absolute time
-	 */
-	Type: string;
+  /**
+   * Relative or absolute time
+   */
+  Type: string;
 
-	/**
-	 * If relative time
-	 */
-	IsPastDate?: boolean;
-	/**
-	 * If relative time
-	 */
-    Period?: string;
-	/**
-	 * If relative time
-	 */
-	Amount?: number;
-	
-	/**
-	 * If absolute time
-	 */
-	Value?: Date;
+  /**
+   * If relative time
+   */
+  IsPastDate?: boolean;
+  /**
+   * If relative time
+   */
+  Period?: string;
+  /**
+   * If relative time
+   */
+  Amount?: number;
+
+  /**
+   * If absolute time
+   */
+  Value?: Date;
 }
 
 export interface Transform {
-	Filter?: FilterConfig;
-	Sort?: SortConfig[];
+  Filter?: FilterConfig;
+  Sort?: SortConfig[];
 }
 
 export interface SortConfig {
-	Dimension?: string;
-	Order?: 'ASC'|'DESC'|'';
+  Dimension?: string;
+  Order?: 'ASC' | 'DESC' | '';
 
-	Format?: 'string';
+  Format?: 'string';
 }
 
 export interface FilterConfig {
-	Dimension?: string;
-	Operator?: string;
-	Value?: string;
+  Dimension?: string;
+  Operator?: string;
+  Value?: string;
 
-	Logicals?: FilterConfig[];
-
+  Logicals?: FilterConfig[];
 }
 
 export interface SchemaDetail {
-	Title?: string;
-	Property?: string;
-	Type?: string;
-	Method?: string;
-	Value?: any;
+  IDSchema?: number;
+  Id?: number;
+  PropertyType?: string;
+  DataType?: string;
+  Format?: string;
+  Aggregate?: string;
+  Icon?: string;
+  Color?: string;
+  Code?: string;
+  Name?: string;
+  Remark?: string;
+
+  Sort?: number;
+
+  //For UI only
+  Title?: string;
+  Property?: string;
+  Type?: string;
+  Method?: string;
+
+  Value?: any; //To show in UI only
 }

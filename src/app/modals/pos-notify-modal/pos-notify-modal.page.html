@@ -1,31 +1,39 @@
 <ion-header>
-	<ion-toolbar> 
+  <ion-toolbar>
     <ion-title>Thông báo</ion-title>
     <ion-buttons slot="primary">
-        <ion-button title="Xóa thông báo đã xem" color="primary" (click)="removeNotifications()">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-button>
-        <ion-button title="{{'erp.app.components.detail-toolbar.refresh' | translate}}" color="primary" (click)="refresh()">
-            <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
-        </ion-button>
-        <ion-button title="{{'erp.app.pages.sale.sale-order.merge.close-modal' | translate}}" color="secondary" (click)="closeModal()">
-            <ion-icon slot="icon-only" name="close"></ion-icon>
-        </ion-button>
+      <ion-button title="Xóa thông báo đã xem" color="primary" (click)="removeNotifications()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button title="{{'Refresh' | translate}}" color="primary" (click)="refresh()">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+      <ion-button title="{{'Close' | translate}}" color="secondary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
-</ion-toolbar>
+  </ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme>
   <app-page-message [itemsLength]="item.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
   <div *ngIf="item.length && pageConfig.showSpinner==false" class="ion-padding">
     <ion-item *ngFor="let i of item; let j = index;" lines="none" class="ion-margin-top c-input">
       <ion-text>
-        <div><ion-text color="danger" class="clickable" (click)="goToNofication(i,j)"><small>{{i.Name }}</small></ion-text></div>
-        <div><ion-text class="clickable" (click)="goToNofication(i,j)">{{i.Message}}</ion-text></div>
+        <div>
+          <ion-text color="danger" class="clickable" (click)="goToNofication(i,j)"><small>{{i.Name }}</small></ion-text>
+        </div>
+        <div>
+          <ion-text class="clickable" (click)="goToNofication(i,j)">{{i.Message}}</ion-text>
+        </div>
       </ion-text>
       <ion-text slot="end" *ngIf="i.Watched">Đã xem</ion-text>
-      <ion-button color="success" fill="clear" slot="end" (click)="goToNofication(i,j)" *ngIf="!i.Watched"><ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
-      
-      <ion-button slot="end" (click)="removeNotification(j)" color="danger" fill="clear"><ion-icon  name="trash-outline"></ion-icon></ion-button>
+      <ion-button color="success" fill="clear" slot="end" (click)="goToNofication(i,j)" *ngIf="!i.Watched"
+        ><ion-icon name="arrow-forward-outline"></ion-icon
+      ></ion-button>
+
+      <ion-button slot="end" (click)="removeNotification(j)" color="danger" fill="clear"
+        ><ion-icon name="trash-outline"></ion-icon
+      ></ion-button>
     </ion-item>
   </div>
 </ion-content>

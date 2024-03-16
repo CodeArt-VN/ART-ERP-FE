@@ -1,0 +1,9 @@
+src/assets
+src/app/services/static/api-list.ts
+src/app/services/static/services.service.ts
+src/app/app-routing.module.ts
+src/app/page-base.ts
+src/theme/print.scss
+src/index.html
+
+**/routing.module.ts

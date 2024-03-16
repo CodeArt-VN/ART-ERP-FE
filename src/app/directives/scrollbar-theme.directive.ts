@@ -2,12 +2,11 @@ import { Directive, ElementRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Directive({
-  selector: '[appScrollbarTheme]'
+  selector: '[appScrollbarTheme]',
 })
 export class ScrollbarThemeDirective {
   constructor(el: ElementRef) {
     if (environment.showScrollbar) {
-
       let stylesheet = `
     /*.scroll-y{
       overflow-y: hidden !important;
@@ -28,6 +27,10 @@ export class ScrollbarThemeDirective {
       background: var(--menu-right-border-color);
       background: transprent;
     }
+
+    ::-webkit-scrollbar-corner {
+      background: var(--menu-right-border-color);
+    }
     
     .scroll-y::-webkit-scrollbar-thumb {
       border-radius: 0px;
@@ -47,7 +50,6 @@ export class ScrollbarThemeDirective {
   
       `;
       }
-
 
       const styleElmt = el.nativeElement.shadowRoot.querySelector('style');
 

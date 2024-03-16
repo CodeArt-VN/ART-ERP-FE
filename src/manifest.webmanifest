@@ -9,7 +9,8 @@
   "scope": ".",
   "start_url": ".",
   "id": ".",
-  "icons": [{
+  "icons": [
+    {
       "src": "assets/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
@@ -50,8 +51,10 @@
       "type": "image/png"
     }
   ],
-  "related_applications": [{
-    "platform": "play",
-    "url": "https://play.google.com/store/apps/details?id=vn.codeart.art.dms"
-  }]
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=vn.codeart.art.dms"
+    }
+  ]
 }
