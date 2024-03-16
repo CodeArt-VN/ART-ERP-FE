@@ -2,6 +2,7 @@
   <!-- left-tool-bar -->
   <ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': pageConfig.isSubActive }">
     <ion-back-button *ngIf="!pageConfig.isDetailPage"></ion-back-button>
+
     <ion-back-button
       *ngIf="pageConfig.isDetailPage"
       [defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
@@ -15,9 +16,11 @@
     <ion-button color="dark" *ngIf="!pageConfig.isDetailPage && selectedItems?.length" (click)="page.unselect()">
       {{ selectedTitle || selectedItems?.length + ' dòng' }}
     </ion-button>
-    <ng-content select="[leftTitle]"></ng-content>
+    <ng-content select="[startTitle]"></ng-content>
+    <ng-content select="[tollbarTitle]"></ng-content>
   </ion-buttons>
 
+  <!-- fake back -->
   <ion-buttons slot="start" [collapse]="true" class="ion-hide-md-up" *ngIf="pageConfig.isSubActive">
     <ion-button class="toggle" (click)="page.backSubPage()">
       <ion-icon slot="icon-only" name="chevron-back-outline"> </ion-icon>
@@ -42,7 +45,7 @@
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
 
-    <ng-content select="[selected]"></ng-content>
+    <ng-content select="[tollbarSelected]"></ng-content>
 
     <!-- Submit for approval -->
     <ion-button
@@ -79,8 +82,6 @@
       <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
     </ion-button>
 
-    <span class="split ion-hide-md-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
-
     <!-- Change Branch -->
     <ion-button
       title="{{ 'Change Branch' | translate }}"
@@ -89,12 +90,6 @@
     >
       <ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
     </ion-button>
-
-    <span
-      class="split ion-hide-md-down"
-      *ngIf="(pageConfig.canApprove || pageConfig.canCancel) && !pageConfig.isDetailPage"
-      >|</span
-    >
 
     <!-- Merge -->
     <ion-button
@@ -141,10 +136,14 @@
     <ion-button title="{{ 'Delete' | translate }}" *ngIf="pageConfig.canDelete && showDelete" (click)="deleteItem()">
       <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
     </ion-button>
+
   </ion-buttons>
 
   <!-- right-tool-bar md up-->
   <ion-buttons class="ion-hide-md-down" [collapse]="true" slot="end" *ngIf="!selectedItems?.length">
+    <ng-content></ng-content>
+    <ng-content select="[rightScreen]"></ng-content>
+
     <!-- Add -->
     <ion-button
       title="{{ 'Add' | translate }}"
@@ -154,12 +153,6 @@
       <ion-icon slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
 
-    <span
-      class="split ion-hide-md-down"
-      *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval && !pageConfig.isDetailPage"
-      >|</span
-    >
-
     <!-- Search -->
     <ion-button
       title="{{ 'Search' | translate }}"
@@ -168,6 +161,7 @@
     >
       <ion-icon slot="icon-only" name="search-outline"></ion-icon>
     </ion-button>
+
     <!-- Refresh -->
     <ion-button
       title="{{ 'Refresh' | translate }}"
@@ -178,13 +172,6 @@
       <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
     </ion-button>
 
-    <ng-content select="[rightScreen]"></ng-content>
-
-    <span
-      class="split ion-hide-md-down"
-      *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport && !pageConfig.isDetailPage"
-      >|</span
-    >
     <!-- Export -->
     <ion-button
       title="{{ 'Export' | translate }}"
@@ -194,6 +181,7 @@
     >
       <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
     </ion-button>
+
     <!-- Import -->
     <ion-button
       title="{{ 'Import' | translate }}"
@@ -203,10 +191,8 @@
     >
       <ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
     </ion-button>
-
     <input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
 
-    <span class="split ion-hide-md-down" *ngIf="(ShowHelp || ShowFeature) && !pageConfig.isDetailPage">|</span>
     <!-- Help -->
     <ion-button title="{{ 'Help' | translate }}" *ngIf="ShowHelp" (click)="page.help()">
       <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
@@ -276,14 +262,17 @@
       <ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
 
-    <ng-content select="selectedSmUp"></ng-content>
+    <ng-content select="selectedItems"></ng-content>
 
     <ion-button title="Copy" *ngIf="pageConfig.canCopy && !pageConfig.isDetailPage" (click)="page.copy()">
       <ion-icon color="primary" slot="icon-only" name="copy-outline"></ion-icon>
     </ion-button>
+
     <ion-button title="{{ 'Delete' | translate }}" *ngIf="pageConfig.canDelete && showDelete" (click)="deleteItem()">
       <ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
     </ion-button>
+
+    <!-- Show more -->
     <ion-button
       (click)="presentToolBarPopover($event)"
       size="small"

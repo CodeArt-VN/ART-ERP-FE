@@ -35,6 +35,7 @@ app-data-table,
   display: block;
   background: var(--ion-color-tertiary-tint);
   width: 100%;
+  min-width: min-content;
   margin: auto;
   $cell-padding-horizontal: 16px;
 
@@ -444,8 +445,8 @@ app-data-table,
   }
 
   .col-id {
-    max-width: calc(10/16 * 6rem);
-    min-width: calc(10/16 * 6rem);
+    max-width: calc(10/16 * 9rem);
+    min-width: calc(10/16 * 9rem);
     justify-content: center;
     //font-weight: bold;
     white-space: nowrap;

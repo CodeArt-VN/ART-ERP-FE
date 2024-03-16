@@ -1,4 +1,4 @@
-<a class="clickable" *ngIf="column.property == 'Id'">
+<a class="clickable" *ngIf="!column.cellTemplate && column.property == 'Id'">
   {{ value | number: format }}
 </a>
 <input
