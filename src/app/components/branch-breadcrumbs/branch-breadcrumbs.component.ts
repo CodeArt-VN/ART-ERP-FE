@@ -10,6 +10,8 @@ export class BranchBreadcrumbsComponent implements OnInit {
   @Input() Id;
   @Input() Items;
   @Input() maxItems;
+  @Input() itemsBeforeCollapse = 0;
+  @Input() itemsAfterCollapse = 1;
   breadcrumbs = [];
 
   isOpen = false;

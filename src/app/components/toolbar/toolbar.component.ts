@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
   @Input() selectedTitle;
   @Input() pageConfig;
   @Input() selectedItems;
-  @Input() query;
+  @Input() query = {};
   @Input() ShowAdd = true;
   @Input() ShowSearch = true;
   @Input() ShowRefresh = true;

@@ -17,7 +17,7 @@
   }
 
   .ion-text-wrap {
-    font-size: calc(10/16 * 1.2rem);
+    //font-size: calc(10/16 * 1.2rem);
   }
 
   ul {
@@ -63,7 +63,7 @@
       width: auto;
       font-weight: normal;
       border: solid transparent;
-      font-size: calc(10/16 * 1.3rem);
+      //font-size: calc(10/16 * 1.3rem);
     }
     .c-input {
       text-align: right;
@@ -86,7 +86,7 @@
     appearance: none;
     background-color: var(--menu-background-bottom);
 
-    font-size: calc(10/16 * 1.3rem);
+    //font-size: calc(10/16 * 1.3rem);
     color: var(--ion-color-light-contrast);
 
     &[type='textarea'] {
@@ -225,7 +225,7 @@
     opacity: 0.8;
     margin-right: 1px;
     margin-bottom: calc(10/16 * 0.8rem);
-    font-size: calc(10/16 * 1.2rem);
+    //font-size: calc(10/16 * 1.2rem);
     font-weight: bold;
     display: inline-block;
     width: calc(100% - 0px);
@@ -248,7 +248,7 @@
     }
 
     small {
-      font-size: 80%;
+      font-size: 85%;
       display: inline-block;
       border-left: solid 2px var(--menu-right-border-color);
       padding-left: 2px;
@@ -321,7 +321,7 @@ fieldset {
   padding: 16px;
 
   legend {
-    font-size: calc(10/16 * 1.2rem);
+    //font-size: calc(10/16 * 1.2rem);
     color: var(--ion-color-primary);
   }
 }

@@ -264,7 +264,16 @@ input[type='number'] {
   }
 }
 
+.rotate180 {
+  transform: rotate(180deg);
+}
+
 .no-warp {
+  white-space: nowrap;
+}
+
+.flex-nowrap {
+  display: flex;
   white-space: nowrap;
 }
 
