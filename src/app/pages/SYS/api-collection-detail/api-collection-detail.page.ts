@@ -4,7 +4,7 @@ import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
-import { SYS_APICollectionProvider, } from 'src/app/services/static/services.service';
+import { SYS_APICollectionProvider, SYS_IntegrationProviderProvider, } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, FormArray, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 import {SYS_APICollection, } from 'src/app/models/model-list-interface';
@@ -24,10 +24,11 @@ export class APICollectionDetailPage extends PageBase {
   isAllChecked : boolean = false;
   bodyType : any = [];
   dataType : any =[];
+  providerDataSource: any = [];
   item: SYS_APICollection;
   constructor(
     public pageProvider: SYS_APICollectionProvider,
-    // public APICollectionDetailservice: SYS_APICollectionDetailProvider,
+    public integrationProvider: SYS_IntegrationProviderProvider,
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
@@ -51,8 +52,8 @@ export class APICollectionDetailPage extends PageBase {
 
   buildFormGroup(){
     this.formGroup = this.formBuilder.group({
-      IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
+      IDProvider: new FormControl({ value: '', disabled: false }),
       Name: [''],
       Code: [''],
       Remark: [''],
@@ -104,6 +105,11 @@ export class APICollectionDetailPage extends PageBase {
       { Code: 'BearerToken', Name: 'Bearer token' },
       { Code: 'BasicAuth', Name: 'Basic auth' },
     ];
+    Promise.all([
+      this.integrationProvider.read( this.query),
+    ]).then((values: any) => {
+      this.providerDataSource = values[0].data
+    })
     this.query.Type_in=['Folder','Collection'];
     this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((resp : any)=>{
       lib.buildFlatTree(resp['data'], this.parentList).then((result: any) => {
@@ -112,8 +118,6 @@ export class APICollectionDetailPage extends PageBase {
             i.disabled = false;
         });
         // this.markNestedNode(this.parentList, this.env.selectedBranch);
-    
-      console.log(this.parentList);
     })
     super.preLoadData(event);
    

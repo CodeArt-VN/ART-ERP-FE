@@ -42,6 +42,8 @@
 
 			<ion-col size="12" size-sm size-xl="4">
 				<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
+				
+				<app-form-control [field]="{id:'IDProvider', label: 'Provider', dataSource: providerDataSource, type : 'ng-select',bindValue:'Id',bindLabel:'Name', form : formGroup }" (change)="saveChange()"></app-form-control>
 
 				<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
 
