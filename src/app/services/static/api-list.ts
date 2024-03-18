@@ -9014,6 +9014,55 @@ export var APIListBase = {
 		
 	},
 
+	SYS_ActionAPIRunner:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/ActionAPIRunner/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/ActionAPIRunner"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/ActionAPIRunner/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/ActionAPIRunner/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/ActionAPIRunner/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ActionAPIRunner/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ActionAPIRunner/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ActionAPIRunner/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/ActionAPIRunner"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/ActionAPIRunner/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/ActionAPIRunner/" + id} 
+        }
+		
+	},
+
 	SYS_APICollection:{
         getSearchList:{
             method: "GET",
@@ -13812,6 +13861,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "vw/SYS/SyncJob/" + id} 
+        }
+		
+	},
+
+	vw_WMS_LotLocLPN:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/WMS/LotLocLPN/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/WMS/LotLocLPN"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/WMS/LotLocLPN/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/WMS/LotLocLPN/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/WMS/LotLocLPN/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/WMS/LotLocLPN/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/WMS/LotLocLPN/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/WMS/LotLocLPN/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/WMS/LotLocLPN"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/WMS/LotLocLPN/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/WMS/LotLocLPN/" + id} 
         }
 		
 	},
