@@ -18,5 +18,8 @@ export const SYSRoutes: Routes = [
 
     { path: 'schema', loadChildren: () => import('./schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
     { path: 'schema/:id', loadChildren: () => import('./schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
+   
+    { path: 'api-collection', loadChildren: () => import('./api-collection/api-collection.module').then(m => m.APICollectionPageModule) },
+    { path: 'api-collection/:id', loadChildren: () => import('./api-collection-detail/api-collection-detail.module').then(m => m.APICollectionDetailPageModule)},
 
 ];
