@@ -53,7 +53,7 @@ export class APICollectionDetailPage extends PageBase {
   buildFormGroup(){
     this.formGroup = this.formBuilder.group({
       Id: new FormControl({ value: '', disabled: true }),
-      IDProvider: new FormControl({ value: '', disabled: false }),
+      IDProvider: ['', Validators.required],
       Name: [''],
       Code: [''],
       Remark: [''],
@@ -66,7 +66,8 @@ export class APICollectionDetailPage extends PageBase {
       Method: [''],
       Body: [''],
       Authorization: [''],
-      PreRequestScript: [''],
+      BeforeRequestScript: [''],
+      AfterResponseScript: [''],
       Setting: [''],
       Varibles:[''],
       _Header: this.formBuilder.array([]),
