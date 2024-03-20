@@ -51,11 +51,11 @@
             <span>Mapping</span>
 
             <div class="c-control" *ngIf="runnerConfigList">
-              <ng-container *ngFor="let c of formGroup.controls.TriggerActionDataMapping['controls']">
+              <ng-container *ngFor="let c of formGroup.controls.TriggerActionDataMappings['controls']">
                 <form [formGroup]="c">
-                  <p>{{c.get('ERPProperty').value}}</p>
+                  <p>{{c.get('ProviderProperty').value}}</p>
                   <app-form-control
-                    [field]="{id:'ProviderProperty', label: 'Schema', type : 'ng-select', dataSource: c.get('_schemaDetailDataSource').value, bindValue:'Code', bindLabel:'Name', form : c }">
+                    [field]="{id:'ERPProperty', label: 'Schema', type : 'ng-select', dataSource: c.get('_schemaDetailDataSource').value, bindValue:'Code', bindLabel:'Name', form : c }">
                   </app-form-control>
                 </form>
               </ng-container>

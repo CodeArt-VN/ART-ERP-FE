@@ -18,9 +18,11 @@ import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./integration-trigger-action-modal.page.scss'],
 })
 export class IntegrationTriggerActionModalPage extends PageBase {
+  Id;
   IDTrigger;
   IDAction;
   IDProvider;
+  IDTriggerAction;
   constructor(
     public pageProvider: SYS_TriggerActionProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
@@ -39,11 +41,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     public loadingController: LoadingController,
   ) {
     super();
-    this.pageConfig.isDetailPage = false;
-    this.IDTrigger = this.route.snapshot.paramMap.get('IDTrigger');
-    this.IDAction = this.route.snapshot.paramMap.get('IDAction');
-    this.IDProvider = this.route.snapshot.paramMap.get('IDProvider');
-
+    this.pageConfig.isDetailPage = true;
     this.formGroup = formBuilder.group({
       IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
@@ -56,7 +54,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       Sort: [''],
       ActionName: [''],
       ProviderName: [''],
-      TriggerActionDataMapping: this.formBuilder.array([]),
+      TriggerActionDataMappings: this.formBuilder.array([]),
       IsDisabled: new FormControl({ value: '', disabled: true }),
       IsDeleted: new FormControl({ value: '', disabled: true }),
       CreatedBy: new FormControl({ value: '', disabled: true }),
@@ -69,38 +67,39 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   providerDataSource: any;
   schemaDataSource: any;
   preLoadData(event) {
-    console.log('IDTrigger' + this.IDTrigger);
-
-    this.sortToggle('Id', true);
-
+    this.query.Id = this.Id;
+    this.id = this.Id;
     super.preLoadData(event);
   }
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
     super.loadedData(event, ignoredFromGroup);
-    this.query.Id = undefined;
-    this.query.IDProvider = this.IDProvider;
+
+    this.formGroup.get('Id').setValue(this.Id);
+    this.formGroup.get('Id').markAsDirty();
     this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
     this.formGroup.get('IDTrigger').markAsDirty();
 
-    let providerPromise = this.integrationProvider.read(this.query, false);
-    let actionPromise = this.actionProvider.read(this.query, false);
-    let schemaPromise = this.schemaService.read(this.query, false);
-
-    Promise.all([providerPromise, actionPromise, schemaPromise]).then((results) => {
+    let queryIntegration = {
+      Keyword: '',
+      Take: 100,
+      Skip: 0,
+    };
+    let providerPromise = this.integrationProvider.read(queryIntegration, false);
+    Promise.all([providerPromise]).then((results) => {
       let listProvider: any = results[0];
-
       if (listProvider != null && listProvider.data && listProvider.data.length > 0) {
         this.providerDataSource = listProvider.data;
       }
-
-      if (this.IDProvider) {
-        let provider = {
-          Id: this.IDProvider,
-        };
-        this.changeProvider(provider);
-      }
     });
+
+    if (this.item) {
+      this.IDTriggerAction = this.item.Id;
+      let provider = {
+        Id: this.item.IDProvider,
+      };
+      this.changeProvider(provider, this.item.IDAction);
+    }
   }
 
   saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
@@ -131,16 +130,21 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   }
 
   actionDataSource: any;
-  async changeProvider(e) {
+  async changeProvider(e, idAction = null) {
     this.formGroup.get('IDProvider').setValue(e.Id);
     this.formGroup.get('IDProvider').markAsDirty();
     this.formGroup.get('ProviderName').setValue(e.Name);
-    this.query.IDProvider = e.Id;
-    this.actionProvider.read(this.query, false).then((listAction: any) => {
+    let queryAction = {
+      Keyword: '',
+      Take: 100,
+      Skip: 0,
+      IDProvider: e.Id,
+    };
+    this.actionProvider.read(queryAction, false).then((listAction: any) => {
       if (listAction != null && listAction.data.length > 0) {
         this.actionDataSource = listAction.data;
         let action = {
-          Id: e.Id,
+          Id: idAction,
         };
         this.changeAction(action);
       } else {
@@ -181,43 +185,37 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       this.schemaService.getAnItem(id).then((data: any) => {
         if (data) {
           this.schemaDetailDataSource = data.Fields;
-          this.loadTriggerActionDataMapping(this.IDTrigger);
+          this.patchTriggerActionDataMapping();
         }
       });
     }
   }
 
-  triggerActionDataMapping: any;
-  loadTriggerActionDataMapping(id) {
-    this.triggerActionDataMapping = [];
-    this.actionTriggerMappingProvider.getAnItem(id).then((data: any) => {
-      if (data) {
-        this.triggerActionDataMapping = data;
-      }
-    });
-    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMapping;
+  patchTriggerActionDataMapping() {
+    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
     groups.clear();
     this.getObjectKeys(this.runnerConfigList).forEach((e) => {
       this.addField(
-        this.triggerActionDataMapping?.find((d) => d.ERPProperty == e),
-        e, true
+        this.item.TriggerActionDataMappings?.find((d) => d.ProviderProperty == e),
+        e,
+        true,
       );
     });
   }
 
-  addField(field: any, actionProperty, markAsDirty = false) {
-    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMapping;
+  addField(field: any, providerProperty, markAsDirty = false) {
+    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
     let group = this.formBuilder.group({
       IDTriggerAction: [this.IDTrigger],
-      Id: new FormControl({ value: field?.Id, disabled: false }),
+      Id: [field?.Id ?? 0],
       Code: new FormControl({ value: field?.Code, disabled: false }),
       Name: new FormControl({ value: field?.Name, disabled: false }),
       Remark: new FormControl({ value: field?.Remark, disabled: false }),
-      ERPProperty: new FormControl({
-        value: field?.ERPProperty ? field?.ERPProperty : actionProperty ? actionProperty : '',
+      ERPProperty: new FormControl({ value: field?.ERPProperty, disabled: false }),
+      ProviderProperty: new FormControl({
+        value: field?.ProviderProperty ? field?.ProviderProperty : providerProperty ? providerProperty : '',
         disabled: false,
       }),
-      ProviderProperty: new FormControl({ value: field?.ProviderProperty, disabled: false }),
       DataType: new FormControl({ value: field?.DataType, disabled: false }),
       Format: new FormControl({ value: field?.Format, disabled: false }),
       Sort: [field?.Sort],
@@ -230,7 +228,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       _schemaDetailDataSource: [[...this.schemaDetailDataSource]],
     });
     groups.push(group);
-    if(markAsDirty){
+    if (markAsDirty) {
       group.get('IDTriggerAction').markAsDirty();
       group.get('Id').markAsDirty();
       group.get('Code').markAsDirty();
@@ -240,7 +238,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       group.get('ProviderProperty').markAsDirty();
       group.get('DataType').markAsDirty();
       group.get('Format').markAsDirty();
-      this.formGroup.get('TriggerActionDataMapping').markAsDirty();
+      this.formGroup.get('TriggerActionDataMappings').markAsDirty();
     }
   }
 }

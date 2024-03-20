@@ -39,6 +39,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
+    this.pageConfig.canEdit = true;
 
     this.formGroup = formBuilder.group({
       IDBranch: [this.env.selectedBranch],
@@ -117,9 +118,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
       }
     });
     if (this.query.IDProvider) {
-      let action = {
-        
-      };
+      let action = {};
       this.changeAction(action);
     }
   }
@@ -129,6 +128,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     let group = this.formBuilder.group({
       IDTrigger: [field.IDTrigger],
       IDAction: [field.IDAction],
+      IDProvider: [field.IDProvider],
       ActionName: [field.ActionName],
       ProviderName: [field.ProviderName],
       Id: new FormControl({ value: field.Id, disabled: false }),
@@ -164,7 +164,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
         this.actionDataSource = [];
       }
     });
-    if(saved) {
+    if (saved) {
       this.saveChange();
     }
   }
@@ -172,11 +172,10 @@ export class IntegrationTriggerDetailPage extends PageBase {
   changeAction(e, saved = false) {
     const triggerActionsArray = this.formGroup.get('TriggerActions') as FormArray;
     triggerActionsArray.clear();
-  
+
     let query = {
-      IDTrigger:  this.item.Id,
-      //IDAction: this.item.IDAction ? this.item.IDAction : e.Id
-    }
+      IDTrigger: this.item.Id,
+    };
     this.triggerActionProvider.read(query, false).then((listTGA: any) => {
       if (listTGA != null && listTGA.data.length > 0) {
         this.item.TriggerActions = listTGA.data;
@@ -185,7 +184,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
         }
       }
     });
-    if(saved) {
+    if (saved) {
       this.formGroup.get('IDAction').markAsDirty();
       this.saveChange();
     }
@@ -205,9 +204,10 @@ export class IntegrationTriggerDetailPage extends PageBase {
     const modal = await this.modalController.create({
       component: IntegrationTriggerActionModalPage,
       componentProps: {
-        IDTrigger: fg?.controls.Id.value ?? this.formGroup.controls.Id.value,
+        Id: fg?.controls.Id.value ?? 0,
+        IDTrigger: this.formGroup.controls.Id.value,
         IDAction: fg?.controls.IDAction.value,
-        IDProvider: this.formGroup.controls.IDProvider.value,
+        IDProvider: fg?.controls.IDProvider.value,
       },
       cssClass: 'modal90',
     });
@@ -221,22 +221,51 @@ export class IntegrationTriggerDetailPage extends PageBase {
   }
 
   doReorder(ev, groups) {
+    let obj = [];
     groups = ev.detail.complete(groups);
     for (let i = 0; i < groups.length; i++) {
       const g = groups[i];
       g.controls.Sort.setValue(i + 1);
       g.controls.Sort.markAsDirty();
+      obj.push({
+        Id: g.get('Id').value,
+        Sort: g.get('Sort').value,
+      });
     }
-    // let submitItem = {
-
-    // };
-    // this.triggerActionProvider.save(submitItem).then((resp) => {
-    //   this.env.showTranslateMessage('Saving completed!', 'success');
-    // });
-    //this.saveChange();
+    if (obj.length > 0) {
+      this.pageProvider.commonService
+        .connect('PUT', 'SYS/TriggerAction/putSort', obj)
+        .toPromise()
+        .then((rs) => {
+          if (rs) {
+            this.env.showTranslateMessage('Saving completed!', 'success');
+          } else {
+            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+          }
+        });
+    }
   }
 
   toggleReorder() {
     this.isDisabled = !this.isDisabled;
+  }
+  disableAction(fg, e) {
+    if (e.target.checked) {
+      this.triggerActionProvider.disable(fg.getRawValue(), true).then((resp) => {
+        if (resp) {
+          this.env.showTranslateMessage('Saving completed!', 'success');
+        } else {
+          this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        }
+      });
+    } else {
+      this.triggerActionProvider.disable(fg.getRawValue(), false).then((resp) => {
+        if (resp) {
+          this.env.showTranslateMessage('Saving completed!', 'success');
+        } else {
+          this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        }
+      });
+    }
   }
 }

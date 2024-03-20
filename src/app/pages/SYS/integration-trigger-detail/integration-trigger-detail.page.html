@@ -34,38 +34,52 @@
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="8">
-            <ion-list>
-              <ion-list-header lines="full">
-                <ion-label>{{'Actions' | translate }}</ion-label>
-                <ion-button (click)="showActionModal()" fill="outline">{{'Add' | translate }}</ion-button>
-                <ion-button (click)="toggleReorder()" fill="outline">{{'Sort' | translate }}</ion-button>
-              </ion-list-header>
-              <ion-accordion-group [multiple]="true">
+            <div class="table-contain">
+              <section class="table">
+
+                <ion-list-header lines="full">
+                  <ion-label>{{'Actions' | translate }}</ion-label>
+                  <ion-button *ngIf="pageConfig.canEdit" (click)="showActionModal()" fill="outline">{{'Add' | translate
+                    }}</ion-button>
+                  <ion-button *ngIf="pageConfig.canEdit" (click)="toggleReorder()" fill="outline">{{'Sort' | translate
+                    }}</ion-button>
+                </ion-list-header>
+                <header class="bold" style="padding-right: 0;">
+
+                  <div class="col-id cell">#</div>
+                  <div class="col-name cell">Provider / Action</div>
+                  <div class="col-icon cell" *ngIf="pageConfig.canEdit">Disable</div>
+                  <div class="col-reorder cell" *ngIf="pageConfig.canEdit"></div>
+                </header>
                 <ion-reorder-group [disabled]="isDisabled"
                   (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])">
                   <ng-container *ngFor="let g of formGroup.get('TriggerActions')['controls']; let idx = index;">
-                    <ion-item slot="header" [style.order]="g.get('Sort').value" lines="full">
-                      <div class="c-control">
-                        <div class="col-id cell">{{idx +1}}</div>
-                      </div>
-                      <ion-label style="margin-right: 0" class="ion-text-wrap clickable">
-                        {{g.get('Name').value}}
-                      </ion-label>
-                      <app-input-control [field]="{id:'IsDisable', type : 'checkbox', form : g }">
-                      </app-input-control>
-                      <div class="c-control">
-                        <div class="col-checkbox cell" [checked]="g.get('IsDisable').value"></div>
-                      </div>
-                      <ion-button color="danger" (click)="removeField(g,dx)" fill="clear" slot="end">
-                        <ion-icon slot="icon-only" name="trash"></ion-icon>
-                      </ion-button>
+                    <ng-container [formGroup]="g">
+                      <div class="row">
 
-                      <ion-reorder slot="end"></ion-reorder>
-                    </ion-item>
+                        <div class="col-id cell">
+                          {{idx+1}}
+                        </div>
+                        <div class="col-name cell" (click)="showActionModal(g)">
+                          {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
+                        </div>
+                        <div class="col-checkbox cell">
+                          <app-input-control [field]="{id:'IsDisable', type : 'checkbox', form : g }"
+                            (change)="disableAction(g, $event)">
+                          </app-input-control>
+
+                        </div>
+                        <div class="col-icon cell" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
+                          <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>
+                        </div>
+                        <ion-reorder slot="end"></ion-reorder>
+                      </div>
+                    </ng-container>
                   </ng-container>
                 </ion-reorder-group>
-              </ion-accordion-group>
-            </ion-list>
+              </section>
+
+            </div>
           </ion-col>
         </ion-row>
         <!-- Other information -->
