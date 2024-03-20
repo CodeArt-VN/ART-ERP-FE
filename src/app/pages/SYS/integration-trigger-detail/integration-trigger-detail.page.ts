@@ -199,7 +199,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
       });
     });
   }
-  SelectedActionsList;
+
   async showActionModal(fg) {
     const modal = await this.modalController.create({
       component: IntegrationTriggerActionModalPage,
