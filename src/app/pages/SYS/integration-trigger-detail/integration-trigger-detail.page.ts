@@ -63,38 +63,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
     });
   }
 
-  async saveChange() {
-    this.saveChange2();
-  }
-
-  saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
-    return new Promise((resolve, reject) => {
-      this.formGroup.updateValueAndValidity();
-      if (!form.valid) {
-        this.env.showTranslateMessage('Please recheck information highlighted in red above', 'warning');
-      } else if (this.submitAttempt == false) {
-        this.submitAttempt = true;
-        let submitItem = this.getDirtyValues(form);
-
-        provider
-          .save(submitItem, this.pageConfig.isForceCreate)
-          .then((savedItem: any) => {
-            resolve(savedItem);
-            this.savedChange(savedItem, form);
-            this.item = savedItem;
-            this.loadedData();
-            if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
-          })
-          .catch((err) => {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
-            this.cdr.detectChanges();
-            this.submitAttempt = false;
-            reject(err);
-          });
-      }
-    });
-  }
-
   providerDataSource: any;
   preLoadData(event?: any): void {
     this.integrationProvider.read(this.query, false).then((listProvider: any) => {
@@ -117,12 +85,29 @@ export class IntegrationTriggerDetailPage extends PageBase {
         this.actionDataSource = listAction.data;
       }
     });
-    if (this.query.IDProvider) {
-      let action = {};
-      this.changeAction(action);
+
+    this.query.IDProvider = undefined;
+    if (this.item.Id) {
+      this.query.IDTrigger = this.item.Id;
+      this.triggerActionProvider.read(this.query, false).then((listTGA: any) => {
+        if (listTGA != null && listTGA.data.length > 0) {
+          this.item.TriggerActions = listTGA.data;
+          if (this.item.TriggerActions?.length) {
+            this.patchFieldsValue();
+          }
+        }
+      });
     }
   }
 
+  private patchFieldsValue() {
+    this.pageConfig.showSpinner = true;
+    this.formGroup.controls.TriggerActions = new FormArray([]);
+    if (this.item.TriggerActions?.length) {
+      this.item.TriggerActions.forEach((i) => this.addField(i));
+    }
+    this.pageConfig.showSpinner = false;
+  }
   addField(field: any, markAsDirty = false) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;
     let group = this.formBuilder.group({
@@ -152,11 +137,12 @@ export class IntegrationTriggerDetailPage extends PageBase {
   }
 
   actionDataSource: any;
-  changeProvider(e, saved = false) {
-    this.formGroup.get('IDProvider').setValue(e.Id);
-    this.formGroup.get('IDProvider').markAsDirty();
+  changeProvider() {
     this.actionDataSource = [];
-    this.query.IDProvider = e.Id;
+    this.formGroup.get('IDAction').setValue('');
+    this.formGroup.get('IDAction').markAsDirty();
+    this.query.IDProvider = this.formGroup.get('IDProvider').value;
+    this.query.IsTriggerable = true;
     this.actionProvider.read(this.query, false).then((listAction: any) => {
       if (listAction != null && listAction.data.length > 0) {
         this.actionDataSource = listAction.data;
@@ -164,30 +150,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
         this.actionDataSource = [];
       }
     });
-    if (saved) {
-      this.saveChange();
-    }
-  }
-
-  changeAction(e, saved = false) {
-    const triggerActionsArray = this.formGroup.get('TriggerActions') as FormArray;
-    triggerActionsArray.clear();
-
-    let query = {
-      IDTrigger: this.item.Id,
-    };
-    this.triggerActionProvider.read(query, false).then((listTGA: any) => {
-      if (listTGA != null && listTGA.data.length > 0) {
-        this.item.TriggerActions = listTGA.data;
-        if (this.item.TriggerActions?.length) {
-          this.item.TriggerActions.forEach((i) => this.addField(i));
-        }
-      }
-    });
-    if (saved) {
-      this.formGroup.get('IDAction').markAsDirty();
-      this.saveChange();
-    }
+    this.saveChange();
   }
 
   removeField(fg, j) {
@@ -196,6 +159,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then((_) => {
       this.triggerActionProvider.delete(itemToDelete).then((result) => {
         groups.removeAt(j);
+        this.env.showTranslateMessage('Saving completed!', 'success');
       });
     });
   }
@@ -216,7 +180,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     const { data } = await modal.onWillDismiss();
 
     if (data) {
-      this.addField(data);
+      this.loadedData();
     }
   }
 
@@ -249,23 +213,46 @@ export class IntegrationTriggerDetailPage extends PageBase {
   toggleReorder() {
     this.isDisabled = !this.isDisabled;
   }
+
   disableAction(fg, e) {
-    if (e.target.checked) {
-      this.triggerActionProvider.disable(fg.getRawValue(), true).then((resp) => {
-        if (resp) {
-          this.env.showTranslateMessage('Saving completed!', 'success');
-        } else {
-          this.env.showTranslateMessage('Cannot save, please try again', 'danger');
-        }
-      });
-    } else {
-      this.triggerActionProvider.disable(fg.getRawValue(), false).then((resp) => {
-        if (resp) {
-          this.env.showTranslateMessage('Saving completed!', 'success');
-        } else {
-          this.env.showTranslateMessage('Cannot save, please try again', 'danger');
-        }
-      });
-    }
+    this.triggerActionProvider.disable(fg.getRawValue(), e.target.checked).then((resp) => {
+      if (resp) {
+        this.env.showTranslateMessage('Saving completed!', 'success');
+      } else {
+        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+      }
+    });
+  }
+
+  async saveChange() {
+    this.saveChange2();
+  }
+
+  saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
+    return new Promise((resolve, reject) => {
+      this.formGroup.updateValueAndValidity();
+      if (!form.valid) {
+        this.env.showTranslateMessage('Please recheck information highlighted in red above', 'warning');
+      } else if (this.submitAttempt == false) {
+        this.submitAttempt = true;
+        let submitItem = this.getDirtyValues(form);
+
+        provider
+          .save(submitItem, this.pageConfig.isForceCreate)
+          .then((savedItem: any) => {
+            resolve(savedItem);
+            this.savedChange(savedItem, form);
+            this.item = savedItem;
+            this.loadedData();
+            if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
+          })
+          .catch((err) => {
+            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.cdr.detectChanges();
+            this.submitAttempt = false;
+            reject(err);
+          });
+      }
+    });
   }
 }

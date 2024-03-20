@@ -15,11 +15,11 @@
           <ion-col size="12" size-sm size-xl="4">
             <app-form-control
               [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeProvider($event, true)">
+              (change)="changeProvider()">
             </app-form-control>
             <app-form-control
               [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeAction($event, true)">
+              (change)="saveChange()">
             </app-form-control>
 
           </ion-col>
@@ -30,7 +30,7 @@
         <ion-row class="hr-group" style="position: relative;">
           <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
             <ion-list-header class="ion-no-padding">
-              <ion-label color="primary"></ion-label>
+              <ion-label color="primary">Actions</ion-label>
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="8">
@@ -38,7 +38,7 @@
               <section class="table">
 
                 <ion-list-header lines="full">
-                  <ion-label>{{'Actions' | translate }}</ion-label>
+                  <ion-label>{{'' | translate }}</ion-label>
                   <ion-button *ngIf="pageConfig.canEdit" (click)="showActionModal()" fill="outline">{{'Add' | translate
                     }}</ion-button>
                   <ion-button *ngIf="pageConfig.canEdit" (click)="toggleReorder()" fill="outline">{{'Sort' | translate
@@ -46,7 +46,7 @@
                 </ion-list-header>
                 <header class="bold" style="padding-right: 0;">
 
-                  <div class="col-id cell">#</div>
+                  <div class="col-id cell">Id</div>
                   <div class="col-name cell">Provider / Action</div>
                   <div class="col-icon cell" *ngIf="pageConfig.canEdit">Disable</div>
                   <div class="col-reorder cell" *ngIf="pageConfig.canEdit"></div>
