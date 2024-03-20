@@ -7,3 +7,15 @@
         }
     }
 }
+
+.col-name {
+    min-width: 250px;
+    max-width: 250px;
+    &.provider{
+        min-width: 300px;
+        max-width: unset;
+    }
+    b {
+      color: var(--ion-color-primary);
+    }
+  }

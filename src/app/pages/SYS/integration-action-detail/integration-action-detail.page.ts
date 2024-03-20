@@ -21,7 +21,7 @@ export class IntegrationActionDetailPage extends PageBase {
   typeList :any = [];
   apiCollectionDataSource : any = [];
   Runners:any;
-  isDisabled=false;
+  isDisabled = true;
   constructor(
     public pageProvider: SYS_ActionProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
@@ -44,7 +44,7 @@ export class IntegrationActionDetailPage extends PageBase {
     this.formGroup = this.formBuilder.group({
       Id: new FormControl({ value: '', disabled: true }),
       IDProvider: ['', Validators.required],
-      IDSchema: [''],
+      IDSchema: [null],
       Name: [''],
       Code: [''],
       Remark: [''],
@@ -142,35 +142,8 @@ export class IntegrationActionDetailPage extends PageBase {
       CreatedDate: new FormControl({ value: field.CreatedDate, disabled: true, }),
       ModifiedBy: new FormControl({ value: field.ModifiedBy, disabled: true, }),
       ModifiedDate: new FormControl({ value: field.ModifiedDate, disabled: true, }),
-      // _apiCollectionDataSource:[{
-      //   searchProvider: this.apiCollectionProvider,
-      //   loading: false,
-      //   input$: new Subject<string>(),
-      //   selected: [],
-      //   items$: null,
-      //   initSearch() {
-      //       this.loading = false;
-      //       this.items$ = concat(
-      //           of(this.selected),
-      //           this.input$.pipe(
-      //               distinctUntilChanged(),
-      //               tap(() => this.loading = true),
-      //               switchMap(term => this.searchProvider.search({ IDProvider: IDProvider,Take: 20, Skip: 0, Term: term }).pipe(
-      //                   catchError(() => of([])), // empty list on error
-      //                   tap(() => this.loading = false)
-      //               ))
-    
-      //           )
-      //       );
-      //   }
-      // }]
     });
     runner.get('IDAction').markAsDirty();
-    // runner.get('IDAPICollection').markAsDirty();
-    // if(field.APICollection){
-    //    runner.get('_apiCollectionDataSource').value.selected.push(field.APICollection);
-    // }
-    // runner.get('_apiCollectionDataSource').value.initSearch();
     this.Runners.push(runner);
   }
   changeProvider(){
@@ -235,8 +208,8 @@ export class IntegrationActionDetailPage extends PageBase {
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length
       this.env.showPrompt('Bạn chắc muốn xóa Runners đang chọn?', null, 'Xóa ' + length + ' dòng').then(_ => {
-        this.Runners.clear()
         this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then(_=>{
+          this.Runners.clear()
           this.convertRunnerConfig();
           this.env.showTranslateMessage('Saved change!', 'success');
         });
@@ -264,8 +237,10 @@ convertRunnerConfig(){
     if(r.get('IsDisabled').value) return false;
     let body = '';
     if(r.get('Body').value) body = JSON.parse(r.get('Body').value).Value
-    const bodyJson = JSON.parse( body); // Parse the 'Body' value as JSON
-    Object.assign(runnerConfig, bodyJson);
+    if (body){
+      const bodyJson = JSON.parse( body); 
+      Object.assign(runnerConfig, bodyJson);
+    }
   });
   this.formGroup.get('RunnerConfig').setValue(JSON.stringify(runnerConfig));
   this.formGroup.get('RunnerConfig').markAsDirty();
