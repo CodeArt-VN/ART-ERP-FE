@@ -31,7 +31,7 @@
 	<section class="table">
 	  <header class="bold">
 		<div class="col-checkbox cell"></div>
-		<div class="col-id cell">Id</div>
+		<div class="col-id ion-hide-sm-down cell">Id</div>
 		<div class="col-name cell" >
 		  {{'Name' | translate}}
 		  <ion-icon *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
@@ -76,7 +76,7 @@
 						<div class="col-checkbox cell">
 							<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
 						</div>
-						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-id cell">
+						<div (click)="nav('integration-action/'+i.Id,'forward')" class="ion-hide-sm-down col-id cell">
 							{{i.Id}}
 						</div>
 						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-name cell">

@@ -85,10 +85,12 @@ export class IntegrationActionDetailPage extends PageBase {
   if(this.item.IDProvider){
     this.query.IDProvider = this.item.IDProvider;
     this.query.IDAction = this.item.Id;
+    this.query.IsDisabled_eq = null;
     Promise.all([
       this.actionAPIRunnerProvider.read(this.query),
       this.apiCollectionProvider.read(this.query)
     ]).then((values: any) => {
+      
       if(values[0].data != null && (values[0].data.length>0)){
         this.Runners.clear();
         this.item.Runners = values[0].data;
