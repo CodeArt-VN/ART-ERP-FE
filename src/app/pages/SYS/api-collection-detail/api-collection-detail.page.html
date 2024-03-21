@@ -116,6 +116,20 @@
 							<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" (click)="removeField(j)"  name="trash"></ion-icon>
 						</div>
 					</div>
+					<div class="row">
+						
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Key" (change)="newField($event,'Params','Key')"/>
+							<!-- <app-input-control [field]="{id:'Key', type : 'text', form : formGroupParam, }" (change)="newField($event,formGroupParam,'_Params','Key')"></app-input-control> -->
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Value" (change)="newField($event,'Params','Key')"/>
+							<!-- <app-input-control [field]="{id:'Key', type : 'text', form : formGroupParam, }" (change)="newField($event,formGroupParam,'_Params','Key')"></app-input-control> -->
+						</div>
+						<div class="col-icon cell"> </div>
+					</div>
 				</ng-container>
 				
 			</section>
@@ -249,7 +263,7 @@
 				<ng-container  *ngIf="!pageConfig.showSpinner">
 					<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
 						<div class="col-name cell">
-							<app-input-control [field]="{id:'Name', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
+							<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
 						</div>
 
 						<div class="col-name cell">
@@ -266,7 +280,7 @@
 					<div class="row">
 						<div class="col-name cell" >
 							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
-							[(ngModel)]="model.Name" (change)="newField($event,'Varibles','Name')"/>
+							[(ngModel)]="model.Key" (change)="newField($event,'Varibles','Key')"/>
 						</div>
 						<div class="col-name cell" >
 							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
@@ -302,7 +316,7 @@
 				<ng-container  *ngIf="!pageConfig.showSpinner">
 					<div *ngFor="let c of formGroup.get('_Setting')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
 						<div class="col-name cell">
-							<app-input-control [field]="{id:'Name', type : 'text', form : c }" (change)="saveChangeJson('Setting')"></app-input-control>
+							<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting')"></app-input-control>
 						</div>
 
 						<div class="col-name cell">
@@ -317,7 +331,7 @@
 						
 						<div class="col-name cell" >
 							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
-							[(ngModel)]="model.Name" (change)="newField($event,'Setting','Name')"/>
+							[(ngModel)]="model.Key" (change)="newField($event,'Setting','Key')"/>
 						</div>
 						<div class="col-name cell" >
 							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"

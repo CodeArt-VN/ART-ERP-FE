@@ -162,12 +162,12 @@ export class APICollectionDetailPage extends PageBase {
           break;
 
         case 'Setting':
-          controls = ['Name', 'Value'];
+          controls = ['Key', 'Value'];
           isArray = true;
           break;
         case 'Varibles':
           isArray = true;
-          controls = [ 'Name', 'InitialValue', 'CurrentValue'];
+          controls = [ 'Key', 'InitialValue', 'CurrentValue'];
           break;
 
         default:
