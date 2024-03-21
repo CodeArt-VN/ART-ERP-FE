@@ -108,6 +108,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     }
     this.pageConfig.showSpinner = false;
   }
+
   addField(field: any, markAsDirty = false) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;
     let group = this.formBuilder.group({
@@ -178,10 +179,9 @@ export class IntegrationTriggerDetailPage extends PageBase {
 
     await modal.present();
     const { data } = await modal.onWillDismiss();
-
-    if (data) {
-      this.loadedData();
-    }
+    
+    this.loadedData();
+    
   }
 
   doReorder(ev, groups) {

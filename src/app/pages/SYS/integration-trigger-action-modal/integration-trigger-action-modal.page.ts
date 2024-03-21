@@ -20,15 +20,14 @@ import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms'
 export class IntegrationTriggerActionModalPage extends PageBase {
   Id;
   IDTrigger;
-  IDAction;
-  IDProvider;
-  IDTriggerAction;
+  IDProviderBefore;
+  IDActionBefore;
   constructor(
     public pageProvider: SYS_TriggerActionProvider,
-    public integrationProvider: SYS_IntegrationProviderProvider,
-    public actionProvider: SYS_ActionProvider,
+    public providerService: SYS_IntegrationProviderProvider,
+    public actionService: SYS_ActionProvider,
     public schemaService: SYS_SchemaProvider,
-    public actionTriggerMappingProvider: SYS_TriggerActionDataMappingProvider,
+    public triggerActionDataMappingService: SYS_TriggerActionDataMappingProvider,
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
@@ -42,7 +41,72 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
-    this.formGroup = formBuilder.group({
+    this.buildFormGroup();
+  }
+
+  providerDataSource: any;
+  schemaDataSource: any;
+  preLoadData(event) {
+    this.id = this.Id;
+    super.preLoadData(event);
+  }
+
+  loadedData(event?: any, ignoredFromGroup?: boolean): void {
+    super.loadedData(event, ignoredFromGroup);
+    this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
+    this.formGroup.get('IDTrigger').markAsDirty();
+    this.actionDataSource = [];
+
+    let queryProvider = {
+      Keyword: '',
+      Take: 100,
+      Skip: 0,
+    };
+
+    let providerPromise = this.providerService.read(queryProvider, false);
+    Promise.all([providerPromise]).then((results) => {
+      let listProvider: any = results[0];
+      if (listProvider != null && listProvider.data && listProvider.data.length > 0) {
+        this.providerDataSource = listProvider.data;
+      }
+    });
+
+    if (this.item?.IDProvider) {
+      this.IDProviderBefore = this.item.IDProvider;
+      this.IDActionBefore = this.item.IDAction;
+      let queryAction = {
+        Keyword: '',
+        Take: 100,
+        Skip: 0,
+        IDProvider: this.formGroup.get('IDProvider').value,
+      };
+      this.actionService.read(queryAction, false).then((listAction: any) => {
+        if (listAction != null && listAction.data.length > 0) {
+          this.actionDataSource = listAction.data;
+        }
+      });
+
+      if (this.item?.IDAction) {
+        this.actionService.getAnItem(this.item.IDAction).then((data: any) => {
+          if (data) {
+            this.runnerConfigList = JSON.parse(data.RunnerConfig);
+            if (data.IDSchema) {
+              this.schemaDetailDataSource = [];
+              this.schemaService.getAnItem(data.IDSchema).then((data: any) => {
+                if (data) {
+                  this.schemaDetailDataSource = data.Fields;
+                  if (this.runnerConfigList) this.patchFieldsValue();
+                }
+              });
+            }
+          }
+        });
+      }
+    }
+  }
+
+  buildFormGroup() {
+    this.formGroup = this.formBuilder.group({
       IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
       IDProvider: ['', Validators.required],
@@ -51,9 +115,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       Code: [''],
       Name: [''],
       Remark: [''],
-      Sort: [''],
-      ActionName: [''],
-      ProviderName: [''],
+      Sort: [null],
       TriggerActionDataMappings: this.formBuilder.array([]),
       IsDisabled: new FormControl({ value: '', disabled: true }),
       IsDeleted: new FormControl({ value: '', disabled: true }),
@@ -61,144 +123,70 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       CreatedDate: new FormControl({ value: '', disabled: true }),
       ModifiedBy: new FormControl({ value: '', disabled: true }),
       ModifiedDate: new FormControl({ value: '', disabled: true }),
-    });
-  }
-
-  providerDataSource: any;
-  schemaDataSource: any;
-  preLoadData(event) {
-    this.query.Id = this.Id;
-    this.id = this.Id;
-    super.preLoadData(event);
-  }
-
-  loadedData(event?: any, ignoredFromGroup?: boolean): void {
-    super.loadedData(event, ignoredFromGroup);
-
-    this.formGroup.get('Id').setValue(this.Id);
-    this.formGroup.get('Id').markAsDirty();
-    this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
-    this.formGroup.get('IDTrigger').markAsDirty();
-
-    let queryIntegration = {
-      Keyword: '',
-      Take: 100,
-      Skip: 0,
-    };
-    let providerPromise = this.integrationProvider.read(queryIntegration, false);
-    Promise.all([providerPromise]).then((results) => {
-      let listProvider: any = results[0];
-      if (listProvider != null && listProvider.data && listProvider.data.length > 0) {
-        this.providerDataSource = listProvider.data;
-      }
-    });
-
-    if (this.item) {
-      this.IDTriggerAction = this.item.Id;
-      let provider = {
-        Id: this.item.IDProvider,
-      };
-      this.changeProvider(provider, this.item.IDAction);
-    }
-  }
-
-  saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
-    return new Promise((resolve, reject) => {
-      this.formGroup.updateValueAndValidity();
-      if (!form.valid) {
-        this.env.showTranslateMessage('Please recheck information highlighted in red above', 'warning');
-      } else if (this.submitAttempt == false) {
-        this.submitAttempt = true;
-        let submitItem = this.getDirtyValues(form);
-
-        provider
-          .save(submitItem, this.pageConfig.isForceCreate)
-          .then((savedItem: any) => {
-            resolve(savedItem);
-            this.savedChange(savedItem, form);
-            this.modalController.dismiss(savedItem);
-            if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
-          })
-          .catch((err) => {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
-            this.cdr.detectChanges();
-            this.submitAttempt = false;
-            reject(err);
-          });
-      }
+      DeletedAction: new FormControl({ value: '', disabled: true }),
+      DeletedFields: [[]],
     });
   }
 
   actionDataSource: any;
-  async changeProvider(e, idAction = null) {
-    this.formGroup.get('IDProvider').setValue(e.Id);
-    this.formGroup.get('IDProvider').markAsDirty();
-    this.formGroup.get('ProviderName').setValue(e.Name);
-    let queryAction = {
-      Keyword: '',
-      Take: 100,
-      Skip: 0,
-      IDProvider: e.Id,
-    };
-    this.actionProvider.read(queryAction, false).then((listAction: any) => {
-      if (listAction != null && listAction.data.length > 0) {
-        this.actionDataSource = listAction.data;
-        let action = {
-          Id: idAction,
-        };
-        this.changeAction(action);
-      } else {
-        let action = {
-          Id: '',
-        };
-        this.changeAction(action);
-        this.actionDataSource = [];
-      }
-    });
+  async changeProvider() {
+    let triggerActionMappings = this.formGroup.getRawValue().TriggerActionDataMappings.filter((d) => d.Id > 0);
+    let ids = triggerActionMappings.map((e) => e.Id);
+    let detailLength = ids.length;
+    if (detailLength > 0) {
+      this.env
+        .showPrompt(
+          'Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?',
+          null,
+          'Xóa ' + detailLength + ' dòng',
+        )
+        .then((_) => {
+          let deletedFields = ids;
+          this.formGroup.get('DeletedFields').setValue(deletedFields);
+          this.formGroup.get('DeletedFields').markAsDirty();
+          this.formGroup.get('DeletedAction').setValue(true);
+          this.formGroup.get('DeletedAction').markAsDirty();
+          this.formGroup.get('IDAction').setValue('');
+          this.formGroup.get('IDAction').markAsDirty();
+          this.saveChange2();
+          this.runnerConfigList = [];
+          this.Id = 0;
+          this.item = {};
+          this.item.IDProvider = this.formGroup.get('IDProvider').value;
+
+          this.buildFormGroup();
+          this.preLoadData(event);
+        })
+        .catch((er) => {
+          this.formGroup.get('IDProvider').setValue(this.IDProviderBefore);
+          this.submitAttempt = false;
+        });
+    } else {
+      let queryAction = {
+        Keyword: '',
+        Take: 100,
+        Skip: 0,
+        IDProvider: this.formGroup.get('IDProvider').value,
+      };
+      this.actionDataSource = [];
+      this.formGroup.get('IDAction').setValue('');
+      this.formGroup.get('IDAction').markAsDirty();
+      this.actionService.read(queryAction, false).then((listAction: any) => {
+        if (listAction != null && listAction.data.length > 0) {
+          this.actionDataSource = listAction.data;
+        }
+      });
+    }
   }
   runnerConfigList: any;
 
-  async changeAction(e) {
-    this.formGroup.get('IDAction').setValue(e.Id);
-    this.formGroup.get('IDAction').markAsDirty();
-    this.formGroup.get('ActionName').setValue(e.Name);
-
-    this.runnerConfigList = [];
-    if (e.Id) {
-      this.actionProvider.getAnItem(e.Id).then((data: any) => {
-        if (data) {
-          this.loadSchema(data.IDSchema);
-          this.runnerConfigList = JSON.parse(data.RunnerConfig);
-        }
-      });
-    }
-  }
-
-  getObjectKeys(obj: any): string[] {
-    return obj ? Object.keys(obj) : [];
-  }
-
-  schemaDetailDataSource: any;
-  async loadSchema(id) {
-    if (id) {
-      this.schemaDetailDataSource = [];
-      this.schemaService.getAnItem(id).then((data: any) => {
-        if (data) {
-          this.schemaDetailDataSource = data.Fields;
-          this.patchTriggerActionDataMapping();
-        }
-      });
-    }
-  }
-
-  patchTriggerActionDataMapping() {
+  patchFieldsValue() {
     let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
     groups.clear();
     this.getObjectKeys(this.runnerConfigList).forEach((e) => {
       this.addField(
         this.item.TriggerActionDataMappings?.find((d) => d.ProviderProperty == e),
         e,
-        true,
       );
     });
   }
@@ -206,7 +194,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   addField(field: any, providerProperty, markAsDirty = false) {
     let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
     let group = this.formBuilder.group({
-      IDTriggerAction: [this.IDTrigger],
+      IDTriggerAction: [this.formGroup.get('Id').value],
       Id: [field?.Id ?? 0],
       Code: new FormControl({ value: field?.Code, disabled: false }),
       Name: new FormControl({ value: field?.Name, disabled: false }),
@@ -228,17 +216,78 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       _schemaDetailDataSource: [[...this.schemaDetailDataSource]],
     });
     groups.push(group);
-    if (markAsDirty) {
-      group.get('IDTriggerAction').markAsDirty();
-      group.get('Id').markAsDirty();
-      group.get('Code').markAsDirty();
-      group.get('Name').markAsDirty();
-      group.get('Remark').markAsDirty();
-      group.get('ERPProperty').markAsDirty();
-      group.get('ProviderProperty').markAsDirty();
-      group.get('DataType').markAsDirty();
-      group.get('Format').markAsDirty();
-      this.formGroup.get('TriggerActionDataMappings').markAsDirty();
+  }
+
+  async changeAction(ev) {
+    let triggerActionMappings = this.formGroup.getRawValue().TriggerActionDataMappings.filter((d) => d.Id > 0);
+    let ids = triggerActionMappings.map((e) => e.Id);
+    let detailLength = ids.length;
+    if (detailLength > 0) {
+      this.env
+        .showPrompt(
+          'Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?',
+          null,
+          'Xóa ' + detailLength + ' dòng',
+        )
+        .then((_) => {
+          let deletedFields = ids;
+          this.formGroup.get('DeletedFields').setValue(deletedFields);
+          this.formGroup.get('DeletedFields').markAsDirty();
+          this.saveChange2();
+        })
+        .catch((er) => {
+          this.formGroup.get('IDAction').setValue(this.IDActionBefore);
+          this.submitAttempt = false;
+        });
+    } else {
+      this.schemaDetailDataSource = [];
+      this.runnerConfigList = JSON.parse(ev.RunnerConfig);
+      let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
+      groups.clear();
+      if (ev.IDSchema) {
+        let query = {
+          Id: ev.IDSchema,
+          IDProvider: ev.IDProvider,
+        };
+        this.schemaService.commonService
+          .connect('GET', 'BI/Schema/GetSchemaWithProvider', query)
+          .toPromise()
+          .then((data: any) => {
+            if (data) {
+              this.schemaDetailDataSource = data.Fields;
+              if (this.runnerConfigList) {
+                this.getObjectKeys(this.runnerConfigList).forEach((e) => {
+                  this.addField({}, e);
+                });
+              }
+            }
+          });
+      }
+      this.saveChange2();
     }
+  }
+
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  changeERPProperty(fg) {
+    fg.get('IDTriggerAction').markAsDirty();
+    fg.get('Id').markAsDirty();
+    fg.get('ProviderProperty').markAsDirty();
+    fg.get('ERPProperty').markAsDirty();
+    this.saveChange2();
+  }
+
+  async savedChange(savedItem, form) {
+    this.item = savedItem;
+    super.savedChange(savedItem, form);
+    this.patchFieldsValue();
+  }
+  schemaDetailDataSource: any = [];
+
+  saveActionMapping() {
+    //this.saveChange();
+    this.modalController.dismiss();
   }
 }
