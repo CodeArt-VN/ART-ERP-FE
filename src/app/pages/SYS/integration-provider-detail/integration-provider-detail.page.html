@@ -28,6 +28,15 @@
             </app-form-control>
             <app-form-control [field]="{id:'Icon', type : 'text', form : formGroup }" (change)="saveChange()">
             </app-form-control>
+            <!-- <div class="c-control">
+              <div> 
+                <label class="c-label" for="Icon">{{'Icon' | translate}}
+                </label>
+                <ion-avatar class="avatar" slot="start">
+                  <ion-img #img [src]="formGroup.get('Icon').value" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+                </ion-avatar>
+              </div>
+            </div> -->
           </ion-col>
         </ion-row>
       </form>
