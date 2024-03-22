@@ -68,6 +68,11 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.integrationProvider.read(this.query, false).then((listProvider: any) => {
       if (listProvider != null && listProvider.data.length > 0) {
         this.providerDataSource = listProvider.data;
+        const idProvider = this.formGroup.get('IDProvider').value;
+        if (idProvider) {
+          let selectedProvider = this.providerDataSource.find((d) => d.Id === idProvider);
+          this.providerName = selectedProvider.Name + ' -';
+        }
       }
     });
     super.preLoadData(event);
@@ -79,16 +84,21 @@ export class IntegrationTriggerDetailPage extends PageBase {
       this.formGroup.get('Type').markAsDirty();
     }
     this.query.Id = undefined;
-    this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
-    this.actionProvider.read(this.query, false).then((listAction: any) => {
-      if (listAction != null && listAction.data.length > 0) {
-        this.actionDataSource = listAction.data;
-      }
-    });
+    this.actionDataSource = [];
+    if (this.formGroup.controls.IDProvider?.value) {
+      this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
+      this.query.IsTriggerable = true;
+      this.actionProvider.read(this.query, false).then((listAction: any) => {
+        if (listAction != null && listAction.data.length > 0) {
+          this.actionDataSource = listAction.data;
+        }
+      });
+    }
 
     this.query.IDProvider = undefined;
     if (this.item.Id) {
       this.query.IDTrigger = this.item.Id;
+      this.query.Skiped = true;
       this.triggerActionProvider.read(this.query, false).then((listTGA: any) => {
         if (listTGA != null && listTGA.data.length > 0) {
           this.item.TriggerActions = listTGA.data;
@@ -97,6 +107,8 @@ export class IntegrationTriggerDetailPage extends PageBase {
           }
         }
       });
+      this.query.IDTrigger = undefined;
+      this.query.Skiped = undefined;
     }
   }
 
@@ -138,10 +150,12 @@ export class IntegrationTriggerDetailPage extends PageBase {
   }
 
   actionDataSource: any;
-  changeProvider() {
+  changeProvider(ev) {
     this.actionDataSource = [];
     this.formGroup.get('IDAction').setValue('');
     this.formGroup.get('IDAction').markAsDirty();
+    this.providerName = ev ? ev.Name + ' -' : '';
+    this.updateNameField();
     this.query.IDProvider = this.formGroup.get('IDProvider').value;
     this.query.IsTriggerable = true;
     this.actionProvider.read(this.query, false).then((listAction: any) => {
@@ -152,6 +166,19 @@ export class IntegrationTriggerDetailPage extends PageBase {
       }
     });
     this.saveChange();
+  }
+
+  changeAction(ev) {
+    this.actionName = ev ? ev.Name : '';
+    this.updateNameField();
+    this.saveChange();
+  }
+
+  providerName = '';
+  actionName = '';
+  updateNameField() {
+    this.formGroup.get('Name').setValue(this.providerName + ' ' + this.actionName);
+    this.formGroup.get('Name').markAsDirty();
   }
 
   removeField(fg, j) {
@@ -179,9 +206,8 @@ export class IntegrationTriggerDetailPage extends PageBase {
 
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    
+
     this.loadedData();
-    
   }
 
   doReorder(ev, groups) {
@@ -214,8 +240,8 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.isDisabled = !this.isDisabled;
   }
 
-  disableAction(fg, e) {
-    this.triggerActionProvider.disable(fg.getRawValue(), e.target.checked).then((resp) => {
+  changeEnableAction(fg, e) {
+    this.triggerActionProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
       if (resp) {
         this.env.showTranslateMessage('Saving completed!', 'success');
       } else {

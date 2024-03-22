@@ -146,9 +146,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           this.formGroup.get('DeletedFields').markAsDirty();
           this.formGroup.get('DeletedAction').setValue(true);
           this.formGroup.get('DeletedAction').markAsDirty();
+          this.saveChange2();
+          
           this.formGroup.get('IDAction').setValue('');
           this.formGroup.get('IDAction').markAsDirty();
-          this.saveChange2();
           this.runnerConfigList = [];
           this.Id = 0;
           this.item = {};
@@ -169,8 +170,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
         IDProvider: this.formGroup.get('IDProvider').value,
       };
       this.actionDataSource = [];
+      this.runnerConfigList = [];
       this.formGroup.get('IDAction').setValue('');
       this.formGroup.get('IDAction').markAsDirty();
+      this.clearTriggerActionMapping();
       this.actionService.read(queryAction, false).then((listAction: any) => {
         if (listAction != null && listAction.data.length > 0) {
           this.actionDataSource = listAction.data;
@@ -181,8 +184,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   runnerConfigList: any;
 
   patchFieldsValue() {
-    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
-    groups.clear();
+    this.clearTriggerActionMapping();
     this.getObjectKeys(this.runnerConfigList).forEach((e) => {
       this.addField(
         this.item.TriggerActionDataMappings?.find((d) => d.ProviderProperty == e),
@@ -233,6 +235,8 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           let deletedFields = ids;
           this.formGroup.get('DeletedFields').setValue(deletedFields);
           this.formGroup.get('DeletedFields').markAsDirty();
+          this.runnerConfigList = [];
+          this.runnerConfigList = JSON.parse(ev.RunnerConfig);
           this.saveChange2();
         })
         .catch((er) => {
@@ -240,26 +244,24 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           this.submitAttempt = false;
         });
     } else {
-      this.schemaDetailDataSource = [];
-      this.runnerConfigList = JSON.parse(ev.RunnerConfig);
-      let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
-      groups.clear();
+      this.clearTriggerActionMapping();
       if (ev.IDSchema) {
         let query = {
           Id: ev.IDSchema,
           IDProvider: ev.IDProvider,
         };
+        this.schemaDetailDataSource = [];
+        this.runnerConfigList = [];
         this.schemaService.commonService
           .connect('GET', 'BI/Schema/GetSchemaWithProvider', query)
           .toPromise()
           .then((data: any) => {
             if (data) {
               this.schemaDetailDataSource = data.Fields;
-              if (this.runnerConfigList) {
-                this.getObjectKeys(this.runnerConfigList).forEach((e) => {
-                  this.addField({}, e);
-                });
-              }
+              this.runnerConfigList = JSON.parse(ev.RunnerConfig);
+              this.getObjectKeys(this.runnerConfigList).forEach((e) => {
+                this.addField({}, e);
+              });
             }
           });
       }
@@ -289,5 +291,9 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   saveActionMapping() {
     //this.saveChange();
     this.modalController.dismiss();
+  }
+  clearTriggerActionMapping(){
+    let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
+    groups.clear();
   }
 }
