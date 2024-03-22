@@ -4,11 +4,13 @@ import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
 import { SYS_APICollectionProvider, SYS_IntegrationProviderProvider, } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, FormArray, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 import {SYS_APICollection, } from 'src/app/models/model-list-interface';
-
+import { getJSDocThisTag } from 'typescript';
+declare var ace: any;
 @Component({
   selector: 'app-api-collection-detail',
   templateUrl: './api-collection-detail.page.html',
@@ -29,6 +31,7 @@ export class APICollectionDetailPage extends PageBase {
   constructor(
     public pageProvider: SYS_APICollectionProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
+    public dynamicScriptLoaderService: DynamicScriptLoaderService,
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
@@ -48,6 +51,7 @@ export class APICollectionDetailPage extends PageBase {
   segmentView = 's1';
   segmentChanged(ev: any) {
     this.segmentView = ev.detail.value;
+      this.loadAceEditor();
   }
 
   buildFormGroup(){
@@ -95,8 +99,13 @@ export class APICollectionDetailPage extends PageBase {
       // DeletedFields: [[]],
     });
   }
-
+  // ngAfterViewInit() {
+  //   // The DOM is fully loaded here
+  //   // You can access DOM elements and run your code
+  //   this.loadAceEditor();
+  // }
   preLoadData(event?: any): void {
+    this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
     this.methodList = [{ Code: 'GET' }, { Code: 'POST' }, { Code: 'PUT' }, { Code: 'PATCH' }, { Code: 'DELETE' }];
     this.typeList = [{ Code: 'Request' }, { Code: 'Folder' }, { Code: 'Collection' }];
     this.bodyType = [{Name:'raw',Code:'raw'},{Name:'none',Code:'none'},{Name:'form-data',Code:'formData'},{Name:'binary',Code:'binary'},{Name:'GraphQL',Code:'GraphQL'}]
@@ -119,7 +128,8 @@ export class APICollectionDetailPage extends PageBase {
             i.disabled = false;
         });
         // this.markNestedNode(this.parentList, this.env.selectedBranch);
-    })
+    });
+   
     super.preLoadData(event);
    
   })
@@ -136,6 +146,7 @@ export class APICollectionDetailPage extends PageBase {
       this.segmentView = 's2'
     }
     this.formGroup.get('Type').markAsDirty();
+   
   }
 
   patchFieldValue() {
@@ -300,5 +311,94 @@ export class APICollectionDetailPage extends PageBase {
       });
      
   }
+  }
+
+  loadAceEditor() {
+    // if (typeof ace !== 'undefined') this.initAce();
+    // else
+      this.dynamicScriptLoaderService
+        .loadScript('https://ace.c9.io/build/src/ace.js')
+        .then(() => this.initAce())
+        .catch((error) => console.error('Error loading script', error));
+  }
+  chartScriptId;
+  chartScriptEditor;
+  initAce() {
+    let control;
+    let saveControl='';
+    let formattedValue='';
+    if(this.segmentView=='s4'){
+      let jsonValue =  JSON.parse(this.formGroup.get('_Body').value.Value);
+      control =  this.formGroup.get('_Body')['controls'].Value;
+      formattedValue = JSON.stringify(jsonValue, null, '\t');
+      saveControl = 'Body';
+    }
+    if(this.segmentView=='s5'){
+      let jsonValue =  this.formGroup.get('BeforeRequestScript').value;
+      control =  this.formGroup.get('BeforeRequestScript');
+      saveControl = 'BeforeRequestScript';
+      formattedValue = jsonValue.replace(/\\n/g, '\n');
+    }
+    if(this.segmentView=='s6'){
+      let jsonValue =  this.formGroup.get('AfterResponseScript').value;
+      control =  this.formGroup.get('AfterResponseScript');
+      saveControl = 'AfterResponseScript';
+      formattedValue = jsonValue.replace(/\\n/g, '\n');
+    }
+    const id = document.querySelector('#'+this.chartScriptId);
+    if ( id != null && control) {
+      const editor = ace.edit(this.chartScriptId);
+      if( editor){
+        editor.session.setMode('ace/mode/javascript');
+        editor.maxLines = Infinity;
+        let that = this;
+        editor.setValue(formattedValue);
+        editor.session.on('change', function (delta) {
+          const editorContent = editor.getValue();
+          try {
+            if(saveControl == 'Body') {
+              JSON.parse(editorContent);
+              control.setValue(editorContent); 
+              that.saveChangeJson(saveControl);
+            } 
+            else{
+              control.setValue(editorContent); 
+              control.markAsDirty();
+              that.saveChange();
+            }
+              console.log('success');
+            }
+            catch (error) {
+              return;
+          }
+            // Update _Body value
+          } 
+       );
+       // Add mouseout event listener to the editor's DOM element
+      //  if (id && control) {
+      //   id.addEventListener('mouseup', ()=>{
+      //     const editorContent = editor.getValue();
+      //     try {
+      //       if(saveControl == 'Body') {
+      //         JSON.parse(editorContent);
+      //         that.saveChangeJson(saveControl);
+      //       }
+      //       else{
+      //         control.markAsDirty();
+      //         that.saveChange();
+      //       }
+      //       console.log('success');
+      //     }
+      //     catch (error) {
+      //       this.env.showTranslateMessage('Cannot save, please try again','danger');
+      //       return;
+      //   }
+      //   }
+        
+      //  );
+      //  }
+      }
+    
+    }
   }
 }

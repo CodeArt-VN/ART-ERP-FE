@@ -43,7 +43,45 @@
 			<ion-col size="12" size-sm size-xl="4">
 				<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
 				
-				<app-form-control [field]="{id:'IDProvider', label: 'Provider', dataSource: providerDataSource, type : 'ng-select',bindValue:'Id',bindLabel:'Name', form : formGroup }" (change)="saveChange()"></app-form-control>
+				<div class="c-control">
+					<label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
+					<ng-select
+					  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+					  class="c-input"
+					  formControlName="IDProvider"
+					  labelForId="IDProvider"
+					  [items]="providerDataSource"
+					  bindLabel="Name"
+					  bindValue="Id"
+					  [clearable]="true"
+					  (change)="saveChange()"
+					  appendTo="#ng-select-holder"
+					>
+					  <!-- <ng-template ng-label-tmp let-i="item" let-clear="clear">
+						<ion-chip color="primary" *ngIf="i">
+						  <ion-avatar>
+							<ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+						  </ion-avatar>
+						  <ion-label>{{ i.Name }}</ion-label><br />
+						  <small
+						  >#<b><span class="important">{{ i.Id }} - {{ i.Code }}</span></b>
+						  </small
+						>
+						</ion-chip>
+					  </ng-template> -->
+					  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+						<div *ngIf="i">
+						  <ion-avatar
+							><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+						  ></ion-avatar>
+						  <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
+						  <small
+							>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
+						  </small>
+						</div>
+					  </ng-template>
+					</ng-select>
+				  </div>
 
 				<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
 
@@ -219,25 +257,65 @@
 					<ion-col size="12" size-sm size-xl="4" *ngIf="formGroup.get('_Body').get('BodyType').value =='raw'">
 						<app-form-control [field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
 					</ion-col>
-					<ion-col size="12">
+				
+					<!-- <ion-col size="12">
 						<app-form-control [field]="{id:'Value', type : 'textarea', label: 'data', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
+					</ion-col> -->
+				</ion-row>
+				<ion-row class="hr-group ion-padding">
+					<ion-col>
+						<ion-accordion-group [value]="'body'" multiple="true">
+							<ion-accordion value="body" fixed style="background: transparent">
+								<ion-item slot="header" color="light">
+								  <ion-label>{{ 'Advanced chart configuration' | translate }}</ion-label>
+								</ion-item>
+								<div slot="content" style="background: transparent">
+								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChangeJson('Body')">
+									<!-- {{ _report.ChartConfigScript }} -->
+								  </div>
+								</div>
+							  </ion-accordion>
+							  </ion-accordion-group>
 					</ion-col>
+					
 				</ion-row>
 			</form>
 		</ion-grid>
 		<!-- BeforeRequestScript -->
 		<ion-grid fixed *ngIf="segmentView == 's5'">
 			<ion-row class="hr-group ion-padding">
-				<ion-col size="12" >
-					<app-form-control [field]="{id:'BeforeRequestScript', type : 'textarea', label: 'Pre-request script', form : formGroup}" (change)="saveChange()"></app-form-control>
+				<ion-col>
+					<ion-accordion-group [value]="'beforeScirpt'" multiple="true">
+						<ion-accordion value="beforeScirpt" fixed style="background: transparent">
+							<ion-item slot="header" color="light">
+							  <ion-label>{{ 'Advanced chart configuration' | translate }}</ion-label>
+							</ion-item>
+							<div slot="content" style="background: transparent">
+							  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+								<!-- {{ _report.ChartConfigScript }} -->
+							  </div>
+							</div>
+						  </ion-accordion>
+						  </ion-accordion-group>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
 			<!-- AfterResponseScript -->
 			<ion-grid fixed *ngIf="segmentView == 's6'">
 				<ion-row class="hr-group ion-padding">
-					<ion-col size="12" >
-						<app-form-control [field]="{id:'AfterResponseScript', type : 'textarea', label: 'Pre-request script', form : formGroup}" (change)="saveChange()"></app-form-control>
+					<ion-col>
+						<ion-accordion-group [value]="'afterScirpt'" multiple="true">
+							<ion-accordion value="afterScirpt" fixed style="background: transparent">
+								<ion-item slot="header" color="light">
+								  <ion-label>{{ 'Advanced chart configuration' | translate }}</ion-label>
+								</ion-item>
+								<div slot="content" style="background: transparent">
+								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+									<!-- {{ _report.ChartConfigScript }} -->
+								  </div>
+								</div>
+							  </ion-accordion>
+							  </ion-accordion-group>
 					</ion-col>
 				</ion-row>
 			</ion-grid>

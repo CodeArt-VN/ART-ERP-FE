@@ -16,9 +16,10 @@ import { Subject, catchError, concat, distinctUntilChanged, of, switchMap, tap }
   styleUrls: ['./integration-action-detail.page.scss'],
 })
 export class IntegrationActionDetailPage extends PageBase {
-  // providerDataSource: any = [];
+  providerDataSource: any = [];
   schemaDataSource :any = [];
   typeList :any = [];
+  IDProviderBefore;
   apiCollectionDataSource : any = [];
   Runners:any;
   isDisabled = true;
@@ -68,10 +69,10 @@ export class IntegrationActionDetailPage extends PageBase {
     this.typeList = [{ Code: 'Import',Name:'Import' }, { Code: 'Export',Name:'Export' }, { Code: 'Changed',Name:'Changed' }];
     Promise.all([
       this.schemaProvider.read(),
-      // this.integrationProvider.read()
+       this.integrationProvider.read()
     ]).then((values: any) => {
       this.schemaDataSource = values[0].data;
-
+      this.providerDataSource = values[1].data;
     })
     super.preLoadData(event);
   }
@@ -83,6 +84,7 @@ export class IntegrationActionDetailPage extends PageBase {
   // this._schemaDatasource.selected = 
   // this._schemaDatasource.initSearch();
   if(this.item.IDProvider){
+    this.IDProviderBefore = this.item.IDProvider;
     this.query.IDProvider = this.item.IDProvider;
     this.query.IDAction = this.item.Id;
     this.query.IsDisabled_eq = null;
@@ -111,11 +113,12 @@ export class IntegrationActionDetailPage extends PageBase {
     });
   }
 
-  if(this.item.IntegrationProvider){
-    this.providerDataSource.selected = [this.item.IntegrationProvider];
-  }
-  this.providerDataSource.initSearch();
-    this.formGroup.get('IDProvider').markAsDirty();
+  // if(this.item.IntegrationProvider){
+  //   this.providerDataSource.selected = [this.item.IntegrationProvider];
+  // }
+  // this.providerDataSource.initSearch();
+  //   this.formGroup.get('IDProvider').markAsDirty();
+  // }
   }
   patchRunnersValue(){
     if (this.item.Runners?.length) {
@@ -174,8 +177,10 @@ export class IntegrationActionDetailPage extends PageBase {
           });
         });
       
-      })
-      console.log(providerId)
+      }).catch((er) => {
+        this.formGroup.get('IDProvider').setValue(this.IDProviderBefore);
+        this.submitAttempt = false;
+      });
     }
     else{
       this.formGroup.get('IDProvider').markAsDirty();
@@ -201,11 +206,18 @@ export class IntegrationActionDetailPage extends PageBase {
       this.saveChange2(fg, null, this.actionAPIRunnerProvider)
   }
  
-  disableRunner(runner){
-    this.actionAPIRunnerProvider.disable(runner.getRawValue()).then((resp) => {
+  changeEnableRunner(fg, e) {
+    this.actionAPIRunnerProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
+      if (resp) {
+        fg.get('IsDisabled').setValue(!e.target.checked);
+        this.env.showTranslateMessage('Saving completed!', 'success');
+      } else {
+        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+      }
       this.convertRunnerConfig();
     });
   }
+
   deleteItems(){
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length
@@ -279,28 +291,6 @@ doReorder(ev, groups) {
     this.segmentView = ev.detail.value;
   }
 
-  providerDataSource = {
-    searchProvider: this.integrationProvider,
-    loading: false,
-    input$: new Subject<string>(),
-    selected: [],
-    items$: null,
-    initSearch() {
-        this.loading = false;
-        this.items$ = concat(
-            of(this.selected),
-            this.input$.pipe(
-                distinctUntilChanged(),
-                tap(() => this.loading = true),
-                switchMap(term => this.searchProvider.search({ Take: 20, Skip: 0, Term: term }).pipe(
-                    catchError(() => of([])), // empty list on error
-                    tap(() => this.loading = false)
-                ))
-
-            )
-        );
-    }
-  };
   toggleReorder() {
     this.isDisabled = !this.isDisabled;
   }
