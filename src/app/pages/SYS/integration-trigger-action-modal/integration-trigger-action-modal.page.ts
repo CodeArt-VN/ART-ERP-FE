@@ -191,6 +191,9 @@ export class IntegrationTriggerActionModalPage extends PageBase {
         e,
       );
     });
+    if (!this.pageConfig.canEdit || this.item.IsDisabled ) {
+      this.formGroup.controls.TriggerActionDataMappings.disable();
+    }
   }
 
   addField(field: any, providerProperty, markAsDirty = false) {
