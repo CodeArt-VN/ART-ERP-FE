@@ -245,13 +245,13 @@ export class IntegrationTriggerActionModalPage extends PageBase {
         });
     } else {
       this.clearTriggerActionMapping();
+      this.runnerConfigList = [];
       if (ev.IDSchema) {
         let query = {
           Id: ev.IDSchema,
           IDProvider: ev.IDProvider,
         };
         this.schemaDetailDataSource = [];
-        this.runnerConfigList = [];
         this.schemaService.commonService
           .connect('GET', 'BI/Schema/GetSchemaWithProvider', query)
           .toPromise()

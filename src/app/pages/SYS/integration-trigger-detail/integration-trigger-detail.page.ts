@@ -99,11 +99,14 @@ export class IntegrationTriggerDetailPage extends PageBase {
       this.query.IDTrigger = this.item.Id;
       this.query.Skiped = true;
       this.triggerActionProvider.read(this.query, false).then((listTGA: any) => {
+        this.item.TriggerActions = listTGA.data;
         if (listTGA != null && listTGA.data.length > 0) {
-          this.item.TriggerActions = listTGA.data;
           if (this.item.TriggerActions?.length) {
             this.patchFieldsValue();
           }
+        }else {
+          let groups = <FormArray>this.formGroup.controls.TriggerActions;
+          groups.clear();
         }
       });
       this.query.IDTrigger = undefined;
