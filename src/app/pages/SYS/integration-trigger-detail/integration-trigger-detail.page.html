@@ -76,8 +76,9 @@
                 <header class="bold" style="padding-right: 0;">
                   <div class="col-id cell">Id</div>
                   <div class="col-name cell">Provider / Action</div>
-                  <div class="col-icon cell" *ngIf="pageConfig.canEdit">Enable</div>
-                  <div class="col-reorder cell" *ngIf="pageConfig.canEdit"></div>
+                  <div class="col-checkbox cell">Enable</div>
+                  <div class="col-icon cell" *ngIf="pageConfig.canEdit"></div>
+                  <div class="col-reorder cell" *ngIf="pageConfig.canEdit &&  !isDisabled "></div>
                 </header>
                 <ion-reorder-group [disabled]="isDisabled"
                   (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])">
@@ -88,11 +89,7 @@
                         <div class="col-id cell">
                           {{idx+1}}
                         </div>
-                        <div class="col-name cell" *ngIf="pageConfig.canEdit" (click)="showActionModal(g)">
-                          {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
-                          <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
-                        </div>
-                        <div class="col-name cell" *ngIf="!pageConfig.canEdit" >
+                        <div class="col-name cell" (click)="showActionModal(g)">
                           {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
                           <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
                         </div>
