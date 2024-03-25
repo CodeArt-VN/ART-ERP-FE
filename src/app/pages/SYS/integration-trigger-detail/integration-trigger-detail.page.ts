@@ -39,7 +39,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
-    this.pageConfig.canEdit = true;
 
     this.formGroup = formBuilder.group({
       IDBranch: [this.env.selectedBranch],

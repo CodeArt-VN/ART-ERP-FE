@@ -63,10 +63,10 @@
                 <ion-list-header lines="full" style="padding-left: 0px;">
                     <ion-toolbar color="primary">
                       <ion-buttons slot="end">
-                        <ion-button (click)="showActionModal()">
+                        <ion-button (click)="showActionModal()" *ngIf="pageConfig.canAdd">
                           <ion-icon slot="end" name="add"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="toggleReorder()">
+                        <ion-button (click)="toggleReorder()" *ngIf="pageConfig.canEdit">
                           <ion-icon slot="end" name="funnel-outline"></ion-icon>
                         </ion-button>
                       </ion-buttons>
@@ -88,12 +88,17 @@
                         <div class="col-id cell">
                           {{idx+1}}
                         </div>
-                        <div class="col-name cell" (click)="showActionModal(g)">
+                        <div class="col-name cell" *ngIf="pageConfig.canEdit" (click)="showActionModal(g)">
                           {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
                           <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
                         </div>
-                        <div class="col-checkbox cell" >
-                          <input class="c-checkbox" [checked]="!g.get('IsDisable').value" type="checkbox" (change)="changeEnableAction(g, $event)"/>
+                        <div class="col-name cell" *ngIf="!pageConfig.canEdit" >
+                          {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
+                          <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
+                        </div>
+                        <div class="col-checkbox cell">
+                          <input class="c-checkbox" *ngIf="pageConfig.canEdit" [checked]="!g.get('IsDisable').value" type="checkbox" (change)="changeEnableAction(g, $event)"/>
+                          <input class="c-checkbox" *ngIf="!pageConfig.canEdit" [checked]="!g.get('IsDisable').value" type="checkbox"/>
                         </div>
                         <div class="col-icon cell" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
                           <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>

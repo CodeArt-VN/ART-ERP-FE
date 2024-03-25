@@ -129,7 +129,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   }
 
   actionDataSource: any;
-  async changeProvider() {
+  changeProvider() {
     let triggerActionMappings = this.formGroup.getRawValue().TriggerActionDataMappings.filter((d) => d.Id > 0);
     let ids = triggerActionMappings.map((e) => e.Id);
     let detailLength = ids.length;
@@ -220,7 +220,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     groups.push(group);
   }
 
-  async changeAction(ev) {
+  changeAction(ev) {
     let triggerActionMappings = this.formGroup.getRawValue().TriggerActionDataMappings.filter((d) => d.Id > 0);
     let ids = triggerActionMappings.map((e) => e.Id);
     let detailLength = ids.length;
