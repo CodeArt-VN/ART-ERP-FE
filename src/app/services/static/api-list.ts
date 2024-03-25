@@ -6564,6 +6564,55 @@ export var APIListBase = {
 		
 	},
 
+	LIST_AddressSubdivision:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "LIST/AddressSubdivision/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "LIST/AddressSubdivision"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "LIST/AddressSubdivision/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "LIST/AddressSubdivision/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "LIST/AddressSubdivision/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "LIST/AddressSubdivision/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "LIST/AddressSubdivision/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "LIST/AddressSubdivision/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "LIST/AddressSubdivision"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "LIST/AddressSubdivision/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "LIST/AddressSubdivision/" + id} 
+        }
+		
+	},
+
 	LIST_ContractTemplate:{
         getSearchList:{
             method: "GET",
@@ -6658,55 +6707,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "LIST/Country/" + id} 
-        }
-		
-	},
-
-	LIST_District:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "LIST/District/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "LIST/District"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "LIST/District/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "LIST/District/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "LIST/District/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "LIST/District/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/District/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/District/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "LIST/District"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "LIST/District/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "LIST/District/" + id} 
         }
 		
 	},
@@ -6854,104 +6854,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "LIST/PayPeriod/" + id} 
-        }
-		
-	},
-
-	LIST_Province:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "LIST/Province/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "LIST/Province"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "LIST/Province/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "LIST/Province/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "LIST/Province/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Province/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Province/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Province/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "LIST/Province"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "LIST/Province/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "LIST/Province/" + id} 
-        }
-		
-	},
-
-	LIST_Ward:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "LIST/Ward/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "LIST/Ward"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "LIST/Ward/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "LIST/Ward/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "LIST/Ward/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Ward/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Ward/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "LIST/Ward/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "LIST/Ward"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "LIST/Ward/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "LIST/Ward/" + id} 
         }
 		
 	},
