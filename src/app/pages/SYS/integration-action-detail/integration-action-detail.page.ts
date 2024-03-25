@@ -87,7 +87,7 @@ export class IntegrationActionDetailPage extends PageBase {
     this.IDProviderBefore = this.item.IDProvider;
     this.query.IDProvider = this.item.IDProvider;
     this.query.IDAction = this.item.Id;
-    this.query.IsDisabled_eq = null;
+    this.query.IsDisabled = 'Skipped';
     Promise.all([
       this.actionAPIRunnerProvider.read(this.query),
       this.apiCollectionProvider.read(this.query)
