@@ -97,8 +97,8 @@
                           <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
                         </div>
                         <div class="col-checkbox cell">
-                          <input class="c-checkbox" *ngIf="pageConfig.canEdit" [checked]="!g.get('IsDisable').value" type="checkbox" (change)="changeEnableAction(g, $event)"/>
-                          <input class="c-checkbox" *ngIf="!pageConfig.canEdit" [checked]="!g.get('IsDisable').value" type="checkbox"/>
+                          <input class="c-checkbox" *ngIf="pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox" (change)="changeEnableAction(g, $event)"/>
+                          <input class="c-checkbox" *ngIf="!pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox"/>
                         </div>
                         <div class="col-icon cell" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
                           <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>

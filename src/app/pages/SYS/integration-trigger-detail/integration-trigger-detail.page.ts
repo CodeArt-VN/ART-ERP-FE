@@ -97,7 +97,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.query.IDProvider = undefined;
     if (this.item.Id) {
       this.query.IDTrigger = this.item.Id;
-      this.query.Skiped = true;
+      this.query.IsDisabled = 'skipped';
       this.triggerActionProvider.read(this.query, false).then((listTGA: any) => {
         this.item.TriggerActions = listTGA.data;
         if (listTGA != null && listTGA.data.length > 0) {
@@ -110,7 +110,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
         }
       });
       this.query.IDTrigger = undefined;
-      this.query.Skiped = undefined;
+      this.query.IsDisabled = undefined;
     }
   }
 
@@ -136,7 +136,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
       Name: new FormControl({ value: field.Name, disabled: false }),
       Remark: new FormControl({ value: field.Remark, disabled: false }),
       Sort: new FormControl({ value: field.Sort, disabled: false }),
-      IsDisable: new FormControl({ value: field.IsDisable, disabled: false }),
+      IsDisabled: new FormControl({ value: field.IsDisabled, disabled: false }),
     });
     groups.push(group);
     if (markAsDirty) {
