@@ -20,7 +20,7 @@ import { IntegrationTriggerActionModalPage } from '../integration-trigger-action
   styleUrls: ['./integration-trigger-detail.page.scss'],
 })
 export class IntegrationTriggerDetailPage extends PageBase {
-  public isDisabled = true;
+
   constructor(
     public pageProvider: SYS_TriggerProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
@@ -39,7 +39,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
-
+    this.pageConfig.canEdit = false;
     this.formGroup = formBuilder.group({
       IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
@@ -238,9 +238,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
     }
   }
 
-  toggleReorder() {
-    this.isDisabled = !this.isDisabled;
-  }
 
   changeEnableAction(fg, e) {
     this.triggerActionProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {

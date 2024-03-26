@@ -54,38 +54,26 @@
         <ion-row class="hr-group" style="position: relative;">
           <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
             <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">Actions</ion-label>
+              <ion-label color="primary">{{'Actions' | translate}}</ion-label>
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="8">
             <div class="table-contain">
               <section class="table">
-                <ion-list-header lines="full" style="padding-left: 0px;">
-                    <ion-toolbar color="primary">
-                      <ion-buttons slot="end">
-                        <ion-button (click)="showActionModal()" *ngIf="pageConfig.canAdd">
-                          <ion-icon slot="end" name="add"></ion-icon>
-                        </ion-button>
-                        <ion-button (click)="toggleReorder()" *ngIf="pageConfig.canEdit">
-                          <ion-icon slot="end" name="funnel-outline"></ion-icon>
-                        </ion-button>
-                      </ion-buttons>
-
-                    </ion-toolbar>
-                </ion-list-header>
-                <header class="bold" style="padding-right: 0;">
+                <header class="bold">
                   <div class="col-id cell">Id</div>
                   <div class="col-name cell">Provider / Action</div>
                   <div class="col-checkbox cell">Enable</div>
                   <div class="col-icon cell" *ngIf="pageConfig.canEdit"></div>
-                  <div class="col-reorder cell" *ngIf="pageConfig.canEdit &&  !isDisabled "></div>
+                  <div class="col-reorder cell">
+                    <ion-icon color="primary" size="large" (click)="showActionModal()" *ngIf="pageConfig.canAdd" name="add"></ion-icon>
+                  </div>
                 </header>
-                <ion-reorder-group [disabled]="isDisabled"
+                <ion-reorder-group [disabled]="false"
                   (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])">
                   <ng-container *ngFor="let g of formGroup.get('TriggerActions')['controls']; let idx = index;">
                     <ng-container [formGroup]="g">
                       <div class="row">
-
                         <div class="col-id cell">
                           {{idx+1}}
                         </div>
@@ -100,7 +88,9 @@
                         <div class="col-icon cell" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
                           <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>
                         </div>
-                        <ion-reorder slot="end"></ion-reorder>
+                        <div class="col-reorder cell">
+                          <ion-reorder *ngIf="pageConfig.canEdit" slot="end"></ion-reorder>
+                        </div>
                       </div>
                     </ng-container>
                   </ng-container>

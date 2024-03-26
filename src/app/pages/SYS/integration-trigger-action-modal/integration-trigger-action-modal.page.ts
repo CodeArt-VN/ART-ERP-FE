@@ -89,13 +89,13 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       if (this.item?.IDAction) {
         this.actionService.getAnItem(this.item.IDAction).then((data: any) => {
           if (data) {
-            this.runnerConfigList = JSON.parse(data.RunnerConfig);
+            this.varibles = JSON.parse(data.Varibles);
             if (data.IDSchema) {
               this.schemaDetailDataSource = [];
               this.schemaService.getAnItem(data.IDSchema).then((data: any) => {
                 if (data) {
                   this.schemaDetailDataSource = data.Fields;
-                  if (this.runnerConfigList) this.patchFieldsValue();
+                  if (this.varibles) this.patchFieldsValue();
                 }
               });
             }
@@ -147,10 +147,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           this.formGroup.get('DeletedAction').setValue(true);
           this.formGroup.get('DeletedAction').markAsDirty();
           this.saveChange2();
-          
+
           this.formGroup.get('IDAction').setValue('');
           this.formGroup.get('IDAction').markAsDirty();
-          this.runnerConfigList = [];
+          this.varibles = [];
           this.Id = 0;
           this.item = {};
           this.item.IDProvider = this.formGroup.get('IDProvider').value;
@@ -170,7 +170,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
         IDProvider: this.formGroup.get('IDProvider').value,
       };
       this.actionDataSource = [];
-      this.runnerConfigList = [];
+      this.varibles = [];
       this.formGroup.get('IDAction').setValue('');
       this.formGroup.get('IDAction').markAsDirty();
       this.clearTriggerActionMapping();
@@ -181,17 +181,17 @@ export class IntegrationTriggerActionModalPage extends PageBase {
       });
     }
   }
-  runnerConfigList: any;
+  varibles: any;
 
   patchFieldsValue() {
     this.clearTriggerActionMapping();
-    this.getObjectKeys(this.runnerConfigList).forEach((e) => {
+    this.getObjectKeys(this.varibles).forEach((e) => {
       this.addField(
         this.item.TriggerActionDataMappings?.find((d) => d.ProviderProperty == e),
         e,
       );
     });
-    if (!this.pageConfig.canEdit || this.item.IsDisabled ) {
+    if (!this.pageConfig.canEdit || this.item.IsDisabled) {
       this.formGroup.controls.TriggerActionDataMappings.disable();
     }
   }
@@ -223,7 +223,17 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     groups.push(group);
   }
 
-  changeAction(ev) {
+  async changeAction(ev) {
+    let localVariables = [];
+    //clear varibles
+    this.varibles = [];
+    await this.actionService.getAnItem(ev.Id).then((data: any) => {
+      if (data) {
+        this.varibles = JSON.parse(data.Varibles);
+        localVariables = this.varibles;
+      }
+    });
+
     let triggerActionMappings = this.formGroup.getRawValue().TriggerActionDataMappings.filter((d) => d.Id > 0);
     let ids = triggerActionMappings.map((e) => e.Id);
     let detailLength = ids.length;
@@ -238,17 +248,16 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           let deletedFields = ids;
           this.formGroup.get('DeletedFields').setValue(deletedFields);
           this.formGroup.get('DeletedFields').markAsDirty();
-          this.runnerConfigList = [];
-          this.runnerConfigList = JSON.parse(ev.RunnerConfig);
+          this.varibles = [];
+          this.varibles = localVariables;
           this.saveChange2();
+          this.IDActionBefore = ev.Id;
         })
         .catch((er) => {
           this.formGroup.get('IDAction').setValue(this.IDActionBefore);
           this.submitAttempt = false;
         });
     } else {
-      this.clearTriggerActionMapping();
-      this.runnerConfigList = [];
       if (ev.IDSchema) {
         let query = {
           Id: ev.IDSchema,
@@ -261,8 +270,8 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           .then((data: any) => {
             if (data) {
               this.schemaDetailDataSource = data.Fields;
-              this.runnerConfigList = JSON.parse(ev.RunnerConfig);
-              this.getObjectKeys(this.runnerConfigList).forEach((e) => {
+              this.clearTriggerActionMapping();
+              this.getObjectKeys(this.varibles).forEach((e) => {
                 this.addField({}, e);
               });
             }
@@ -273,7 +282,11 @@ export class IntegrationTriggerActionModalPage extends PageBase {
   }
 
   getObjectKeys(obj: any): string[] {
-    return obj ? Object.keys(obj) : [];
+    if (Array.isArray(obj)) {
+      return obj.map((item) => item.Key);
+    } else {
+      return obj ? Object.keys(obj) : [];
+    }
   }
 
   changeERPProperty(fg) {
@@ -295,7 +308,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     //this.saveChange();
     this.modalController.dismiss();
   }
-  clearTriggerActionMapping(){
+  clearTriggerActionMapping() {
     let groups = <FormArray>this.formGroup.controls.TriggerActionDataMappings;
     groups.clear();
   }
