@@ -3421,6 +3421,33 @@ export interface HRM_TimesheetLog
     
 }
 
+export interface LIST_AddressSubdivision
+{
+    IDParent?: number;
+    Id?: number;
+    Icon?: string;
+    Color?: string;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    ZipCode?: string;
+    Lat?: string;
+    Long?: string;
+    FromDate?: Date;
+    ToDate?: Date;
+    Remark?: string;
+    ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface LIST_ContractTemplate
 {
     Id?: number;
@@ -3455,25 +3482,6 @@ export interface LIST_Country
     CountryNumber?: string;
     InternetCountryCode?: string;
     Flags?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
-export interface LIST_District
-{
-    IDProvince?: number;
-    Id?: number;
-    Name?: string;
-    Type?: string;
-    LatiLongTude?: string;
-    Code?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -3540,45 +3548,6 @@ export interface LIST_PayPeriod
     ModifiedDate?: Date;
     StartDay?: Date;
     EndDay?: Date;
-    
-}
-
-export interface LIST_Province
-{
-    IDCountry?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Type?: string;
-    TelephoneCode?: number;
-    ZipCode?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
-export interface LIST_Ward
-{
-    IDDistrict?: number;
-    Id?: number;
-    Name?: string;
-    Type?: string;
-    LatiLongTude?: string;
-    Code?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
     
 }
 
@@ -4736,7 +4705,30 @@ export interface SHIP_Vehicle
 
 export interface SYS_Action
 {
+    IDProvider?: number;
     IDSchema?: number;
+    Id?: number;
+    Type?: string;
+    Group?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    IsTriggerable?: boolean;
+    RunnerConfig?: string;
+    
+}
+
+export interface SYS_ActionAPIRunner
+{
+    IDAction?: number;
+    IDAPICollection?: number;
     Id?: number;
     Type?: string;
     Code?: string;
@@ -4754,6 +4746,8 @@ export interface SYS_Action
 
 export interface SYS_APICollection
 {
+    IDProvider?: number;
+    IDParent?: number;
     Id?: number;
     Type?: string;
     Code?: string;
@@ -4772,10 +4766,10 @@ export interface SYS_APICollection
     Header?: string;
     Body?: string;
     Authorization?: string;
-    PreRequestScript?: string;
+    BeforeRequestScript?: string;
+    AfterResponseScript?: string;
     Setting?: string;
     Varibles?: string;
-    IDParent?: number;
     
 }
 
@@ -4835,6 +4829,7 @@ export interface SYS_Config
 
 export interface SYS_ConfigOption
 {
+    IDProvider?: number;
     IDParent?: number;
     Id?: number;
     Code?: string;
@@ -5264,14 +5259,6 @@ export interface SYS_Translate
     Code?: string;
     Name?: string;
     Lang1?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
     Lang2?: string;
     Lang3?: string;
     Lang4?: string;
@@ -5280,12 +5267,21 @@ export interface SYS_Translate
     Lang7?: string;
     Lang8?: string;
     Lang9?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
 export interface SYS_Trigger
 {
-    IDIntegration?: number;
+    IDProvider?: number;
+    IDAction?: number;
     Id?: number;
     Type?: string;
     Icon?: string;
@@ -7140,6 +7136,48 @@ export interface vw_SYS_SyncJob
     IsRunning?: boolean;
     ErrorMessage?: string;
     Priority?: number;
+    
+}
+
+export interface vw_WMS_LotLocLPN
+{
+    IDBranch?: number;
+    StorerId?: number;
+    StorerName?: string;
+    GroupId?: number;
+    GroupName?: string;
+    ItemId?: number;
+    ItemCode?: string;
+    ItemName?: string;
+    UoMId?: number;
+    UoMName?: string;
+    AlternativeQuantity?: number;
+    BaseQuantity?: number;
+    ZoneId?: number;
+    ZoneName?: string;
+    LocationId?: number;
+    LocationName?: string;
+    LocationLevel?: number;
+    LotId?: number;
+    Lottable0?: string;
+    Lottable1?: string;
+    Lottable2?: string;
+    Lottable3?: string;
+    Lottable4?: string;
+    Lottable5?: Date;
+    Lottable6?: Date;
+    Lottable7?: Date;
+    Lottable8?: Date;
+    Lottable9?: Date;
+    LPNId?: number;
+    QuantityExpected?: number;
+    QuantityOnHand?: number;
+    QuantityAllocated?: number;
+    QuantityPicked?: number;
+    QuantityOnHold?: number;
+    QuantityPickInProcess?: number;
+    QuantityPendingMoveIn?: number;
+    Id?: number;
     
 }
 
