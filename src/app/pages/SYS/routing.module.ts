@@ -25,4 +25,10 @@ export const SYSRoutes: Routes = [
     { path: 'integration-action', loadChildren: () => import('./integration-action/integration-action.module').then(m => m.IntegrationActionPageModule) , canActivate: [AuthGuard]},
     { path: 'integration-action/:id', loadChildren: () => import('./integration-action-detail/integration-action-detail.module').then(m => m.IntegrationActionDetailPageModule), canActivate: [AuthGuard]},
 
+    { path: 'integration-provider', loadChildren: () => import('./integration-provider/integration-provider.module').then(m => m.IntegrationProviderPageModule), canActivate: [AuthGuard] },
+    { path: 'integration-provider/:id', loadChildren: () => import('./integration-provider-detail/integration-provider-detail.module').then(m => m.IntegrationProviderDetailPageModule), canActivate: [AuthGuard] },
+    
+    { path: 'integration-trigger', loadChildren: () => import('./integration-trigger/integration-trigger.module').then(m => m.IntegrationTriggerPageModule), canActivate: [AuthGuard] },
+    { path: 'integration-trigger/:id', loadChildren: () => import('./integration-trigger-detail/integration-trigger-detail.module').then(m => m.IntegrationTriggerDetailPageModule), canActivate: [AuthGuard] },
+
 ];
