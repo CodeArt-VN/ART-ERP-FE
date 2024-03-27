@@ -1,0 +1,14 @@
+.full-screen {
+  min-height: calc(100vh - 97px);
+}
+.table-contain .table .row {
+  min-height: 35px;
+}
+.table .col-checkbox {
+  max-width: 55px;
+  min-width: 55px;
+}
+.table .col-reorder {
+  max-width: 36px;
+  min-width: 36px;
+}

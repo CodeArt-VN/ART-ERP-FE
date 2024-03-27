@@ -22,4 +22,10 @@ export const SYSRoutes: Routes = [
     { path: 'api-collection', loadChildren: () => import('./api-collection/api-collection.module').then(m => m.APICollectionPageModule) },
     { path: 'api-collection/:id', loadChildren: () => import('./api-collection-detail/api-collection-detail.module').then(m => m.APICollectionDetailPageModule)},
 
+    { path: 'integration-provider', loadChildren: () => import('./integration-provider/integration-provider.module').then(m => m.IntegrationProviderPageModule), canActivate: [AuthGuard] },
+    { path: 'integration-provider/:id', loadChildren: () => import('./integration-provider-detail/integration-provider-detail.module').then(m => m.IntegrationProviderDetailPageModule), canActivate: [AuthGuard] },
+    
+    { path: 'integration-trigger', loadChildren: () => import('./integration-trigger/integration-trigger.module').then(m => m.IntegrationTriggerPageModule), canActivate: [AuthGuard] },
+    { path: 'integration-trigger/:id', loadChildren: () => import('./integration-trigger-detail/integration-trigger-detail.module').then(m => m.IntegrationTriggerDetailPageModule), canActivate: [AuthGuard] },
+
 ];
