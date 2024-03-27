@@ -81,7 +81,7 @@ let allRoutes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules, useHash: false })
+    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules, useHash: true })
   ],
   exports: [RouterModule]
 })

@@ -176,7 +176,18 @@ import { lib } from 'src/app/services/static/global-functions';
           [labelForId]="field.labelForId"
           [bindLabel]="field.bindLabel ? field.bindLabel : 'Name'"
           [bindValue]="field.bindValue"
-        ></ng-select>
+        >
+          <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+            <div *ngIf="i">
+              <div>
+                <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
+                <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
+                  i[field.bindLabel ? field.bindLabel : 'Name']
+                }}</ion-text>
+              </div>
+            </div>
+          </ng-template>
+        </ng-select>
         <input
           *ngSwitchCase="'string'"
           [id]="field.labelForId"

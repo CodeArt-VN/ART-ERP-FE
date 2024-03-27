@@ -274,7 +274,7 @@ input[type='number'] {
 
 .flex-nowrap {
   display: flex;
-  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .alert-text-left {

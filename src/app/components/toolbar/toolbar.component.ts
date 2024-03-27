@@ -1,33 +1,69 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EnvService } from 'src/app/services/core/env.service';
-import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
   @ViewChild('importfile') importfile: any;
 
+  @Input() NoBorder = false;
+
+  @Input() page;
+
+
+  @Input() pageConfig; //remove this line
+
+  
+  @Input() BackHref;
   @Input() pageTitle;
   @Input() selectedTitle;
-  @Input() pageConfig;
-  @Input() selectedItems;
-  @Input() query = {};
+  @Input() selectedItems; //remove this line
+
+  @Input() query: any = {}; //remove this line
+
+
+  @Input() CenterTitle;
+
   @Input() ShowAdd = true;
   @Input() ShowSearch = true;
   @Input() ShowRefresh = true;
-  @Input() ShowArchive = true;
+
   @Input() ShowExport = true;
   @Input() ShowImport = true;
+
+  @Input() ShowCopy = true;
+  @Input() ShowChangeBranch = true;
+
+  @Input() ShowSubmit = true;
+  @Input() ShowApprove = true;
+  @Input() ShowDisapprove = true;
+
+  @Input() ShowMerge = true;
+  @Input() ShowSplit = true;
+
+  @Input() ShowCancel = true;
+  @Input() ShowArchive = true;
+  @Input() ShowDelete = true;
+
+
   @Input() ShowHelp = true;
-  @Input() ShowFeature = true;
-  @Input() NoBorder = false;
-  @Input() page;
-  @Input() title;
-  @Input() BackHref;
+  @Input() ShowFeature = false;
+
+
+
+
+
+
+
+
+
+
+
+
 
   constructor(
     public translate: TranslateService,
@@ -42,46 +78,25 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.page?.pageConfig && !this.pageConfig){
-      this.pageConfig = this.page.pageConfig
-    }
-    // this.pageConfig.isMainPageActive = true;
-    if (this.pageConfig.pageTitle)
-      this.translate.get(this.pageConfig.pageTitle).subscribe((text: string) => {
+    if (this.page.pageConfig?.pageTitle)
+      this.translate.get(this.page.pageConfig.pageTitle).subscribe((text: string) => {
         this.pageTitle = text;
         window.document.title = text;
       });
-      console.log(this.pageConfig)
-  
   }
 
-  onClickImport() {
-    this.importfile.nativeElement.value = '';
-    this.importfile.nativeElement.click();
-  }
 
-  importFileChange(event) {
-    this.page.import(event);
-  }
-
-  showSubmit = true;
-  showApprove = true;
-  showDisapprove = true;
-  showCancel = true;
-  showDelete = true;
-  showSplit = true;
-  showMerge = true;
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('check');
-    if (this.pageConfig?.pageName == 'sale-order') {
-      this.showSubmit = true;
-      this.showApprove = true;
-      this.showDisapprove = true;
-      this.showCancel = true;
-      this.showDelete = true;
+    console.log('changed');
+    if (this.page.pageConfig?.pageName == 'sale-order') {
+      this.ShowSubmit = true;
+      this.ShowApprove = true;
+      this.ShowDisapprove = true;
+      this.ShowCancel = true;
+      this.ShowDelete = true;
 
-      this.selectedItems.forEach((i) => {
+      this.page.selectedItems.forEach((i) => {
         // 101	new	Mới
         // 102	unapproved	Không duyệt
         // 103	submitted	Chờ duyệt
@@ -102,50 +117,50 @@ export class ToolbarComponent implements OnInit {
 
         let notShowSubmitOrdersForApproval = [103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
         if (notShowSubmitOrdersForApproval.indexOf(i._Status.IDStatus) > -1) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
 
         let notShowApproveOrders = [101, 102, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
         if (notShowApproveOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.showApprove = false;
+          this.ShowApprove = false;
         }
 
         let notShowDisapproveOrders = [101, 102, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
         if (notShowDisapproveOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.showDisapprove = false;
+          this.ShowDisapprove = false;
         }
 
         let notShowCancelOrders = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
         if (notShowCancelOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.showCancel = false;
+          this.ShowCancel = false;
         }
 
         let notShowDelete = [103, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114];
         if (notShowDelete.indexOf(i._Status.IDStatus) > -1) {
-          this.showDelete = false;
+          this.ShowDelete = false;
         }
 
         // let notShowSplit = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
         // if (notShowSplit.indexOf(i.Status) > -1) {
-        // 	this.showSplit = false;
+        // 	this.ShowSplit = false;
         // }
 
         // let notShowMerge = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
         // if (notShowMerge.indexOf(i.Status) > -1) {
-        // 	this.showMerge = false;
+        // 	this.ShowMerge = false;
         // }
       });
     }
 
-    if (this.pageConfig?.pageName == 'purchase-order') {
-      this.showSubmit = true;
-      this.showApprove = true;
-      this.showDisapprove = true;
-      this.showCancel = true;
-      this.showSubmit = true;
-      this.showDelete = true;
+    if (this.page.pageConfig?.pageName == 'purchase-order') {
+      this.ShowSubmit = true;
+      this.ShowApprove = true;
+      this.ShowDisapprove = true;
+      this.ShowCancel = true;
+      this.ShowSubmit = true;
+      this.ShowDelete = true;
 
-      this.selectedItems.forEach((i) => {
+      this.page.selectedItems.forEach((i) => {
         // Draft	Nháp
         // Unapproved	Không duyệt
         // Submitted	Chờ duyệt
@@ -173,7 +188,7 @@ export class ToolbarComponent implements OnInit {
           'Cancelled',
         ];
         if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
 
         let notShowApproveOrders = [
@@ -189,7 +204,7 @@ export class ToolbarComponent implements OnInit {
           'Cancelled',
         ];
         if (notShowApproveOrders.indexOf(i.Status) > -1) {
-          this.showApprove = false;
+          this.ShowApprove = false;
         }
 
         let notShowDisapproveOrders = [
@@ -204,7 +219,7 @@ export class ToolbarComponent implements OnInit {
           'Cancelled',
         ];
         if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
-          this.showDisapprove = false;
+          this.ShowDisapprove = false;
         }
 
         let notShowCancelOrders = [
@@ -218,7 +233,7 @@ export class ToolbarComponent implements OnInit {
           'Cancelled',
         ];
         if (notShowCancelOrders.indexOf(i.Status) > -1) {
-          this.showCancel = false;
+          this.ShowCancel = false;
         }
 
         let notShowSubmitOrders = [
@@ -234,7 +249,7 @@ export class ToolbarComponent implements OnInit {
           'Cancelled',
         ];
         if (notShowSubmitOrders.indexOf(i.Status) > -1) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
 
         let notShowDelete = [
@@ -247,23 +262,23 @@ export class ToolbarComponent implements OnInit {
           'Received',
         ];
         if (notShowDelete.indexOf(i.Status) > -1) {
-          this.showDelete = false;
+          this.ShowDelete = false;
         }
       });
     }
 
-    if (this.pageConfig?.pageName == 'arinvoice') {
-      this.showSubmit = true;
-      this.showApprove = true;
-      this.showDisapprove = true;
-      this.showCancel = true;
-      this.showSubmit = true;
+    if (this.page.pageConfig?.pageName == 'arinvoice') {
+      this.ShowSubmit = true;
+      this.ShowApprove = true;
+      this.ShowDisapprove = true;
+      this.ShowCancel = true;
+      this.ShowSubmit = true;
 
-      this.showMerge = true;
-      this.showSplit = true;
-      this.showDelete = true;
+      this.ShowMerge = true;
+      this.ShowSplit = true;
+      this.ShowDelete = true;
 
-      this.selectedItems.forEach((i) => {
+      this.page.selectedItems.forEach((i) => {
         // ARInvoiceNew	Mới
         // ARInvoiceDraft	Nháp
         // ARInvoiceRejected	Không duyệt
@@ -288,7 +303,7 @@ export class ToolbarComponent implements OnInit {
           'ARInvoiceMerged',
         ];
         if (notShowSubmitARsForApproval.indexOf(i.Status) > -1) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
 
         let notShowApproveARs = [
@@ -303,7 +318,7 @@ export class ToolbarComponent implements OnInit {
           'ARInvoiceMerged',
         ];
         if (notShowApproveARs.indexOf(i.Status) > -1) {
-          this.showApprove = false;
+          this.ShowApprove = false;
         }
 
         let notShowDisapproveARs = [
@@ -318,12 +333,12 @@ export class ToolbarComponent implements OnInit {
           'ARInvoiceRejected',
         ];
         if (notShowDisapproveARs.indexOf(i.Status) > -1) {
-          this.showDisapprove = false;
+          this.ShowDisapprove = false;
         }
 
         let notShowCancelARs = ['ARInvoiceCanceled'];
         if (notShowCancelARs.indexOf(i.Status) > -1) {
-          this.showCancel = false;
+          this.ShowCancel = false;
         }
 
         let notShowSubmitARs = [
@@ -335,12 +350,12 @@ export class ToolbarComponent implements OnInit {
           'EInvoiceEmpty',
         ];
         if (notShowSubmitARs.indexOf(i.Status) > -1) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
 
         let notShowDelete = ['EInvoiceNew', 'EInvoiceRelease', 'EInvoiceCancel', 'ARInvoiceApproved'];
         if (notShowDelete.indexOf(i.Status) > -1) {
-          this.showDelete = false;
+          this.ShowDelete = false;
         }
 
         let notShowSplit = [
@@ -353,7 +368,7 @@ export class ToolbarComponent implements OnInit {
           'ARInvoiceMerged',
         ];
         if (notShowSplit.indexOf(i.Status) > -1) {
-          this.showSplit = false;
+          this.ShowSplit = false;
         }
 
         let notShowMerge = [
@@ -366,42 +381,42 @@ export class ToolbarComponent implements OnInit {
           'ARInvoiceMerged',
         ];
         if (notShowMerge.indexOf(i.Status) > -1) {
-          this.showMerge = false;
+          this.ShowMerge = false;
         }
       });
     }
 
     if (
-      this.pageConfig?.pageName == 'business-partner' ||
-      this.pageConfig?.pageName == 'outlet' ||
-      this.pageConfig?.pageName == 'contact-mobile'
+      this.page.pageConfig?.pageName == 'business-partner' ||
+      this.page.pageConfig?.pageName == 'outlet' ||
+      this.page.pageConfig?.pageName == 'contact-mobile'
     ) {
-      this.showSubmit = true;
-      this.showApprove = true;
-      this.showDisapprove = true;
-      this.showCancel = true;
+      this.ShowSubmit = true;
+      this.ShowApprove = true;
+      this.ShowDisapprove = true;
+      this.ShowCancel = true;
 
-      //this.showCancel = false
-      this.showDelete = true;
+      //this.ShowCancel = false
+      this.ShowDelete = true;
 
-      this.selectedItems.forEach((i) => {
+      this.page.selectedItems.forEach((i) => {
         // ['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'];
         // if (['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showCancelOrders = false;
 
-        if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showSubmit = false;
-        if (['New', 'Unapproved', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showApprove = false;
-        if (['New', 'Unapproved', 'Cancelled'].indexOf(i.Status) > -1) this.showDisapprove = false;
-        if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showDelete = false;
+        if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.ShowSubmit = false;
+        if (['New', 'Unapproved', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.ShowApprove = false;
+        if (['New', 'Unapproved', 'Cancelled'].indexOf(i.Status) > -1) this.ShowDisapprove = false;
+        if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.ShowDelete = false;
       });
     }
 
-    if (this.pageConfig?.pageName == 'request') {
-      this.showApprove = false;
-      this.showDisapprove = false;
-      this.showCancel = true;
-      this.showDelete = false;
-      this.showSubmit = true;
-      this.selectedItems.forEach((i) => {
+    if (this.page.pageConfig?.pageName == 'request') {
+      this.ShowApprove = false;
+      this.ShowDisapprove = false;
+      this.ShowCancel = true;
+      this.ShowDelete = false;
+      this.ShowSubmit = true;
+      this.page.selectedItems.forEach((i) => {
         // Draft	Nháp
         // Unapproved	Không duyệt
         // Submitted	Chờ duyệt
@@ -419,7 +434,7 @@ export class ToolbarComponent implements OnInit {
 
         let notShowSubmitOrdersForApproval = ['Pending', 'Approved', 'InProgress', 'Forward', 'Denied', 'Cancelled'];
         if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1 || !i.canSubmit) {
-          this.showSubmit = false;
+          this.ShowSubmit = false;
         }
         // let notShowDisapproveOrders = ['Draft', 'Unapproved','Cancelled'];
         // if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
@@ -428,32 +443,37 @@ export class ToolbarComponent implements OnInit {
 
         let notShowCancelOrders = ['Cancelled', 'Draft'];
         if (notShowCancelOrders.indexOf(i.Status) > -1) {
-          this.showCancel = false;
+          this.ShowCancel = false;
         }
       });
     }
-  }
-
-  ngOnDestroy(): void {
-    // Perform cleanup operations here
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleFeature() {
     if (this.page) {
       this.page.toggleFeature();
     } else {
-      this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
+      this.page.pageConfig.isShowFeature = !this.page.pageConfig.isShowFeature;
     }
   }
 
   deleteItem() {
-    if (this.page?.item && this.page.item?.Id) {
+    if (this.page?.item?.Id) {
       this.page.delete();
     } else {
       this.page.deleteItems();
     }
   }
+
+  onClickImport() {
+    this.importfile.nativeElement.value = '';
+    this.importfile.nativeElement.click();
+  }
+
+  importFileChange(event) {
+    this.page.import(event);
+  }
+  
 
   @ViewChild('toolBarPopover') toolBarPopover;
   isToolBarPopoverOpen = false;
