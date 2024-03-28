@@ -1,6 +1,6 @@
 <ion-header>
 	<app-detail-toolbar [page]="this"></app-detail-toolbar>
-  </ion-header>
+</ion-header>
   <ion-content appScrollbarTheme class="ion-padding">
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
 	  <ion-grid fixed>
@@ -20,7 +20,47 @@
 			  <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()">
 				<small label *ngIf="item?.Id">Id: {{item.Id}}</small>
 			  </app-form-control>
-			
+				
+			  <div class="c-control">
+				<label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
+				<ng-select
+				  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+				  class="c-input"
+				  formControlName="IDProvider"
+				  labelForId="IDProvider"
+				  [items]="providerDataSource"
+				  bindLabel="Name"
+				  bindValue="Id"
+				  [clearable]="true"
+				  (change)="changeProvider()"
+				  appendTo="#ng-select-holder"
+				>
+				  <!-- <ng-template ng-label-tmp let-i="item" let-clear="clear">
+					<ion-chip color="primary" *ngIf="i">
+					  <ion-avatar>
+						<ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					  </ion-avatar>
+					  <ion-label>{{ i.Name }}</ion-label><br />
+					  <small
+					  >#<b><span class="important">{{ i.Id }} - {{ i.Code }}</span></b>
+					  </small
+					>
+					</ion-chip>
+				  </ng-template> -->
+				  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+					<div *ngIf="i">
+					  <ion-avatar
+						><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+					  ></ion-avatar>
+					  <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
+					  <small
+						>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
+					  </small>
+					</div>
+				  </ng-template>
+				</ng-select>
+			  </div>
+
 			  <div class="c-control" *ngIf="formGroup.get('Type').value != 'Collection'">
 				<label class="c-label" for="IDBranch">{{'Parent' | translate}}
 					<span *ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)" ion-text color="danger">(*)</span>
@@ -36,55 +76,15 @@
 					</ng-template>
 				</ng-select>
 			</div>
-			  <app-form-control  *ngIf="formGroup.get('Type').value == 'Request' "[field]="{id:'URL', label: 'URL', type : 'text', form : formGroup }"  (change)="saveChange()"></app-form-control>
 			
 			</ion-col>
 
 			<ion-col size="12" size-sm size-xl="4">
 				<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
-				
-				<div class="c-control">
-					<label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
-					<ng-select
-					  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-					  class="c-input"
-					  formControlName="IDProvider"
-					  labelForId="IDProvider"
-					  [items]="providerDataSource"
-					  bindLabel="Name"
-					  bindValue="Id"
-					  [clearable]="true"
-					  (change)="saveChange()"
-					  appendTo="#ng-select-holder"
-					>
-					  <!-- <ng-template ng-label-tmp let-i="item" let-clear="clear">
-						<ion-chip color="primary" *ngIf="i">
-						  <ion-avatar>
-							<ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
-						  </ion-avatar>
-						  <ion-label>{{ i.Name }}</ion-label><br />
-						  <small
-						  >#<b><span class="important">{{ i.Id }} - {{ i.Code }}</span></b>
-						  </small
-						>
-						</ion-chip>
-					  </ng-template> -->
-					  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-						<div *ngIf="i">
-						  <ion-avatar
-							><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-						  ></ion-avatar>
-						  <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
-						  <small
-							>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
-						  </small>
-						</div>
-					  </ng-template>
-					</ng-select>
-				  </div>
-
+			
 				<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
-
+				<app-form-control  *ngIf="formGroup.get('Type').value == 'Request' "[field]="{id:'URL', label: 'URL', type : 'text', form : formGroup }"  (change)="saveChange()"></app-form-control>
+			
 			</ion-col>
 		  </ion-row>
 		</form>

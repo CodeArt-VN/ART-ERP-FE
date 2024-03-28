@@ -232,13 +232,17 @@ export class IntegrationActionDetailPage extends PageBase {
   }
   removeField(fg, j) {
     let itemToDelete = fg.getRawValue();
-    this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then(_ => {
+    if(!itemToDelete.Id) this.Runners.removeAt(j);
+    else{
+      this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then(_ => {
         this.actionAPIRunnerProvider.delete(itemToDelete).then(result => {
             this.Runners.removeAt(j);
             this.convertRunnerConfig();
             this.saveChange();
         })
     })
+    }
+   
 }
 changeAPICollection(c){
   this.saveChangeRunner(c);

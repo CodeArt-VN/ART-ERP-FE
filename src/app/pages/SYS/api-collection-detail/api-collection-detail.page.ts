@@ -121,6 +121,9 @@ export class APICollectionDetailPage extends PageBase {
       this.providerDataSource = values[0].data
     })
     this.query.Type_in=['Folder','Collection'];
+    if(this.item?.IDProvider){
+      this.query.IDProvider = this.item?.IDProvider;
+    }
     this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((resp : any)=>{
       lib.buildFlatTree(resp['data'], this.parentList).then((result: any) => {
         this.parentList = result;
@@ -221,6 +224,20 @@ export class APICollectionDetailPage extends PageBase {
     }
   }
 
+  changeProvider(){
+    this.query.IDProvider  = this.formGroup.get("IDProvider").value;
+    this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((resp : any)=>{
+      lib.buildFlatTree(resp['data'], this.parentList).then((result: any) => {
+        this.parentList = result;
+        this.parentList.forEach(i => {
+            i.disabled = false;
+        });
+          // this.markNestedNode(this.parentList, this.env.selectedBranch);
+      })
+    });
+    this.formGroup.get("IDProvider").markAsDirty();
+    this.saveChange();
+  }
   changeType() {
     this.formGroup.get('Type').markAsDirty();
     let type = this.formGroup.get('Type').value;
@@ -289,12 +306,12 @@ export class APICollectionDetailPage extends PageBase {
         break;
 
       case 'Setting':
-        controls = ['Name', 'Value'];
+        controls = ['Key', 'Value'];
         isArray = true;
         break;
       case 'Varibles':
         isArray = true;
-        controls = [ 'Name', 'InitialValue', 'CurrentValue'];
+        controls = [ 'Key', 'InitialValue', 'CurrentValue'];
         break;
     }
     this.addField(this.model,controlName,controls,isArray,true)
@@ -327,29 +344,37 @@ export class APICollectionDetailPage extends PageBase {
     let control;
     let saveControl='';
     let formattedValue='';
+    let mode = 'javascript';
     if(this.segmentView=='s4'){
-      let jsonValue =  JSON.parse(this.formGroup.get('_Body').value.Value);
+      try {
+        JSON.parse(this.formGroup.get('_Body').value.Value)
+        let jsonValue = this.formGroup.get('_Body').value.Value?JSON.parse(this.formGroup.get('_Body').value.Value) : null;
+        formattedValue = jsonValue? JSON.stringify(jsonValue, null, '\t'): null;
+       
+      }catch(err){
+        formattedValue = this.formGroup.get('_Body').value.Value;
+        mode = 'text'
+      }
       control =  this.formGroup.get('_Body')['controls'].Value;
-      formattedValue = JSON.stringify(jsonValue, null, '\t');
       saveControl = 'Body';
     }
     if(this.segmentView=='s5'){
       let jsonValue =  this.formGroup.get('BeforeRequestScript').value;
       control =  this.formGroup.get('BeforeRequestScript');
       saveControl = 'BeforeRequestScript';
-      formattedValue = jsonValue.replace(/\\n/g, '\n');
+      formattedValue = jsonValue?.replace(/\\n/g, '\n');
     }
     if(this.segmentView=='s6'){
       let jsonValue =  this.formGroup.get('AfterResponseScript').value;
       control =  this.formGroup.get('AfterResponseScript');
       saveControl = 'AfterResponseScript';
-      formattedValue = jsonValue.replace(/\\n/g, '\n');
+      formattedValue = jsonValue?.replace(/\\n/g, '\n');
     }
     const id = document.querySelector('#'+this.chartScriptId);
     if ( id != null && control) {
       const editor = ace.edit(this.chartScriptId);
       if( editor){
-        editor.session.setMode('ace/mode/javascript');
+        editor.session.setMode('ace/mode/'+mode);
         editor.maxLines = Infinity;
         let that = this;
         editor.setValue(formattedValue);
@@ -357,7 +382,7 @@ export class APICollectionDetailPage extends PageBase {
           const editorContent = editor.getValue();
           try {
             if(saveControl == 'Body') {
-              JSON.parse(editorContent);
+              // JSON.parse(editorContent);
               control.setValue(editorContent); 
               that.saveChangeJson(saveControl);
             } 
@@ -400,5 +425,8 @@ export class APICollectionDetailPage extends PageBase {
       }
     
     }
+  }
+  onError() {
+    console.log("IMG ERROR");
   }
 }
