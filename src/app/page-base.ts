@@ -799,8 +799,11 @@ export abstract class PageBase implements OnInit {
     }
 
     
-    backSubPage() {
-      this.pageConfig.isSubActive = false;
+    backToMainView() {
+        if (this.pageConfig.isFeatureAsMain && !this.pageConfig.isShowFeature) {
+            this.pageConfig.isShowFeature = true;
+        }
+        this.pageConfig.isSubActive = false;
     }
 
     help() {

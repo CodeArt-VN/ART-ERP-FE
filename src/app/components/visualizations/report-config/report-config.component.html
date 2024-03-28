@@ -332,7 +332,7 @@
   <!-- datepicker -->
   <ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
     <ng-template>
-      <ion-content>
+      <ion-content appScrollbarTheme>
         <ion-segment
           scrollable="false"
           (ionChange)="segmentTimeframeChanged($event)"
@@ -374,7 +374,7 @@
           </div>
           <ion-item>
             <app-input-control
-              style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 16px"
+              style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
               [form]="pickerControl"
               type="select"
               id="Period"
