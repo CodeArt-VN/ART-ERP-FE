@@ -59,7 +59,13 @@ export class HelpDetailComponent extends PageBase {
     this.pageConfig.showSpinner = false;
     this.pageConfig.pageCode = 'help';
     //this.id = this.route.snapshot?.paramMap?.get('id');
-    this.formGroup = formBuilder.group({
+    this.buildFormGroup();
+  }
+
+  @Output() closeHelp = new EventEmitter();
+
+  buildFormGroup() {
+    this.formGroup = this.formBuilder.group({
       IDBranch: [this.env.selectedBranch],
       IDCategory: [''],
       IDParent: [''],
@@ -98,9 +104,6 @@ export class HelpDetailComponent extends PageBase {
       HomePos: [''],
     });
   }
-
-  @Output() closeHelp = new EventEmitter();
-
   ngAfterViewInit() {
     this.quillEditor.changes.subscribe((elements) => {
       if (typeof elements.first !== 'undefined') {
@@ -162,7 +165,6 @@ export class HelpDetailComponent extends PageBase {
       //this.editor.getModule("toolbar").addHandler("image", imageHandler);
 
       this.quill.on('text-change', (delta, oldDelta, source) => {
-        
         this.item.Content = this.quill.root.innerHTML;
       });
 
@@ -204,7 +206,6 @@ export class HelpDetailComponent extends PageBase {
         this.contentBefore = this.item.Content;
         this.isShowAdd = false;
         this.isShowEdit = true;
-
       }
       this.loadedData();
     });
@@ -255,9 +256,14 @@ export class HelpDetailComponent extends PageBase {
   }
 
   add() {
+    this.buildFormGroup();
     this.item = {
       Id: 0,
+      Name: '',
+      Content: ''
     };
+    this.formGroup.controls.Code.setValue(this._helpCode);
+    this.formGroup.controls.Code.markAsDirty();
     this.showEditorContent = true;
   }
 
@@ -270,11 +276,26 @@ export class HelpDetailComponent extends PageBase {
   }
 
   deleted() {
-    if(!this.pageConfig.isDetailPage) {
+    if (!this.pageConfig.isDetailPage) {
       this.item = null;
       this.id = 0;
       this.showEditorContent = false;
+      this.formGroup.reset();
     }
   }
 
+  async closeModal() {
+    if (this.pageConfig.isDetailPage) {
+      super.closeModal();
+    } else {
+      try {
+        if (!this.modalController) {
+          return;
+        }
+        await this.modalController.dismiss();
+      } catch (error) {
+        return;
+      }
+    }
+  }
 }
