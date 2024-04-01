@@ -206,8 +206,8 @@ export class HelpDetailComponent extends PageBase {
         this.isShowEdit = true;
 
       }
+      this.loadedData();
     });
-    this.loadedData();
     this.formLoaded = true;
   }
 
@@ -267,13 +267,6 @@ export class HelpDetailComponent extends PageBase {
       this.formGroup.controls.Content.markAsDirty();
     }
     await super.saveChange2();
-    // if (!this.item.Id) {
-    //   this.isShowAdd = true;
-    //   this.isShowEdit = false;
-    // } else {
-    //   this.isShowAdd = false;
-    //   this.isShowEdit = true;
-    // }
   }
 
   deleted() {
