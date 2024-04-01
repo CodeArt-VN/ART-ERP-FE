@@ -35,7 +35,6 @@ import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page
 import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
-import { HelpDetailPage } from './pages/SYS/help-detail/help-detail.page';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -54,7 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
-    HelpDetailPage,
     PopoverPage,
     SaleOrderSplitModalPage,
     SaleOrderMergeModalPage,
