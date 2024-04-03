@@ -87,7 +87,7 @@
                             <ng-template ng-label-tmp let-i="item">
                               <div [attr.disabled]="i.disabled">
                                 <div>
-                                  <ion-text *ngIf="i.Type === 'Request'" [color]="i.Method === 'GET' ? 'success' : i.Method === 'DELETE' ? 'danger' : 'warning'">
+                                  <ion-text *ngIf="i.Type === 'Request'" [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'">
                                     {{ i.Method }}
                                   </ion-text>
                                   <ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>
@@ -102,7 +102,7 @@
                                 <div>
                                   <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
                                   <span [ngOptionHighlight]="search">
-                                    <ion-text *ngIf="i.Type === 'Request'" [color]="i.Method === 'GET' ? 'success' : i.Method === 'DELETE' ? 'danger' : 'warning'">
+                                    <ion-text *ngIf="i.Type === 'Request'" [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'">
                                       {{ i.Method }}
                                     </ion-text>
                                     <ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>

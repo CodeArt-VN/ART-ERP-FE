@@ -90,15 +90,22 @@ export class IntegrationTriggerActionModalPage extends PageBase {
         this.actionService.getAnItem(this.item.IDAction).then((data: any) => {
           if (data) {
             this.varibles = JSON.parse(data.Varibles);
+            this.schemaDetailDataSource = [];
             if (data.IDSchema) {
-              this.schemaDetailDataSource = [];
-              this.schemaService.getAnItem(data.IDSchema).then((data: any) => {
+              let querySchema = {
+                Id: data.IDSchema,
+                IDProvider: data.IDProvider,
+              };
+              this.schemaService.commonService
+              .connect('GET', 'BI/Schema/GetSchemaWithProvider', querySchema)
+              .toPromise()
+              .then((data: any) => {
                 if (data) {
                   this.schemaDetailDataSource = data.Fields;
                   if (this.varibles) this.patchFieldsValue();
                 }
               });
-            }
+              }
           }
         });
       }
