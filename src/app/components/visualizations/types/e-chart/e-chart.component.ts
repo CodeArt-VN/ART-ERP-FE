@@ -89,7 +89,6 @@ export class EChartComponent implements OnInit {
       finalChartOption = this.calcChartOption(finalChartOption, this.chartScript);
     }
 
-    console.log('finalChartOption', finalChartOption);
     setTimeout(() => {
       this.chart?.setOption(finalChartOption, true);
     }, 0);

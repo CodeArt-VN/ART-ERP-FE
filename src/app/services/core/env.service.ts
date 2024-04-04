@@ -605,6 +605,17 @@ export class EnvService {
     });
   }
 
+  async getTypeAsync(Code: string, AllChild = false) {
+    let it = this.typeList.find((d) => d.Code == Code);
+      if (it) {
+        if (AllChild) {
+          let ids = lib.findChildren(this.typeList, it.Id);
+          let childs = this.typeList.filter((d) => ids.includes(d.Id));
+          return await lib.buildSubNode(childs, [], it, []); //await lib.buildFlatTree(childs, [], true, it);
+        } else return this.typeList.filter((d) => d.IDParent == it.Id);
+      } else return [];
+  }
+
   /**
    * Get branch by parent Id
    * @param Id Id parent branch
