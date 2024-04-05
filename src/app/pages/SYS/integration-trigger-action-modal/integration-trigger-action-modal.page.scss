@@ -1,0 +1,88 @@
+.cell small {
+  /* border-left: solid 2px; */
+  margin-left: 5px;
+  padding: 2px 4px;
+  background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+  border-radius: 2px;
+}
+
+.right {
+  margin-left: auto;
+  order: 2;
+}
+
+.col-code {
+  max-width: 120px !important;
+  min-width: 120px !important;
+}
+
+form {
+  margin: 0;
+}
+
+.filter .min-btn {
+  margin-left: 0 !important;
+}
+
+.c-input {
+  outline: none;
+  display: block;
+  border-radius: 3px;
+  border: 1px solid var(--menu-right-border-color) !important;
+  padding: calc(10/16 * 0.5rem);
+  width: 100%;
+  height: unset !important;
+  text-overflow: ellipsis;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--menu-background-bottom);
+
+  font-size: calc(10/16 * 1.3rem);
+  color: var(--ion-color-light-contrast);
+
+  // &::-webkit-inner-spin-button,
+  // &::-webkit-calendar-picker-indicator {
+  // 	//display: none;
+  // 	-webkit-appearance: none;
+  // }
+
+  &.ng-dirty:not(.no-check-dirty) {
+    border: 1px solid var(--ion-color-success) !important;
+  }
+
+  &.ng-invalid,
+  &.ng-invalid.ng-dirty:not(.no-check-dirty) {
+    border: 1px solid var(--ion-color-danger) !important;
+  }
+
+  &[readonly],
+  &[disabled],
+  &.disable,
+  &.ng-select-disabled {
+    background-color: var(--main-background-top);
+    opacity: 0.7;
+    color: var(--ion-color-medium);
+  }
+
+  &:focus,
+  &.ng-select-focused {
+    border: 1px solid var(--ion-color-primary) !important;
+  }
+
+  &.ng-select {
+    padding: 0;
+
+    .ng-select-container {
+      padding: calc(10/16 * 0.5rem);
+    }
+  }
+}
+
+.total {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
