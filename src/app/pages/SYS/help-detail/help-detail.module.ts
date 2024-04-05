@@ -4,13 +4,13 @@
 // import { Routes, RouterModule } from '@angular/router';
 // import { IonicModule } from '@ionic/angular';
 // import { ShareModule } from 'src/app/share.module';
-// import { HelpDetailPage } from './help-detail.page';
+// import { HelpDetailComponent } from './help-detail.page';
 // // import { QuillModule } from 'ngx-quill';
 
 // const routes: Routes = [
 //   {
 //     path: '',
-//     component: HelpDetailPage
+//     component: HelpDetailComponent
 //   }
 // ];
 
@@ -24,6 +24,6 @@
 //     RouterModule.forChild(routes),
 //     QuillModule.forRoot()
 //   ],
-//   declarations: [HelpDetailPage]
+//   declarations: [HelpDetailComponent]
 // })
-// export class HelpDetailPageModule { }
+// export class HelpDetailComponentModule { }

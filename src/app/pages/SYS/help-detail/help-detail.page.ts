@@ -2,7 +2,6 @@ import {
   Component,
   ChangeDetectorRef,
   Input,
-  ViewChild,
   Output,
   EventEmitter,
   ViewChildren,
@@ -25,8 +24,9 @@ declare var Quill: any;
   templateUrl: './help-detail.page.html',
   styleUrls: ['./help-detail.page.scss'],
 })
-export class HelpDetailPage extends PageBase {
+export class HelpDetailComponent extends PageBase {
   _helpCode;
+  @Input() pageConfig;
   @Input() set helpCode(value: string) {
     this._helpCode = value;
     if (this.formLoaded) {
@@ -38,8 +38,7 @@ export class HelpDetailPage extends PageBase {
   isShowAdd = false;
   isShowEdit = false;
   showEditorContent = false;
-  quillEditorRef: any;
-  content = '';
+  contentBefore = '';
 
   @ViewChildren('quillEditor') quillEditor: QueryList<ElementRef>;
 
@@ -60,7 +59,13 @@ export class HelpDetailPage extends PageBase {
     this.pageConfig.showSpinner = false;
     this.pageConfig.pageCode = 'help';
     //this.id = this.route.snapshot?.paramMap?.get('id');
-    this.formGroup = formBuilder.group({
+    this.buildFormGroup();
+  }
+
+  @Output() closeHelp = new EventEmitter();
+
+  buildFormGroup() {
+    this.formGroup = this.formBuilder.group({
       IDBranch: [this.env.selectedBranch],
       IDCategory: [''],
       IDParent: [''],
@@ -99,19 +104,12 @@ export class HelpDetailPage extends PageBase {
       HomePos: [''],
     });
   }
-
-  @Output() closeHelp = new EventEmitter();
-
   ngAfterViewInit() {
     this.quillEditor.changes.subscribe((elements) => {
       if (typeof elements.first !== 'undefined') {
-        this.initQuill();
+        this.loadQuillEditor();
       }
     });
-
-    // The DOM is fully loaded here
-    // You can access DOM elements and run your code
-    this.loadQuillEditor();
   }
 
   loadQuillEditor() {
@@ -167,8 +165,7 @@ export class HelpDetailPage extends PageBase {
       //this.editor.getModule("toolbar").addHandler("image", imageHandler);
 
       this.quill.on('text-change', (delta, oldDelta, source) => {
-        const content = this.quill.root.innerHTML;
-        this.item.Content = content;
+        this.item.Content = this.quill.root.innerHTML;
       });
 
       const toolbar = document.querySelector('.ql-toolbar');
@@ -198,26 +195,47 @@ export class HelpDetailPage extends PageBase {
 
   loadData() {
     this.query.Code = this._helpCode;
-    this.query.IsDeleted = true;
     this.pageProvider.read(this.query).then((result: any) => {
       if (result.data.length == 0) {
+        this.id = 0;
         this.isShowAdd = true;
         this.isShowEdit = false;
         this.formGroup.controls.Id.setValue(0);
-      }
-      if (result.data.length > 0) {
+      } else {
+        this.item = result.data[0];
+        this.contentBefore = this.item.Content;
         this.isShowAdd = false;
         this.isShowEdit = true;
-        this.item = result.data[0];
-        this.content = this.item.Content;
-        this.formGroup?.patchValue(this.item);
-        this.formGroup?.markAsPristine();
       }
-      this.formGroup.controls.Code.setValue(this._helpCode);
-      this.formGroup.controls.Code.markAsDirty();
+      this.loadedData();
     });
-    super.loadData();
     this.formLoaded = true;
+  }
+
+  loadedData(event = null, ignoredFromGroup = false) {
+    this.pageConfig.showSpinner = false;
+    event?.target?.complete();
+    if (this.item) {
+      if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
+      this.formGroup?.patchValue(this.item);
+      this.formGroup?.markAsPristine();
+      this.cdr?.detectChanges();
+
+      if (this.item.IsDisabled) this.pageConfig.canEdit = false;
+    }
+
+    if ((!this.item || this.id == 0) && this.pageConfig.canAdd) {
+      if (!this.item) this.item = { Id: 0, IsDisabled: false };
+      else Object.assign(this.item, this.DefaultItem);
+
+      this.pageConfig.canEdit = this.pageConfig.canAdd;
+    }
+
+    if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
+      this.formGroup?.disable();
+    }
+    this.formGroup.controls.Code.setValue(this._helpCode);
+    this.formGroup.controls.Code.markAsDirty();
   }
 
   edit() {
@@ -238,49 +256,46 @@ export class HelpDetailPage extends PageBase {
   }
 
   add() {
+    this.buildFormGroup();
     this.item = {
       Id: 0,
+      Name: '',
+      Content: ''
     };
+    this.formGroup.controls.Code.setValue(this._helpCode);
+    this.formGroup.controls.Code.markAsDirty();
     this.showEditorContent = true;
   }
 
   async saveChange() {
-    if (typeof this.item.Content !== 'undefined') {
+    if (typeof this.item.Content !== 'undefined' && this.contentBefore != typeof this.item.Content) {
       this.formGroup.controls.Content.setValue(this.item.Content);
       this.formGroup.controls.Content.markAsDirty();
     }
-    super.saveChange2();
+    await super.saveChange2();
   }
 
   deleted() {
-    this.item = null;
-    this.id = 0;
-    this.content = '';
-    this.showEditorContent = false;
+    if (!this.pageConfig.isDetailPage) {
+      this.item = null;
+      this.id = 0;
+      this.showEditorContent = false;
+      this.formGroup.reset();
+    }
   }
 
-  customModules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
-
-      [{ header: 1 }, { header: 2 }], // custom button values
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-      [{ direction: 'rtl' }], // text direction
-
-      [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ font: [] }],
-      [{ align: [] }],
-
-      ['clean'], // remove formatting button
-
-      ['link', 'image', 'video'], // link and image, video
-    ],
-    imageResize: true,
-  };
+  async closeModal() {
+    if (this.pageConfig.isDetailPage) {
+      super.closeModal();
+    } else {
+      try {
+        if (!this.modalController) {
+          return;
+        }
+        await this.modalController.dismiss();
+      } catch (error) {
+        return;
+      }
+    }
+  }
 }
