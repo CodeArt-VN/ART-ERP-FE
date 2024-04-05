@@ -11,12 +11,12 @@
   </ion-refresher>
 
 
-  <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+  <div style="margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
     <app-page-title [icon]="pageConfig.pageIcon" [color]="pageConfig.pageColor" [title]="pageConfig.pageTitle"
       [remark]="pageConfig.pageRemark"></app-page-title>
   </div>
 
-  <div style="max-width: 1440px; margin: auto; width: 100%">
+  <div style="margin: auto; width: 100%">
     <app-data-table style="width: fit-content; min-width: calc(100% - 32px)" class="box-shadow responsive"
       [rows]="items" [trackBy]="'Id'" [(selectedRows)]="selectedItems" [showSpinner]="pageConfig.showSpinner"
       [showFilter]="pageConfig.isShowSearch" [(query)]="query" (dataInfinite)="loadData($event)"
