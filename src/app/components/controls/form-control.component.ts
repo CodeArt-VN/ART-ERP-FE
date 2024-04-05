@@ -52,7 +52,7 @@ export class FormControlComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (!this.label) this.label = this.id;
+    if (!this.label && this.label !='') this.label = this.id;
   }
 
   @Output() change = new EventEmitter();

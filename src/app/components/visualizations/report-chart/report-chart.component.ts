@@ -1,4 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
@@ -16,9 +17,12 @@ export class ReportChartComponent implements OnInit {
   dataFetchDate: Date; //To show last time load data
   dataIntervalProperty: string; //To pass to chart component
   dataIntervalType: string; //To pass to chart component
+  compareBy: string[] = []; //Compare by to pass to chart component
+  measureBy: string[] = []; //Measure by to show card row and pass to chart component
   rawData: any[] = []; //Raw data from services
 
   report: BIReport = null; //Report config
+
   chartType: string = 'auto'; //Chart type
   chartScript: string; //Chart script
   chartOption: echarts.EChartsOption = null; //Chart option
@@ -44,6 +48,9 @@ export class ReportChartComponent implements OnInit {
       this._reportId = v;
       let temp = this.rpt.getReport(this._reportId);
       this.report = JSON.parse(JSON.stringify(temp));
+      this.buildForm(this.report.DataConfig);
+      this.compareBy = this.report.DataConfig.CompareBy.map((x) => x.Title || x.Property);
+      this.measureBy = this.report.DataConfig.MeasureBy.map((x) => x.Title || x.Property);
       this.dataIntervalProperty = this.report.DataConfig.Interval?.Title || this.report.DataConfig.Interval?.Property;
       this.dataIntervalType = this.report.DataConfig.Interval.Type;
 
@@ -95,7 +102,12 @@ export class ReportChartComponent implements OnInit {
   constructor(
     private env: EnvService,
     public rpt: ReportService,
-  ) {}
+    public formBuilder: FormBuilder,
+  ) {
+
+    
+
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -238,5 +250,106 @@ export class ReportChartComponent implements OnInit {
   @Output() chartClick = new EventEmitter();
   onChartClick(e) {
     this.chartClick.emit(e);
+  }
+
+  @Output() dataChange = new EventEmitter();
+  onDataChange(e) {
+    this.dataChange.emit(e);
+  }
+
+  @ViewChild('popover') popover;
+  isOpenDatePicker = false;
+  isOpenCompareBy = false;
+  pickerControl: any;
+  pickerGroupName: string;
+
+  presentDatePicker(event, control, groupName) {
+    this.pickerGroupName = groupName;
+    this.pickerControl = control;
+    this.popover.event = event;
+    this.calcAbsoluteDate(groupName == 'TimeFrame-To');
+    this.isOpenDatePicker = true;
+  }
+
+  dismissDatePicker(apply: boolean = false) {
+    if (!this.isOpenDatePicker) return;
+
+    if (!apply) {
+      this.form.patchValue(this.report?.DataConfig);
+    } else {
+      this.report.DataConfig = this.form.getRawValue();
+      this.onChangeTimeRange(this.report.DataConfig);
+    }
+    this.isOpenDatePicker = false;
+  }
+
+  calcAbsoluteDate(isFullfillDate = false) {
+    if (this.pickerControl.controls.Type.value == 'Relative') {
+      let tempDate = this.rpt.calcTimeValue(this.pickerControl.getRawValue(), isFullfillDate);
+      if (tempDate) {
+        this.pickerControl.controls.Value.value = tempDate.toJSON();
+      }
+    }
+  }
+
+  pickDate(pDate) {
+    if (this.pickerControl.controls.Type.value != pDate.Type) {
+      this.pickerControl.controls.Type.setValue(pDate.Type);
+      this.pickerControl.controls.Type.markAsDirty();
+    }
+
+    if (pDate.Type == 'Relative') {
+      if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
+        this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
+        this.pickerControl.controls.IsPastDate.markAsDirty();
+      }
+      if (this.pickerControl.controls.Period.value != pDate.Period) {
+        this.pickerControl.controls.Period.setValue(pDate.Period);
+        this.pickerControl.controls.Period.markAsDirty();
+      }
+      if (this.pickerControl.controls.Amount.value != pDate.Amount) {
+        this.pickerControl.controls.Amount.setValue(pDate.Amount);
+        this.pickerControl.controls.Amount.markAsDirty();
+      }
+      this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To');
+    } else {
+      if (this.pickerControl.controls.Value.value != pDate.Value.detail.value) {
+        this.pickerControl.controls.Value.setValue(pDate.Value.detail.value);
+        this.pickerControl.controls.Value.markAsDirty();
+      }
+    }
+  }
+
+  segmentTimeframeChanged(e) {
+    this.pickerControl.controls.Type.value = e.detail.value;
+  }
+
+
+  form: FormGroup;
+
+  buildForm(c: ReportDataConfig) {
+    this.form = this.formBuilder.group({
+      TimeFrame: this.formBuilder.group({
+        From: this.formBuilder.group({
+          Type: [c.TimeFrame?.From?.Type],
+          IsPastDate: [c.TimeFrame?.From?.IsPastDate],
+          Period: [c.TimeFrame?.From?.Period],
+          Amount: [c.TimeFrame?.From?.Amount],
+          Value: [c.TimeFrame?.From?.Value],
+        }),
+        To: this.formBuilder.group({
+          Type: [c.TimeFrame?.To?.Type],
+          IsPastDate: [c.TimeFrame?.To?.IsPastDate],
+          Period: [c.TimeFrame?.To?.Period],
+          Amount: [c.TimeFrame?.To?.Amount],
+          Value: [c.TimeFrame?.To?.Value],
+        }),
+      }),
+      
+    });
+  }
+  @Output() timeRangeChange = new EventEmitter();
+  onChangeTimeRange(e) {
+    this.timeRangeChange.emit(e);
   }
 }

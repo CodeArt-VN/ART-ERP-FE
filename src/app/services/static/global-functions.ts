@@ -426,6 +426,37 @@ export var lib = {
     return result;
   },
 
+
+  //sum multiple columns tree by IDParent and Id from flat treelist
+  sumTreeListByParentId(treeList, sumFields = [], idFieldName = 'Id', parentIdFieldName = 'IDParent') {
+    let result = [];
+    let tree = this.listToTree(treeList);
+
+    tree.forEach((e) => {
+      this.sumTree(e, sumFields);
+      result = result.concat(this.treeToList([e]));
+    });
+
+    return result;
+  },
+
+  sumTree(tree, sumFields) {
+    if (!tree.children) {
+      return;
+    }
+
+    tree.children.forEach((e) => {
+      this.sumTree(e, sumFields);
+      sumFields.forEach((f) => {
+        if (!e[f]) {
+          e[f] = 0;
+        }
+        tree[f] = (tree[f] || 0) + e[f];
+      });
+    });
+  },
+
+
   buildFlatTree(items, treeState, isAllRowOpened = true, root = null) {
     let treeItems = [];
     let listItems = [];

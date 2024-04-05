@@ -374,8 +374,12 @@
 
   <div class="app-footer">
     <span id="change-app-server" class="text" *ngIf="!env.user?.Id">
-      <ion-icon color="danger" name="server"></ion-icon>
-      <span>{{ 'Change server' | translate }}</span>
+      <ng-container *ngFor="let s of _environment.appServers">
+        <ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name"  *ngIf="_environment.appDomain == s.Code"></ion-icon>
+      </ng-container>
+      
+      
+      <span>&nbsp;{{ 'Change server' | translate }}</span>
 
       <ion-popover trigger="change-app-server" triggerAction="click" class="w300" [dismissOnSelect]="true">
         <ng-template>
@@ -409,7 +413,7 @@
         *ngIf="env.user?.Id && s.Name != 'Main server' && _environment.appDomain == s.Code"
         (click)="env.showTranslateMessage(s.Name, s.Color)"
       >
-        <ion-icon color="danger" [color]="s.Color" [name]="s.Icon" [title]="s.Name"></ion-icon>
+        <ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name"></ion-icon>
       </span>
     </ng-container>
 
