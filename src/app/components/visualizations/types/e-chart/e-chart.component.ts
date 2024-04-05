@@ -15,6 +15,8 @@ export class EChartComponent implements OnInit {
   @Input() chartOption: echarts.EChartsOption = {};
   @Input() dimensions: string[] = [];
   @Input() viewDimension: string;
+  @Input() compareBy: string[] = [];
+  @Input() measureBy: string[] = [];
   @Input() dataIntervalProperty: string;
   @Input() dataIntervalType: string;
 
@@ -103,5 +105,10 @@ export class EChartComponent implements OnInit {
   @Output() chartClick = new EventEmitter();
   onChartClick(e) {
     this.chartClick.emit(e);
+  }
+
+  @Output() dataChange = new EventEmitter();
+  outData(e) {
+    this.dataChange.emit(e);
   }
 }

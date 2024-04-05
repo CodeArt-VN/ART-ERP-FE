@@ -1,7 +1,8 @@
 <app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner"></app-page-message>
 <!-- [style.height]="calculateContainerHeight()" autosize -->
 <div *ngIf="rows.length && !showSpinner">
-  <datatable-body-row
+  <ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
+    <datatable-body-row
     class="row"
     [ngClass]="{ selected: row.checked }"
     [columns]="columns"
@@ -9,8 +10,14 @@
     [isSelected]="row.checked"
     [rowIndex]="idx"
     (activate)="changeSelection(row, $event)"
-    *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)"
+    *ngIf="row.show != false"
   ></datatable-body-row>
+  </ng-container>
+
+  
+
+
+  
 
   <!-- <cdk-virtual-scroll-viewport  [id]="elId" itemSize="31"  minBufferPx="2000" maxBufferPx="2000" #scrollViewport> 
     <datatable-body-row 

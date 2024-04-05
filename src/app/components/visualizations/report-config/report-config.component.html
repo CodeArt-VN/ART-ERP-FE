@@ -288,7 +288,6 @@
             }"
           ></app-form-control>
         </ng-container>
-
         <ng-container *ngIf="pickerGroupName == 'CompareTo'">
           <app-form-control
             [field]="{
@@ -388,6 +387,7 @@
               [form]="pickerControl"
               type="number"
               id="Amount"
+              label=""
               (change)="onChange($event)"
             ></app-form-control>
           </ion-item>

@@ -144,26 +144,124 @@
     [chartOption]="chartOption"
     [dimensions]="dimensions"
     [viewDimension]="viewDimension"
+    [compareBy]="compareBy"
+    [measureBy]="measureBy"
     [dataIntervalProperty]="dataIntervalProperty"
     [dataIntervalType]="dataIntervalType"
     [data]="rawData"
     (chartClick)="onChartClick($event)"
+    (dataChange)="onDataChange($event)"
   ></app-e-chart>
 
-  <ion-item lines="none" *ngIf="viewMode == 'full'">
-    <ion-icon name="server-outline" color="success" slot="start"></ion-icon>
-    <ion-label color="primary">
-      <p>
-        {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
-        <span *ngIf="!compareObjects(report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)">
-          →
-          {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To) }}
-        </span>
+  <form [formGroup]="form" (submit)="onChange($event)">
+    <ion-item lines="none" *ngIf="viewMode == 'full'">
+      <ion-icon name="server-outline" color="success" slot="start"></ion-icon>
+      <ion-label color="primary">
+        <ng-container formGroupName="TimeFrame">
+          <p>
+            <!-- class="clickable"
+              (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')" -->
+            <a
+              
+            >
+              {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
+            </a>
+            →
+            <!-- class="clickable"
+              (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')" -->
+            <a
+              
+            >
+              {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To) }}
+            </a>
 
-        <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
-          <small>{{ 'Updated' | translate }}: {{ dataFetchDate | date: 'HH:mm dd/MM' }}</small>
-        </span>
-      </p>
-    </ion-label>
-  </ion-item>
+            <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
+              <small>{{ 'Updated' | translate }}: {{ dataFetchDate | date: 'HH:mm dd/MM' }}</small>
+            </span>
+
+            <!-- datepicker -->
+            <ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
+              <ng-template>
+                <ion-content appScrollbarTheme>
+                  <ion-segment
+                    scrollable="false"
+                    (ionChange)="segmentTimeframeChanged($event)"
+                    [value]="pickerControl.controls.Type.value"
+                    mode="md"
+                  >
+                    <ion-segment-button value="Relative">
+                      <ion-label>{{ 'Relative' | translate }}</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="Absolute">
+                      <ion-label>{{ 'Absolute' | translate }}</ion-label>
+                    </ion-segment-button>
+                  </ion-segment>
+
+                  <ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
+                    <div>
+                      <ng-container *ngIf="pickerGroupName == 'CompareTo'">
+                        <ion-item
+                          button
+                          detail="false"
+                          *ngFor="let i of rpt.commonOptions.compareTo"
+                          (click)="pickDate(i.timeConfig)"
+                        >
+                          <ion-icon name="timer-outline" slot="start"></ion-icon>
+                          <ion-label>{{ i.name }}</ion-label>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="pickerGroupName != 'CompareTo'">
+                        <ion-item
+                          button
+                          detail="false"
+                          *ngFor="let i of rpt.commonOptions.timeframe"
+                          (click)="pickDate(i.timeConfig)"
+                        >
+                          <ion-icon name="timer-outline" slot="start"></ion-icon>
+                          <ion-label>{{ i.name }}</ion-label>
+                        </ion-item>
+                      </ng-container>
+                    </div>
+                    <ion-item>
+                      <app-input-control
+                        style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
+                        [form]="pickerControl"
+                        type="select"
+                        id="Period"
+                        [dataSource]="_timePeriodList"
+                        bindValue="code"
+                        bindLabel="name"
+                        (change)="onChange($event)"
+                      ></app-input-control>
+                      <app-form-control
+                        style="width: 100%"
+                        [form]="pickerControl"
+                        type="number"
+                        id="Amount"
+                        (change)="onChange($event)"
+                      ></app-form-control>
+                    </ion-item>
+                  </ion-list>
+
+                  <div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
+                    <ion-datetime
+                      [locale]="env.language.current"
+                      [value]="pickerControl.controls.Value.value"
+                      [firstDayOfWeek]="1"
+                      (ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
+                      mode="ios"
+                      format="YYYY-MM-DDTHH:mm:ssZ"
+                    ></ion-datetime>
+                  </div>
+                </ion-content>
+                <ion-button class="ion-margin" size="small" expand="block" (click)="dismissDatePicker(true)"
+                  >Apply</ion-button
+                >
+              </ng-template>
+            </ion-popover>
+          </p>
+        </ng-container>
+      </ion-label>
+    </ion-item>
+  </form>
 </div>

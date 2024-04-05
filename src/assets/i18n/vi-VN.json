@@ -384,7 +384,7 @@
   "Seller information": "Thông tin người bán",
   "SO": "Đơn hàng SO",
   "Tax rate (%)": "Thuế suất(%)",
-  "Amount": "Thành tiền",
+  "Amount": "Amount",
   "Total amount": "Tổng tiền",
   "[Amount to be paid] = [Total amount] + [Tax charge]": "[Khách phải trả] = [Thành tiền] + [Tiền thuế]",
   "Total": "Tổng cộng",
