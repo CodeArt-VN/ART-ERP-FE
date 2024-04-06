@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { lib } from 'src/app/services/static/global-functions';
 
-
 @Component({
   selector: 'app-page-title',
   templateUrl: './page-title.component.html',
@@ -13,15 +12,8 @@ export class PageTitleComponent implements OnInit {
   @Input() title;
   @Input() remark;
 
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-    
-  }
-  ngAfterViewInit() {
-    
-  }
-
-
+  ngOnInit() {}
+  ngAfterViewInit() {}
 }

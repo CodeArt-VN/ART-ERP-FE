@@ -3,29 +3,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { ShareModule } from 'src/app/share.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GoogleMapsModule } from '@angular/google-maps'
+import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
 import { MapViewComponent } from './map-view/map-view.component';
 import { CoordinatePickerComponent } from './coordinate-picker/coordinate-picker.component';
 
-
-
 @NgModule({
-	imports: [IonicModule,
-		CommonModule,
-		ShareModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		GoogleMapsModule,
-	],
-	declarations: [
-		MapViewComponent,
-		CoordinatePickerComponent
-	],
-	exports: [
-		MapViewComponent,
-		CoordinatePickerComponent
-	],
+  imports: [IonicModule, CommonModule, ShareModule, RouterModule, FormsModule, ReactiveFormsModule, GoogleMapsModule],
+  declarations: [MapViewComponent, CoordinatePickerComponent],
+  exports: [MapViewComponent, CoordinatePickerComponent],
 })
-export class MapCompsModule { }
+export class MapCompsModule {}

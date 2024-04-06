@@ -11,11 +11,11 @@ export class GroupControlComponent implements OnInit {
 
   @Output() onChange = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
-  trackChange(data){
+  trackChange(data) {
     this.onChange.emit(data);
   }
 }

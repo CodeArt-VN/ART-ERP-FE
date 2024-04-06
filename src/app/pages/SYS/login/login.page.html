@@ -1,72 +1,101 @@
-    <ion-content appScrollbarTheme class="login" scroll-y="false">
-    <div class="logo-contain">
-        <div class="logo">
-        </div>
-    </div>
+<ion-content appScrollbarTheme class="login" scroll-y="false">
+  <div class="logo-contain">
+    <div class="logo"></div>
+  </div>
 
-
-    <form [formGroup]="formGroup" (ngSubmit)="login()" *ngIf="!showForgotPassword">
-        <!-- <div class="removeAutoComplete">
+  <form [formGroup]="formGroup" (ngSubmit)="login()" *ngIf="!showForgotPassword">
+    <!-- <div class="removeAutoComplete">
             <input tabindex="-1" id="UserName" type="email">
             <input tabindex="-1" type="password">
             <input tabindex="-1" type="text">
             <input tabindex="-1" type="text">
         </div> -->
 
-        <div class="ion-padding">
-            <div class="c-control">
+    <div class="ion-padding">
+      <div class="c-control">
+        <label class="c-label" for=""
+          >{{'Username (email)' | translate}}
+          <ion-text
+            *ngIf="!formGroup.controls.UserName.valid && !formGroup.controls.UserName.pending && (formGroup.controls.UserName.dirty || submitAttempt)"
+            color="danger"
+            >*</ion-text
+          >
+        </label>
+        <input
+          (focus)="$event.target.select()"
+          placeholder="{{'Account - email' | translate}}"
+          class="c-input"
+          [(ngModel)]="email"
+          formControlName="UserName"
+          type="email"
+        />
+      </div>
 
-                <label class="c-label" for="">{{'erp.app.pages.sys.login.username' | translate}}
-                    <ion-text *ngIf="!formGroup.controls.UserName.valid && !formGroup.controls.UserName.pending && (formGroup.controls.UserName.dirty || submitAttempt)" color="danger">*</ion-text>
-                </label>
-                <input (focus)="$event.target.select()" placeholder="{{'erp.app.pages.sys.login.account-placeholder' | translate}}" class="c-input" [(ngModel)]="email" formControlName="UserName" type="email">
+      <div class="c-control">
+        <label class="c-label" for=""
+          >{{'Password' | translate}}
+          <ion-text
+            *ngIf="!formGroup.controls.Password.valid && !formGroup.controls.Password.pending && (formGroup.controls.Password.dirty || submitAttempt)"
+            color="danger"
+            >*</ion-text
+          >
+        </label>
+        <input
+          class="c-input"
+          placeholder="{{'Password' | translate}}"
+          [(ngModel)]="password"
+          formControlName="Password"
+          type="password"
+        />
+      </div>
+    </div>
 
-            </div>
+    <div class="ion-padding-horizontal">
+      <button type="submit" style="visibility: hidden; position: absolute">{{'Login' | translate}}</button>
 
-            <div class="c-control">
-                <label class="c-label" for="">{{'erp.app.pages.sys.login.password' | translate}}
-                    <ion-text *ngIf="!formGroup.controls.Password.valid && !formGroup.controls.Password.pending && (formGroup.controls.Password.dirty || submitAttempt)" color="danger">*</ion-text>
-                </label>
-                <input class="c-input" placeholder="{{'erp.app.pages.sys.login.password-placeholder' | translate}}" [(ngModel)]="password" formControlName="Password" type="password">
+      <ion-button class="shadow" color="primary" expand="block" (click)="login()">{{'Login' | translate}}</ion-button>
+      <!-- <ion-button (click)="nav('/casual-labour-register', 'forward')" ion-padding-vertical color="primary" fill="clear" expand="block">{{'CL Registration' | translate}}</ion-button> -->
+    </div>
+  </form>
+  <form (ngSubmit)="forgotPassword()" *ngIf="showForgotPassword">
+    <ion-item lines="none">
+      <ion-label color="white" position="stacked">
+        {{'Username (email)' | translate}}
+        <ion-text color="danger">(*)</ion-text>
+      </ion-label>
+      <ion-input
+        autocomplete="nope"
+        [(ngModel)]="email"
+        [ngModelOptions]="{standalone: true}"
+        color="white"
+        placeholder="{{'email@domain.com' | translate}}"
+      ></ion-input>
+    </ion-item>
 
-            </div>
-        </div>
+    <div class="text-right ion-padding-horizontal">
+      <!-- <ion-button (click)="nav('/forgot-password', 'forward')" slot="end" color="light" size="small" fill="clear" >Quên mật khẩu?</ion-button> -->
+    </div>
 
+    <div class="ion-padding">
+      <button type="submit" style="visibility: hidden; position: absolute">{{'Login' | translate}}</button>
 
+      <ion-button color="warning" expand="block" (click)="forgotPassword()"
+        >{{'Request to change password' | translate}}</ion-button
+      >
+      <p class="divider">{{'Or' | translate}}</p>
+      <ion-button expand="block" (click)="showForgotPassword=false;">{{'Login' | translate}}</ion-button>
 
-
-        <div class="ion-padding-horizontal"> 
-            <button type="submit" style="visibility: hidden; position: absolute">{{'erp.app.pages.sys.login.login' | translate}}</button>
-
-            <ion-button class="shadow" color="primary" expand="block" (click)="login()">{{'erp.app.pages.sys.login.login' | translate}}</ion-button>
-            <!-- <ion-button (click)="nav('/casual-labour-register', 'forward')" ion-padding-vertical color="primary" fill="clear" expand="block">{{'erp.app.pages.sys.login.cl-register' | translate}}</ion-button> -->
-        </div>
-    </form>
-    <form (ngSubmit)="forgotPassword()" *ngIf="showForgotPassword">
-        <ion-item lines="none">
-            <ion-label color="white" position="stacked">
-                {{'erp.app.pages.sys.login.username' | translate}}
-                <ion-text color="danger">(*)</ion-text>
-            </ion-label>
-            <ion-input autocomplete="nope" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" color="white" placeholder="{{'erp.app.pages.sys.login.email-example' | translate}}"></ion-input>
-        </ion-item>
-
-        <div class="text-right ion-padding-horizontal">
-            <!-- <ion-button (click)="nav('/forgot-password', 'forward')" slot="end" color="light" size="small" fill="clear" >Quên mật khẩu?</ion-button> -->
-        </div>
-
-        <div class="ion-padding">
-            <button type="submit" style="visibility: hidden; position: absolute">{{'erp.app.pages.sys.login.login' | translate}}</button>
-
-            <ion-button color="warning" expand="block" (click)="forgotPassword()">{{'erp.app.pages.sys.login.forgotpassword' | translate}}</ion-button>
-            <p class="divider">{{'erp.app.pages.sys.login.else' | translate}}</p>
-            <ion-button expand="block" (click)="showForgotPassword=false;">{{'erp.app.pages.sys.login.login' | translate}}</ion-button>
-
-            <ion-button (click)="nav('/register', 'forward')" ion-padding-vertical color="light" fill="clear" size="small" expand="block">{{'erp.app.pages.sys.login.register' | translate}}</ion-button>
-        </div>
-    </form>
-
-
+      <ion-button
+        (click)="nav('/register', 'forward')"
+        ion-padding-vertical
+        color="light"
+        fill="clear"
+        size="small"
+        expand="block"
+        >{{'Register' | translate}}</ion-button
+      >
+    </div>
+  </form>
 </ion-content>
 <!-- <ion-footer>
     <ion-toolbar color="primary" text-center>

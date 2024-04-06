@@ -9,8 +9,8 @@ describe('CardMultiRowComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardMultiRowComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [CardMultiRowComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CardMultiRowComponent);

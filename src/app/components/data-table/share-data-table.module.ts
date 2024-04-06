@@ -8,7 +8,6 @@ import { ScrollingModule as ExperimentalScrollingModule } from '@angular/cdk-exp
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-
 //Custom component
 import { DataTableComponent } from './data-table.component';
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
@@ -25,51 +24,48 @@ import { SvgImageDirective } from 'src/app/directives/svg-image.directive';
 import { DataTableFilterCellComponent } from './components/1.header/datatable-filter-cell.component';
 import { ShareInputControlsModule } from '../controls/share-input-controls.modules';
 
-
-
-
-
 @NgModule({
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		ScrollingModule, ExperimentalScrollingModule,
-		IonicModule,
-		TranslateModule,
-		ShareInputControlsModule,
-	],
-	providers: [ColumnChangesService],
-	declarations: [
-		SvgImageDirective,
-		PageMessageComponent,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    ExperimentalScrollingModule,
+    IonicModule,
+    TranslateModule,
+    ShareInputControlsModule,
+  ],
+  providers: [ColumnChangesService],
+  declarations: [
+    SvgImageDirective,
+    PageMessageComponent,
 
-		DataTableComponent,
-		DataTableColumnDirective,
-		DataTableColumnCellDirective,
-		DataTableColumnFilterDirective,
-		DataTableColumnHeaderDirective,
-		DataTableHeaderComponent,
-		DataTableHeaderCellComponent,
-		DataTableFilterCellComponent,
-		DataTablBodyComponent,
-		DataTablBodyRowComponent,
-		DataTableBodyCellComponent,
-	],
-	exports: [
-		SvgImageDirective,
-		PageMessageComponent,
-		DataTableComponent,
-		DataTableColumnDirective,
-		DataTableColumnCellDirective,
-		DataTableColumnFilterDirective,
-		DataTableColumnHeaderDirective,
-		DataTableHeaderComponent,
-		DataTableHeaderCellComponent,
-		DataTableFilterCellComponent,
-		DataTablBodyComponent,
-		DataTablBodyRowComponent,
-		DataTableBodyCellComponent,
-	],
+    DataTableComponent,
+    DataTableColumnDirective,
+    DataTableColumnCellDirective,
+    DataTableColumnFilterDirective,
+    DataTableColumnHeaderDirective,
+    DataTableHeaderComponent,
+    DataTableHeaderCellComponent,
+    DataTableFilterCellComponent,
+    DataTablBodyComponent,
+    DataTablBodyRowComponent,
+    DataTableBodyCellComponent,
+  ],
+  exports: [
+    SvgImageDirective,
+    PageMessageComponent,
+    DataTableComponent,
+    DataTableColumnDirective,
+    DataTableColumnCellDirective,
+    DataTableColumnFilterDirective,
+    DataTableColumnHeaderDirective,
+    DataTableHeaderComponent,
+    DataTableHeaderCellComponent,
+    DataTableFilterCellComponent,
+    DataTablBodyComponent,
+    DataTablBodyRowComponent,
+    DataTableBodyCellComponent,
+  ],
 })
-export class ShareDataTableModule { }
+export class ShareDataTableModule {}

@@ -1,6 +1,18 @@
-<ion-icon class="min-btn" *ngIf="!column.headerTemplate && column.property && filterValue && filterValue[column?.property]" name="search" color="danger"></ion-icon>
-<span *ngIf="!column.headerTemplate" (click)="onSort()" class="clickable">{{name | translate}}</span>
-<ion-icon class="min-btn" *ngIf="!column.headerTemplate && column.property && sortOrder" [name]="sortOrder == 'ASC' ? 'arrow-down' : 'arrow-up'"></ion-icon>
+<ion-icon
+  class="min-btn"
+  *ngIf="!column.headerTemplate && column.property && filterValue && filterValue[column?.property]"
+  name="search"
+  color="danger"
+></ion-icon>
+<span *ngIf="!column.headerTemplate" (click)="onSort()" class="clickable">{{ name | translate }}</span>
+<ion-icon
+  class="min-btn"
+  *ngIf="!column.headerTemplate && column.property && sortOrder"
+  [name]="sortOrder == 'ASC' ? 'arrow-down' : 'arrow-up'"
+></ion-icon>
 
-
-<ng-template *ngIf="column.headerTemplate" [ngTemplateOutlet]="column.headerTemplate" [ngTemplateOutletContext]="_column"></ng-template>
+<ng-template
+  *ngIf="column.headerTemplate"
+  [ngTemplateOutlet]="column.headerTemplate"
+  [ngTemplateOutletContext]="_column"
+></ng-template>

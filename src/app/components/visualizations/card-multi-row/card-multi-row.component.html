@@ -1,7 +1,7 @@
-<div class="card-header">{{title}}</div>
-<div class="card-value">{{value | number: '1.0-0' }}</div>
-<ion-text [color]="percent>0 ? 'success' : (percent<0? 'danger':'warning') " class="card-compare-percent">
-	{{percent}}%
-	<ion-icon [name]="percent>0 ? 'caret-up' : (percent<0? 'caret-down':'warning') " ></ion-icon>
+<div class="card-header">{{ title }}</div>
+<div class="card-value">{{ value | number: '1.0-0' }}</div>
+<ion-text [color]="percent > 0 ? 'success' : percent < 0 ? 'danger' : 'warning'" class="card-compare-percent">
+  {{ percent }}%
+  <ion-icon [name]="percent > 0 ? 'caret-up' : percent < 0 ? 'caret-down' : 'warning'"></ion-icon>
 </ion-text>
 <div class="card-chart-preview"></div>

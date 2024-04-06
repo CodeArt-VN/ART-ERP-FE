@@ -1,4 +1,4 @@
-import { TemplateRef, Directive } from "@angular/core";
+import { TemplateRef, Directive } from '@angular/core';
 
 @Directive({ selector: '[datatable-cell-template]' })
 export class DataTableColumnCellDirective {

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DataTableHeaderComponent } from './data-table-header.component';
+import { FilterComponent } from './filter.component';
 
-describe('DataTableHeaderComponent', () => {
-  let component: DataTableHeaderComponent;
-  let fixture: ComponentFixture<DataTableHeaderComponent>;
+describe('FilterComponent', () => {
+  let component: FilterComponent;
+  let fixture: ComponentFixture<FilterComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataTableHeaderComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [FilterComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataTableHeaderComponent);
+    fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -9,8 +9,8 @@ describe('MapViewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapViewComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [MapViewComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MapViewComponent);

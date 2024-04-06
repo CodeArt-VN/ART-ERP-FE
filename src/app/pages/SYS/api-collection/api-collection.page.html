@@ -1,0 +1,103 @@
+<ion-header>
+	<app-list-toolbar
+	  pageTitle="{{'Organization structure' | translate}}"
+	  [pageConfig]="pageConfig"
+	  [selectedItems]="selectedItems"
+	  [query]="query"
+	  (add)="add()"
+	  (refresh)="refresh()"
+	  (export)="export()"
+	  (import)="import($event)"
+	  (help)="help()"
+	  (unselect)="unselect()"
+	  (archiveItems)="archiveItems()"
+	  (deleteItems)="deleteItems()"
+	></app-list-toolbar>
+  </ion-header>
+  
+  <ion-content appScrollbarTheme class="scrollx" scroll-x="true">
+	<ion-refresher
+	  [disabled]="!pageConfig.refresher"
+	  [disabled]="!pageConfig.refresher"
+	  slot="fixed"
+	  (ionRefresh)="refresh($event)"
+	>
+	  <ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	<ion-fab *ngIf="pageConfig.isShowFeature" class="feature" vertical="top" horizontal="end" slot="fixed">
+	  <div class="ion-padding"></div>
+	</ion-fab>
+  
+	<section class="table">
+	  <header class="bold">
+		<div class="col-checkbox cell"></div>
+		<div class="hide-small col-id cell">Id</div>
+		<div class="col-name cell" (click)="toggleRowAll()">
+		  <ion-icon class="min-btn" [name]="!isAllRowOpened? 'add-circle-outline':'remove-circle-outline'"></ion-icon>
+		  {{'Name' | translate}}
+		  <ion-icon *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
+		  <ion-icon
+			(click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+			*ngIf="query.Keyword"
+			name="search"
+			color="primary"
+		  ></ion-icon>
+		</div>
+	  </header>
+	  <form (submit)="refresh()" action="#">
+		<header class="filter" *ngIf="pageConfig.isShowSearch">
+		  <div class="col-checkbox cell"></div>
+		  <div class="hide-small col-id cell"></div>
+		  <div class="col-name cell">
+			<input
+			  [ngModelOptions]="{standalone: true}"
+			  [(ngModel)]="query.Keyword"
+			  class="c-input"
+			  [ngClass]="{active: query.Keyword}"
+			  placeholder="Tìm theo tên hoặc mã..."
+			  type="text"
+			/>
+			<ion-icon (click)="query.Keyword=''; refresh()" *ngIf="query.Keyword" name="close"></ion-icon>
+		  </div>
+		  <button mat-raised-button type="submit" style="display: none">Search</button>
+		</header>
+	  </form>
+  
+	  <ng-container *ngIf="itemsState.length && pageConfig.showSpinner==false">
+		<ng-container *ngFor="let i of itemsState; let j = index;">
+		  <div class="row" *ngIf="i.show" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
+			<div class="col-checkbox cell">
+			  <input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox" />
+			</div>
+			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="hide-small col-id cell">
+			  <a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
+			</div>
+			<div [ngClass]="i.HasChild? ('bold ') : ('')" class="col-name cell"  (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
+			  <ng-container *ngFor="let w of i.levels; let k = index;"
+				><span class="spacing" *ngIf="k>0"></span
+			  ></ng-container>
+			  <ion-icon
+				(click)="toggleRow(itemsState, i, true);"
+				class="min-btn clickable"
+				[name]="i.HasChild? (!i.showdetail? 'chevron-forward-outline':'chevron-down-outline') : ''"
+			  ></ion-icon>
+			  <ion-icon class="min-btn" [color]="i.IsHeadOfDepartment?'primary':''" [name]="i.Icon"></ion-icon>
+  
+			  <span class="clickable" (click)="showModal(i)">
+				<ion-text *ngIf="i.Type=='Request'" [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"> {{i.Method}}  </ion-text>  
+				<ion-icon *ngIf="i.Type== 'Folder'" name="folder-outline"></ion-icon>
+				<ion-icon *ngIf="i.Type== 'Collection'"name="keypad-outline"></ion-icon>
+				{{i.Name}}
+				<span *ngIf="i.IsDisabled">
+				  -
+				  <ion-icon color="warning" class="min-btn" name="archive"></ion-icon
+				></span>
+			  </span>
+			</div>
+		  </div>
+		</ng-container>
+	  </ng-container>
+	</section>
+	<app-page-message [itemsLength]="itemsState.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  </ion-content>
+  

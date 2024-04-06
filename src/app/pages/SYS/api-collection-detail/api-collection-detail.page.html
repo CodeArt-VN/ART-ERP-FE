@@ -1,0 +1,448 @@
+<ion-header>
+	<app-detail-toolbar [page]="this"></app-detail-toolbar>
+</ion-header>
+  <ion-content appScrollbarTheme class="ion-padding">
+	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+	  <ion-grid fixed>
+		<form [formGroup]="formGroup">
+			
+		  <ion-row class="hr-group">
+			<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+				<ion-list-header class="ion-no-padding">
+					<ion-label color="primary">{{'API collection' | translate}}</ion-label>
+				</ion-list-header>
+			</ion-col>
+			<!-- <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+				<app-page-title [icon]="person-outline" [color]="warning"
+				[title]="'API collection'"></app-page-title>
+			</ion-col> -->
+			<ion-col size="12" size-sm size-xl="4">
+			  <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()">
+				<small label *ngIf="item?.Id">Id: {{item.Id}}</small>
+			  </app-form-control>
+				
+			  <div class="c-control">
+				<label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
+				<ng-select
+				  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+				  class="c-input"
+				  formControlName="IDProvider"
+				  labelForId="IDProvider"
+				  [items]="providerDataSource"
+				  bindLabel="Name"
+				  bindValue="Id"
+				  [clearable]="true"
+				  (change)="changeProvider()"
+				  appendTo="#ng-select-holder"
+				>
+				  <!-- <ng-template ng-label-tmp let-i="item" let-clear="clear">
+					<ion-chip color="primary" *ngIf="i">
+					  <ion-avatar>
+						<ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					  </ion-avatar>
+					  <ion-label>{{ i.Name }}</ion-label><br />
+					  <small
+					  >#<b><span class="important">{{ i.Id }} - {{ i.Code }}</span></b>
+					  </small
+					>
+					</ion-chip>
+				  </ng-template> -->
+				  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+					<div *ngIf="i">
+					  <ion-avatar
+						><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+					  ></ion-avatar>
+					  <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
+					  <small
+						>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
+					  </small>
+					</div>
+				  </ng-template>
+				</ng-select>
+			  </div>
+
+			  <div class="c-control" *ngIf="formGroup.get('Type').value != 'Collection'">
+				<label class="c-label" for="IDBranch">{{'Parent' | translate}}
+					<span *ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+				</label>
+				<ng-select class="c-input" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'erp.app.pages.purchase.purchase-order.search-placeholder' | translate}}">
+					<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+						<div *ngIf="i">
+							<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> 
+								<ion-icon *ngIf="i.Type == 'Folder'"name="folder-outline"></ion-icon>
+								<ion-icon *ngIf="i.Type == 'Collection'"name="keypad-outline"></ion-icon>
+								<span [ngOptionHighlight]="search">{{i.Name}}</span></div>
+						</div>
+					</ng-template>
+				</ng-select>
+			</div>
+			
+			</ion-col>
+
+			<ion-col size="12" size-sm size-xl="4">
+				<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
+			
+				<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
+				<app-form-control  *ngIf="formGroup.get('Type').value == 'Request' "[field]="{id:'URL', label: 'URL', type : 'text', form : formGroup }"  (change)="saveChange()"></app-form-control>
+			
+			</ion-col>
+		  </ion-row>
+		</form>
+	  </ion-grid>
+	  <div class="row-full shadow full-screen">
+		<ion-toolbar color="primary">
+		  <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+			<ion-segment-button value="s1"  *ngIf="formGroup.get('Type').value == 'Request'">
+			  <ion-label>{{'Params' | translate }}</ion-label>
+			</ion-segment-button>
+			<ion-segment-button value="s2">
+				<ion-label>{{'Authorization' | translate }}</ion-label>
+			  </ion-segment-button>
+			<ion-segment-button value="s3" *ngIf="formGroup.get('Type').value == 'Request'">
+				<ion-label>{{'Header' | translate }}</ion-label>
+			  </ion-segment-button>
+			  <ion-segment-button value="s4" *ngIf="formGroup.get('Type').value == 'Request'">
+				<ion-label>{{'Body' | translate }}</ion-label>
+			  </ion-segment-button>
+			  
+			  <ion-segment-button value="s5">
+				<ion-label>{{'Before request script' | translate }}</ion-label>
+			  </ion-segment-button>
+			  <ion-segment-button value="s6">
+				<ion-label>{{'After response script' | translate }}</ion-label>
+			  </ion-segment-button>
+			  <ion-segment-button value="s7" *ngIf="formGroup.get('Type').value == 'Collection'">
+				<ion-label>{{'Varibles' | translate }}</ion-label>
+			  </ion-segment-button>
+			  <ion-segment-button value="s8" *ngIf="formGroup.get('Type').value == 'Request'">
+				<ion-label>{{'Setting' | translate }}</ion-label>
+			  </ion-segment-button>
+			<ion-segment-button value="s9">
+			  <ion-label>{{'Other information' | translate}}</ion-label>
+			</ion-segment-button>
+		  </ion-segment>
+		</ion-toolbar>
+  
+		<!-- Params -->
+		<div class="table-contain  ion-padding" *ngIf="segmentView == 's1' && formGroup.get('Type').value == 'Request'">
+			<section class="table responsive">
+				<header class="bold">
+					
+					<div class="col-name cell">
+						{{'Key' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Value' | translate}}
+					</div>
+					<div class="col-icon cell">
+						<ion-icon (click)="deleteItems('Params')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+					</div>
+				</header>
+				<app-page-message [itemsLength]= "formGroup.get('_Params')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+				<ng-container  *ngIf="!pageConfig.showSpinner">
+					<div *ngFor="let c of formGroup.get('_Params')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Key', type : 'text', form : c, }" (change)="saveChange()"></app-input-control>
+						</div>
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Value', type : 'text', form : c, }" (change)="saveChange()"></app-input-control>
+						</div>
+				
+						<div class="col-icon cell clickable" >
+							<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" (click)="removeField(j)"  name="trash"></ion-icon>
+						</div>
+					</div>
+					<div class="row">
+						
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Key" (change)="newField($event,'Params','Key')"/>
+							<!-- <app-input-control [field]="{id:'Key', type : 'text', form : formGroupParam, }" (change)="newField($event,formGroupParam,'_Params','Key')"></app-input-control> -->
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Value" (change)="newField($event,'Params','Key')"/>
+							<!-- <app-input-control [field]="{id:'Key', type : 'text', form : formGroupParam, }" (change)="newField($event,formGroupParam,'_Params','Key')"></app-input-control> -->
+						</div>
+						<div class="col-icon cell"> </div>
+					</div>
+				</ng-container>
+				
+			</section>
+		</div>
+		<!-- Authorization -->
+		<ion-grid fixed *ngIf="segmentView == 's2'">
+			<form [formGroup]="formGroup.get('_Authorization')" >
+				<ion-row class="hr-group ion-padding">
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'BearerToken'">
+						<app-form-control [field]="{id:'Token', type : 'text', label: 'Token', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'BasicAuth'">
+						<app-form-control [field]="{id:'Username', type : 'text', label: 'Username', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+						<app-form-control [field]="{id:'Password', type : 'text', label: 'Password', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+					</ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+		<!-- Header -->
+		<div class="table-contain ion-padding" *ngIf="segmentView == 's3' && formGroup.get('Type').value == 'Request'"> 
+			<section class="table responsive">
+				<header class="bold">
+					
+					<div class="col-name cell">
+						{{'Key' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Value' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Remark' | translate}}
+					</div>
+					<div class="col-icon cell">
+						<ion-icon (click)="deleteItems('Header')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+					</div>
+				</header>
+				<app-page-message [itemsLength]= "formGroup.get('_Header')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+				<ng-container  *ngIf="!pageConfig.showSpinner">
+					<div *ngFor="let c of formGroup.get('_Header')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Header')"></app-input-control>
+						</div>
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Header')"></app-input-control>
+						</div>
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Description', label:'Remark', type : 'text', form : c }"  (change)="saveChangeJson('Header')"></app-input-control>
+						</div>
+				
+						<div class="col-icon cell clickable" (click)="removeField(j,'Header')" >
+							<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
+						</div>
+					</div>
+					<div class="row">
+					
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Key" (change)="newField($event,'Header','Key')"/>
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Value" (change)="newField($event,'Header','Key')"/>
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Description" (change)="newField($event,'Header','Key')"/>
+						</div>
+						<div class="col-icon cell">
+						</div>
+					</div>
+				</ng-container>
+				
+			</section>
+		</div>
+		<!-- Body -->
+		<ion-grid fixed *ngIf="segmentView == 's4' && formGroup.get('Type').value == 'Request'">
+			<form [formGroup]="formGroup.get('_Body')" >
+				<ion-row class="hr-group ion-padding">
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'BodyType', type : 'ng-select', dataSource: bodyType, bindLabel:'Name', bindValue:'Code', label: 'Body type', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4" *ngIf="formGroup.get('_Body').get('BodyType').value =='raw'">
+						<app-form-control [field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
+					</ion-col>
+				
+					<!-- <ion-col size="12">
+						<app-form-control [field]="{id:'Value', type : 'textarea', label: 'data', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
+					</ion-col> -->
+				</ion-row>
+				<ion-row class="hr-group ion-padding">
+					<ion-col>
+						<ion-accordion-group [value]="'body'" multiple="true">
+							<ion-accordion value="body" fixed style="background: transparent">
+								<ion-item slot="header" color="light">
+								  <ion-label>{{ 'data' | translate }}</ion-label>
+								</ion-item>
+								<div slot="content" style="background: transparent">
+								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChangeJson('Body')">
+									<!-- {{ _report.ChartConfigScript }} -->
+								  </div>
+								</div>
+							  </ion-accordion>
+							  </ion-accordion-group>
+					</ion-col>
+					
+				</ion-row>
+			</form>
+		</ion-grid>
+		<!-- BeforeRequestScript -->
+		<ion-grid fixed *ngIf="segmentView == 's5'">
+			<ion-row class="hr-group ion-padding">
+				<ion-col>
+					<ion-accordion-group [value]="'beforeScirpt'" multiple="true">
+						<ion-accordion value="beforeScirpt" fixed style="background: transparent">
+							<ion-item slot="header" color="light">
+							  <ion-label>{{ 'Script' | translate }}</ion-label>
+							</ion-item>
+							<div slot="content" style="background: transparent">
+							  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+								<!-- {{ _report.ChartConfigScript }} -->
+							  </div>
+							</div>
+						  </ion-accordion>
+						  </ion-accordion-group>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+			<!-- AfterResponseScript -->
+			<ion-grid fixed *ngIf="segmentView == 's6'">
+				<ion-row class="hr-group ion-padding">
+					<ion-col>
+						<ion-accordion-group [value]="'afterScirpt'" multiple="true">
+							<ion-accordion value="afterScirpt" fixed style="background: transparent">
+								<ion-item slot="header" color="light">
+								  <ion-label>{{ 'Script' | translate }}</ion-label>
+								</ion-item>
+								<div slot="content" style="background: transparent">
+								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+									<!-- {{ _report.ChartConfigScript }} -->
+								  </div>
+								</div>
+							  </ion-accordion>
+							  </ion-accordion-group>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		<!-- Varibles -->
+		<div class="table-contain ion-padding" *ngIf="segmentView == 's7' && formGroup.get('Type').value == 'Collection'">
+			<section class="table responsive">
+				<header class="bold">
+					
+					<div class="col-name cell">
+						{{'Varible' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Inital value' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Current value' | translate}}
+					</div>
+					<div class="col-icon cell">
+						<ion-icon (click)="deleteItems('Varibles')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+					</div>
+				</header>
+				<app-page-message [itemsLength]= "formGroup.get('_Varibles')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+				<ng-container  *ngIf="!pageConfig.showSpinner">
+					<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
+						</div>
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'InitialValue', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
+						</div>
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'CurrentValue', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
+						</div>
+					
+						<div class="col-icon cell clickable" (click)="removeField(j,'Varibles')" >
+							<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Key" (change)="newField($event,'Varibles','Key')"/>
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.InitialValue" (change)="newField($event,'Varibles','InitialValue')"/>
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.CurrentValue" (change)="newField($event,'Varibles','CurrentValue')"/>
+						</div>
+						<div class="col-icon cell">
+						</div>
+					</div>
+				</ng-container>
+				
+			</section>
+		</div>
+		<!-- Setting -->
+		<div class="table-contain ion-padding" *ngIf="segmentView == 's8' && formGroup.get('Type').value == 'Request'">
+			<section class="table responsive">
+				<header class="bold">
+					
+					<div class="col-name cell">
+						{{'Name' | translate}}
+					</div>
+					<div class="col-name cell" >
+						{{'Value' | translate}}
+					</div>
+					<div class="col-icon cell">
+						<ion-icon (click)="deleteItems('Setting')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+					</div>
+				</header>
+				<app-page-message [itemsLength]= "formGroup.get('_Setting')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+				<ng-container  *ngIf="!pageConfig.showSpinner">
+					<div *ngFor="let c of formGroup.get('_Setting')['controls'] ;let j = index"class="row" [ngClass]="{odd: j % 2 != 0}" >
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting')"></app-input-control>
+						</div>
+
+						<div class="col-name cell">
+							<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Setting')"></app-input-control>
+						</div>
+						
+						<div class="col-icon cell clickable" (click)="removeField(j,'Setting')" >
+							<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
+						</div>
+					</div>
+					<div class="row">
+						
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Key" (change)="newField($event,'Setting','Key')"/>
+						</div>
+						<div class="col-name cell" >
+							<input type="text"class="c-input"	placeholder="{{ placeholder | translate }}"
+							[(ngModel)]="model.Value" (change)="newField($event,'Setting','Value')"/>
+						</div>
+						<div class="col-icon cell">
+						</div>
+					</div>
+				</ng-container>
+				
+			</section>
+		</div>
+		<!-- Order information -->
+		<div *ngIf="segmentView == 's9'">
+			<ion-row class="hr-group" *ngIf="item?.Id">
+				<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+					<ion-list-header class="ion-no-padding">
+						<ion-label color="primary">{{'Other information' | translate}}</ion-label>
+					</ion-list-header>
+				</ion-col>
+				<ion-col size="12" size-sm size-xl="4">
+					<app-form-control [field]="{id:'CreatedBy', type : 'span-text', label: 'Created by', form : formGroup }"></app-form-control>
+					<app-form-control [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
+					<app-form-control [field]="{id:'ModifiedBy', type : 'span-text', label: 'Last modified by', form : formGroup }"></app-form-control>
+					<app-form-control [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"></app-form-control>
+				</ion-col>
+				<ion-col size="12" size-sm size-xl="4">
+					<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
+				</ion-col>
+			</ion-row>
+		</div>
+	  </div>
+	</div>
+	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  </ion-content>
+  

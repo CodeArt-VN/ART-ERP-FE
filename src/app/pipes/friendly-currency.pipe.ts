@@ -1,21 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'friendlyCurrency'
+  name: 'friendlyCurrency',
 })
 export class FriendlyCurrencyPipe implements PipeTransform {
-
-  transform(value: any, decimalCount = 2, decimal = ".", thousands = ","): string {
-    if(isNaN(value - parseFloat(value))){
+  transform(value: any, decimalCount = 2, decimal = '.', thousands = ','): string {
+    if (isNaN(value - parseFloat(value))) {
       return value;
     }
-
-
-
   }
-
 }
-
 
 // transform(value: any, currencyCode?: string, display?: string | boolean, digitsInfo?: string, locale?: string): string {
 //   if (value != null)

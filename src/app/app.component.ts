@@ -17,353 +17,388 @@ register();
 let ga: any;
 
 @Component({
-	selector: 'app-root',
-	templateUrl: 'app.component.html',
-	styleUrls: ['app.component.scss']
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-	@ViewChild('search') search: any;
-	appTheme = 'default-theme';
-	isConnectFail = false;
-	appMessages = [];
-	appVersion = '';
-	canGoBack = false;
-	showScrollbar = false;
-	showAppMenu = true;
-	countForm = 0;
-	showMenu = true;
-	randomImg = './assets/undraw_art_museum_8or4.svg';
+  @ViewChild('search') search: any;
+  appTheme = 'default-theme';
+  isConnectFail = false;
+  appMessages = [];
+  appVersion = '';
+  canGoBack = false;
+  showScrollbar = false;
+  showAppMenu = true;
 
-	isShowSearch = false;
-	queryMenu = '';
-	foundMenu = [];
+  countForm = 0;
+  showMenu = true;
+  randomImg = './assets/undraw_art_museum_8or4.svg';
 
-	@ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
+  isShowSearch = false;
+  queryMenu = '';
+  foundMenu = [];
 
-	constructor(
-		public router: Router,
-		public navCtrl: NavController,
-		public menu: MenuController,
+  pageConfigPageName = '';
+  showHelp = false;
+  showAppMenuHelp = true;
 
-		public userSettingProvider: SYS_UserSettingProvider,
-		public branchProvider: BRA_BranchProvider,
-		public popoverCtrl: PopoverController,
-		public env: EnvService,
-		public accountService: AccountService,
-		public platform: Platform,
+  @ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
-	) {
-		this.appVersion = 'v' + this.env.version;
-		let imgs = [
-			'./assets/undraw_art_museum_8or4.svg',
-			'./assets/undraw_best_place_r685.svg',
-			'./assets/undraw_road_sign_mfpo.svg',
-			'./assets/undraw_street_food_hm5i.svg',
-			'./assets/undraw_empty.svg',
-			'./assets/undraw_Container_ship_urt4.svg'
-		]
-		let r = Math.floor((Math.random() * imgs.length));
-		this.randomImg = imgs[r];
+  _environment = environment;
 
-		this.initializeApp();
+  constructor(
+    public router: Router,
+    public navCtrl: NavController,
+    public menu: MenuController,
 
-		this.env.getEvents().subscribe((data) => {
-			switch (data.Code) {
-				case 'app:ForceUpdate':
-					this.isConnectFail = true;
-					this.openAppStore();
-					break;
-				case 'app:ConnectFail':
-					this.isConnectFail = true;
-					break;
-				case 'app:ShowAppMessage':
-					this.appMessageManage(data);
-					break;
-				case 'app:ShowMenu':
-					this.showAppMenu = data.Value;
-					break;
-				case 'app:ChangeTheme':
-					this.updateStatusbar();
-					break;
-				case 'app:logout':
-					accountService.logout().then(_ => {
-						this.router.navigateByUrl('/login');
-						this.env.showTranslateMessage('erp.app.app-component.log-out', 'danger');
-						setTimeout(() => {
-							location.reload();
-						}, 1000);
-					});
-					break;
-				case 'app:silentlogout':
-					accountService.logout().then(_ => {
-						this.router.navigateByUrl('/login');
-					});
-					break;
-				case 'app:updatedUser':
-					this.countForm = 0;
+    public userSettingProvider: SYS_UserSettingProvider,
+    public branchProvider: BRA_BranchProvider,
+    public popoverCtrl: PopoverController,
+    public env: EnvService,
+    public accountService: AccountService,
+    public platform: Platform,
+  ) {
+    this.appVersion = 'v' + this.env.version;
+    let imgs = [
+      './assets/undraw_art_museum_8or4.svg',
+      './assets/undraw_best_place_r685.svg',
+      './assets/undraw_road_sign_mfpo.svg',
+      './assets/undraw_street_food_hm5i.svg',
+      './assets/undraw_empty.svg',
+      './assets/undraw_Container_ship_urt4.svg',
+    ];
+    let r = Math.floor(Math.random() * imgs.length);
+    this.randomImg = imgs[r];
 
-					if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
-						this.countForm = this.env.user.Forms.filter(d => d.Type == 1).length;
-						if (this.countForm == 1 && this.env.branchList.filter(d => !d.disabled).length == 1) {
-							this.showMenu = false;
-						}
-						this.loadPinnedMenu();
-						this.updateStatusbar();
-					}
-					break;
-				case 'app:loadLang':
-					this.env.getStorage('lang').then(lang => {
+    this.initializeApp();
 
-						if (lang) {
-							this.changeLanguage(lang);
-						}
-						else {
-							this.changeLanguage();
-						}
-					})
-					break;
-				default:
-					if (this.env.version == 'dev') {
-						this.appMessageManage({ IsShow: true, Id: 'event', Icon: 'checkmark-outline', IsBlink: false, Color: 'success', Message: data.Code });
-						setTimeout(() => {
-							this.appMessageManage({ IsShow: false, Id: 'event' });
-						}, 2000);
-					}
-					break;
-			}
-		});
+    this.env.getEvents().subscribe((data) => {
+      switch (data.Code) {
+        case 'app:ForceUpdate':
+          this.isConnectFail = true;
+          this.openAppStore();
+          break;
+        case 'app:ConnectFail':
+          this.isConnectFail = true;
+          break;
+        case 'app:ShowAppMessage':
+          this.appMessageManage(data);
+          break;
+        case 'app:ShowMenu':
+          this.showAppMenu = data.Value;
+          break;
+        case 'app:ShowHelp':
+          this.showHelp = true;
+          this.pageConfigPageName = data.Value;
+          this.openHelp();
+          break;
+        case 'app:ChangeTheme':
+          this.updateStatusbar();
+          break;
+        case 'app:logout':
+          accountService.logout().then((_) => {
+            this.router.navigateByUrl('/login');
+            this.env.showTranslateMessage('You have log out of the system', 'danger');
+          });
+          break;
+        case 'app:silentlogout':
+          accountService.logout().then((_) => {
+            this.router.navigateByUrl('/login');
+          });
+          break;
+        case 'app:updatedUser':
+          this.countForm = 0;
 
-		this.router.events.subscribe((event: any) => {
-			if (ga && event instanceof NavigationEnd) {
-				ga('set', 'page', 'test/' + event.urlAfterRedirects);
-				ga('send', 'pageview');
-				//console.log(event.urlAfterRedirects);
-			}
+          if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
+            this.countForm = this.env.user.Forms.filter((d) => d.Type == 1).length;
+            if (this.countForm == 1 && this.env.branchList.filter((d) => !d.disabled).length == 1) {
+              this.showMenu = false;
+            }
+            this.loadPinnedMenu();
+            this.updateStatusbar();
+          }
+          break;
+        case 'app:loadLang':
+          this.env.getStorage('lang').then((lang) => {
+            if (lang) {
+              this.changeLanguage(lang);
+            } else {
+              this.changeLanguage();
+            }
+          });
+          break;
+        default:
+          if (this.env.version == 'dev') {
+            this.appMessageManage({
+              IsShow: true,
+              Id: 'event',
+              Icon: 'checkmark-outline',
+              IsBlink: false,
+              Color: 'success',
+              Message: data.Code,
+            });
+            setTimeout(() => {
+              this.appMessageManage({
+                IsShow: false,
+                Id: 'event',
+              });
+            }, 2000);
+          }
+          break;
+      }
+    });
 
-			// if (event) {
-			//   //console.log(event);
+    this.router.events.subscribe((event: any) => {
+      if (ga && event instanceof NavigationEnd) {
+        ga('set', 'page', 'test/' + event.urlAfterRedirects);
+        ga('send', 'pageview');
+        //console.log(event.urlAfterRedirects);
+      }
 
-			//   // (<any>window).ga('set', 'page', event.urlAfterRedirects);
-			//   // (<any>window).ga('send', 'pageview');
-			// }
-		});
-	}
+      // if (event) {
+      //   //console.log(event);
 
-	pinnedForms = [];
-	loadPinnedMenu() {
-		let pinned = this.env.user.UserSetting.PinnedForms.Value;
-		if (pinned) {
-			this.env.user.Forms.forEach(i => {
-				i.isPinned = pinned.includes(i.Id) && i.Type == 1;
-			});
-		}
+      //   // (<any>window).ga('set', 'page', event.urlAfterRedirects);
+      //   // (<any>window).ga('send', 'pageview');
+      // }
+    });
+  }
 
-		this.pinnedForms = this.env.user.Forms.filter(d => d.isPinned);
-	}
+  pinnedForms = [];
+  loadPinnedMenu() {
+    let pinned = this.env.user.UserSetting.PinnedForms.Value;
+    if (pinned) {
+      this.env.user.Forms.forEach((i) => {
+        i.isPinned = pinned.includes(i.Id) && i.Type == 1;
+      });
+    }
 
-	menuPin(form, event) {
-		event.preventDefault();
-		event.stopPropagation();
-		form.isPinned = !form.isPinned;
+    this.pinnedForms = this.env.user.Forms.filter((d) => d.isPinned);
+  }
 
-		let pinned = this.env.user.Forms.filter(d => d.isPinned).map(i => i.Id);
-		this.env.user.UserSetting.PinnedForms.Value = JSON.stringify(pinned);
-		this.userSettingProvider.save(this.env.user.UserSetting.PinnedForms).then((response: any) => {
-			if (!this.env.user.UserSetting.PinnedForms.Id) {
-				this.env.user.UserSetting.PinnedForms.Id = response.Id;
-			}
-			this.env.setStorage('UserProfile', this.env.user);
-			this.loadPinnedMenu();
-		});
-	}
+  menuPin(form, event) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.isPinned = !form.isPinned;
 
-	updateStatusbar() {
-		let title = 'ERP';
-		let relIcon = 'assets/icons/icon-512x512.png';
+    let pinned = this.env.user.Forms.filter((d) => d.isPinned).map((i) => i.Id);
+    this.env.user.UserSetting.PinnedForms.Value = JSON.stringify(pinned);
+    this.userSettingProvider.save(this.env.user.UserSetting.PinnedForms).then((response: any) => {
+      if (!this.env.user.UserSetting.PinnedForms.Id) {
+        this.env.user.UserSetting.PinnedForms.Id = response.Id;
+      }
+      this.env.setStorage('UserProfile', this.env.user);
+      this.loadPinnedMenu();
+    });
+  }
 
-		if (environment.appDomain.indexOf('artlogistics') > -1) {
-			this.appTheme = 'artdistribution-theme';
-		} else if (environment.appDomain.indexOf('art.appcenter.vn') > -1) {
-			this.appTheme = 'artdistribution-theme';
-		} else {
+  updateStatusbar() {
+    let title = 'ERP';
+    let relIcon = 'assets/icons/icon-512x512.png';
 
-		
-		}
+    let link: any = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
 
-		let link: any = document.querySelector("link[rel~='icon']");
-		if (!link) {
-			link = document.createElement('link');
-			link.rel = 'icon';
-			document.head.appendChild(link);
-		}
+    window.document.title = title;
+    link.href = relIcon;
 
-		window.document.title = title;
-		link.href = relIcon;
+    setTimeout(() => {
+      let themeColor = lib.getCssVariableValue('--ion-color-primary');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+    }, 100);
 
-		setTimeout(() => {
-			let themeColor = lib.getCssVariableValue('--ion-color-primary');
-			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
-		}, 100);
+    if (Capacitor.isPluginAvailable('StatusBar')) {
+      StatusBar.setBackgroundColor({
+        color:
+          this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value
+            ? '#5a5c5e'
+            : '#ffffff',
+      });
+      StatusBar.setStyle({
+        style:
+          this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value
+            ? Style.Dark
+            : Style.Light,
+      });
+      //StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
+      StatusBar.setOverlaysWebView({ overlay: false });
+    }
+  }
 
-		if (Capacitor.isPluginAvailable('StatusBar')) {
-			StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
-			StatusBar.setStyle({ style: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? Style.Dark : Style.Light });
-			//StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
-			StatusBar.setOverlaysWebView({ overlay: false });
-		}
-	}
+  ngOnInit() {
+    console.log('AppComponent ngOnInit');
+    this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
 
-	ngOnInit() {
-		console.log('AppComponent ngOnInit');
-		this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
+    // const path = window.location.pathname.split('folder/')[1];
+    // if (path !== undefined) {
+    //     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+    // }
+    //this.initNotification();
+  }
 
-		// const path = window.location.pathname.split('folder/')[1];
-		// if (path !== undefined) {
-		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-		// }
-		//this.initNotification();
-	}
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.showScrollbar = environment.showScrollbar;
+      this.updateStatusbar();
+    });
+  }
+  async initNotification() {
+    if (Capacitor.getPlatform() != 'web') {
+      let permStatus = await PushNotifications.checkPermissions();
+      if (permStatus.receive === 'prompt') {
+        permStatus = await PushNotifications.requestPermissions();
+      }
+      await PushNotifications.register();
+      await PushNotifications.addListener('registration', (token: Token) => {
+        this.env.setStorage('NotifyToken', token.value);
+      });
+      PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+        let navigateByUrl = notification.notification.data.navigateByUrl;
+        this.router.navigateByUrl(navigateByUrl);
+      });
+    }
+  }
 
-	initializeApp() {
-		this.platform.ready().then(() => {
-			this.showScrollbar = environment.showScrollbar;
-			this.updateStatusbar();
-		});
+  toogleMenu() {
+    this.showAppMenu = !this.showAppMenu;
+  }
 
+  toogleMenuGroup(f) {
+    f.isShowDetail = !f.isShowDetail;
+    this.env.user.Forms.filter((g) => f.Id == g.IDParent).forEach((i) => {
+      i.isShowDetail = f.isShowDetail;
 
-	}
-	async initNotification() {
-		if (Capacitor.getPlatform() != 'web') {
-			let permStatus = await PushNotifications.checkPermissions();
-			if (permStatus.receive === 'prompt') {
-				permStatus = await PushNotifications.requestPermissions();
-			}
-			await PushNotifications.register();
-			await PushNotifications.addListener('registration', (token: Token) => {
-				this.env.setStorage('NotifyToken', token.value);
-			});
-			PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-				let navigateByUrl = notification.notification.data.navigateByUrl;
-				this.router.navigateByUrl(navigateByUrl);
-			});
-		}
-	}
+      this.env.user.Forms.filter((m) => m.IDParent == i.Id).forEach((l) => {
+        l.isShowDetail = f.isShowDetail;
+        if (i.isShowForm == undefined) {
+          l.isShowForm = true;
+        }
+      });
 
-	toogleMenu() {
-		this.showAppMenu = !this.showAppMenu;
-	}
+      if (i.isShowForm == undefined) {
+        i.isShowForm = true;
+      }
+    });
+  }
+  toogleMenuForm(f) {
+    f.isShowForm = !f.isShowForm;
+    this.env.user.Forms.filter((m) => m.IDParent == f.Id).forEach((l) => {
+      l.isShowForm = f.isShowForm;
+    });
+  }
 
-	toogleMenuGroup(f) {
-		f.isShowDetail = !f.isShowDetail;
-		this.env.user.Forms.filter(g => f.Id == g.IDParent).forEach(i => {
-			i.isShowDetail = f.isShowDetail;
+  goToPage(path, event, direction = 'root') {
+    event.preventDefault();
+    event.stopPropagation();
 
-			this.env.user.Forms.filter(m => m.IDParent == i.Id).forEach(l => {
-				l.isShowDetail = f.isShowDetail;
-				if (i.isShowForm == undefined) {
-					l.isShowForm = true;
-				}
-			});
+    this.menu.close();
+    //this.router.navigateByUrl(path);
+    if (direction == 'root') {
+      this.navCtrl.navigateRoot(path);
+    } else if (direction == 'forward') {
+      this.navCtrl.navigateForward(path);
+    }
+  }
 
-			if (i.isShowForm == undefined) {
-				i.isShowForm = true;
-			}
+  logout() {
+    event.preventDefault();
+    event.stopPropagation();
+    this.menu.close();
+    this.isUserCPOpen = false;
+    this.env.publishEvent({ Code: 'app:logout' });
+  }
 
-		})
-	}
-	toogleMenuForm(f) {
-		f.isShowForm = !f.isShowForm;
-		this.env.user.Forms.filter(m => m.IDParent == f.Id).forEach(l => {
-			l.isShowForm = f.isShowForm
-		});
-	}
+  changeServer(server) {
+    environment.appDomain = server.Code;
+    this.env.setStorage('appDomain', server.Code);
+    this._environment = environment;
+  }
 
-	goToPage(path, event, direction = 'root') {
-		event.preventDefault();
-		event.stopPropagation();
+  logo = '';
+  async changeBranch() {
+    await this.env.changeBranch();
+    let sb = this.env.branchList.find((d) => d.Id == this.env.selectedBranch);
 
-		this.menu.close();
-		//this.router.navigateByUrl(path);
-		if (direction == 'root') {
-			this.navCtrl.navigateRoot(path);
-		}
-		else if (direction == 'forward') {
-			this.navCtrl.navigateForward(path);
-		}
+    if (sb.LogoURL) {
+      this.logo = sb.LogoURL;
+    } else {
+      this.logo = 'assets/logos/logo-in-holdings.png';
+    }
+    console.log(this.logo);
+  }
 
-	}
+  appMessageManage(message) {
+    if (message.IsShow) {
+      this.appMessages.push(message);
+    } else {
+      let ms = this.appMessages.filter((e) => e.Id == message.Id);
+      ms.forEach((f) =>
+        this.appMessages.splice(
+          this.appMessages.findIndex((e) => e.Id == f.Id),
+          1,
+        ),
+      );
+    }
+  }
 
-	logout() {
-		event.preventDefault();
-		event.stopPropagation();
-		this.menu.close();
-		this.env.publishEvent({ Code: 'app:logout' });
-	}
+  openAppStore() {
+    console.log('openAppStore');
+    if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+      window.location.href = environment.playStoreURL;
+    }
+    if (navigator.userAgent.toLowerCase().indexOf('iphone') > -1) {
+      window.location.href = environment.appStoreURL;
+    }
+  }
 
-	logo = '';
-	async changeBranch() {
-		await this.env.changeBranch();
-		let sb = this.env.branchList.find(d => d.Id == this.env.selectedBranch);
+  searchMenu(ev) {
+    var val = ev.target.value;
+    if (val == undefined) {
+      val = '';
+    }
+    if (val.length > 1) {
+      this.queryMenu = val;
+      this.foundMenu = lib.searchTree(this.env.user.Forms, this.queryMenu);
+    }
+  }
 
-		if (sb.LogoURL) {
-			this.logo = sb.LogoURL;
-		}
-		else {
-			this.logo = 'assets/logos/logo-in-holdings.png';
-		}
-		console.log(this.logo);
+  focusSearch(): void {
+    setTimeout(() => {
+      this.search.setFocus();
+    }, 300);
+  }
 
-	}
+  searchResultIdList = { term: '', ids: [] };
+  searchShowAllChildren = (term: string, item: any) => {
+    if (this.searchResultIdList.term != term) {
+      this.searchResultIdList.term = term;
+      this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
+    }
+    return this.searchResultIdList.ids.indexOf(item.Id) > -1;
+  };
 
-	appMessageManage(message) {
-		if (message.IsShow) {
-			this.appMessages.push(message);
-		}
-		else {
-			let ms = this.appMessages.filter(e => e.Id == message.Id);
-			ms.forEach(f => this.appMessages.splice(this.appMessages.findIndex(e => e.Id == f.Id), 1));
-		}
-	}
+  changeLanguage(lang = null) {
+    this.env.setLang(lang);
+  }
 
-	openAppStore() {
-		console.log('openAppStore');
-		if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
-			window.location.href = environment.playStoreURL;
-		}
-		if (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) {
-			window.location.href = environment.appStoreURL;
-		}
-	}
+  closeHelp() {
+    this.menu.close('appHelpDetail');
+    this.showHelp = false;
+  }
 
-	searchMenu(ev) {
-		var val = ev.target.value;
-		if (val == undefined) {
-			val = '';
-		}
-		if (val.length > 1) {
-			this.queryMenu = val;
-			this.foundMenu = lib.searchTree(this.env.user.Forms, this.queryMenu);
-		}
-	}
+  openHelp() {
+    this.menu.open('appHelpDetail');
+  }
 
-	focusSearch(): void {
-		setTimeout(() => {
-			this.search.setFocus();
-		}, 300);
-	}
-
-	searchResultIdList = { term: '', ids: [] };
-	searchShowAllChildren = (term: string, item: any) => {
-		if (this.searchResultIdList.term != term) {
-			this.searchResultIdList.term = term;
-			this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
-		}
-		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
-	}
-
-
-	changeLanguage(lang = null) {
-		this.env.setLang(lang);
-	}
+  @ViewChild('userCPPopover') userCPPopover;
+  isUserCPOpen = false;
+  presentUserCPPopover(e: any) {
+    this.userCPPopover.event = e;
+    this.isUserCPOpen = true;
+  }
 }
-

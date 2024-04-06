@@ -1,15 +1,24 @@
-<ion-breadcrumbs [maxItems]="maxItems" [itemsBeforeCollapse]="0" [itemsAfterCollapse]="1" (ionCollapsedClick)="presentPopover($event)">
-  <ion-breadcrumb *ngFor="let i of breadcrumbs; last as isLast">{{i.Name}}</ion-breadcrumb>
+<ion-breadcrumbs
+  [maxItems]="maxItems"
+  [itemsBeforeCollapse]="itemsBeforeCollapse"
+  [itemsAfterCollapse]="itemsAfterCollapse"
+  (ionCollapsedClick)="presentPopover($event)"
+>
+  <ion-breadcrumb *ngFor="let i of breadcrumbs; last as isLast">{{ i.Name }}</ion-breadcrumb>
 </ion-breadcrumbs>
 <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
-    <ion-content>
+    <ion-content appScrollbarTheme>
       <ion-list>
         <ion-item *ngFor="let i of breadcrumbs; last as isLast" [lines]="isLast ? 'none' : null">
           <ion-label>
-            <div>
-              <span *ngFor="let l of i.levels; first as isFirst"> <span *ngIf="!isFirst">&nbsp;&nbsp;&nbsp;</span></span>
-              <ion-text [color]=" i.Type == 'Company'? 'primary':'dark'">{{i.Name}}</ion-text>
+            <div class="flex-nowrap">
+              <span>
+                <span *ngFor="let l of i.levels; first as isFirst">
+                  <span *ngIf="!isFirst">&nbsp;&nbsp;&nbsp;</span>
+                </span>
+              </span>
+              <ion-text [color]="i.Type == 'Company' ? 'primary' : 'dark'">{{ i.Name }}</ion-text>
             </div>
           </ion-label>
         </ion-item>

@@ -1,0 +1,23 @@
+<!-- <ion-segment scrollable="false" (ionChange)="segmentChanged($event)" [value]="segmentView" mode="md">
+	<ion-segment-button value="s1">
+		<ion-label>{{'App color' | translate}}</ion-label>
+	</ion-segment-button>
+	<ion-segment-button value="s2">
+		<ion-label>{{'Palettes' | translate}}</ion-label>
+	</ion-segment-button>
+</ion-segment> -->
+<!-- App Color -->
+<div class="ion-padding" *ngIf="segmentView == 's1'">
+  <div class="ion-padding ion-text-center">
+    <ion-button size="small" [color]="r.Code" *ngFor="let r of items" (click)="onSelected(r)" style="width: 50px">
+    </ion-button>
+  </div>
+</div>
+<!-- Palettes -->
+<div *ngIf="segmentView == 's2'">
+  <div>
+    <div>
+      <input type="color" value="#3880ff" />
+    </div>
+  </div>
+</div>

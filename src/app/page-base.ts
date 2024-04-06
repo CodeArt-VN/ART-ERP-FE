@@ -6,6 +6,7 @@ import introJs from 'intro.js/intro.js';
 import { APIList, GlobalData } from './services/static/global-variable';
 import { PopoverPage } from "./pages/SYS/popover/popover.page";
 import { Subscription } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Component({
     template: '',
@@ -45,7 +46,8 @@ export abstract class PageBase implements OnInit {
         pageName: '',
         pageTitle: '',
         pageRemark: '',
-        pageIcon: '',
+        pageIcon: 'star',
+        pageColor: 'primary',
 
         isDetailPage: false,
         isShowMore: false,
@@ -58,10 +60,13 @@ export abstract class PageBase implements OnInit {
         showSpinner: true,
         isEndOfData: false,
         didEnter: false,
-
+        isMainPageActive:true,
+        isSubActive: false,
+        isFeatureAsMain: false,
         sort: []
 
     }
+
 
     subscriptions: Subscription[] = [];
 
@@ -118,7 +123,7 @@ export abstract class PageBase implements OnInit {
                             this.env.showMessage(err.message, 'danger');
                         }
                         else {
-                            this.env.showTranslateMessage('erp.app.pages.bi.sales-report.message.can-not-get-data','danger');
+                            this.env.showTranslateMessage('Cannot extract data','danger');
                         }
 
                         this.loadedData(event);
@@ -261,7 +266,7 @@ export abstract class PageBase implements OnInit {
                 this.env.showLoading('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
                 .then(_ => {
                     this.removeSelectedItems();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.showTranslateMessage('Deleted!','success');
                     this.env.publishEvent({ Code: publishEventCode });
                 }).catch(err => {
                     this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
@@ -274,10 +279,10 @@ export abstract class PageBase implements OnInit {
     archiveItems() {
         this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
             if (this.query.IsDisabled == true) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.open-number-line','success', this.selectedItems.length);
+                this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
             }
             else {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.archive-number-line','success', this.selectedItems.length);
+                this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
             }
             this.removeSelectedItems();
         });
@@ -319,11 +324,11 @@ export abstract class PageBase implements OnInit {
                         message += '<br> ' + e.Id + '. Tại dòng ' + e.Line + ': ' + e.Message;
                     }
                 this.env.showPrompt('Có ' + resp.ErrorList.length + ' lỗi khi import:' + message, 'Bạn có muốn xem lại các mục bị lỗi?', 'Có lỗi import dữ liệu').then(_=>{
-                    this.downloadURLContent(ApiSetting.mainService.base + resp.FileUrl);
+                    this.downloadURLContent(resp.FileUrl);
                 }).catch(e => { });
             }
             else {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+                this.env.showTranslateMessage('Import completed!','success');
             }
         })
         .catch(err => {
@@ -331,7 +336,7 @@ export abstract class PageBase implements OnInit {
                 // var contentDispositionHeader = err.headers.get('Content-Disposition');
                 // var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
                 // this.downloadContent(result.replace(/"/g, ''),err._body);
-                this.downloadURLContent(ApiSetting.mainService.base + err._body);
+                this.downloadURLContent(err._body);
             }
         })
 
@@ -343,7 +348,7 @@ export abstract class PageBase implements OnInit {
         this.submitAttempt = true;
         this.env.showLoading('Vui lòng chờ export dữ liệu...', this.pageProvider.export(this.query))
         .then((response: any) => {
-            this.downloadURLContent(ApiSetting.mainService.base + response);
+            this.downloadURLContent(response);
             this.submitAttempt = false;
         }).catch(err => {
             this.submitAttempt = false;
@@ -351,7 +356,7 @@ export abstract class PageBase implements OnInit {
     }
 
     download(url) {
-        this.downloadURLContent(ApiSetting.mainService.base + url);
+        this.downloadURLContent(url);
     }
     private getAPIPathByPageName(pageName) {
         let apiPath = null;
@@ -374,6 +379,9 @@ export abstract class PageBase implements OnInit {
         document.body.removeChild(pom);
     }
     downloadURLContent(url) {
+        if(url.indexOf('http') == -1){
+            url = environment.appDomain + url;
+        }
         var pom = document.createElement('a');
         pom.setAttribute('target', '_blank');
         pom.setAttribute('href', url);
@@ -429,7 +437,7 @@ export abstract class PageBase implements OnInit {
             this.formGroup.updateValueAndValidity();
 
             if (!this.formGroup.valid) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.check-red-above','warning');
+                this.env.showTranslateMessage('Please recheck information highlighted in red above','warning');
             }
             else if (this.submitAttempt == false) {
                 this.submitAttempt = true;
@@ -438,7 +446,7 @@ export abstract class PageBase implements OnInit {
                 // this.item.Id = this.id;
                 Object.assign(this.item, this.formGroup.value);
                 Object.keys(this.item).forEach(k => {
-                    if (this.item[k] === null || this.item[k] === undefined || this.item[k] === '')
+                    if (this.item[k] === undefined)
                         delete this.item[k];
 
                 });
@@ -477,7 +485,7 @@ export abstract class PageBase implements OnInit {
                     }
 
                     // if (loading) loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.import-complete','success');
+                    this.env.showTranslateMessage('Import completed!','success');
                     this.formGroup.markAsPristine();
                     this.cdr.detectChanges();
                     resolve(savedItem.Id);
@@ -485,7 +493,7 @@ export abstract class PageBase implements OnInit {
                     this.savedChange(savedItem);
                 }).catch(err => {
                     // if (loading) loading.dismiss();
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.can-not-save','danger');
+                    this.env.showTranslateMessage('Cannot save, please try again','danger');
                     this.cdr.detectChanges();
                     this.submitAttempt = false;
                     reject(err);
@@ -499,7 +507,7 @@ export abstract class PageBase implements OnInit {
         return new Promise((resolve, reject) => {
             this.formGroup.updateValueAndValidity();
             if (!form.valid) {
-                this.env.showTranslateMessage('erp.app.app-component.page-bage.check-red-above','warning');
+                this.env.showTranslateMessage('Please recheck information highlighted in red above','warning');
             }
             else if (this.submitAttempt == false) {
                 this.submitAttempt = true;
@@ -511,7 +519,7 @@ export abstract class PageBase implements OnInit {
                     if (publishEventCode)
                         this.env.publishEvent({ Code: publishEventCode });
                 }).catch(err => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.can-not-save','danger');
+                    this.env.showTranslateMessage('Cannot save, please try again','danger');
                     this.cdr.detectChanges();
                     this.submitAttempt = false;
                     reject(err);
@@ -538,7 +546,7 @@ export abstract class PageBase implements OnInit {
         form.markAsPristine();
         this.cdr.detectChanges();
         this.submitAttempt = false;
-        this.env.showTranslateMessage('erp.app.app-component.page-bage.save-complete','success');
+        this.env.showTranslateMessage('Saving completed!','success');
     }
 
     alwaysReturnProps = ['Id', 'IDBranch'];
@@ -566,9 +574,10 @@ export abstract class PageBase implements OnInit {
         if (this.pageConfig.canDelete) {
             this.env.showPrompt('Bạn chắc muốn xóa' + (this.item.Name ? ' ' + this.item.Name : '') + '?').then(_=>{
                 this.pageProvider.delete(this.item).then(() => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.delete-complete','success');
+                    this.env.showTranslateMessage('Deleted!','success');
                     this.env.publishEvent({ Code: publishEventCode });
 
+                    this.deleted();
                     this.closeModal();
 
                 }).catch(err => {
@@ -578,7 +587,11 @@ export abstract class PageBase implements OnInit {
         }
     }
 
-    submitForApproval(){
+    deleted(){
+
+    }
+
+    submit(){
 
     }
 
@@ -594,6 +607,15 @@ export abstract class PageBase implements OnInit {
         
     }
 
+    copy(){
+
+    }
+    merge(){
+
+    }
+    split(){
+        
+    }
     async closeModal() {
         try {
             if (!this.modalController) {
@@ -673,21 +695,33 @@ export abstract class PageBase implements OnInit {
     }
 
     ngOnInit() {
-        if (this.route) {
+        let pageUrl = '';
+        
+        if (this.route && !this.pageConfig.pageCode ) {
             this.pageConfig.pageCode = this.route.snapshot?.routeConfig?.component?.name;
             this.id = this.route.snapshot?.paramMap?.get('id');
+            pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
+        }
+        else if(this.pageConfig.pageCode == 'help'){
+            pageUrl = '/' + this.pageConfig.pageCode + '/';
+        }
+        else {
+            //pageUrl = this.pageConfig.pageCode + '/';
+            pageUrl = this.navCtrl.router.routerState.snapshot.url + '/';
         }
 
 
         if (this.navCtrl && this.env.user && this.env.user.Forms) {
 
             //console.log('snapshot.url', this.navCtrl.router.routerState.snapshot.url);
-            let currentForm = this.env.user.Forms.find(d => (this.navCtrl.router.routerState.snapshot.url + '/').indexOf(d.Code + '/') > -1 && (d.Type == 0 || d.Type == 1 || d.Type == 2));
+            let currentForm = this.env.user.Forms.find(d => pageUrl.startsWith('/'+d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2));
             if (currentForm) {
                 this.pageConfig.pageName = currentForm.Code;
                 this.pageConfig.pageTitle = currentForm.Name;
                 this.pageConfig.pageIcon = currentForm.Icon;
+                this.pageConfig.pageColor = currentForm.BadgeColor;
                 this.pageConfig.pageRemark = currentForm.Remark;
+                this.pageConfig.canEditHelpContent = true;
                 
                 let permissionList = this.env.user.Forms.filter(d => d.IDParent == currentForm.Id);
                 if (permissionList.length) {
@@ -760,22 +794,22 @@ export abstract class PageBase implements OnInit {
 
     toggleFeature() {
         this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
+        if(!this.pageConfig.isFeatureAsMain){
+            this.pageConfig.isSubActive =   this.pageConfig.isShowFeature;
+        }
+    }
+
+    
+    backToMainView() {
+        if (this.pageConfig.isFeatureAsMain && !this.pageConfig.isShowFeature) {
+            this.pageConfig.isShowFeature = true;
+        }
+        this.pageConfig.isSubActive = false;
     }
 
     help() {
-        debugger;
-        //console.log(this.navCtrl.router.url, this);
-        console.log(this);
-        this.intro();
-    }
-
-    intro() {
-        const intro = introJs();
-        let options = GlobalData.IntroApp.getIntroByPage(this.pageConfig.pageName);
-        if (options) {
-            intro.setOptions(options.intro);
-            intro.start();
-        }
+        let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
+        this.env.publishEvent({ Code: 'app:ShowHelp', Value: code});
     }
 
     async changeBranch(ev: any) {
@@ -802,7 +836,7 @@ export abstract class PageBase implements OnInit {
                     Ids: this.selectedItems.map(m => m.Id),
                     IDBranch: result.data.branch.Id
                 }).then(_ => {
-                    this.env.showTranslateMessage('erp.app.app-component.page-bage.unit-change-complete','success');
+                    this.env.showTranslateMessage('Unit changed','success');
                     this.refresh();
                 })
             }
@@ -880,5 +914,9 @@ export abstract class PageBase implements OnInit {
 		}
 		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
 	}
+
+    closePopListToolBar(){
+        this.env.publishEvent({ Code: 'app:closePopListToolBar'});
+    }
 
 }

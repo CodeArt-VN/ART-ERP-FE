@@ -9,8 +9,8 @@ describe('PageMessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageMessageComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PageMessageComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PageMessageComponent);

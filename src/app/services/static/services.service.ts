@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+﻿//------------------------------------------------------------------------------
 // 
 //    www.codeart.vn
 //    hungvq@live.com
@@ -30,6 +30,13 @@ export class AC_APInvoiceDetailProvider extends exService {
 export class AC_ARInvoiceProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.AC_ARInvoice, SearchConfig.getSearchFields('AC_ARInvoice'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class AC_ARInvoiceContentProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.AC_ARInvoiceContent, SearchConfig.getSearchFields('AC_ARInvoiceContent'), commonService);
 	}
 }
 
@@ -76,6 +83,20 @@ export class AC_PostingPeriodProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class APPROVAL_ApprovalRuleProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_ApprovalRule, SearchConfig.getSearchFields('APPROVAL_ApprovalRule'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class APPROVAL_ApprovalRuleApproverProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_ApprovalRuleApprover, SearchConfig.getSearchFields('APPROVAL_ApprovalRuleApprover'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class APPROVAL_ChangelogProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_Changelog, SearchConfig.getSearchFields('APPROVAL_Changelog'), commonService);
@@ -100,6 +121,13 @@ export class APPROVAL_RequestProvider extends exService {
 export class APPROVAL_RequestApproverProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.APPROVAL_RequestApprover, SearchConfig.getSearchFields('APPROVAL_RequestApprover'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class APPROVAL_TemplateProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.APPROVAL_Template, SearchConfig.getSearchFields('APPROVAL_Template'), commonService);
 	}
 }
 
@@ -135,6 +163,13 @@ export class BC_RevenueExpenditureComponentProvider extends exService {
 export class BC_RevenueExpenditureRefCodeProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.BC_RevenueExpenditureRefCode, SearchConfig.getSearchFields('BC_RevenueExpenditureRefCode'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class BI_CSVDataProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.BI_CSVData, SearchConfig.getSearchFields('BI_CSVData'), commonService);
 	}
 }
 
@@ -177,6 +212,20 @@ export class BI_Daily_RevenueExpenditure1Provider extends exService {
 export class BI_Daily_RevenueExpenditure2Provider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.BI_Daily_RevenueExpenditure2, SearchConfig.getSearchFields('BI_Daily_RevenueExpenditure2'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class BI_DashboardProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.BI_Dashboard, SearchConfig.getSearchFields('BI_Dashboard'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class BI_DashboardDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.BI_DashboardDetail, SearchConfig.getSearchFields('BI_DashboardDetail'), commonService);
 	}
 }
 
@@ -233,6 +282,13 @@ export class BI_Operating_MarketResearchProvider extends exService {
 export class BI_OppotunityProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.BI_Oppotunity, SearchConfig.getSearchFields('BI_Oppotunity'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class BI_ReportProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.BI_Report, SearchConfig.getSearchFields('BI_Report'), commonService);
 	}
 }
 
@@ -380,6 +436,13 @@ export class CRM_PartnerAddressProvider extends exService {
 export class CRM_PartnerBankAccountProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.CRM_PartnerBankAccount, SearchConfig.getSearchFields('CRM_PartnerBankAccount'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class CRM_PartnerTaxInfoProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.CRM_PartnerTaxInfo, SearchConfig.getSearchFields('CRM_PartnerTaxInfo'), commonService);
 	}
 }
 
@@ -881,6 +944,13 @@ export class HRM_TimesheetLogProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class LIST_AddressSubdivisionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.LIST_AddressSubdivision, SearchConfig.getSearchFields('LIST_AddressSubdivision'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class LIST_ContractTemplateProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.LIST_ContractTemplate, SearchConfig.getSearchFields('LIST_ContractTemplate'), commonService);
@@ -891,13 +961,6 @@ export class LIST_ContractTemplateProvider extends exService {
 export class LIST_CountryProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.LIST_Country, SearchConfig.getSearchFields('LIST_Country'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class LIST_DistrictProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.LIST_District, SearchConfig.getSearchFields('LIST_District'), commonService);
 	}
 }
 
@@ -919,20 +982,6 @@ export class LIST_GeneralProvider extends exService {
 export class LIST_PayPeriodProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.LIST_PayPeriod, SearchConfig.getSearchFields('LIST_PayPeriod'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class LIST_ProvinceProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.LIST_Province, SearchConfig.getSearchFields('LIST_Province'), commonService);
-	}
-}
-
-@Injectable({ providedIn: 'root' })
-export class LIST_WardProvider extends exService {
-	constructor(public commonService: CommonService) {
-		super(APIList.LIST_Ward, SearchConfig.getSearchFields('LIST_Ward'), commonService);
 	}
 }
 
@@ -1224,6 +1273,27 @@ export class SHIP_VehicleProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class SYS_ActionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_Action, SearchConfig.getSearchFields('SYS_Action'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_ActionAPIRunnerProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_ActionAPIRunner, SearchConfig.getSearchFields('SYS_ActionAPIRunner'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_APICollectionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_APICollection, SearchConfig.getSearchFields('SYS_APICollection'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class SYS_AppleAppRedemptionProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_AppleAppRedemption, SearchConfig.getSearchFields('SYS_AppleAppRedemption'), commonService);
@@ -1287,9 +1357,30 @@ export class SYS_GlobalConfigProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class SYS_IntegrationProviderProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationProvider, SearchConfig.getSearchFields('SYS_IntegrationProvider'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_IntegrationReferenceIdentityProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_IntegrationReferenceIdentity, SearchConfig.getSearchFields('SYS_IntegrationReferenceIdentity'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class SYS_LogProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_Log, SearchConfig.getSearchFields('SYS_Log'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_MessageTemplateProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_MessageTemplate, SearchConfig.getSearchFields('SYS_MessageTemplate'), commonService);
 	}
 }
 
@@ -1329,6 +1420,20 @@ export class SYS_SAP_DatabasesProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class SYS_SchemaProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_Schema, SearchConfig.getSearchFields('SYS_Schema'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_SchemaDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_SchemaDetail, SearchConfig.getSearchFields('SYS_SchemaDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class SYS_StatusProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_Status, SearchConfig.getSearchFields('SYS_Status'), commonService);
@@ -1346,6 +1451,34 @@ export class SYS_SyncJobProvider extends exService {
 export class SYS_TranslateProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.SYS_Translate, SearchConfig.getSearchFields('SYS_Translate'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_Trigger, SearchConfig.getSearchFields('SYS_Trigger'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerAction, SearchConfig.getSearchFields('SYS_TriggerAction'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionConfigProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerActionConfig, SearchConfig.getSearchFields('SYS_TriggerActionConfig'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class SYS_TriggerActionDataMappingProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.SYS_TriggerActionDataMapping, SearchConfig.getSearchFields('SYS_TriggerActionDataMapping'), commonService);
 	}
 }
 
@@ -1588,6 +1721,48 @@ export class WMS_CartonGroupProvider extends exService {
 }
 
 @Injectable({ providedIn: 'root' })
+export class WMS_CycleCountProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCount, SearchConfig.getSearchFields('WMS_CycleCount'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDetail, SearchConfig.getSearchFields('WMS_CycleCountDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDeterminationProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDetermination, SearchConfig.getSearchFields('WMS_CycleCountDetermination'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountDeterminationDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountDeterminationDetail, SearchConfig.getSearchFields('WMS_CycleCountDeterminationDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountTaskProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountTask, SearchConfig.getSearchFields('WMS_CycleCountTask'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class WMS_CycleCountTaskDetailProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.WMS_CycleCountTaskDetail, SearchConfig.getSearchFields('WMS_CycleCountTaskDetail'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
 export class WMS_ItemProvider extends exService {
 	constructor(public commonService: CommonService) {
 		super(APIList.WMS_Item, SearchConfig.getSearchFields('WMS_Item'), commonService);
@@ -1790,7 +1965,21 @@ export class WMS_ZoneProvider extends exService {
 	}
 }
 
-//import { AC_APInvoiceProvider, AC_APInvoiceDetailProvider, AC_ARInvoiceProvider, AC_ARInvoiceDetailProvider, AC_ARInvoiceSODetailProvider, AC_CaseProvider, AC_JournalEntryProvider, AC_JournalEntryRowProvider, AC_PostingPeriodProvider, APPROVAL_ChangelogProvider, APPROVAL_CommentProvider, APPROVAL_RequestProvider, APPROVAL_RequestApproverProvider, BANK_IncomingPaymentProvider, BANK_IncomingPaymentDetailProvider, BANK_PaymentTermProvider, BC_RevenueExpenditureComponentProvider, BC_RevenueExpenditureRefCodeProvider, BI_Daily_BalanceProvider, BI_Daily_DebtProvider, BI_Daily_GeneralProvider, BI_Daily_RevenueProvider, BI_Daily_RevenueExpenditure1Provider, BI_Daily_RevenueExpenditure2Provider, BI_Finance_BalanceSheetCategoryProvider, BI_Finance_BalanceSheetsProvider, BI_Finance_CashFlowProvider, BI_Finance_IncomeStatementProvider, BI_Finance_ManagementProvider, BI_HRM_PayrollPerBranchProvider, BI_Operating_MarketResearchProvider, BI_OppotunityProvider, BI_ReportTemplateProvider, BI_ReportTemplateDetailProvider, BP_PartnerProvider, BRA_BranchProvider, BSC_RevenueTargetProvider, CRM_ActivityProvider, CRM_AttendanceProvider, CRM_BusinessPartnerGroupProvider, CRM_CampaignProvider, CRM_CampaignMemberProvider, CRM_ConfigProvider, CRM_ContactProvider, CRM_ContactReferenceProvider, CRM_ContractProvider, CRM_CustomerProvider, CRM_LeadProvider, CRM_MemberCardProvider, CRM_OpportunityProvider, CRM_OutletsProvider, CRM_PartnerAddressProvider, CRM_PartnerBankAccountProvider, CRM_PersonInfoProvider, CRM_QuotationProvider, CRM_RouteProvider, CRM_RouteDetailProvider, CRM_VoucherProvider, FINANCE_CostCenterProvider, FINANCE_GeneralLedgerProvider, FINANCE_TaxDefinitionProvider, HRM_DeductionOnSalaryProvider, HRM_OpenScheduleProvider, HRM_OvertimePolicyProvider, HRM_PayrollElementProvider, HRM_PayrollPaySheetMasterProvider, HRM_PayrollPaySheetMasterSalaryDecisionProvider, HRM_PersonalIncomePaymentProcessProvider, HRM_PolAllowanceProvider, HRM_PolAllowanceApplyForProvider, HRM_PolCompulsoryInsuranceProvider, HRM_PolCompulsoryInsuranceApplyForProvider, HRM_PolicyHolidayProvider, HRM_PolicyPaidTimeOffProvider, HRM_PolicyPaidTimeOffGrantsByLengthOfServicesProvider, HRM_PolWelfareProvider, HRM_PolWelfareApplyForProvider, HRM_ShiftProvider, HRM_ShiftInTimesheetProvider, HRM_StaffProvider, HRM_Staff_CLApprovalProvider, HRM_Staff_ConcurrentPositionProvider, HRM_StaffAcademicLevelProvider, HRM_StaffAddressProvider, HRM_StaffAllowanceProvider, HRM_StaffAnotherSkillProvider, HRM_StaffAppointDecisionProvider, HRM_StaffBankProvider, HRM_StaffBasicInfoProvider, HRM_StaffBounusOnSalaryProvider, HRM_StaffCompulsoryInsuranceProvider, HRM_StaffConcurrentPositionProvider, HRM_StaffConcurrentProbationryPositionProvider, HRM_StaffCurrentWorkingProvider, HRM_StaffDeductionOnSalaryProvider, HRM_StaffFamilyProvider, HRM_StaffForeignLanguageProvider, HRM_StaffIdentityCardAndPITProvider, HRM_StaffInsurancePaymentProcessProvider, HRM_StaffInternetAccountProvider, HRM_StaffLaborContractProvider, HRM_StaffLearningProcessProvider, HRM_StaffPhoneProvider, HRM_StaffPTOEnrollmentProvider, HRM_StaffRecruitmentInfoProvider, HRM_StaffResignationInfoProvider, HRM_StaffSalaryDecisionProvider, HRM_StaffScheduleProvider, HRM_StaffSpecializedFieldProvider, HRM_StaffSpecializedSkillProvider, HRM_StaffStaffAndFamilyJobProvider, HRM_StaffTimesheetEnrollmentProvider, HRM_StaffTrainingProcessProvider, HRM_StaffTrainingProcessSkillProvider, HRM_StaffWelfareProvider, HRM_StaffWorkExperienceProvider, HRM_StaffWorkingDiaryProvider, HRM_TimesheetProvider, HRM_TimesheetAndHolidayProvider, HRM_TimesheetCheckInCodeProvider, HRM_TimesheetCycleProvider, HRM_TimesheetCycleDetailProvider, HRM_TimesheetFormulaProvider, HRM_TimesheetLogProvider, LIST_ContractTemplateProvider, LIST_CountryProvider, LIST_DistrictProvider, LIST_ElementOfSalaryProvider, LIST_GeneralProvider, LIST_PayPeriodProvider, LIST_ProvinceProvider, LIST_WardProvider, MR_CompetiorOrderProvider, MR_TrackingCompetitorProvider, OST_OfficeProvider, OST_OfficeGateProvider, PM_TaskProvider, PM_TaskLinkProvider, POS_BillTableProvider, POS_CashProvider, POS_KitchenProvider, POS_MemberCardPromotionProvider, POS_MemoProvider, POS_MenuProvider, POS_MenuDetailProvider, POS_TableProvider, POS_TableGroupProvider, POS_TableGroupStaffProvider, POS_TerminalProvider, POS_WorkOrderCoordinateProvider, PR_DealProvider, PR_ProgramProvider, PR_ProgramConditionProvider, PR_ProgramItemProvider, PR_ProgramPartnerProvider, PR_ProgramRewardProvider, PR_PromotionTrackingProvider, PROD_BillOfMaterialsProvider, PROD_BillOfMaterialsDetailProvider, PROD_ItemInVendorProvider, PROD_MRPProvider, PROD_MRPScenarioProvider, PURCHASE_OrderProvider, PURCHASE_OrderDetailProvider, SALE_OrderProvider, SALE_OrderAdditionProvider, SALE_OrderDeductionProvider, SALE_OrderDetailProvider, SHIFT_TimeSheetProvider, SHIP_ShipmentProvider, SHIP_ShipmentDebtProvider, SHIP_ShipmentDetailProvider, SHIP_VehicleProvider, SYS_AppleAppRedemptionProvider, SYS_AppsProvider, SYS_ConfigProvider, SYS_ConfigOptionProvider, SYS_CurrencyProvider, SYS_DataPermissionListProvider, SYS_FormProvider, SYS_FormGroupProvider, SYS_GlobalConfigProvider, SYS_LogProvider, SYS_PermissionListProvider, SYS_PrinterProvider, SYS_RoleProvider, SYS_RuningNoProvider, SYS_SAP_DatabasesProvider, SYS_StatusProvider, SYS_SyncJobProvider, SYS_TranslateProvider, SYS_TypeProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider, SYS_UserVoiceProvider, SYS_VeifyPhoneNumberProvider, VersionProvider, WEB_CategoryProvider, WEB_ContentProvider, WEB_Content_TagProvider, WEB_ContentInCategoryProvider, WEB_TagProvider, WH_BranchesProvider, WH_CashFlowsProvider, WH_ContactGroupsProvider, WH_ContactsProvider, WH_GeneralLedgersProvider, WH_InvoiceRowsProvider, WH_InvoicesProvider, WH_ItemGroupsProvider, WH_ItemPriceListsProvider, WH_ItemsProvider, WH_ItemUoMProvider, WH_JournalEntriesProvider, WH_JournalEntryRowsProvider, WH_PostingPeriodsProvider, WH_PriceListsProvider, WH_StaffProvider, WH_UoMProvider, WH_VTB_StatementsProvider, WMS_AdjustmentProvider, WMS_AdjustmentDetailProvider, WMS_CarrierProvider, WMS_CartonProvider, WMS_CartonGroupProvider, WMS_ItemProvider, WMS_ItemGroupProvider, WMS_ItemInLocationProvider, WMS_ItemInWarehouseConfigProvider, WMS_ItemUoMProvider, WMS_LicencePlateNumberProvider, WMS_LocationProvider, WMS_LotProvider, WMS_LotAttributeProvider, WMS_LotLPNLocationProvider, WMS_PriceListProvider, WMS_PriceListDetailProvider, WMS_PriceListVersionProvider, WMS_PriceListVersionDetailProvider, WMS_PutawayStrategyProvider, WMS_PutawayStrategyDetailProvider, WMS_ReceiptProvider, WMS_ReceiptDetailProvider, WMS_ReceiptPalletizationProvider, WMS_StorerProvider, WMS_TaskDispatchStrategyProvider, WMS_TaskDispatchStrategyDetailProvider, WMS_TransactionProvider, WMS_UoMProvider, WMS_UoMGroupProvider, WMS_VendorProvider, WMS_WarehouseInfoProvider, WMS_WavePlanningProvider, WMS_ZoneProvider, } from './services/static/services.service';
+@Injectable({ providedIn: 'root' })
+export class vw_SYS_SyncJobProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.vw_SYS_SyncJob, SearchConfig.getSearchFields('vw_SYS_SyncJob'), commonService);
+	}
+}
+
+@Injectable({ providedIn: 'root' })
+export class vw_WMS_LotLocLPNProvider extends exService {
+	constructor(public commonService: CommonService) {
+		super(APIList.vw_WMS_LotLocLPN, SearchConfig.getSearchFields('vw_WMS_LotLocLPN'), commonService);
+	}
+}
+
+//import { AC_APInvoiceProvider, AC_APInvoiceDetailProvider, AC_ARInvoiceProvider, AC_ARInvoiceContentProvider, AC_ARInvoiceDetailProvider, AC_ARInvoiceSODetailProvider, AC_CaseProvider, AC_JournalEntryProvider, AC_JournalEntryRowProvider, AC_PostingPeriodProvider, APPROVAL_ApprovalRuleProvider, APPROVAL_ApprovalRuleApproverProvider, APPROVAL_ChangelogProvider, APPROVAL_CommentProvider, APPROVAL_RequestProvider, APPROVAL_RequestApproverProvider, APPROVAL_TemplateProvider, BANK_IncomingPaymentProvider, BANK_IncomingPaymentDetailProvider, BANK_PaymentTermProvider, BC_RevenueExpenditureComponentProvider, BC_RevenueExpenditureRefCodeProvider, BI_CSVDataProvider, BI_Daily_BalanceProvider, BI_Daily_DebtProvider, BI_Daily_GeneralProvider, BI_Daily_RevenueProvider, BI_Daily_RevenueExpenditure1Provider, BI_Daily_RevenueExpenditure2Provider, BI_DashboardProvider, BI_DashboardDetailProvider, BI_Finance_BalanceSheetCategoryProvider, BI_Finance_BalanceSheetsProvider, BI_Finance_CashFlowProvider, BI_Finance_IncomeStatementProvider, BI_Finance_ManagementProvider, BI_HRM_PayrollPerBranchProvider, BI_Operating_MarketResearchProvider, BI_OppotunityProvider, BI_ReportProvider, BI_ReportTemplateProvider, BI_ReportTemplateDetailProvider, BP_PartnerProvider, BRA_BranchProvider, BSC_RevenueTargetProvider, CRM_ActivityProvider, CRM_AttendanceProvider, CRM_BusinessPartnerGroupProvider, CRM_CampaignProvider, CRM_CampaignMemberProvider, CRM_ConfigProvider, CRM_ContactProvider, CRM_ContactReferenceProvider, CRM_ContractProvider, CRM_CustomerProvider, CRM_LeadProvider, CRM_MemberCardProvider, CRM_OpportunityProvider, CRM_OutletsProvider, CRM_PartnerAddressProvider, CRM_PartnerBankAccountProvider, CRM_PartnerTaxInfoProvider, CRM_PersonInfoProvider, CRM_QuotationProvider, CRM_RouteProvider, CRM_RouteDetailProvider, CRM_VoucherProvider, FINANCE_CostCenterProvider, FINANCE_GeneralLedgerProvider, FINANCE_TaxDefinitionProvider, HRM_DeductionOnSalaryProvider, HRM_OpenScheduleProvider, HRM_OvertimePolicyProvider, HRM_PayrollElementProvider, HRM_PayrollPaySheetMasterProvider, HRM_PayrollPaySheetMasterSalaryDecisionProvider, HRM_PersonalIncomePaymentProcessProvider, HRM_PolAllowanceProvider, HRM_PolAllowanceApplyForProvider, HRM_PolCompulsoryInsuranceProvider, HRM_PolCompulsoryInsuranceApplyForProvider, HRM_PolicyHolidayProvider, HRM_PolicyPaidTimeOffProvider, HRM_PolicyPaidTimeOffGrantsByLengthOfServicesProvider, HRM_PolWelfareProvider, HRM_PolWelfareApplyForProvider, HRM_ShiftProvider, HRM_ShiftInTimesheetProvider, HRM_StaffProvider, HRM_Staff_CLApprovalProvider, HRM_Staff_ConcurrentPositionProvider, HRM_StaffAcademicLevelProvider, HRM_StaffAddressProvider, HRM_StaffAllowanceProvider, HRM_StaffAnotherSkillProvider, HRM_StaffAppointDecisionProvider, HRM_StaffBankProvider, HRM_StaffBasicInfoProvider, HRM_StaffBounusOnSalaryProvider, HRM_StaffCompulsoryInsuranceProvider, HRM_StaffConcurrentPositionProvider, HRM_StaffConcurrentProbationryPositionProvider, HRM_StaffCurrentWorkingProvider, HRM_StaffDeductionOnSalaryProvider, HRM_StaffFamilyProvider, HRM_StaffForeignLanguageProvider, HRM_StaffIdentityCardAndPITProvider, HRM_StaffInsurancePaymentProcessProvider, HRM_StaffInternetAccountProvider, HRM_StaffLaborContractProvider, HRM_StaffLearningProcessProvider, HRM_StaffPhoneProvider, HRM_StaffPTOEnrollmentProvider, HRM_StaffRecruitmentInfoProvider, HRM_StaffResignationInfoProvider, HRM_StaffSalaryDecisionProvider, HRM_StaffScheduleProvider, HRM_StaffSpecializedFieldProvider, HRM_StaffSpecializedSkillProvider, HRM_StaffStaffAndFamilyJobProvider, HRM_StaffTimesheetEnrollmentProvider, HRM_StaffTrainingProcessProvider, HRM_StaffTrainingProcessSkillProvider, HRM_StaffWelfareProvider, HRM_StaffWorkExperienceProvider, HRM_StaffWorkingDiaryProvider, HRM_TimesheetProvider, HRM_TimesheetAndHolidayProvider, HRM_TimesheetCheckInCodeProvider, HRM_TimesheetCycleProvider, HRM_TimesheetCycleDetailProvider, HRM_TimesheetFormulaProvider, HRM_TimesheetLogProvider, LIST_AddressSubdivisionProvider, LIST_ContractTemplateProvider, LIST_CountryProvider, LIST_ElementOfSalaryProvider, LIST_GeneralProvider, LIST_PayPeriodProvider, MR_CompetiorOrderProvider, MR_TrackingCompetitorProvider, OST_OfficeProvider, OST_OfficeGateProvider, PM_TaskProvider, PM_TaskLinkProvider, POS_BillTableProvider, POS_CashProvider, POS_KitchenProvider, POS_MemberCardPromotionProvider, POS_MemoProvider, POS_MenuProvider, POS_MenuDetailProvider, POS_TableProvider, POS_TableGroupProvider, POS_TableGroupStaffProvider, POS_TerminalProvider, POS_WorkOrderCoordinateProvider, PR_DealProvider, PR_ProgramProvider, PR_ProgramConditionProvider, PR_ProgramItemProvider, PR_ProgramPartnerProvider, PR_ProgramRewardProvider, PR_PromotionTrackingProvider, PROD_BillOfMaterialsProvider, PROD_BillOfMaterialsDetailProvider, PROD_ItemInVendorProvider, PROD_MRPProvider, PROD_MRPScenarioProvider, PURCHASE_OrderProvider, PURCHASE_OrderDetailProvider, SALE_OrderProvider, SALE_OrderAdditionProvider, SALE_OrderDeductionProvider, SALE_OrderDetailProvider, SHIFT_TimeSheetProvider, SHIP_ShipmentProvider, SHIP_ShipmentDebtProvider, SHIP_ShipmentDetailProvider, SHIP_VehicleProvider, SYS_ActionProvider, SYS_ActionAPIRunnerProvider, SYS_APICollectionProvider, SYS_AppleAppRedemptionProvider, SYS_AppsProvider, SYS_ConfigProvider, SYS_ConfigOptionProvider, SYS_CurrencyProvider, SYS_DataPermissionListProvider, SYS_FormProvider, SYS_FormGroupProvider, SYS_GlobalConfigProvider, SYS_IntegrationProviderProvider, SYS_IntegrationReferenceIdentityProvider, SYS_LogProvider, SYS_MessageTemplateProvider, SYS_PermissionListProvider, SYS_PrinterProvider, SYS_RoleProvider, SYS_RuningNoProvider, SYS_SAP_DatabasesProvider, SYS_SchemaProvider, SYS_SchemaDetailProvider, SYS_StatusProvider, SYS_SyncJobProvider, SYS_TranslateProvider, SYS_TriggerProvider, SYS_TriggerActionProvider, SYS_TriggerActionConfigProvider, SYS_TriggerActionDataMappingProvider, SYS_TypeProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider, SYS_UserVoiceProvider, SYS_VeifyPhoneNumberProvider, VersionProvider, WEB_CategoryProvider, WEB_ContentProvider, WEB_Content_TagProvider, WEB_ContentInCategoryProvider, WEB_TagProvider, WH_BranchesProvider, WH_CashFlowsProvider, WH_ContactGroupsProvider, WH_ContactsProvider, WH_GeneralLedgersProvider, WH_InvoiceRowsProvider, WH_InvoicesProvider, WH_ItemGroupsProvider, WH_ItemPriceListsProvider, WH_ItemsProvider, WH_ItemUoMProvider, WH_JournalEntriesProvider, WH_JournalEntryRowsProvider, WH_PostingPeriodsProvider, WH_PriceListsProvider, WH_StaffProvider, WH_UoMProvider, WH_VTB_StatementsProvider, WMS_AdjustmentProvider, WMS_AdjustmentDetailProvider, WMS_CarrierProvider, WMS_CartonProvider, WMS_CartonGroupProvider, WMS_CycleCountProvider, WMS_CycleCountDetailProvider, WMS_CycleCountDeterminationProvider, WMS_CycleCountDeterminationDetailProvider, WMS_CycleCountTaskProvider, WMS_CycleCountTaskDetailProvider, WMS_ItemProvider, WMS_ItemGroupProvider, WMS_ItemInLocationProvider, WMS_ItemInWarehouseConfigProvider, WMS_ItemUoMProvider, WMS_LicencePlateNumberProvider, WMS_LocationProvider, WMS_LotProvider, WMS_LotAttributeProvider, WMS_LotLPNLocationProvider, WMS_PriceListProvider, WMS_PriceListDetailProvider, WMS_PriceListVersionProvider, WMS_PriceListVersionDetailProvider, WMS_PutawayStrategyProvider, WMS_PutawayStrategyDetailProvider, WMS_ReceiptProvider, WMS_ReceiptDetailProvider, WMS_ReceiptPalletizationProvider, WMS_StorerProvider, WMS_TaskDispatchStrategyProvider, WMS_TaskDispatchStrategyDetailProvider, WMS_TransactionProvider, WMS_UoMProvider, WMS_UoMGroupProvider, WMS_VendorProvider, WMS_WarehouseInfoProvider, WMS_WavePlanningProvider, WMS_ZoneProvider, vw_SYS_SyncJobProvider, vw_WMS_LotLocLPNProvider, } from './services/static/services.service';
 
 
 

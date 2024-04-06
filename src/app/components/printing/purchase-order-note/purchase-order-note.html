@@ -1,0 +1,242 @@
+<table *ngIf="item">
+  <thead>
+    <tr>
+      <td>
+        <div class="page-header-space"></div>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="top-zone">
+          <div
+            class="ribbon"
+            *ngIf="item.Status == 'PODraft' || item.Status == 'POCancelled' || item.Status == 'PORequestUnapproved' || item.Status == 'PORequestSubmitted' "
+          >
+            <span class="text"> {{item.StatusText}} </span>
+          </div>
+          <table class="rpt-header" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td rowspan="6" class="logo">
+                  <img [src]="item._Branch.LogoURL" (error)="$event.src='assets/RPT-Logo-ART.png'" />
+                </td>
+                <td colspan="2" class="bol title">{{'Purchase order' | translate}}</td>
+                <td class="bol num" colspan="2">{{item.Code? item.Code : 'PO: '+item.Id}}</td>
+                <td rowspan="6" class="topQR">
+                  <div *ngIf="item.Code">{{'PO' | translate}}:{{item.Id}}</div>
+                  <a [href]="'#/'+'purchase-order/'+item.Id" (click)="nav('purchase-order/'+item.Id,'forward')">
+                    <img class="qrc" [src]="item.QRC" />
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="head-c1 bol" colspan="2">{{item._Storer.CompanyName}}</td>
+                <td class="bol num" colspan="2">{{item.OrderDateText}}</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <span>{{item._Branch.Address}}</span>
+                </td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="bol"></td>
+                <td class="bol num" colspan="2"></td>
+              </tr>
+              <tr>
+                <td colspan="4" class="">
+                  <span>
+                    <b> {{'Dear' | translate}}:</b>
+                    {{item._Vendor.CompanyName}},
+                    <br />{{'According to our agreement, we would like to order the following items:' | translate}}:
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class="">
+                  <span *ngIf="item.ExpectedReceiptDate">
+                    <b> {{'Expected delivery date' | translate}}:</b>
+                    {{item.ExpectedReceiptDateText}}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="ds-san-pham">
+            <table cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr class="head">
+                  <td class="cen">{{'No.' | translate}}</td>
+                  <td>
+                    <div class="ten-sp ck">{{'Product / Service name' | translate}}</div>
+                  </td>
+                  <td class="cen" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">Quy cách</td>
+
+                  <ng-container *ngIf="!PONShowEACaseOnly">
+                    <td class="cen">{{'Unit' | translate}}</td>
+                    <td class="cen">{{'S.L' | translate}}</td>
+                  </ng-container>
+
+                  <ng-container *ngIf="PONShowEACaseOnly">
+                    <td class="cen">{{'Box' | translate}}</td>
+                    <td class="cen">{{'LCL' | translate}}</td>
+                  </ng-container>
+
+                  <td class="num">{{'Unit price' | translate}}</td>
+                  <td class="num">{{'Amount' | translate}}</td>
+                  <!-- <td class="num">VAT</td>
+									<td class="num">T.GTGT</td>
+									<td class="num">TT sau thuế</td> -->
+                </tr>
+                <ng-container *ngFor="let i of item.OrderLines; let idx = index; ">
+                  <tr *ngFor="let uom of i._SplitUoMs; let gdx = index; ">
+                    <td class="cen" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{idx+1}}</td>
+                    <td [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">
+                      <div class="ten-sp ck">
+                        <b *ngIf="i._Item.Code">{{i._Item.Code}}</b><b *ngIf="!i._Item.Code">{{i.IDItem}}</b>
+                        - {{i._Item.Name}}
+                      </div>
+                      <div class="ten-sp ck" *ngIf="i.Remark">
+                        <em>{{i.Remark}}</em>
+                      </div>
+                    </td>
+                    <td class="num bol" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">
+                      <span> {{i._PackingUoM}}</span>
+                    </td>
+                    <ng-container *ngIf="!PONShowEACaseOnly">
+                      <td class="num bol">
+                        <span> {{uom.UoMName}} </span>
+                      </td>
+                      <td class="num bol">
+                        <span>{{uom.Quantity}}</span>
+                      </td>
+                    </ng-container>
+
+                    <ng-container *ngIf="PONShowEACaseOnly">
+                      <td
+                        class="num bol"
+                        *ngIf="uom.UoMId == i._Item.PurchasingUoM || uom.BaseQuantity == uom.Quantity"
+                      >
+                        <span *ngIf="uom.UoMId == i._Item.PurchasingUoM">{{uom.Quantity}}</span>
+                      </td>
+                      <td
+                        class="num bol"
+                        *ngIf="uom.UoMId == i._Item.PurchasingUoM || uom.BaseQuantity == uom.Quantity"
+                      >
+                        <span *ngIf="uom.BaseQuantity == uom.Quantity"> {{uom.Quantity}} </span>
+                      </td>
+                      <td
+                        colspan="2"
+                        class="ion-text-center bol"
+                        *ngIf="!(uom.UoMId == i._Item.PurchasingUoM || uom.BaseQuantity == uom.Quantity)"
+                      >
+                        {{uom.Quantity}} {{uom.UoMName}}
+                      </td>
+                    </ng-container>
+
+                    <td class="num">{{i.UoMPriceText}}</td>
+                    <td class="num" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{i.TotalAfterTaxText}}</td>
+
+                    <!-- <td class="num" [attr.rowspan]="i._SplitUoMs.length" >{{i.TaxRate}}</td>
+										<td class="num" [attr.rowspan]="i._SplitUoMs.length" >{{i.Tax}}</td>
+										<td class="num" [attr.rowspan]="i._SplitUoMs.length" >{{i.TotalAfterTax}}</td> -->
+                  </tr>
+                </ng-container>
+
+                <tr style="border-top: dashed 1px #000">
+                  <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td>
+                  <td class="num">
+                    <b>{{item.TotalBeforeDiscountText}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'VAT' | translate}}</td>
+                  <td class="num">
+                    <b>{{item.TotalTaxText}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td>
+                  <td class="num">
+                    <b>{{item.TotalAfterTaxText}}</b>
+                  </td>
+                </tr>
+                <!-- <tr style="border-top: dashed 1px #000;" >
+									<td [attr.colspan]="pageConfig.PONShowPackingUoM? 7:6" class="num">
+										{{item.DocTienBangChu}}
+									</td>
+								</tr> -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- <table class="thanh-tien" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td class="c1">Tổng tiền:</td>
+								<td class="bol">{{item.TotalBeforeDiscountText}}</td>
+								<td class="num">Tổng CK:</td>
+								<td class="bol"> </td>
+								<td class="num">Tổng phải trả:</td>
+								<td class="num bol"></td>
+								<td class="num">VAT</td>
+								<td class="num">T.GTGT</td>
+								<td class="num bol">TT sau thuế</td>
+							</tr>
+							<tr>
+								<td class="num" colspan="6"> </td>
+							</tr>
+						</tbody>
+					</table> -->
+
+          <table class="chu-ky" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td style="width: 50%">
+                  {{'Seller' | translate}}
+                  <div class="line2">
+                    <i>{{'(Sign and write full name)' | translate}}</i>
+                  </div>
+                </td>
+                <td>
+                  {{'Buyer' | translate}}
+                  <div class="line2">
+                    <i>{{'(Sign and write full name)' | translate}}</i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <table class="noti" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td class="cen">
+                {{'Please deliver on time with specified quantity and quality.' | translate}}<br />
+                {{'We truly appriciate.' | translate}}
+                <!-- <span *ngIf="item._Branch.Phone">Quý công ty cần liên hệ về sản phẩm dịch vụ vui lòng gọi <b>{{ item._Branch.Phone }}</b></span>
+								<span *ngIf="item._Branch.Phone2"> hoặc liên hệ vận chuyển, giao hàng theo hotline <b>{{ item._Branch.Phone2 }}</b></span>. -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td>
+        <div class="page-footer-space"></div>
+      </td>
+    </tr>
+  </tfoot>
+</table>

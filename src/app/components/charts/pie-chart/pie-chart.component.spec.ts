@@ -9,8 +9,8 @@ describe('PieChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PieChartComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PieChartComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PieChartComponent);
