@@ -197,12 +197,21 @@ export class AppComponent implements OnInit {
     let title = 'ERP';
     let relIcon = 'assets/icons/icon-512x512.png';
 
-    let link: any = document.querySelector("link[rel~='icon']");
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'icon';
-      document.head.appendChild(link);
-    }
+		if (environment.appDomain.indexOf('artlogistics') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else if (environment.appDomain.indexOf('art.appcenter.vn') > -1) {
+			this.appTheme = 'artdistribution-theme';
+		} else {
+
+		
+		}
+
+		let link: any = document.querySelector("link[rel~='icon']");
+		if (!link) {
+			link = document.createElement('link');
+			link.rel = 'icon';
+			document.head.appendChild(link);
+		}
 
     window.document.title = title;
     link.href = relIcon;
