@@ -66,7 +66,7 @@ export class HelpDetailComponent extends PageBase {
 
   buildFormGroup() {
     this.formGroup = this.formBuilder.group({
-      IDBranch: [this.env.selectedBranch],
+      IDBranch: new FormControl({ value: null, disabled: false }),
       IDCategory: [''],
       IDParent: [''],
       Id: new FormControl({ value: '', disabled: true }),
