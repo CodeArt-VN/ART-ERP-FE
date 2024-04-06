@@ -1,5 +1,4 @@
 .inholdings-theme {
-
 	// #region ionic colors
 	--ion-color-primary: #9dbc01;
 	--ion-color-primary-rgb: 157, 188, 1;
@@ -68,6 +67,14 @@
 	$small-logo-url: "/assets/logos/logo-in-square.png";
 
 	.login {
+		// &::part(background) {
+		// 	// background: linear-gradient(0deg, rgba(43, 43, 43, 0.9), rgba(43, 43, 43, 0.9)),
+		// 	// 	url("https://in.appcenter.vn/img/media/46f0ca_567bfe7542f5497bbb941c608c9980db~mv2-2.jpg");
+		// 	// background-size: cover;
+		// }
+
+		--background: #2b2b2b;
+
 		.logo-contain {
 			padding-top: 10vh;
 			padding-bottom: 0vh;
@@ -82,7 +89,7 @@
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-position: center center;
-			background-image: url($wide-logo-url);
+			background-image: url('https://static.wixstatic.com/media/46f0ca_0117704a99564ed9a03b3c7877fa6b44~mv2.png/v1/fill/w_416,h_168,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/logo%20d%E1%BA%B9p.png');
 		}
 
 		form {
@@ -108,7 +115,6 @@
 			}
 		}
 	}
-
 
 	&.dark {
 		// #region ionic colors
@@ -198,11 +204,10 @@
 		ion-item {
 			--border-color: var(--ion-color-primary);
 		}
-
 	}
 
 	.splash {
-		//background: url("../assets/IN-splash.jpg") rgba(148, 148, 148, 0.32);
+		//background: url("https://in.appcenter.vn/img/media/46f0ca_567bfe7542f5497bbb941c608c9980db~mv2-2.jpg") rgba(43, 43, 43, 1);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;

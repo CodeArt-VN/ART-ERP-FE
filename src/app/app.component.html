@@ -1,8 +1,8 @@
 <ion-app
-  class="default-palette"
+  class="default-palette dark"
   [class]="appTheme"
   [ngClass]="{
-    dark: env?.user?.UserSetting?.IsDarkTheme?.Value,
+    dark: !env?.user?.Id || env?.user?.UserSetting?.IsDarkTheme?.Value,
     showScrollbar: showScrollbar
   }"
 >
