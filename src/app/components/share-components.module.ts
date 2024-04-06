@@ -23,6 +23,8 @@ import { ShareInputControlsModule } from './controls/share-input-controls.module
 import { ShareVisualizationsModule } from './visualizations/share-visualizations.modules';
 import { SharePrintingModule } from './printing/share-printing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { HelpDetailComponent } from '../pages/SYS/help-detail/help-detail.page';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -40,6 +42,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ShareDataTableModule,
     ShareVisualizationsModule,
     SharePrintingModule,
+    PipesModule
   ],
   // providers: [provideNgxMask()],
 
@@ -50,8 +53,10 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ModalDetailToolbarComponent,
     PageTitleComponent,
     QueryFilterComponent,
+    HelpDetailComponent,
   ],
   exports: [
+    HelpDetailComponent,
     ListToolbarComponent,
     DetailToolbarComponent,
     ToolbarComponent,
