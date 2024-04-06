@@ -31,9 +31,8 @@
 	<section class="table">
 	  <header class="bold">
 		<div class="col-checkbox cell"></div>
-		<div class="hide-small col-id cell">Id</div>
-		<div class="col-name cell" (click)="toggleRowAll()">
-		  <ion-icon class="min-btn" [name]="!isAllRowOpened? 'add-circle-outline':'remove-circle-outline'"></ion-icon>
+		<div class="col-id ion-hide-sm-down cell">Id</div>
+		<div class="col-name cell" >
 		  {{'Name' | translate}}
 		  <ion-icon *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
 		  <ion-icon
@@ -43,6 +42,13 @@
 			color="primary"
 		  ></ion-icon>
 		</div>
+		<div class="col-name provider cell">
+			{{'Provider' | translate}}
+		  </div>
+		  <div class="col-code cell">
+			{{'Type' | translate}}
+		  </div>
+
 	  </header>
 	  <form (submit)="refresh()" action="#">
 		<header class="filter" *ngIf="pageConfig.isShowSearch">
@@ -63,40 +69,34 @@
 		</header>
 	  </form>
   
-	  <ng-container *ngIf="itemsState.length && pageConfig.showSpinner==false">
-		<ng-container *ngFor="let i of itemsState; let j = index;">
-		  <div class="row" *ngIf="i.show" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
-			<div class="col-checkbox cell">
-			  <input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox" />
-			</div>
-			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="hide-small col-id cell">
-			  <a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
-			</div>
-			<div [ngClass]="i.HasChild? ('bold ') : ('')" class="col-name cell"  (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
-			  <ng-container *ngFor="let w of i.levels; let k = index;"
-				><span class="spacing" *ngIf="k>0"></span
-			  ></ng-container>
-			  <ion-icon
-				(click)="toggleRow(itemsState, i, true);"
-				class="min-btn clickable"
-				[name]="i.HasChild? (!i.showdetail? 'chevron-forward-outline':'chevron-down-outline') : ''"
-			  ></ion-icon>
-			  <ion-icon class="min-btn" [color]="i.IsHeadOfDepartment?'primary':''" [name]="i.Icon"></ion-icon>
-  
-			  <span class="clickable" (click)="showModal(i)">
-				<ion-text *ngIf="i.Type=='Request'" [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"> {{i.Method}}  </ion-text>  
-				<ion-icon *ngIf="i.Type== 'Folder'" name="folder-outline"></ion-icon>
-				<ion-icon *ngIf="i.Type== 'Collection'"name="keypad-outline"></ion-icon>
-				{{i.Name}}
-				<span *ngIf="i.IsDisabled">
-				  -
-				  <ion-icon color="warning" class="min-btn" name="archive"></ion-icon
-				></span>
-			  </span>
-			</div>
-		  </div>
-		</ng-container>
-	  </ng-container>
+	<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+	<div *ngIf="items.length && pageConfig.showSpinner==false">
+		<section class="table">
+					<div *ngFor="let i of items; let j = index;"  class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
+						<div class="col-checkbox cell">
+							<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+						</div>
+						<div (click)="nav('integration-action/'+i.Id,'forward')" class="ion-hide-sm-down col-id cell">
+							{{i.Id}}
+						</div>
+						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-name cell">
+							{{i.Name}}
+						</div>
+						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-name provider cell">
+							<ion-avatar ><ion-img #img [src]="i.ProviderIcon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img ></ion-avatar>
+						  {{i.ProviderName}}
+						</div>
+						<div class="col-code cell">
+							{{i.Type}}
+						</div>
+					</div>
+				
+		</section>
+	</div>
+	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	
 	</section>
 	<app-page-message [itemsLength]="itemsState.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
   </ion-content>

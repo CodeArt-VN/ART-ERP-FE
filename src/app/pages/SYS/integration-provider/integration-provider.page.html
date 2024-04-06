@@ -1,0 +1,59 @@
+<ion-header>
+  <app-toolbar [page]="this" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query" (add)="add()"
+    (refresh)="refresh()" (export)="export()" (import)="import($event)" (help)="help()" (unselect)="unselect()"
+    (archiveItems)="archiveItems()" (deleteItems)="deleteItems()" (changeBranch)="changeBranch($event)"></app-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="left" forceOverscroll="false">
+  <ion-refresher [disabled]="!pageConfig.refresher" [disabled]="!pageConfig.refresher" slot="fixed"
+    (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <div style="margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+    <app-page-title [icon]="pageConfig.pageIcon" [color]="pageConfig.pageColor" [title]="pageConfig.pageTitle"
+      [remark]="pageConfig.pageRemark"></app-page-title>
+  </div>
+
+  <div style="margin: auto; width: 100%">
+    <app-data-table style="width: fit-content; min-width: calc(100% - 32px)" class="box-shadow responsive"
+      [rows]="items" [trackBy]="'Id'" [(selectedRows)]="selectedItems" [showSpinner]="pageConfig.showSpinner"
+      [showFilter]="pageConfig.isShowSearch" [(query)]="query" (dataInfinite)="loadData($event)"
+      (filter)="onDatatableFilter($event)" (sort)="onSort($event)">
+      <datatable-column [checkbox]="true" name=""></datatable-column>
+      <datatable-column class="col-id" name="#" property="Id">
+        <ng-template let-i="row" datatable-cell-template>
+          <a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
+        </ng-template>
+      </datatable-column>
+      <datatable-column class="col-code" name="Type" property="Type"></datatable-column>
+      <datatable-column class="col-code" name="Color" property="Color"></datatable-column>
+      <datatable-column class="col-code" name="Code" property="Code"></datatable-column>
+      <datatable-column class="col-icon large" name="Icon" property="Icon">
+        <ng-template let-i="row" datatable-cell-template>
+          <ion-icon [name]="i.Icon || 'bars'" [color]="i.Color || 'primary'"
+            [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-icon>
+        </ng-template>
+      </datatable-column>
+      <datatable-column class="col-name" name="Name" property="Name">
+        <ng-template let-i="row" datatable-cell-template>
+          <div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
+            <a class="bold">
+              <ion-text color="dark">{{i.Name}}</ion-text>
+            </a>
+            <div *ngIf="i.Remark">
+              {{i.Remark}}
+            </div>
+          </div>
+        </ng-template>
+      </datatable-column>
+    </app-data-table>
+  </div>
+
+  <div class="ion-padding"></div>
+  <ion-infinite-scroll color="primary" threshold="30%" (ionInfinite)="loadData($event)"
+    [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
