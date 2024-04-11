@@ -230,9 +230,6 @@ export class HelpDetailComponent extends PageBase {
     }
 
     if ((!this.item || this.id == 0) && this.pageConfig.canAdd) {
-      if (!this.item) this.item = { Id: 0, IsDisabled: false };
-      else Object.assign(this.item, this.DefaultItem);
-
       this.pageConfig.canEdit = this.pageConfig.canAdd;
     }
 
@@ -262,7 +259,7 @@ export class HelpDetailComponent extends PageBase {
 
   add() {
     this.buildFormGroup();
-    this.id = 1;
+    this.id = 0;
     this.item = {
       Id: 0,
       Name: '',
