@@ -18,8 +18,11 @@ declare var ace: any;
 export class ReportConfigComponent implements OnInit {
   subscriptions: Subscription[] = []; //Subscriptions
   @Input() canEdit = false;
+  @Input() canExport = false;
   @Input() canChangeReportConfig = false;
   @Input() canEditScript = false;
+  @Output() exportReport = new EventEmitter();
+
   form: FormGroup;
   _report: BIReport;
   selectedSchema: any;
@@ -449,6 +452,10 @@ export class ReportConfigComponent implements OnInit {
     }
   }
 
+  export(){
+    this.exportReport.emit();
+  }
+ 
   loadAceEditor() {
     if (typeof ace !== 'undefined') this.initAce();
     else
