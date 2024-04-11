@@ -20,6 +20,7 @@ export let environment = {
     { Code: 'https://demo.inholdings.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
 
     { Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
+    { Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'code-slash-outline' },
   ],
   staffAvatarsServer: 'https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
   posImagesServer: 'https://api.inholdings.vn/',
