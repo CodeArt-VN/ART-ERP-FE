@@ -184,7 +184,7 @@
             </ion-button>
           </ion-col>
           <ion-col size="6" *ngIf="canExport">
-            <ion-button  (click)="export()" color="warning" expand="block">
+            <ion-button  (click)="onExportData()" color="warning" expand="block">
               <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
               {{ 'Export' | translate }}
             </ion-button>

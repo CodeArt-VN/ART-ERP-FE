@@ -21,7 +21,7 @@ export class ReportConfigComponent implements OnInit {
   @Input() canExport = false;
   @Input() canChangeReportConfig = false;
   @Input() canEditScript = false;
-  @Output() exportReport = new EventEmitter();
+  @Output() exportData = new EventEmitter();
 
   form: FormGroup;
   _report: BIReport;
@@ -452,8 +452,8 @@ export class ReportConfigComponent implements OnInit {
     }
   }
 
-  export(){
-    this.exportReport.emit();
+  onExportData(){
+    this.exportData.emit();
   }
  
   loadAceEditor() {
