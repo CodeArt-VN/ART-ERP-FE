@@ -85,6 +85,7 @@ export class IntegrationActionDetailPage extends PageBase {
   // this._schemaDatasource.initSearch();
   if(this.item.IDProvider){
     this.IDProviderBefore = this.item.IDProvider;
+    this.query.Take = 5000;
     this.query.IDProvider = this.item.IDProvider;
     this.query.IDAction = this.item.Id;
     this.query.IsDisabled = 'Skipped';
