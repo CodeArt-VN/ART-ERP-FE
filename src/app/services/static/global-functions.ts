@@ -168,6 +168,9 @@ export var lib = {
     if (amount === null) {
       return '';
     }
+    if(typeof(amount)=='string'){
+      amount = amount.replace(/,/g, '');
+    }
     try {
       decimalCount = Math.abs(decimalCount);
       decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
@@ -483,7 +486,7 @@ export var lib = {
       treeItems.forEach((i) => {
         currentParent = treeItems.find((d) => d.Id == i.IDParent);
 
-        let f = treeState.find((d) => d.Id == i.Id);
+        let f = treeState?.find((d) => d.Id == i.Id);
         if (f) {
           i.show = !currentParent ? true : currentParent.showdetail && f.show ? true : false;
           i.showdetail = f.showdetail ? true : false;
