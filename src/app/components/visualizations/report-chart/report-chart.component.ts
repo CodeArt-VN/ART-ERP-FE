@@ -20,6 +20,7 @@ export class ReportChartComponent implements OnInit {
   compareBy: string[] = []; //Compare by to pass to chart component
   measureBy: string[] = []; //Measure by to show card row and pass to chart component
   rawData: any[] = []; //Raw data from services
+  comparitionData: any[] = []; //Comparition data
 
   report: BIReport = null; //Report config
 
@@ -185,9 +186,12 @@ export class ReportChartComponent implements OnInit {
     });
     this.dataFetchDate = ds.dataFetchDate;
     this.rawData = ds.data;
+    this.comparitionData = ds.comparitionData || [];
 
     this.report?.DataConfig.MeasureBy.forEach((m) => {
       m.Value = this.rawData.map((x) => x[m.Title || m.Property]).reduce((a, b) => +a + +b, 0);
+      m.ComparitionValue = this.comparitionData.map((x) => x[m.Title || m.Property]).reduce((a, b) => +a + +b, 0);
+      if (!m.ComparitionValue) m.ComparitionValue = 0;
     });
   }
 

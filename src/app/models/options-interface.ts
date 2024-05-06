@@ -135,4 +135,5 @@ export interface SchemaDetail {
   Method?: string;
 
   Value?: any; //To show in UI only
+  ComparitionValue?: any; //To show in UI only
 }

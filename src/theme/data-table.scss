@@ -142,10 +142,17 @@ app-data-table,
 
     &:hover {
       background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+      .col-sticky {
+         background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+      }
     }
 
     &.selected {
       background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+
+      .col-sticky {
+         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+      }
     }
 
     // &.odd {

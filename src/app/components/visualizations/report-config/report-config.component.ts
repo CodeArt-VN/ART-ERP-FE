@@ -210,8 +210,8 @@ export class ReportConfigComponent implements OnInit {
         CompareTo: {
           Type: 'Relative',
           IsPastDate: true,
-          Period: 'Week',
-          Amount: 1,
+          Period: 'Day',
+          Amount: 0,
         },
         Schema: null,
         Transform: {

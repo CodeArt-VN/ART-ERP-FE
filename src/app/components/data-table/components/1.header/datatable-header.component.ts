@@ -22,7 +22,11 @@ export class DataTableHeaderComponent implements OnInit {
 
   @Input() isFilter: boolean = false;
   @Input() formGroup: FormGroup;
-  @Input() query: any = {};
+
+  _query : any = {};
+  @Input() set query(val: any) {
+    this._query = val;
+  }
 
   constructor() {}
 
