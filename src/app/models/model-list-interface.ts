@@ -437,7 +437,6 @@ export interface APPROVAL_Request
 {
     IDBranch?: number;
     IDStaff?: number;
-    IDApprovalTemplate?: number;
     Id?: number;
     Type?: string;
     SubType?: string;
@@ -478,6 +477,7 @@ export interface APPROVAL_Request
     UDF20?: number;
     UDF21?: number;
     UDF22?: number;
+    IDApprovalTemplate?: number;
     
 }
 
@@ -487,7 +487,6 @@ export interface APPROVAL_RequestApprover
     IDApprover?: number;
     Status?: string;
     Id?: number;
-    Type?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -496,25 +495,17 @@ export interface APPROVAL_RequestApprover
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    Type?: string;
     
 }
 
 export interface APPROVAL_Template
 {
     IDBranch?: number;
-    IDSchemaMapping?: number;
+    HoursToApprove?: number;
     Id?: number;
     Type?: string;
     SubType?: string;
-    HoursToApprove?: number;
-    ApprovalMode?: string;
-    IsSentToAdministrationManager?: boolean;
-    IsSentToSpecializedManager?: boolean;
-    FixedApproverList?: string;
-    IsUserCanChooseApprover?: boolean;
-    SelectableApproverList?: string;
-    SupperApproverList?: string;
-    FollowerList?: string;
     UDFLabel01?: string;
     UDFLabel02?: string;
     UDFLabel03?: string;
@@ -524,6 +515,7 @@ export interface APPROVAL_Template
     UDFLabel07?: string;
     UDFLabel08?: string;
     UDFLabel09?: string;
+    UDFLabel22?: string;
     UDFLabel10?: string;
     UDFLabel11?: string;
     UDFLabel12?: string;
@@ -536,7 +528,6 @@ export interface APPROVAL_Template
     UDFLabel19?: string;
     UDFLabel20?: string;
     UDFLabel21?: string;
-    UDFLabel22?: string;
     IsUseUDF01?: boolean;
     IsUseUDF02?: boolean;
     IsUseUDF03?: boolean;
@@ -569,6 +560,7 @@ export interface APPROVAL_Template
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    IDSchemaMapping?: number;
     UDFMapping01?: string;
     UDFMapping02?: string;
     UDFMapping03?: string;
@@ -591,6 +583,14 @@ export interface APPROVAL_Template
     UDFMapping20?: string;
     UDFMapping21?: string;
     UDFMapping22?: string;
+    FixedApproverList?: string;
+    SelectableApproverList?: string;
+    SupperApproverList?: string;
+    FollowerList?: string;
+    ApprovalMode?: string;
+    IsSentToAdministrationManager?: boolean;
+    IsSentToSpecializedManager?: boolean;
+    IsUserCanChooseApprover?: boolean;
     
 }
 
@@ -3676,12 +3676,10 @@ export interface PM_Task
     IDLead?: number;
     IDProject?: number;
     IDOwner?: number;
-    IDParent?: number;
     Id?: number;
     Code?: string;
     Name?: string;
     Type?: string;
-    SubType?: string;
     Status?: string;
     Remark?: string;
     Sort?: number;
@@ -3699,6 +3697,7 @@ export interface PM_Task
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    IDParent?: number;
     StartDatePlan?: Date;
     EndDatePlan?: Date;
     DurationPlan?: number;
@@ -3708,6 +3707,7 @@ export interface PM_Task
     Priority?: number;
     IsUnscheduled?: boolean;
     IsSplited?: boolean;
+    SubType?: string;
     
 }
 
@@ -4749,11 +4749,8 @@ export interface SHIP_Vehicle
 
 export interface SYS_Action
 {
-    IDProvider?: number;
-    IDSchema?: number;
     Id?: number;
     Type?: string;
-    Group?: string;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -4764,6 +4761,9 @@ export interface SYS_Action
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    IDSchema?: number;
+    IDProvider?: number;
+    Group?: string;
     IsTriggerable?: boolean;
     RunnerConfig?: string;
     
@@ -4811,9 +4811,9 @@ export interface SYS_APICollection
     Body?: string;
     Authorization?: string;
     BeforeRequestScript?: string;
-    AfterResponseScript?: string;
     Setting?: string;
     Varibles?: string;
+    AfterResponseScript?: string;
     
 }
 
@@ -4873,7 +4873,6 @@ export interface SYS_Config
 
 export interface SYS_ConfigOption
 {
-    IDProvider?: number;
     IDParent?: number;
     Id?: number;
     Code?: string;
@@ -4898,6 +4897,7 @@ export interface SYS_ConfigOption
     CreatedDate?: Date;
     ModifiedDate?: Date;
     IsProtected?: boolean;
+    IDProvider?: number;
     
 }
 
@@ -5279,19 +5279,19 @@ export interface SYS_SyncJob
     RefChar7?: string;
     RefChar8?: string;
     RefChar9?: string;
+    IsDone?: boolean;
+    CreatedDate?: Date;
+    CreatedBy?: string;
+    TryCount?: number;
+    ExeDate?: Date;
+    IsRunning?: boolean;
+    ErrorMessage?: string;
     RefDate1?: Date;
     RefDate2?: Date;
     RefDate3?: Date;
     RefDate4?: Date;
-    IsDone?: boolean;
-    IsRunning?: boolean;
-    TryCount?: number;
-    ExeDate?: Date;
-    ErrorMessage?: string;
     Request?: string;
     Response?: string;
-    CreatedDate?: Date;
-    CreatedBy?: string;
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
@@ -5303,14 +5303,6 @@ export interface SYS_Translate
     Code?: string;
     Name?: string;
     Lang1?: string;
-    Lang2?: string;
-    Lang3?: string;
-    Lang4?: string;
-    Lang5?: string;
-    Lang6?: string;
-    Lang7?: string;
-    Lang8?: string;
-    Lang9?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -5319,13 +5311,19 @@ export interface SYS_Translate
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    Lang2?: string;
+    Lang3?: string;
+    Lang4?: string;
+    Lang5?: string;
+    Lang6?: string;
+    Lang7?: string;
+    Lang8?: string;
+    Lang9?: string;
     
 }
 
 export interface SYS_Trigger
 {
-    IDProvider?: number;
-    IDAction?: number;
     Id?: number;
     Type?: string;
     Icon?: string;
@@ -5343,6 +5341,8 @@ export interface SYS_Trigger
     PerformedBy?: string;
     TriggerWhen?: string;
     Frequency?: string;
+    IDProvider?: number;
+    IDAction?: number;
     
 }
 
@@ -6100,7 +6100,6 @@ export interface WMS_Adjustment
 {
     IDBranch?: number;
     IDStorer?: number;
-    IDCycleCount?: number;
     Id?: number;
     Status?: string;
     Reason?: string;
@@ -6111,6 +6110,7 @@ export interface WMS_Adjustment
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    IDCycleCount?: number;
     
 }
 
@@ -6228,8 +6228,6 @@ export interface WMS_CycleCountDetail
     IDCycleCount?: number;
     IDItem?: number;
     IDUoM?: number;
-    IDLocation?: number;
-    IDLot?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -6244,6 +6242,8 @@ export interface WMS_CycleCountDetail
     CurrentQuantity?: number;
     IsCounted?: boolean;
     CountedQuantity?: number;
+    IDLocation?: number;
+    IDLot?: number;
     IDCycleCountTask?: number;
     Status?: string;
     
@@ -6428,6 +6428,86 @@ export interface WMS_ItemGroup
     ModifiedDate?: Date;
     General?: string;
     Accounting?: string;
+    IsLocked?: boolean;
+    DataSource?: string;
+    AccountInventory?: string;
+    AccountCostOfGoodsSold?: string;
+    AccountAllocation?: string;
+    AccountRevenue?: string;
+    AccountRevenueReturns?: string;
+    AccountVariance?: string;
+    AccountInventoryOffsetDecrease?: string;
+    AccountInventoryOffsetIncrease?: string;
+    AccountSalesReturns?: string;
+    AccountSalesCredit?: string;
+    AccountExpense?: string;
+    AccountExpenseClearing?: string;
+    AccountExpenseOffset?: string;
+    AccountExemptRevenue?: string;
+    AccountPriceDifference?: string;
+    AccountExchangeRateDifferences?: string;
+    AccountGoodsClearing?: string;
+    AccountPurchase?: string;
+    AccountPurchaseCredit?: string;
+    AccountPurchaseReturn?: string;
+    AccountPurchaseOffset?: string;
+    AccountShippedGoods?: string;
+    AccountVATInRevenue?: string;
+    AccountGLDecrease?: string;
+    AccountGLIncrease?: string;
+    AccountInventoryRevaluation?: string;
+    AccountInventoryRevaluationOffset?: string;
+    AccountWIPInventory?: string;
+    AccountWIPInventoryVariance?: string;
+    AccountCOGSRevaluation?: string;
+    AccountCOGSRevaluationOffset?: string;
+    AccountTaxExemptCredit?: string;
+    AccountStockInTransit?: string;
+    AccountPurchaseBalance?: string;
+    AccountWIPOffsetPnL?: string;
+    AccountInventoryOffsetPnL?: string;
+    AccountFreeOfChargeSales?: string;
+    AccountFreeOfChargePurchase?: string;
+    Account?: string;
+    
+}
+
+export interface WMS_ItemInBranch
+{
+    IDBranch?: number;
+    IDItemGroup?: number;
+    IDSalesTaxDefinition?: number;
+    IDPurchaseTaxDefinition?: number;
+    IDRevenueAccount?: number;
+    IDExemptRevenueAccount?: number;
+    IDDefaultWarehouse?: number;
+    IDPreferredVendor?: number;
+    IDCartonGroup?: number;
+    Id?: number;
+    ItemType?: string;
+    TreeType?: string;
+    InventoryUoM?: number;
+    PurchasingUoM?: number;
+    SalesUoM?: number;
+    AccountantUoM?: number;
+    IsInventoryItem?: boolean;
+    IsSalesItem?: boolean;
+    IsPurchaseItem?: boolean;
+    PrefQtyInPurchaseUnits?: number;
+    AllocationStrategy?: number;
+    ProductionDateInDays?: number;
+    IsTrackSales?: boolean;
+    NoOfItemsPerSalesUnit?: number;
+    PutawayStrategy?: number;
+    IsLocked?: boolean;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -6720,7 +6800,7 @@ export interface WMS_Packing
 
 export interface WMS_PackingDetail
 {
-    IDPicking?: number;
+    IDPacking?: number;
     IDItem?: number;
     IDUoM?: number;
     IDParent?: number;
@@ -7220,6 +7300,8 @@ export interface WMS_UoMGroup
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    General?: string;
+    Accounting?: string;
     
 }
 

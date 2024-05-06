@@ -12493,6 +12493,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_ItemInBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemInBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemInBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemInBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemInBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemInBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemInBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        }
+		
+	},
+
 	WMS_ItemInLocation:{
         getSearchList:{
             method: "GET",
