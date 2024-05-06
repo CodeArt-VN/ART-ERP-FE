@@ -116,8 +116,6 @@ export class ReportChartComponent implements OnInit {
         this.updateDataset(ds);
         this.rptLoaded = true;
         this.isLoading = false;
-
-        console.log('report chart component regReportTrackingData');
       }),
     );
 
