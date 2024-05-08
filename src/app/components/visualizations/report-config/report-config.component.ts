@@ -269,7 +269,7 @@ export class ReportConfigComponent implements OnInit {
     });
     let filter = this._report?.DataConfig?.Transform?.Filter;
     if (filter) this.form.get('Transform.Filter').setValue(filter);
-    console.log(this.form.getRawValue());
+
     // let notGroupList = ['MeasureBy', 'CompareBy', 'Interval', 'Transform', 'Schema', 'ReprotInfo'];
 
     // let keys = Object.keys(c);
@@ -485,6 +485,13 @@ export class ReportConfigComponent implements OnInit {
       this.chartScriptEditor = ace.edit(this.chartScriptId);
       this.chartScriptEditor.session.setMode('ace/mode/javascript');
       this.chartScriptEditor.maxLines = Infinity;
+      this.chartScriptEditor.commands.addCommand({
+        name: "fullScreen",
+        bindKey: {win: "Ctrl-Shift-f", mac: "Command-Shift-f"},
+        exec: function(editor) {
+          editor.container.webkitRequestFullscreen();
+        }
+    })
       this.chartScriptEditor.session.on('change', function (delta) {
         console.log(delta);
         // delta.start, delta.end, delta.lines, delta.action

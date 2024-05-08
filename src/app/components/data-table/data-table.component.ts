@@ -106,6 +106,9 @@ export class DataTableComponent implements OnInit {
    */
   @Input() set rows(val: any) {
     this._rows = val;
+    if (this._isTreeList && this.isQueryLocalOnly) {
+      this.onSort([]);
+    }
   }
 
   /**
@@ -119,6 +122,9 @@ export class DataTableComponent implements OnInit {
   _isTreeList: boolean;
   @Input() set isTreeList(val: boolean) {
     this._isTreeList = val;
+    if (this._isTreeList && this.isQueryLocalOnly && this._rows.length) {
+      this.onSort([]);
+    }
   }
 
   @Input() trackBy: string;

@@ -866,6 +866,7 @@ export abstract class PageBase implements OnInit {
     }
 
     showHideAllNestedFolder(ls, Id, isShow, showDetail) {
+		if(Id == null) return;
         ls.filter(d => d.IDParent == Id).forEach(i => {
             if (!isShow || showDetail) {
                 i.show = isShow;
