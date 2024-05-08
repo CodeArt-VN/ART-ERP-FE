@@ -41,7 +41,17 @@ export class DataTablBodyComponent implements OnInit {
     }
   }
 
-  @Input() selectedRows: any[] = [];
+  _selectedRows: any[] = [];
+
+  @Input() set selectedRows(val: any[]) {
+    this._selectedRows = val;
+    this.setCheckedRows();
+  }
+
+  get selectedRows(): any[] {
+    return this._selectedRows;
+  }
+
   @Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   @Input() showSpinner: boolean;
@@ -131,5 +141,12 @@ export class DataTablBodyComponent implements OnInit {
     this.selectedRowsChange.emit(this.selectedRows);
 
     this.activate.emit({ event: e, selectedItems: this.selectedRows });
+  }
+
+  // Set checked rows by  selectedRows
+  setCheckedRows() {
+    this._rows.forEach((row) => {
+      row.checked = this.selectedRows.includes(row);
+    });
   }
 }

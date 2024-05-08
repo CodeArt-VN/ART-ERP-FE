@@ -53,6 +53,7 @@ import { ShareDirectivesModule } from 'src/app/directives/share-directives.modul
 
     NgxMaskDirective,
     NgxMaskPipe,
+    PipesModule,
   ],
 })
 export class ShareInputControlsModule {}

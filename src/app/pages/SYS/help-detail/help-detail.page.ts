@@ -66,7 +66,7 @@ export class HelpDetailComponent extends PageBase {
 
   buildFormGroup() {
     this.formGroup = this.formBuilder.group({
-      IDBranch: [this.env.selectedBranch],
+      IDBranch: new FormControl({ value: null, disabled: false }),
       IDCategory: [''],
       IDParent: [''],
       Id: new FormControl({ value: '', disabled: true }),
@@ -136,6 +136,10 @@ export class HelpDetailComponent extends PageBase {
   quill;
   initQuill() {
     if (this.showEditorContent && this.segmentView == 's1') {
+      const existingToolbar = document.querySelector('.ql-toolbar');
+      if (existingToolbar) {
+        existingToolbar.parentNode.removeChild(existingToolbar);
+      }
       this.quill = new Quill('#editor', {
         modules: {
           toolbar: [
@@ -203,6 +207,7 @@ export class HelpDetailComponent extends PageBase {
         this.formGroup.controls.Id.setValue(0);
       } else {
         this.item = result.data[0];
+        this.id = this.item.Id;
         this.contentBefore = this.item.Content;
         this.isShowAdd = false;
         this.isShowEdit = true;
@@ -225,9 +230,6 @@ export class HelpDetailComponent extends PageBase {
     }
 
     if ((!this.item || this.id == 0) && this.pageConfig.canAdd) {
-      if (!this.item) this.item = { Id: 0, IsDisabled: false };
-      else Object.assign(this.item, this.DefaultItem);
-
       this.pageConfig.canEdit = this.pageConfig.canAdd;
     }
 
@@ -257,10 +259,11 @@ export class HelpDetailComponent extends PageBase {
 
   add() {
     this.buildFormGroup();
+    this.id = 0;
     this.item = {
       Id: 0,
       Name: '',
-      Content: ''
+      Content: '',
     };
     this.formGroup.controls.Code.setValue(this._helpCode);
     this.formGroup.controls.Code.markAsDirty();
@@ -273,6 +276,24 @@ export class HelpDetailComponent extends PageBase {
       this.formGroup.controls.Content.markAsDirty();
     }
     await super.saveChange2();
+    await this.loadQuillEditor();
+  }
+
+  savedChange(savedItem = null, form = this.formGroup) {
+    super.savedChange(savedItem);
+    this.item = savedItem;
+    if (this.pageConfig.isDetailPage) {
+      if (this.item.Id) {
+        this.contentBefore = this.item.Content;
+        this.isShowAdd = false;
+        this.isShowEdit = true;
+      } else {
+        this.isShowAdd = true;
+        this.isShowEdit = false;
+      }
+    }else {
+      this.item.Id = savedItem.Id
+    }
   }
 
   deleted() {

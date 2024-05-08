@@ -527,6 +527,7 @@ export class ReportService extends BI_ReportProvider {
           if (!resp.Message) {
             localDataset.dataFetchDate = resp.LastModifiedDate;
             localDataset.data = resp.Data;
+            localDataset.comparitionData = resp.ComparitionData;
             trackingData.tracking.next(localDataset);
             //this.env.showTranslateMessage('You just loaded the latest data!', 'success');
             this.env.setStorage('ReportDataset-' + reportId, localDataset);
@@ -555,7 +556,7 @@ export class ReportService extends BI_ReportProvider {
    * @param isFullfillDate Fill hour, minute, second to end of date
    * @returns Datetime
    */
-  calcTimeValue(timeConfig: TimeConfig, isFullfillDate = false): Date {
+  calcTimeValue(timeConfig: TimeConfig, isFullfillDate = false, baseDate: TimeConfig = null): Date {
     if (timeConfig.Type == 'absolute') {
       return timeConfig.Value;
     }
@@ -591,6 +592,9 @@ export class ReportService extends BI_ReportProvider {
     }
 
     let date = new Date();
+    if (baseDate) {
+      date = this.calcTimeValue(baseDate, false);
+    }
 
     if (isFullfillDate) {
       return new Date(
@@ -633,7 +637,7 @@ export class ReportService extends BI_ReportProvider {
     if (!timeConfig) return '';
 
     if (isPrevious) {
-      if (timeConfig.Amount == 0) return 'Today';
+      if (timeConfig.Amount == 0) return 'None';
 
       if (timeConfig.Amount == 1) {
         return 'Previous ' + timeConfig.Period.toLocaleLowerCase();

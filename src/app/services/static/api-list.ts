@@ -7054,6 +7054,55 @@ export var APIListBase = {
 		
 	},
 
+	PM_ProjectPeople:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/ProjectPeople/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/ProjectPeople"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/ProjectPeople/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/ProjectPeople/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/ProjectPeople/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/ProjectPeople/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/ProjectPeople/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/ProjectPeople/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/ProjectPeople"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/ProjectPeople/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/ProjectPeople/" + id} 
+        }
+		
+	},
+
 	PM_Task:{
         getSearchList:{
             method: "GET",
@@ -7099,6 +7148,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PM/Task/" + id} 
+        }
+		
+	},
+
+	PM_TaskAssignment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/TaskAssignment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/TaskAssignment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/TaskAssignment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/TaskAssignment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/TaskAssignment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/TaskAssignment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/TaskAssignment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/TaskAssignment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/TaskAssignment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/TaskAssignment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/TaskAssignment/" + id} 
         }
 		
 	},
@@ -12395,6 +12493,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_ItemInBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemInBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemInBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemInBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemInBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemInBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemInBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemInBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemInBranch/" + id} 
+        }
+		
+	},
+
 	WMS_ItemInLocation:{
         getSearchList:{
             method: "GET",
@@ -12783,6 +12930,300 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/LotLPNLocation/" + id} 
+        }
+		
+	},
+
+	WMS_OutboundOrder:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundOrder/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundOrder"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/OutboundOrder/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/OutboundOrder/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/OutboundOrder/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrder/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrder/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrder/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/OutboundOrder"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/OutboundOrder/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/OutboundOrder/" + id} 
+        }
+		
+	},
+
+	WMS_OutboundOrderDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundOrderDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundOrderDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/OutboundOrderDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/OutboundOrderDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/OutboundOrderDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrderDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrderDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundOrderDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/OutboundOrderDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/OutboundOrderDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/OutboundOrderDetail/" + id} 
+        }
+		
+	},
+
+	WMS_Packing:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/Packing/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/Packing"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/Packing/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/Packing/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/Packing/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Packing/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Packing/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Packing/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/Packing"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/Packing/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/Packing/" + id} 
+        }
+		
+	},
+
+	WMS_PackingDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/PackingDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/PackingDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/PackingDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/PackingDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/PackingDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PackingDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PackingDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PackingDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/PackingDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/PackingDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/PackingDetail/" + id} 
+        }
+		
+	},
+
+	WMS_Picking:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/Picking/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/Picking"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/Picking/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/Picking/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/Picking/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Picking/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Picking/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Picking/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/Picking"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/Picking/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/Picking/" + id} 
+        }
+		
+	},
+
+	WMS_PickingDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/PickingDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/PickingDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/PickingDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/PickingDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/PickingDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PickingDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PickingDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/PickingDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/PickingDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/PickingDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/PickingDetail/" + id} 
         }
 		
 	},
@@ -13224,6 +13665,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/ReceiptPalletization/" + id} 
+        }
+		
+	},
+
+	WMS_Shipping:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/Shipping/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/Shipping"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/Shipping/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/Shipping/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/Shipping/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Shipping/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Shipping/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/Shipping/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/Shipping"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/Shipping/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/Shipping/" + id} 
+        }
+		
+	},
+
+	WMS_ShippingDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ShippingDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ShippingDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ShippingDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ShippingDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ShippingDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ShippingDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ShippingDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ShippingDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ShippingDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ShippingDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ShippingDetail/" + id} 
         }
 		
 	},

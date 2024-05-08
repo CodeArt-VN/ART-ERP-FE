@@ -77,6 +77,8 @@ import { PipesModule } from '../pipes/pipes.module';
     NgSelectModule,
     NgOptionHighlightModule,
     //FileUploadModule
+
+    PipesModule,
   ],
 })
 export class ShareComponentsModule {}

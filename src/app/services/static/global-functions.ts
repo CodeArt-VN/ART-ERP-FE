@@ -43,7 +43,8 @@ export var lib = {
   },
   generateCode(radix = 36) {
     var d = new Date();
-    return d.getTime().toString(radix);
+    var random = Math.random().toString(radix).substr(2, 4);
+    return d.getTime().toString(radix) + random;
   },
   isNumeric(value: any): boolean {
     return !isNaN(value - parseFloat(value));
@@ -426,16 +427,16 @@ export var lib = {
     return result;
   },
 
-
   //sum multiple columns tree by IDParent and Id from flat treelist
   sumTreeListByParentId(treeList, sumFields = [], idFieldName = 'Id', parentIdFieldName = 'IDParent') {
     let result = [];
     let tree = this.listToTree(treeList);
 
-    tree.forEach((e) => {
+    //loop tree
+    for (let e of tree) {
       this.sumTree(e, sumFields);
       result = result.concat(this.treeToList([e]));
-    });
+    }
 
     return result;
   },
@@ -455,7 +456,6 @@ export var lib = {
       });
     });
   },
-
 
   buildFlatTree(items, treeState, isAllRowOpened = true, root = null) {
     let treeItems = [];
@@ -536,12 +536,16 @@ export var lib = {
 
     if (item) {
       item.count = childrent.length;
+      if (!item.levelSort) {
+        item.levelSort = '.' + (item.Sort || item.Id);
+      }
     }
 
     let index = treeItems.findIndex((d) => d.Id == idp);
     treeItems.splice(index + 1, 0, ...childrent);
 
     childrent.forEach((i) => {
+      i.levelSort = item ? item.levelSort + '.' + (i.Sort || i.Id) : '.' + (i.Sort || i.Id);
       i.levels = Array(level).fill('');
       i.level = level;
       i.show = item == null ? true : false;
