@@ -50,9 +50,7 @@
                 <div *ngIf="i">
                   <div>
                     <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-                    <ion-text [color]="i.Type == 'Company' ? 'primary' : 'dark'" [ngOptionHighlight]="search">{{
-                      i.Name
-                    }}</ion-text>
+                    <ion-text [color]="i.Type == 'Company' ? 'primary' : 'dark'" [innerHTML]="i.highlightedName || i.Name"></ion-text>
                   </div>
                 </div>
               </ng-template>
@@ -102,7 +100,7 @@
                 class="menu-item"
               >
                 <ion-icon class="menu-icon" [name]="f.Icon"></ion-icon>
-                <span class="menu-title">{{ f.Name | translate }}</span>
+                <span class="menu-title" [innerHTML]="f.highlightedName || f.Name | translate"></span>
                 <ion-icon
                   class="menu-icon pin"
                   [name]="f.isPinned ? 'close-circle-outline' : 'pin-outline'"

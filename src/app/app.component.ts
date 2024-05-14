@@ -12,9 +12,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
+import { DynamicScriptLoaderService } from './services/custom.service';
 
 register();
 let ga: any;
+declare var Fuse: any;
 
 @Component({
   selector: 'app-root',
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit {
     public env: EnvService,
     public accountService: AccountService,
     public platform: Platform,
+    public dynamicScriptLoaderService: DynamicScriptLoaderService,
   ) {
     this.appVersion = 'v' + this.env.version;
     let imgs = [
@@ -233,7 +236,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     console.log('AppComponent ngOnInit');
     this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
-
+    this.loadFuse();
     // const path = window.location.pathname.split('folder/')[1];
     // if (path !== undefined) {
     //     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
@@ -361,9 +364,14 @@ export class AppComponent implements OnInit {
     if (val == undefined) {
       val = '';
     }
+    if(val == ''){
+      this.env.user.Forms.forEach(i => {
+        delete i.highlightedName;
+      });
+    }
     if (val.length > 1) {
       this.queryMenu = val;
-      this.foundMenu = lib.searchTree(this.env.user.Forms, this.queryMenu);
+      this.foundMenu = this.searchTree(this.env.user.Forms, this.queryMenu);
     }
   }
 
@@ -373,11 +381,13 @@ export class AppComponent implements OnInit {
     }, 300);
   }
 
+  highlightedNames: any;
   searchResultIdList = { term: '', ids: [] };
   searchShowAllChildren = (term: string, item: any) => {
     if (this.searchResultIdList.term != term) {
       this.searchResultIdList.term = term;
-      this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
+      this.searchResultIdList.ids = this.searchTreeReturnId(this.env.branchList, term);
+
     }
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };
@@ -400,5 +410,133 @@ export class AppComponent implements OnInit {
   presentUserCPPopover(e: any) {
     this.userCPPopover.event = e;
     this.isUserCPOpen = true;
+  }
+
+  loadFuse() {
+    const script = this.dynamicScriptLoaderService
+      .loadScript('https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js')
+      .then(() => {
+      })
+      .catch((error) => console.error('Error loading script', error));
+    Promise.all([script])
+      .then(() => {})
+      .catch((error) => console.log(`Error in promises ${error}`));
+  }
+
+  fuseSearch(list = [], term = '', keys: string[] = ['Name', 'Code']) {
+    let searchQuery : any = term;
+    if (term.includes('@')) {
+      searchQuery = this.createSearchQueryMention(term, keys);
+    }
+    const fuseOptions = {
+      includeScore: true,
+      includeMatches: true,
+      useExtendedSearch: false,
+      threshold: 0.5,
+      shouldSort: true,
+      keys: keys,
+    };
+    const fuse = new Fuse(list, fuseOptions);
+    const searchResult = this.highlight(fuse.search(searchQuery));
+    return searchResult;
+  }
+  
+  highlight(fuseSearchResult: any, highlightClassName: string = 'highlighted') {
+    const set = (obj: object, path: string, value: any) => {
+      const pathValue = path.split('.');
+      let i;
+  
+      for (i = 0; i < pathValue.length - 1; i++) {
+        obj = obj[pathValue[i]];
+      }
+  
+      obj[pathValue[i]] = value;
+    };
+  
+    const generateHighlightedText = (inputText: string, regions: number[] = []) => {
+      let content = '';
+      let nextUnhighlightedRegionStartingIndex = 0;
+  
+      regions.forEach(region => {
+        const lastRegionNextIndex = region[1] + 1;
+  
+        content += [
+          inputText.substring(nextUnhighlightedRegionStartingIndex, region[0]),
+          `<span class="${highlightClassName}">`,
+          inputText.substring(region[0], lastRegionNextIndex),
+          '</span>',
+        ].join('');
+  
+        nextUnhighlightedRegionStartingIndex = lastRegionNextIndex;
+      });
+  
+      content += inputText.substring(nextUnhighlightedRegionStartingIndex);
+  
+      return content;
+    };
+  
+    return fuseSearchResult
+      .filter(({ matches }: any) => matches && matches.length)
+      .map(({ item, matches }: any) => {
+        const highlightedItem: any = { ...item };
+  
+        matches.forEach((match: any) => {
+          set(highlightedItem, match.key, generateHighlightedText(match.value, match.indices));
+        });
+  
+        return highlightedItem;
+      });
+  };
+  
+  
+
+
+  searchTree(ls: Array<any>, term: string, allParent = true, allChildren = true) {
+    let ids = this.searchTreeReturnId(ls, term, allParent, allChildren);
+    return ls.filter((d) => ids.indexOf(d.Id) > -1);
+  }
+
+  searchTreeReturnId(ls: Array<any>, term: string, allParent = true, allChildren = true) {
+    let ids = [];
+    ls.forEach(item => {
+      delete item.highlightedName;
+    });
+    let searchResults = this.fuseSearch(ls, term, ['Name', 'Code']);
+    this.highlightedNames = searchResults;
+    searchResults.forEach((result) => {
+      const itemId = result.Id;
+      if (!ids.includes(itemId)) {
+        ids.push(itemId);
+        if (allChildren) {
+          lib.findChildren(ls, itemId, ids);
+        }
+        if (allParent) {
+          lib.findParent(ls, itemId, ids);
+        }
+        const matchingItem = ls.find(item => item.Id === itemId);
+        if (matchingItem) {
+          matchingItem.highlightedName = result.Name;
+        }
+      }
+      
+    });
+    return ids;
+  }
+
+  createSearchQueryMention(input, keys) {
+    const parts = input.split(' ');
+  
+    const conditions = parts.map(part => {
+      if (part.includes('@')) {
+        const mention = part.replace('@', '');
+        const orConditions = keys.map(key => ({ [key]: mention }));
+        return { $or: orConditions };
+      } else {
+        const orConditions = keys.map(key => ({ [key]: part }));
+        return { $or: orConditions };
+      }
+    });
+  
+    return { $and: conditions };
   }
 }
