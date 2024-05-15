@@ -381,7 +381,6 @@ export class AppComponent implements OnInit {
     }, 300);
   }
 
-  highlightedNames: any;
   searchResultIdList = { term: '', ids: [] };
   searchShowAllChildren = (term: string, item: any) => {
     if (this.searchResultIdList.term != term) {
@@ -502,7 +501,6 @@ export class AppComponent implements OnInit {
       delete item.highlightedName;
     });
     let searchResults = this.fuseSearch(ls, term, ['Name', 'Code']);
-    this.highlightedNames = searchResults;
     searchResults.forEach((result) => {
       const itemId = result.Id;
       if (!ids.includes(itemId)) {
