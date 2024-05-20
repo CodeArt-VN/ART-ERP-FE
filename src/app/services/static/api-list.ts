@@ -8524,6 +8524,104 @@ export var APIListBase = {
 		
 	},
 
+	SALE_Forecast:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SALE/Forecast/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SALE/Forecast"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SALE/Forecast/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SALE/Forecast/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SALE/Forecast/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Forecast/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Forecast/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Forecast/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SALE/Forecast"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SALE/Forecast/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SALE/Forecast/" + id} 
+        }
+		
+	},
+
+	SALE_ForecastDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SALE/ForecastDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SALE/ForecastDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SALE/ForecastDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SALE/ForecastDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SALE/ForecastDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SALE/ForecastDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/ForecastDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/ForecastDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SALE/ForecastDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SALE/ForecastDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SALE/ForecastDetail/" + id} 
+        }
+		
+	},
+
 	SALE_Order:{
         getSearchList:{
             method: "GET",
