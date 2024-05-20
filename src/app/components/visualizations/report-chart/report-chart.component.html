@@ -13,7 +13,7 @@
 
           <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
             {{ 'Updated' | translate }}:
-            {{ dataFetchDate | date: 'HH:mm dd/MM' }}
+            {{ dataFetchDate | dateFriendly | async }}
           </span>
         </small>
       </p>
@@ -109,7 +109,7 @@
     <app-card-multi-row
       [title]="m.Title || m.Property"
       [value]="m.Value"
-      [percent]="0"
+      [comparitionValue]="m.ComparitionValue"
       [ngClass]="{ selected: viewDimension == (m.Title || m.Property) }"
       *ngFor="let m of report.DataConfig.MeasureBy"
       (click)="onViewDimensionChange(m.Title || m.Property)"
@@ -149,6 +149,7 @@
     [dataIntervalProperty]="dataIntervalProperty"
     [dataIntervalType]="dataIntervalType"
     [data]="rawData"
+    [comparitionData] = "comparitionData"
     (chartClick)="onChartClick($event)"
     (dataChange)="onDataChange($event)"
   ></app-e-chart>
@@ -176,7 +177,7 @@
             </a>
 
             <span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
-              <small>{{ 'Updated' | translate }}: {{ dataFetchDate | date: 'HH:mm dd/MM' }}</small>
+              <small>{{ 'Updated' | translate }}: {{ dataFetchDate | dateFriendly | async }}</small>
             </span>
 
             <!-- datepicker -->

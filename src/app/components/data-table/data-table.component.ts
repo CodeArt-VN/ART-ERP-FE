@@ -3,6 +3,7 @@ import { ColumnChangesService, DataTableColumnDirective } from './directives/dat
 import { TableColumn } from './interfaces/table-column.interface';
 import { Subscription } from 'rxjs';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
   selector: 'app-data-table',
@@ -15,7 +16,17 @@ export class DataTableComponent implements OnInit {
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
 
-  @Input() selectedRows: any[] = [];
+  _selectedRows: any[] = [];
+
+  @Input() set selectedRows(val: any[]) {
+    this._selectedRows = val;
+  }
+
+  get selectedRows(): any[] {
+    return this._selectedRows;
+  }
+
+  
   @Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   onSelectedRowsChange(event) {
     this.selectedRowsChange.emit(this.selectedRows);
@@ -30,7 +41,14 @@ export class DataTableComponent implements OnInit {
     this.createFilterFormGroup();
   }
 
-  @Input() query: any = {};
+  _query: any = {};
+  @Input() set query(val: any) {
+    this._query = val;
+    if (this.formGroup){
+      this.formGroup.patchValue(this._query);
+      this.onFilterSubmit(null);
+    }
+  }
   filterValue: any;
 
   @Output() filterInputChange: EventEmitter<any> = new EventEmitter();
@@ -39,10 +57,21 @@ export class DataTableComponent implements OnInit {
     this.filterInputChange.emit({ event: e, query: this.filterValue });
   }
 
+  _rowsBeforeFilter: any[];
   @Output() filter: EventEmitter<any> = new EventEmitter();
   onFilterSubmit(e) {
     this.filterValue = this.formGroup.getRawValue();
-    this.filter.emit({ event: e, query: this.filterValue });
+    if (this.isQueryLocalOnly) {
+      this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
+      this._rows = this._rowsBeforeFilter.filter((row) => {
+        return Object.keys(this.filterValue).every((key) => {
+          return String(row[key]).toLowerCase().includes(String(this.filterValue[key]).toLowerCase());
+        });
+      });
+      
+    } else {
+      this.filter.emit({ event: e, query: this.filterValue });
+    }
   }
 
   formGroup: FormGroup;
@@ -50,7 +79,7 @@ export class DataTableComponent implements OnInit {
     const group: any = {};
     this._allColumns.forEach((column) => {
       if (column.canFilter && column.property) {
-        group[column.property] = new FormControl(this.query[column.property] || '');
+        group[column.property] = new FormControl(this._query[column.property] || '');
       }
     });
     this.formGroup = new FormGroup(group);
@@ -77,6 +106,9 @@ export class DataTableComponent implements OnInit {
    */
   @Input() set rows(val: any) {
     this._rows = val;
+    if (this._isTreeList && this.isQueryLocalOnly) {
+      this.onSort([]);
+    }
   }
 
   /**
@@ -85,6 +117,14 @@ export class DataTableComponent implements OnInit {
   get rows(): any {
     this.showInfinitespinner = false;
     return this._rows;
+  }
+
+  _isTreeList: boolean;
+  @Input() set isTreeList(val: boolean) {
+    this._isTreeList = val;
+    if (this._isTreeList && this.isQueryLocalOnly && this._rows.length) {
+      this.onSort([]);
+    }
   }
 
   @Input() trackBy: string;
@@ -165,16 +205,32 @@ export class DataTableComponent implements OnInit {
   @Output() sort: EventEmitter<any> = new EventEmitter();
   onSort(event) {
     if (this.isQueryLocalOnly) {
+      if (this._isTreeList) {
+        this._rows.forEach((row) => {row.Sort = null});
+        if (event.length) {
+        } else {
+          event = [{ Dimension: 'levelSort', Order: 'ASC' }];
+        }
+      }
+
       this._rows.sort((a, b) => {
         for (const e of event) {
-            const comparison = e.Order === 'ASC' ? 1 : -1;
-            if (a[e.Dimension] > b[e.Dimension]) return comparison;
-            if (a[e.Dimension] < b[e.Dimension]) return -comparison;
+          const comparison = e.Order === 'ASC' ? 1 : -1;
+          if (a[e.Dimension] > b[e.Dimension]) return comparison;
+          if (a[e.Dimension] < b[e.Dimension]) return -comparison;
         }
         return 0;
       });
+
+      if (this._isTreeList) {
+        lib.buildFlatTree(this._rows,[]).then((resp: any) => {
+          this._rows = [...resp];
+        });
+      }
+
     } else {
       this.sort.emit(event);
     }
   }
+
 }

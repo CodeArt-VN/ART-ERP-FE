@@ -23,6 +23,8 @@ export class EChartComponent implements OnInit {
   @Input() chartScript: string;
 
   @Input() data: any[] = [];
+  @Input() comparitionData: any[] = [];
+
 
   constructor(public rpt: ReportService) {
     this.elId = lib.generateCode();
@@ -69,6 +71,7 @@ export class EChartComponent implements OnInit {
             this.dataIntervalType,
             this.dimensions,
             this.data,
+            this.comparitionData,
           );
         }
         break;
@@ -98,6 +101,7 @@ export class EChartComponent implements OnInit {
 
   calcChartOption(option: echarts.EChartsOption, js: string): echarts.EChartsOption {
     let li = lib;
+    let ec = echarts;
     eval(js);
     return option;
   }
