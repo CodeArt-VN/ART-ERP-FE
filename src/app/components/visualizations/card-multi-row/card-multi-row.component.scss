@@ -12,11 +12,7 @@
   color: var(--ion-color-dark);
 }
 .card-compare-percent {
-  display: grid;
-  grid-template-columns: min-content min-content;
-  gap: 5px;
-  -webkit-box-align: center;
-  align-items: center;
+  
 }
 .card-chart-preview {
   pointer-events: none;

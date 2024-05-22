@@ -1,11 +1,17 @@
 .chart-holder {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   border-radius: 6px;
 
   &.box-shadow {
     background: var(--ion-color-tertiary-tint);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .toggle-mini-btn {
@@ -20,6 +26,11 @@
     margin: 16px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
     gap: 4px;
+
+    @media screen and (max-width: 576px) {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 540px));
+    }
+    
 
     app-card-multi-row {
       cursor: pointer;
@@ -53,6 +64,17 @@
           rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.025) 0%,
           rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1) 100%
         ) !important;
+      }
+    }
+
+    &.dashboard{
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+      
+      app-card-multi-row{
+        max-width:250px;
       }
     }
   }

@@ -8,8 +8,8 @@ import {
   SafeStyle,
   SafeFrame,
   searchNoAccents,
-} from './filter/filter';
-import { FriendlyCurrencyPipe } from './friendly-currency.pipe';
+} from './filter';
+import { DateFriendlyPipe, NumberFriendlyPipe } from './friendly-format.pipe';
 @NgModule({
   declarations: [
     MyPipe,
@@ -19,10 +19,24 @@ import { FriendlyCurrencyPipe } from './friendly-currency.pipe';
     SafeHtml,
     SafeStyle,
     SafeFrame,
-    FriendlyCurrencyPipe,
     searchNoAccents,
+
+    DateFriendlyPipe,
+    NumberFriendlyPipe,
   ],
   imports: [],
-  exports: [MyPipe, filterProperties, searchProperties, isNotDeleted, SafeHtml, SafeStyle, SafeFrame, searchNoAccents],
+  exports: [
+    MyPipe,
+    filterProperties,
+    searchProperties,
+    isNotDeleted,
+    SafeHtml,
+    SafeStyle,
+    SafeFrame,
+    searchNoAccents,
+
+    DateFriendlyPipe,
+    NumberFriendlyPipe,
+  ],
 })
 export class PipesModule {}

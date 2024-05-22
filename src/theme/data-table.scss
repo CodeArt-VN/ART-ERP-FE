@@ -142,10 +142,19 @@ app-data-table,
 
     &:hover {
       background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+      .col-sticky {
+         background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+         backdrop-filter: blur(10px);
+      }
     }
 
     &.selected {
-      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
+
+      .col-sticky {
+         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
+         backdrop-filter: blur(10px);
+      }
     }
 
     // &.odd {
@@ -464,8 +473,11 @@ app-data-table,
 
   .col-sticky {
     position: sticky;
+    z-index: 1;
     left: 0;
-    background: var(--table-header-background);
+    //background: var(--table-header-background);
+    background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.8);
+    backdrop-filter: blur(10px);
     border-right: solid var(--menu-right-border-color);
     border-left: solid var(--menu-right-border-color);
   }

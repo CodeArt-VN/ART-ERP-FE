@@ -864,6 +864,7 @@ export interface BI_Dashboard
     MaxCols?: number;
     MinRows?: number;
     MaxRows?: number;
+    Config?: string;
     
 }
 
@@ -887,6 +888,7 @@ export interface BI_DashboardDetail
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    Config?: string;
     
 }
 
@@ -3645,6 +3647,30 @@ export interface OST_OfficeGate
     
 }
 
+export interface PM_ProjectPeople
+{
+    IDProject?: number;
+    IDStaff?: number;
+    IDContact?: number;
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    ShortName?: string;
+    Avatar?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Role?: string;
+    Rate?: number;
+    
+}
+
 export interface PM_Task
 {
     IDBranch?: number;
@@ -3657,6 +3683,7 @@ export interface PM_Task
     Code?: string;
     Name?: string;
     Type?: string;
+    SubType?: string;
     Status?: string;
     Remark?: string;
     Sort?: number;
@@ -3683,6 +3710,25 @@ export interface PM_Task
     Priority?: number;
     IsUnscheduled?: boolean;
     IsSplited?: boolean;
+    
+}
+
+export interface PM_TaskAssignment
+{
+    IDTask?: number;
+    IDPerson?: number;
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -4227,6 +4273,7 @@ export interface PROD_MRP
 export interface PROD_MRPScenario
 {
     IDBranch?: number;
+    IDSaleForecast?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -4250,7 +4297,6 @@ export interface PROD_MRPScenario
     IsConsiderSalesOrders?: boolean;
     IsConsiderWorkOrders?: boolean;
     IsMinimumInventoryLevel?: boolean;
-    ForecastAbsoluteEntry?: number;
     IsItemsWithoutRequirement?: boolean;
     IsScenarioASimulation?: boolean;
     LastExecuteDate?: Date;
@@ -4339,6 +4385,49 @@ export interface PURCHASE_OrderDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     SuggestedQuantity?: number;
+    
+}
+
+export interface SALE_Forecast
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    StartDate?: Date;
+    EndDate?: Date;
+    Period?: string;
+    LastExecuteDate?: Date;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface SALE_ForecastDetail
+{
+    IDWarehouse?: number;
+    IDForecast?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Date?: Date;
+    Quantity?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -6382,8 +6471,100 @@ export interface WMS_ItemGroup
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    IsLocked?: boolean;
+    DataSource?: string;
+    AccountInventory?: string;
+    AccountCostOfGoodsSold?: string;
+    AccountAllocation?: string;
+    AccountRevenue?: string;
+    AccountRevenueReturns?: string;
+    AccountVariance?: string;
+    AccountInventoryOffsetDecrease?: string;
+    AccountInventoryOffsetIncrease?: string;
+    AccountSalesReturns?: string;
+    AccountSalesCredit?: string;
+    AccountExpense?: string;
+    AccountExpenseClearing?: string;
+    AccountExpenseOffset?: string;
+    AccountExemptRevenue?: string;
+    AccountPriceDifference?: string;
+    AccountExchangeRateDifferences?: string;
+    AccountGoodsClearing?: string;
+    AccountPurchase?: string;
+    AccountPurchaseCredit?: string;
+    AccountPurchaseReturn?: string;
+    AccountPurchaseOffset?: string;
+    AccountShippedGoods?: string;
+    AccountVATInRevenue?: string;
+    AccountGLDecrease?: string;
+    AccountGLIncrease?: string;
+    AccountInventoryRevaluation?: string;
+    AccountInventoryRevaluationOffset?: string;
+    AccountWIPInventory?: string;
+    AccountWIPInventoryVariance?: string;
+    AccountCOGSRevaluation?: string;
+    AccountCOGSRevaluationOffset?: string;
+    AccountTaxExemptCredit?: string;
+    AccountStockInTransit?: string;
+    AccountPurchaseBalance?: string;
+    AccountWIPOffsetPnL?: string;
+    AccountInventoryOffsetPnL?: string;
+    AccountFreeOfChargeSales?: string;
+    AccountFreeOfChargePurchase?: string;
+    Account?: string;
     General?: string;
     Accounting?: string;
+    
+}
+
+export interface WMS_ItemInBranch
+{
+    IDBranch?: number;
+    IDItemGroup?: number;
+    IDSalesTaxDefinition?: number;
+    IDPurchaseTaxDefinition?: number;
+    IDRevenueAccount?: number;
+    IDExemptRevenueAccount?: number;
+    IDDefaultWarehouse?: number;
+    IDPreferredVendor?: number;
+    IDCartonGroup?: number;
+    Id?: number;
+    IDItem?: number;
+    ItemType?: string;
+    TreeType?: string;
+    InventoryUoM?: number;
+    PurchasingUoM?: number;
+    SalesUoM?: number;
+    AccountantUoM?: number;
+    IsInventoryItem?: boolean;
+    IsSalesItem?: boolean;
+    IsPurchaseItem?: boolean;
+    PrefQtyInPurchaseUnits?: number;
+    AllocationStrategy?: number;
+    ProductionDateInDays?: number;
+    IsTrackSales?: boolean;
+    NoOfItemsPerSalesUnit?: number;
+    PutawayStrategy?: number;
+    IsLocked?: boolean;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    PlanningMethod?: string;
+    ProcurementMethod?: string;
+    OrderInterval?: string;
+    OrderMultiple?: number;
+    MinimumOrderQty?: number;
+    CheckingRule?: string;
+    LeadTime?: number;
+    ToleranceDays?: number;
+    InventoryLevelRequired?: number;
+    InventoryLevelMinimum?: number;
+    InventoryLevelMaximum?: number;
     
 }
 
@@ -6596,6 +6777,148 @@ export interface WMS_LotLPNLocation
     QuantityOnHold?: number;
     QuantityPickInProcess?: number;
     QuantityPendingMoveIn?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_OutboundOrder
+{
+    IDWarehouse?: number;
+    IDStorer?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    OrderDate?: Date;
+    DeliveryDate?: Date;
+    ShippedDate?: Date;
+    PackingTag?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_OutboundOrderDetail
+{
+    IDOutboundOrder?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    IDParent?: number;
+    Id?: number;
+    Quantity?: number;
+    QuantityPicked?: number;
+    QuantityPacked?: number;
+    QuantityShipped?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_Packing
+{
+    IDOutboundOrder?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    Tag?: string;
+    ExpectedDate?: Date;
+    PackagedDate?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_PackingDetail
+{
+    IDPacking?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    FromLocation?: number;
+    ToLocation?: number;
+    Lot?: number;
+    LPN?: number;
+    Quantity?: number;
+    QuantityPacked?: number;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_Picking
+{
+    IDOutboundOrder?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    ExpectedDate?: Date;
+    PickedDate?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_PickingDetail
+{
+    IDPicking?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    Id?: number;
+    FromLocation?: number;
+    ToLocation?: number;
+    Lot?: number;
+    LPN?: number;
+    Quantity?: number;
+    QuantityPicked?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
@@ -6846,6 +7169,54 @@ export interface WMS_ReceiptPalletization
     
 }
 
+export interface WMS_Shipping
+{
+    IDOutboundOrder?: number;
+    IDCarrier?: number;
+    IDShipment?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    Vehicle?: string;
+    Shipper?: string;
+    ExpectedDate?: Date;
+    ShippedDate?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface WMS_ShippingDetail
+{
+    IDShipping?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    FromLocation?: number;
+    Lot?: number;
+    LPN?: number;
+    Quantity?: number;
+    QuantityShipped?: number;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface WMS_Storer
 {
     Id?: number;
@@ -6987,6 +7358,8 @@ export interface WMS_UoMGroup
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    General?: string;
+    Accounting?: string;
     
 }
 

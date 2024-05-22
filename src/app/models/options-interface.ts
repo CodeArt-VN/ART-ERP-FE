@@ -9,20 +9,18 @@ export interface Widget {
   rows?: number;
   Id?: number;
   IDReport?: number;
-  WidgetConfig?: WidgetConfig;
+  Config?: WidgetConfig;
 }
 
 //Widget config interface
 export interface WidgetConfig {
-  ViewDimension: string;
-  Statistic?: StatisticConfig;
+  Type?: 'Chart' | 'Summary card', 'Data table' ;
+  ChartDimension?: string ;
+  SummaryCards?: string[];
+  Layout?: any;
 }
 
-export interface StatisticConfig {
-  ShowInFull: boolean;
-  ShowInDashboard: boolean;
-  DashboardMeasureList: string[];
-}
+
 
 export interface BIReport extends Schema {
   DataConfig?: ReportDataConfig;
@@ -135,4 +133,5 @@ export interface SchemaDetail {
   Method?: string;
 
   Value?: any; //To show in UI only
+  ComparitionValue?: any; //To show in UI only
 }

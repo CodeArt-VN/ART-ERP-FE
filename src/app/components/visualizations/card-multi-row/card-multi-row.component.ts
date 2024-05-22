@@ -9,8 +9,20 @@ export class CardMultiRowComponent implements OnInit {
   @Output() onChange = new EventEmitter();
 
   @Input() title: any;
-  @Input() value: any;
-  @Input() percent: any;
+  
+  _value: number = 0;
+  @Input() set value(val){
+    this._value = val;
+  }
+
+  _comparitionValue: number = null;
+  @Input() set comparitionValue(val){
+    this._comparitionValue = val;
+  }
+
+  get percent(){
+    return this._comparitionValue ? (this._value - this._comparitionValue) / this._comparitionValue * 100 : 0;
+  }
 
   @Input() selected: any;
 

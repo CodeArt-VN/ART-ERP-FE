@@ -4,7 +4,7 @@
   <ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
     <datatable-body-row
     class="row"
-    [ngClass]="{ selected: row.checked }"
+    [ngClass]="{ selected: row.checked, 'bold': row.HasChild }"
     [columns]="columns"
     [row]="row"
     [isSelected]="row.checked"

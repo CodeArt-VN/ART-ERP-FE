@@ -1,6 +1,6 @@
 <datatable-header
   [columns]="_allColumns"
-  [query]="query"
+  [query]="_query"
   [filterValue]="filterValue"
   (sort)="onSort($event)"
   class="row header sticky-header bold"
@@ -10,7 +10,7 @@
     [formGroup]="formGroup"
     (filterInputChange)="onFilterSubmit($event)"
     (filterFieldReset)="onFilterSubmit(null)"
-    [query]="query"
+    [query]="_query"
     [columns]="_allColumns"
     class="row header filter sticky-header"
     [isFilter]="true"

@@ -1,7 +1,13 @@
 <div class="card-header">{{ title }}</div>
-<div class="card-value">{{ value | number: '1.0-0' }}</div>
-<ion-text [color]="percent > 0 ? 'success' : percent < 0 ? 'danger' : 'warning'" class="card-compare-percent">
-  {{ percent }}%
-  <ion-icon [name]="percent > 0 ? 'caret-up' : percent < 0 ? 'caret-down' : 'warning'"></ion-icon>
-</ion-text>
+<div class="card-value">
+  {{ _value | numberFriendly }}
+  <small *ngIf="_comparitionValue">/ {{ _comparitionValue | numberFriendly }}</small>
+</div>
+<div class="card-compare-percent no-warp">
+  <ion-text [color]="percent > 0 ? 'success' : percent < 0 ? 'danger' : 'warning'" *ngIf="_comparitionValue">
+    
+    {{ percent | number: '1.0-1' }}%
+    <ion-icon [name]="percent > 0 ? 'caret-up' : percent < 0 ? 'caret-down' : 'warning'"></ion-icon>
+  </ion-text>
+</div>
 <div class="card-chart-preview"></div>

@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Pipe({ name: 'safeFrame' })
 export class SafeFrame implements PipeTransform {

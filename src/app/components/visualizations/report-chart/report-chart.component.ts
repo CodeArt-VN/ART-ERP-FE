@@ -20,6 +20,7 @@ export class ReportChartComponent implements OnInit {
   compareBy: string[] = []; //Compare by to pass to chart component
   measureBy: string[] = []; //Measure by to show card row and pass to chart component
   rawData: any[] = []; //Raw data from services
+  comparitionData: any[] = []; //Comparition data
 
   report: BIReport = null; //Report config
 
@@ -58,10 +59,7 @@ export class ReportChartComponent implements OnInit {
       else this.updateDimensions();
 
       if (!this.viewDimension || !this.dimensions.includes(this.viewDimension)) {
-        this.viewDimension =
-          this.report.viewDimension ||
-          this.report.DataConfig.MeasureBy[0]?.Title ||
-          this.report.DataConfig.MeasureBy[0]?.Property;
+        this.viewDimension = this.report.viewDimension || this.measureBy[0];
       }
 
       this.chartScript = this.report.ChartScript;
@@ -85,8 +83,10 @@ export class ReportChartComponent implements OnInit {
   @Input() set gridItem(v) {
     this._gridItem = v;
     console.log('gridItem', v);
-    if (this._gridItem?.WidgetConfig?.ViewDimension) {
-      this.onViewDimensionChange(this._gridItem.WidgetConfig.ViewDimension);
+    if (this._gridItem?.Config?.ChartDimension && this._gridItem.Config.ChartDimension != this.viewDimension) {
+      this.onViewDimensionChange(this._gridItem.Config.ChartDimension);
+    } else {
+      this._gridItem.Config.ChartDimension = this.viewDimension;
     }
   }
 
@@ -103,11 +103,7 @@ export class ReportChartComponent implements OnInit {
     private env: EnvService,
     public rpt: ReportService,
     public formBuilder: FormBuilder,
-  ) {
-
-    
-
-  }
+  ) {}
 
   ngOnInit() {
     this.subscriptions.push(
@@ -115,8 +111,6 @@ export class ReportChartComponent implements OnInit {
         this.updateDataset(ds);
         this.rptLoaded = true;
         this.isLoading = false;
-
-        console.log('report chart component regReportTrackingData');
       }),
     );
 
@@ -154,19 +148,6 @@ export class ReportChartComponent implements OnInit {
         this.dimensions.push(this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property);
       }
     }
-
-    // if (this.viewDimension && this.report.DataConfig.CompareBy.length > 0) {
-    // 	this.dimensions = [
-    // 		(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property),
-    // 		this.viewDimension
-    // 	];
-    // }
-    // else if (this.report.DataConfig.CompareBy.length > 0 && this.report.DataConfig.MeasureBy.length > 0) {
-    // 	this.dimensions = [
-    // 		(this.report.DataConfig.CompareBy[0].Title || this.report.DataConfig.CompareBy[0].Property),
-    // 		(this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property)
-    // 	];
-    // }
   }
 
   /**
@@ -185,9 +166,12 @@ export class ReportChartComponent implements OnInit {
     });
     this.dataFetchDate = ds.dataFetchDate;
     this.rawData = ds.data;
+    this.comparitionData = ds.comparitionData || [];
 
     this.report?.DataConfig.MeasureBy.forEach((m) => {
       m.Value = this.rawData.map((x) => x[m.Title || m.Property]).reduce((a, b) => +a + +b, 0);
+      m.ComparitionValue = this.comparitionData.map((x) => x[m.Title || m.Property]).reduce((a, b) => +a + +b, 0);
+      if (!m.ComparitionValue) m.ComparitionValue = 0;
     });
   }
 
@@ -210,6 +194,10 @@ export class ReportChartComponent implements OnInit {
    */
   onViewDimensionChange(v) {
     this.viewDimension = v;
+    if (this._gridItem && this._gridItem?.Config?.ChartDimension != v) {
+      this._gridItem.Config.ChartDimension = v;
+      this.widgetConfigChange.emit(this._gridItem);
+    }
     this.updateDimensions();
     setTimeout(() => {
       this.changeViewDimension.emit(v);
@@ -324,7 +312,6 @@ export class ReportChartComponent implements OnInit {
     this.pickerControl.controls.Type.value = e.detail.value;
   }
 
-
   form: FormGroup;
 
   buildForm(c: ReportDataConfig) {
@@ -345,11 +332,40 @@ export class ReportChartComponent implements OnInit {
           Value: [c.TimeFrame?.To?.Value],
         }),
       }),
-      
     });
   }
   @Output() timeRangeChange = new EventEmitter();
   onChangeTimeRange(e) {
     this.timeRangeChange.emit(e);
   }
+
+
+  @Output() widgetConfigChange = new EventEmitter();
+  onTypeChanged(e) {
+    if (!this._gridItem.Config) {
+      this._gridItem.Config = {};
+    }
+
+    this._gridItem.Config.Type = e;
+
+    this.widgetConfigChange.emit(this._gridItem);
+  }
+
+  onSummaryCardsChanged(m) {
+    if (!this._gridItem.Config.SummaryCards) {
+      this._gridItem.Config.SummaryCards = [];
+    }
+
+    let c = m.Title || m.Property;
+    const index = this._gridItem.Config.SummaryCards.indexOf(c);
+    if (index > -1) {
+      this._gridItem.Config.SummaryCards.splice(index, 1);
+    } else {
+      this._gridItem.Config.SummaryCards.push(c);
+    }
+
+    this.widgetConfigChange.emit(this._gridItem);
+  }
+
+
 }
