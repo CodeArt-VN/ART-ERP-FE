@@ -1,9 +1,13 @@
 <div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{ 'box-shadow': viewMode != 'mini' }">
+  <!-- chart title -->
   <ion-item lines="none" *ngIf="viewMode == 'dashboard'">
     <ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>
     <ion-label color="primary" (click)="isToolPopoverOpen = false; onOpenReport()" class="clickable">
       <h2>{{ report.Name }}</h2>
-      <p>
+      <p><small>
+        {{report.Remark}}
+      </small></p>
+      <!-- <p>
         <small>
           {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
           <span *ngIf="!compareObjects(report.DataConfig?.TimeFrame.From, report.DataConfig?.TimeFrame.To)">
@@ -16,7 +20,7 @@
             {{ dataFetchDate | dateFriendly | async }}
           </span>
         </small>
-      </p>
+      </p> -->
     </ion-label>
 
     <ion-button
@@ -54,8 +58,7 @@
     <ion-popover
       #toolPopover
       [isOpen]="isToolPopoverOpen"
-      (didDismiss)="isToolPopoverOpen = false"
-      [dismissOnSelect]="true"
+      (didDismiss)="isToolPopoverOpen = false; showSummaryCardsPopover = false"
       [backdropDismiss]="true"
     >
       <ng-template>
@@ -70,6 +73,79 @@
               <ion-text color="dark">{{ 'Reload' | translate }}</ion-text>
             </ion-item>
 
+            <!-- widget type -->
+            <ion-item [button]="true" id="nested-type-trigger">
+              <ion-icon color="dark" slot="icon-only" name="options-outline" slot="start"></ion-icon>
+              <ion-text color="dark">{{ 'Type...' | translate }}</ion-text>
+            </ion-item>
+
+            <ion-popover trigger="nested-type-trigger" side="end">
+              <ng-template>
+                <ion-content>
+                  <ion-list>
+                    <ng-container *ngFor="let t of ['Chart', 'Summary card']">
+                      <ion-item
+                        [button]="true"
+                        [detail]="false"
+                        (click)="onTypeChanged(t)"
+                        *ngIf="expressionType != 'Chart' || report.DataConfig.MeasureBy.length"
+                      >
+                        <ion-label>{{ t | translate }}</ion-label>
+                        <ion-icon
+                          name="checkmark-circle-outline"
+                          slot="end"
+                          color="success"
+                          *ngIf="_gridItem?.Config?.Type == t"
+                        ></ion-icon>
+                      </ion-item>
+                    </ng-container>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+
+            <!-- chart dimension -->
+            <ng-container *ngIf="_gridItem?.Config?.Type == 'Chart'">
+              <ion-item
+                [button]="true"
+                [detail]="false"
+                (click)="onViewDimensionChange(m.Title || m.Property)"
+                *ngFor="let m of report.DataConfig.MeasureBy"
+              >
+                <ion-icon color="dark" slot="icon-only" name="layers-outline" slot="start"></ion-icon>
+                <ion-label>{{ m.Title || m.Property | translate }}</ion-label>
+                <ion-icon
+                  name="checkmark-circle-outline"
+                  slot="end"
+                  color="success"
+                  *ngIf="_gridItem?.Config?.ChartDimension == (m.Title || m.Property)"
+                ></ion-icon>
+              </ion-item>
+            </ng-container>
+
+            <!-- summary card -->
+            <ng-container *ngIf="_gridItem?.Config?.Type == 'Summary card'">
+              <ion-item
+                [button]="true"
+                [detail]="false"
+                (click)="onSummaryCardsChanged(m)"
+                *ngFor="let m of report.DataConfig.MeasureBy"
+              >
+                <ion-icon color="dark" slot="icon-only" name="layers-outline" slot="start"></ion-icon>
+                <ion-label>{{ m.Title || m.Property | translate }}</ion-label>
+                <ion-icon
+                  name="checkmark-circle-outline"
+                  slot="end"
+                  color="success"
+                  *ngIf="
+                    _gridItem?.Config?.SummaryCards &&
+                    _gridItem?.Config?.SummaryCards?.indexOf(m.Title || m.Property) > -1
+                  "
+                ></ion-icon>
+              </ion-item>
+            </ng-container>
+         
+            <!-- delete -->
             <ion-item
               lines="none"
               [button]="true"
@@ -79,16 +155,13 @@
               <ion-icon color="danger" slot="icon-only" name="trash" slot="start"></ion-icon>
               <ion-text color="danger">{{ 'Delete' | translate }}</ion-text>
             </ion-item>
-            <!-- <ion-item [button]="true" [detail]="false" routerDirection="forward" [routerLink]="['/'+pageConfig.pageName+'/0/']" (click)="$event.stopPropagation(); this.popoverCtrl.dismiss();">
-              <ion-icon color="success" slot="icon-only" name="add-outline" slot="end"></ion-icon>
-              <ion-text color="success">Thêm đơn mới</ion-text>
-            </ion-item> -->
           </ion-list>
         </ion-content>
       </ng-template>
     </ion-popover>
   </ion-item>
 
+  <!-- chart title -->
   <ion-button
     class="toggle-mini-btn"
     title="{{ 'Resize' | translate }}"
@@ -100,11 +173,13 @@
   >
     <ion-icon color="dark" slot="icon-only" name="resize"></ion-icon>
   </ion-button>
+
+  <!-- loading -->
   <div class="loading fullfill" *ngIf="isLoading">
     <ion-spinner color="primary" name="dots"></ion-spinner>
   </div>
 
-  <!-- || (  && _gridItem?.rows == 1) -->
+  <!-- statistic in full mode -->
   <div class="statistic-row" *ngIf="viewMode == 'full'">
     <app-card-multi-row
       [title]="m.Title || m.Property"
@@ -116,24 +191,34 @@
     ></app-card-multi-row>
   </div>
 
-  <div class="statistic-row" *ngIf="viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics as ls">
+  <!-- statistic in dashboard mode -->
+  <div
+    class="statistic-row dashboard"
+    *ngIf="
+      viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Summary card' && _gridItem?.Config?.SummaryCards as ls
+    "
+  >
     <ng-container *ngFor="let s of ls">
       <ng-container *ngFor="let m of report.DataConfig.MeasureBy">
         <app-card-multi-row
-          *ngIf="m.Title == s"
+          *ngIf="(m.Title || m.Property) == s"
           class="selected"
           [title]="m.Title || m.Property"
           [value]="m.Value"
-          [percent]="0"
+          [comparitionValue]="m.ComparitionValue"
         ></app-card-multi-row>
       </ng-container>
     </ng-container>
   </div>
 
+  <!-- chart -->
   <app-e-chart
     class="app-chart"
     *ngIf="
-      !(viewMode == 'dashboard' && _gridItem?.WidgetConfig?.Statistics) &&
+      ( 
+        (viewMode != 'dashboard' )  || 
+        (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')
+      ) &&
       rptLoaded &&
       (rawData.length || report.DataConfig.Schema.Id == null)
     "
@@ -149,30 +234,27 @@
     [dataIntervalProperty]="dataIntervalProperty"
     [dataIntervalType]="dataIntervalType"
     [data]="rawData"
-    [comparitionData] = "comparitionData"
+    [comparitionData]="comparitionData"
     (chartClick)="onChartClick($event)"
     (dataChange)="onDataChange($event)"
   ></app-e-chart>
 
-  <form [formGroup]="form" (submit)="onChange($event)">
-    <ion-item lines="none" *ngIf="viewMode == 'full'">
-      <ion-icon name="server-outline" color="success" slot="start"></ion-icon>
+  <!-- timeframe picker in full mode-->
+  <form [formGroup]="form" (submit)="onChange($event)" >
+    <ion-item lines="none" *ngIf="viewMode != 'mini'">
+      <ion-icon name="server-outline" color="success" slot="start" size="small"></ion-icon>
       <ion-label color="primary">
         <ng-container formGroupName="TimeFrame">
           <p>
             <!-- class="clickable"
               (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')" -->
-            <a
-              
-            >
+            <a>
               {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
             </a>
             →
             <!-- class="clickable"
               (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')" -->
-            <a
-              
-            >
+            <a>
               {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.To) }}
             </a>
 
@@ -264,5 +346,8 @@
         </ng-container>
       </ion-label>
     </ion-item>
+
+   
+
   </form>
 </div>

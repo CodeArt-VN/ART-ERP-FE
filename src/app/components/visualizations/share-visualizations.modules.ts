@@ -16,6 +16,7 @@ import { ReportChartComponent } from './report-chart/report-chart.component';
 import { EChartComponent } from './types/e-chart/e-chart.component';
 import { FilterComponent } from '../filter/filter.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ShareDataTableModule } from '../data-table/share-data-table.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TranslateModule,
     ShareInputControlsModule,
     DragDropModule,
+    ShareDataTableModule
   ],
   declarations: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
   exports: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
