@@ -72,7 +72,7 @@
 			<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="hide-small col-id cell">
 			  <a [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">{{i.Id}}</a>
 			</div>
-			<div [ngClass]="i.HasChild? ('bold ') : ('')" class="col-name cell"  (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
+			<div [ngClass]="i.HasChild? ('bold ') : ('')" class="col-name cell">
 			  <ng-container *ngFor="let w of i.levels; let k = index;"
 				><span class="spacing" *ngIf="k>0"></span
 			  ></ng-container>
@@ -83,7 +83,7 @@
 			  ></ion-icon>
 			  <ion-icon class="min-btn" [color]="i.IsHeadOfDepartment?'primary':''" [name]="i.Icon"></ion-icon>
   
-			  <span class="clickable" (click)="showModal(i)">
+			  <span class="clickable" (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')">
 				<ion-text *ngIf="i.Type=='Request'" [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"> {{i.Method}}  </ion-text>  
 				<ion-icon *ngIf="i.Type== 'Folder'" name="folder-outline"></ion-icon>
 				<ion-icon *ngIf="i.Type== 'Collection'"name="keypad-outline"></ion-icon>
