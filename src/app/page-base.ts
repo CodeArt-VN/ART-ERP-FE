@@ -1,12 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { lib } from './services/static/global-functions';
-import { ApiSetting } from './services/static/api-setting';
-import introJs from 'intro.js/intro.js';
-import { APIList, GlobalData } from './services/static/global-variable';
-import { PopoverPage } from "./pages/SYS/popover/popover.page";
 import { Subscription } from "rxjs";
 import { environment } from "src/environments/environment";
+import { PopoverPage } from "./pages/SYS/popover/popover.page";
+import { lib } from './services/static/global-functions';
+import { APIList } from './services/static/global-variable';
 
 @Component({
     template: '',
