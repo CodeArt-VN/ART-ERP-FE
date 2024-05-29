@@ -4235,11 +4235,79 @@ export interface PROD_ItemInVendor
     
 }
 
-export interface PROD_MRP
+export interface PROD_MRPItem
 {
-    Id?: number;
     IDMRP?: number;
-    IDMRPLineID?: number;
+    IDItem?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_MRPPegging
+{
+    IDMRP?: number;
+    IDWarehouse?: number;
+    IDParentItem?: number;
+    IDItem?: number;
+    Id?: number;
+    Period?: string;
+    Quantity?: number;
+    BaseDocument?: number;
+    BaseRow?: number;
+    Type?: string;
+    DueDate?: Date;
+    StockType?: string;
+    StartDate?: Date;
+    EndDate?: Date;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_MRPPreventDocument
+{
+    IDMRP?: number;
+    Id?: number;
+    RefId?: number;
+    Code?: string;
+    Type?: string;
+    SubType?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_MRPRecommendation
+{
+    IDMRP?: number;
+    Id?: number;
+    SAPMRP?: number;
+    SAPMRPLine?: number;
     IDItem?: number;
     IDUoM?: number;
     IDPreferVendor?: number;
@@ -4267,6 +4335,32 @@ export interface PROD_MRP
     IDPurchaseOrder?: number;
     Status?: string;
     IDBranch?: number;
+    
+}
+
+export interface PROD_MRPResult
+{
+    IDMRP?: number;
+    IDItem?: number;
+    Id?: number;
+    Period?: string;
+    InitialQuantity?: number;
+    OriginalInitialQuantity?: number;
+    IncomingStock?: number;
+    OutgoingStock?: number;
+    FinalQuantity?: number;
+    OriginalFinalQuantity?: number;
+    Requests?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -4323,6 +4417,24 @@ export interface PROD_MRPScenario
     IsExpandedSalesQuotations?: boolean;
     IsExpandedTransferRequest?: boolean;
     IsDisplaySelectedItemOnly?: boolean;
+    
+}
+
+export interface PROD_MRPWarehouse
+{
+    IDMRP?: number;
+    IDWarehouse?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -4420,7 +4532,7 @@ export interface SALE_ForecastDetail
     Name?: string;
     Remark?: string;
     Date?: Date;
-    Quantity?: string;
+    Quantity?: number;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
