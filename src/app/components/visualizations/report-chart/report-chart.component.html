@@ -4,9 +4,11 @@
     <ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>
     <ion-label color="primary" (click)="isToolPopoverOpen = false; onOpenReport()" class="clickable">
       <h2>{{ report.Name }}</h2>
-      <p><small>
-        {{report.Remark}}
-      </small></p>
+      <p>
+        <small>
+          {{ report.Remark }}
+        </small>
+      </p>
       <!-- <p>
         <small>
           {{ rpt.formatTimeConfig(report.DataConfig?.TimeFrame.From) }}
@@ -23,7 +25,7 @@
       </p> -->
     </ion-label>
 
-    <ion-button
+    <!-- <ion-button
       title="{{ 'Open report' | translate }}"
       fill="clear"
       slot="end"
@@ -32,9 +34,9 @@
       class="gridster-item-content ion-hide-sm-down"
     >
       <ion-icon color="dark" slot="icon-only" name="open-outline"></ion-icon>
-    </ion-button>
+    </ion-button> -->
 
-    <ion-button
+    <!-- <ion-button
       title="{{ 'Reload' | translate }}"
       fill="clear"
       slot="end"
@@ -43,7 +45,7 @@
       class="gridster-item-content ion-hide-sm-down"
     >
       <ion-icon color="dark" slot="icon-only" name="reload-outline"></ion-icon>
-    </ion-button>
+    </ion-button> -->
 
     <ion-button
       title="{{ 'More...' | translate }}"
@@ -57,6 +59,7 @@
 
     <ion-popover
       #toolPopover
+      class="w300"
       [isOpen]="isToolPopoverOpen"
       (didDismiss)="isToolPopoverOpen = false; showSummaryCardsPopover = false"
       [backdropDismiss]="true"
@@ -72,39 +75,43 @@
               <ion-icon color="dark" slot="icon-only" name="reload-outline" slot="start"></ion-icon>
               <ion-text color="dark">{{ 'Reload' | translate }}</ion-text>
             </ion-item>
-
-            <!-- widget type -->
-            <ion-item [button]="true" id="nested-type-trigger">
-              <ion-icon color="dark" slot="icon-only" name="options-outline" slot="start"></ion-icon>
-              <ion-text color="dark">{{ 'Type...' | translate }}</ion-text>
+            <!-- delete -->
+            <ion-item
+              lines="none"
+              [button]="true"
+              [detail]="false"
+              (click)="isToolPopoverOpen = false; onDeleteClick($event)"
+            >
+              <ion-icon color="danger" slot="icon-only" name="trash" slot="start"></ion-icon>
+              <ion-text color="danger">{{ 'Delete' | translate }}</ion-text>
             </ion-item>
 
-            <ion-popover trigger="nested-type-trigger" side="end">
-              <ng-template>
-                <ion-content>
-                  <ion-list>
-                    <ng-container *ngFor="let t of ['Chart', 'Summary card']">
-                      <ion-item
-                        [button]="true"
-                        [detail]="false"
-                        (click)="onTypeChanged(t)"
-                        *ngIf="expressionType != 'Chart' || report.DataConfig.MeasureBy.length"
-                      >
-                        <ion-label>{{ t | translate }}</ion-label>
-                        <ion-icon
-                          name="checkmark-circle-outline"
-                          slot="end"
-                          color="success"
-                          *ngIf="_gridItem?.Config?.Type == t"
-                        ></ion-icon>
-                      </ion-item>
-                    </ng-container>
-                  </ion-list>
-                </ion-content>
-              </ng-template>
-            </ion-popover>
+            <!-- widget type -->
+            <ion-list-header>
+              <ion-label>{{ 'Type' | translate }}</ion-label>
+            </ion-list-header>
+
+            <ng-container *ngFor="let t of ['Chart', 'Summary card']">
+              <ion-item
+                [button]="true"
+                [detail]="false"
+                (click)="onTypeChanged(t)"
+                *ngIf="expressionType != 'Chart' || report.DataConfig.MeasureBy.length"
+              >
+                <ion-label>{{ t | translate }}</ion-label>
+                <ion-icon
+                  name="checkmark-circle-outline"
+                  slot="end"
+                  color="success"
+                  *ngIf="_gridItem?.Config?.Type == t"
+                ></ion-icon>
+              </ion-item>
+            </ng-container>
 
             <!-- chart dimension -->
+            <ion-list-header *ngIf="_gridItem?.Config?.Type == 'Chart'">
+              <ion-label>{{ 'Chart dimension' | translate }}</ion-label>
+            </ion-list-header>
             <ng-container *ngIf="_gridItem?.Config?.Type == 'Chart'">
               <ion-item
                 [button]="true"
@@ -112,7 +119,6 @@
                 (click)="onViewDimensionChange(m.Title || m.Property)"
                 *ngFor="let m of report.DataConfig.MeasureBy"
               >
-                <ion-icon color="dark" slot="icon-only" name="layers-outline" slot="start"></ion-icon>
                 <ion-label>{{ m.Title || m.Property | translate }}</ion-label>
                 <ion-icon
                   name="checkmark-circle-outline"
@@ -124,6 +130,9 @@
             </ng-container>
 
             <!-- summary card -->
+            <ion-list-header *ngIf="_gridItem?.Config?.Type == 'Summary card'">
+              <ion-label>{{ 'Summary cards' | translate }}</ion-label>
+            </ion-list-header>
             <ng-container *ngIf="_gridItem?.Config?.Type == 'Summary card'">
               <ion-item
                 [button]="true"
@@ -131,7 +140,6 @@
                 (click)="onSummaryCardsChanged(m)"
                 *ngFor="let m of report.DataConfig.MeasureBy"
               >
-                <ion-icon color="dark" slot="icon-only" name="layers-outline" slot="start"></ion-icon>
                 <ion-label>{{ m.Title || m.Property | translate }}</ion-label>
                 <ion-icon
                   name="checkmark-circle-outline"
@@ -144,17 +152,6 @@
                 ></ion-icon>
               </ion-item>
             </ng-container>
-         
-            <!-- delete -->
-            <ion-item
-              lines="none"
-              [button]="true"
-              [detail]="false"
-              (click)="isToolPopoverOpen = false; onDeleteClick($event)"
-            >
-              <ion-icon color="danger" slot="icon-only" name="trash" slot="start"></ion-icon>
-              <ion-text color="danger">{{ 'Delete' | translate }}</ion-text>
-            </ion-item>
           </ion-list>
         </ion-content>
       </ng-template>
@@ -215,10 +212,7 @@
   <app-e-chart
     class="app-chart"
     *ngIf="
-      ( 
-        (viewMode != 'dashboard' )  || 
-        (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')
-      ) &&
+      (viewMode != 'dashboard' || (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')) &&
       rptLoaded &&
       (rawData.length || report.DataConfig.Schema.Id == null)
     "
@@ -240,7 +234,7 @@
   ></app-e-chart>
 
   <!-- timeframe picker in full mode-->
-  <form [formGroup]="form" (submit)="onChange($event)" >
+  <form [formGroup]="form" (submit)="onChange($event)">
     <ion-item lines="none" *ngIf="viewMode != 'mini'">
       <ion-icon name="server-outline" color="success" slot="start" size="small"></ion-icon>
       <ion-label color="primary">
@@ -346,8 +340,5 @@
         </ng-container>
       </ion-label>
     </ion-item>
-
-   
-
   </form>
 </div>

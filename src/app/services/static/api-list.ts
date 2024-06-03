@@ -8328,51 +8328,247 @@ export var APIListBase = {
 		
 	},
 
-	PROD_MRP:{
+	PROD_MRPItem:{
         getSearchList:{
             method: "GET",
-            url: function(){return "PROD/MRP/Search"}  
+            url: function(){return "PROD/MRPItem/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "PROD/MRP"}  
+            url: function(){return "PROD/MRPItem"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "PROD/MRP/Export"}  
+            url: function(){return "PROD/MRPItem/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "PROD/MRP/Import"}  
+            url: function(){return "PROD/MRPItem/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "PROD/MRP/" + id} 
+            url: function(id){return "PROD/MRPItem/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "PROD/MRP/" + id} 
+            url: function(id){return "PROD/MRPItem/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "PROD/MRP/Disable/" + id} 
+            url: function(id){return "PROD/MRPItem/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "PROD/MRP/Enable/" + id} 
+            url: function(id){return "PROD/MRPItem/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "PROD/MRP"}
+            url: function(){return "PROD/MRPItem"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "PROD/MRP/ChangeBranch"} 
+            url: function(){return "PROD/MRPItem/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "PROD/MRP/" + id} 
+            url: function(id){return "PROD/MRPItem/" + id} 
+        }
+		
+	},
+
+	PROD_MRPPegging:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/MRPPegging/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/MRPPegging"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/MRPPegging/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/MRPPegging/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/MRPPegging/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPegging/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPegging/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPegging/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/MRPPegging"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/MRPPegging/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/MRPPegging/" + id} 
+        }
+		
+	},
+
+	PROD_MRPPreventDocument:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/MRPPreventDocument/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/MRPPreventDocument"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/MRPPreventDocument/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/MRPPreventDocument/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/MRPPreventDocument/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPreventDocument/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPreventDocument/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPPreventDocument/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/MRPPreventDocument"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/MRPPreventDocument/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/MRPPreventDocument/" + id} 
+        }
+		
+	},
+
+	PROD_MRPRecommendation:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/MRPRecommendation/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/MRPRecommendation"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/MRPRecommendation/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/MRPRecommendation/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/MRPRecommendation/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPRecommendation/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPRecommendation/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPRecommendation/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/MRPRecommendation"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/MRPRecommendation/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/MRPRecommendation/" + id} 
+        }
+		
+	},
+
+	PROD_MRPResult:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/MRPResult/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/MRPResult"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/MRPResult/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/MRPResult/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/MRPResult/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPResult/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPResult/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPResult/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/MRPResult"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/MRPResult/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/MRPResult/" + id} 
         }
 		
 	},
@@ -8422,6 +8618,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PROD/MRPScenario/" + id} 
+        }
+		
+	},
+
+	PROD_MRPWarehouse:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/MRPWarehouse/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/MRPWarehouse"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/MRPWarehouse/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/MRPWarehouse/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/MRPWarehouse/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPWarehouse/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPWarehouse/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/MRPWarehouse/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/MRPWarehouse"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/MRPWarehouse/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/MRPWarehouse/" + id} 
         }
 		
 	},
