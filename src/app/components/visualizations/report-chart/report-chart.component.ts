@@ -82,10 +82,12 @@ export class ReportChartComponent implements OnInit {
   _gridItem: any;
   @Input() set gridItem(v) {
     this._gridItem = v;
-    console.log('gridItem', v);
     if (this._gridItem?.Config?.ChartDimension && this._gridItem.Config.ChartDimension != this.viewDimension) {
       this.onViewDimensionChange(this._gridItem.Config.ChartDimension);
     } else {
+      if (!this._gridItem.Config) {
+        this._gridItem.Config = {};
+      }
       this._gridItem.Config.ChartDimension = this.viewDimension;
     }
   }
