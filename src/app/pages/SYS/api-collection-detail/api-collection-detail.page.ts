@@ -108,7 +108,7 @@ export class APICollectionDetailPage extends PageBase {
     this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
     this.methodList = [{ Code: 'GET' }, { Code: 'POST' }, { Code: 'PUT' }, { Code: 'PATCH' }, { Code: 'DELETE' }];
     this.typeList = [{ Code: 'Request' }, { Code: 'Folder' }, { Code: 'Collection' }];
-    this.bodyType = [{Name:'raw',Code:'raw'},{Name:'none',Code:'none'},{Name:'form-data',Code:'formData'},{Name:'binary',Code:'binary'},{Name:'GraphQL',Code:'GraphQL'}]
+    this.bodyType = [{Name:'raw',Code:'raw'},{Name:'x-www-form-urlencoded',Code:'x-www-form-urlencoded'}, {Name:'none',Code:'none'},{Name:'form-data',Code:'formData'},{Name:'binary',Code:'binary'},{Name:'GraphQL',Code:'GraphQL'}]
     this.dataType = [{Name:'JSON',Code:'JSON'},{Name:'Text',Code:'Text'},{Name:'Javascript',Code:'Javascript'},{Name:'HTML',Code:'HTML'},{Name:'XML',Code:'XML'}]
 
     this.authorizationList = [
