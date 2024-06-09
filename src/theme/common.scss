@@ -273,8 +273,9 @@ input[type='number'] {
 }
 
 .flex-nowrap {
-  display: flex;
+  display: flex !important;
   flex-wrap: nowrap;
+  align-items: center;
 }
 
 .alert-text-left {
@@ -302,6 +303,18 @@ input[type='number'] {
 
 .clickable {
   cursor: pointer;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-left: 0;
+  .button-clear {
+    --padding-start: 5px;
+    --padding-end: 5px;
+  }
 }
 
 .shadow {

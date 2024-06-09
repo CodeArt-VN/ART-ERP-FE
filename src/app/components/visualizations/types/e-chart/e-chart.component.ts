@@ -33,8 +33,6 @@ export class EChartComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit', this.elId);
-
     var chartDom = document.getElementById(this.elId);
     this.chart = echarts.init(chartDom);
     this.chart.on('click', (params) => {

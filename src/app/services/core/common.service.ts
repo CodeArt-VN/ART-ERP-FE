@@ -30,7 +30,7 @@ export class CommonService {
     };
 
     if (data && pmethod != 'UPLOAD') {
-      data = JSON.parse(JSON.stringify(data));
+      data = lib.cloneObject(data);
 
       //delete data.IsDisabled;
       delete data.IsDeleted;

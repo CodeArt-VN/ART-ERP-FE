@@ -151,7 +151,11 @@
       align-items: center;
       justify-content: flex-start;
 
-      padding-left: 0;
+      padding-left: 7px;
+      .button-clear {
+        --padding-start: 5px;
+        --padding-end: 5px;
+      }
     }
   }
 

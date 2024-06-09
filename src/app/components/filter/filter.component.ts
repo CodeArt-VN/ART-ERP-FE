@@ -76,7 +76,7 @@ export class FilterComponent implements OnInit {
 
     let temp = s;
 
-    this._schema = JSON.parse(JSON.stringify(temp));
+    this._schema = lib.cloneObject(temp);
     if (this._schema.Fields.findIndex((d) => d.Code == 'logical') === -1) {
       this._schema.Fields.unshift({ Code: 'logical', Name: 'Logical' });
     }

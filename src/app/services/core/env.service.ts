@@ -124,8 +124,6 @@ export class EnvService {
    * Connet SignalR
    */
   async init() {
-    console.log('init env');
-
     // If using, define drivers here: await this.storage.defineDriver(/*...*/);
     this._storage = await this.storage.create();
     this.publishEvent({ Code: 'app:loadLang' });

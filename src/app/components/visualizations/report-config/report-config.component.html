@@ -33,45 +33,25 @@
           bindLabel="Name"
           (change)="onChange($event)"
         ></app-form-control>
-        <ng-container formGroupName="TimeFrame" *ngIf="form.controls.TimeFrame.controls.Dimension.value">
-          <div class="c-control">
-            <label class="c-label">{{ 'Time range' | translate }}</label>
-            <span class="c-input btns">
-              <ion-button
-                fill="clear"
-                size="small"
-                (click)="presentDatePicker($event, form.controls.TimeFrame.controls.From, 'TimeFrame-From')"
-              >
-                <ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
-                {{ rpt.formatTimeConfig(form.controls.TimeFrame.controls.From.getRawValue()) }}
-              </ion-button>
 
-              <ion-button
-                fill="clear"
-                size="small"
-                (click)="presentDatePicker($event, form.controls.TimeFrame.controls.To, 'TimeFrame-To')"
-              >
-                <ion-icon color="dark" slot="start" name="arrow-forward"></ion-icon>
-                {{ rpt.formatTimeConfig(form.controls.TimeFrame.controls.To.getRawValue()) }}
-              </ion-button>
-            </span>
-          </div>
-        </ng-container>
+        <app-form-control
+          *ngIf="form.controls.TimeFrame.controls.Dimension.value"
+          [form]="form.controls.TimeFrame"
+          type="time-frame"
+          id="From"
+          secondaryId="To"
+          label="Time range"
+          (change)="onChange($event)"
+        ></app-form-control>
 
-        <div class="c-control" *ngIf="form.controls.TimeFrame.controls.Dimension.value">
-          <label class="c-label">{{ 'Commpare to' | translate }}</label>
-          <span class="c-input btns">
-            <ion-button
-              class="no-padding"
-              fill="clear"
-              size="small"
-              (click)="presentDatePicker($event, form.controls.CompareTo, 'CompareTo')"
-            >
-              <ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
-              {{ rpt.formatTimeConfig(form.controls.CompareTo.getRawValue(), true) }}
-            </ion-button>
-          </span>
-        </div>
+        <app-form-control
+          *ngIf="form.controls.TimeFrame.controls.Dimension.value"
+          [form]="form"
+          type="date-compare-to"
+          id="CompareTo"
+          label="Commpare to"
+          (change)="onChange($event)"
+        ></app-form-control>
 
         <ng-container formGroupName="Interval" *ngIf="canChangeReportConfig">
           <div class="c-control">
