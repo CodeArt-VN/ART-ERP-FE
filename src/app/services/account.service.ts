@@ -47,12 +47,8 @@ export class AccountService {
   }
 
   checkVersion() {
-    console.log('check version');
-
     return new Promise((resolve) => {
       this.env?.ready?.then((_) => {
-        console.log('app - ready');
-
         Promise.all([this.env.getStorage('appDomain'), this.env.getStorage('appVersion')])
           .then((values) => {
             let appDomain = values[0];
@@ -98,26 +94,28 @@ export class AccountService {
         this.getToken().then(() => {
           this.getProfile(true)
             .then(() => {
-              if (this.env.user) {
+              
                 setTimeout(() => {
-                  let woopraId = {
-                    id: this.env.user.Id,
-                    email: this.env.user.Email,
-                    name: this.env.user.FullName,
-                    avatar: this.env.user.Avatar,
-                  };
-                  let woopraInterval: any = setInterval(() => {
-                    if (window?.woopra) {
-                      window.woopra.identify(woopraId);
-                      window.woopra.push();
-                      if (woopraInterval) {
-                        clearInterval(woopraInterval);
-                        woopraInterval = null;
+                  if (this.env.user) {
+                    let woopraId = {
+                      id: this.env.user.Id,
+                      email: this.env.user.Email,
+                      name: this.env.user.FullName,
+                      avatar: this.env.user.Avatar,
+                    };
+                    let woopraInterval: any = setInterval(() => {
+                      if (window?.woopra) {
+                        window.woopra.identify(woopraId);
+                        window.woopra.push();
+                        if (woopraInterval) {
+                          clearInterval(woopraInterval);
+                          woopraInterval = null;
+                        }
                       }
-                    }
-                  }, 2000);
+                    }, 2000);
+                  }
                 }, 1000);
-              }
+              
               this.env.isloaded = true;
               this.env.publishEvent({
                 Code: 'app:loadedLocalData',
@@ -222,7 +220,7 @@ export class AccountService {
           if (profile && profile.Id) {
             let settings = null;
             if (Array.isArray(profile.UserSetting)) {
-              settings = JSON.parse(JSON.stringify(profile.UserSetting));
+              settings = lib.cloneObject(profile.UserSetting);
               profile.UserSetting = this.loadUserSettings(settings, profile);
             }
 

@@ -19,7 +19,6 @@ var URLSearchParams: any;
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage extends PageBase {
-  email: string = '';
   password: string = '';
   formGroup: FormGroup;
   submitAttempt = false;
@@ -73,7 +72,7 @@ export class LoginPage extends PageBase {
     }
 
     this.env.getStorage('Username')?.then((v) => {
-      this.email = v;
+      this.formGroup.controls.UserName.setValue(v);
     });
   }
 
@@ -91,7 +90,7 @@ export class LoginPage extends PageBase {
         loading.present();
 
         this.accountService
-          .forgotPassword(this.email)
+          .forgotPassword(this.formGroup.controls.UserName.value)
           .then((data) => {
             loading.dismiss();
             this.env.showTranslateMessage(
@@ -117,16 +116,18 @@ export class LoginPage extends PageBase {
   }
 
   login() {
-    if (this.email.indexOf('@') == -1) {
-      this.email += environment.loginEmail;
+    if (this.formGroup.controls.UserName.value.indexOf('@') == -1) {
+      this.formGroup.controls.UserName.setValue(this.formGroup.controls.UserName.value + '' + environment.loginEmail);
     }
     this.submitAttempt = true;
     if (!this.formGroup.valid) {
       return;
     }
 
+    let account = this.formGroup.getRawValue();
+
     this.env
-      .showLoading('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(this.email, this.password))
+      .showLoading('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(account.UserName, account.Password))
       .then((data) => {
         this.goBack();
       })

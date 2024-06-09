@@ -92,7 +92,6 @@ export class ReportConfigComponent implements OnInit {
 
   //destroy before leave
   ngOnDestroy() {
-    this.dismissDatePicker();
     this.dismissPopover();
 
     this.chartConfigEditor?.destroy();
@@ -112,9 +111,9 @@ export class ReportConfigComponent implements OnInit {
       this._reportId = v;
       let temp = this.rpt.getReport(this._reportId);
       if (temp) {
-        this._report = JSON.parse(JSON.stringify(temp));
+        this._report = lib.cloneObject(temp);
 
-        this._timePeriodList = JSON.parse(JSON.stringify(this.rpt.commonOptions.timeConfigPeriod));
+        this._timePeriodList = lib.cloneObject(this.rpt.commonOptions.timeConfigPeriod);
 
         this._timePeriodList.forEach((p) => {
           p.name = p.name.toLowerCase() + ' ago';
@@ -301,6 +300,7 @@ export class ReportConfigComponent implements OnInit {
   listControls: any;
   formGroup: any;
   tempForm: any;
+  pickerGroupName;
   presentPopover(event, fg, groupName) {
     this.pickerGroupName = groupName;
     this.formGroup = fg;
@@ -309,58 +309,6 @@ export class ReportConfigComponent implements OnInit {
   }
 
   @ViewChild('popover') popover;
-  isOpenDatePicker = false;
-  isOpenCompareBy = false;
-  pickerControl: any;
-  pickerGroupName: string;
-  presentDatePicker(event, control, groupName) {
-    this.pickerGroupName = groupName;
-    this.pickerControl = control;
-    this.popover.event = event;
-    this.calcAbsoluteDate(groupName == 'TimeFrame-To');
-    this.isOpenDatePicker = true;
-  }
-
-  calcAbsoluteDate(isFullfillDate = false) {
-    if (this.pickerControl.controls.Type.value == 'Relative') {
-      let tempDate = this.rpt.calcTimeValue(this.pickerControl.getRawValue(), isFullfillDate);
-      if (tempDate) {
-        this.pickerControl.controls.Value.value = tempDate.toJSON();
-      }
-    }
-  }
-
-  pickDate(pDate) {
-    if (this.pickerControl.controls.Type.value != pDate.Type) {
-      this.pickerControl.controls.Type.setValue(pDate.Type);
-      this.pickerControl.controls.Type.markAsDirty();
-    }
-
-    if (pDate.Type == 'Relative') {
-      if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
-        this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
-        this.pickerControl.controls.IsPastDate.markAsDirty();
-      }
-      if (this.pickerControl.controls.Period.value != pDate.Period) {
-        this.pickerControl.controls.Period.setValue(pDate.Period);
-        this.pickerControl.controls.Period.markAsDirty();
-      }
-      if (this.pickerControl.controls.Amount.value != pDate.Amount) {
-        this.pickerControl.controls.Amount.setValue(pDate.Amount);
-        this.pickerControl.controls.Amount.markAsDirty();
-      }
-      this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To');
-    } else {
-      if (this.pickerControl.controls.Value.value != pDate.Value.detail.value) {
-        this.pickerControl.controls.Value.setValue(pDate.Value.detail.value);
-        this.pickerControl.controls.Value.markAsDirty();
-      }
-    }
-  }
-
-  segmentTimeframeChanged(e) {
-    this.pickerControl.controls.Type.value = e.detail.value;
-  }
 
   addNewForm(e, type) {
     let group = this.formBuilder.group({
@@ -395,23 +343,6 @@ export class ReportConfigComponent implements OnInit {
         parentForm.removeAt(index);
       }
     }
-  }
-
-  changeDateTime(e, key) {
-    this.tempForm.get(key).setValue();
-    this.form.get('');
-  }
-
-  dismissDatePicker(apply: boolean = false) {
-    if (!this.isOpenDatePicker) return;
-
-    if (!apply) {
-      this.form.patchValue(this._report?.DataConfig);
-    } else {
-      this._report.DataConfig = this.form.getRawValue();
-      this.onRunReport();
-    }
-    this.isOpenDatePicker = false;
   }
 
   dismissPopover(apply: boolean = false) {
@@ -452,10 +383,10 @@ export class ReportConfigComponent implements OnInit {
     }
   }
 
-  onExportData(){
+  onExportData() {
     this.exportData.emit();
   }
- 
+
   loadAceEditor() {
     if (typeof ace !== 'undefined') this.initAce();
     else
@@ -476,8 +407,7 @@ export class ReportConfigComponent implements OnInit {
       this.chartConfigEditor.session.setMode('ace/mode/javascript');
 
       this.chartConfigEditor.session.on('change', function (delta) {
-        console.log(delta);
-        // delta.start, delta.end, delta.lines, delta.action
+    
       });
     }
 
@@ -486,15 +416,14 @@ export class ReportConfigComponent implements OnInit {
       this.chartScriptEditor.session.setMode('ace/mode/javascript');
       this.chartScriptEditor.maxLines = Infinity;
       this.chartScriptEditor.commands.addCommand({
-        name: "fullScreen",
-        bindKey: {win: "Ctrl-Shift-f", mac: "Command-Shift-f"},
-        exec: function(editor) {
+        name: 'fullScreen',
+        bindKey: { win: 'Ctrl-Shift-f', mac: 'Command-Shift-f' },
+        exec: function (editor) {
           editor.container.webkitRequestFullscreen();
-        }
-    })
+        },
+      });
       this.chartScriptEditor.session.on('change', function (delta) {
-        console.log(delta);
-        // delta.start, delta.end, delta.lines, delta.action
+       
       });
     }
   }

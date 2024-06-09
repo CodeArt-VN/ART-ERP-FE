@@ -195,7 +195,7 @@ export class AppComponent implements OnInit {
 
   updateStatusbar() {
     let title = 'ERP';
-    let relIcon = 'assets/icons/icon-512x512.png';
+    let relIcon = 'assets/icons/icon-512.webp';
 
     let link: any = document.querySelector("link[rel~='icon']");
     if (!link) {
@@ -234,7 +234,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('AppComponent ngOnInit');
     this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
 
     // const path = window.location.pathname.split('folder/')[1];

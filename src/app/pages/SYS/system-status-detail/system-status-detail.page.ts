@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { SYS_StatusProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
   selector: 'app-system-status-detail',
@@ -54,7 +55,7 @@ export class SystemStatusDetailPage extends PageBase {
 
   preLoadData() {
     if (this.navParams) {
-      this.items = JSON.parse(JSON.stringify(this.navParams.data.items));
+      this.items = lib.cloneObject(this.navParams.data.items);
       this.items.forEach((i) => {
         let prefix = '';
         for (let j = 1; j < i.level; j++) {
@@ -62,7 +63,7 @@ export class SystemStatusDetailPage extends PageBase {
         }
         i.Name = prefix + i.Name;
       });
-      this.item = JSON.parse(JSON.stringify(this.navParams.data.item));
+      this.item = lib.cloneObject(this.navParams.data.item);
       this.id = this.navParams.data.id;
 
       this.removeCurrentNode();

@@ -731,7 +731,6 @@ export abstract class PageBase implements OnInit {
             }
         }
 
-        console.log('subs', this.pageConfig.pageName);
         this.subscriptions.push(
             this.env.getEvents().subscribe((data) => {
                 if (data.Code == 'changeBranch') {

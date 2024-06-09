@@ -253,6 +253,7 @@
 
     <!-- Delete -->
     <ion-button
+      class="ion-hide-md-down"
       title="{{ 'Delete' | translate }}"
       *ngIf="
         (page.selectedItems?.length || (page.pageConfig.isDetailPage && page.item?.Id)) &&

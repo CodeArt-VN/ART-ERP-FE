@@ -142,7 +142,6 @@ export class ListToolbarComponent implements OnInit {
   showDisapproveBusinessPartner = true;
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('check');
     if (this.pageConfig.pageName == 'sale-order') {
       this.showSubmitBusinessPartner = false;
       this.showApproveBusinessPartner = false;
