@@ -8671,6 +8671,104 @@ export var APIListBase = {
 		
 	},
 
+	PROD_Order:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/Order/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/Order"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/Order/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/Order/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/Order/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/Order"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/Order/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/Order/" + id} 
+        }
+		
+	},
+
+	PROD_OrderDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/OrderDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/OrderDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/OrderDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/OrderDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/OrderDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/OrderDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/OrderDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/OrderDetail/" + id} 
+        }
+		
+	},
+
 	PURCHASE_Order:{
         getSearchList:{
             method: "GET",

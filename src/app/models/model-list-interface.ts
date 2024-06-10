@@ -873,14 +873,11 @@ export interface BI_DashboardDetail
     IDDashboard?: number;
     IDReport?: number;
     Id?: number;
-    X?: number;
-    Y?: number;
-    Cols?: number;
-    Rows?: number;
     Type?: string;
     Code?: string;
     Name?: string;
     Remark?: string;
+    Config?: string;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -888,7 +885,6 @@ export interface BI_DashboardDetail
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
-    Config?: string;
     
 }
 
@@ -4435,6 +4431,96 @@ export interface PROD_MRPWarehouse
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    
+}
+
+export interface PROD_Order
+{
+    IDBranch?: number;
+    IDWarehouse?: number;
+    IDCustomer?: number;
+    IDProject?: number;
+    IDSaleOrder?: number;
+    IDParent?: number;
+    IDTransaction?: number;
+    IDBOM?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    PickRemark?: string;
+    JournalRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Status?: string;
+    Type?: string;
+    PlannedQuantity?: number;
+    CompletedQuantity?: number;
+    RejectedQuantity?: number;
+    OrderDate?: Date;
+    StartDate?: Date;
+    DueDate?: Date;
+    ClosingDate?: Date;
+    ReleaseDate?: Date;
+    IsPrinted?: boolean;
+    DistributionRule1?: string;
+    DistributionRule2?: string;
+    DistributionRule3?: string;
+    DistributionRule4?: string;
+    DistributionRule5?: string;
+    SequenceCode?: number;
+    SerialNumber?: number;
+    Series?: number;
+    SeriesString?: string;
+    SubseriesString?: string;
+    Priority?: number;
+    RoutingDateCalculation?: string;
+    DataSource?: string;
+    
+}
+
+export interface PROD_OrderDetail
+{
+    IDProductionOrder?: number;
+    Id?: number;
+    Type?: string;
+    IDItem?: number;
+    IDUoM?: number;
+    BaseQuantity?: number;
+    AdditionalQuantity?: number;
+    PlannedQuantity?: number;
+    IssuedQuantity?: number;
+    IssueMethod?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    WIPAccount?: string;
+    DistributionRule1?: string;
+    DistributionRule2?: string;
+    DistributionRule3?: string;
+    DistributionRule4?: string;
+    DistributionRule5?: string;
+    PickStatus?: string;
+    PickQuantity?: number;
+    IDPickingList?: number;
+    ReleasedQuantity?: number;
+    ResourceAllocation?: string;
+    StartDate?: Date;
+    EndDate?: Date;
+    IDStage?: number;
+    RequiredDays?: number;
+    Status?: string;
     
 }
 
