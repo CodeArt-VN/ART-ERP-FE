@@ -4,7 +4,8 @@ import { TableColumn } from './interfaces/table-column.interface';
 import { Subscription } from 'rxjs';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
-
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+declare var Fuse: any;
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
@@ -26,7 +27,6 @@ export class DataTableComponent implements OnInit {
     return this._selectedRows;
   }
 
-  
   @Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   onSelectedRowsChange(event) {
     this.selectedRowsChange.emit(this.selectedRows);
@@ -63,12 +63,27 @@ export class DataTableComponent implements OnInit {
     this.filterValue = this.formGroup.getRawValue();
     if (this.isQueryLocalOnly) {
       this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
-      this._rows = this._rowsBeforeFilter.filter((row) => {
-        return Object.keys(this.filterValue).every((key) => {
-          return String(row[key]).toLowerCase().includes(String(this.filterValue[key]).toLowerCase());
-        });
-      });
-      
+      const filter = this.filterValue;
+      const keysAndTerms = Object.keys(filter).map((key) => ({
+        key,
+        term: filter[key],
+      }));
+      const fuseOptions = {
+        includeScore: true,
+        includeMatches: true,
+        useExtendedSearch: false,
+        threshold: 0.5,
+        shouldSort: true,
+        keys: keysAndTerms.map((item) => item.key),
+      };
+      const terms = keysAndTerms.filter((item) => item.term);
+      const searchQuery = {
+        $and: terms.map((item) => {
+          return { [item.key]: item.term };
+        }),
+      };
+      const fuse = new Fuse(this._rowsBeforeFilter, fuseOptions);
+      this._rows = fuse.search(searchQuery).map((result) => result.item);
     } else {
       this.filter.emit({ event: e, query: this.filterValue });
     }
@@ -137,9 +152,14 @@ export class DataTableComponent implements OnInit {
 
   @Output() dataInfinite: EventEmitter<any> = new EventEmitter();
 
-  constructor(private columnChangesService: ColumnChangesService) {}
+  constructor(
+    private columnChangesService: ColumnChangesService,
+    private dynamicScriptLoaderService: DynamicScriptLoaderService,
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadFuse();
+  }
 
   ngAfterContentInit() {
     this.columnTemplates.changes.subscribe((v) => this.translateColumns(v));
@@ -231,6 +251,15 @@ export class DataTableComponent implements OnInit {
     } else {
       this.sort.emit(event);
     }
+  }
+  loadFuse() {
+    const script = this.dynamicScriptLoaderService
+      .loadScript('https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js')
+      .then(() => {})
+      .catch((error) => console.error('Error loading script', error));
+    Promise.all([script])
+      .then(() => {})
+      .catch((error) => console.log(`Error in promises ${error}`));
   }
 
 }
