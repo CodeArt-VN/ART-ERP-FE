@@ -217,7 +217,15 @@ export class EnvService {
         if (e.value.localeCompare(this.version) > 0) {
           location.reload();
         }
-      }
+      } else if (e.code == 'SOPaymentUpdate') {
+        this.publishEvent({
+          Code: 'app:SOPaymentUpdate',
+          Id: e.id,
+          Name: e.name,
+          Value: e.value,
+        });
+    }
+      
     });
     signalRConnection.on('SendMessage', (user, message) => {
       console.log('SendMessage', user, message);
