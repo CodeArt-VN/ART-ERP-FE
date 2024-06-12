@@ -1,4 +1,112 @@
+import { TimeConfig } from "src/app/models/options-interface";
+
 export var lib = {
+  formatTimeConfig(time: TimeConfig, isPrevious = false) {
+    if (time.Type == 'Absolute') {
+      return lib.dateFormat(time.Value, 'dd/mm/yy hh:MM');
+    }
+
+    if (!time) return '';
+
+    if (isPrevious) {
+      if (time.Amount == 0) return 'None';
+
+      if (time.Amount == 1) {
+        return 'Previous ' + time.Period.toLocaleLowerCase();
+      }
+
+      return 'Previous ' + time.Amount + ' ' + time.Period.toLocaleLowerCase() + 's';
+    }
+
+    if (time.Amount == 0) return 'Today';
+
+    if (time.Amount == 1 && time.Period == 'Day') return 'Yesterday';
+
+    return (
+      time.Amount +
+      ' ' +
+      time.Period.toLocaleLowerCase() +
+      (time.Amount == 1 ? '' : 's') +
+      (time.IsPastDate ? ' ago' : '')
+    );
+  },
+
+  calcTimeValue(timeConfig: TimeConfig, isFullfillDate = false, baseDate: TimeConfig = null): Date {
+    
+
+    let addMinutes = 0;
+    let addHours = 0;
+    let addDays = 0;
+    let addMonths = 0;
+    let addYears = 0;
+
+    switch (timeConfig.Period) {
+      case 'Minute':
+        addMinutes = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+        break;
+      case 'Hour':
+        addHours = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+        break;
+      case 'Day':
+        addDays = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+        break;
+      case 'Week':
+        addDays = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount * 7;
+        break;
+      case 'Month':
+        addMonths = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+        break;
+      case 'Year':
+        addYears = (timeConfig.IsPastDate ? -1 : 1) * timeConfig.Amount;
+        break;
+
+      default:
+        break;
+    }
+
+    let date = new Date();
+    if (baseDate) {
+      date = this.calcTimeValue(baseDate, false);
+    }
+
+    if (timeConfig.Type.toLowerCase() == 'absolute') {
+      date = new Date(timeConfig.Value);
+
+      if (!isFullfillDate) {
+        return date;
+      }
+    }
+
+
+
+    if (isFullfillDate) {
+      return new Date(
+        //Date.UTC(
+          date.getFullYear() + addYears,
+          date.getMonth() + addMonths,
+          date.getDate() + addDays,
+          timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getHours() + addHours : 23,
+          timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getMinutes() + addMinutes : 59,
+          timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getSeconds() : 59,
+          timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getMilliseconds() : 999,
+        //)
+      );
+    }
+
+    return new Date(
+      //Date.UTC(
+        date.getFullYear() + addYears,
+        date.getMonth() + addMonths,
+        date.getDate() + addDays,
+        timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getHours() + addHours : 0,
+        timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getMinutes() + addMinutes : 0,
+        timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getSeconds() : 0,
+        timeConfig.Period == 'Minute' || timeConfig.Period == 'Hour' ? date.getMilliseconds() : 0,
+      //)
+    );
+  },
+
+
   deepAssign(target: any, ...sources: any[]): any {
     sources.forEach((source) => {
       Object.keys(source).forEach((key) => {
@@ -120,6 +228,20 @@ export var lib = {
         this.paddingNumber(mm, 2) +
         '/' +
         this.paddingNumber(yy, 4);
+    }
+    else if (term == 'hh:MM dd/mm/yyyy') {
+      result =
+        this.paddingNumber(hh, 2) +
+        ':' +
+        this.paddingNumber(MM, 2) +
+        ' ' +
+        this.paddingNumber(dd, 2) +
+        '/' +
+        this.paddingNumber(mm, 2) +
+        '/' +
+        this.paddingNumber(yy, 4);
+    }else if (term == 'yyyy-mm-ddThh:MM:ss') {
+      result = this.paddingNumber(yy, 4) + '-' + this.paddingNumber(mm, 2) + '-' + this.paddingNumber(dd, 2) + 'T' + this.paddingNumber(hh, 2) + ':' + this.paddingNumber(MM, 2) + ':' + this.paddingNumber(ss, 2);
     } else if (term == 'hh:MM') {
       result = this.paddingNumber(hh, 2) + ':' + this.paddingNumber(MM, 2);
     } else if (term == 'hh:MM:ss') {
@@ -460,6 +582,8 @@ export var lib = {
   buildFlatTree(items, treeState, isAllRowOpened = true, root = null) {
     let treeItems = [];
     let listItems = [];
+    if(!treeState) treeState = []
+    
     return new Promise((resolve) => {
       let resp = items;
       let headerItems = [];
@@ -531,8 +655,14 @@ export var lib = {
 
   buildSubNode(listItem, treeItems, item, hierarchicalSumCols = [], isAllRowOpened = true) {
     let idp = item == null ? null : item.Id;
-    let childrent = listItem.filter((d) => d.IDParent == idp);
+    let childrent = listItem.filter((d) => d.IDParent == idp && idp !== undefined);
+
+    
     let level = item && item.level >= 0 ? item.level + 1 : 1;
+
+    if(childrent.length && (level > 10 || idp === undefined) ) debugger;
+    
+    
 
     if (item) {
       item.count = childrent.length;
@@ -546,7 +676,8 @@ export var lib = {
 
     childrent.forEach((i) => {
       i.levelSort = item ? item.levelSort + '.' + (i.Sort || i.Id) : '.' + (i.Sort || i.Id);
-      i.levels = Array(level).fill('');
+      i.levels = item?.levels ? lib.cloneObject(item.levels) : [];
+      i.levels.push(item?.Name);
       i.level = level;
       i.show = item == null ? true : false;
       i.showdetail = isAllRowOpened;

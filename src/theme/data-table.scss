@@ -149,10 +149,10 @@ app-data-table,
     }
 
     &.selected {
-      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
 
       .col-sticky {
-         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
          backdrop-filter: blur(10px);
       }
     }

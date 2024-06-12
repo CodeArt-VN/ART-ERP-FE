@@ -27,6 +27,7 @@ export class FormControlComponent implements OnInit {
   @Input() type: string = 'text';
 
   @Input() id: string;
+  @Input() secondaryId: string;
 
   @Input() label: string;
   @Input() color: string;

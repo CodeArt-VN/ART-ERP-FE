@@ -124,8 +124,6 @@ export class EnvService {
    * Connet SignalR
    */
   async init() {
-    console.log('init env');
-
     // If using, define drivers here: await this.storage.defineDriver(/*...*/);
     this._storage = await this.storage.create();
     this.publishEvent({ Code: 'app:loadLang' });
@@ -219,6 +217,10 @@ export class EnvService {
         if (e.value.localeCompare(this.version) > 0) {
           location.reload();
         }
+      } else if (e.code == 'SOPaymentUpdate') {
+        this.publishEvent({
+          Code: 'app:SOPaymentUpdate',
+        });
       }
     });
     signalRConnection.on('SendMessage', (user, message) => {

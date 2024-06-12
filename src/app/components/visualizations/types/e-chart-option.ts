@@ -387,7 +387,7 @@ export class EChartDefaultOption {
                     const its = data.filter(
                       (item) =>
                         item[legendProperty] === legend &&
-                        item[categoryProperty].toString().toLowerCase() === x.toString().toLowerCase(),
+                        item[categoryProperty]?.toString().toLowerCase() === x?.toString().toLowerCase(),
                     );
                     return its.reduce((a, b) => a + b[valueProperty], 0);
                   } else {

@@ -1,62 +1,10 @@
 <ng-container [ngSwitch]="type" [formGroup]="form">
-  <!-- text -->
+  <!-- default -->
   <input
     *ngSwitchDefault
-    type="text"
+    [type]="type"
     [ngClass]="{ 'no-check-dirty': noCheckDirty }"
     class="c-input"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
-
-  <!-- number -->
-  <input
-    *ngSwitchCase="'number'"
-    type="number"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
-
-  <!-- email -->
-  <input
-    *ngSwitchCase="'email'"
-    type="email"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
-
-  <!-- date -->
-  <input
-    *ngSwitchCase="'date'"
-    type="date"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input date"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
-
-  <!-- datetime-local -->
-  <input
-    *ngSwitchCase="'datetime-local'"
-    type="datetime-local"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input date"
     [id]="id"
     placeholder="{{ placeholder | translate }}"
     [formControlName]="id"
@@ -370,18 +318,16 @@
   ></app-branch-breadcrumbs>
 
   <!-- span-text -->
-  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value }}</span>
+  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value || '&nbsp;'}}</span> 
 
   <!-- span-number -->
-  <span *ngSwitchCase="'span-number'" class="c-input disable">{{ form.controls[id].value | number: '1.0-0' }}</span>
+  <span *ngSwitchCase="'span-number'" class="c-input disable">{{ form.controls[id].value | number: '1.0-0' }}{{form.controls[id].value == null? '&nbsp;': '' }} </span>
 
   <!-- span-date -->
-  <span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}</span>
+  <span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
 
   <!-- span-datetime -->
-  <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{
-    form.controls[id].value | date: 'yyyy/MM/dd HH:mm'
-  }}</span>
+  <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
 
   <!-- color -->
   <span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
@@ -427,4 +373,132 @@
       </ng-template>
     </ion-modal>
   </span>
+
+  <!-- time-frame -->
+  <span *ngSwitchCase="'time-frame'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+    <ion-button fill="outline" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-Range')">
+      <ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
+      <ion-icon color="dark" slot="end" name="chevron-down"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
+      <!-- <ion-icon color="dark" slot="start" name="radio-button-on"></ion-icon> -->
+      {{ lib.formatTimeConfig(form.controls[id].getRawValue()) }}
+    </ion-button>
+    <ion-icon name="arrow-forward-outline"></ion-icon>
+    <ion-button
+      fill="clear"
+      size="small"
+      (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')"
+    >
+      <!-- <ion-icon slot="start" name="chevron-forward"></ion-icon> -->
+      {{ lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) }}
+    </ion-button>
+  </span>
+
+  <!-- date-compare-to -->
+  <span *ngSwitchCase="'date-compare-to'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+    <ion-button
+      class="no-padding"
+      fill="clear"
+      size="small"
+      (click)="presentDatePicker($event, form.controls[id], 'CompareTo')"
+    >
+      <ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
+      {{ lib.formatTimeConfig(form.controls[id].getRawValue(), true) }}
+    </ion-button>
+  </span>
+
+  <!-- datepicker -->
+  <ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
+    <ng-template>
+      <ion-content appScrollbarTheme>
+        <ion-segment
+          scrollable="false"
+          (ionChange)="segmentTimeframeChanged($event)"
+          [value]="pickerControl.controls.Type.value"
+          mode="md"
+        >
+          <ion-segment-button value="Relative">
+            <ion-label>{{ 'Relative' | translate }}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Absolute">
+            <ion-label>{{ 'Absolute' | translate }}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
+          <div>
+            <ng-container *ngIf="pickerGroupName == 'CompareTo'">
+              <ion-item
+                button
+                detail="false"
+                *ngFor="let i of commonOptions.compareTo"
+                (click)="pickDate(i.timeConfig)"
+              >
+                <ion-icon name="timer-outline" slot="start"></ion-icon>
+                <ion-label>{{ i.name | translate }}</ion-label>
+              </ion-item>
+            </ng-container>
+
+            <ng-container *ngIf="pickerGroupName == 'TimeFrame-Range'">
+              <ion-item
+                button
+                detail="false"
+                *ngFor="let i of commonOptions.quickPickTimeRange"
+                (click)="pickDate(i, true)"
+              >
+                <ion-icon name="timer-outline" slot="start"></ion-icon>
+                <ion-label>{{ i.name | translate}}</ion-label>
+              </ion-item>
+            </ng-container>
+
+            <ng-container *ngIf="pickerGroupName == 'TimeFrame-From' || pickerGroupName == 'TimeFrame-To'">
+              <ion-item
+                button
+                detail="false"
+                *ngFor="let i of commonOptions.timeframe"
+                (click)="pickDate(i.timeConfig)"
+              >
+                <ion-icon name="timer-outline" slot="start"></ion-icon>
+                <ion-label>{{ i.name | translate }}</ion-label>
+              </ion-item>
+            </ng-container>
+          </div>
+          <ion-item>
+            <app-input-control
+              style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
+              [form]="pickerControl"
+              type="select"
+              id="Period"
+              [dataSource]="_timePeriodList"
+              bindValue="code"
+              bindLabel="name"
+            ></app-input-control>
+            <app-form-control
+              style="width: 100%"
+              [form]="pickerControl"
+              type="number"
+              id="Amount"
+              label=""
+            ></app-form-control>
+          </ion-item>
+        </ion-list>
+
+        <div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
+          <!-- [locale]="env.language.current" -->
+          <ion-datetime
+            [value]="pickerControl.controls.Value.value"
+            [firstDayOfWeek]="1"
+            (ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
+            mode="ios"
+            format="YYYY-MM-DDTHH:mm"
+          ></ion-datetime>
+        </div>
+      </ion-content>
+      <ion-button class="ion-margin" size="small" expand="block" (click)="dismissDatePicker(true)">{{
+        'Apply' | translate
+      }}</ion-button>
+    </ng-template>
+  </ion-popover>
 </ng-container>

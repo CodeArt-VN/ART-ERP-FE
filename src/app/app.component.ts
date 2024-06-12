@@ -195,7 +195,7 @@ export class AppComponent implements OnInit {
 
   updateStatusbar() {
     let title = 'ERP';
-    let relIcon = 'assets/icons/icon-512x512.png';
+    let relIcon = 'assets/icons/icon-512.webp';
 
     if (environment.appDomain.indexOf('inholdings.vn') > -1) {
       if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
@@ -226,28 +226,30 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       let themeColor = lib.getCssVariableValue('--ion-color-primary');
       document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+
+      if (Capacitor.isPluginAvailable('StatusBar')) {
+        StatusBar.setBackgroundColor({
+          color: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? themeColor : '#ffffff',
+        });
+        StatusBar.setStyle({
+          style: this.env.user.UserSetting.IsDarkTheme.Value ? Style.Dark : Style.Light,
+        });
+      }
     }, 100);
 
     if (Capacitor.isPluginAvailable('StatusBar')) {
       StatusBar.setBackgroundColor({
-        color:
-          this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value
-            ? '#5a5c5e'
-            : '#ffffff',
+        color: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? '#5a5c5e' : '#ffffff',
       });
       StatusBar.setStyle({
-        style:
-          this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value
-            ? Style.Dark
-            : Style.Light,
+        style: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? Style.Dark : Style.Light,
       });
-      //StatusBar.setBackgroundColor({ color: (this.env.user && this.env.user.userSetting && this.env.user.UserSetting.IsDarkTheme.Value) ? '#5a5c5e' : '#ffffff' });
+      //StatusBar.setBackgroundColor({ color: (this.env?.user?.UserSetting?.IsDarkTheme?.Value) ? '#5a5c5e' : '#ffffff' });
       StatusBar.setOverlaysWebView({ overlay: false });
     }
   }
 
   ngOnInit() {
-    console.log('AppComponent ngOnInit');
     this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
 
     // const path = window.location.pathname.split('folder/')[1];

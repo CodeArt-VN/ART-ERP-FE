@@ -1,6 +1,7 @@
 .chart-holder {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   border-radius: 6px;
 
@@ -12,6 +13,16 @@
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
+
+  // &:hover {
+  //   .more-btn{
+  //     display: block;
+  //   }
+  // }
+
+  // .more-btn{
+  //   display: none;
+  // }
 
   .toggle-mini-btn {
     position: absolute;
@@ -63,6 +74,17 @@
           rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.025) 0%,
           rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1) 100%
         ) !important;
+      }
+    }
+
+    &.dashboard{
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+      
+      app-card-multi-row{
+        max-width:250px;
       }
     }
   }
