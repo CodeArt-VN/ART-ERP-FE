@@ -318,18 +318,16 @@
   ></app-branch-breadcrumbs>
 
   <!-- span-text -->
-  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value }}</span>
+  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value || '&nbsp;'}}</span> 
 
   <!-- span-number -->
-  <span *ngSwitchCase="'span-number'" class="c-input disable">{{ form.controls[id].value | number: '1.0-0' }}</span>
+  <span *ngSwitchCase="'span-number'" class="c-input disable">{{ form.controls[id].value | number: '1.0-0' }}{{form.controls[id].value == null? '&nbsp;': '' }} </span>
 
   <!-- span-date -->
-  <span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}</span>
+  <span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
 
   <!-- span-datetime -->
-  <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{
-    form.controls[id].value | date: 'yyyy/MM/dd HH:mm'
-  }}</span>
+  <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
 
   <!-- color -->
   <span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
