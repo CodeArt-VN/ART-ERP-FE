@@ -30,7 +30,7 @@
           *ngFor="let g of groupControl.groupList"
           (click)="onGroupChange(g)"
         >
-          <ion-icon aria-hidden="true" [name]="g.Icon ? 'grid-outline' : 'layers'" slot="start"></ion-icon>
+          <ion-img slot="start" class="icon-30" #img [src]="g.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
           <ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
           <ion-reorder slot="end"></ion-reorder>
         </ion-item>
@@ -58,11 +58,9 @@
     >
       <datatable-column [checkbox]="true" name=""></datatable-column>
       <datatable-column class="col-id" name="#" property="Id"></datatable-column>
-      <datatable-column class="col-id" name="" property="ProviderIcon">
+      <datatable-column class="col-icon large" name="" property="Id">
         <ng-template let-i="row" datatable-cell-template>
-          <ion-avatar
-            ><ion-img #img [src]="i.ProviderIcon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-          ></ion-avatar>
+          <ion-icon [name]="i.Icon || 'bar-chart-outline'" [color]="i.Color || 'primary'" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-icon>
         </ng-template>
       </datatable-column>
       <datatable-column class="col-name" name="Name" property="Name">
@@ -75,7 +73,6 @@
           </div>
         </ng-template>
       </datatable-column>
-      <datatable-column class="col-code" name="Type" property="Type"></datatable-column>
     </app-data-table>
   </div>
 

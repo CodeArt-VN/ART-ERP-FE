@@ -21,6 +21,7 @@ import { IntegrationTriggerActionModalPage } from '../integration-trigger-action
 })
 export class IntegrationTriggerDetailPage extends PageBase {
   typeList: any = [];
+  actionDataSource: any;
 
   constructor(
     public pageProvider: SYS_TriggerProvider,
@@ -45,12 +46,12 @@ export class IntegrationTriggerDetailPage extends PageBase {
       IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
       IDProvider: ['', Validators.required],
-      IDAction: ['', Validators.required],
+      IDAction: [''],
       Code: [''],
       Type: ['Event'],
       Icon: [''],
       Color: [''],
-      Name: [''],
+      Name: ['', Validators.required],
       Remark: [''],
       Sort: [''],
       TriggerActions: this.formBuilder.array([]),
@@ -66,11 +67,14 @@ export class IntegrationTriggerDetailPage extends PageBase {
   providerDataSource: any;
   preLoadData(event?: any): void {
     Promise.all([
-      this.integrationProvider.read(this.query, false), 
-      this.env.getType('IntegrationTriggerType')]).then(
+      this.integrationProvider.read({IsTriggerable: true}, false), 
+      this.env.getType('IntegrationTriggerType'),
+      this.actionProvider.read(this.query, false)
+    ]).then(
       (values: any) => {
         this.providerDataSource = values[0].data;
         this.typeList = values[1].data;
+        this.actionDataSource = values[2].data;
         super.preLoadData(event);
       },
     );
@@ -149,24 +153,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
       this.formGroup.get('TriggerActions').markAsDirty();
     }
   }
-
-  actionDataSource: any;
-  changeProvider() {
-    this.actionDataSource = [];
-    this.formGroup.get('IDAction').setValue('');
-    this.formGroup.get('IDAction').markAsDirty();
-    this.query.IDProvider = this.formGroup.get('IDProvider').value;
-    this.query.IsTriggerable = true;
-    this.actionProvider.read(this.query, false).then((listAction: any) => {
-      if (listAction != null && listAction.data.length > 0) {
-        this.actionDataSource = listAction.data;
-      } else {
-        this.actionDataSource = [];
-      }
-    });
-    this.saveChange();
-  }
-
 
   removeField(fg, j) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;

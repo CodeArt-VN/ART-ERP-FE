@@ -49,7 +49,7 @@ export class IntegrationActionDetailPage extends PageBase {
       Id: new FormControl({ value: '', disabled: true }),
       IDProvider: ['', Validators.required],
       IDSchema: [null],
-      Name: [''],
+      Name: ['', Validators.required],
       Code: [''],
       Remark: [''],
       Type: [''],
