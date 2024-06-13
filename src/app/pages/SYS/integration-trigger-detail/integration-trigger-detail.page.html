@@ -24,10 +24,10 @@
           <ion-col size="12" size-sm size-xl="4">
             <app-form-control
               [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeProvider($event)">
+              (change)="saveChange()">
             </app-form-control>
             <app-form-control
-              [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
+              [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', dataSource: actionDataSource, clearable : true, bindValue:'Id', bindLabel:'Name', form : formGroup }"
               (change)="saveChange()">
             </app-form-control>
             <app-form-control [field]="{id:'Color', label: 'Color',  type : 'color', form : formGroup }" (change)="saveChange()"></app-form-control>
