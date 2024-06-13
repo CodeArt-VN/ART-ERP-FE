@@ -276,7 +276,7 @@ export abstract class PageBase implements OnInit {
         }
     }
 
-    archiveItems() {
+    archiveItems(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.isDetailPage){
             this.pageProvider.disable(this.item, !this.item.IsDisabled).then(() => {
                 if (this.item.IsDisabled) {
@@ -285,6 +285,7 @@ export abstract class PageBase implements OnInit {
                 else {
                     this.env.showTranslateMessage('Reopened','success');
                 }
+                this.env.publishEvent({ Code: publishEventCode });
             })
         }else{
             this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
