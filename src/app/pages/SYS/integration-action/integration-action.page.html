@@ -1,103 +1,91 @@
 <ion-header>
-	<app-list-toolbar
-	  pageTitle="{{'Organization structure' | translate}}"
-	  [pageConfig]="pageConfig"
-	  [selectedItems]="selectedItems"
-	  [query]="query"
-	  (add)="add()"
-	  (refresh)="refresh()"
-	  (export)="export()"
-	  (import)="import($event)"
-	  (help)="help()"
-	  (unselect)="unselect()"
-	  (archiveItems)="archiveItems()"
-	  (deleteItems)="deleteItems()"
-	></app-list-toolbar>
-  </ion-header>
-  
-  <ion-content appScrollbarTheme class="scrollx" scroll-x="true">
-	<ion-refresher
-	  [disabled]="!pageConfig.refresher"
-	  [disabled]="!pageConfig.refresher"
-	  slot="fixed"
-	  (ionRefresh)="refresh($event)"
-	>
-	  <ion-refresher-content></ion-refresher-content>
-	</ion-refresher>
-	<ion-fab *ngIf="pageConfig.isShowFeature" class="feature" vertical="top" horizontal="end" slot="fixed">
-	  <div class="ion-padding"></div>
-	</ion-fab>
-  
-	<section class="table">
-	  <header class="bold">
-		<div class="col-checkbox cell"></div>
-		<div class="col-id ion-hide-sm-down cell">Id</div>
-		<div class="col-name cell" >
-		  {{'Name' | translate}}
-		  <ion-icon *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
-		  <ion-icon
-			(click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
-			*ngIf="query.Keyword"
-			name="search"
-			color="primary"
-		  ></ion-icon>
-		</div>
-		<div class="col-name provider cell">
-			{{'Provider' | translate}}
-		  </div>
-		  <div class="col-code cell">
-			{{'Type' | translate}}
-		  </div>
+  <app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme class="left" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+  <ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-	  </header>
-	  <form (submit)="refresh()" action="#">
-		<header class="filter" *ngIf="pageConfig.isShowSearch">
-		  <div class="col-checkbox cell"></div>
-		  <div class="hide-small col-id cell"></div>
-		  <div class="col-name cell">
-			<input
-			  [ngModelOptions]="{standalone: true}"
-			  [(ngModel)]="query.Keyword"
-			  class="c-input"
-			  [ngClass]="{active: query.Keyword}"
-			  placeholder="Tìm theo tên hoặc mã..."
-			  type="text"
-			/>
-			<ion-icon (click)="query.Keyword=''; refresh()" *ngIf="query.Keyword" name="close"></ion-icon>
-		  </div>
-		  <button mat-raised-button type="submit" style="display: none">Search</button>
-		</header>
-	  </form>
-  
-	<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
-	<div *ngIf="items.length && pageConfig.showSpinner==false">
-		<section class="table">
-					<div *ngFor="let i of items; let j = index;"  class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
-						<div class="col-checkbox cell">
-							<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
-						</div>
-						<div (click)="nav('integration-action/'+i.Id,'forward')" class="ion-hide-sm-down col-id cell">
-							{{i.Id}}
-						</div>
-						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-name cell">
-							{{i.Name}}
-						</div>
-						<div (click)="nav('integration-action/'+i.Id,'forward')" class="col-name provider cell">
-							<ion-avatar ><ion-img #img [src]="i.ProviderIcon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img ></ion-avatar>
-						  {{i.ProviderName}}
-						</div>
-						<div class="col-code cell">
-							{{i.Type}}
-						</div>
-					</div>
-				
-		</section>
-	</div>
-	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
-		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-	</ion-infinite-scroll>
-	
-	</section>
-	<app-page-message [itemsLength]="itemsState.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
-  </ion-content>
-  
+  <ion-fab
+    *ngIf="pageConfig.isShowFeature"
+    [ngClass]="{'ion-hide-md-down' : pageConfig.isSubActive}"
+    class="feature no-print"
+    vertical="bottom"
+    horizontal="start"
+    slot="fixed"
+  >
+    <ion-list>
+      <ion-list-header lines="full">
+        <ion-label color="dark">{{'Provider' | translate}}</ion-label>
+      </ion-list-header>
+      <ion-item [color]="!groupControl.selectedGroup? 'primary': '' " lines="full" button (click)="onGroupChange(null)">
+        <ion-icon aria-hidden="true" name="layers" slot="start"></ion-icon>
+        <ion-label>{{'All' | translate}}</ion-label>
+      </ion-item>
+      <ion-reorder-group [disabled]="!groupControl.showReorder" (ionItemReorder)="handleReorder($any($event))">
+        <ion-item
+          [color]="g.Id == groupControl.selectedGroup?.Id? 'primary': '' "
+          lines="full"
+          button
+          *ngFor="let g of groupControl.groupList"
+          (click)="onGroupChange(g)"
+        >
+          <ion-icon aria-hidden="true" [name]="g.Icon ? 'grid-outline' : 'layers'" slot="start"></ion-icon>
+          <ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      </ion-reorder-group>
+    </ion-list>
+  </ion-fab>
+
+  <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+    <app-page-title [pageConfig]="pageConfig"></app-page-title>
+  </div>
+
+  <div style="max-width: 1440px; margin: auto; width: 100%">
+    <app-data-table
+      style="width: fit-content; min-width: calc(100% - 32px)"
+      class="box-shadow responsive"
+      [rows]="items"
+      [trackBy]="'Id'"
+      [(selectedRows)]="selectedItems"
+      [showSpinner]="pageConfig.showSpinner"
+      [showFilter]="pageConfig.isShowSearch"
+      [(query)]="query"
+      (dataInfinite)="loadData($event)"
+      (filter)="onDatatableFilter($event)"
+      (sort)="onSort($event)"
+    >
+      <datatable-column [checkbox]="true" name=""></datatable-column>
+      <datatable-column class="col-id" name="#" property="Id"></datatable-column>
+      <datatable-column class="col-id" name="" property="ProviderIcon">
+        <ng-template let-i="row" datatable-cell-template>
+          <ion-avatar
+            ><ion-img #img [src]="i.ProviderIcon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+          ></ion-avatar>
+        </ng-template>
+      </datatable-column>
+      <datatable-column class="col-name" name="Name" property="Name">
+        <ng-template let-i="row" datatable-cell-template>
+          <div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
+            <a class="bold">
+              <ion-text color="dark">{{i.Name}}</ion-text>
+            </a>
+            <div *ngIf="i.Remark">{{i.Remark}}</div>
+          </div>
+        </ng-template>
+      </datatable-column>
+      <datatable-column class="col-code" name="Type" property="Type"></datatable-column>
+    </app-data-table>
+  </div>
+
+  <div class="ion-padding"></div>
+  <ion-infinite-scroll
+    color="primary"
+    threshold="30%"
+    (ionInfinite)="loadData($event)"
+    [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData"
+  >
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
