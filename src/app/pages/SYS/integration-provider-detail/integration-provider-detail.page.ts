@@ -54,6 +54,12 @@ export class IntegrationProviderDetailPage extends PageBase {
     this.segmentView = ev.detail.value;
   }
 
+  preLoadData(event?: any): void {
+    this.env.getType('IntegrationProviderType').then((values) => {
+      this.typeDataSource = values;
+      super.preLoadData(event);
+    });
+  }
   async saveChange() {
     super.saveChange2();
   }

@@ -13,41 +13,25 @@
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
+            <app-form-control [field]="{id:'Code', form : formGroup }" (change)="saveChange()">
+              <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
+            </app-form-control>
+            <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()">
+            </app-form-control>
+            <app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Name', form : formGroup }" (change)="saveChange()">
+            </app-form-control>
+          </ion-col>
+          <ion-col size="12" size-sm size-xl="4">
             <app-form-control
               [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
               (change)="changeProvider($event)">
             </app-form-control>
-            <!-- <div class="c-control">
-              <label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
-              <ng-select [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="c-input" formControlName="IDProvider"
-                labelForId="IDProvider" [items]="providerDataSource.items$ | async" [typeahead]="providerDataSource.input$"
-                [loading]="providerDataSource.loading" [clearable]="true" bindLabel="Name" bindValue="Id"
-                placeholder="{{ 'Provider' | translate }}" (change)="changeProvider($event)">
-                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <ion-chip *ngFor="let i of items">
-                    <ion-avatar><ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
-                    <ion-label>{{ i.Name }}</ion-label>
-                    <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
-                  </ion-chip>
-                </ng-template>
-                <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                  <div *ngIf="i">
-                    <ion-avatar><ion-img #img [src]="i.Icon"
-                        (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
-                    <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
-                    <small>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
-                      ></small>
-                  </div>
-                </ng-template>
-              </ng-select>
-            </div> -->
             <app-form-control
               [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeAction($event)">
+              (change)="saveChange()">
             </app-form-control>
-
-          </ion-col>
-          <ion-col size="12" size-sm size-xl="4">
+            <app-form-control [field]="{id:'Color', label: 'Color',  type : 'color', form : formGroup }" (change)="saveChange()"></app-form-control>
+            <app-form-control [field]="{id:'Icon', label: 'Icon',  type : 'icon', form : formGroup }" (change)="saveChange()"></app-form-control>
           </ion-col>
         </ion-row>
 
