@@ -1,0 +1,8 @@
+<ion-list>
+  <ion-reorder-group [disabled]="false" (ionItemReorder)="onReoder($any($event))">
+    <ion-item *ngFor="let item of _items">
+      <ion-label>{{ item.Name }}</ion-label>
+      <ion-reorder slot="end"></ion-reorder>
+    </ion-item>
+  </ion-reorder-group>
+</ion-list>
