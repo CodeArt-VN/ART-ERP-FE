@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
-import { BRA_BranchProvider, SYS_APICollectionProvider } from 'src/app/services/static/services.service';
+import { BRA_BranchProvider, SYS_APICollectionProvider, SYS_IntegrationProviderProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
+import { CommonService } from 'src/app/services/core/common.service';
 import { SortConfig } from 'src/app/models/options-interface';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-api-collection',
@@ -15,11 +17,16 @@ export class APICollectionPage extends PageBase {
   itemsState: any = [];
   isAllRowOpened = true;
   itemsView = [];
-  constructor(
+  statusList: [];
+  providerDataSource :[];
+   constructor(
     public pageProvider: SYS_APICollectionProvider,
+    public integrationProvider: SYS_IntegrationProviderProvider,
     public branchProvider: BRA_BranchProvider,
+    public commonService: CommonService,
     public modalController: ModalController,
-    public popoverCtrl: PopoverController,
+    public formBuilder: FormBuilder,
+     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public loadingController: LoadingController,
     public env: EnvService,
@@ -30,14 +37,22 @@ export class APICollectionPage extends PageBase {
     this.query.Take = 5000;
     this.pageConfig.canDelete = true;
     this.pageConfig.canAdd = true;
+    this.formGroup = this.formBuilder.group({
+        IDProvider:['']
+    });
   }
-  statusList: [];
-
+  
+  
   preLoadData(event?: any): void {
     let sorted: SortConfig[] = [
         { Dimension: 'Name', Order: 'ASC' }
     ];
     this.pageConfig.sort = sorted;
+    Promise.all([
+      this.integrationProvider.read( this.query),
+    ]).then((values: any) => {
+      this.providerDataSource = values[0].data
+    })
     super.preLoadData(event);
   }
   loadedData(event) {
@@ -47,6 +62,27 @@ export class APICollectionPage extends PageBase {
     });
     super.loadedData(event);
   }
+
+  ngOnDestroy() {
+    this.dismissPopover();
+  }
+
+  @ViewChild('popoverPub') popoverPub;
+  isOpenPopover = false;
+  dismissPopover(apply: boolean = false) {
+    if (!this.isOpenPopover) return;
+
+    if (!apply) {
+      // this.form.patchValue(this._reportConfig?.DataConfig);
+    } else {
+      this.onClickImport();
+    }
+    this.isOpenPopover = false;
+  }
+  presentPopover(event) {
+    this.isOpenPopover = true;
+  }
+
 
   toggleRowAll() {
     this.isAllRowOpened = !this.isAllRowOpened;
@@ -61,4 +97,62 @@ export class APICollectionPage extends PageBase {
     super.toggleRow(ls, ite, toogle);
     this.itemsView = this.itemsState.filter((d) => d.show);
   }
+  
+  @ViewChild('importfileJson') importfileJson: any;
+  onClickImport() {
+      this.importfileJson.nativeElement.value = "";
+      this.importfileJson.nativeElement.click();
+  }
+
+  async importJson(event) {
+      
+    if (this.submitAttempt) {
+      this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.importing', 'primary');
+      return;
+    }
+    this.submitAttempt = true;
+    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: true, Id: 'FileImport', Icon: 'flash', IsBlink: true, Color: 'danger', Message: 'đang import' });
+      const reader = new FileReader();
+      const file = event.target.files[0];
+
+      if (file.type === "application/json") {
+       reader.onload = (e) => {
+          try {
+            if(!this.formGroup.get('IDProvider').value){
+              this.submitAttempt = false;
+
+            }
+            const jsonObject = JSON.parse(reader.result as string);
+
+            let obj = {
+              IDProvider : this.formGroup.get('IDProvider').value,
+              apicollection : jsonObject
+            }
+            this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+            this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                .then((resp:any) => {
+                    this.submitAttempt = false;
+                    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                    this.refresh();
+                  
+                }).catch(err => {
+                    this.submitAttempt = false;
+                    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                    this.refresh();
+                    this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                })
+          } catch (error) {
+            this.env.showTranslateMessage("Error parsing JSON:", 'danger');
+          }
+        };
+        reader.onerror = (e) => {
+          this.env.showTranslateMessage("File could not be read:", 'danger');
+        };
+        reader.readAsText(file);
+      } else {
+        this.env.showTranslateMessage("Please select a valid JSON file.", 'danger');
+      }
+     
+  }
+ 
 }
