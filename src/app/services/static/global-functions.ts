@@ -582,6 +582,8 @@ export var lib = {
   buildFlatTree(items, treeState, isAllRowOpened = true, root = null) {
     let treeItems = [];
     let listItems = [];
+    if(!treeState) treeState = []
+    
     return new Promise((resolve) => {
       let resp = items;
       let headerItems = [];

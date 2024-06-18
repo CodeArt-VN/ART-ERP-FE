@@ -11,6 +11,7 @@ export class FormControlComponent implements OnInit {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
     if (f.id) this.id = f.id;
+    if (f.secondaryId) this.secondaryId = f.secondaryId;
     if (f.label) this.label = f.label;
     if (f.color) this.color = f.color;
     if (f.placeholder) this.placeholder = f.placeholder;

@@ -7103,6 +7103,104 @@ export var APIListBase = {
 		
 	},
 
+	PM_Space:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/Space/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/Space"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/Space/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/Space/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/Space/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/Space/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/Space/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/Space/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/Space"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/Space/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/Space/" + id} 
+        }
+		
+	},
+
+	PM_SpaceStatus:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/SpaceStatus/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/SpaceStatus"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/SpaceStatus/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/SpaceStatus/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/SpaceStatus/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/SpaceStatus/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/SpaceStatus/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/SpaceStatus/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/SpaceStatus"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/SpaceStatus/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/SpaceStatus/" + id} 
+        }
+		
+	},
+
 	PM_Task:{
         getSearchList:{
             method: "GET",
@@ -7246,6 +7344,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PM/TaskLink/" + id} 
+        }
+		
+	},
+
+	PM_View:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/View/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/View"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/View/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/View/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/View/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/View/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/View/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/View/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/View"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/View/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/View/" + id} 
+        }
+		
+	},
+
+	PM_Workspace:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PM/Workspace/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PM/Workspace"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PM/Workspace/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PM/Workspace/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PM/Workspace/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PM/Workspace/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PM/Workspace/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PM/Workspace/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PM/Workspace"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PM/Workspace/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PM/Workspace/" + id} 
         }
 		
 	},
@@ -8667,6 +8863,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PROD/MRPWarehouse/" + id} 
+        }
+		
+	},
+
+	PROD_Order:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/Order/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/Order"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/Order/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/Order/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/Order/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/Order/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/Order"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/Order/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/Order/" + id} 
+        }
+		
+	},
+
+	PROD_OrderDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/OrderDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/OrderDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/OrderDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/OrderDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/OrderDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/OrderDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/OrderDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/OrderDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/OrderDetail/" + id} 
         }
 		
 	},

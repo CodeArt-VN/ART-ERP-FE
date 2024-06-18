@@ -26,6 +26,7 @@ export interface InputControlField {
     | 'color';
 
   id: string;
+  secondaryId: string;
 
   label: string;
   color: string;
