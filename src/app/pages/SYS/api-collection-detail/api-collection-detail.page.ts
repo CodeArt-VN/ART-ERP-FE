@@ -471,19 +471,19 @@ export class APICollectionDetailPage extends PageBase {
             if(saveControl == 'Body') {
               // JSON.parse(editorContent);
               control.setValue(editorContent); 
-              that.saveChangeJson(saveControl);
+              //that.saveChangeJson(saveControl);
             } 
             else{
               control.setValue(editorContent); 
-              control.markAsDirty();
-              that.saveChange();
+              //control.markAsDirty();
+            //  that.saveChange();
             }
-              console.log('success');
+           //   console.log('success');
             }
             catch (error) {
               return;
           }
-            // Update _Body value
+            //Update _Body value
           } 
        );
        // Add mouseout event listener to the editor's DOM element

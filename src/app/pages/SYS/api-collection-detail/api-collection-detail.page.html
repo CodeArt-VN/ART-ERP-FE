@@ -266,20 +266,25 @@
 					</ion-col> -->
 				</ion-row>
 				<ion-row class="hr-group ion-padding" *ngIf="formGroup.get('_Body').get('BodyType').value !='x-www-form-urlencoded'"> 
-					<ion-col>
+					<ion-col size="12">
 						<ion-accordion-group [value]="'body'" multiple="true">
 							<ion-accordion value="body" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 									<ion-label>{{ 'data' | translate }}</ion-label>
+									<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChangeJson('Body')">
+										<ion-icon name="save-outline"></ion-icon>
+									</ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-								<div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChangeJson('Body')">
+								<div [id]="chartScriptId" style="min-height: 500px; width: 100%" >
 										<!-- {{ _report.ChartConfigScript }} -->
 								</div>
 								</div>
 							</ion-accordion>
 						</ion-accordion-group>
+						
 				  </ion-col>
+				 
 			  	</ion-row>
 				<div class="table-contain ion-padding"  *ngIf="formGroup.get('_Body').get('BodyType').value =='x-www-form-urlencoded'"> 
 					<section class="table responsive">
@@ -336,9 +341,12 @@
 						<ion-accordion value="beforeScirpt" fixed style="background: transparent">
 							<ion-item slot="header" color="light">
 							  <ion-label>{{ 'Script' | translate }}</ion-label>
+							  <ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
+								<ion-icon name="save-outline"></ion-icon>
+							  </ion-button>
 							</ion-item>
 							<div slot="content" style="background: transparent">
-							  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+							  <div [id]="chartScriptId" style="min-height: 500px; width: 100%">
 								<!-- {{ _report.ChartConfigScript }} -->
 							  </div>
 							</div>
@@ -355,9 +363,12 @@
 							<ion-accordion value="afterScirpt" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 								  <ion-label>{{ 'Script' | translate }}</ion-label>
+								  <ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
+									<ion-icon name="save-outline"></ion-icon>
+								  </ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%" (change)="saveChange()">
+								  <div [id]="chartScriptId" style="min-height: 500px; width: 100%">
 									<!-- {{ _report.ChartConfigScript }} -->
 								  </div>
 								</div>
