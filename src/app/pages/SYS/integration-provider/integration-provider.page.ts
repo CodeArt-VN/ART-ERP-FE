@@ -29,7 +29,6 @@ export class IntegrationProviderPage extends PageBase {
     public location: Location,
   ) {
     super();
-    this.pageConfig.isFeatureAsMain = true;
   }
 
   preLoadData(event?: any): void {

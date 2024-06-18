@@ -16,7 +16,7 @@
   >
     <ion-list>
       <ion-list-header lines="full">
-        <ion-label color="dark">{{'Provider' | translate}}</ion-label>
+        <ion-label color="dark">{{'Providers' | translate}}</ion-label>
       </ion-list-header>
       <ion-item [color]="!groupControl.selectedGroup? 'primary': '' " lines="full" button (click)="onGroupChange(null)">
         <ion-icon aria-hidden="true" name="layers" slot="start"></ion-icon>
@@ -60,7 +60,7 @@
       <datatable-column class="col-id" name="#" property="Id"></datatable-column>
       <datatable-column class="col-icon large" name="" property="Id">
         <ng-template let-i="row" datatable-cell-template>
-          <ion-icon [name]="i.Icon || 'bar-chart-outline'" [color]="i.Color || 'primary'" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-icon>
+          <ion-icon [name]="i.Icon || 'flash'" [color]="i.Color || 'primary'" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-icon>
         </ng-template>
       </datatable-column>
       <datatable-column class="col-name" name="Name" property="Name">

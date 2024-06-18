@@ -1,5 +1,5 @@
 <ion-header>
-  <app-detail-toolbar [page]="this"></app-detail-toolbar>
+  <app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding">
   <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
@@ -22,7 +22,7 @@
             >
             </app-form-control>
             <app-form-control
-              [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Name', form : formGroup }"
+              [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select', bindValue:'Code', bindLabel:'Name', form : formGroup }"
               (change)="saveChange()"
             ></app-form-control>
             <app-form-control
@@ -36,35 +36,12 @@
           </ion-col>
 
           <ion-col size="12" size-sm size-xl="4">
-            <div class="c-control">
-              <label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
-              <ng-select
-                [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-                class="c-input"
-                formControlName="IDProvider"
-                labelForId="IDProvider"
-                [items]="providerDataSource"
-                bindLabel="Name"
-                bindValue="Id"
-                [clearable]="true"
-                (change)="changeProvider()"
-                appendTo="#ng-select-holder"
-              >
-                <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                  <div *ngIf="i">
-                    <ion-avatar
-                      ><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-                    ></ion-avatar>
-                    <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
-                    <small
-                      >#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
-                    </small>
-                  </div>
-                </ng-template>
-              </ng-select>
-            </div>
             <app-form-control
-              [field]="{id:'IDSchema', label: 'Schema', dataSource: schemaDataSource, type : 'ng-select',bindValue:'Id',bindLabel:'Name', form : formGroup }"
+              [field]="{id:'IDProvider', label: 'Provider', dataSource: providerDataSource, type: 'ng-select', clearable: false, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
+              (change)="changeProvider()"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'IDSchema', label: 'Schema', dataSource: schemaDataSource, type: 'ng-select', clearable: true, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
               (change)="saveChange()"
             ></app-form-control>
             <app-form-control
@@ -87,7 +64,7 @@
             <div class="table-contain">
               <section class="table">
                 <header class="bold">
-                  <div class="col-id cell">{{'Id' | translate}}</div>
+                  <div class="col-id cell">{{'No.' | translate}}</div>
                   <div class="col-name cell">{{'API' | translate}}</div>
                   <div class="col-icon cell clickable">
                     <ion-icon
@@ -118,7 +95,7 @@
                   <ng-container *ngFor="let c of Runners.controls ;let j = index">
                     <ng-container [formGroup]="c">
                       <div class="row" [ngClass]="{odd: j % 2 != 0}">
-                        <div class="col-id cell">{{c.get('Id')?.value}}</div>
+                        <div class="col-id cell">{{j+1}}</div>
                         <div class="col-name cell">
                           <ng-select
                             [ngClass]="{ 'no-check-dirty': noCheckDirty }"

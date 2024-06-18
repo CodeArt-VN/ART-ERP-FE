@@ -30,7 +30,6 @@
       <datatable-column class="col-icon large" name="" property="Icon">
         <ng-template let-i="row" datatable-cell-template>
           <ion-img slot="start" #img [src]="i.Icon" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-img>
-          
         </ng-template>
       </datatable-column>
       <datatable-column class="col-name" name="Name" property="Name">

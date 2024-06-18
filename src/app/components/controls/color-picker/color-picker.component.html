@@ -9,8 +9,10 @@
 <!-- App Color -->
 <div class="ion-padding" *ngIf="segmentView == 's1'">
   <div class="ion-padding ion-text-center">
-    <ion-button size="small" [color]="r.Code" *ngFor="let r of items" (click)="onSelected(r)" style="width: 50px">
+    <ion-button shape="round" size="small" [color]="r.Code" *ngFor="let r of items" (click)="onSelected(r)" >
+      
     </ion-button>
+
   </div>
 </div>
 <!-- Palettes -->

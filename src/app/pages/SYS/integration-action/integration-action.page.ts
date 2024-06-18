@@ -40,7 +40,6 @@ export class IntegrationActionPage extends PageBase {
     this.pageConfig.isShowFeature = true;
     this.pageConfig.isFeatureAsMain = true;
   }
-  statusList: [];
 
   preLoadData(event?: any): void {
     let sorted: SortConfig[] = [{ Dimension: 'Id', Order: 'DESC' }];

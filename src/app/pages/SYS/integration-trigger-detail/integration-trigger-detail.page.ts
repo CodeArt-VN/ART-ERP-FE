@@ -73,7 +73,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     ]).then(
       (values: any) => {
         this.providerDataSource = values[0].data;
-        this.typeList = values[1].data;
+        this.typeList = values[1];
         this.actionDataSource = values[2].data;
         super.preLoadData(event);
       },

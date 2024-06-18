@@ -76,7 +76,8 @@ export class IntegrationActionDetailPage extends PageBase {
     ]).then((values: any) => {
       this.schemaDataSource = values[0].data;
       this.providerDataSource = values[1].data;
-      this.typeList = values[2].data;
+      this.typeList = values[2];
+      
     });
     super.preLoadData(event);
   }

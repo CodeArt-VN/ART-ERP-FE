@@ -1,5 +1,5 @@
 <ion-header>
-  <app-detail-toolbar [page]="this"></app-detail-toolbar>
+  <app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
 <ion-content appScrollbarTheme class="ion-padding">
@@ -23,7 +23,7 @@
             </app-form-control>
             <app-form-control
               [field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: typeDataSource, bindValue:'Code', bindLabel:'Name', form : formGroup }"
-              (change)="changeType($event)"
+              (change)="saveChange()"
             >
             </app-form-control>
           </ion-col>
@@ -32,15 +32,6 @@
             </app-form-control>
             <app-form-control [field]="{id:'Icon', label: 'Logo', type : 'text', form : formGroup }" (change)="saveChange()">
             </app-form-control>
-            <!-- <div class="c-control">
-              <div> 
-                <label class="c-label" for="Icon">{{'Icon' | translate}}
-                </label>
-                <ion-avatar class="avatar" slot="start">
-                  <ion-img #img [src]="formGroup.get('Icon').value" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
-                </ion-avatar>
-              </div>
-            </div> -->
           </ion-col>
         </ion-row>
         <!-- Other information -->
