@@ -108,7 +108,7 @@ export class APICollectionDetailPage extends PageBase {
     this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
     this.methodList = [{ Code: 'GET' }, { Code: 'POST' }, { Code: 'PUT' }, { Code: 'PATCH' }, { Code: 'DELETE' }];
     this.typeList = [{ Code: 'Request' }, { Code: 'Folder' }, { Code: 'Collection' }];
-    this.bodyType = [{Name:'raw',Code:'raw'},{Name:'none',Code:'none'},{Name:'form-data',Code:'formData'},{Name:'binary',Code:'binary'},{Name:'GraphQL',Code:'GraphQL'}]
+    this.bodyType = [{Name:'raw',Code:'raw'}, { Name: 'x-www-form-urlencoded', Code : 'x-www-form-urlencoded'}, {Name:'none',Code:'none'},{Name:'form-data',Code:'formData'},{Name:'binary',Code:'binary'},{Name:'GraphQL',Code:'GraphQL'}]
     this.dataType = [{Name:'JSON',Code:'JSON'},{Name:'Text',Code:'Text'},{Name:'Javascript',Code:'Javascript'},{Name:'HTML',Code:'HTML'},{Name:'XML',Code:'XML'}]
 
     this.authorizationList = [
@@ -159,6 +159,7 @@ export class APICollectionDetailPage extends PageBase {
       //JSON.parse(this.item[key]);
       let controls = [];
       let isArray = false;
+      let isNestedValueArray = false;
       switch (key) {
         case 'Params':
           controls = [ 'Key', 'Value'];
@@ -170,6 +171,7 @@ export class APICollectionDetailPage extends PageBase {
           break;
         case 'Body':
           controls = ['BodyType', 'DataType', 'Value'];
+          isNestedValueArray = true;
           break;
         case 'Authorization':
           controls = ['Type', 'Token', 'Username', 'Password'];
@@ -189,25 +191,58 @@ export class APICollectionDetailPage extends PageBase {
       }
       let value = null;
       if (this.item[key]) {
-         value = JSON.parse(this.item[key]);
-      }
+        let data = this.item[key];
+        value = JSON.parse(data);
+//          if (!Array.isArray(value)) {
+      
+    }
       if (controls.length > 0 && isArray && value != null) {
-          value.forEach((v) => {
+          value?.forEach((v) => {
             this.addField(v, key, controls, isArray);
           });
       } 
+      // else if(isNestedValueArray){
+      //   let arrayNested = []; 
+      //   let keys = Object.keys(value);
+      //   keys.forEach(k => {
+      //     if(Array.isArray(value[k])){
+      //       arrayNested.push()
+      //   }
+      //   else{
+
+      //   }
+      //   });
+      //   value?.forEach((v) => {
+      //       if((!Array.isArray(v))){
+      //         console.log('array ' +v);
+      //       }
+      //       this.addField(v, key, controls, isArray);
+      //     });
+      // }
       else if(!isArray) this.addField(value, key, controls, isArray);
     }
+    console.log(this.formGroup)
   }
 
-  addField(field: any, controlName, controls, isArray, markAsDirty = false) {
+  addField(field: any, controlName, controls, isArray , fg = null) {
+    if(!fg) fg = this.formGroup;
     if (isArray) {
-      let groups = <FormArray>this.formGroup.get('_' + controlName);
- 
+      let groups : FormArray
+    //  let groups = <FormArray>fg.get('_' + controlName);
+      if (fg.get('_' + controlName) instanceof FormArray) {
+        groups = fg.get('_' + controlName) as FormArray;
+      } else if (fg.get(controlName) instanceof FormArray) {
+        groups = fg.get(controlName)
+      } else {
+        // Handle the case where neither FormGroup exists
+        console.error(`Neither '_${controlName}' nor '${controlName}' exist as FormGroup in the form.`);
+        return;
+      }
       let group = this.formBuilder.group({});
       for (let control of controls) {
         group.addControl(control, this.formBuilder.control(field != null ? field[control] : ''));
-        this.model[control] = ''
+        this.model[control] = '';
+        group.get(control).markAsPristine();
       }
     
       // if(group.get('IsAvailable')?.value && group.get('IsAvailable').value == false){
@@ -215,10 +250,31 @@ export class APICollectionDetailPage extends PageBase {
       // }
       groups.push(group);
     } else {
-      let _group = this.formGroup.get('_' + controlName) as FormGroup;
+      let _group = fg.get('_' + controlName) as FormGroup;
       for (let control of controls) {
-        _group.get(control).setValue(field != null ? field[control] : '');
-        this.model[control] = ''
+        if(field && Array.isArray(field[control])){
+          let formArray = new FormArray([]);
+          // Loop through each item in the array and add a new FormControl for each item
+          field[control].forEach(item => {
+            let formGroup = new FormGroup({});
+            
+            // Loop through each key in the item and add a new FormControl to the FormGroup
+            for (let key in item) {
+                if (item.hasOwnProperty(key)) {
+                    formGroup.addControl(key, new FormControl(item[key]));
+                }
+            }
+
+            // Push the FormGroup into the FormArray
+            formArray.push(formGroup)
+          });
+          _group.setControl(control, formArray); //
+        }
+        else{
+            _group.get(control).setValue(field != null ? field[control] : '');
+            this.model[control] = ''
+        }
+        
       }
     
     }
@@ -252,6 +308,22 @@ export class APICollectionDetailPage extends PageBase {
     this.saveChange();
   }
 
+  changeBodyType(){
+    let _group =  this.formGroup.get('_Body') as FormGroup;
+    if(this.formGroup.get('_Body').get('BodyType').value == 'x-www-form-urlencoded'){
+      _group.setControl('Value',  new FormArray([])); //
+    }
+    else{
+      _group.setControl('Value',  new FormControl()); //
+     // this.initAce() ;
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        this.initAce();
+      }, 0);
+    }
+    this.saveChangeJson('Body') 
+  }
+
   resetForm(){
     let type = this.formGroup.get('Type').value;
     if(type == 'Request'){
@@ -272,9 +344,17 @@ export class APICollectionDetailPage extends PageBase {
     }
   }
 
-  removeField(index, controlName) {
-    let groups = <FormArray>this.formGroup.get('_' + controlName);
-    groups.removeAt(index);
+  removeField(index, controlName,isArray = false, arrayName =  '') {
+    if(isArray){
+      let fg = this.formGroup.get('_' + controlName) as FormGroup;
+      let formArray = fg?.get(arrayName)  as FormArray;
+      formArray.removeAt(index);
+    }
+    else{
+        let groups = <FormArray>this.formGroup.get('_' + controlName);
+        groups.removeAt(index);
+    }
+
     this.saveChangeJson(controlName);
   }
   saveChangeJson(controlName) {
@@ -286,9 +366,10 @@ export class APICollectionDetailPage extends PageBase {
     this.saveChange2();
     // this.sa
   }
-  newField(ev, controlName, control) {
+  newField(ev, controlName, fg = null) {
     let controls = [];
     let isArray = false;
+    let saveControl = controlName;
     switch (controlName) {
       case 'Params':
         controls = [ 'Key', 'Value'];
@@ -301,10 +382,16 @@ export class APICollectionDetailPage extends PageBase {
       case 'Body':
         controls = ['BodyType', 'DataType', 'Value'];
         break;
+      case 'Body/Value':
+        controlName = 'Value';
+        controls = ['Key', 'Value'];
+        isArray = true;
+        saveControl = 'Body';
+        fg = this.formGroup.get('_Body');
+        break;
       case 'Authorization':
         controls = ['Type', 'Token', 'Username', 'Password'];
         break;
-
       case 'Setting':
         controls = ['Key', 'Value'];
         isArray = true;
@@ -314,8 +401,8 @@ export class APICollectionDetailPage extends PageBase {
         controls = [ 'Key', 'InitialValue', 'CurrentValue'];
         break;
     }
-    this.addField(this.model,controlName,controls,isArray,true)
-    this.saveChangeJson(controlName)
+    this.addField(this.model,controlName,controls,isArray,fg)
+    this.saveChangeJson(saveControl)
   }
   deleteItems(controlName){
     if (this.pageConfig.canDelete) {
@@ -350,7 +437,7 @@ export class APICollectionDetailPage extends PageBase {
         JSON.parse(this.formGroup.get('_Body').value.Value)
         let jsonValue = this.formGroup.get('_Body').value.Value?JSON.parse(this.formGroup.get('_Body').value.Value) : null;
         formattedValue = jsonValue? JSON.stringify(jsonValue, null, '\t'): null;
-       
+        
       }catch(err){
         formattedValue = this.formGroup.get('_Body').value.Value;
         mode = 'text'
