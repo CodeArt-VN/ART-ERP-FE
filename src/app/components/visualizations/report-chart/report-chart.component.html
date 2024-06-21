@@ -1,4 +1,4 @@
-<div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{ 'box-shadow': viewMode != 'mini' }">
+<div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{ 'glass': viewMode != 'mini' }">
   <!-- chart title -->
   <ion-item lines="none" *ngIf="viewMode == 'dashboard'">
     <ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>

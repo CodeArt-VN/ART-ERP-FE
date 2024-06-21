@@ -1,4 +1,3 @@
-
 html {
   // font-size: 10px !important;
 
@@ -10,8 +9,8 @@ html {
   //--ion-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
 }
 
-body{
-  font-size: calc(10/16 * 1.4rem);
+body {
+  font-size: calc(10 / 16 * 1.4rem);
 }
 
 a {
@@ -127,6 +126,9 @@ app-detail-toolbar {
       --padding-start: 40px;
     }
   }
+  ion-toolbar:last-of-type {
+    --border-color: var(--menu-right-border-color);
+  }
 }
 
 [hidden] {
@@ -153,7 +155,7 @@ swiper-slide {
   width: 100%;
   height: 100%;
 
-  font-size: calc(10/16 * 1.8rem);
+  font-size: calc(10 / 16 * 1.8rem);
 
   text-align: center;
   box-sizing: border-box;
@@ -224,11 +226,6 @@ input[type='number'] {
 ::-webkit-resizer the draggable resizing handle that appears at the bottom corner of some elements.
 */
 
-
-
-
-
-
 .safe-holder {
   position: relative;
   margin-top: 20px;
@@ -255,7 +252,7 @@ input[type='number'] {
 .title {
   color: var(--ion-color-dark);
   font-weight: 300;
-  font-size: calc(10/16 * 1.3rem);
+  font-size: calc(10 / 16 * 1.3rem);
   padding-left: 16px;
   //text-transform: uppercase;
 
@@ -330,6 +327,29 @@ input[type='number'] {
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
 }
 
+
+ion-app{
+  .glass{
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  &.dark {
+    .glass{
+      background: rgba(48, 53, 60, 0.2);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(106,106,106,0.3);
+    }
+  
+  }
+}
+
+
 .hide-all {
   display: none !important;
 }
@@ -342,7 +362,7 @@ input[type='number'] {
 
 .split {
   color: var(--ion-color-light);
-  font-size: calc(10/16 * 1.6rem);
+  font-size: calc(10 / 16 * 1.6rem);
   padding: 0 7px;
 }
 
@@ -397,7 +417,7 @@ input[type='number'] {
   right: 16px;
   bottom: 16px;
   left: 16px;
-  // background: var(--ion-color-tertiary-tint);
+  // background: var(--table-row-background);
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -405,7 +425,7 @@ input[type='number'] {
   min-width: 250px;
 
   .icon {
-    font-size: calc(10/16 * 9rem);
+    font-size: calc(10 / 16 * 9rem);
     color: #ccc;
     width: 51vw;
     max-width: 300px;
@@ -418,13 +438,13 @@ input[type='number'] {
 
     .title {
       line-height: 30px;
-      font-size: calc(10/16 * 2rem);
+      font-size: calc(10 / 16 * 2rem);
       color: var(--ion-color-medium);
     }
 
     .detail {
       line-height: 20px;
-      font-size: calc(10/16 * 1.3rem);
+      font-size: calc(10 / 16 * 1.3rem);
       color: var(--ion-color-medium);
     }
   }
@@ -448,7 +468,7 @@ input[type='number'] {
 
     margin: 1px 0;
     padding: 3px;
-    font-size: calc(10/16 * 1.5rem);
+    font-size: calc(10 / 16 * 1.5rem);
     width: 160px;
     text-align: center;
     text-decoration: none;
@@ -461,7 +481,7 @@ input[type='number'] {
 .tag {
   position: absolute;
   left: 0;
-  top: calc(10/16 * 0.625rem);
+  top: calc(10 / 16 * 0.625rem);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -471,18 +491,18 @@ input[type='number'] {
   .tag-content {
     display: flex;
     position: relative;
-    left: calc(10/16 * -0.3rem);
-    line-height: calc(10/16 * 0.875rem);
-    padding-top: calc(10/16 * 0.5rem);
-    padding-bottom: calc(10/16 * 0.5rem);
-    padding-left: calc(10/16 * 1rem);
-    padding-right: calc(10/16 * 0.8rem);
+    left: calc(10 / 16 * -0.3rem);
+    line-height: calc(10 / 16 * 0.875rem);
+    padding-top: calc(10 / 16 * 0.5rem);
+    padding-bottom: calc(10 / 16 * 0.5rem);
+    padding-left: calc(10 / 16 * 1rem);
+    padding-right: calc(10 / 16 * 0.8rem);
     align-items: center;
-    border-top-right-radius: calc(10/16 * 0.2rem);
-    border-bottom-right-radius: calc(10/16 * 0.2rem);
+    border-top-right-radius: calc(10 / 16 * 0.2rem);
+    border-bottom-right-radius: calc(10 / 16 * 0.2rem);
     background: var(--ion-color-base);
     color: var(--ion-color-contrast);
-    font-size: calc(10/16 * 1.2rem);
+    font-size: calc(10 / 16 * 1.2rem);
     font-weight: bold;
 
     &:before {
@@ -490,7 +510,7 @@ input[type='number'] {
       display: inline-block;
       position: absolute;
       left: 0;
-      bottom: calc(10/16 * -0.3rem);
+      bottom: calc(10 / 16 * -0.3rem);
       border-top: 0.3rem solid;
       border-left: 0.3rem solid transparent;
       filter: brightness(60%);
@@ -504,9 +524,9 @@ input[type='number'] {
     .tag-content {
       border-radius: 2px 0 0 2px;
       left: auto;
-      right: calc(10/16 * -0.3rem);
-      padding-right: calc(10/16 * 1rem);
-      padding-left: calc(10/16 * 0.8rem);
+      right: calc(10 / 16 * -0.3rem);
+      padding-right: calc(10 / 16 * 1rem);
+      padding-left: calc(10 / 16 * 0.8rem);
 
       &:before {
         left: auto;
@@ -537,7 +557,7 @@ input[type='number'] {
   position: relative;
 
   .coupon-left {
-    border-right: dotted 4px var(--ion-color-tertiary-tint);
+    border-right: dotted 4px var(--table-row-background);
     min-width: 62px;
     display: flex;
     flex-direction: column;
@@ -546,7 +566,7 @@ input[type='number'] {
   }
 
   .coupon-right {
-    /* background: var(--ion-color-tertiary-tint); */
+    /* background: var(--table-row-background); */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -557,10 +577,10 @@ input[type='number'] {
     position: absolute;
     z-index: 1;
     right: -9px;
-    background: var(--ion-color-tertiary-tint);
+    background: var(--table-row-background);
     border-radius: 100px;
-    width: calc(10/16 * 3rem);
-    height: calc(10/16 * 3rem);
+    width: calc(10 / 16 * 3rem);
+    height: calc(10 / 16 * 3rem);
   }
 }
 
@@ -577,7 +597,7 @@ input[type='number'] {
     .feature {
       left: -320px;
       right: unset;
-      border-right: solid 1px var(--ion-color-tertiary-shade);
+      border-right: solid 1px var(--menu-right-border-color);
       border-left: none;
     }
   }
@@ -596,7 +616,6 @@ input[type='number'] {
     width: 100% !important;
     right: 0;
     left: 0 !important;
-
   }
 }
 
@@ -637,7 +656,7 @@ input[type='number'] {
     border-radius: 4px;
     padding: 0 7px;
     margin-right: 4px;
-    font-size: calc(10/16 * 1.2rem);
+    font-size: calc(10 / 16 * 1.2rem);
   }
 
   .title {
@@ -645,7 +664,7 @@ input[type='number'] {
   }
 
   .query-time {
-    font-size: calc(10/16 * 1.2rem);
+    font-size: calc(10 / 16 * 1.2rem);
     padding: 5px 0 32px 0;
     font-style: italic;
     color: var(--ion-color-primary);
@@ -704,7 +723,7 @@ input[type='number'] {
   min-height: 150px;
   min-width: 240px;
   width: 240px;
-  background: var(--ion-color-tertiary-tint);
+  background: var(--table-row-background);
   border-radius: 0 0 0 18px;
   margin: 15px;
 
@@ -747,7 +766,7 @@ input[type='number'] {
   // }
 
   .row-full {
-    background: var(--ion-color-tertiary-tint);
+    background: var(--table-row-background);
     overflow: hidden;
     border-radius: 6px;
 
@@ -793,7 +812,7 @@ input[type='number'] {
       }
 
       .number {
-        font-size: calc(10/16 * 3rem);
+        font-size: calc(10 / 16 * 3rem);
         font-weight: 500;
         color: var(--ion-color-primary-contrast);
 
@@ -803,7 +822,7 @@ input[type='number'] {
 
       .title {
         padding-left: 0;
-        font-size: calc(10/16 * 1.2rem);
+        font-size: calc(10 / 16 * 1.2rem);
         text-transform: uppercase;
         color: var(--ion-color-primary-contrast);
         opacity: 0.5;
@@ -876,7 +895,7 @@ input[type='number'] {
       }
 
       .number {
-        font-size: calc(10/16 * 2.2rem);
+        font-size: calc(10 / 16 * 2.2rem);
         font-weight: 600;
         color: var(--ion-color-dark);
         margin-top: 26px;
@@ -886,7 +905,7 @@ input[type='number'] {
 
       .title {
         padding: 0;
-        font-size: calc(10/16 * 0.9rem);
+        font-size: calc(10 / 16 * 0.9rem);
         text-transform: uppercase;
         color: var(--ion-color-medium);
         opacity: 0.5;
@@ -894,14 +913,14 @@ input[type='number'] {
       }
 
       .stats {
-        font-size: calc(10/16 * 1.6rem);
+        font-size: calc(10 / 16 * 1.6rem);
         margin-top: 26px;
         margin-left: 17px;
         vertical-align: middle;
         font-weight: bold;
 
         ion-icon {
-          font-size: calc(10/16 * 2.5rem);
+          font-size: calc(10 / 16 * 2.5rem);
           vertical-align: middle;
           height: 20px;
         }
@@ -999,11 +1018,11 @@ ion-content.cameraFrame {
       border-left: solid 2px var(--ion-color-primary);
       padding-left: 8px;
       margin-left: 16px;
-      font-size: calc(10/16 * 1rem);
+      font-size: calc(10 / 16 * 1rem);
 
       .number {
         display: block;
-        font-size: calc(10/16 * 2rem);
+        font-size: calc(10 / 16 * 2rem);
       }
 
       .title {
@@ -1029,7 +1048,7 @@ ion-content.cameraFrame {
   min-width: 200px;
   .w-full {
     width: 100%;
-    line-height: calc(10/16 * 1.5rem);
+    line-height: calc(10 / 16 * 1.5rem);
     td {
       padding: 5px 0;
     }
@@ -1139,7 +1158,7 @@ ion-content.cameraFrame {
       position: absolute;
       right: 15px;
       top: 0px;
-      font-size: calc(10/16 * 3rem);
+      font-size: calc(10 / 16 * 3rem);
     }
   }
 }
@@ -1196,7 +1215,7 @@ ion-content.cameraFrame {
 
 @media screen and (max-width: 767px) {
   .hiddenMd {
-    display:none !important;
+    display: none !important;
   }
   .titleMainPageActive {
     display: flex !important;

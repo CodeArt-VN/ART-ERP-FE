@@ -33,7 +33,7 @@
 app-data-table,
 .table {
   display: block;
-  background: var(--ion-color-tertiary-tint);
+  background: var(--table-row-background);
   width: 100%;
   min-width: min-content;
   margin: auto;
@@ -121,6 +121,7 @@ app-data-table,
     datatable-header-cell,
     .cell {
       color: var(--ion-color-dark);
+      padding: 0;
 
       &.selected {
         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
@@ -129,7 +130,7 @@ app-data-table,
   }
 
   .table-body {
-    background: var(--ion-color-tertiary-tint);
+    background: var(--table-row-background);
   }
 
   .row {
@@ -141,18 +142,18 @@ app-data-table,
     position: relative;
 
     &:hover {
-      background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+      background-color: var(--table-row-hover-background);
       .col-sticky {
-         background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
+         background-color: var(--table-cell-sticky-background);
          backdrop-filter: blur(10px);
       }
     }
 
     &.selected {
-      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
+      background-color: var(--table-row-selected-background);
 
       .col-sticky {
-         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
+         background-color: var(--table-cell-sticky-background);
          backdrop-filter: blur(10px);
       }
     }
@@ -183,7 +184,7 @@ app-data-table,
     color: var(--ion-color-dark);
 
     &.selected {
-      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+      background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
     }
 
     app-input-control {
@@ -476,7 +477,7 @@ app-data-table,
     z-index: 1;
     left: 0;
     //background: var(--table-header-background);
-    background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.8);
+    background-color: var(--table-cell-sticky-background);
     backdrop-filter: blur(10px);
     border-right: solid var(--menu-right-border-color);
     border-left: solid var(--menu-right-border-color);
@@ -659,8 +660,8 @@ app-data-table,
         padding: 16px 100px 16px 35px;
         margin: 16px;
         border-radius: 10px;
-        background-color: var(--ion-color-tertiary-tint);
-        line-height: calc(10/16 * 1.5rem);
+        background-color: var(--table-row-background);
+        line-height: calc(10/16 * 1.8rem);
         min-width: auto;
 
         @media screen and (max-width: calc(320px)) {
@@ -669,7 +670,7 @@ app-data-table,
         }
 
         &:hover {
-          background-color: var(--ion-color-tertiary-tint);
+          background-color: var(--table-row-background);
         }
 
         &.selected {
