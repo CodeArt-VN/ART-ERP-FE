@@ -1,5 +1,12 @@
 <ion-header>
-	<app-toolbar [page]="this"></app-toolbar>
+	<app-toolbar [page]="this">
+		<ion-buttons slot="start" class="ion-hide-sm-down_" *ngIf="pageConfig.canExportJson">
+			<ion-button fill="clear" title="Export Json"  (click)="exportJson()" >
+				<ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</app-toolbar>
+	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding">
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
@@ -148,10 +155,10 @@
 						<ion-col size="12" size-sm size-xl="4">
 							<app-form-control [field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
 						</ion-col>
-						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'BearerToken'">
+						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Bearer'">
 							<app-form-control [field]="{id:'Token', type : 'text', label: 'Token', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
 						</ion-col>
-						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'BasicAuth'">
+						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Basic'">
 							<app-form-control [field]="{id:'Username', type : 'text', label: 'Username', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
 							<app-form-control [field]="{id:'Password', type : 'text', label: 'Password', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
 						</ion-col>

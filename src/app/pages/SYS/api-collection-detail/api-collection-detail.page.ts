@@ -118,16 +118,16 @@ export class APICollectionDetailPage extends PageBase {
       { Name: 'GraphQL', Code: 'GraphQL' },
     ];
     this.dataType = [
-      { Name: 'JSON', Code: 'JSON' },
-      { Name: 'Text', Code: 'Text' },
-      { Name: 'Javascript', Code: 'Javascript' },
-      { Name: 'HTML', Code: 'HTML' },
-      { Name: 'XML', Code: 'XML' },
+      { Name: 'JSON', Code: 'application/json' },
+      { Name: 'Text', Code: 'text/plain' },
+      { Name: 'Javascript', Code: 'application/javascript' },
+      { Name: 'HTML', Code: 'text/html' },
+      { Name: 'XML', Code: 'application/xml' },
     ];
 
     this.authorizationList = [
-      { Code: 'BearerToken', Name: 'Bearer token' },
-      { Code: 'BasicAuth', Name: 'Basic auth' },
+      { Code: 'Bearer', Name: 'Bearer token' },
+      { Code: 'Basic', Name: 'Basic auth' },
     ];
     Promise.all([this.integrationProvider.read(this.query)]).then((values: any) => {
       this.providerDataSource = values[0].data;
@@ -414,6 +414,33 @@ export class APICollectionDetailPage extends PageBase {
         });
     }
   }
+  async exportJson() {
+    if (this.submitAttempt) return;
+    this.submitAttempt = true;
+    let obj = {
+      id: this.item.Id
+    }
+    this.pageProvider.commonService.connect("POST","/SYS/APICollection/ExportJson",obj).toPromise()
+    .then((response:any) => {
+        const blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: 'application/json',
+        });
+        let date = new Date();
+        let filename =  date.getDate()+ '-' +date.getMonth() + '-' + date.getFullYear()+ ' -' + this.formGroup.get('Name').value;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      
+      this.submitAttempt = false;
+    })
+    .catch(err=>{
+      this.submitAttempt = false;
+
+    });
+}
 
   loadAceEditor() {
     this.dynamicScriptLoaderService

@@ -123,24 +123,67 @@ export class APICollectionPage extends PageBase {
 
             }
             const jsonObject = JSON.parse(reader.result as string);
-
+            let queryPostMan = {
+              IDPostman : jsonObject.info._postman_id
+            }
             let obj = {
               IDProvider : this.formGroup.get('IDProvider').value,
-              apicollection : jsonObject
+              apicollection : jsonObject,
+              ForceDelete : true
             }
-            this.env.showLoading('Vui lòng chờ import dữ liệu...', 
-            this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
-                .then((resp:any) => {
-                    this.submitAttempt = false;
-                    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                    this.refresh();
-                  
-                }).catch(err => {
-                    this.submitAttempt = false;
-                    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                    this.refresh();
-                    this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+            this.pageProvider.read(queryPostMan, false).then((result: any) => {
+              if (result.data.length > 0) {
+                this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy ?')
+                .then((_) => {
+                    obj.ForceDelete = false;
+                    this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                    this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                        .then((resp:any) => {
+                            this.submitAttempt = false;
+                            this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                            this.refresh();
+                          
+                        }).catch(err => {
+                            this.submitAttempt = false;
+                            this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                            this.refresh();
+                            this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                        })
                 })
+                .catch((_) => {
+                  this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                  this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                      .then((resp:any) => {
+                          this.submitAttempt = false;
+                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                          this.refresh();
+                        
+                      }).catch(err => {
+                          this.submitAttempt = false;
+                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                          this.refresh();
+                          this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                      })
+                });
+              }
+              else{
+                   this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                  this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                      .then((resp:any) => {
+                          this.submitAttempt = false;
+                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                          this.refresh();
+                        
+                      }).catch(err => {
+                          this.submitAttempt = false;
+                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                          this.refresh();
+                          this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                      })
+                };
+          });
+        
+           
           } catch (error) {
             this.env.showTranslateMessage("Error parsing JSON:", 'danger');
           }
