@@ -60,21 +60,19 @@
 					</ion-col>
 
 					<ion-col size="12" size-sm size-xl="4">
-						<app-form-control [field]="{id:'Code', label: 'URL', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
+						<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
 
 						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
 
 					</ion-col>
-				</ion-row>
-				<ion-row class="hr-group">
-					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-					</ion-col>
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3"></ion-col>
 					<ion-col size="12" size-sm size-xl="8">
 						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }" (change)="changeURL()"></app-form-control>
 					</ion-col>
 
 				</ion-row>
+			
 			</form>
 		</ion-grid>
 		<div class="row-full shadow full-screen">
