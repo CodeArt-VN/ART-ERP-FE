@@ -60,12 +60,20 @@
 					</ion-col>
 
 					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Code', label: 'URL', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
 
 						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
-						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'URL', label: 'URL', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
 
 					</ion-col>
+				</ion-row>
+				<ion-row class="hr-group">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="8">
+						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }" (change)="changeURL()"></app-form-control>
+					</ion-col>
+
 				</ion-row>
 			</form>
 		</ion-grid>
@@ -108,7 +116,8 @@
 				<div class="table-contain  ion-padding" *ngIf="segmentView == 's1' && formGroup.get('Type').value == 'Request'">
 					<section class="table responsive">
 						<header class="bold">
-
+							<div class="col-checkbox cell">
+							</div>
 							<div class="col-name cell">
 								{{'Key' | translate}}
 							</div>
@@ -122,19 +131,24 @@
 						<app-page-message [itemsLength]="formGroup.get('_Params')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Params')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
+								<ng-container [formGroup]="c" >
+									<div class="col-checkbox cell">
+										<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
+										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
+									</div>
+									<div class="col-name cell">
+										<app-input-control [field]="{id:'Key', type : 'text', form : c, }" (change)="renderURL(); saveChangeJson('Params', true)"></app-input-control>
+									</div>
 
-								<div class="col-name cell">
-									<app-input-control [field]="{id:'Key', type : 'text', form : c, }" (change)="saveChangeJson('Params', true)"></app-input-control>
-								</div>
+									<div class="col-name cell">
+										<app-input-control [field]="{id:'Value', type : 'text', form : c, }" (change)="renderURL(); saveChangeJson('Params', true)"></app-input-control>
+									</div>
 
-								<div class="col-name cell">
-									<app-input-control [field]="{id:'Value', type : 'text', form : c, }" (change)="saveChangeJson('Params', true)"></app-input-control>
+									<div class="col-icon cell clickable">
+										<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" (click)="removeField(j,'Params');renderURL()" name="trash"></ion-icon>
+									</div>
+								</ng-container>
 								</div>
-
-								<div class="col-icon cell clickable">
-									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" (click)="removeField(j)" name="trash"></ion-icon>
-								</div>
-							</div>
 							<div class="row">
 								<div class="col-name cell">
 									<ion-button fill="clear" size="small" (click)="newField($event,'Params')">
@@ -170,7 +184,8 @@
 				<div class="table-contain ion-padding">
 					<section class="table responsive">
 						<header class="bold">
-
+							<div class="col-checkbox cell">
+							</div>
 							<div class="col-name cell">
 								{{'Key' | translate}}
 							</div>
@@ -187,6 +202,9 @@
 						<app-page-message [itemsLength]="formGroup.get('_Header')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Header')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
+								<div class="col-checkbox cell"> 
+									<input type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled('Header', 'Value')"/>
+								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
 								</div>
@@ -250,7 +268,9 @@
 				<div class="table-contain ion-padding" *ngIf="formGroup.get('_Body').get('BodyType').value =='x-www-form-urlencoded'">
 					<section class="table responsive">
 						<header class="bold">
-
+							<div class="col-checkbox cell">
+						
+							</div>
 							<div class="col-name cell">
 								{{'Key' | translate}}
 							</div>
@@ -263,6 +283,9 @@
 						</header>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Body').get('Value')['controls']; let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
+								<div class="col-checkbox cell"> 
+									<input type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')"/>
+								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
 								</div>
@@ -337,7 +360,8 @@
 			<div class="table-contain ion-padding" *ngIf="segmentView == 's7' && formGroup.get('Type').value == 'Collection'">
 				<section class="table responsive">
 					<header class="bold">
-
+						<div class="col-checkbox cell">
+						</div>
 						<div class="col-name cell">
 							{{'Varible' | translate}}
 						</div>
@@ -354,6 +378,10 @@
 					<app-page-message [itemsLength]="formGroup.get('_Varibles')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 					<ng-container *ngIf="!pageConfig.showSpinner">
 						<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
+							<div class="col-checkbox cell">
+								<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)"/>
+								<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
+							</div>
 							<div class="col-name cell">
 								<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
 							</div>
@@ -387,7 +415,8 @@
 				<div class="table-contain ion-padding" *ngIf="segmentView == 's8' && formGroup.get('Type').value == 'Request'">
 					<section class="table responsive">
 						<header class="bold">
-
+							<div class="col-checkbox cell">
+							</div>
 							<div class="col-name cell">
 								{{'Name' | translate}}
 							</div>
@@ -401,6 +430,9 @@
 						<app-page-message [itemsLength]="formGroup.get('_Setting')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Setting')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
+								<div class="col-checkbox cell">
+									<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)"/>
+								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
