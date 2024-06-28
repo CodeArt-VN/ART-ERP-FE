@@ -9,8 +9,6 @@ import { SYS_APICollectionProvider, SYS_IntegrationProviderProvider } from 'src/
 import { FormBuilder, FormControl, FormArray, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 import { SYS_APICollection } from 'src/app/models/model-list-interface';
-import { getJSDocThisTag } from 'typescript';
-import { co } from '@fullcalendar/core/internal-common';
 declare var ace: any;
 @Component({
   selector: 'app-api-collection-detail',
@@ -66,6 +64,7 @@ export class APICollectionDetailPage extends PageBase {
 
       Type: ['', Validators.required],
       URL: [''],
+      _URL: [''], // For showing with Params
       Header: [''],
       Params: [''],
       Method: [''],
@@ -118,16 +117,16 @@ export class APICollectionDetailPage extends PageBase {
       { Name: 'GraphQL', Code: 'GraphQL' },
     ];
     this.dataType = [
-      { Name: 'JSON', Code: 'JSON' },
-      { Name: 'Text', Code: 'Text' },
-      { Name: 'Javascript', Code: 'Javascript' },
-      { Name: 'HTML', Code: 'HTML' },
-      { Name: 'XML', Code: 'XML' },
+      { Name: 'JSON', Code: 'application/json' },
+      { Name: 'Text', Code: 'text/plain' },
+      { Name: 'Javascript', Code: 'application/javascript' },
+      { Name: 'HTML', Code: 'text/html' },
+      { Name: 'XML', Code: 'application/xml' },
     ];
 
     this.authorizationList = [
-      { Code: 'BearerToken', Name: 'Bearer token' },
-      { Code: 'BasicAuth', Name: 'Basic auth' },
+      { Code: 'Bearer', Name: 'Bearer token' },
+      { Code: 'Basic', Name: 'Basic auth' },
     ];
     Promise.all([this.integrationProvider.read(this.query)]).then((values: any) => {
       this.providerDataSource = values[0].data;
@@ -154,10 +153,12 @@ export class APICollectionDetailPage extends PageBase {
     super.loadedData(event, ignoredFromGroup);
     this.patchFieldValue();
     if (this.formGroup.get('Type').value == 'Request') {
+      this.renderURL();
       this.segmentView = 's1';
     } else {
       this.segmentView = 's2';
     }
+
   }
 
   patchFieldValue() {
@@ -170,11 +171,11 @@ export class APICollectionDetailPage extends PageBase {
       let isNestedValueArray = false;
       switch (key) {
         case 'Params':
-          controls = ['Key', 'Value'];
+          controls = ['Disabled','Key', 'Value'];
           isArray = true;
           break;
         case 'Header':
-          controls = ['Key', 'Value', 'Description'];
+          controls = ['Disabled','Key', 'Value', 'Description'];
           isArray = true;
           break;
         case 'Body':
@@ -186,12 +187,12 @@ export class APICollectionDetailPage extends PageBase {
           break;
 
         case 'Setting':
-          controls = ['Key', 'Value'];
+          controls = ['Disabled','Key', 'Value'];
           isArray = true;
           break;
         case 'Varibles':
           isArray = true;
-          controls = ['Key', 'InitialValue', 'CurrentValue'];
+          controls = ['Disabled','Key', 'InitialValue', 'CurrentValue'];
           break;
 
         default:
@@ -225,6 +226,7 @@ export class APICollectionDetailPage extends PageBase {
 
       let group = this.formBuilder.group({});
       for (let control of controls) {
+      //  if(field != null && control == "Disabled") field[control] = !field[control];
         group.addControl(control, this.formBuilder.control(field != null ? field[control] : ''));
       }
       groups.push(group);
@@ -235,6 +237,7 @@ export class APICollectionDetailPage extends PageBase {
           let formArray = new FormArray([]);
           field[control].forEach((item) => {
             let formGroup = new FormGroup({});
+            if(!item['Disabled']) item['Disabled'] = false;
             for (let key in item) {
               if (item.hasOwnProperty(key)) {
                 formGroup.addControl(key, new FormControl(item[key]));
@@ -311,11 +314,11 @@ export class APICollectionDetailPage extends PageBase {
   }
 
   removeField(index, controlName, isArray = false, arrayName = '') {
-    if (isArray) {
+    if (isArray) {// TH array trong formGroup
       let fg = this.formGroup.get('_' + controlName) as FormGroup;
       let formArray = fg?.get(arrayName) as FormArray;
       formArray.removeAt(index);
-    } else {
+    } else { // TH Array 
       let groups = <FormArray>this.formGroup.get('_' + controlName);
       groups.removeAt(index);
     }
@@ -323,32 +326,41 @@ export class APICollectionDetailPage extends PageBase {
     this.saveChangeJson(controlName);
   }
   saveChangeJson(controlName, isArray = false, fg = null, formArray = null) {
-    if (!fg) {
-      fg = this.formGroup;
-    }
-    if (isArray) {
-      if (formArray) {
-        formArray = fg.get(formArray) as FormArray;
-      } else {
-        formArray = fg.get('_' + controlName) as FormArray;
-      }
-      //   const groups = fg.get('_' + controlName) as FormArray;
-      for (let i = formArray.length - 1; i >= 0; i--) {
-        const group = formArray.at(i) as FormGroup;
-        const allControlsEmpty = Object.keys(group.controls).every((key) => {
-          const control = group.get(key) as FormControl;
-          return control.value === null || control.value.trim() === '';
-        });
-        if (allControlsEmpty) {
-          formArray.removeAt(i);
+    return new Promise<void>((resolve, reject) => {
+      try {
+        if (!fg) {
+          fg = this.formGroup;
         }
+        if (isArray) {
+          if (formArray) {
+            formArray = fg.get(formArray) as FormArray;
+          } else {
+            formArray = fg.get('_' + controlName) as FormArray;
+          }
+          //   const groups = fg.get('_' + controlName) as FormArray;
+          for (let i = formArray.length - 1; i >= 0; i--) {
+            const group = formArray.at(i) as FormGroup;
+            const allControlsEmpty = Object.keys(group.controls).every((key) => {
+              const control = group.get(key) as FormControl;
+              return control.value === null || control.value === '';
+            });
+            if (allControlsEmpty) {
+              formArray.removeAt(i);
+            }
+          }
+        }
+        let jsonValue = JSON.stringify(this.formGroup.get('_' + controlName).value);
+        this.formGroup.get(controlName).setValue(jsonValue);
+        this.formGroup.get(controlName).markAsDirty();
+        console.log(this.formGroup.get(controlName).value);
+         this.saveChange2();
+        resolve();
+      } catch (error) {
+        // Call reject() if there is an error
+        reject(error);
       }
-    }
-    let jsonValue = JSON.stringify(this.formGroup.get('_' + controlName).value);
-    this.formGroup.get(controlName).setValue(jsonValue);
-    this.formGroup.get(controlName).markAsDirty();
-    console.log(this.formGroup.get(controlName).value);
-     this.saveChange2();
+    });
+   
   }
 
   newField(ev, controlName, fg = null) {
@@ -358,11 +370,11 @@ export class APICollectionDetailPage extends PageBase {
     let arrayName = null;
     switch (controlName) {
       case 'Params':
-        controls = ['Key', 'Value'];
+        controls = ['Disabled','Key', 'Value'];
         isArray = true;
         break;
       case 'Header':
-        controls = ['Key', 'Value', 'Description'];
+        controls = ['Disabled', 'Key', 'Value', 'Description'];
         isArray = true;
         break;
       case 'Body':
@@ -370,7 +382,7 @@ export class APICollectionDetailPage extends PageBase {
         break;
       case 'Body/Value':
         controlName = arrayName =  'Value';
-        controls = ['Key', 'Value'];
+        controls = ['Disabled','Key', 'Value'];
         isArray = true;
         saveControl = 'Body';
         fg = this.formGroup.get('_Body');
@@ -379,12 +391,12 @@ export class APICollectionDetailPage extends PageBase {
         controls = ['Type', 'Token', 'Username', 'Password'];
         break;
       case 'Setting':
-        controls = ['Key', 'Value'];
+        controls = ['Disabled', 'Key', 'Value'];
         isArray = true;
         break;
       case 'Varibles':
         isArray = true;
-        controls = ['Key', 'InitialValue', 'CurrentValue'];
+        controls = ['Disabled', 'Key', 'InitialValue', 'CurrentValue'];
         break;
     }
     this.addField(null, controlName, controls, isArray, fg);
@@ -410,10 +422,126 @@ export class APICollectionDetailPage extends PageBase {
         .then((_) => {
           groups.clear();
           if(!saveControl) saveControl = controlName;
-          this.saveChangeJson(saveControl,true,fg , arrayName)
+          if(controlName =='Params'){
+            this.renderURL();
+            this.changeURL();
+          }
+          else{
+            this.saveChangeJson(saveControl,true,fg , arrayName)
+          }
         });
     }
   }
+
+  renderURL(){
+    if(this.formGroup.get('URL').value){
+      let url = this.formGroup.get('_Params').value?.filter(param => param.Value !== undefined && param.Value !== null && param.Value !== "" && param.Disabled != true)
+      .map(param => `${param.Key}=${param.Value}`)
+      .join('&');
+      if(url) url = '?'+url;
+      this.formGroup.get('_URL').setValue(this.formGroup.get('URL').value + url);
+    }
+  }
+  changeURL(){
+    const url = this.formGroup.get('_URL').value;
+    // const regex = /^(.*?\:\/\/[^\/]+\/[^?]*)(\?.*)?$/ ;
+    const regex = /^([^?]*)(\?.*)?$/;
+    const match = url.match(regex);
+    if (match) {
+      const baseUrl = match[1];
+      const queryParams = match[2] || '';
+      // Update the base URL if it's different
+      if (this.formGroup.get('URL').value !== baseUrl) {
+        this.formGroup.get('URL').setValue(baseUrl);
+       this.saveChange();
+      }
+      // Optionally, handle the query parameters
+      let groups =  this.formGroup.get('_Params') as FormArray;
+      if (queryParams) {
+        let params  =  new URLSearchParams(queryParams);
+        params.forEach((value, key) => {
+          let isMapped = false;
+          
+          // Find or create the group with the key from params
+          const matchedGroup = groups.controls.find(group => {
+            if (group.get('Key')?.value == key) {
+              // Update the value and enable it (if previously disabled)
+              group.get('Value').setValue(value);
+              group.get('Disabled').setValue(false); // Enable it
+              isMapped = true;
+              return true;
+            }
+            return false;
+          });
+        
+          if (!isMapped) {
+            // Create a new form group for the key from params
+            const newGroup = new FormGroup({});
+            newGroup.addControl('Key', new FormControl(key));
+            newGroup.addControl('Value', new FormControl(value));
+            newGroup.addControl('Disabled', new FormControl(false)); // Enable it
+            groups.push(newGroup); // Add it to groups
+          }
+        });
+        
+        // Disable groups that don't have keys from params
+        groups.controls.forEach(group => {
+          const keyExists = params.has(group.value.Key); // Assuming group.value.key holds the key name
+          if (!keyExists) {
+            group.get('Disabled').setValue(true); // Disable it
+          }
+        });
+        this.saveChangeJson('Params',true);
+      }
+      else{
+        groups.controls.forEach(group => {
+            group.get('Disabled').setValue(true); // Disable it
+        });
+        this.saveChangeJson('Params',true);
+      }
+      
+    }else{
+      this.saveChange();
+    }
+  }
+   changeDisabled(fg,controlName, isArray = false, formArray = null){
+    fg.get('Disabled').setValue(!fg.get('Disabled').value)
+    this.saveChangeJson(controlName, isArray).then(() => {
+      // Toggle the 'Disabled' value after saveChangeJson completes
+      // fg.get('Disabled').setValue(!fg.get('Disabled').value);
+      // Additional logic based on controlName
+      if (controlName === 'Params') {
+        this.renderURL();
+      }
+  });
+  }
+  async exportJson() {
+    if (this.submitAttempt) return;
+    this.submitAttempt = true;
+    let obj = {
+      id: this.item.Id
+    }
+    this.pageProvider.commonService.connect("POST","/SYS/APICollection/ExportJson",obj).toPromise()
+    .then((response:any) => {
+        const blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: 'application/json',
+        });
+        let date = new Date();
+        let filename =  date.getDate()+ '-' +date.getMonth() + '-' + date.getFullYear()+ ' -' + this.formGroup.get('Name').value;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      
+      this.submitAttempt = false;
+    })
+    .catch(err=>{
+      this.submitAttempt = false;
+
+    });
+}
 
   loadAceEditor() {
     this.dynamicScriptLoaderService
