@@ -444,7 +444,8 @@ export class APICollectionDetailPage extends PageBase {
   }
   changeURL(){
     const url = this.formGroup.get('_URL').value;
-    const regex = /^(.*?:\/\/[^\/]+\/[^?]*)(\?.*)?$/;
+    // const regex = /^(.*?\:\/\/[^\/]+\/[^?]*)(\?.*)?$/ ;
+    const regex = /^([^?]*)(\?.*)?$/;
     const match = url.match(regex);
     if (match) {
       const baseUrl = match[1];
@@ -499,6 +500,8 @@ export class APICollectionDetailPage extends PageBase {
         this.saveChangeJson('Params',true);
       }
       
+    }else{
+      this.saveChange();
     }
   }
    changeDisabled(fg,controlName, isArray = false, formArray = null){
