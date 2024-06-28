@@ -131,7 +131,7 @@
 							<div *ngFor="let c of formGroup.get('_Params')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<ng-container [formGroup]="c" >
 									<div class="col-checkbox cell">
-										<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
+										<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
 										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 									</div>
 									<div class="col-name cell">
@@ -201,7 +201,7 @@
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Header')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<div class="col-checkbox cell"> 
-									<input type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled('Header', 'Value')"/>
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Header', 'Value')"/>
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
@@ -282,7 +282,7 @@
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Body').get('Value')['controls']; let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<div class="col-checkbox cell"> 
-									<input type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')"/>
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')"/>
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
@@ -377,7 +377,7 @@
 					<ng-container *ngIf="!pageConfig.showSpinner">
 						<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 							<div class="col-checkbox cell">
-								<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)"/>
+								<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)"/>
 								<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 							</div>
 							<div class="col-name cell">
@@ -429,7 +429,7 @@
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Setting')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<div class="col-checkbox cell">
-									<input   type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)"/>
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)"/>
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
