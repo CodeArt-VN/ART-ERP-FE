@@ -11,6 +11,7 @@ export class IconPickerComponent implements OnInit {
 
   items = [
     
+    { Name: 'project', Tags: 'project' },
     { Name: 'panel-right-active', Tags: 'panel,right,active' },
     { Name: 'panel-right', Tags: 'panel,right' },
     

@@ -50,6 +50,8 @@ export class InputControlComponent implements OnInit {
 
   @Input() noCheckDirty: boolean = false;
 
+  @Input() inputControlTemplate: any;
+
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
@@ -68,7 +70,7 @@ export class InputControlComponent implements OnInit {
   onInputChange(event) {
     this.inputChange.emit(event);
     if (
-      '|ng-select|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|icon-color|time-frame|'.includes(
+      '|ng-select|ng-select-async|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|icon-color|time-frame|'.includes(
         this.type,
       )
     ) {

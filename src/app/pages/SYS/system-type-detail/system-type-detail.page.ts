@@ -48,6 +48,7 @@ export class SystemTypeDetailPage extends PageBase {
       Name: ['', Validators.required],
       Remark: [''],
       Sort: [''],
+      Icon: [''],
       Color: [''],
     });
   }

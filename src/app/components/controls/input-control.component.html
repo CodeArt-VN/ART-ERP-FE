@@ -75,6 +75,28 @@
   >
   </ng-select>
 
+  <!-- ng-select-async -->
+  <ng-select
+    *ngSwitchCase="'ng-select-async'"
+    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+    class="c-input"
+    [formControlName]="id"
+    [labelForId]="id"
+    [items]="dataSource.items$ | async"
+    [typeahead]="dataSource.input$"
+    [loading]="dataSource.loading"
+    [bindValue]="bindValue"
+    [bindLabel]="bindLabel"
+    [multiple]="multiple"
+    [clearable]="clearable"
+    (change)="onInputChange($event)"
+    appendTo="#ng-select-holder"
+  >
+    <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+    </ng-template>
+  </ng-select>
+
   <!-- ng-select-status -->
   <ng-select
     *ngSwitchCase="'ng-select-status'"
@@ -274,6 +296,14 @@
         <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
       </ion-chip>
     </ng-template>
+    <ng-template ng-label-tmp let-i="item">
+      <ion-chip *ngIf="i">
+        <ion-avatar
+          ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+        ></ion-avatar>
+        <ion-label>{{ i.FullName }}</ion-label>
+      </ion-chip>
+    </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
       <div *ngIf="i">
         <ion-avatar
@@ -293,6 +323,7 @@
       </div>
     </ng-template>
   </ng-select>
+
   <!-- textarea -->
   <textarea
     *ngSwitchCase="'textarea'"

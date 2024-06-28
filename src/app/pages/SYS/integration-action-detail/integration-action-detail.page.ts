@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
@@ -19,6 +19,7 @@ import { CommonService } from 'src/app/services/core/common.service';
   styleUrls: ['./integration-action-detail.page.scss'],
 })
 export class IntegrationActionDetailPage extends PageBase {
+  @ViewChild('runnerList') divRef;
   providerDataSource: any = [];
   schemaDataSource: any = [];
   typeList: any = [];
@@ -147,9 +148,35 @@ export class IntegrationActionDetailPage extends PageBase {
       CreatedDate: new FormControl({ value: field.CreatedDate, disabled: true }),
       ModifiedBy: new FormControl({ value: field.ModifiedBy, disabled: true }),
       ModifiedDate: new FormControl({ value: field.ModifiedDate, disabled: true }),
+      BeforeRequestScript: [field.APICollection?.BeforeRequestScript],
+      AfterResponseScript: [field.APICollection?.AfterResponseScript],
     });
     runner.get('IDAction').markAsDirty();
     this.Runners.push(runner);
+  }
+
+  isFullScreen = false;
+  toggleFullscreen(){
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      this.isFullScreen = false;
+    } else {
+      const elem = this.divRef.nativeElement;
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+
+      this.isFullScreen = true;
+     
+    }
+
   }
   changeProvider() {
     let providerId = this.formGroup.get('IDProvider').value;

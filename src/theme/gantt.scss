@@ -1,0 +1,818 @@
+.gantt-chart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 2px;
+    padding-right: 14px;
+    width: fit-content;
+
+    .avatar {
+      width: 26px;
+      height: 26px;
+      display: inline-block;
+      margin-right: -11px;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: -2px 2px 6px 0px rgba(0, 0, 0, 0.1);
+      -webkit-backdrop-filter: blur(5px);
+      border-radius: 50px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      &.main {
+        width: 28px;
+        height: 28px;
+
+        img {
+          //border-color: var(--ion-color-primary);
+          border-width: 2px;
+        }
+      }
+    }
+  }
+
+  .gantt_grid {
+    background-color: var(--table-row-background);
+
+    .gantt_grid_scale {
+      .gantt_grid_head_cell {
+        text-align: left;
+        padding-left: 8px;
+      }
+    }
+
+    .gantt_grid_data {
+      .gantt_row {
+        &.odd {
+        }
+
+        &.gantt_row_task {
+        }
+
+        &.gantt_row_project {
+        }
+
+        &.gantt_row_milestone {
+          .gantt_cell {
+            .gantt_tree_content {
+            }
+
+            &.gantt_cell_tree {
+              .gantt_tree_indent {
+              }
+
+              .gantt_tree_icon.gantt_close {
+              }
+
+              .gantt_tree_icon.gantt_open {
+              }
+
+              .gantt_tree_content {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .gantt_add,
+  .gantt_grid_head_add {
+    background: none;
+    color: var(--ion-color-primary);
+    text-align: center;
+    font-size: 150%;
+
+    &::before {
+      content: '+';
+    }
+  }
+
+  .gantt_container {
+    background-color: var(--table-row-background);
+    background-color: transparent;
+  }
+
+  .gantt_row,
+  .gantt_task_row {
+    border-bottom: 1px solid var(--menu-right-border-color);
+    //border-bottom: none;
+    background-color: transparent;
+    //background-color: var(--table-row-background);
+
+    &.odd {
+      background-color: transparent;
+      //background-color: var(--table-row-background);
+    }
+  }
+
+  .gantt_grid_scale .gantt_grid_head_cell {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }
+
+  .gantt_task .gantt_task_scale .gantt_scale_cell {
+    color: var(--ion-color-dark);
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_data .gantt_row.odd:hover,
+  .gantt_grid_data .gantt_row:hover {
+    background-color: var(--table-row-hover-background);
+  }
+
+  .gantt_task_progress {
+    background: var(--ion-color-success);
+    border: solid 1px var(--ion-color-success);
+    box-sizing: content-box;
+  }
+
+  .gantt_task_line {
+    background-color: rgba(var(--ion-color-medium-rgb), 0.5);
+    border-radius: 50px;
+    border: none;
+    &.gantt_selected {
+      border: 1px solid var(--ion-color-primary);
+    }
+  }
+
+  .gantt_task_cell.week_end {
+    background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.2);
+  }
+
+  .gridHoverStyle,
+  .gridSelection,
+  .timelineSelection {
+    background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+  }
+
+  .gantt_grid_data .gantt_cell {
+    color: var(--ion-color-dark);
+  }
+
+  .chartHeaderBg {
+    background-color: #fff;
+  }
+
+  .gantt_row.gantt_project,
+  .gantt_row.odd.gantt_project {
+    background-color: #edffef;
+  }
+
+  .gantt_task_row.gantt_project,
+  .gantt_task_row.odd.gantt_project {
+    background-color: #f5fff6;
+  }
+
+  .gantt_task_line.gantt_project {
+    background-color: #a6de96;
+    border: none;
+    height: 8px !important;
+    margin-top: 11px;
+
+    .gantt_task_progress {
+      background-color: #6bc950;
+    }
+
+    &.Folder {
+      background-color: rgba(var(--ion-color-medium-rgb, 0, 0, 0), 0.1);
+      .gantt_task_progress {
+        background-color: rgba(var(--ion-color-medium-rgb, 0, 0, 0), 0.2);
+        border-color: rgba(var(--ion-color-medium-rgb, 0, 0, 0), 0.2);
+      }
+    }
+    // &.List{
+    //   background-color: rgba(var(--ion-color-dark-rgb, 0, 0, 0), 0.1);
+    //   .gantt_task_progress {
+    //     background-color: rgba(var(--ion-color-dark-rgb, 0, 0, 0), 0.2);
+    //     border-color: rgba(var(--ion-color-dark-rgb, 0, 0, 0), 0.2);
+    //   }
+    // }
+    // &.Backlog{
+    //   background-color: rgba(var(--ion-color-pink-rgb, 0, 0, 0), 0.2);
+    //   .gantt_task_progress {
+    //     background-color: var(--ion-color-pink);
+    //     border-color: var(--ion-color-pink);
+    //   }
+    // }
+  }
+
+  .buttonBg {
+    background: #fff;
+  }
+
+  .gantt_btn_set.gantt_cancel_btn_set {
+    background: #fff;
+    color: #454545;
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_btn_set.gantt_save_btn_set {
+    background: var(--ion-color-primary);
+    text-shadow: 0 -1px 0 #248a9f;
+    color: #fff;
+  }
+
+  .gantt_btn_set.gantt_delete_btn_set {
+    text-shadow: 0 -1px 0 #6f6f6f;
+    background: #ec8e00;
+    text-shadow: 0 -1px 0 #a60;
+    color: #fff;
+  }
+
+  .gantt_popup_button.gantt_ok_button {
+    background: var(--ion-color-primary);
+    text-shadow: 0 -1px 0 #248a9f;
+    color: #fff;
+  }
+
+  .gantt_popup_button.gantt_cancel_button {
+    color: #454544;
+  }
+
+  .gantt_popup_title {
+    background-color: #fff;
+  }
+
+  .gantt_qi_big_icon.icon_edit {
+    color: #454545;
+    background: #fff;
+  }
+
+  .gantt_qi_big_icon.icon_delete {
+    text-shadow: 0 -1px 0 #a60;
+    background: #ec8e00;
+    color: #fff;
+  }
+
+  .gantt_tooltip {
+    color: #454545;
+  }
+
+  .gantt_tooltip {
+    background-color: var(--menu-background-bottom);
+  }
+
+  .gantt_container {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_scale,
+  .gantt_task_scale {
+    color: #6b6b6b;
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_scale,
+  .gantt_task_scale,
+  .gantt_task_vscroll {
+    background-color: var(--menu-background-bottom);
+  }
+
+  .gantt_scale_line {
+    border-top: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_head_cell {
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_column_resize_wrap .gantt_grid_column_resize {
+    background-color: var(--menu-right-border-color);
+  }
+
+  .gantt_task_grid_row_resize_wrap .gantt_task_grid_row_resize {
+    background-color: var(--menu-right-border-color);
+  }
+
+  .gantt_drag_marker.gantt_grid_resize_area,
+  .gantt_drag_marker.gantt_row_grid_resize_area {
+    background-color: hsla(0, 0%, 91%, 0.5);
+  }
+
+  .gantt_drag_marker.gantt_grid_resize_area {
+    border-left: 1px solid var(--menu-right-border-color);
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_drag_marker.gantt_row_grid_resize_area {
+    border-top: 1px solid var(--menu-right-border-color);
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cell {
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_scale_cell {
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_task_cell {
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_layout_cell.gantt_ver_scroll {
+    background-color: transparent;
+  }
+
+  .gantt_hor_scroll {
+    background-color: transparent;
+  }
+
+  .gantt_invalid {
+    background-color: #ffe0e0;
+  }
+
+  .gantt_error {
+    color: red;
+  }
+
+  .gantt_column_drag_marker {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_head_cell_dragged {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_grid_target_marker {
+    background-color: #ffa011;
+  }
+
+  .gantt_grid_target_marker:before {
+    border-top-color: #ffa011;
+  }
+
+  .gantt_grid_target_marker:after {
+    border-bottom-color: #ffa011;
+  }
+
+  .gantt_modal_box {
+    border: 1px solid var(--menu-right-border-color);
+    background: #fff;
+  }
+
+  .gantt_button,
+  .gantt_popup_button {
+    border: 1px solid var(--menu-right-border-color);
+    background: #fff;
+  }
+
+  div.dhx_modal_cover {
+    background-color: #000;
+    zoom: 1;
+  }
+
+  .gantt_popup_title {
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_popup_text {
+    color: #000;
+  }
+
+  .gantt-error,
+  .gantt-info {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #fff;
+  }
+
+  .gantt-info div {
+    background-color: #fff;
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt-error {
+    background-color: #d81b1b;
+    border: 1px solid #ff3c3c;
+  }
+
+  .gantt-error div {
+    background-color: #d81b1b;
+    border: 1px solid #940000;
+    color: #fff;
+  }
+
+  .gantt-warning {
+    background-color: #ff9000;
+    border: 1px solid #ffa633;
+  }
+
+  .gantt-warning div {
+    background-color: #ff9000;
+    border: 1px solid #b36500;
+    color: #fff;
+  }
+
+  .gantt_data_area div,
+  .gantt_grid div {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .gantt_task_content {
+    color: #fff;
+  }
+
+  .gantt_side_content {
+    color: #6e6e6e;
+  }
+
+  .gantt_line_wrapper div {
+    background-color: #ffa011;
+  }
+
+  .gantt_task_link:hover .gantt_line_wrapper div {
+    box-shadow: 0 0 5px 0 #ffa011;
+  }
+
+  .gantt_task_link div.gantt_link_arrow {
+    background-color: transparent;
+  }
+
+  .gantt_link_control div {
+    border: 1px solid #929292;
+    background-color: #f0f0f0;
+  }
+
+  .gantt_link_control div:hover {
+    background-color: #fff;
+  }
+
+  .gantt_link_source,
+  .gantt_link_target {
+    box-shadow: 0 0 3px var(--ion-color-primary);
+  }
+
+  .gantt_link_target.link_finish_allow,
+  .gantt_link_target.link_start_allow {
+    box-shadow: 0 0 3px #ffbf5e;
+  }
+
+  .gantt_link_target.link_finish_deny,
+  .gantt_link_target.link_start_deny {
+    box-shadow: 0 0 3px #e87e7b;
+  }
+
+  .link_finish_allow .gantt_link_control.task_end_date div,
+  .link_start_allow .gantt_link_control.task_start_date div {
+    background-color: #ffbf5e;
+    border-color: #ffa011;
+  }
+
+  .link_finish_deny .gantt_link_control.task_end_date div,
+  .link_start_deny .gantt_link_control.task_start_date div {
+    background-color: #e87e7b;
+    border-color: #dd3e3a;
+  }
+
+  .gantt_link_arrow_right {
+    border-top-color: transparent !important;
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    border-left-color: #ffa011;
+  }
+
+  .gantt_link_arrow_left {
+    border-top-color: transparent !important;
+    border-right-color: #ffa011;
+    border-bottom-color: transparent !important;
+    border-left-color: transparent !important;
+  }
+
+  .gantt_link_arrow_up {
+    border-color: transparent transparent #ffa011;
+    border-bottom-color: #ffa011;
+  }
+
+  .gantt_link_arrow_down {
+    border-top-color: #ffa011;
+  }
+
+  .gantt_link_tooltip {
+    box-shadow: 3px 3px 3px #888;
+    background-color: #fff;
+    border-left: 1px dotted var(--menu-right-border-color);
+    border-top: 1px dotted var(--menu-right-border-color);
+    color: #444;
+  }
+
+  .gantt_link_direction {
+    border-color: #ffa011;
+  }
+
+  .gantt_grid_data .gantt_row.gantt_selected,
+  .gantt_grid_data .gantt_row.odd.gantt_selected,
+  .gantt_task_row.gantt_selected {
+    background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.15);
+  }
+
+  .gantt_task_row.gantt_selected .gantt_task_cell {
+    border-right-color: var(--menu-right-border-color);
+  }
+
+  .gantt_task_line.gantt_project.gantt_selected {
+    // box-shadow: 0 0 5px #46ad51;
+    box-shadow: none;
+  }
+
+  .gantt_task_line.gantt_milestone {
+    background-color: #d33daf;
+    border: 0 solid #61164f;
+  }
+
+  .gantt_task_line.gantt_task_inline_color {
+    border-color: #999;
+  }
+
+  .gantt_task_line.gantt_task_inline_color .gantt_task_progress {
+    background-color: #363636;
+  }
+
+  .gantt_task_line.gantt_task_inline_color.gantt_project.gantt_selected,
+  .gantt_task_line.gantt_task_inline_color.gantt_selected {
+    box-shadow: 0 0 5px #999;
+  }
+
+  .gantt_task_link.gantt_link_inline_color:hover .gantt_line_wrapper div {
+    box-shadow: 0 0 5px 0 #999;
+  }
+
+  .gantt_critical_task {
+    background-color: #e63030;
+    border-color: #9d3a3a;
+  }
+
+  .gantt_critical_task .gantt_task_progress {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .gantt_critical_link .gantt_line_wrapper > div {
+    background-color: #e63030;
+  }
+
+  .gantt_critical_link .gantt_link_arrow {
+    border-color: #e63030;
+  }
+
+  .gantt_btn_set:focus,
+  .gantt_cell:focus,
+  .gantt_grid_head_cell:focus,
+  .gantt_popup_button:focus,
+  .gantt_qi_big_icon:focus,
+  .gantt_row:focus {
+    box-shadow: inset 0 0 1px 1px #4d90fe;
+  }
+
+  .gantt_cal_light {
+    -webkit-tap-highlight-color: transparent;
+    background: #fff;
+    border: 1px solid var(--menu-right-border-color);
+    color: #6b6b6b;
+  }
+
+  .gantt_cal_light select {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_lsection {
+    color: #727272;
+  }
+
+  .gantt_cal_ltext textarea {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_larea {
+    border: 1px solid var(--menu-right-border-color);
+    background-color: #fff;
+  }
+
+  .gantt_btn_set {
+    border: 0 solid var(--menu-right-border-color);
+    background: #fff;
+  }
+
+  .gantt_cal_cover {
+    background-color: #000;
+  }
+
+  .gantt_custom_button {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_light_wide .gantt_cal_larea {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_light_wide .gantt_wrap_section {
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_section_time {
+    background-color: #fff;
+  }
+
+  .gantt_section_time .gantt_time_selects select {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_duration .gantt_duration_dec,
+  .gantt_duration .gantt_duration_inc,
+  .gantt_duration .gantt_duration_value {
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_duration .gantt_duration_dec,
+  .gantt_duration .gantt_duration_inc {
+    background: #fff;
+  }
+
+  .gantt_resource_row {
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_quick_info {
+    border: 1px solid var(--menu-right-border-color);
+    background-color: #fff;
+  }
+
+  .gantt_cal_qi_title {
+    color: #454545;
+    background-color: #fff;
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_cal_qi_content {
+    color: #454545;
+  }
+
+  .gantt_qi_big_icon {
+    background: #fff;
+    border: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_resource_marker {
+    color: #fff;
+  }
+
+  .gantt_histogram_fill {
+    background-color: rgba(41, 157, 180, 0.2);
+  }
+
+  .gantt_histogram_hor_bar,
+  .gantt_histogram_vert_bar {
+    background: #299db4;
+  }
+
+  .gantt_histogram_cell {
+    color: #000;
+  }
+
+  .gantt_marker {
+    background-color: rgba(255, 0, 0, 0.4);
+  }
+
+  .gantt_marker .gantt_marker_content {
+    color: #fff;
+  }
+
+  .gantt_grid_dnd_marker_line {
+    background-color: #3498db;
+  }
+
+  .gantt_grid_dnd_marker_line:before {
+    background: #fff;
+    border: 3px solid #3498db;
+  }
+
+  .gantt_grid_dnd_marker_folder {
+    box-shadow: inset 0 0 0 2px #3f98db;
+  }
+
+  .gantt_click_drag_rect {
+    outline: 1px solid #3f98db;
+    background-color: rgba(52, 152, 219, 0.3);
+  }
+
+  .gantt_layout_cell > .gantt_layout_header {
+    background: #33aae8;
+    color: #fff;
+  }
+
+  .gantt_layout_header.collapsed_x {
+    background: #a9a9a9;
+  }
+
+  .gantt_layout_header.collapsed_y {
+    background: #a9a9a9;
+  }
+
+  .gantt_resizing {
+    background: transparent;
+  }
+
+  .gantt_resizer_stick {
+    background: #33aae8;
+  }
+
+  .gantt_resizer_error {
+    background: #cd5c5c !important;
+  }
+
+  .gantt_layout_cell_border_left {
+    border-left: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_layout_cell_border_right {
+    border-right: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_layout_cell_border_top {
+    border-top: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_layout_cell_border_bottom {
+    border-bottom: 1px solid var(--menu-right-border-color);
+  }
+
+  .gantt_layout_cell_border_transparent {
+    border-color: transparent;
+  }
+
+  .gantt_window {
+    background: #fff;
+  }
+
+  .gantt_window_content_header {
+    background: #39c;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+
+  .gantt_window_content_header_buttons:hover {
+    color: #000;
+  }
+
+  .gantt_empty_state_text_link {
+    color: #03a9f4;
+  }
+
+  .gantt_drag_marker,
+  .gantt_drag_marker .gantt_row.odd {
+    background-color: #fff;
+  }
+
+  .gantt_drag_marker .gantt_row {
+    border-left: 1px solid #d2d2d2;
+    border-top: 1px solid #d2d2d2;
+  }
+
+  .gantt_drag_marker .gantt_cell {
+    border-color: #d2d2d2;
+  }
+
+  .gantt_row.gantt_over,
+  .gantt_task_row.gantt_over {
+    background-color: #0070fe;
+  }
+
+  .gantt_task_row.gantt_transparent {
+    background-color: #f8fdfd;
+  }
+
+  .gantt_popup_button.gantt_delete_button {
+    background: var(--ion-color-primary);
+    text-shadow: 0 -1px 0 #248a9f;
+    color: #fff;
+  }
+
+  .gantt_task .gantt_task_content {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    $avatar-size: 34px;
+    $num-avatars: 100;
+
+    .text {
+      margin-left: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

@@ -275,6 +275,12 @@ input[type='number'] {
   align-items: center;
 }
 
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .alert-text-left {
   .alert-message {
     text-align: left !important;
@@ -300,6 +306,11 @@ input[type='number'] {
 
 .clickable {
   cursor: pointer;
+}
+
+.spacing {
+  display: inline-block;
+  padding-left: 16px;
 }
 
 .btns {
@@ -358,6 +369,10 @@ ion-app{
   @media screen and (max-width: 991px) {
     display: none !important;
   }
+}
+
+.small-btn{
+  min-height: 26px !important;
 }
 
 .split {
@@ -1260,4 +1275,9 @@ ion-content.cameraFrame {
 
 .backSubPageActive {
   display: none;
+}
+
+
+.gantt_message_area {
+  right: -900vw !important;
 }

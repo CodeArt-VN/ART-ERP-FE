@@ -64,7 +64,6 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "angular-gridster2": "^17.0.0",
-    "dhtmlx-gantt": "^8.0.6",
     "echarts": "^5.5.0",
     "intro.js": "^7.2.0",
     "ionicons": "^7.2.2",
