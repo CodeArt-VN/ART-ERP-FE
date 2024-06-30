@@ -240,6 +240,12 @@ input[type='number'] {
   height: calc(100% - env(safe-area-inset-top));
 }
 
+.safe-max-width{
+  max-width: var(--grid-ll);
+  margin: auto;
+  width: 100%;
+}
+
 .fullfill {
   position: absolute;
   z-index: 1;
@@ -1275,9 +1281,4 @@ ion-content.cameraFrame {
 
 .backSubPageActive {
   display: none;
-}
-
-
-.gantt_message_area {
-  right: -900vw !important;
 }

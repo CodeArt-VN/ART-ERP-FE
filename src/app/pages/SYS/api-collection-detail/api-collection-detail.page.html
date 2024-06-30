@@ -318,7 +318,7 @@
 							<ion-accordion value="beforeScirpt" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 									<ion-label>{{ 'Script' | translate }}</ion-label>
-									<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
+									<ion-button fill="clear" title="Save" (click)="saveScript($event); ">
 										<ion-icon name="save-outline"></ion-icon>
 									</ion-button>
 								</ion-item>
@@ -340,7 +340,7 @@
 							<ion-accordion value="afterScirpt" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 									<ion-label>{{ 'Script' | translate }}</ion-label>
-									<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
+									<ion-button fill="clear" title="Save" (click)="saveScript($event);">
 										<ion-icon name="save-outline"></ion-icon>
 									</ion-button>
 								</ion-item>

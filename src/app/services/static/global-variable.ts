@@ -366,8 +366,6 @@ export var GlobalData: any = {
           Amount: 0,
         },
       },
-      
-    
     ],
 
     /**
@@ -619,3 +617,4 @@ export var GlobalData: any = {
     monthsOfYear: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
   },
 };
+

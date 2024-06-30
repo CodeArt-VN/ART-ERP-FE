@@ -16,6 +16,7 @@ import { BRA_BranchProvider, WEB_ContentProvider } from 'src/app/services/static
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 
 declare var Quill: any;
 
@@ -40,7 +41,7 @@ export class HelpDetailComponent extends PageBase {
   showEditorContent = false;
   contentBefore = '';
 
-  @ViewChildren('quillEditor') quillEditor: QueryList<ElementRef>;
+  @ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
 
   constructor(
     public pageProvider: WEB_ContentProvider,
@@ -105,7 +106,7 @@ export class HelpDetailComponent extends PageBase {
     });
   }
   ngAfterViewInit() {
-    this.quillEditor.changes.subscribe((elements) => {
+    this.quillElement.changes.subscribe((elements) => {
       if (typeof elements.first !== 'undefined') {
         this.loadQuillEditor();
       }
@@ -115,32 +116,23 @@ export class HelpDetailComponent extends PageBase {
   loadQuillEditor() {
     if (typeof Quill !== 'undefined') this.initQuill();
     else {
-      const script = this.dynamicScriptLoaderService
-        .loadScript('https://cdn.quilljs.com/1.3.6/quill.js')
-        .then(() => {})
-        .catch((error) => console.error('Error loading script', error));
-
-      const style = this.dynamicScriptLoaderService
-        .loadStyle('https://cdn.quilljs.com/1.3.6/quill.snow.css')
-        .then(() => {})
-        .catch((error) => console.error('Error loading style', error));
-
-      Promise.all([script, style])
+      this.dynamicScriptLoaderService
+        .loadResources(thirdPartyLibs.quill.source)
         .then(() => {
           this.initQuill();
         })
-        .catch((error) => console.log(`Error in promises ${error}`));
+        .catch((error) => console.error('Error loading script', error));
     }
   }
 
-  quill;
+  editor;
   initQuill() {
     if (this.showEditorContent && this.segmentView == 's1') {
       const existingToolbar = document.querySelector('.ql-toolbar');
       if (existingToolbar) {
         existingToolbar.parentNode.removeChild(existingToolbar);
       }
-      this.quill = new Quill('#editor', {
+      this.editor = new Quill('#editor', {
         modules: {
           toolbar: [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -168,8 +160,8 @@ export class HelpDetailComponent extends PageBase {
       //choose image
       //this.editor.getModule("toolbar").addHandler("image", imageHandler);
 
-      this.quill.on('text-change', (delta, oldDelta, source) => {
-        this.item.Content = this.quill.root.innerHTML;
+      this.editor.on('text-change', (delta, oldDelta, source) => {
+        this.item.Content = this.editor.root.innerHTML;
       });
 
       const toolbar = document.querySelector('.ql-toolbar');
@@ -291,8 +283,8 @@ export class HelpDetailComponent extends PageBase {
         this.isShowAdd = true;
         this.isShowEdit = false;
       }
-    }else {
-      this.item.Id = savedItem.Id
+    } else {
+      this.item.Id = savedItem.Id;
     }
   }
 

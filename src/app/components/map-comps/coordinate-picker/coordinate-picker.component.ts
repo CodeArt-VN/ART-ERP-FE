@@ -1,16 +1,14 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  SimpleChanges,
-  ChangeDetectorRef,
-} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MapMarker } from '@angular/google-maps';
 import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
