@@ -360,16 +360,28 @@ export abstract class PageBase implements OnInit {
         }
     }
 
-    archiveItems() {
-        this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
-            if (this.query.IsDisabled == true) {
-                this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
-            }
-            else {
-                this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
-            }
-            this.removeSelectedItems();
-        });
+    archiveItems(publishEventCode = this.pageConfig.pageName) {
+        if (this.pageConfig.isDetailPage){
+            this.pageProvider.disable(this.item, !this.item.IsDisabled).then(() => {
+                if (this.item.IsDisabled) {
+                    this.env.showTranslateMessage('Archived','success');
+                }
+                else {
+                    this.env.showTranslateMessage('Reopened','success');
+                }
+                this.env.publishEvent({ Code: publishEventCode });
+            })
+        }else{
+            this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
+                if (this.query.IsDisabled) {
+                    this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
+                }
+                else {
+                    this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
+                }
+                this.removeSelectedItems();
+            });
+        }
     }
 
     removeSelectedItems() {

@@ -157,7 +157,8 @@
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canApprove &&
-        ShowApprove
+        ShowApprove &&
+        !page.pageConfig.isDetailPage
       "
       (click)="page.approve()"
     >
@@ -170,7 +171,8 @@
       title="{{ 'Disapprove' | translate }}"
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
-        ((page.pageConfig.canDisapprove && ShowDisapprove) || (page.pageConfig.canApprove && ShowDisapprove))
+        ((page.pageConfig.canDisapprove && ShowDisapprove) || (page.pageConfig.canApprove && ShowDisapprove)) &&
+        !page.pageConfig.isDetailPage
       "
       (click)="page.disapprove()"
     >
@@ -216,7 +218,8 @@
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canCancel &&
-        ShowCancel
+        ShowCancel &&
+        !page.pageConfig.isDetailPage
       "
       (click)="page.cancel()"
     >
