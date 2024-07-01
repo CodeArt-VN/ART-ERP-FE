@@ -1,5 +1,5 @@
 <ion-header>
-  <app-detail-toolbar [page]="this"></app-detail-toolbar>
+  <app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
 <ion-content appScrollbarTheme class="ion-padding">
@@ -13,45 +13,39 @@
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeProvider($event)">
+            <app-form-control [field]="{id:'Code', form : formGroup }" (change)="saveChange()">
+              <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
             </app-form-control>
-            <!-- <div class="c-control">
-              <label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
-              <ng-select [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="c-input" formControlName="IDProvider"
-                labelForId="IDProvider" [items]="providerDataSource.items$ | async" [typeahead]="providerDataSource.input$"
-                [loading]="providerDataSource.loading" [clearable]="true" bindLabel="Name" bindValue="Id"
-                placeholder="{{ 'Provider' | translate }}" (change)="changeProvider($event)">
-                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <ion-chip *ngFor="let i of items">
-                    <ion-avatar><ion-img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
-                    <ion-label>{{ i.Name }}</ion-label>
-                    <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
-                  </ion-chip>
-                </ng-template>
-                <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                  <div *ngIf="i">
-                    <ion-avatar><ion-img #img [src]="i.Icon"
-                        (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
-                    <span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
-                    <small>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
-                      ></small>
-                  </div>
-                </ng-template>
-              </ng-select>
-            </div> -->
             <app-form-control
-              [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeAction($event)">
+              [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
+              (change)="saveChange()"
+            >
             </app-form-control>
-
+            <app-form-control
+              [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select', bindValue:'Code', bindLabel:'Name', form : formGroup }"
+              (change)="saveChange()"
+            >
+            </app-form-control>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
+            <app-form-control
+              [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
+              (change)="saveChange()"
+            >
+            </app-form-control>
+            <app-form-control
+              [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', clearable : true, dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
+              (change)="saveChange()"
+            >
+            </app-form-control>
+            <app-form-control
+              [field]="{id:'Icon', secondaryId: 'Color', label: 'Icon',  type : 'icon-color', form : formGroup }"
+              (change)="saveChange()"
+            ></app-form-control>
           </ion-col>
         </ion-row>
 
-        <ion-row class="hr-group" style="position: relative;">
+        <ion-row class="hr-group" style="position: relative">
           <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
             <ion-list-header class="ion-no-padding">
               <ion-label color="primary">{{'Actions' | translate}}</ion-label>
@@ -61,31 +55,52 @@
             <div class="table-contain">
               <section class="table">
                 <header class="bold">
-                  <div class="col-id cell">Id</div>
-                  <div class="col-name cell">Provider / Action</div>
-                  <div class="col-checkbox cell">Enable</div>
+                  <div class="col-id cell">{{'No.' | translate}}</div>
+                  <div class="col-name cell">{{'Action' | translate}}</div>
+                  <div class="col-icon cell" *ngIf="pageConfig.canEdit"></div>
+                  <div class="col-checkbox cell">{{'Enable' | translate}}</div>
                   <div class="col-icon cell" *ngIf="pageConfig.canEdit"></div>
                   <div class="col-reorder cell">
-                    <ion-icon color="primary" size="large" (click)="showActionModal()" *ngIf="pageConfig.canAdd" name="add"></ion-icon>
+                    <ion-icon
+                      color="primary"
+                      size="large"
+                      (click)="showActionModal()"
+                      *ngIf="pageConfig.canAdd"
+                      name="add"
+                    ></ion-icon>
                   </div>
                 </header>
-                <ion-reorder-group [disabled]="false"
-                  (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])">
+                <ion-reorder-group
+                  [disabled]="false"
+                  (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])"
+                >
                   <ng-container *ngFor="let g of formGroup.get('TriggerActions')['controls']; let idx = index;">
                     <ng-container [formGroup]="g">
                       <div class="row">
-                        <div class="col-id cell">
-                          {{idx+1}}
-                        </div>
-                        <div class="col-name cell" (click)="showActionModal(g)">
+                        <div class="col-id cell">{{idx+1}}</div>
+                        <div class="col-name cell">
                           {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
                           <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
                         </div>
-                        <div class="col-checkbox cell">
-                          <input class="c-checkbox" *ngIf="pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox" (change)="changeEnableAction(g, $event)"/>
-                          <input class="c-checkbox" *ngIf="!pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox"/>
+                        <div class="col-icon cell clickable" (click)="showActionModal(g)" *ngIf="pageConfig.canEdit">
+                          <ion-icon color="primary" class="min-btn" name="server"></ion-icon>
                         </div>
-                        <div class="col-icon cell" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
+                        <div class="col-checkbox cell">
+                          <input
+                            class="c-checkbox"
+                            *ngIf="pageConfig.canEdit"
+                            [checked]="!g.get('IsDisabled').value"
+                            type="checkbox"
+                            (change)="changeEnableAction(g, $event)"
+                          />
+                          <input
+                            class="c-checkbox"
+                            *ngIf="!pageConfig.canEdit"
+                            [checked]="!g.get('IsDisabled').value"
+                            type="checkbox"
+                          />
+                        </div>
+                        <div class="col-icon cell clickable" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
                           <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>
                         </div>
                         <div class="col-reorder cell">
@@ -96,7 +111,6 @@
                   </ng-container>
                 </ion-reorder-group>
               </section>
-
             </div>
           </ion-col>
         </ion-row>
@@ -109,22 +123,28 @@
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
             <app-form-control
-              [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
+              [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"
+            ></app-form-control>
             <app-form-control
-              [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
+              [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"
+            ></app-form-control>
             <app-form-control
-              [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
+              [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"
+            ></app-form-control>
             <app-form-control
-              [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"></app-form-control>
+              [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
+            ></app-form-control>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
             <app-form-control
-              [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"></app-form-control>
-            <app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
-              (change)="saveChange()"></app-form-control>
+              [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
+              (change)="saveChange()"
+            ></app-form-control>
           </ion-col>
         </ion-row>
-
       </form>
     </ion-grid>
   </div>

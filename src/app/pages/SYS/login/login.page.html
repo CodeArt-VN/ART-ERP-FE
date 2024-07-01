@@ -12,42 +12,23 @@
         </div> -->
 
     <div class="ion-padding">
-      <div class="c-control">
-        <label class="c-label" for=""
-          >{{'Username (email)' | translate}}
-          <ion-text
-            *ngIf="!formGroup.controls.UserName.valid && !formGroup.controls.UserName.pending && (formGroup.controls.UserName.dirty || submitAttempt)"
-            color="danger"
-            >*</ion-text
-          >
-        </label>
-        <input
-          (focus)="$event.target.select()"
-          placeholder="{{'Account - email' | translate}}"
-          class="c-input"
-          [(ngModel)]="email"
-          formControlName="UserName"
+      <app-form-control
+          [form]="formGroup"
           type="email"
-        />
-      </div>
+          id="UserName"
+          label="UserName"
+          placeholder="Account - email"
+        ></app-form-control> 
 
-      <div class="c-control">
-        <label class="c-label" for=""
-          >{{'Password' | translate}}
-          <ion-text
-            *ngIf="!formGroup.controls.Password.valid && !formGroup.controls.Password.pending && (formGroup.controls.Password.dirty || submitAttempt)"
-            color="danger"
-            >*</ion-text
-          >
-        </label>
-        <input
-          class="c-input"
-          placeholder="{{'Password' | translate}}"
-          [(ngModel)]="password"
-          formControlName="Password"
+        <app-form-control
+          [form]="formGroup"
           type="password"
-        />
-      </div>
+          id="Password"
+          label="Password"
+          placeholder="Password"
+        ></app-form-control> 
+      
+  
     </div>
 
     <div class="ion-padding-horizontal">

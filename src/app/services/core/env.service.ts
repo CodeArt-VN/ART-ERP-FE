@@ -124,8 +124,6 @@ export class EnvService {
    * Connet SignalR
    */
   async init() {
-    console.log('init env');
-
     // If using, define drivers here: await this.storage.defineDriver(/*...*/);
     this._storage = await this.storage.create();
     this.publishEvent({ Code: 'app:loadLang' });
@@ -156,69 +154,40 @@ export class EnvService {
     signalRConnection.on('BroadcastMessage', (e) => {
       //console.log('BroadcastMessage', e);
       //this.publishEvent({})
-
-      if (e.code == 'SystemAlert') {
-        this.showAlert(e.value, null, e.name);
-      } else if (e.code == 'POSOrderPaymentUpdate') {
-        this.publishEvent({
-          Code: 'app:POSOrderPaymentUpdate',
-          Id: e.id,
-          Name: e.name,
-          Value: e.value,
-        });
-      } else if (e.code == 'POSOrderFromCustomer') {
-        this.publishEvent({
-          Code: 'app:POSOrderFromCustomer',
-          Data: e,
-        });
-      } else if (e.code == 'POSOrderFromStaff') {
-        this.publishEvent({ Code: 'app:POSOrderFromStaff', Data: e });
-      } else if (e.code == 'POSSupport') {
-        this.publishEvent({ Code: 'app:POSSupport', Data: e });
-      } else if (e.code == 'POSCallToPay') {
-        this.publishEvent({ Code: 'app:POSCallToPay', Data: e });
-      } else if (e.code == 'POSLockOrderFromStaff') {
-        this.publishEvent({
-          Code: 'app:POSLockOrderFromStaff',
-          Data: e,
-        });
-      } else if (e.code == 'POSLockOrderFromCustomer') {
-        this.publishEvent({
-          Code: 'app:POSLockOrderFromCustomer',
-          Data: e,
-        });
-      } else if (e.code == 'POSUnlockOrderFromStaff') {
-        this.publishEvent({
-          Code: 'app:POSUnlockOrderFromStaff',
-          Data: e,
-        });
-      } else if (e.code == 'POSUnlockOrderFromCustomer') {
-        this.publishEvent({
-          Code: 'app:POSUnlockOrderFromCustomer',
-          Data: e,
-        });
-      } else if (e.code == 'POSLockOrder') {
-        this.publishEvent({ Code: 'app:POSLockOrder', Data: e });
-      } else if (e.code == 'POSUnlockOrder') {
-        this.publishEvent({ Code: 'app:POSUnlockOrder', Data: e });
-      } else if (e.code == 'POSOrderSplittedFromStaff') {
-        this.publishEvent({
-          Code: 'app:POSOrderSplittedFromStaff',
-          Data: e,
-        });
-      } else if (e.code == 'POSOrderMergedFromStaff') {
-        this.publishEvent({
-          Code: 'app:POSOrderMergedFromStaff',
-          Data: e,
-        });
-      } else if (e.code == 'SystemMessage') {
-        this.showMessage(e.value, e.name);
-      } else if (e.code == 'AppReload') {
-        location.reload();
-      } else if (e.code == 'AppReloadOldVersion') {
-        if (e.value.localeCompare(this.version) > 0) {
+      switch (e.code) {
+        case 'POSOrderPaymentUpdate':
+        case 'POSOrderFromCustomer':
+        case 'POSOrderFromStaff':
+        case 'POSSupport':
+        case 'POSCallToPay':
+        case 'POSLockOrderFromStaff':
+        case 'POSLockOrderFromCustomer':
+        case 'POSUnlockOrderFromStaff':
+        case 'POSUnlockOrderFromCustomer':
+        case 'POSLockOrder':
+        case 'POSUnlockOrder':
+        case 'POSOrderSplittedFromStaff':
+        case 'POSOrderMergedFromStaff':
+        case 'SOPaymentUpdate':
+          e.code = 'app:' + e.code;
+          this.publishEvent(e);
+          break;
+        case 'AppReload':
           location.reload();
-        }
+          break;
+        case 'SystemMessage':
+          this.showMessage(e.value, e.name);
+          break;
+        case 'AppReloadOldVersion':
+          if (e.value.localeCompare(this.version) > 0) {
+            location.reload();
+          }
+          break;
+        case 'SystemAlert':
+          this.showAlert(e.value, null, e.name);
+          break;
+        default:
+          break;
       }
     });
     signalRConnection.on('SendMessage', (user, message) => {
@@ -607,13 +576,13 @@ export class EnvService {
 
   async getTypeAsync(Code: string, AllChild = false) {
     let it = this.typeList.find((d) => d.Code == Code);
-      if (it) {
-        if (AllChild) {
-          let ids = lib.findChildren(this.typeList, it.Id);
-          let childs = this.typeList.filter((d) => ids.includes(d.Id));
-          return await lib.buildSubNode(childs, [], it, []); //await lib.buildFlatTree(childs, [], true, it);
-        } else return this.typeList.filter((d) => d.IDParent == it.Id);
-      } else return [];
+    if (it) {
+      if (AllChild) {
+        let ids = lib.findChildren(this.typeList, it.Id);
+        let childs = this.typeList.filter((d) => ids.includes(d.Id));
+        return await lib.buildSubNode(childs, [], it, []); //await lib.buildFlatTree(childs, [], true, it);
+      } else return this.typeList.filter((d) => d.IDParent == it.Id);
+    } else return [];
   }
 
   /**

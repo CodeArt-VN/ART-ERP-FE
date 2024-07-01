@@ -88,7 +88,6 @@ export class ToolbarComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changed');
     if (this.page.pageConfig?.pageName == 'sale-order') {
       this.ShowSubmit = true;
       this.ShowApprove = true;

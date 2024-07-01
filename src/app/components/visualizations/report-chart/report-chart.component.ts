@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ReportService } from 'src/app/services/report.service';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
   selector: 'app-report-chart',
@@ -47,8 +48,8 @@ export class ReportChartComponent implements OnInit {
       }
 
       this._reportId = v;
-      let temp = this.rpt.getReport(this._reportId);
-      this.report = JSON.parse(JSON.stringify(temp));
+      this.report = this.rpt.getReport(this._reportId);
+      //this.report = lib.cloneObject(this.rpt.getReport(this._reportId));
       this.buildForm(this.report.DataConfig);
       this.compareBy = this.report.DataConfig.CompareBy.map((x) => x.Title || x.Property);
       this.measureBy = this.report.DataConfig.MeasureBy.map((x) => x.Title || x.Property);
@@ -82,10 +83,12 @@ export class ReportChartComponent implements OnInit {
   _gridItem: any;
   @Input() set gridItem(v) {
     this._gridItem = v;
-    console.log('gridItem', v);
     if (this._gridItem?.Config?.ChartDimension && this._gridItem.Config.ChartDimension != this.viewDimension) {
       this.onViewDimensionChange(this._gridItem.Config.ChartDimension);
     } else {
+      if (!this._gridItem.Config) {
+        this._gridItem.Config = {};
+      }
       this._gridItem.Config.ChartDimension = this.viewDimension;
     }
   }
@@ -246,71 +249,6 @@ export class ReportChartComponent implements OnInit {
   }
 
   @ViewChild('popover') popover;
-  isOpenDatePicker = false;
-  isOpenCompareBy = false;
-  pickerControl: any;
-  pickerGroupName: string;
-
-  presentDatePicker(event, control, groupName) {
-    this.pickerGroupName = groupName;
-    this.pickerControl = control;
-    this.popover.event = event;
-    this.calcAbsoluteDate(groupName == 'TimeFrame-To');
-    this.isOpenDatePicker = true;
-  }
-
-  dismissDatePicker(apply: boolean = false) {
-    if (!this.isOpenDatePicker) return;
-
-    if (!apply) {
-      this.form.patchValue(this.report?.DataConfig);
-    } else {
-      this.report.DataConfig = this.form.getRawValue();
-      this.onChangeTimeRange(this.report.DataConfig);
-    }
-    this.isOpenDatePicker = false;
-  }
-
-  calcAbsoluteDate(isFullfillDate = false) {
-    if (this.pickerControl.controls.Type.value == 'Relative') {
-      let tempDate = this.rpt.calcTimeValue(this.pickerControl.getRawValue(), isFullfillDate);
-      if (tempDate) {
-        this.pickerControl.controls.Value.value = tempDate.toJSON();
-      }
-    }
-  }
-
-  pickDate(pDate) {
-    if (this.pickerControl.controls.Type.value != pDate.Type) {
-      this.pickerControl.controls.Type.setValue(pDate.Type);
-      this.pickerControl.controls.Type.markAsDirty();
-    }
-
-    if (pDate.Type == 'Relative') {
-      if (this.pickerControl.controls.IsPastDate.value != pDate.IsPastDate) {
-        this.pickerControl.controls.IsPastDate.setValue(pDate.IsPastDate);
-        this.pickerControl.controls.IsPastDate.markAsDirty();
-      }
-      if (this.pickerControl.controls.Period.value != pDate.Period) {
-        this.pickerControl.controls.Period.setValue(pDate.Period);
-        this.pickerControl.controls.Period.markAsDirty();
-      }
-      if (this.pickerControl.controls.Amount.value != pDate.Amount) {
-        this.pickerControl.controls.Amount.setValue(pDate.Amount);
-        this.pickerControl.controls.Amount.markAsDirty();
-      }
-      this.calcAbsoluteDate(this.pickerGroupName == 'TimeFrame-To');
-    } else {
-      if (this.pickerControl.controls.Value.value != pDate.Value.detail.value) {
-        this.pickerControl.controls.Value.setValue(pDate.Value.detail.value);
-        this.pickerControl.controls.Value.markAsDirty();
-      }
-    }
-  }
-
-  segmentTimeframeChanged(e) {
-    this.pickerControl.controls.Type.value = e.detail.value;
-  }
 
   form: FormGroup;
 
@@ -336,9 +274,27 @@ export class ReportChartComponent implements OnInit {
   }
   @Output() timeRangeChange = new EventEmitter();
   onChangeTimeRange(e) {
-    this.timeRangeChange.emit(e);
-  }
+    let timeFrame = this.form.getRawValue().TimeFrame;
+    this.report.DataConfig.TimeFrame.From = timeFrame.From;
+    this.report.DataConfig.TimeFrame.To = timeFrame.To;
+    this.onReloadData();
+    // this.rpt.runTestReport(this.report.DataConfig).subscribe(
+    //   (resp: any) => {
+    //     if (resp) {
+    //       this.updateDataset({
+    //         dataFetchDate: resp.LastModifiedDate,
+    //         data: resp.Data,
+    //         comparitionData: resp.ComparitionData,
+    //       });
+    //     }
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   },
+    // );
 
+    this.timeRangeChange.emit(this.report.DataConfig.TimeFrame);
+  }
 
   @Output() widgetConfigChange = new EventEmitter();
   onTypeChanged(e) {
@@ -366,6 +322,4 @@ export class ReportChartComponent implements OnInit {
 
     this.widgetConfigChange.emit(this._gridItem);
   }
-
-
 }

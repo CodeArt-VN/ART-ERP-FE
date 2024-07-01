@@ -25,6 +25,7 @@ import { SharePrintingModule } from './printing/share-printing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { HelpDetailComponent } from '../pages/SYS/help-detail/help-detail.page';
 import { PipesModule } from '../pipes/pipes.module';
+import { ReorderComponent } from './reorder/reorder.component';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { PipesModule } from '../pipes/pipes.module';
     PageTitleComponent,
     QueryFilterComponent,
     HelpDetailComponent,
+    ReorderComponent,
   ],
   exports: [
     HelpDetailComponent,
@@ -79,6 +81,7 @@ import { PipesModule } from '../pipes/pipes.module';
     //FileUploadModule
 
     PipesModule,
+    ReorderComponent,
   ],
 })
 export class ShareComponentsModule {}

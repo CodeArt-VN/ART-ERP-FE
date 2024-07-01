@@ -83,7 +83,7 @@ export class PopoverPage {
     }
 
     if (this.popConfig.isShowBranchSelect) {
-      this.branchList = JSON.parse(JSON.stringify(this.env.branchList));
+      this.branchList = lib.cloneObject(this.env.branchList);
       let translateResult;
       this.translate.get('all-unit').subscribe((message: string) => {
         translateResult = message;

@@ -51,7 +51,11 @@
   --main-background-top: #eff2f5;
   --main-background-bottom: #eff2f5;
 
-  --table-header-background: #f8f9fb;
+  --table-header-background: rgb(248, 249, 251);
+  --table-row-background: rgb(255, 255, 255);
+  --table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+  --table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+  --table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
 
   --feature-background-top: #ffffff;
   --feature-background-bottom: #ffffff;
@@ -121,12 +125,12 @@
 
   &.dark {
     // #region ionic colors
-    --ion-color-primary: #82be41;
-    --ion-color-primary-rgb: 130, 190, 65;
+    --ion-color-primary: #74caff;
+    --ion-color-primary-rgb: 116,202,255;
     --ion-color-primary-contrast: #000000;
-    --ion-color-primary-contrast-rgb: 0, 0, 0;
-    --ion-color-primary-shade: #72a739;
-    --ion-color-primary-tint: #8fc554;
+    --ion-color-primary-contrast-rgb: 0,0,0;
+    --ion-color-primary-shade: #66b2e0;
+    --ion-color-primary-tint: #82cfff;
 
     --ion-color-secondary: #ffffff;
     --ion-color-secondary-rgb: 255, 255, 255;
@@ -164,48 +168,55 @@
     --ion-color-light-tint: #646567;
     // #endregion
 
-    --menu-right-border-color: #47484a;
-    --menu-background-item-active: #656669;
-    --menu-background-top: #535456;
-    --menu-background-bottom: #535456;
+    --menu-right-border-color: #3c414a;
+    --menu-background-item-active: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+    --menu-background-top: #30353c;
+    --menu-background-bottom: #30353c;
 
-    --main-background-top: #3f3f3f;
-    --main-background-bottom: #3f3f3f;
+    --main-background-top: #2a2e34;
+    --main-background-bottom: #2a2e34;
 
-    --table-header-background: #515355;
+    --table-header-background: rgb(60, 65, 74);
+    --table-row-background: rgb(48, 53, 60);
+    --table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+    --table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+    --table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
 
-    --feature-background-top: #4c4d4f;
-    --feature-background-bottom: #4c4d4f;
+
+    --feature-background-top: #2a2e34;
+    --feature-background-bottom: #2a2e34;
 
     --ion-background-color: var(--main-background-bottom);
     --ion-background-color-rgb: 35, 40, 81;
     --ion-toolbar-background: var(--main-background-top);
     --ion-card-background: var(--main-background-top);
-    --ion-text-color: #ffffff;
-    --ion-text-color-rgb: 255, 255, 255;
 
-    --ion-color-step-50: #0d0d0d;
-    --ion-color-step-100: #1a1a1a;
-    --ion-color-step-150: #262626;
-    --ion-color-step-200: #333333;
-    --ion-color-step-250: #404040;
-    --ion-color-step-300: #4d4d4d;
-    --ion-color-step-350: #595959;
-    --ion-color-step-400: #666666;
-    --ion-color-step-450: #737373;
-    --ion-color-step-500: #808080;
-    --ion-color-step-550: #8c8c8c;
-    --ion-color-step-600: #999999;
-    --ion-color-step-650: #a6a6a6;
-    --ion-color-step-700: #b3b3b3;
-    --ion-color-step-750: #bfbfbf;
-    --ion-color-step-800: #cccccc;
-    --ion-color-step-850: #d9d9d9;
-    --ion-color-step-900: #e6e6e6;
-    --ion-color-step-950: #f2f2f2;
+    --ion-text-color: #eeeeee;
+    --ion-text-color-rgb: 238,238,238;
+
+    --ion-color-step-50: #34383d;
+    --ion-color-step-100: #3e4147;
+    --ion-color-step-150: #474b50;
+    --ion-color-step-200: #515459;
+    --ion-color-step-250: #5b5e63;
+    --ion-color-step-300: #65686c;
+    --ion-color-step-350: #6f7175;
+    --ion-color-step-400: #787b7e;
+    --ion-color-step-450: #828488;
+    --ion-color-step-500: #8c8e91;
+    --ion-color-step-550: #96989a;
+    --ion-color-step-600: #a0a1a4;
+    --ion-color-step-650: #a9abad;
+    --ion-color-step-700: #b3b4b6;
+    --ion-color-step-750: #bdbec0;
+    --ion-color-step-800: #c7c8c9;
+    --ion-color-step-850: #d1d1d2;
+    --ion-color-step-900: #dadbdb;
+    --ion-color-step-950: #e4e4e5;
+  
 
     ion-item {
-      --border-color: var(--ion-color-primary);
+      --border-color: var(--menu-right-border-color);
     }
   }
 }
