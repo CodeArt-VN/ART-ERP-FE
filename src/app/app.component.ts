@@ -403,4 +403,8 @@ export class AppComponent implements OnInit {
     this.userCPPopover.event = e;
     this.isUserCPOpen = true;
   }
+
+  changeThemeMode(event) {
+    this.env.user.UserSetting.IsDarkTheme.Value = event.detail.value == Style.Dark ? Style.Dark : null;
+  }
 }
