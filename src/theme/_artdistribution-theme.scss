@@ -51,7 +51,11 @@
 	--main-background-top: #eff2f5;
 	--main-background-bottom: #eff2f5;
 
-	--table-header-background: #f8f9fb;
+	--table-header-background: rgb(248, 249, 251);
+	--table-row-background: rgb(255, 255, 255);
+	--table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+	--table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+	--table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
 
 	--feature-background-top: #ffffff;
 	--feature-background-bottom: #ffffff;
@@ -84,6 +88,10 @@
 			background-size: contain;
 			background-position: center center;
 			background-image: url($wide-dark-logo-url);
+		}
+
+		form {
+			margin-top: 0px !important;
 		}
 	}
 
@@ -165,7 +173,12 @@
 		--main-background-top: #3b4576;
 		--main-background-bottom: #232851;
 
-		--table-header-background: #232851;
+		--table-header-background: var(--menu-right-border-color);
+		--table-row-background: transparent; // rgb(43, 70, 108);
+		--table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+		--table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+		--table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+
 
 		--feature-background-top: #343b6f;
 		--feature-background-bottom: #22274e;
@@ -176,6 +189,7 @@
 		--ion-item-background: transparent;
 		--ion-item-background-activated: transparent;
 		--ion-card-background: var(--main-background-top);
+
 		--ion-text-color: #ffffff;
 		--ion-text-color-rgb: 255, 255, 255;
 
@@ -224,11 +238,5 @@
 		ion-item {
 			--border-color: var(--ion-color-primary);
 		}
-
-		// ion-segment-button {
-		// 	--ion-background-color: var(--ion-color-secondary); //segment selected background
-		// 	--ion-background-color-rgb: var(--ion-color-secondary-rgb);
-		// 	--color-checked: var(--ion-color-secondary-contrast);
-		// }
 	}
 }
