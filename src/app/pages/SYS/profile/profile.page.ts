@@ -1,20 +1,18 @@
-import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { EnvService } from 'src/app/services/core/env.service';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
-import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
+import { AccountService } from 'src/app/services/account.service';
+import { CommonService } from 'src/app/services/core/common.service';
+import { EnvService } from 'src/app/services/core/env.service';
 import { CompareValidator } from 'src/app/services/core/validators';
+import { ACCOUNT_ApplicationUserProvider } from 'src/app/services/custom.service';
+import { lib } from 'src/app/services/static/global-functions';
 import {
   HRM_StaffProvider,
   SYS_UserDeviceProvider,
   SYS_UserSettingProvider,
 } from 'src/app/services/static/services.service';
-import { ACCOUNT_ApplicationUserProvider } from 'src/app/services/custom.service';
-import { CommonService } from 'src/app/services/core/common.service';
-import { ApiSetting } from 'src/app/services/static/api-setting';
-import { lib } from 'src/app/services/static/global-functions';
-import { AccountService } from 'src/app/services/account.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -173,18 +171,26 @@ export class ProfilePage extends PageBase {
     }
   }
 
-  updateUserSetting(event) {
-    let setting = this.userSetting.Theme;
+  updateTheme(event){
+    this.userSetting.Theme.Value = event.detail.value;
+    this.updateUserSetting(this.userSetting.Theme, true);
+  }
 
-    setting.Value = event.detail.value;
-    
+  updateUserSetting(setting, isStringValue = false) {
+
     if (this.submitAttempt) return;
     this.submitAttempt = true;
-
+    if (!isStringValue) 
+      setting.Value = JSON.stringify(!setting.Value);
+    
+    
     this.userSettingProvider.save(setting).then((response: any) => {
       if (!setting.Id) {
         setting.Id = response.Id;
       }
+
+      if (!isStringValue) 
+        setting.Value = JSON.parse(setting.Value);
 
       this.submitAttempt = false;
       this.env.user.UserSetting = this.userSetting;
@@ -194,7 +200,7 @@ export class ProfilePage extends PageBase {
     });
   }
 
-  changeTheme(event) {
+  changeTheme() {
     this.env.publishEvent({ Code: 'app:ChangeTheme' });
   }
 

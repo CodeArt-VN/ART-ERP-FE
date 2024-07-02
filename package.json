@@ -56,7 +56,7 @@
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/resource-daygrid": "^6.1.11",
     "@fullcalendar/resource-timeline": "^6.1.11",
-    "@ionic/angular": "^7.7.3",
+    "@ionic/angular": "^8.2.4",
     "@ionic/storage-angular": "^4.0.0",
     "@microsoft/signalr": "^8.0.0",
     "@ng-select/ng-option-highlight": "^12.0.6",

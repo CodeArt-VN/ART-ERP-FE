@@ -2,7 +2,8 @@
   class="default-palette"
   [class]="appTheme"
   [ngClass]="{
-    dark: env?.user?.UserSetting?.Theme?.Value == 'Dark' ? true : false,
+    dark: env?.user?.UserSetting?.Theme?.Value == 'Dark',
+    light: env?.user?.UserSetting?.Theme?.Value == 'Light',
     showScrollbar: showScrollbar
   }"
 >
