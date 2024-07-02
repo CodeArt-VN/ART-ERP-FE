@@ -2,7 +2,7 @@
   class="default-palette"
   [class]="appTheme"
   [ngClass]="{
-    dark: env?.user?.UserSetting?.IsDarkTheme?.Value,
+    dark: env?.user?.UserSetting?.Theme?.Value == 'Dark' ? true : false,
     showScrollbar: showScrollbar
   }"
 >
@@ -254,7 +254,7 @@
           side="right"
           alignment="end"
           class="w300"
-          [dismissOnSelect]="true"
+          [dismissOnSelect]="false"
           (didDismiss)="isUserCPOpen = false"
         >
           <ng-template>
@@ -287,6 +287,53 @@
                   <ion-icon color="blue" name="help-circle" slot="start"></ion-icon>
                   <ion-label> {{ 'Help & Support' | translate }}</ion-label>
                 </ion-item>
+
+                <ion-item button id="mode-trigger">
+                  <ion-icon name="contrast-outline" slot="start"></ion-icon>
+                  <ion-label> {{ 'Mode' | translate }}</ion-label>
+                </ion-item>
+                <ion-popover trigger="mode-trigger" [dismissOnSelect]="false" side="end">
+                  <ng-template>
+                    <ion-content>
+                      <ion-list>
+                        <ion-radio-group
+                          [value]="env?.user?.UserSetting?.Theme?.Value"
+                          (ionChange)="changeThemeMode($event)"
+                        >
+                          <ion-item>
+                            <ion-radio value="Light">{{ 'Light mode' | translate }}</ion-radio>
+                          </ion-item>
+                          <ion-item>
+                            <ion-radio value="Dark">{{ 'Dark mode' | translate }}</ion-radio>
+                          </ion-item>
+                        </ion-radio-group>
+                      </ion-list>
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+
+                <ion-item button id="language-trigger">
+                  <ion-icon name="globe-outline" slot="start"></ion-icon>
+                  <ion-label> {{ 'Language' | translate }}</ion-label>
+                </ion-item>
+
+                <ion-popover trigger="language-trigger" [dismissOnSelect]="false" side="end">
+                  <ng-template>
+                    <ion-content>
+                      <ion-list>
+                        <ion-item lines="full" button detail="false" (click)="changeLanguage('vi-VN')">
+                          <ion-icon slot="start" name="flag-vn"> </ion-icon>
+                          <ion-label>{{ 'Vietnames' | translate }}</ion-label>
+                        </ion-item>
+
+                        <ion-item lines="full" button (click)="changeLanguage('en-US')" detail="false">
+                          <ion-icon slot="start" name="flag-us"> </ion-icon>
+                          <ion-label>{{ 'English' | translate }}</ion-label>
+                        </ion-item>
+                      </ion-list>
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
                 <ion-item lines="none" (click)="logout()" button detail="false">
                   <ion-icon color="bluegreen" name="log-out" slot="start"></ion-icon>
                   <ion-label>{{ 'Sign out' | translate }}</ion-label>
@@ -375,10 +422,14 @@
   <div class="app-footer">
     <span id="change-app-server" class="text" *ngIf="!env.user?.Id">
       <ng-container *ngFor="let s of _environment.appServers">
-        <ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name"  *ngIf="_environment.appDomain == s.Code"></ion-icon>
+        <ion-icon
+          [color]="s.Color"
+          [name]="s.Icon"
+          [title]="s.Name"
+          *ngIf="_environment.appDomain == s.Code"
+        ></ion-icon>
       </ng-container>
-      
-      
+
       <span>&nbsp;{{ 'Change server' | translate }}</span>
 
       <ion-popover trigger="change-app-server" triggerAction="click" class="w300" [dismissOnSelect]="true">
@@ -433,15 +484,17 @@
       (click)="changeLanguage('vi-VN')"
       class="text float-right"
       style="font-size: x-large"
-      ><b>🇻🇳</b></span
     >
+      <ion-icon name="flag-vn"></ion-icon
+    ></span>
     <span
       *ngIf="env.language.isDefault"
       (click)="changeLanguage('en-US')"
       class="text float-right"
       style="font-size: x-large"
-      ><b>🇺🇸</b></span
     >
+      <ion-icon name="flag-us"></ion-icon
+    ></span>
 
     <!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">
 			<ion-icon color="danger" name="alert-circle"></ion-icon>

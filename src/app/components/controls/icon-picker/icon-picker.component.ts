@@ -611,6 +611,10 @@ export class IconPickerComponent implements OnInit {
     { Name: 'wifi', Tags: 'bars,connection,internet,wifi' },
     { Name: 'wine', Tags: 'glass,wine' },
     { Name: 'woman', Tags: 'dudette,female,girl,lady,woman' },
+
+    { Name: 'flag-vn', Tags: 'flag,vn' },
+    { Name: 'flag-us', Tags: 'flag,us' },
+
   ];
   @Output() selected = new EventEmitter();
   keyword = '';
