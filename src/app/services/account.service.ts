@@ -182,7 +182,7 @@ export class AccountService {
     });
   }
 
-  settingList = ['IsDarkTheme', 'IsCompactMenu', 'IsCacheQuery', 'PinnedForms'];
+  settingList = ['Theme', 'IsCompactMenu', 'IsCacheQuery', 'PinnedForms'];
   loadUserSettings(settings, profile = this.env.user) {
     let userSetting = {};
     for (let idx = 0; idx < this.settingList.length; idx++) {
@@ -190,7 +190,10 @@ export class AccountService {
       let setting = settings ? settings.find((d) => d.Code == s) : null;
 
       if (setting && setting.Value) {
-        setting.Value = JSON.parse(setting.Value);
+        try {
+          setting.Value = JSON.parse(setting.Value);
+        } catch (error) {
+        }
       } else {
         setting = {
           Id: 0,

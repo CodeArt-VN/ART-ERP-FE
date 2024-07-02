@@ -307,14 +307,16 @@
                         <p>{{'Dark mode' | translate}}</p>
                       </ion-text>
                     </ion-label>
-                    <ion-toggle
-                      (click)="updateUserSetting(userSetting.IsDarkTheme); changeTheme();"
-                      slot="end"
-                      color="primary"
-                      [checked]="userSetting.IsDarkTheme.Value"
-                    ></ion-toggle>
-                  </ion-item>
 
+                    <ion-list lines="none">
+                      <ion-radio-group [value]="userSetting.Theme.Value" (ionChange)="updateUserSetting($event);changeTheme()">
+                        <ion-radio value="OS">{{ 'OS' | translate }}</ion-radio>
+                        <ion-radio value="Light">{{ 'Light' | translate }}</ion-radio>
+                        <ion-radio value="Dark">{{ 'Dark' | translate }}</ion-radio>
+                      </ion-radio-group>
+                    </ion-list>
+                  </ion-item>
+              
                   <ion-item class="ion-no-padding">
                     <ion-label class="ion-text-wrap">
                       <ion-text color="dark">

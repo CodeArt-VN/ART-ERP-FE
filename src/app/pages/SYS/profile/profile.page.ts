@@ -63,12 +63,9 @@ export class ProfilePage extends PageBase {
       IDDepartment: new FormControl('', Validators.required),
       IDJobTitle: new FormControl('', Validators.required),
       IsDisabled: new FormControl(),
-
       LastName: new FormControl(),
-
       Title: new FormControl(),
       FirstName: new FormControl(),
-
       FullName: new FormControl('', Validators.required),
       ShortName: new FormControl(),
       Gender: new FormControl(),
@@ -77,12 +74,10 @@ export class ProfilePage extends PageBase {
       Email: new FormControl({ value: '', disabled: true }),
       Address: new FormControl(),
       ImageURL: new FormControl(),
-
       IdentityCardNumber: new FormControl(),
       Domicile: new FormControl(),
       DateOfIssueID: new FormControl(),
       IssuedBy: new FormControl(),
-
       BackgroundColor: new FormControl(),
     });
 
@@ -178,17 +173,19 @@ export class ProfilePage extends PageBase {
     }
   }
 
-  updateUserSetting(setting) {
+  updateUserSetting(event) {
+    let setting = this.userSetting.Theme;
+
+    setting.Value = event.detail.value;
+    
     if (this.submitAttempt) return;
     this.submitAttempt = true;
 
-    setting.Value = JSON.stringify(!setting.Value);
     this.userSettingProvider.save(setting).then((response: any) => {
       if (!setting.Id) {
         setting.Id = response.Id;
       }
 
-      setting.Value = JSON.parse(setting.Value);
       this.submitAttempt = false;
       this.env.user.UserSetting = this.userSetting;
       this.accountProvider.setProfile(this.env.user).then(() => {
@@ -197,7 +194,7 @@ export class ProfilePage extends PageBase {
     });
   }
 
-  changeTheme() {
+  changeTheme(event) {
     this.env.publishEvent({ Code: 'app:ChangeTheme' });
   }
 
