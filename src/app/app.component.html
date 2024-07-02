@@ -254,12 +254,12 @@
           side="right"
           alignment="end"
           class="w300"
-          [dismissOnSelect]="false"
+          [dismissOnSelect]="true"
           (didDismiss)="isUserCPOpen = false"
         >
           <ng-template>
             <ion-content scroll-y="false">
-              <ion-list lines="full">
+              <ion-list lines="none">
                 <ion-item [routerLinkActive]="['is-active']" [routerLink]="['/profile']" button detail="false">
                   <ion-avatar slot="start">
                     <ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
@@ -271,28 +271,22 @@
                     <p>{{ env.user.UserName }}</p>
                   </ion-label>
                 </ion-item>
-                <!-- <ion-item lines="none" button detail="false" [routerLink]="['/profile']">
-									<ion-label >{{'Profile' | translate}}</ion-label>
-								</ion-item> -->
-
-                <ion-item lines="none" button detail="false">
+                <ion-item lines="full" button detail="false">
                   <ion-icon color="warning" name="notifications" slot="start"></ion-icon>
                   <ion-label>{{ 'Notifications' | translate }}</ion-label>
+                  <ion-badge color="danger" slot="end">22</ion-badge>
                 </ion-item>
-                <ion-item lines="none" button detail="false">
-                  <ion-icon color="pink" name="bulb" slot="start"></ion-icon>
-                  <ion-label>{{ 'Give feed back' | translate }}</ion-label>
-                </ion-item>
-                <ion-item lines="full" button detail="false">
-                  <ion-icon color="blue" name="help-circle" slot="start"></ion-icon>
-                  <ion-label> {{ 'Help & Support' | translate }}</ion-label>
+
+                <ion-item button [routerLink]="['/profile']">
+                  <ion-icon color="blue" name="cog-outline" slot="start"></ion-icon>
+                  <ion-label>{{ 'Settings' | translate }}</ion-label>
                 </ion-item>
 
                 <ion-item button id="mode-trigger">
-                  <ion-icon name="contrast-outline" slot="start"></ion-icon>
-                  <ion-label> {{ 'Mode' | translate }}</ion-label>
+                  <ion-icon color="blue" name="contrast-outline" slot="start"></ion-icon>
+                  <ion-label> {{ 'Theme' | translate }}</ion-label>
                 </ion-item>
-                <ion-popover trigger="mode-trigger" [dismissOnSelect]="false" side="end">
+                <ion-popover trigger="mode-trigger" size="cover" [dismissOnSelect]="false" side="end">
                   <ng-template>
                     <ion-content>
                       <ion-list>
@@ -301,9 +295,15 @@
                           (ionChange)="changeThemeMode($event)"
                         >
                           <ion-item>
+                            <ion-icon color="primary" name="contrast" slot="start"></ion-icon>
+                            <ion-radio value="OS">{{ 'OS default' | translate }}</ion-radio>
+                          </ion-item>
+                          <ion-item>
+                            <ion-icon color="warning" name="sunny" slot="start"></ion-icon>
                             <ion-radio value="Light">{{ 'Light mode' | translate }}</ion-radio>
                           </ion-item>
                           <ion-item>
+                            <ion-icon color="purple" name="moon" slot="start"></ion-icon>
                             <ion-radio value="Dark">{{ 'Dark mode' | translate }}</ion-radio>
                           </ion-item>
                         </ion-radio-group>
@@ -313,29 +313,52 @@
                 </ion-popover>
 
                 <ion-item button id="language-trigger">
-                  <ion-icon name="globe-outline" slot="start"></ion-icon>
+                  <ion-icon color="blue" name="globe-outline" slot="start"></ion-icon>
                   <ion-label> {{ 'Language' | translate }}</ion-label>
                 </ion-item>
 
-                <ion-popover trigger="language-trigger" [dismissOnSelect]="false" side="end">
+                <ion-popover trigger="language-trigger" [dismissOnSelect]="true" side="end">
                   <ng-template>
                     <ion-content>
                       <ion-list>
                         <ion-item lines="full" button detail="false" (click)="changeLanguage('vi-VN')">
                           <ion-icon slot="start" name="flag-vn"> </ion-icon>
                           <ion-label>{{ 'Vietnames' | translate }}</ion-label>
+                          <ion-icon
+                            name="checkmark-circle-outline"
+                            slot="end"
+                            color="success"
+                            *ngIf="env.language.isDefault"
+                          ></ion-icon>
                         </ion-item>
 
                         <ion-item lines="full" button (click)="changeLanguage('en-US')" detail="false">
                           <ion-icon slot="start" name="flag-us"> </ion-icon>
                           <ion-label>{{ 'English' | translate }}</ion-label>
+                          <ion-icon
+                            name="checkmark-circle-outline"
+                            slot="end"
+                            color="success"
+                            *ngIf="!env.language.isDefault"
+                          ></ion-icon>
                         </ion-item>
                       </ion-list>
                     </ion-content>
                   </ng-template>
                 </ion-popover>
+
+                <ion-item button>
+                  <ion-icon color="bluegreen" name="bulb" slot="start"></ion-icon>
+                  <ion-label>{{ 'Give feed back' | translate }}</ion-label>
+                </ion-item>
+
+                <ion-item lines="full" button [routerLinkActive]="['is-active']" [routerLink]="['/profile']">
+                  <ion-icon color="bluegreen" name="help-circle" slot="start"></ion-icon>
+                  <ion-label> {{ 'Help & Support' | translate }}</ion-label>
+                </ion-item>
+
                 <ion-item lines="none" (click)="logout()" button detail="false">
-                  <ion-icon color="bluegreen" name="log-out" slot="start"></ion-icon>
+                  <ion-icon color="pink" name="log-out" slot="start"></ion-icon>
                   <ion-label>{{ 'Sign out' | translate }}</ion-label>
                 </ion-item>
               </ion-list>
@@ -496,13 +519,13 @@
       <ion-icon name="flag-us"></ion-icon
     ></span>
 
-    <!-- <span class="text float-right" *ngIf="isConnectFail" title="không kết nối được server...">
-			<ion-icon color="danger" name="alert-circle"></ion-icon>
-		</span> -->
-    <!-- <span class="text float-right">
+    <span class="text float-right" *ngIf="1 || isConnectFail" title="không kết nối được server...">
+      <ion-icon color="danger" name="alert-circle"></ion-icon>
+    </span>
+    <span class="text float-right">
       <ion-icon color="warning" name="notifications"></ion-icon>
       <span>10</span>
-    </span> -->
+    </span>
 
     <span class="text float-right" *ngFor="let m of appMessages">
       <ion-icon [ngClass]="{ blink: m.IsBlink }" [color]="m.Color" [name]="m.Icon"></ion-icon>

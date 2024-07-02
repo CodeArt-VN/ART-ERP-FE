@@ -192,8 +192,7 @@ export class AccountService {
       if (setting && setting.Value) {
         try {
           setting.Value = JSON.parse(setting.Value);
-        } catch (error) {
-        }
+        } catch (error) {}
       } else {
         setting = {
           Id: 0,
