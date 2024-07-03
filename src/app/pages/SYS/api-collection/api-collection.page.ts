@@ -124,7 +124,7 @@ export class APICollectionPage extends PageBase {
             }
             const jsonObject = JSON.parse(reader.result as string);
             let queryPostMan = {
-              IDPostman : jsonObject.info._postman_id
+              Code : jsonObject.info._postman_id
             }
             let obj = {
               IDProvider : this.formGroup.get('IDProvider').value,

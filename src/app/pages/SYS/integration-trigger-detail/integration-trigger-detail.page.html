@@ -16,32 +16,17 @@
             <app-form-control [field]="{id:'Code', form : formGroup }" (change)="saveChange()">
               <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
             </app-form-control>
-            <app-form-control
-              [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
-              (change)="saveChange()"
-            >
+            <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()">
             </app-form-control>
-            <app-form-control
-              [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select', bindValue:'Code', bindLabel:'Name', form : formGroup }"
-              (change)="saveChange()"
-            >
+            <app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select', bindValue:'Code', bindLabel:'Name', form : formGroup }" (change)="saveChange()">
             </app-form-control>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="saveChange()"
-            >
+            <app-form-control [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }" (change)="saveChange()">
             </app-form-control>
-            <app-form-control
-              [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', clearable : true, dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="saveChange()"
-            >
+            <app-form-control [field]="{id:'IDAction', label: 'Action triggerable', type : 'ng-select', clearable : true, dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }" (change)="saveChange()">
             </app-form-control>
-            <app-form-control
-              [field]="{id:'Icon', secondaryId: 'Color', label: 'Icon',  type : 'icon-color', form : formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
+            <app-form-control [field]="{id:'Icon', secondaryId: 'Color', label: 'Icon',  type : 'icon-color', form : formGroup }" (change)="saveChange()"></app-form-control>
           </ion-col>
         </ion-row>
 
@@ -61,23 +46,16 @@
                   <div class="col-checkbox cell">{{'Enable' | translate}}</div>
                   <div class="col-icon cell" *ngIf="pageConfig.canEdit"></div>
                   <div class="col-reorder cell">
-                    <ion-icon
-                      color="primary"
-                      size="large"
-                      (click)="showActionModal()"
-                      *ngIf="pageConfig.canAdd"
-                      name="add"
-                    ></ion-icon>
+                    <ion-icon color="primary" size="large" (click)="showActionModal()" *ngIf="pageConfig.canAdd" name="add"></ion-icon>
                   </div>
                 </header>
-                <ion-reorder-group
-                  [disabled]="false"
-                  (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])"
-                >
+                <ion-reorder-group [disabled]="false" (ionItemReorder)="doReorder($event, formGroup.get('TriggerActions')['controls'])">
                   <ng-container *ngFor="let g of formGroup.get('TriggerActions')['controls']; let idx = index;">
                     <ng-container [formGroup]="g">
                       <div class="row">
-                        <div class="col-id cell">{{idx+1}}</div>
+                        <div class="col-id cell">
+                          <a class="col-id cell" [routerLink]="['/integration-action/'+g.get('IDAction').value]">{{idx+1}}</a>
+                        </div>
                         <div class="col-name cell">
                           {{g.get('ProviderName').value}} - {{g.get('ActionName').value}}
                           <small *ngIf="g.get('Remark').value">{{g.get('Remark').value}}</small>
@@ -86,19 +64,8 @@
                           <ion-icon color="primary" class="min-btn" name="server"></ion-icon>
                         </div>
                         <div class="col-checkbox cell">
-                          <input
-                            class="c-checkbox"
-                            *ngIf="pageConfig.canEdit"
-                            [checked]="!g.get('IsDisabled').value"
-                            type="checkbox"
-                            (change)="changeEnableAction(g, $event)"
-                          />
-                          <input
-                            class="c-checkbox"
-                            *ngIf="!pageConfig.canEdit"
-                            [checked]="!g.get('IsDisabled').value"
-                            type="checkbox"
-                          />
+                          <input class="c-checkbox" *ngIf="pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox" (change)="changeEnableAction(g, $event)" />
+                          <input class="c-checkbox" *ngIf="!pageConfig.canEdit" [checked]="!g.get('IsDisabled').value" type="checkbox" />
                         </div>
                         <div class="col-icon cell clickable" *ngIf="pageConfig.canEdit" (click)="removeField(g,idx)">
                           <ion-icon color="danger" class="min-btn" name="trash"></ion-icon>
@@ -122,27 +89,14 @@
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
-            ></app-form-control>
+            <app-form-control [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
+            <app-form-control [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
+            <app-form-control [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
+            <app-form-control [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"></app-form-control>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
+            <app-form-control [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"></app-form-control>
+            <app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
           </ion-col>
         </ion-row>
       </form>

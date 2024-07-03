@@ -88,7 +88,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.query.Id = undefined;
     this.actionDataSource = [];
     if (this.formGroup.controls.IDProvider?.value) {
-      this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
+   //   this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
       this.query.IsTriggerable = true;
       this.actionProvider.read(this.query, false).then((listAction: any) => {
         if (listAction != null && listAction.data.length > 0) {
