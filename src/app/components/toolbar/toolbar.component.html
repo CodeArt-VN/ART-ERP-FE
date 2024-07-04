@@ -98,7 +98,7 @@
     >
       <ion-icon color="warning" slot="icon-only" name="cloud-upload-outline"></ion-icon>
     </ion-button>
-    <input class="hide-all" #importfile type="file" accept="AcceptFile" (change)="importFileChange($event)" />
+    <input class="hide-all" #importfile type="file" [accept]="AcceptFile" (change)="importFileChange($event)" />
 
     <!-- Unselect -->
     <ion-button title="{{ 'Unselect' | translate }}" (click)="page.unselect()" *ngIf="page.selectedItems?.length">
