@@ -53,7 +53,7 @@ export class ToolbarComponent implements OnInit {
   @Input() ShowHelp = true;
   @Input() ShowFeature = false;
 
-
+  @Input() AcceptFile = '.xlsx';
 
 
 
