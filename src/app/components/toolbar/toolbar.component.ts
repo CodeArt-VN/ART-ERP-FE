@@ -53,7 +53,7 @@ export class ToolbarComponent implements OnInit {
   @Input() ShowHelp = true;
   @Input() ShowFeature = false;
 
-
+  @Input() AcceptFile = '.xlsx';
 
 
 
@@ -88,7 +88,6 @@ export class ToolbarComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changed');
     if (this.page.pageConfig?.pageName == 'sale-order') {
       this.ShowSubmit = true;
       this.ShowApprove = true;

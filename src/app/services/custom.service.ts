@@ -366,4 +366,22 @@ export class DynamicScriptLoaderService {
       document.head.appendChild(styleElement);
     });
   }
+
+  loadResources(resources) {
+    // resources is array of resource object with type and url
+    // Affter loading all resources, return a promise
+
+    const promises = resources.map((resource) => {
+      if (resource.type === 'script' || resource.type === 'js') {
+        return this.loadScript(resource.url);
+      } else if (resource.type === 'style' || resource.type === 'css') {
+        return this.loadStyle(resource.url);
+      } else {
+        return Promise.reject(`Invalid resource type: ${resource.type}`);
+      }
+    });
+
+    return Promise.all(promises);
+
+  }
 }

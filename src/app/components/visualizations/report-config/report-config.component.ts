@@ -6,6 +6,7 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 
 declare var ace: any;
@@ -391,7 +392,7 @@ export class ReportConfigComponent implements OnInit {
     if (typeof ace !== 'undefined') this.initAce();
     else
       this.dynamicScriptLoaderService
-        .loadScript('https://ace.c9.io/build/src/ace.js')
+        .loadResources(thirdPartyLibs.aceEditor.source)
         .then(() => this.initAce())
         .catch((error) => console.error('Error loading script', error));
   }

@@ -75,6 +75,28 @@
   >
   </ng-select>
 
+  <!-- ng-select-async -->
+  <ng-select
+    *ngSwitchCase="'ng-select-async'"
+    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+    class="c-input"
+    [formControlName]="id"
+    [labelForId]="id"
+    [items]="dataSource.items$ | async"
+    [typeahead]="dataSource.input$"
+    [loading]="dataSource.loading"
+    [bindValue]="bindValue"
+    [bindLabel]="bindLabel"
+    [multiple]="multiple"
+    [clearable]="clearable"
+    (change)="onInputChange($event)"
+    appendTo="#ng-select-holder"
+  >
+    <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+    </ng-template>
+  </ng-select>
+
   <!-- ng-select-status -->
   <ng-select
     *ngSwitchCase="'ng-select-status'"
@@ -274,6 +296,14 @@
         <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
       </ion-chip>
     </ng-template>
+    <ng-template ng-label-tmp let-i="item">
+      <ion-chip *ngIf="i">
+        <ion-avatar
+          ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+        ></ion-avatar>
+        <ion-label>{{ i.FullName }}</ion-label>
+      </ion-chip>
+    </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
       <div *ngIf="i">
         <ion-avatar
@@ -293,6 +323,7 @@
       </div>
     </ng-template>
   </ng-select>
+
   <!-- textarea -->
   <textarea
     *ngSwitchCase="'textarea'"
@@ -318,16 +349,22 @@
   ></app-branch-breadcrumbs>
 
   <!-- span-text -->
-  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value || '&nbsp;'}}</span> 
+  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value || '&nbsp;' }}</span>
 
   <!-- span-number -->
-  <span *ngSwitchCase="'span-number'" class="c-input disable">{{ form.controls[id].value | number: '1.0-0' }}{{form.controls[id].value == null? '&nbsp;': '' }} </span>
+  <span *ngSwitchCase="'span-number'" class="c-input disable"
+    >{{ form.controls[id].value | number: '1.0-0' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}
+  </span>
 
   <!-- span-date -->
-  <span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
+  <span *ngSwitchCase="'span-date'" class="c-input disable"
+    >{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span
+  >
 
   <!-- span-datetime -->
-  <span *ngSwitchCase="'span-datetime'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{form.controls[id].value == null? '&nbsp;': '' }}</span>
+  <span *ngSwitchCase="'span-datetime'" class="c-input disable"
+    >{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span
+  >
 
   <!-- color -->
   <span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
@@ -366,6 +403,40 @@
           <app-icon-picker
             (selected)="onSelectIcon($event, form.controls[id])"
             [color]="color"
+            [icon]="form.controls[id].value"
+          ></app-icon-picker>
+          <div style="padding-top: 25vh"></div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </span>
+
+  <!-- icon-color -->
+  <span *ngSwitchCase="'icon-color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+    <ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
+      <ion-icon
+        [color]="form.controls[secondaryId].value || color"
+        slot="start"
+        [name]="form.controls[id].value || 'layers'"
+      ></ion-icon>
+      {{ form.controls[id].value || 'Change icon' | translate }}
+    </ion-button>
+
+    <ion-modal
+      [isOpen]="isOpenPicker"
+      (willDismiss)="isOpenPicker = false"
+      [initialBreakpoint]="0.75"
+      [breakpoints]="[0.5, 0.75]"
+    >
+      <ng-template>
+        <app-color-picker
+          (selected)="onSelectColor($event, form.controls[secondaryId])"
+          [color]="form.controls[secondaryId].value || 'dark'"
+        ></app-color-picker>
+        <ion-content appScrollbarTheme>
+          <app-icon-picker
+            (selected)="onSelectIcon($event, form.controls[id])"
+            [color]="form.controls[secondaryId].value || color"
             [icon]="form.controls[id].value"
           ></app-icon-picker>
           <div style="padding-top: 25vh"></div>
@@ -449,7 +520,7 @@
                 (click)="pickDate(i, true)"
               >
                 <ion-icon name="timer-outline" slot="start"></ion-icon>
-                <ion-label>{{ i.name | translate}}</ion-label>
+                <ion-label>{{ i.name | translate }}</ion-label>
               </ion-item>
             </ng-container>
 

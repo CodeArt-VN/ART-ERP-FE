@@ -1,21 +1,20 @@
 <ion-header>
-	<app-list-toolbar
+	
+	<app-toolbar
 	  pageTitle="{{'Organization structure' | translate}}"
-	  [pageConfig]="pageConfig"
-	  [selectedItems]="selectedItems"
-	  [query]="query"
-	  (add)="add()"
-	  (refresh)="refresh()"
-	  (export)="export()"
-	  (import)="import($event)"
-	  (help)="help()"
-	  (unselect)="unselect()"
-	  (archiveItems)="archiveItems()"
-	  (deleteItems)="deleteItems()"
-	></app-list-toolbar>
+	[page]="this" AcceptFile=".json"
+	>
+	<!-- <ion-buttons slot="start"*ngIf="pageConfig.canImport" class="ion-hide-sm-down_">
+		<ion-button fill="clear" title="Import Json"  (click)="presentPopover($event)" >
+			<ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+		</ion-button>
+	</ion-buttons> -->
+	
+</app-toolbar>
   </ion-header>
   
   <ion-content appScrollbarTheme class="scrollx" scroll-x="true">
+    <!-- <input class="hide-all" #importfileJson type="file" accept=".json" (change)="importJson($event)" /> -->
 	<ion-refresher
 	  [disabled]="!pageConfig.refresher"
 	  [disabled]="!pageConfig.refresher"
@@ -98,6 +97,31 @@
 		</ng-container>
 	  </ng-container>
 	</section>
+	 <!-- datepicker -->
+	 <ion-popover class="w300" #popover [isOpen]="isOpenPopover" (didDismiss)="dismissPopover()">
+		<ng-template>
+		<ion-content appScrollbarTheme>
+			<ion-grid>
+			<form [formGroup]="formGroup" (submit)="dismissPopover(true)">
+				<ion-row>
+				<ion-col size="12" size-sm size-xl="12">
+			    <app-form-control
+				[form]="formGroup"
+				type="ng-select"
+				label = "Provider"
+				id="IDProvider"
+				[dataSource]="providerDataSource"
+				bindValue="Id"
+				bindLabel="Name"
+				></app-form-control>
+				</ion-col>
+			</ion-row>
+			</form>
+		</ion-grid>
+		  </ion-content>
+		  <ion-button class="ion-margin" size="small" expand="block" (click)="dismissPopover(true)">Apply</ion-button>
+		</ng-template>
+	 </ion-popover>
 	<app-page-message [itemsLength]="itemsState.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
   </ion-content>
   

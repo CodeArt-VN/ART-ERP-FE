@@ -20,6 +20,8 @@ import { IntegrationTriggerActionModalPage } from '../integration-trigger-action
   styleUrls: ['./integration-trigger-detail.page.scss'],
 })
 export class IntegrationTriggerDetailPage extends PageBase {
+  typeList: any = [];
+  actionDataSource: any;
 
   constructor(
     public pageProvider: SYS_TriggerProvider,
@@ -44,12 +46,12 @@ export class IntegrationTriggerDetailPage extends PageBase {
       IDBranch: [this.env.selectedBranch],
       Id: new FormControl({ value: '', disabled: true }),
       IDProvider: ['', Validators.required],
-      IDAction: ['', Validators.required],
+      IDAction: [''],
       Code: [''],
       Type: ['Event'],
       Icon: [''],
       Color: [''],
-      Name: [''],
+      Name: ['', Validators.required],
       Remark: [''],
       Sort: [''],
       TriggerActions: this.formBuilder.array([]),
@@ -64,17 +66,18 @@ export class IntegrationTriggerDetailPage extends PageBase {
 
   providerDataSource: any;
   preLoadData(event?: any): void {
-    this.integrationProvider.read(this.query, false).then((listProvider: any) => {
-      if (listProvider != null && listProvider.data.length > 0) {
-        this.providerDataSource = listProvider.data;
-        const idProvider = this.formGroup.get('IDProvider').value;
-        if (idProvider) {
-          let selectedProvider = this.providerDataSource.find((d) => d.Id === idProvider);
-          this.providerName = selectedProvider.Name + ' -';
-        }
-      }
-    });
-    super.preLoadData(event);
+    Promise.all([
+      this.integrationProvider.read({IsTriggerable: true}, false), 
+      this.env.getType('IntegrationTriggerType'),
+      this.actionProvider.read(this.query, false)
+    ]).then(
+      (values: any) => {
+        this.providerDataSource = values[0].data;
+        this.typeList = values[1];
+        this.actionDataSource = values[2].data;
+        super.preLoadData(event);
+      },
+    );
   }
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
@@ -85,7 +88,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.query.Id = undefined;
     this.actionDataSource = [];
     if (this.formGroup.controls.IDProvider?.value) {
-      this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
+   //   this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
       this.query.IsTriggerable = true;
       this.actionProvider.read(this.query, false).then((listAction: any) => {
         if (listAction != null && listAction.data.length > 0) {
@@ -104,7 +107,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
           if (this.item.TriggerActions?.length) {
             this.patchFieldsValue();
           }
-        }else {
+        } else {
           let groups = <FormArray>this.formGroup.controls.TriggerActions;
           groups.clear();
         }
@@ -149,38 +152,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
       group.get('Sort').markAsDirty();
       this.formGroup.get('TriggerActions').markAsDirty();
     }
-  }
-
-  actionDataSource: any;
-  changeProvider(ev) {
-    this.actionDataSource = [];
-    this.formGroup.get('IDAction').setValue('');
-    this.formGroup.get('IDAction').markAsDirty();
-    this.providerName = ev ? ev.Name + ' -' : '';
-    this.updateNameField();
-    this.query.IDProvider = this.formGroup.get('IDProvider').value;
-    this.query.IsTriggerable = true;
-    this.actionProvider.read(this.query, false).then((listAction: any) => {
-      if (listAction != null && listAction.data.length > 0) {
-        this.actionDataSource = listAction.data;
-      } else {
-        this.actionDataSource = [];
-      }
-    });
-    this.saveChange();
-  }
-
-  changeAction(ev) {
-    this.actionName = ev ? ev.Name : '';
-    this.updateNameField();
-    this.saveChange();
-  }
-
-  providerName = '';
-  actionName = '';
-  updateNameField() {
-    this.formGroup.get('Name').setValue(this.providerName + ' ' + this.actionName);
-    this.formGroup.get('Name').markAsDirty();
   }
 
   removeField(fg, j) {
@@ -237,7 +208,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
         });
     }
   }
-
 
   changeEnableAction(fg, e) {
     this.triggerActionProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {

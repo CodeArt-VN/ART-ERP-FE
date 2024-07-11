@@ -3667,11 +3667,54 @@ export interface PM_ProjectPeople
     
 }
 
+export interface PM_Space
+{
+    IDBrannch?: number;
+    IDWorkspace?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Icon?: string;
+    Color?: string;
+    Remark?: string;
+    Sort?: number;
+    IsPrivate?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    ViewConfig?: string;
+    
+}
+
+export interface PM_SpaceStatus
+{
+    IDSpace?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Icon?: string;
+    Color?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface PM_Task
 {
     IDBranch?: number;
     IDOpportunity?: number;
     IDLead?: number;
+    IDSpace?: number;
     IDProject?: number;
     IDOwner?: number;
     IDParent?: number;
@@ -3706,6 +3749,8 @@ export interface PM_Task
     Priority?: number;
     IsUnscheduled?: boolean;
     IsSplited?: boolean;
+    IDLinkedDocument?: number;
+    DocumentType?: string;
     
 }
 
@@ -3736,6 +3781,47 @@ export interface PM_TaskLink
     Target?: number;
     Code?: string;
     Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PM_View
+{
+    IDProject?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Icon?: string;
+    Color?: string;
+    Remark?: string;
+    Sort?: number;
+    IsPrivate?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    ViewConfig?: string;
+    
+}
+
+export interface PM_Workspace
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Icon?: string;
+    Color?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -4997,6 +5083,8 @@ export interface SYS_Action
     Id?: number;
     Type?: string;
     Group?: string;
+    Icon?: string;
+    Color?: string;
     Code?: string;
     Name?: string;
     Remark?: string;

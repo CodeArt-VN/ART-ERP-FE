@@ -11,6 +11,7 @@ export class IconPickerComponent implements OnInit {
 
   items = [
     
+    { Name: 'project', Tags: 'project' },
     { Name: 'panel-right-active', Tags: 'panel,right,active' },
     { Name: 'panel-right', Tags: 'panel,right' },
     
@@ -311,6 +312,8 @@ export class IconPickerComponent implements OnInit {
     { Name: 'lock-closed', Tags: 'closed,lock' },
     { Name: 'lock-open', Tags: 'lock,open' },
     { Name: 'log-in', Tags: 'login,signin' },
+    { Name: 'logo-ca', Tags: 'ca,codeart,logo' },
+    { Name: 'logo-codeart', Tags: 'ca,codeart,logo' },
     { Name: 'logo-alipay', Tags: 'alipay,logo' },
     { Name: 'logo-amazon', Tags: 'amazon,logo' },
     { Name: 'logo-amplify', Tags: 'amplify,logo' },
@@ -553,6 +556,7 @@ export class IconPickerComponent implements OnInit {
     { Name: 'stop-circle', Tags: 'circle,stop' },
     { Name: 'stopwatch', Tags: 'stopwatch,time' },
     { Name: 'storefront', Tags: 'storefront' },
+    { Name: 'sub', Tags: 'sub,tree' },
     { Name: 'subway', Tags: 'subway' },
     { Name: 'sunny', Tags: 'light,sky,sunny,weather,whether' },
     { Name: 'swap-horizontal', Tags: 'horizontal,swap' },
@@ -607,6 +611,10 @@ export class IconPickerComponent implements OnInit {
     { Name: 'wifi', Tags: 'bars,connection,internet,wifi' },
     { Name: 'wine', Tags: 'glass,wine' },
     { Name: 'woman', Tags: 'dudette,female,girl,lady,woman' },
+
+    { Name: 'flag-vn', Tags: 'flag,vn' },
+    { Name: 'flag-us', Tags: 'flag,us' },
+
   ];
   @Output() selected = new EventEmitter();
   keyword = '';

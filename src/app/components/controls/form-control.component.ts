@@ -1,16 +1,32 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { InputControlField } from './controls.interface';
 import { FormGroup } from '@angular/forms';
+import { InputControlTempateDirective } from './input-control-template.directive';
 
 @Component({
   selector: 'app-form-control',
   templateUrl: './form-control.component.html',
 })
 export class FormControlComponent implements OnInit {
+
+  @Input('inputControlTemplate') _inputControlTemplateInput: TemplateRef<any>;
+
+  @ContentChild(InputControlTempateDirective, {
+    read: TemplateRef,
+    static: true,
+  })
+  _inputControlTemplateQuery: TemplateRef<any>;
+
+  get inputControlTemplate(): TemplateRef<any> {
+    return this._inputControlTemplateInput || this._inputControlTemplateQuery;
+  }
+
+
   @Input() set field(f: InputControlField) {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
     if (f.id) this.id = f.id;
+    if (f.secondaryId) this.secondaryId = f.secondaryId;
     if (f.label) this.label = f.label;
     if (f.color) this.color = f.color;
     if (f.placeholder) this.placeholder = f.placeholder;

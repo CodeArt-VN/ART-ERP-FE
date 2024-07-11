@@ -11,6 +11,14 @@ export class PageTitleComponent implements OnInit {
   @Input() color;
   @Input() title;
   @Input() remark;
+  @Input() set pageConfig(value) {
+      if(value){
+        this.icon = value.pageIcon;
+        this.color = value.pageColor;
+        this.title = value.pageTitle;
+        this.remark = value.pageRemark;
+      }
+  }
 
   constructor() {}
 

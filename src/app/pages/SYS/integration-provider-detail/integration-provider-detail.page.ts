@@ -48,12 +48,14 @@ export class IntegrationProviderDetailPage extends PageBase {
   }
 
   typeDataSource: any;
+  isAllRowOpened = true;
 
-  segmentView = 's2';
-  segmentChanged(ev: any) {
-    this.segmentView = ev.detail.value;
+  preLoadData(event?: any): void {
+    this.env.getType('IntegrationProviderType').then((values) => {
+      this.typeDataSource = values;
+      super.preLoadData(event);
+    });
   }
-
   async saveChange() {
     super.saveChange2();
   }

@@ -1,3 +1,20 @@
 .full-screen{
-    min-height: calc(100vh - 97px);
+    min-height: calc(100vh - 97px);   
 }
+
+.table-contain {
+    .row{
+        flex-wrap: wrap;
+        .script-editor{
+            width: 100%;
+        }
+        pre {
+            overflow: visible;
+            width: 100%;
+            font-size: 12px;
+            border-left: double 2px var(--ion-color-medium);
+            padding: 0 16px;
+        }
+    }
+}
+

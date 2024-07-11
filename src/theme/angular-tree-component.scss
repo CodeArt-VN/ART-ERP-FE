@@ -48,7 +48,7 @@ tree-node-expander {
 
 .table-tree {
   border-bottom: solid 1px var(--menu-right-border-color);
-  background: var(--ion-color-tertiary-tint);
+  background: var(--table-row-background);
 
   tree-node::before {
     content: '';

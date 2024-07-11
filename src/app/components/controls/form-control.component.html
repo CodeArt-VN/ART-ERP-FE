@@ -7,6 +7,7 @@
     >
   </label>
   <app-input-control
+    [inputControlTemplate]="inputControlTemplate"
     [form]="form"
     [type]="type"
     [id]="id"
@@ -31,4 +32,6 @@
       >(*<ng-content select="[message]"></ng-content>)</ion-text
     >
   </label>
+
+  
 </div>

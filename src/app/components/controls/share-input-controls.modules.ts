@@ -15,6 +15,7 @@ import { IconPickerComponent } from './icon-picker/icon-picker.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ShareDirectivesModule } from 'src/app/directives/share-directives.module';
+import { InputControlTempateDirective } from './input-control-template.directive';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { ShareDirectivesModule } from 'src/app/directives/share-directives.modul
     BranchBreadcrumbsComponent,
     IconPickerComponent,
     ColorPickerComponent,
+    InputControlTempateDirective,
   ],
   exports: [
     GroupControlComponent,
@@ -49,6 +51,7 @@ import { ShareDirectivesModule } from 'src/app/directives/share-directives.modul
     BranchBreadcrumbsComponent,
     IconPickerComponent,
     ColorPickerComponent,
+    InputControlTempateDirective,
     ShareDirectivesModule,
 
     NgxMaskDirective,

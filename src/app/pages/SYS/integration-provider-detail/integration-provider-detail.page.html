@@ -1,8 +1,8 @@
 <ion-header>
-  <app-detail-toolbar [page]="this"></app-detail-toolbar>
+  <app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content appScrollbarTheme class="scrollx">
   <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
     <ion-grid fixed>
       <form [formGroup]="formGroup">
@@ -13,58 +13,118 @@
             </ion-list-header>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
-              (change)="saveChange()">
+            <app-form-control [field]="{id:'Code', form : formGroup }" (change)="saveChange()">
               <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
             </app-form-control>
             <app-form-control
-              [field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: typeDataSource, bindValue:'Code', bindLabel:'Name', form : formGroup }"
-              (change)="changeType($event)">
+              [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
+              (change)="saveChange()"
+            >
             </app-form-control>
-            <app-form-control [field]="{id:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
+            <app-form-control
+              [field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: typeDataSource, bindValue:'Code', bindLabel:'Name', form : formGroup }"
+              (change)="saveChange()"
+            >
+            </app-form-control>
           </ion-col>
           <ion-col size="12" size-sm size-xl="4">
-            <app-form-control [field]="{id:'Color', type : 'text', form : formGroup }" (change)="saveChange()">
+            <app-form-control [field]="{id:'Color', type : 'color', form : formGroup }" (change)="saveChange()">
             </app-form-control>
-            <app-form-control [field]="{id:'Icon', type : 'text', form : formGroup }" (change)="saveChange()">
+            <app-form-control
+              [field]="{id:'Icon', label: 'Logo', type : 'text', form : formGroup }"
+              (change)="saveChange()"
+            >
             </app-form-control>
-            <!-- <div class="c-control">
-              <div> 
-                <label class="c-label" for="Icon">{{'Icon' | translate}}
-                </label>
-                <ion-avatar class="avatar" slot="start">
-                  <ion-img #img [src]="formGroup.get('Icon').value" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
-                </ion-avatar>
-              </div>
-            </div> -->
           </ion-col>
         </ion-row>
-          <!-- Other information -->
-          <ion-row class="hr-group" *ngIf="item.Id">
-            <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-              <ion-list-header class="ion-no-padding">
-                <ion-label color="primary">{{'Other information' | translate}}</ion-label>
-              </ion-list-header>
-            </ion-col>
-            <ion-col size="12" size-sm size-xl="4">
-              <app-form-control
-                [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
-              <app-form-control
-                [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
-              <app-form-control
-                [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
-              <app-form-control
-                [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"></app-form-control>
-            </ion-col>
-            <ion-col size="12" size-sm size-xl="4">
-              <app-form-control
-                [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"></app-form-control>
-              <app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
-                (change)="saveChange()"></app-form-control>
-            </ion-col>
-          </ion-row>
+
+        <!-- Config options -->
+        <ion-row class="hr-group" *ngIf="item?._ConfigOptionList?.length">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+            <ion-list-header class="ion-no-padding">
+              <ion-label color="primary">{{'Config options'}}</ion-label>
+            </ion-list-header>
+          </ion-col>
+          <ion-col size="12" size-sm size-xl="8">
+            <app-data-table
+              style="width: fit-content; min-width: calc(100% - 32px)"
+              [rows]="item._ConfigOptionList"
+              [isQueryLocalOnly]="true"
+              [query]="query"
+              [isTreeList]="true"
+              [showFilter]="pageConfig.showFilter"
+              [showSpinner]="pageConfig.showSpinner"
+              class="box-shadow ion-margin-horizontal"
+            >
+              <datatable-column class="col-name" [sticky]="true" name="Name" property="Name">
+                <ng-template datatable-header-template>
+                  <ion-icon
+                    class="min-btn"
+                    [name]="!item?._ConfigOptionListOpen? 'add-circle-outline':'remove-circle-outline'"
+                    (click)="toggleRowAll(item?._ConfigOptionList, item?._ConfigOptionListOpen)"
+                  ></ion-icon>
+                  <span (click)="toggleRowAll(item?._ConfigOptionList, item?._ConfigOptionListOpen)">{{'Name' | translate}}</span>
+                </ng-template>
+                <ng-template let-i="row" datatable-cell-template>
+                  <ng-container *ngFor="let w of i.levels; let k = index;"
+                    ><span class="spacing" *ngIf="k>0"></span
+                  ></ng-container>
+                  <ion-icon
+                    (click)="toggleRow(item?._ConfigOptionList, i, true);"
+                    class="min-btn clickable"
+                    [name]="!i.showdetail? 'chevron-forward-outline':'chevron-down-outline'"
+                    *ngIf="i.HasChild"
+                  ></ion-icon>
+                  <ion-icon class="min-btn clickable" [name]="''" *ngIf="!i.HasChild"></ion-icon>
+
+                  <ion-text class="clickable" [ngClass]="i.HasChild? ('bold ') : ('')" [color]="i.Color"
+                    >{{i.Name}}</ion-text
+                  >
+                </ng-template>
+              </datatable-column>
+              <datatable-column class="col-code" name="Code"></datatable-column>
+            </app-data-table>
+
+            
+          </ion-col>
+        </ion-row>
+
+        <!-- Other information -->
+        <ion-row class="hr-group" *ngIf="item.Id">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+            <ion-list-header class="ion-no-padding">
+              <ion-label color="primary">{{'Other information' | translate}}</ion-label>
+            </ion-list-header>
+          </ion-col>
+          <ion-col size="12" size-sm size-xl="4">
+            <app-form-control
+              [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
+            ></app-form-control>
+          </ion-col>
+          <ion-col size="12" size-sm size-xl="4">
+            <app-form-control
+              [field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"
+            ></app-form-control>
+            <app-form-control
+              [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
+              (change)="saveChange()"
+            ></app-form-control>
+          </ion-col>
+        </ion-row>
       </form>
     </ion-grid>
   </div>
+
+  
+
   <app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

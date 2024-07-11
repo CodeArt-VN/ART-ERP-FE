@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormArray, FormGroup } from "@angular/forms";
 import { lib } from './services/static/global-functions';
-import { ApiSetting } from './services/static/api-setting';
-import introJs from 'intro.js/intro.js';
-import { APIList, GlobalData } from './services/static/global-variable';
+import { APIList } from './services/static/global-variable';
 import { PopoverPage } from "./pages/SYS/popover/popover.page";
-import { Subscription } from "rxjs";
+import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap } from 'rxjs';
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -172,6 +170,92 @@ export abstract class PageBase implements OnInit {
         }
     }
 
+    setFormValues(data, form = this.formGroup, instantly = false, forceSave = false) {
+        //Loop through data object and find control in form group
+        //Check if control is form array or form group
+        //If form array, loop through all controls in array
+        //If form group, loop through all controls in group
+        //Set value, mark as dirty and touched 
+
+        Object.keys(data).forEach((key) => {
+            //if (data.hasOwnProperty(key)) {
+                const value = data[key];
+                if (form.controls[key]) {
+                    const control = form.controls[key];
+                    if (control instanceof FormGroup) {
+                        this.setFormValues(value, control, instantly, forceSave);
+                    } else if (control instanceof FormArray) {
+                        control.controls.forEach((arrayControl:any) => {
+                            this.setFormValues(value, arrayControl, instantly, forceSave);
+                        });
+                    } else {
+                        control.setValue(value);
+                        control.markAsDirty();
+                        control.markAsTouched();
+                    }
+                }
+            //}
+        });
+
+
+        //Check this.pageConfig.systemConfig.IsAutoSave then debounce to save change after 1s. Save change if instantly.
+        //Else save change if forceSave is true
+
+        if (this.pageConfig.systemConfig.IsAutoSave) {
+            if (instantly) {
+                this.saveChange2();
+            } else {
+                this.debounce(() => {
+                    this.saveChange2();
+                }, 1000);
+            }
+        } else if (forceSave) {
+            this.saveChange2();
+        }
+        else{
+            //Shake save button if not save
+            let saveBtnElm = document.querySelector('.save-btn');
+            if (saveBtnElm) {
+                saveBtnElm.classList.add('shake');
+                setTimeout(() => {
+                  saveBtnElm.classList.remove('shake');
+                }, 2000);
+              }
+        }
+    }
+
+    buildSelectDataSource(searchFunction, buildFlatTree = false){
+        return {
+            searchFunction: searchFunction,
+            loading: false,
+            input$: new Subject<string>(),
+            selected: [],
+            items$: null,
+            initSearch() {
+              this.loading = false;
+              this.items$ = concat(
+                of(this.selected),
+                this.input$.pipe(
+                  distinctUntilChanged(),
+                  tap(() => (this.loading = true)),
+                  switchMap((term) =>
+                    this.searchFunction(term).pipe(
+                      catchError(() => of([])), // empty list on error
+                      tap(() => (this.loading = false)),
+                      mergeMap((e:any) => {
+                        if (buildFlatTree) {
+                          return lib.buildFlatTree(e, e);
+                        }
+                        return new Promise((resolve) => {resolve(e)});
+                    })
+                    )
+                  ),
+                ),
+              );
+            },
+          };
+    }
+
     refresh(event = null) {
         this.selectedItems = [];
         if (!this.pageConfig.showSpinner) {
@@ -276,16 +360,28 @@ export abstract class PageBase implements OnInit {
         }
     }
 
-    archiveItems() {
-        this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
-            if (this.query.IsDisabled == true) {
-                this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
-            }
-            else {
-                this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
-            }
-            this.removeSelectedItems();
-        });
+    archiveItems(publishEventCode = this.pageConfig.pageName) {
+        if (this.pageConfig.isDetailPage){
+            this.pageProvider.disable(this.item, !this.item.IsDisabled).then(() => {
+                if (this.item.IsDisabled) {
+                    this.env.showTranslateMessage('Archived','success');
+                }
+                else {
+                    this.env.showTranslateMessage('Reopened','success');
+                }
+                this.env.publishEvent({ Code: publishEventCode });
+            })
+        }else{
+            this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
+                if (this.query.IsDisabled) {
+                    this.env.showTranslateMessage('Reopened {{value}} lines!','success', this.selectedItems.length);
+                }
+                else {
+                    this.env.showTranslateMessage('Archived {{value}} lines!','success', this.selectedItems.length);
+                }
+                this.removeSelectedItems();
+            });
+        }
     }
 
     removeSelectedItems() {
@@ -847,6 +943,14 @@ export abstract class PageBase implements OnInit {
     //Tree view
     buildFlatTree(items, treeState, isAllRowOpened = true) {
         return lib.buildFlatTree(items, treeState, isAllRowOpened);
+    }
+
+    toggleRowAll(ls = this.items, isAllRowOpened) {
+        isAllRowOpened = !isAllRowOpened;
+        ls.forEach((i) => {
+          i.showdetail = !isAllRowOpened;
+          this.toggleRow(ls, i, true);
+        });
     }
 
     toggleRow(ls, ite, toogle = false) {

@@ -10,7 +10,7 @@ import { GlobalData } from 'src/app/services/static/global-variable';
   templateUrl: './input-control.component.html',
 })
 export class InputControlComponent implements OnInit {
-  lib
+  lib;
   @Input() set field(f: InputControlField) {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
@@ -50,6 +50,8 @@ export class InputControlComponent implements OnInit {
 
   @Input() noCheckDirty: boolean = false;
 
+  @Input() inputControlTemplate: any;
+
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
@@ -68,7 +70,7 @@ export class InputControlComponent implements OnInit {
   onInputChange(event) {
     this.inputChange.emit(event);
     if (
-      '|ng-select|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|time-frame|'.includes(
+      '|ng-select|ng-select-async|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|icon-color|time-frame|'.includes(
         this.type,
       )
     ) {
@@ -108,21 +110,24 @@ export class InputControlComponent implements OnInit {
   onSelectColor(color, control) {
     control.setValue(color.Code);
     control.markAsDirty();
-    this.isOpenPicker = false;
     this.onInputChange(control);
+
+    if (this.type == 'color') {
+      this.isOpenPicker = false;
+    }
   }
 
   isOpenDatePicker = false;
   pickerControl: any;
   pickerGroupName: string;
-  _timePeriodList= [];
+  _timePeriodList = [];
 
   commonOptions = GlobalData.commonOptions;
 
   segmentTimeframeChanged(e) {
     this.pickerControl.controls.Type.value = e.detail.value;
   }
-  calcAbsoluteDate( control, isFullfillDate = false) {
+  calcAbsoluteDate(control, isFullfillDate = false) {
     if (control.controls.Type.value == 'Relative') {
       let tempDate = this.lib.calcTimeValue(control.getRawValue(), isFullfillDate);
       if (tempDate) {
@@ -149,7 +154,6 @@ export class InputControlComponent implements OnInit {
     if (!this.isOpenDatePicker) return;
 
     if (!apply) {
-      
     } else {
       this.onInputChange(this.pickerControl);
     }
@@ -160,20 +164,16 @@ export class InputControlComponent implements OnInit {
     if (isQuickPick) {
       this.setDate(pDate.from, this.pickerControl, false);
       this.setDate(pDate.to, this.form.controls[this.secondaryId], true);
-    }
-    else{
+    } else {
       this.setDate(pDate, this.pickerControl, this.pickerGroupName == 'TimeFrame-To');
 
-      if(this.pickerGroupName == 'TimeFrame-Range'){
+      if (this.pickerGroupName == 'TimeFrame-Range') {
         this.setDate(pDate, this.form.controls[this.secondaryId], true);
       }
     }
-
-
-    
   }
 
-  setDate(pDate, control, isFullfillDate = false){
+  setDate(pDate, control, isFullfillDate = false) {
     if (control.controls.Type.value != pDate.Type) {
       control.controls.Type.setValue(pDate.Type);
       control.controls.Type.markAsDirty();
@@ -195,19 +195,11 @@ export class InputControlComponent implements OnInit {
       this.calcAbsoluteDate(control, isFullfillDate);
     } else {
       if (control.controls.Value.value != pDate.Value.detail.value) {
-        
-        control.controls.Value.setValue( pDate.Value.detail.value+'.000');
+        control.controls.Value.setValue(pDate.Value.detail.value + '.000');
         let tempDate = this.lib.calcTimeValue(control.getRawValue(), isFullfillDate);
-        control.controls.Value.setValue(lib.dateFormat( tempDate, 'yyyy-mm-ddThh:MM:ss'));
+        control.controls.Value.setValue(lib.dateFormat(tempDate, 'yyyy-mm-ddThh:MM:ss'));
         control.controls.Value.markAsDirty();
       }
     }
-
-    
   }
-
-
-
-
-
 }

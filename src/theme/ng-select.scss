@@ -64,6 +64,13 @@
         padding: 0;
         .ng-value {
           z-index: 1;
+          display: flex;
+          align-items: center;
+
+          ion-icon{
+            height: 1rem;
+            width: 1rem;
+          }
         }
         .ng-input {
           line-height: unset;
@@ -204,6 +211,8 @@
       background-color: var(--menu-background-bottom);
       color: var(--ion-color-light-contrast);
       white-space: normal;
+      display: flex !important;
+      align-items: center;
 
       &.ng-option-selected,
       &.ng-option-selected.ng-option-marked {

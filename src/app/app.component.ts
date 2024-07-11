@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
-import { StatusBar, Style } from '@capacitor/status-bar';
-
+import { StatusBar } from '@capacitor/status-bar';
 import { Router, NavigationEnd } from '@angular/router';
 import { EnvService } from './services/core/env.service';
 import { AccountService } from './services/account.service';
 import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
 import { environment } from 'src/environments/environment';
-import { TranslateService } from '@ngx-translate/core';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
@@ -51,7 +49,6 @@ export class AppComponent implements OnInit {
     public router: Router,
     public navCtrl: NavController,
     public menu: MenuController,
-
     public userSettingProvider: SYS_UserSettingProvider,
     public branchProvider: BRA_BranchProvider,
     public popoverCtrl: PopoverController,
@@ -213,6 +210,23 @@ export class AppComponent implements OnInit {
       this.appTheme = 'inholdings-theme';
     }
 
+	// Remove all classes that start with 'theme'
+    const classList = document.documentElement.classList;
+    const themeClasses = Array.from(classList).filter((className) => className.indexOf('theme') > -1);
+    themeClasses.forEach((themeClass) => classList.remove(themeClass));
+
+    //Reset app theme (thí.appTheme) to html
+    document.documentElement.classList.add(this.appTheme);
+
+    //Reset theme color to html
+    document.documentElement.classList.remove('dark', 'light');
+    if (
+      this.env.user?.UserSetting?.Theme?.Value == 'Dark' ||
+      this.env.user?.UserSetting?.Theme?.Value == 'Light'
+    )
+      document.documentElement.classList.add(this.env.user?.UserSetting?.Theme.Value == 'Dark' ? 'dark' : 'light');
+
+    
     let link: any = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
@@ -229,22 +243,22 @@ export class AppComponent implements OnInit {
 
       if (Capacitor.isPluginAvailable('StatusBar')) {
         StatusBar.setBackgroundColor({
-          color: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? themeColor : '#ffffff',
+          color: this.env?.user?.UserSetting?.Theme?.Value ? themeColor : '#ffffff',
         });
         StatusBar.setStyle({
-          style: this.env.user.UserSetting.IsDarkTheme.Value ? Style.Dark : Style.Light,
+          style: this.env.user.UserSetting.Theme.Value,
         });
       }
     }, 100);
 
     if (Capacitor.isPluginAvailable('StatusBar')) {
       StatusBar.setBackgroundColor({
-        color: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? '#5a5c5e' : '#ffffff',
+        color: this.env?.user?.UserSetting?.Theme?.Value ? '#5a5c5e' : '#ffffff',
       });
       StatusBar.setStyle({
-        style: this.env?.user?.UserSetting?.IsDarkTheme?.Value ? Style.Dark : Style.Light,
+        style: this.env?.user?.UserSetting?.Theme?.Value,
       });
-      //StatusBar.setBackgroundColor({ color: (this.env?.user?.UserSetting?.IsDarkTheme?.Value) ? '#5a5c5e' : '#ffffff' });
+      //StatusBar.setBackgroundColor({ color: (this.env?.user?.UserSetting?.Theme?.Value) ? '#5a5c5e' : '#ffffff' });
       StatusBar.setOverlaysWebView({ overlay: false });
     }
   }
@@ -418,5 +432,11 @@ export class AppComponent implements OnInit {
   presentUserCPPopover(e: any) {
     this.userCPPopover.event = e;
     this.isUserCPOpen = true;
+  }
+
+  changeThemeMode(event) {
+    this.env.user.UserSetting.Theme.Value = event.detail.value;
+    this.userSettingProvider.save(this.env.user.UserSetting.Theme);
+    this.updateStatusbar();
   }
 }
