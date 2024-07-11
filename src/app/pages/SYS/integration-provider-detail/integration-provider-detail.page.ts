@@ -48,11 +48,7 @@ export class IntegrationProviderDetailPage extends PageBase {
   }
 
   typeDataSource: any;
-
-  segmentView = 's2';
-  segmentChanged(ev: any) {
-    this.segmentView = ev.detail.value;
-  }
+  isAllRowOpened = true;
 
   preLoadData(event?: any): void {
     this.env.getType('IntegrationProviderType').then((values) => {

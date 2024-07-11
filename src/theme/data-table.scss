@@ -121,7 +121,6 @@ app-data-table,
     datatable-header-cell,
     .cell {
       color: var(--ion-color-dark);
-      padding: 0;
 
       &.selected {
         background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
@@ -191,6 +190,10 @@ app-data-table,
 
     &.selected {
       background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+    }
+
+    &.disabled, &.disabled a{
+      color: var(--ion-color-medium);
     }
 
     app-input-control {

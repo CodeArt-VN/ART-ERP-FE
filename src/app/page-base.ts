@@ -945,6 +945,14 @@ export abstract class PageBase implements OnInit {
         return lib.buildFlatTree(items, treeState, isAllRowOpened);
     }
 
+    toggleRowAll(ls = this.items, isAllRowOpened) {
+        isAllRowOpened = !isAllRowOpened;
+        ls.forEach((i) => {
+          i.showdetail = !isAllRowOpened;
+          this.toggleRow(ls, i, true);
+        });
+    }
+
     toggleRow(ls, ite, toogle = false) {
 
         if (ite && ite.showdetail && toogle) {

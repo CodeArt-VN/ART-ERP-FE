@@ -317,7 +317,7 @@
 
                   <ion-radio-group
                     [value]="userSetting.Theme.Value"
-                    (ionChange)="updateTheme($event);"
+                    (ionChange)="updateTheme($event); changeTheme()"
                   >
                     <ion-item>
                       <ion-icon color="primary" name="contrast" slot="start"></ion-icon>

@@ -275,12 +275,20 @@ input[type='number'] {
   white-space: nowrap;
 }
 
+.text-warp{
+  white-space: normal !important;
+}
+
 .flex-nowrap {
   display: flex !important;
   flex-wrap: nowrap;
   align-items: center;
 }
-
+.flex-left{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 .flex-center{
   display: flex;
   align-items: center;

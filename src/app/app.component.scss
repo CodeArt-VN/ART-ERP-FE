@@ -331,7 +331,6 @@ ion-split-pane {
   padding-left: 8px;
 
   height: calc(10/16 * 2rem);
-  line-height: calc(10/16 * 2rem);
   bottom: 0;
   position: absolute;
   font-size: calc(10/16 * 1.2rem);
@@ -340,9 +339,16 @@ ion-split-pane {
   border-top: solid 1px var(--menu-right-border-color);
   background: var(--menu-background-bottom);
 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  
+
   .text {
     cursor: pointer;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     color: var(--ion-color-medium);
     padding: 0 7px;
 
@@ -352,13 +358,8 @@ ion-split-pane {
     }
   }
 
-  .float-right {
-    float: right;
-  }
-
   ion-icon {
     font-size: calc(10/16 * 2rem);
-    vertical-align: middle;
   }
 }
 

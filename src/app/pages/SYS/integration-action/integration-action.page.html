@@ -68,6 +68,7 @@
           <div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
             <a class="bold">
               <ion-text color="dark">{{i.Name}}</ion-text>
+              <small *ngIf="i.IsTriggerable">{{'Triggerable'}}</small>
             </a>
             <div *ngIf="i.Remark">{{i.Remark}}</div>
           </div>

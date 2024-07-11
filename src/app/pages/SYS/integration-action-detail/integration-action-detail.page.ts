@@ -12,6 +12,9 @@ import {
 } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+declare var ace: any;
 
 @Component({
   selector: 'app-integration-action-detail',
@@ -42,6 +45,7 @@ export class IntegrationActionDetailPage extends PageBase {
     public cdr: ChangeDetectorRef,
     public loadingController: LoadingController,
     public commonService: CommonService,
+    public dynamicScriptLoaderService: DynamicScriptLoaderService,
   ) {
     super();
     this.pageConfig.isDetailPage = true;
@@ -78,7 +82,6 @@ export class IntegrationActionDetailPage extends PageBase {
       this.schemaDataSource = values[0].data;
       this.providerDataSource = values[1].data;
       this.typeList = values[2];
-      
     });
     super.preLoadData(event);
   }
@@ -155,29 +158,50 @@ export class IntegrationActionDetailPage extends PageBase {
     this.Runners.push(runner);
   }
 
-  isFullScreen = false;
-  toggleFullscreen(){
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-      this.isFullScreen = false;
+  isShowCode = false;
+
+  toggleShowCode() {
+    this.isShowCode = !this.isShowCode;
+    if (this.isShowCode) {
+      setTimeout(() => {
+        this.loadAceEditor();
+      }, 1);
     } else {
-      const elem = this.divRef.nativeElement;
-
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      }
-
-      this.isFullScreen = true;
-     
+      this.editors.forEach((e) => {
+        e.destroy();
+      });
+      this.editors = [];
     }
-
   }
+
+  loadAceEditor() {
+    if (typeof ace !== 'undefined') this.initAce();
+    else
+      this.dynamicScriptLoaderService
+        .loadResources(thirdPartyLibs.aceEditor.source)
+        .then(() => {
+          this.dynamicScriptLoaderService.loadResources(thirdPartyLibs.aceEditor.ext.beautify.source).then(() => {
+            this.initAce();
+          });
+        })
+        .catch((error) => console.error('Error loading script', error));
+  }
+
+  editors = [];
+  initAce() {
+    document.querySelectorAll('.script-editor pre').forEach((el) => {
+      var beautify = ace.require('ace/ext/beautify');
+      let editor = ace.edit(el, {
+        mode: 'ace/mode/javascript',
+        autoScrollEditorIntoView: true,
+        maxLines: 30,
+      });
+      beautify?.beautify(editor.session);
+      editor.setReadOnly(true);
+      this.editors.push(editor);
+    });
+  }
+
   changeProvider() {
     let providerId = this.formGroup.get('IDProvider').value;
     this.query.IDProvider = providerId;

@@ -5,7 +5,9 @@
 .table-contain {
     .row{
         flex-wrap: wrap;
-
+        .script-editor{
+            width: 100%;
+        }
         pre {
             overflow: visible;
             width: 100%;

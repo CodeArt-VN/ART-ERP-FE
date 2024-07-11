@@ -194,6 +194,22 @@ export class AppComponent implements OnInit {
     let title = 'ERP';
     let relIcon = 'assets/icons/icon-512.webp';
 
+    // Remove all classes that start with 'theme'
+    const classList = document.documentElement.classList;
+    const themeClasses = Array.from(classList).filter((className) => className.indexOf('theme') > -1);
+    themeClasses.forEach((themeClass) => classList.remove(themeClass));
+
+    //Reset app theme (thí.appTheme) to html
+    document.documentElement.classList.add(this.appTheme);
+
+    //Reset theme color to html
+    document.documentElement.classList.remove('dark', 'light');
+    if (
+      this.env.user?.UserSetting?.Theme?.Value == 'Dark' ||
+      this.env.user?.UserSetting?.Theme?.Value == 'Light'
+    )
+      document.documentElement.classList.add(this.env.user?.UserSetting?.Theme.Value == 'Dark' ? 'dark' : 'light');
+
     let link: any = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
@@ -404,5 +420,6 @@ export class AppComponent implements OnInit {
   changeThemeMode(event) {
     this.env.user.UserSetting.Theme.Value = event.detail.value;
     this.userSettingProvider.save(this.env.user.UserSetting.Theme);
+    this.updateStatusbar();
   }
 }
