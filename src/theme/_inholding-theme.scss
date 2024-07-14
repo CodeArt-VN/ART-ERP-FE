@@ -52,7 +52,11 @@
   --main-background-top: #eff2f5;
   --main-background-bottom: #eff2f5;
 
-  --table-header-background: #f8f9fb;
+  --table-header-background: rgb(248, 249, 251);
+  --table-row-background: rgb(255, 255, 255);
+  --table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+  --table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+  --table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
 
   --feature-background-top: #ffffff;
   --feature-background-bottom: #ffffff;
@@ -60,9 +64,12 @@
   --ion-background-color: var(--main-background-bottom);
   --ion-background-color-rgb: 239, 242, 245;
 
-  --ion-toolbar-background: #fff;
+  --ion-toolbar-background: var(--menu-background-top);
+
   --ion-item-background: transparent;
   --ion-item-background-activated: transparent;
+
+  --ion-card-background: var(--main-background-top);
   // #endregion
 
   color-scheme: light;
@@ -114,23 +121,33 @@
   // #endregion
 
 	// #region custom colors
-  --menu-right-border-color: #47484a;
+  --menu-right-border-color: #3c3c3c;
   --menu-background-item-active: #656669;
-  --menu-background-top: #535456;
-  --menu-background-bottom: #535456;
+  --menu-background-top: #2b2b2b;
+  --menu-background-bottom: #232323;
 
-  --main-background-top: #3f3f3f;
-  --main-background-bottom: #3f3f3f;
+  --main-background-top: #181818;
+  --main-background-bottom: #111111;
 
-  --table-header-background: #47484a;
+  --table-header-background: rgb(43 43 43);
+  --table-row-background: rgb(43 43 43);
+  --table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+  --table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+  --table-cell-sticky-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
 
-  --feature-background-top: #4c4d4f;
-  --feature-background-bottom: #4c4d4f;
+  --feature-background-top: #2b2b2b;
+  --feature-background-bottom: #2b2b2b;
 
   --ion-background-color: var(--main-background-bottom);
   --ion-background-color-rgb: 35, 40, 81;
-  --ion-toolbar-background: var(--main-background-top);
+
+  --ion-toolbar-background: var(--menu-background-top);
+
+  --ion-item-background: transparent;
+  --ion-item-background-activated: transparent;
+
   --ion-card-background: var(--main-background-top);
+  
   --ion-text-color: #ffffff;
   --ion-text-color-rgb: 255, 255, 255;
 
