@@ -334,16 +334,13 @@ export interface AC_JournalEntryRow
     
 }
 
-export interface AC_PostingPeriod
+export interface AC_PeriodCategory
 {
     IDBranch?: number;
     Id?: number;
-    RefID?: number;
     Code?: string;
     Name?: string;
     ForeignName?: string;
-    FromDate?: Date;
-    ToDate?: Date;
     Remark?: string;
     ForeignRemark?: string;
     Sort?: number;
@@ -353,6 +350,44 @@ export interface AC_PostingPeriod
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    FinancialYear?: number;
+    FinancialYearFirstDate?: Date;
+    PostingPeriodType?: string;
+    NumberOfPeriods?: number;
+    PostingDateFrom?: Date;
+    PostingDateTo?: Date;
+    DueDateFrom?: Date;
+    DueDateTo?: Date;
+    DocumentDateFrom?: Date;
+    DocumentDateTo?: Date;
+    
+}
+
+export interface AC_PostingPeriod
+{
+    IDBranch?: number;
+    IDPeriodsCategory?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Status?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    PostingDateFrom?: Date;
+    PostingDateTo?: Date;
+    DueDateFrom?: Date;
+    DueDateTo?: Date;
+    DocumentDateFrom?: Date;
+    DocumentDateTo?: Date;
+    SubPeriod?: number;
     
 }
 
@@ -607,27 +642,31 @@ export interface BANK_IncomingPayment
     ForeignName?: string;
     Remark?: string;
     ForeignRemark?: string;
+    Amount?: number;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    Type?: string;
+    SubType?: string;
+    Status?: string;
+    PaymentURL?: string;
+    IDTransaction?: string;
+    TransactionDate?: Date;
+    TransactionFee?: number;
+    AccountNumber?: string;
+    ReciprocalAccount?: string;
+    ReciprocalName?: string;
+    IsRefundTransaction?: boolean;
+    IDOriginalTransaction?: number;
     Sort?: number;
+    IsCanceled?: boolean;
+    IsPrinted?: boolean;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    Amount?: number;
-    IsCanceled?: boolean;
-    IsPrinted?: boolean;
-    PostingDate?: Date;
-    DueDate?: Date;
-    DocumentDate?: Date;
-    Type?: string;
-    Status?: string;
-    PaymentURL?: string;
-    IDTransaction?: string;
-    TransactionFee?: number;
-    IsRefundTransaction?: boolean;
-    IDOriginalTransaction?: number;
-    SubType?: string;
     
 }
 
@@ -3692,6 +3731,7 @@ export interface PM_Space
 export interface PM_SpaceStatus
 {
     IDSpace?: number;
+    IDProject?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -4690,6 +4730,9 @@ export interface SALE_Forecast
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    Multiply?: number;
+    Filter?: string;
+    Config?: string;
     
 }
 
@@ -7109,6 +7152,7 @@ export interface WMS_OutboundOrderDetail
     QuantityShipped?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Type?: string;
     Remark?: string;
     Sort?: number;
@@ -7151,6 +7195,7 @@ export interface WMS_PackingDetail
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Type?: string;
     FromLocation?: number;
     ToLocation?: number;
@@ -7203,6 +7248,7 @@ export interface WMS_PickingDetail
     QuantityPicked?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -7344,12 +7390,16 @@ export interface WMS_PutawayStrategyDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    PutawayType?: number;
-    PutawayZone?: number;
+    Type?: string;
+    FromZone?: number;
+    ToZone?: number;
     FromLocation?: number;
     ToLocation?: number;
-    ChecksRestrictions?: boolean;
-    DimensionRestriction?: number;
+    IsSinglePutawayForMultiplePallets?: boolean;
+    IsChecksRestrictions?: boolean;
+    DimensionRestriction?: string;
+    LocationSortType?: string;
+    AreaTypeRestrictions?: string;
     
 }
 
@@ -7487,6 +7537,7 @@ export interface WMS_ShippingDetail
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     FromLocation?: number;
     Lot?: number;
     LPN?: number;
@@ -7594,6 +7645,7 @@ export interface WMS_Transaction
     FromLPN?: number;
     ToLPN?: number;
     SourceKey?: number;
+    SourceLine?: number;
     SourceType?: string;
     Status?: string;
     IDUoM?: number;
@@ -7795,6 +7847,22 @@ export interface vw_SYS_SyncJob
     IsRunning?: boolean;
     ErrorMessage?: string;
     Priority?: number;
+    
+}
+
+export interface vw_SYS_Tracking
+{
+    Id?: number;
+    Type?: string;
+    Command?: string;
+    IDBranch?: number;
+    RefNum1?: number;
+    RefNum2?: number;
+    RefChar1?: string;
+    RefChar2?: string;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    IsScheduled?: boolean;
     
 }
 

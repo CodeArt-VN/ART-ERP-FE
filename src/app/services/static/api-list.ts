@@ -488,6 +488,55 @@ export var APIListBase = {
 		
 	},
 
+	AC_PeriodCategory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "AC/PeriodCategory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "AC/PeriodCategory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "AC/PeriodCategory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "AC/PeriodCategory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "AC/PeriodCategory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "AC/PeriodCategory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        }
+		
+	},
+
 	AC_PostingPeriod:{
         getSearchList:{
             method: "GET",
@@ -14939,6 +14988,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "vw/SYS/SyncJob/" + id} 
+        }
+		
+	},
+
+	vw_SYS_Tracking:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Tracking/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Tracking"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/SYS/Tracking/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/SYS/Tracking/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/SYS/Tracking"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/SYS/Tracking/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
         }
 		
 	},
