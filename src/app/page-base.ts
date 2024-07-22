@@ -825,7 +825,6 @@ export abstract class PageBase implements OnInit {
                         this.pageConfig[p.Code] = true;
                     });
                 }
-                //console.log(this.pageConfig);
             }
         }
 
@@ -855,6 +854,14 @@ export abstract class PageBase implements OnInit {
         }
         else {
             this.preLoadData();
+        }
+    }
+
+    getPagePermission(pageCode) {
+        let currentForm = this.env.user.Forms.find(d => pageCode == d.Code && (d.Type == 0 || d.Type == 1 || d.Type == 2));
+        if (currentForm) {
+            let permissionList = this.env.user.Forms.filter(d => d.IDParent == currentForm.Id);
+            if (permissionList.length) permissionList.forEach(p => {this.pageConfig[p.Code] = true; });
         }
     }
 
