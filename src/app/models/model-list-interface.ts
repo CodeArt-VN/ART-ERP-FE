@@ -6785,10 +6785,82 @@ export interface WMS_Item
     
 }
 
+export interface WMS_ItemBalance
+{
+    IDBranch?: number;
+    IDStorer?: number;
+    IDPeriod?: number;
+    IDItem?: number;
+    Id?: number;
+    Quantity?: number;
+    
+}
+
 export interface WMS_ItemGroup
 {
     IDBranch?: number;
     IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsLocked?: boolean;
+    DataSource?: string;
+    AccountInventory?: string;
+    AccountCostOfGoodsSold?: string;
+    AccountAllocation?: string;
+    AccountRevenue?: string;
+    AccountRevenueReturns?: string;
+    AccountVariance?: string;
+    AccountInventoryOffsetDecrease?: string;
+    AccountInventoryOffsetIncrease?: string;
+    AccountSalesReturns?: string;
+    AccountSalesCredit?: string;
+    AccountExpense?: string;
+    AccountExpenseClearing?: string;
+    AccountExpenseOffset?: string;
+    AccountExemptRevenue?: string;
+    AccountPriceDifference?: string;
+    AccountExchangeRateDifferences?: string;
+    AccountGoodsClearing?: string;
+    AccountPurchase?: string;
+    AccountPurchaseCredit?: string;
+    AccountPurchaseReturn?: string;
+    AccountPurchaseOffset?: string;
+    AccountShippedGoods?: string;
+    AccountVATInRevenue?: string;
+    AccountGLDecrease?: string;
+    AccountGLIncrease?: string;
+    AccountInventoryRevaluation?: string;
+    AccountInventoryRevaluationOffset?: string;
+    AccountWIPInventory?: string;
+    AccountWIPInventoryVariance?: string;
+    AccountCOGSRevaluation?: string;
+    AccountCOGSRevaluationOffset?: string;
+    AccountTaxExemptCredit?: string;
+    AccountStockInTransit?: string;
+    AccountPurchaseBalance?: string;
+    AccountWIPOffsetPnL?: string;
+    AccountInventoryOffsetPnL?: string;
+    AccountFreeOfChargeSales?: string;
+    AccountFreeOfChargePurchase?: string;
+    Account?: string;
+    General?: string;
+    Accounting?: string;
+    
+}
+
+export interface WMS_ItemGroupAccountInBranch
+{
+    IDItemGroup?: number;
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;

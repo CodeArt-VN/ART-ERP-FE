@@ -13130,6 +13130,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_ItemBalance:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemBalance/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemBalance"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemBalance/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemBalance/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemBalance"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemBalance/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        }
+		
+	},
+
 	WMS_ItemGroup:{
         getSearchList:{
             method: "GET",
@@ -13175,6 +13224,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/ItemGroup/" + id} 
+        }
+		
+	},
+
+	WMS_ItemGroupAccountInBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemGroupAccountInBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemGroupAccountInBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemGroupAccountInBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
         }
 		
 	},
