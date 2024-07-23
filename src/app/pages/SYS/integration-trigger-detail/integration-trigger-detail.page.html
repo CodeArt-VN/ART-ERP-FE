@@ -1,5 +1,12 @@
 <ion-header>
-  <app-toolbar [page]="this"></app-toolbar>
+  <app-toolbar [page]="this">
+    <ion-button
+      title="{{ 'Run trigger' | translate }}"
+      (click)="runTrigger()"
+    >
+      <ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
+    </ion-button>
+  </app-toolbar>
 </ion-header>
 
 <ion-content appScrollbarTheme class="ion-padding">
