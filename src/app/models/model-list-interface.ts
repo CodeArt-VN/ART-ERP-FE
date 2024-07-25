@@ -5119,6 +5119,23 @@ export interface SHIP_Vehicle
     
 }
 
+export interface SYS_AccountGroup
+{
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface SYS_Action
 {
     IDProvider?: number;
@@ -5224,6 +5241,24 @@ export interface SYS_Apps
     AccessTokenLifetime?: number;
     RequireConsent?: boolean;
     AppColor?: string;
+    
+}
+
+export interface SYS_BranchInGroup
+{
+    IDBranch?: number;
+    IDAccountGroup?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -5476,6 +5511,7 @@ export interface SYS_MessageTemplate
 export interface SYS_PermissionList
 {
     IDBranch?: number;
+    IDAccountGroup?: number;
     IDForm?: number;
     Id?: number;
     Value?: number;
@@ -5516,24 +5552,6 @@ export interface SYS_Printer
     MarginLeft?: number;
     PageSize?: string;
     Scale?: number;
-    
-}
-
-export interface SYS_Role
-{
-    IDBranch?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDefault?: boolean;
     
 }
 
@@ -5833,6 +5851,24 @@ export interface SYS_UserDevice
     IsCharging?: boolean;
     IsAllowCheckIn?: boolean;
     NotifyToken?: string;
+    
+}
+
+export interface SYS_UserInGroup
+{
+    IDUser?: string;
+    IDAccountGroup?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -7237,14 +7273,37 @@ export interface WMS_OutboundOrderDetail
     
 }
 
+export interface WMS_OutboundTag
+{
+    IDOutboundOrder?: number;
+    IDShipment?: number;
+    IDCustomer?: number;
+    IDSaleOrder?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    QRCode?: string;
+    Line1?: string;
+    Line2?: string;
+    
+}
+
 export interface WMS_Packing
 {
     IDOutboundOrder?: number;
+    IDTag?: number;
     Id?: number;
     Code?: string;
     Name?: string;
     Status?: string;
-    Tag?: string;
     ExpectedDate?: Date;
     PackagedDate?: Date;
     Remark?: string;
@@ -7606,6 +7665,7 @@ export interface WMS_ShippingDetail
     IDShipping?: number;
     IDItem?: number;
     IDUoM?: number;
+    IDTag?: number;
     Id?: number;
     Code?: string;
     Name?: string;

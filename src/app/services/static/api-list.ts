@@ -9651,6 +9651,55 @@ export var APIListBase = {
 		
 	},
 
+	SYS_AccountGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/AccountGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/AccountGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/AccountGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/AccountGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/AccountGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/AccountGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        }
+		
+	},
+
 	SYS_Action:{
         getSearchList:{
             method: "GET",
@@ -9892,6 +9941,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/Apps/" + id} 
+        }
+		
+	},
+
+	SYS_BranchInGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/BranchInGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/BranchInGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/BranchInGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/BranchInGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/BranchInGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/BranchInGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
         }
 		
 	},
@@ -10533,55 +10631,6 @@ export var APIListBase = {
 		
 	},
 
-	SYS_Role:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "SYS/Role/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "SYS/Role"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "SYS/Role/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "SYS/Role/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "SYS/Role/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "SYS/Role"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "SYS/Role/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "SYS/Role/" + id} 
-        }
-		
-	},
-
 	SYS_RuningNo:{
         getSearchList:{
             method: "GET",
@@ -11215,6 +11264,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/UserDevice/" + id} 
+        }
+		
+	},
+
+	SYS_UserInGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/UserInGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/UserInGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/UserInGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/UserInGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/UserInGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/UserInGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/UserInGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/UserInGroup/" + id} 
         }
 		
 	},
@@ -13812,6 +13910,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/OutboundOrderDetail/" + id} 
+        }
+		
+	},
+
+	WMS_OutboundTag:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundTag/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundTag"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/OutboundTag/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/OutboundTag/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/OutboundTag/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/OutboundTag"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/OutboundTag/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/OutboundTag/" + id} 
         }
 		
 	},
