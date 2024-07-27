@@ -45,7 +45,7 @@
 							<label class="c-label" for="IDBranch">{{'Parent' | translate}}
 								<span *ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)" ion-text color="danger">(*)</span>
 							</label>
-							<ng-select class="c-input no-check-dirty" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'erp.app.pages.purchase.purchase-order.search-placeholder' | translate}}">
+							<ng-select class="c-input no-check-dirty" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'Search...' | translate}}">
 								<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 									<div *ngIf="i">
 										<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>

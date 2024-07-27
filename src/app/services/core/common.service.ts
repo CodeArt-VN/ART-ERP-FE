@@ -522,7 +522,7 @@ export class CommonService {
       this.env.publishEvent({ Code: 'app:ConnectFail' });
     } else {
       if (!environment.production) {
-        this.env.showMessage(err.message, 'danger');
+        this.env.showMessage('To dev message: ' +err.message, 'danger');
       }
     }
 

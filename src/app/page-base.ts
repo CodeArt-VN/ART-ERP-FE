@@ -601,9 +601,10 @@ export abstract class PageBase implements OnInit {
 
     saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
         return new Promise((resolve, reject) => {
-            this.formGroup.updateValueAndValidity();
+            form.updateValueAndValidity();
             if (!form.valid) {
                 this.env.showTranslateMessage('Please recheck information highlighted in red above','warning');
+                reject('form invalid');
             }
             else if (this.submitAttempt == false) {
                 this.submitAttempt = true;
@@ -620,6 +621,9 @@ export abstract class PageBase implements OnInit {
                     this.submitAttempt = false;
                     reject(err);
                 });
+            }
+            else {
+                reject('submitAttempt');
             }
         });
     }
