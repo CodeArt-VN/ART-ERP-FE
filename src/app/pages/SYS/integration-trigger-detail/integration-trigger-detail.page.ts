@@ -67,17 +67,15 @@ export class IntegrationTriggerDetailPage extends PageBase {
   providerDataSource: any;
   preLoadData(event?: any): void {
     Promise.all([
-      this.integrationProvider.read({IsTriggerable: true}, false), 
+      this.integrationProvider.read({ IsTriggerable: true }, false),
       this.env.getType('IntegrationTriggerType'),
-      this.actionProvider.read(this.query, false)
-    ]).then(
-      (values: any) => {
-        this.providerDataSource = values[0].data;
-        this.typeList = values[1];
-        this.actionDataSource = values[2].data;
-        super.preLoadData(event);
-      },
-    );
+      this.actionProvider.read(this.query, false),
+    ]).then((values: any) => {
+      this.providerDataSource = values[0].data;
+      this.typeList = values[1];
+      this.actionDataSource = values[2].data;
+      super.preLoadData(event);
+    });
   }
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
@@ -88,7 +86,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.query.Id = undefined;
     this.actionDataSource = [];
     if (this.formGroup.controls.IDProvider?.value) {
-   //   this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
+      //   this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
       this.query.IsTriggerable = true;
       this.actionProvider.read(this.query, false).then((listAction: any) => {
         if (listAction != null && listAction.data.length > 0) {
@@ -249,5 +247,21 @@ export class IntegrationTriggerDetailPage extends PageBase {
           });
       }
     });
+  }
+
+  runTrigger() {
+    this.env
+      .showLoading(
+        'Xin vui lòng chờ trong giây lát...',
+        this.pageProvider.commonService.connect('POST', 'SYS/Trigger/Run', { Id: this.item.Id }).toPromise(),
+      )
+      .then((_) => {
+        this.env.showTranslateMessage('Running completed!', 'success');
+        console.log(_);
+      })
+      .catch((err) => {
+        this.env.showTranslateMessage('Cannot run, please try again', 'danger');
+        console.log(err);
+      });
   }
 }
