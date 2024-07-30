@@ -19,6 +19,7 @@ declare var window: any;
   providedIn: 'root',
 })
 export class AccountService {
+  accountLoaded = false;
   constructor(
     public commonService: CommonService,
     private statusProvider: SYS_StatusProvider,
@@ -28,15 +29,15 @@ export class AccountService {
     public env: EnvService,
     public plt: Platform,
   ) {
-    this.plt.ready().then(() => {
-      this.loadSavedData()
-        .then(() => {
-          console.log('loaded saved data');
-        })
-        .catch((err) => {
-          this.commonService.checkError(err);
-        });
-    });
+    // this.plt.ready().then(() => {
+    //   this.loadSavedData()
+    //     .then(() => {
+    //       console.log('loaded saved data');
+    //     })
+    //     .catch((err) => {
+    //       this.commonService.checkError(err);
+    //     });
+    // });
     // Done: flow
     // 1. check app version
     //   => old: clear all
@@ -44,6 +45,78 @@ export class AccountService {
     //   => null || expire: clear all
     // 3. get user info
     //   => fail: clear all
+  }
+
+  loadSavedData(forceReload = false) {
+    return new Promise((resolve, reject) => {
+      if (this.accountLoaded && !forceReload) {
+        debugger;
+        resolve(true);
+      } else {
+        this.checkVersion().then((v) => {
+          GlobalData.Version = v;
+          this.getToken().then(() => {
+            this.getProfile()
+              .then(() => {
+                this.accountLoaded = true;
+                setTimeout(() => {
+                  if (this.env.user) {
+                    let woopraId = {
+                      id: this.env.user.Id,
+                      email: this.env.user.Email,
+                      name: this.env.user.FullName,
+                      avatar: this.env.user.Avatar,
+                    };
+                    let woopraInterval: any = setInterval(() => {
+                      if (window?.woopra) {
+                        window.woopra.identify(woopraId);
+                        window.woopra.push();
+                        if (woopraInterval) {
+                          clearInterval(woopraInterval);
+                          woopraInterval = null;
+                        }
+                      }
+                    }, 3000);
+                  }
+                }, 2000);
+
+                this.env.isloaded = true;
+                this.env.publishEvent({
+                  Code: 'app:loadedLocalData',
+                });
+                resolve(true);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+
+            //TODO: lazy check profile;
+            this.commonService
+              .connect('GET', 'Account/UserName', null)
+              .toPromise()
+              .then((userName) => {
+                if (this.env?.user?.Id && this.env.user.UserName != userName) {
+                  this.env.setStorage('appVersion', '0.0');
+                  this.checkVersion();
+                } else {
+                  setTimeout(() => {
+                    this.getProfile(true)
+                      .then(() => {
+                        this.env.publishEvent({ Code: 'app:loadedLocalData' });
+                      })
+                      .catch((err) => {
+                        reject(err);
+                      });
+                  }, 1500);
+                }
+              })
+              .catch((err) => {
+                this.commonService.checkError(err);
+              });
+          });
+        });
+      }
+    });
   }
 
   checkVersion() {
@@ -86,67 +159,6 @@ export class AccountService {
       });
     });
   }
-
-  loadSavedData(forceReload = false) {
-    return new Promise((resolve, reject) => {
-      this.checkVersion().then((v) => {
-        GlobalData.Version = v;
-        this.getToken().then(() => {
-          this.getProfile(true)
-            .then(() => {
-              
-                setTimeout(() => {
-                  if (this.env.user) {
-                    let woopraId = {
-                      id: this.env.user.Id,
-                      email: this.env.user.Email,
-                      name: this.env.user.FullName,
-                      avatar: this.env.user.Avatar,
-                    };
-                    let woopraInterval: any = setInterval(() => {
-                      if (window?.woopra) {
-                        window.woopra.identify(woopraId);
-                        window.woopra.push();
-                        if (woopraInterval) {
-                          clearInterval(woopraInterval);
-                          woopraInterval = null;
-                        }
-                      }
-                    }, 2000);
-                  }
-                }, 1000);
-              
-              this.env.isloaded = true;
-              this.env.publishEvent({
-                Code: 'app:loadedLocalData',
-              });
-              resolve(true);
-            })
-            .catch((err) => {
-              reject(err);
-            });
-
-          // setTimeout(() => {
-          // 	this.getProfile(true).then(() => {
-          // 		resolve(true);
-          // 		this.env.isloaded = true;
-          // 		this.env.publishEvent({ Code: 'app:loadedLocalData' })
-          // 	}).catch(err => {
-          // 		reject(err);
-          // 	});
-          // }, 1500);
-
-          // //TODO: lazy check profile;
-          // this.commonService.connect('GET', 'Account/UserName', null).toPromise().then(_ => {
-          // 	console.log(_);
-          // }).catch(err => {
-          // 	this.commonService.checkError(err);
-          // })
-        });
-      });
-    });
-  }
-
   setToken(token) {
     if (token != null) {
       GlobalData.Token = token;
@@ -206,52 +218,6 @@ export class AccountService {
     }
     return userSetting;
   }
-  setProfile(profile) {
-    return new Promise((resolve, reject) => {
-      this.env.setStorage('UserProfile', profile).then((_) => {
-        resolve(true);
-      });
-    });
-  }
-
-  loadSavedProfile() {
-    return new Promise((resolve, reject) => {
-      this.env
-        .getStorage('UserProfile')
-        .then((profile) => {
-          if (profile && profile.Id) {
-            let settings = null;
-            if (Array.isArray(profile.UserSetting)) {
-              settings = lib.cloneObject(profile.UserSetting);
-              profile.UserSetting = this.loadUserSettings(settings, profile);
-            }
-
-            this.env.user = profile;
-            this.env.rawBranchList = profile.BranchList;
-            Promise.all([this.statusProvider.read({ Take: 10000 }), this.typeProvider.read({ Take: 10000 })])
-              .then((values: any[]) => {
-                this.env.statusList = values[0]['data'];
-                this.env.typeList = values[1]['data'];
-                this.env.loadBranch().then((_) => {
-                  this.env.publishEvent({
-                    Code: 'app:updatedUser',
-                  });
-                  resolve(true);
-                });
-              })
-              .catch((err) => reject(err));
-          } else {
-            this.env.user = null;
-            this.env.rawBranchList = [];
-            this.env.loadBranch().then((_) => {
-              this.env.publishEvent({ Code: 'app:updatedUser' });
-              resolve(true);
-            });
-          }
-        })
-        .catch((err) => reject(err));
-    });
-  }
 
   getProfile(forceReload = false) {
     return new Promise((resolve, reject) => {
@@ -278,10 +244,18 @@ export class AccountService {
   syncGetUserData() {
     let that = this;
     return new Promise(function (resolve, reject) {
-      that.commonService
-        .connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null)
-        .toPromise()
-        .then((data: any) => {
+      Promise.all([
+        that.statusProvider.read({ Take: 10000 }, true),
+        that.typeProvider.read({ Take: 10000 }, true),
+        that.commonService
+          .connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null)
+          .toPromise(),
+      ])
+        .then((values: any[]) => {
+          that.env.statusList = values[0]['data'];
+          that.env.typeList = values[1]['data'];
+
+          let data = values[2];
           if (data) {
             data.Avatar = data.Avatar
               ? data.Avatar.indexOf('http') != -1
@@ -300,9 +274,55 @@ export class AccountService {
             });
           }
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
+    });
+  }
+
+  setProfile(profile) {
+    return new Promise((resolve, reject) => {
+      this.env.setStorage('UserProfile', profile).then((_) => {
+        resolve(true);
+      });
+    });
+  }
+
+  loadSavedProfile() {
+    return new Promise((resolve, reject) => {
+      this.env
+        .getStorage('UserProfile')
+        .then((profile) => {
+          if (profile && profile.Id) {
+            let settings = null;
+            if (Array.isArray(profile.UserSetting)) {
+              settings = lib.cloneObject(profile.UserSetting);
+              profile.UserSetting = this.loadUserSettings(settings, profile);
+            }
+
+            this.env.user = profile;
+            this.env.rawBranchList = profile.BranchList;
+
+            Promise.all([this.statusProvider.read({ Take: 10000 }), this.typeProvider.read({ Take: 10000 })])
+              .then((values: any[]) => {
+                this.env.statusList = values[0]['data'];
+                this.env.typeList = values[1]['data'];
+                this.env.loadBranch().then((_) => {
+                  this.env.publishEvent({
+                    Code: 'app:updatedUser',
+                  });
+                  resolve(true);
+                });
+              })
+              .catch((err) => reject(err));
+          } else {
+            this.env.user = null;
+            this.env.rawBranchList = [];
+            this.env.loadBranch().then((_) => {
+              this.env.publishEvent({ Code: 'app:updatedUser' });
+              resolve(true);
+            });
+          }
+        })
+        .catch((err) => reject(err));
     });
   }
 
@@ -528,4 +548,6 @@ export class AccountService {
         });
     });
   }
+
+  
 }

@@ -2,7 +2,8 @@ export var SearchConfig = {
   defaultSearchFields: { cache: false, filelds: ['Code', 'Name', '_uid'] },
 
   SYS_Status: { cache: true },
-  //SYS_Type: { cache: true },
+  SYS_Type: { cache: true },
+  
   // BI_Report: {cache: true},
 
   // LIST_BookingSources: { cache: true },

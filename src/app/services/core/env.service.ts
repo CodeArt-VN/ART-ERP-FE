@@ -464,6 +464,8 @@ export class EnvService {
       lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
         this.branchList = [];
         this.jobTitleList = [];
+        console.log('reset branch + jobTitleList')
+        
         for (let ix = 0; ix < resp.length; ix++) {
           const i: any = resp[ix];
           i.Name = i.ShortName ? i.ShortName : i.Name;
@@ -537,6 +539,32 @@ export class EnvService {
 
     this.configTracking.next(this.configs.filter((d) => d.IDBranch == this.selectedBranch));
   }
+
+  /**
+   * Check form permission
+   * @param functionCode Function code to check permission
+   * @returns Return promise and resolve true if have permission
+   */
+  checkFormPermission(functionCode) {
+    return new Promise<boolean>((resolve) => {
+      //Chưa đăng nhập
+      if (!this.user || !this.user.Id) {
+        resolve(false);
+      } else {
+        if (functionCode == '/default') {
+          resolve(false);
+        } else if (functionCode == '/not-found') {
+          resolve(true);
+        } else {
+          functionCode = functionCode + '/';
+          let form = this.user.Forms.find(
+            (d) => functionCode.startsWith('/' + d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2),
+          );
+          resolve(form != null);
+        }
+      }
+    });
+  } 
 
   getConfig() {}
 

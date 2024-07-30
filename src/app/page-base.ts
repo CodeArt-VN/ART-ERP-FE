@@ -837,6 +837,11 @@ export abstract class PageBase implements OnInit {
                 if (data.Code == 'changeBranch') {
                     this.preLoadData(null);
                 }
+                else if(data.Code == 'app:loadedLocalData' ){
+                    this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => { 
+                        if (!result) this.nav('/default');
+                     });
+                }
                 else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
                     this.refresh(null);
                 }
