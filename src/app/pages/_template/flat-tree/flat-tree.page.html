@@ -1,0 +1,85 @@
+<ion-header>
+  <app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="left" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+  <ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab
+    *ngIf="pageConfig.isShowFeature"
+    [ngClass]="{'ion-hide-md-down': pageConfig.isSubActive}"
+    class="feature no-print"
+    vertical="bottom"
+    horizontal="start"
+    slot="fixed"
+  >
+    <ion-list>
+      <ion-list-header>
+        <ion-label color="dark">{{'Groups' | translate}}</ion-label>
+      </ion-list-header>
+        <ion-item
+          [color]="g.Code == groupControl.selectedGroup?.Code? 'primary': '' "
+          [button]="true"
+          *ngFor="let g of groupControl.groupList"
+          (click)="onGroupChange(g)"
+        >
+          <ion-icon aria-hidden="true" [name]="g.Icon || 'layers'" color="medium" slot="start"></ion-icon>
+          <ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
+        </ion-item>
+
+    </ion-list>
+  </ion-fab>
+  <div id="view1" *ngIf="segmentView.Page == 'View1'">
+
+    <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+      <app-page-title
+        [icon]="pageConfig.pageIcon"
+        [color]="pageConfig.pageColor"
+        [title]="pageConfig.pageTitle"
+        [remark]="pageConfig.pageRemark"
+      ></app-page-title>
+    </div>
+  
+    <div style="max-width: 1440px; margin: auto; width: 100%">
+      <app-data-table
+        style="width: fit-content; min-width: calc(100% - 32px)"
+        class="box-shadow responsive"
+        [rows]="items"
+        [trackBy]="'Id'"
+        [(selectedRows)]="selectedItems"
+        [showSpinner]="pageConfig.showSpinner"
+        [showFilter]="pageConfig.isShowSearch"
+        [(query)]="query"
+        (dataInfinite)="loadData($event)"
+        (filter)="onDatatableFilter($event)"
+        (sort)="onSort($event)"
+      >
+        <datatable-column [checkbox]="true" name=""></datatable-column>
+        <datatable-column class="col-id" name="#" property="Id"></datatable-column>
+        <datatable-column class="col-icon large" name="" property="Icon">
+          <ng-template let-i="row" datatable-cell-template>
+            <ion-icon
+              [name]="i.Icon || 'bars'"
+              [color]="i.Color || 'primary'"
+              [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"
+            ></ion-icon>
+          </ng-template>
+        </datatable-column>
+        <datatable-column class="col-name" name="Name" property="Name">
+          <ng-template let-i="row" datatable-cell-template>
+            <div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
+              <a class="bold">
+                <ion-text color="dark">{{i.Name}}</ion-text>
+              </a>
+              <div *ngIf="i.Remark">{{i.Remark}}</div>
+            </div>
+          </ng-template>
+        </datatable-column>
+      </app-data-table>
+    </div>
+  </div>
+  <div id="view2" *ngIf="segmentView.Page == 'View2'"></div>
+
+</ion-content>
