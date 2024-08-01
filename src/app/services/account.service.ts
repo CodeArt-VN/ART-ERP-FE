@@ -107,7 +107,7 @@ export class AccountService {
                         .catch((err) => {
                           reject(err);
                         });
-                    }, 1500);
+                    }, 5000);
                   }
                 })
                 .catch((err) => {

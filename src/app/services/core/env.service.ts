@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
+
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -96,15 +97,15 @@ export class EnvService {
   /** Last message was shown */
   lastMessage = '';
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  private _storage: Storage | null = null;
+  
 
   /** app event tracking */
   public EventTracking = new Subject<any>();
 
   constructor(
     public plt: Platform,
-    public storage: Storage,
+
+    public storage: StorageService,
     public toastController: ToastController,
     public alertCtrl: AlertController,
     public loadingController: LoadingController,
@@ -124,8 +125,9 @@ export class EnvService {
    * Connet SignalR
    */
   async init() {
-    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-    this._storage = await this.storage.create();
+    await this.storage.init();
+    this.typeList = await this.storage.get('SYS/Type');
+    this.statusList = await this.storage.get('SYS/Status');
     this.publishEvent({ Code: 'app:loadLang' });
     Network.addListener('networkStatusChange', (status) => {
       this.publishEvent({ Code: 'app:networkStatusChange', status });
@@ -394,7 +396,7 @@ export class EnvService {
    * @returns Return the storage
    */
   getStorage(key) {
-    return this._storage?.get(key)!;
+    return this.storage.get(key)!;
   }
 
   /**
@@ -404,7 +406,7 @@ export class EnvService {
    * @returns Return promise
    */
   setStorage(key: string, value: any) {
-    return this._storage?.set(key, value)!;
+    return this.storage.set(key, value)!;
   }
 
   /**
@@ -412,7 +414,7 @@ export class EnvService {
    * @returns Return promise
    */
   clearStorage() {
-    return this._storage?.clear()!;
+    return this.storage.clear()!;
   }
 
   /**

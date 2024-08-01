@@ -56,7 +56,7 @@ export class CommonService {
     }
 
     if (URL.indexOf('http') != 0) {
-      URL = pmethod != 'Login'? ApiSetting.apiDomain(URL) :  ApiSetting.appDomain(URL) ;
+      URL = pmethod != 'Login' ? ApiSetting.apiDomain(URL) : ApiSetting.appDomain(URL);
     }
 
     if (
@@ -147,7 +147,7 @@ export class CommonService {
               })
               .toPromise()
               .then((data: any) => {
-                that.cacheLocal(apiPath.url(), data);
+                that.env.setStorage(apiPath.url(), data);
                 that.searchInItems(keyword, fields, page, pageSize, data).then((result) => {
                   resolve(result);
                 });
@@ -166,10 +166,6 @@ export class CommonService {
           reject(err);
         });
     });
-  }
-
-  cacheLocal(URL, Data) {
-    return this.env.setStorage(URL, Data);
   }
 
   getToken() {
@@ -522,7 +518,7 @@ export class CommonService {
       this.env.publishEvent({ Code: 'app:ConnectFail' });
     } else {
       if (!environment.production) {
-        this.env.showMessage('To dev message: ' +err.message, 'danger');
+        this.env.showMessage('To dev message: ' + err.message, 'danger');
       }
     }
 
@@ -579,7 +575,13 @@ export class exService {
           .toPromise()
           .then((data: any) => {
             var result = { count: data.length, data: data };
-            resolve(result);
+            if (that.allowCache) {
+              that.commonService.env.setStorage(apiPath.url(), data).then(() => {
+                resolve(result);
+              });
+            } else {
+              resolve(result);
+            }
           })
           .catch((err) => {
             that.commonService.checkError(err);
