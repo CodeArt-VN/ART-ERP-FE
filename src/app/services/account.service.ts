@@ -50,13 +50,12 @@ export class AccountService {
   loadSavedData(forceReload = false) {
     return new Promise((resolve, reject) => {
       if (this.accountLoaded && !forceReload) {
-        debugger;
         resolve(true);
       } else {
         this.checkVersion().then((v) => {
           GlobalData.Version = v;
           this.getToken().then(() => {
-            this.getProfile()
+            this.getProfile(forceReload)
               .then(() => {
                 this.accountLoaded = true;
                 setTimeout(() => {
@@ -91,28 +90,29 @@ export class AccountService {
               });
 
             //TODO: lazy check profile;
-            this.commonService
-              .connect('GET', 'Account/UserName', null)
-              .toPromise()
-              .then((userName) => {
-                if (this.env?.user?.Id && this.env.user.UserName != userName) {
-                  this.env.setStorage('appVersion', '0.0');
-                  this.checkVersion();
-                } else {
-                  setTimeout(() => {
-                    this.getProfile(true)
-                      .then(() => {
-                        this.env.publishEvent({ Code: 'app:loadedLocalData' });
-                      })
-                      .catch((err) => {
-                        reject(err);
-                      });
-                  }, 1500);
-                }
-              })
-              .catch((err) => {
-                this.commonService.checkError(err);
-              });
+            if (!forceReload)
+              this.commonService
+                .connect('GET', 'Account/UserName', null)
+                .toPromise()
+                .then((userName) => {
+                  if (this.env?.user?.Id && this.env.user.UserName != userName) {
+                    this.env.setStorage('appVersion', '0.0');
+                    this.checkVersion();
+                  } else {
+                    setTimeout(() => {
+                      this.getProfile(true)
+                        .then(() => {
+                          this.env.publishEvent({ Code: 'app:loadedLocalData' });
+                        })
+                        .catch((err) => {
+                          reject(err);
+                        });
+                    }, 1500);
+                  }
+                })
+                .catch((err) => {
+                  this.commonService.checkError(err);
+                });
           });
         });
       }
@@ -297,22 +297,14 @@ export class AccountService {
               settings = lib.cloneObject(profile.UserSetting);
               profile.UserSetting = this.loadUserSettings(settings, profile);
             }
-
             this.env.user = profile;
             this.env.rawBranchList = profile.BranchList;
-
-            Promise.all([this.statusProvider.read({ Take: 10000 }), this.typeProvider.read({ Take: 10000 })])
-              .then((values: any[]) => {
-                this.env.statusList = values[0]['data'];
-                this.env.typeList = values[1]['data'];
-                this.env.loadBranch().then((_) => {
-                  this.env.publishEvent({
-                    Code: 'app:updatedUser',
-                  });
-                  resolve(true);
-                });
-              })
-              .catch((err) => reject(err));
+            this.env.loadBranch().then((_) => {
+              this.env.publishEvent({
+                Code: 'app:updatedUser',
+              });
+              resolve(true);
+            });
           } else {
             this.env.user = null;
             this.env.rawBranchList = [];
@@ -548,6 +540,4 @@ export class AccountService {
         });
     });
   }
-
-  
 }
