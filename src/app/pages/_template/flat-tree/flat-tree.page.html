@@ -31,16 +31,12 @@
 
     </ion-list>
   </ion-fab>
+  <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+    <app-page-title
+    [title]="groupControl.selectedGroup?.Name">
+    </app-page-title>
+  </div>
   <div id="view1" *ngIf="segmentView.Page == 'View1'">
-
-    <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
-      <app-page-title
-        [icon]="pageConfig.pageIcon"
-        [color]="pageConfig.pageColor"
-        [title]="pageConfig.pageTitle"
-        [remark]="pageConfig.pageRemark"
-      ></app-page-title>
-    </div>
   
     <div style="max-width: 1440px; margin: auto; width: 100%">
       <app-data-table
