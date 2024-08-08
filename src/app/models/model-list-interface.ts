@@ -729,6 +729,44 @@ export interface BANK_IncomingPaymentDetail
     
 }
 
+export interface BANK_OutgoingPayment
+{
+    IDJournalEntry?: number;
+    IDBranch?: number;
+    IDStaff?: number;
+    IDBusinessPartner?: number;
+    IDTransaction?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Amount?: number;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    Type?: string;
+    SubType?: string;
+    Status?: string;
+    PaymentURL?: string;
+    ReferenceNumber?: string;
+    TransactionDate?: Date;
+    TransactionFee?: number;
+    IsRefundTransaction?: boolean;
+    IDOriginalTransaction?: number;
+    Sort?: number;
+    IsCanceled?: boolean;
+    IsPrinted?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface BANK_PaymentTerm
 {
     IDBranch?: number;
@@ -758,7 +796,9 @@ export interface BANK_PaymentTerm
 export interface BANK_StatementMatchingCriteria
 {
     IDBranch?: number;
+    IDParent?: number;
     Id?: number;
+    Type?: string;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -782,7 +822,6 @@ export interface BANK_Transaction
     ReferenceNumber?: string;
     Amount?: number;
     TransactionDate?: Date;
-    AccountNumber?: string;
     ReciprocalAccount?: string;
     ReciprocalName?: string;
     Currency?: string;
@@ -793,6 +832,7 @@ export interface BANK_Transaction
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    IDBusinessPartner?: number;
     
 }
 
@@ -6620,6 +6660,37 @@ export interface WMS_AdjustmentDetail
     
 }
 
+export interface WMS_AllocationStrategy
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsStrictLotRotation?: boolean;
+    IsOverallocateAssigned?: boolean;
+    IsUseSpeedPickLocations?: boolean;
+    Type?: string;
+    FindInZone?: number;
+    FindLocationType?: string;
+    FindLocationCategory?: string;
+    CanBreakPallets?: boolean;
+    SortPriority1?: string;
+    SortPriority2?: string;
+    SortPriority3?: string;
+    SortPriority4?: string;
+    SortPriority5?: string;
+    LPNQuantityRule?: string;
+    
+}
+
 export interface WMS_Carrier
 {
     Id?: number;
@@ -7758,6 +7829,7 @@ export interface WMS_ShippingDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    IDParent?: number;
     
 }
 
@@ -7799,6 +7871,7 @@ export interface WMS_Storer
     StandardCarrierAlphaCode?: string;
     CreditLimit?: number;
     Name?: string;
+    DefaultAllocationStrategy?: number;
     
 }
 

@@ -1076,6 +1076,55 @@ export var APIListBase = {
 		
 	},
 
+	BANK_OutgoingPayment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/OutgoingPayment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/OutgoingPayment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        }
+		
+	},
+
 	BANK_PaymentTerm:{
         getSearchList:{
             method: "GET",
@@ -12881,6 +12930,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/AdjustmentDetail/" + id} 
+        }
+		
+	},
+
+	WMS_AllocationStrategy:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/AllocationStrategy/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/AllocationStrategy/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
         }
 		
 	},
