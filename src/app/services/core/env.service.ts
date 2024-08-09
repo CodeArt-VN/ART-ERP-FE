@@ -97,8 +97,6 @@ export class EnvService {
   /** Last message was shown */
   lastMessage = '';
 
-  
-
   /** app event tracking */
   public EventTracking = new Subject<any>();
 
@@ -178,7 +176,7 @@ export class EnvService {
           location.reload();
           break;
         case 'SystemMessage':
-          this.showMessage(e.value, e.name);
+          this.showTranslateMessage(e.value, e.name);
           break;
         case 'AppReloadOldVersion':
           if (e.value.localeCompare(this.version) > 0) {
@@ -186,7 +184,7 @@ export class EnvService {
           }
           break;
         case 'SystemAlert':
-          this.showAlert(e.value, null, e.name);
+          this.showAlert2(e.value, null, e.name);
           break;
         default:
           break;
@@ -297,6 +295,49 @@ export class EnvService {
     }
   }
 
+  showAlert2(message, subHeader = null, header = null, okText = 'OK') {
+    let messageTransObj = {
+      code: typeof message === 'object' ? message.code : message,
+      value: typeof message === 'object' ? message.value : null,
+    };
+
+    let subHeaderTransObj = {
+      code: subHeader != null && typeof subHeader === 'object' ? subHeader.code : subHeader,
+      value: subHeader != null && typeof subHeader === 'object' ? subHeader.value : null,
+    };
+
+    let headerTransObj = {
+      code: header != null && typeof header === 'object' ? header.code : header,
+      value: header != null && typeof header === 'object' ? header.value : null,
+    };
+
+    let objValue = {};
+    if (typeof message === 'object') {
+      objValue = { ...objValue, ...messageTransObj.value };
+    }
+
+    if (subHeader != null && typeof subHeader === 'object') {
+      objValue = { ...objValue, ...subHeaderTransObj.value };
+    }
+
+    if (header != null && typeof header === 'object') {
+      objValue = { ...objValue, ...header.value };
+    }
+
+    // let mergedObjSpread = {...messageTransObj.value, ...obj2};
+
+    this.translate
+      .get([messageTransObj.code, subHeaderTransObj.code, headerTransObj.code], objValue)
+      .subscribe((transMessage: string) => {
+        this.showAlert(
+          transMessage[messageTransObj.code],
+          transMessage[subHeaderTransObj.code],
+          transMessage[headerTransObj.code],
+          okText,
+        );
+      });
+  }
+
   /** @deprecated Deprecated, do not use. */
   showAlert(message, subHeader = null, header = null, okText = 'OK') {
     let option: any = {
@@ -327,6 +368,75 @@ export class EnvService {
    * @param inputs Extra input
    * @returns Promise resolve if end-user click ok button, reject if not.
    */
+
+  showPrompt2(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
+    let messageTransObj = {
+      code: typeof message === 'object' ? message.code : message,
+      value: typeof message === 'object' ? message.value : null,
+    };
+
+    let subHeaderTransObj = {
+      code: subHeader != null && typeof subHeader === 'object' ? subHeader.code : subHeader,
+      value: subHeader != null && typeof subHeader === 'object' ? subHeader.value : null,
+    };
+
+    let headerTransObj = {
+      code: header != null && typeof header === 'object' ? header.code : header,
+      value: header != null && typeof header === 'object' ? header.value : null,
+    };
+
+    let objValue = {};
+    if (typeof message === 'object') {
+      objValue = { ...objValue, ...messageTransObj.value };
+    }
+
+    if (subHeader != null && typeof subHeader === 'object') {
+      objValue = { ...objValue, ...subHeaderTransObj.value };
+    }
+
+    if (header != null && typeof header === 'object') {
+      objValue = { ...objValue, ...header.value };
+    }
+    return new Promise((resolve, reject) => {
+      this.translate
+        .get([messageTransObj.code, subHeaderTransObj.code, headerTransObj.code, okText, cancelText], objValue)
+        .subscribe((transMessage: string) => {
+          //this.showPrompt(transMessage[messageTransObj.code], transMessage[subHeaderTransObj.code], transMessage[headerTransObj.code], transMessage[okText], transMessage[cancelText], inputs)
+          let option: any = {
+            header: transMessage[headerTransObj.code],
+            subHeader: transMessage[subHeaderTransObj.code],
+            message: transMessage[messageTransObj.code],
+            buttons: [],
+          };
+
+          if (cancelText)
+            option.buttons.push({
+              text: transMessage[cancelText],
+              role: 'cancel',
+              handler: () => {
+                reject(false);
+              },
+            });
+
+          if (okText) {
+            option.buttons.push({
+              text: transMessage[okText],
+              cssClass: 'danger-btn',
+              handler: (alertData) => {
+                resolve(alertData);
+              },
+            });
+          }
+
+          if (inputs) option.inputs = inputs;
+
+          this.alertCtrl.create(option).then((alert) => {
+            alert.present();
+          });
+        });
+    });
+  }
+
   showPrompt(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
     return new Promise((resolve, reject) => {
       let option: any = {
@@ -369,6 +479,34 @@ export class EnvService {
    * @param promise The promise funtion to wait
    * @returns Resolve if the promise funtion completed
    */
+
+  showLoading2(message, promise) {
+    let messageTransObj = {
+      code: typeof message === 'object' ? message.code : message,
+      value: typeof message === 'object' ? message.value : null,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.translate.get(messageTransObj.code, messageTransObj.value).subscribe((transMessage: string) => {
+        this.loadingController.create({ cssClass: 'my-custom-class', message: transMessage }).then((loading) => {
+          loading.present();
+          setTimeout(() => {
+            if (typeof promise == 'function') promise = promise();
+            promise
+              .then((result) => {
+                if (loading) loading.dismiss();
+                resolve(result);
+              })
+              .catch((err) => {
+                if (loading) loading.dismiss();
+                reject(err);
+              });
+          }, 0);
+        });
+      });
+    });
+  }
+
   showLoading(message, promise) {
     return new Promise((resolve, reject) => {
       this.loadingController.create({ cssClass: 'my-custom-class', message: message }).then((loading) => {
@@ -466,8 +604,8 @@ export class EnvService {
       lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
         this.branchList = [];
         this.jobTitleList = [];
-        console.log('reset branch + jobTitleList')
-        
+        console.log('reset branch + jobTitleList');
+
         for (let ix = 0; ix < resp.length; ix++) {
           const i: any = resp[ix];
           i.Name = i.ShortName ? i.ShortName : i.Name;
@@ -566,7 +704,7 @@ export class EnvService {
         }
       }
     });
-  } 
+  }
 
   getConfig() {}
 

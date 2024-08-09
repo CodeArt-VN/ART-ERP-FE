@@ -80,7 +80,7 @@ export class RegisterPage extends PageBase {
       }
       if (validateMessage.length) {
         message += validateMessage.join(', ');
-        this.env.showMessage(message, 'danger');
+        this.env.showTranslateMessage(message, 'danger');
         return;
       }
       this.postRegister();

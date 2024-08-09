@@ -98,10 +98,10 @@ export class APICollectionPage extends PageBase {
                   }
                   this.pageProvider.read(queryPostMan, false).then((result: any) => {
                     if (result.data.length > 0) {
-                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy ?')
+                      this.env.showPrompt2('Collection đã tồn tại, Bạn có muốn import copy?')
                       .then((_) => {
                           obj.ForceDelete = false;
-                          this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                          this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
                           this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                               .then((resp:any) => {
                                   this.submitAttempt = false;
@@ -116,7 +116,7 @@ export class APICollectionPage extends PageBase {
                               })
                       })
                       .catch((_) => {
-                        this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                        this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
                         this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                             .then((resp:any) => {
                                 this.submitAttempt = false;
@@ -132,7 +132,7 @@ export class APICollectionPage extends PageBase {
                       });
                     }
                     else{
-                        this.env.showLoading('Vui lòng chờ import dữ liệu...', 
+                        this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
                         this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                             .then((resp:any) => {
                                 this.submitAttempt = false;

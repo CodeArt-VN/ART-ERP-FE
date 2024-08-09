@@ -184,7 +184,7 @@ export class PrintingService {
   async ConnectionPrompt(options, printers) {
     return new Promise((resolve, reject) => {
       this.env
-        .showPrompt('Bạn có muốn tiếp tục in?', options.host, 'Có lỗi khi gọi đến server')
+        .showPrompt2('Bạn có muốn tiếp tục in?', options.host, 'Có lỗi khi gọi đến server')
         .then((_) => {
           this.QZCloseConnection().then(() => {
             this.sendQZTray(printers);
