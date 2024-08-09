@@ -39,7 +39,7 @@ export class POSNotifyModalPage extends PageBase {
       this.env.setStorage('Notifications', this.item);
       this.modalController.dismiss(this.item);
     } else {
-      this.env.showMessage('Không có thông báo nào đã xem', 'warning');
+      this.env.showTranslateMessage('Không có thông báo nào đã xem', 'warning');
       return;
     }
   }
@@ -49,7 +49,7 @@ export class POSNotifyModalPage extends PageBase {
   }
   // dismiss(role = 'cancel') {
   // 	if (role == 'confirm' && this.item.Code == 'Other' && !this.item.NotifyNote ) {
-  // 		this.env.showMessage('Xin vui lòng nhập lý do.');
+  // 		this.env.showTranslateMessage('Xin vui lòng nhập lý do.');
   // 		return;
   // 	}
 

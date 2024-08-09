@@ -155,7 +155,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
   removeField(fg, j) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;
     let itemToDelete = fg.getRawValue();
-    this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then((_) => {
+    this.env.showPrompt2('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
       this.triggerActionProvider.delete(itemToDelete).then((result) => {
         groups.removeAt(j);
         this.env.showTranslateMessage('Saving completed!', 'success');
@@ -251,7 +251,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
 
   runTrigger() {
     this.env
-      .showLoading(
+      .showLoading2(
         'Xin vui lòng chờ trong giây lát...',
         this.pageProvider.commonService.connect('POST', 'SYS/Trigger/Run', { Id: this.item.Id }).toPromise(),
       )

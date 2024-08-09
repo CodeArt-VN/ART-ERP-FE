@@ -127,7 +127,7 @@ export class LoginPage extends PageBase {
     let account = this.formGroup.getRawValue();
 
     this.env
-      .showLoading('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(account.UserName, account.Password))
+      .showLoading2('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(account.UserName, account.Password))
       .then((data) => {
         this.goBack();
       })

@@ -118,7 +118,7 @@ export abstract class PageBase implements OnInit {
                         this.loadedData(event);
                     }).catch(err => {
                         if (err.message != null) {
-                            this.env.showMessage(err.message, 'danger');
+                            this.env.showTranslateMessage(err.message, 'danger');
                         }
                         else {
                             this.env.showTranslateMessage('Cannot extract data','danger');
@@ -346,8 +346,8 @@ export abstract class PageBase implements OnInit {
 
     deleteItems(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.canDelete) {
-            this.env.showPrompt('Bạn chắc muốn xóa ' + this.selectedItems.length + ' đang chọn?', null, 'Xóa ' + this.selectedItems.length + ' dòng').then(_=>{
-                this.env.showLoading('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
+             this.env.showPrompt2({code:'Bạn có chắc muốn xóa {{value}} đang chọn?',value: {value:this.selectedItems.length}}, null,{code:'Xóa {{value1}} đang chọn?',value: {value1:this.selectedItems.length}}).then(_=>{
+                this.env.showLoading2('Xin vui lòng chờ trong giây lát...', this.pageProvider.delete(this.selectedItems))
                 .then(_ => {
                     this.removeSelectedItems();
                     this.env.showTranslateMessage('Deleted!','success');
@@ -356,7 +356,7 @@ export abstract class PageBase implements OnInit {
                     this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
                     console.log(err);
                 });
-            });
+             });
         }
     }
 
@@ -408,7 +408,7 @@ export abstract class PageBase implements OnInit {
     async import(event) {
         if (event.target.files.length == 0)
             return;
-        this.env.showLoading('Vui lòng chờ import dữ liệu', this.pageProvider.import(event.target.files[0]))
+        this.env.showLoading2('Vui lòng chờ import dữ liệu', this.pageProvider.import(event.target.files[0]))
         .then((resp) => {
             this.refresh();
             if (resp.ErrorList && resp.ErrorList.length) {
@@ -419,7 +419,7 @@ export abstract class PageBase implements OnInit {
                         const e = resp.ErrorList[i];
                         message += '<br> ' + e.Id + '. Tại dòng ' + e.Line + ': ' + e.Message;
                     }
-                this.env.showPrompt('Có ' + resp.ErrorList.length + ' lỗi khi import:' + message, 'Bạn có muốn xem lại các mục bị lỗi?', 'Có lỗi import dữ liệu').then(_=>{
+                this.env.showPrompt2({code:'Có {{value}} lỗi khi import: {{value1}}',value:{value:resp.ErrorList.length,value1:message}}, 'Bạn có muốn xem lại các mục bị lỗi?', 'Có lỗi import dữ liệu').then(_=>{
                     this.downloadURLContent(resp.FileUrl);
                 }).catch(e => { });
             }
@@ -442,7 +442,7 @@ export abstract class PageBase implements OnInit {
     async export() {
         if (this.submitAttempt) return;
         this.submitAttempt = true;
-        this.env.showLoading('Vui lòng chờ export dữ liệu...', this.pageProvider.export(this.query))
+        this.env.showLoading2('Vui lòng chờ export dữ liệu...', this.pageProvider.export(this.query))
         .then((response: any) => {
             this.downloadURLContent(response);
             this.submitAttempt = false;
@@ -672,7 +672,7 @@ export abstract class PageBase implements OnInit {
 
     delete(publishEventCode = this.pageConfig.pageName) {
         if (this.pageConfig.canDelete) {
-            this.env.showPrompt('Bạn chắc muốn xóa' + (this.item.Name ? ' ' + this.item.Name : '') + '?').then(_=>{
+            this.env.showPrompt2({code: 'Bạn có chắc muốn xóa {{value}}?' , value:{value:this.item.Name ? ' ' : this.item.Name}}).then(_=>{
                 this.pageProvider.delete(this.item).then(() => {
                     this.env.showTranslateMessage('Deleted!','success');
                     this.env.publishEvent({ Code: publishEventCode });
