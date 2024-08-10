@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import * as echarts from 'echarts';
+import 'echarts-gl';
 @Component({
   selector: 'app-e-chart',
   template: '<div style="height: 100%;" [id]="elId"></div>',

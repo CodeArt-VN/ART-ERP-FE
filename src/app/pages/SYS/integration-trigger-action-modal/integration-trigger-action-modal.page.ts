@@ -142,7 +142,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     let detailLength = ids.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt2('Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
+        .showPrompt('Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
           code: 'Xóa {{value}} dòng',
           value: { value: detailLength },
         })
@@ -245,7 +245,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     let detailLength = ids.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt2('Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
+        .showPrompt('Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
           code: 'Xóa {{value}} dòng',
           value: { value: detailLength },
         })

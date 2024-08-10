@@ -129,7 +129,7 @@ export class ProfilePage extends PageBase {
 
   async changePassword() {
     if (!this.changePasswordForm.valid) {
-      this.env.showTranslateMessage('Please recheck password', 'warning');
+      this.env.showMessage('Please recheck password', 'warning');
     } else {
       const loading = await this.loadingController.create({
         cssClass: 'my-custom-class',
@@ -144,7 +144,7 @@ export class ProfilePage extends PageBase {
             this.changePasswordForm.controls.confirmPassword.value,
           )
           .then((savedItem: any) => {
-            this.env.showTranslateMessage('Password changed', 'warning');
+            this.env.showMessage('Password changed', 'warning');
             this.changePasswordForm.reset();
             this.cdr.detectChanges();
             this.changePasswordForm.markAsPristine();
@@ -153,16 +153,16 @@ export class ProfilePage extends PageBase {
           .catch((err) => {
             let message = '';
             if (err._body && err._body.indexOf('confirmation password do not match') > -1) {
-              this.env.showTranslateMessage(
+              this.env.showMessage(
                 'erp.app.pages.sys.profile.message.confirmation-password-not-match',
                 'danger',
               );
             } else if (err._body && err._body.indexOf('least 6 characters') > -1) {
-              this.env.showTranslateMessage('erp.app.pages.sys.profile.message.least-6-char', 'danger');
+              this.env.showMessage('erp.app.pages.sys.profile.message.least-6-char', 'danger');
             } else if (err.error && err.error.Message.indexOf('The request is invalid.') > -1) {
-              this.env.showTranslateMessage('Password incorrect, please recheck', 'danger');
+              this.env.showMessage('Password incorrect, please recheck', 'danger');
             } else {
-              this.env.showTranslateMessage('erp.app.pages.sys.profile.message.can-not-save', 'danger');
+              this.env.showMessage('erp.app.pages.sys.profile.message.can-not-save', 'danger');
             }
             if (loading) loading.dismiss();
             this.cdr.detectChanges();

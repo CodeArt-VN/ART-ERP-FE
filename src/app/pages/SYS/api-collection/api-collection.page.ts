@@ -98,10 +98,10 @@ export class APICollectionPage extends PageBase {
                   }
                   this.pageProvider.read(queryPostMan, false).then((result: any) => {
                     if (result.data.length > 0) {
-                      this.env.showPrompt2('Collection đã tồn tại, Bạn có muốn import copy?')
+                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?')
                       .then((_) => {
                           obj.ForceDelete = false;
-                          this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
+                          this.env.showLoading('Please wait for a few moments', 
                           this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                               .then((resp:any) => {
                                   this.submitAttempt = false;
@@ -112,11 +112,11 @@ export class APICollectionPage extends PageBase {
                                   this.submitAttempt = false;
                                   this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
                                   this.refresh();
-                                  this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                                  this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
                               })
                       })
                       .catch((_) => {
-                        this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
+                        this.env.showLoading('Please wait for a few moments', 
                         this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                             .then((resp:any) => {
                                 this.submitAttempt = false;
@@ -127,12 +127,12 @@ export class APICollectionPage extends PageBase {
                                 this.submitAttempt = false;
                                 this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
                                 this.refresh();
-                                this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                                this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
                             })
                       });
                     }
                     else{
-                        this.env.showLoading2('Vui lòng chờ import dữ liệu...', 
+                        this.env.showLoading('Please wait for a few moments', 
                         this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                             .then((resp:any) => {
                                 this.submitAttempt = false;
@@ -143,22 +143,22 @@ export class APICollectionPage extends PageBase {
                                 this.submitAttempt = false;
                                 this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
                                 this.refresh();
-                                this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                                this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
                             })
                       };
                 });
               
                 
                 } catch (error) {
-                  this.env.showTranslateMessage("Error parsing JSON:", 'danger');
+                  this.env.showMessage("Error parsing JSON:", 'danger');
                 }
               };
               reader.onerror = (e) => {
-                this.env.showTranslateMessage("File could not be read:", 'danger');
+                this.env.showMessage("File could not be read:", 'danger');
               };
               reader.readAsText(this.fileImport);
             } else {
-              this.env.showTranslateMessage("Please select a valid JSON file.", 'danger');
+              this.env.showMessage("Please select a valid JSON file.", 'danger');
             }
 
     }
@@ -192,7 +192,7 @@ export class APICollectionPage extends PageBase {
   async import(event) {
       
     if (this.submitAttempt) {
-      this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.importing', 'primary');
+      this.env.showMessage('erp.app.pages.sale.sale-order.message.importing', 'primary');
       return;
     }
     this.fileImport = event.target.files[0];

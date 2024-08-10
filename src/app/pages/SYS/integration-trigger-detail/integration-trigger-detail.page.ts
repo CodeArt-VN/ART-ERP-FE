@@ -155,10 +155,10 @@ export class IntegrationTriggerDetailPage extends PageBase {
   removeField(fg, j) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;
     let itemToDelete = fg.getRawValue();
-    this.env.showPrompt2('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
+    this.env.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
       this.triggerActionProvider.delete(itemToDelete).then((result) => {
         groups.removeAt(j);
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       });
     });
   }
@@ -199,9 +199,9 @@ export class IntegrationTriggerDetailPage extends PageBase {
         .toPromise()
         .then((rs) => {
           if (rs) {
-            this.env.showTranslateMessage('Saving completed!', 'success');
+            this.env.showMessage('Saving completed!', 'success');
           } else {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
           }
         });
     }
@@ -210,9 +210,9 @@ export class IntegrationTriggerDetailPage extends PageBase {
   changeEnableAction(fg, e) {
     this.triggerActionProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
       if (resp) {
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       } else {
-        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        this.env.showMessage('Cannot save, please try again', 'danger');
       }
     });
   }
@@ -225,7 +225,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     return new Promise((resolve, reject) => {
       this.formGroup.updateValueAndValidity();
       if (!form.valid) {
-        this.env.showTranslateMessage('Please recheck information highlighted in red above', 'warning');
+        this.env.showMessage('Please recheck information highlighted in red above', 'warning');
       } else if (this.submitAttempt == false) {
         this.submitAttempt = true;
         let submitItem = this.getDirtyValues(form);
@@ -240,7 +240,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
             if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
           })
           .catch((err) => {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
             this.cdr.detectChanges();
             this.submitAttempt = false;
             reject(err);
@@ -251,16 +251,16 @@ export class IntegrationTriggerDetailPage extends PageBase {
 
   runTrigger() {
     this.env
-      .showLoading2(
-        'Xin vui lòng chờ trong giây lát...',
+      .showLoading(
+        'Please wait for a few moments',
         this.pageProvider.commonService.connect('POST', 'SYS/Trigger/Run', { Id: this.item.Id }).toPromise(),
       )
       .then((_) => {
-        this.env.showTranslateMessage('Running completed!', 'success');
+        this.env.showMessage('Running completed!', 'success');
         console.log(_);
       })
       .catch((err) => {
-        this.env.showTranslateMessage('Cannot run, please try again', 'danger');
+        this.env.showMessage('Cannot run, please try again', 'danger');
         console.log(err);
       });
   }

@@ -39,7 +39,7 @@ export class POSNotifyModalPage extends PageBase {
       this.env.setStorage('Notifications', this.item);
       this.modalController.dismiss(this.item);
     } else {
-      this.env.showTranslateMessage('Không có thông báo nào đã xem', 'warning');
+      this.env.showMessage('Không có thông báo nào đã xem', 'warning');
       return;
     }
   }

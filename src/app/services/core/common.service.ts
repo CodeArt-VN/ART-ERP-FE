@@ -501,7 +501,7 @@ export class CommonService {
     //console.log(err);
     if (err.status == 417 && err.statusText) {
       let vers = err.statusText.split('|');
-      this.env.showTranslateMessage(
+      this.env.showMessage(
         'Please update the software ( to min version {{value}}).',
         'danger',
         vers[0],
@@ -512,13 +512,13 @@ export class CommonService {
     } else if (err.status == 401) {
       this.env.publishEvent({ Code: 'app:silentlogout' });
 
-      this.env.showTranslateMessage('Your session has expired, please log in again.');
+      this.env.showMessage('Your session has expired, please log in again.');
     } else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
-      this.env.showTranslateMessage('Cannot connect to server, please try again.', 'danger');
+      this.env.showMessage('Cannot connect to server, please try again.', 'danger');
       this.env.publishEvent({ Code: 'app:ConnectFail' });
     } else {
       if (!environment.production) {
-        this.env.showTranslateMessage('To dev message: {{value}}', 'danger', err.message);
+        this.env.showMessage('To dev message: {{value}}', 'danger', err.message);
       }
     }
 

@@ -208,7 +208,7 @@ export class IntegrationActionDetailPage extends PageBase {
     let detailLength = this.Runners.controls.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt2('Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?', null, {
+        .showPrompt('Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?', null, {
           code: 'Xóa {{value}} dòng?',
           value: { value: length },
         })
@@ -261,9 +261,9 @@ export class IntegrationActionDetailPage extends PageBase {
     this.actionAPIRunnerProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
       if (resp) {
         fg.get('IsDisabled').setValue(!e.target.checked);
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       } else {
-        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        this.env.showMessage('Cannot save, please try again', 'danger');
       }
       this.convertRunnerConfig();
     });
@@ -272,11 +272,11 @@ export class IntegrationActionDetailPage extends PageBase {
   deleteItems() {
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length;
-      this.env.showPrompt2('Bạn có chắc muốn xóa Runners đang chọn?', null, {code: 'Xóa {{value}} đang chọn?', value: { value: length }}).then((_) => {
+      this.env.showPrompt('Bạn có chắc muốn xóa Runners đang chọn?', null, {code: 'Xóa {{value}} đang chọn?', value: { value: length }}).then((_) => {
         this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
           this.Runners.clear();
           this.convertRunnerConfig();
-          this.env.showTranslateMessage('Saved change!', 'success');
+          this.env.showMessage('Saved change!', 'success');
         });
       });
     }
@@ -285,7 +285,7 @@ export class IntegrationActionDetailPage extends PageBase {
     let itemToDelete = fg.getRawValue();
     if (!itemToDelete.Id) this.Runners.removeAt(j);
     else {
-      this.env.showPrompt2('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
+      this.env.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
         this.actionAPIRunnerProvider.delete(itemToDelete).then((result) => {
           this.Runners.removeAt(j);
           this.convertRunnerConfig();
@@ -333,9 +333,9 @@ export class IntegrationActionDetailPage extends PageBase {
         .toPromise()
         .then((rs) => {
           if (rs) {
-            this.env.showTranslateMessage('Saving completed!', 'success');
+            this.env.showMessage('Saving completed!', 'success');
           } else {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
           }
         });
     }

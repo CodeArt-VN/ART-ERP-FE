@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
         case 'app:logout':
           accountService.logout().then((_) => {
             this.router.navigateByUrl('/login');
-            this.env.showTranslateMessage('You have log out of the system', 'danger');
+            this.env.showMessage('You have log out of the system', 'danger');
           });
           break;
         case 'app:silentlogout':

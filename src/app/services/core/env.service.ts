@@ -176,7 +176,7 @@ export class EnvService {
           location.reload();
           break;
         case 'SystemMessage':
-          this.showTranslateMessage(e.value, e.name);
+          this.showMessage(e.value, e.name);
           break;
         case 'AppReloadOldVersion':
           if (e.value.localeCompare(this.version) > 0) {
@@ -184,7 +184,7 @@ export class EnvService {
           }
           break;
         case 'SystemAlert':
-          this.showAlert2(e.value, null, e.name);
+          this.showAlert(e.value, null, e.name);
           break;
         default:
           break;
@@ -230,131 +230,75 @@ export class EnvService {
   /**
    * Translate message and pass to showMessage method
    *
-   * @param messageToTranslate The message in en-US language
+   * @param message The message in en-US language
    * @param [color=''] The color of message
    * @param [value=null] The value to bind in message
    * @param duration The time (ms) to show message
    * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
    */
-  showTranslateMessage(messageToTranslate, color = '', value = null, duration = 5000, showCloseButton = false) {
-    this.translate.get(messageToTranslate, { value: value }).subscribe((message: string) => {
-      this.showMessage(message, color, duration, showCloseButton);
+  showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false) {
+    this.translate.get(message, { value: value }).subscribe((translatedMessage: string) => {
+      if (this.lastMessage == translatedMessage) return;
+      this.lastMessage = translatedMessage;
+
+      setTimeout(() => {
+        this.lastMessage = '';
+      }, 5000);
+
+      if (!showCloseButton) {
+        this.toastController
+          .create({
+            message: translatedMessage,
+            color: color,
+            duration: duration,
+            buttons: [showCloseButton ? { text: 'Close', role: 'close' } : {}],
+          })
+          .then((toast) => {
+            toast.present();
+          });
+      } else {
+        this.alertCtrl
+          .create({
+            message: translatedMessage,
+            buttons: [
+              {
+                text: 'OK',
+                cssClass: 'danger-btn',
+                handler: () => {},
+              },
+            ],
+          })
+          .then((alert) => {
+            alert.present();
+          });
+      }
     });
   }
 
-  /**
-   * Show the message to end-user. Ignored if message equal to the last message in 5 seconds
-   * @param message The message to show
-   * @param color The color of message
-   * @param duration The time (ms) to show message
-   * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
-   */
-  showMessage(message, color = 'warning', duration = 5000, showCloseButton = false) {
-    if (this.lastMessage == message) return;
-    this.lastMessage = message;
-
-    setTimeout(() => {
-      this.lastMessage = '';
-    }, 5000);
-
-    if (!showCloseButton) {
-      this.toastController
-        .create({
-          message: message,
-          color: color,
-          duration: duration,
-          buttons: [showCloseButton ? { text: 'Close', role: 'close' } : {}],
-        })
-        .then((toast) => {
-          toast.present();
-        });
-    } else {
-      this.alertCtrl
-        .create({
-          //header: 'DMS',
-          //subHeader: '---',
-          message: message,
-          buttons: [
-            // {
-            //     text: 'Không',
-            //     role: 'cancel',
-            //     handler: () => {
-            //         //console.log('Không xóa');
-            //     }
-            // },
-            {
-              text: 'OK',
-              cssClass: 'danger-btn',
-              handler: () => {},
-            },
-          ],
-        })
-        .then((alert) => {
-          alert.present();
-        });
-    }
-  }
-
-  showAlert2(message, subHeader = null, header = null, okText = 'OK') {
-    let messageTransObj = {
-      code: typeof message === 'object' ? message.code : message,
-      value: typeof message === 'object' ? message.value : null,
-    };
-
-    let subHeaderTransObj = {
-      code: subHeader != null && typeof subHeader === 'object' ? subHeader.code : subHeader,
-      value: subHeader != null && typeof subHeader === 'object' ? subHeader.value : null,
-    };
-
-    let headerTransObj = {
-      code: header != null && typeof header === 'object' ? header.code : header,
-      value: header != null && typeof header === 'object' ? header.value : null,
-    };
-
-    let objValue = {};
-    if (typeof message === 'object') {
-      objValue = { ...objValue, ...messageTransObj.value };
-    }
-
-    if (subHeader != null && typeof subHeader === 'object') {
-      objValue = { ...objValue, ...subHeaderTransObj.value };
-    }
-
-    if (header != null && typeof header === 'object') {
-      objValue = { ...objValue, ...header.value };
-    }
-
-    // let mergedObjSpread = {...messageTransObj.value, ...obj2};
-
-    this.translate
-      .get([messageTransObj.code, subHeaderTransObj.code, headerTransObj.code], objValue)
-      .subscribe((transMessage: string) => {
-        this.showAlert(
-          transMessage[messageTransObj.code],
-          transMessage[subHeaderTransObj.code],
-          transMessage[headerTransObj.code],
-          okText,
-        );
-      });
-  }
-
   /** @deprecated Deprecated, do not use. */
-  showAlert(message, subHeader = null, header = null, okText = 'OK') {
-    let option: any = {
-      header: header,
-      subHeader: subHeader,
-      message: message,
-      buttons: [
-        {
-          text: okText,
-          cssClass: 'danger-btn',
-          handler: () => {},
-        },
-      ],
-    };
+  showAlert(message, subHeader = null, header = null, okText = 'Ok') {
+    Promise.all([
+      this.translateResource(message),
+      this.translateResource(subHeader),
+      this.translateResource(header),
+      this.translateResource(okText),
+    ]).then((values) => {
+      let option: any = {
+        header: values[2],
+        subHeader: values[1],
+        message: values[0],
+        buttons: [
+          {
+            text: values[3],
+            cssClass: 'danger-btn',
+            handler: () => {},
+          },
+        ],
+      };
 
-    this.alertCtrl.create(option).then((alert) => {
-      alert.present();
+      this.alertCtrl.create(option).then((alert) => {
+        alert.present();
+      });
     });
   }
 
@@ -368,107 +312,46 @@ export class EnvService {
    * @param inputs Extra input
    * @returns Promise resolve if end-user click ok button, reject if not.
    */
-
-  showPrompt2(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
-    let messageTransObj = {
-      code: typeof message === 'object' ? message.code : message,
-      value: typeof message === 'object' ? message.value : null,
-    };
-
-    let subHeaderTransObj = {
-      code: subHeader != null && typeof subHeader === 'object' ? subHeader.code : subHeader,
-      value: subHeader != null && typeof subHeader === 'object' ? subHeader.value : null,
-    };
-
-    let headerTransObj = {
-      code: header != null && typeof header === 'object' ? header.code : header,
-      value: header != null && typeof header === 'object' ? header.value : null,
-    };
-
-    let objValue = {};
-    if (typeof message === 'object') {
-      objValue = { ...objValue, ...messageTransObj.value };
-    }
-
-    if (subHeader != null && typeof subHeader === 'object') {
-      objValue = { ...objValue, ...subHeaderTransObj.value };
-    }
-
-    if (header != null && typeof header === 'object') {
-      objValue = { ...objValue, ...header.value };
-    }
+  showPrompt(message, subHeader = null, header = null, okText = 'Ok', cancelText = 'Cancel', inputs = null) {
     return new Promise((resolve, reject) => {
-      this.translate
-        .get([messageTransObj.code, subHeaderTransObj.code, headerTransObj.code, okText, cancelText], objValue)
-        .subscribe((transMessage: string) => {
-          //this.showPrompt(transMessage[messageTransObj.code], transMessage[subHeaderTransObj.code], transMessage[headerTransObj.code], transMessage[okText], transMessage[cancelText], inputs)
-          let option: any = {
-            header: transMessage[headerTransObj.code],
-            subHeader: transMessage[subHeaderTransObj.code],
-            message: transMessage[messageTransObj.code],
-            buttons: [],
-          };
+      Promise.all([
+        this.translateResource(message),
+        this.translateResource(subHeader),
+        this.translateResource(header),
+        this.translateResource(okText),
+        this.translateResource(cancelText),
+      ]).then((values) => {
+        let option: any = {
+          header: values[2],
+          subHeader: values[1],
+          message: values[0],
+          buttons: [],
+        };
 
-          if (cancelText)
-            option.buttons.push({
-              text: transMessage[cancelText],
-              role: 'cancel',
-              handler: () => {
-                reject(false);
-              },
-            });
-
-          if (okText) {
-            option.buttons.push({
-              text: transMessage[okText],
-              cssClass: 'danger-btn',
-              handler: (alertData) => {
-                resolve(alertData);
-              },
-            });
-          }
-
-          if (inputs) option.inputs = inputs;
-
-          this.alertCtrl.create(option).then((alert) => {
-            alert.present();
+        if (cancelText)
+          option.buttons.push({
+            text: values[4],
+            role: 'cancel',
+            handler: () => {
+              reject(false);
+            },
           });
+
+        if (okText) {
+          option.buttons.push({
+            text: values[3],
+            cssClass: 'danger-btn',
+            handler: (alertData) => {
+              resolve(alertData);
+            },
+          });
+        }
+
+        if (inputs) option.inputs = inputs;
+
+        this.alertCtrl.create(option).then((alert) => {
+          alert.present();
         });
-    });
-  }
-
-  showPrompt(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
-    return new Promise((resolve, reject) => {
-      let option: any = {
-        header: header,
-        subHeader: subHeader,
-        message: message,
-        buttons: [],
-      };
-
-      if (cancelText)
-        option.buttons.push({
-          text: cancelText,
-          role: 'cancel',
-          handler: () => {
-            reject(false);
-          },
-        });
-
-      if (okText) {
-        option.buttons.push({
-          text: okText,
-          cssClass: 'danger-btn',
-          handler: (alertData) => {
-            resolve(alertData);
-          },
-        });
-      }
-
-      if (inputs) option.inputs = inputs;
-
-      this.alertCtrl.create(option).then((alert) => {
-        alert.present();
       });
     });
   }
@@ -479,15 +362,9 @@ export class EnvService {
    * @param promise The promise funtion to wait
    * @returns Resolve if the promise funtion completed
    */
-
-  showLoading2(message, promise) {
-    let messageTransObj = {
-      code: typeof message === 'object' ? message.code : message,
-      value: typeof message === 'object' ? message.value : null,
-    };
-
+  showLoading(message, promise) {
     return new Promise((resolve, reject) => {
-      this.translate.get(messageTransObj.code, messageTransObj.value).subscribe((transMessage: string) => {
+      this.translateResource(message).then((transMessage: string) => {
         this.loadingController.create({ cssClass: 'my-custom-class', message: transMessage }).then((loading) => {
           loading.present();
           setTimeout(() => {
@@ -507,24 +384,20 @@ export class EnvService {
     });
   }
 
-  showLoading(message, promise) {
-    return new Promise((resolve, reject) => {
-      this.loadingController.create({ cssClass: 'my-custom-class', message: message }).then((loading) => {
-        loading.present();
-        setTimeout(() => {
-          if (typeof promise == 'function') promise = promise();
+  translateResource(resource) {
+    return new Promise((resolve) => {
+      if (resource == null) {
+        resolve(null);
+      } else {
+        let key = typeof resource === 'object' ? resource.code : resource;
+        let value = typeof resource === 'object' ? resource : { value: null };
 
-          promise
-            .then((result) => {
-              if (loading) loading.dismiss();
-              resolve(result);
-            })
-            .catch((err) => {
-              if (loading) loading.dismiss();
-              reject(err);
-            });
-        }, 0);
-      });
+        this.translate.get(key, value).subscribe((translatedValue: string) => {
+          console.log(key, value, translatedValue);
+
+          resolve(translatedValue);
+        });
+      }
     });
   }
 

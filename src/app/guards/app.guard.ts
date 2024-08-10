@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate {
             let firstView = this.env.user.Forms.filter((m) => m.Type == 0 || m.Type == 1 || m.Type == 2);
             if (firstView.length) {
               if (state.url != '/default') {
-                this.env.showTranslateMessage(
+                this.env.showMessage(
                   'You are not authorized to access here. System would transfer to authorised page.',
                   'warning',
                 );
@@ -57,7 +57,7 @@ export class AuthGuard implements CanActivate {
               resolve(false);
             } else {
               // not logged in so redirect to login page with the return url
-              this.env.showTranslateMessage(
+              this.env.showMessage(
                 'You are not authorized to access here, please contact Admin to get authorisation',
                 'warning',
               );
@@ -70,7 +70,7 @@ export class AuthGuard implements CanActivate {
             }
           } else {
             // not logged in so redirect to login page with the return url
-            this.env.showTranslateMessage(
+            this.env.showMessage(
               'You are not authorized to access here, please log in again or use another account.',
               'warning',
             );

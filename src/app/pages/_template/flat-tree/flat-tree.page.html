@@ -19,25 +19,21 @@
       <ion-list-header>
         <ion-label color="dark">{{'Groups' | translate}}</ion-label>
       </ion-list-header>
-        <ion-item
-          [color]="g.Code == groupControl.selectedGroup?.Code? 'primary': '' "
-          [button]="true"
-          *ngFor="let g of groupControl.groupList"
-          (click)="onGroupChange(g)"
-        >
-          <ion-icon aria-hidden="true" [name]="g.Icon || 'layers'" color="medium" slot="start"></ion-icon>
-          <ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
-        </ion-item>
-
+      <ion-item
+        [color]="g.Code == groupControl.selectedGroup?.Code? 'primary': '' "
+        [button]="true"
+        *ngFor="let g of groupControl.groupList"
+        (click)="onGroupChange(g)"
+      >
+        <ion-icon aria-hidden="true" [name]="g.Icon || 'layers'" color="medium" slot="start"></ion-icon>
+        <ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
+      </ion-item>
     </ion-list>
   </ion-fab>
   <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
-    <app-page-title
-    [title]="groupControl.selectedGroup?.Name">
-    </app-page-title>
+    <app-page-title [title]="groupControl.selectedGroup?.Name"> </app-page-title>
   </div>
   <div id="view1" *ngIf="segmentView.Page == 'View1'">
-  
     <div style="max-width: 1440px; margin: auto; width: 100%">
       <app-data-table
         style="width: fit-content; min-width: calc(100% - 32px)"
@@ -77,5 +73,4 @@
     </div>
   </div>
   <div id="view2" *ngIf="segmentView.Page == 'View2'"></div>
-
 </ion-content>

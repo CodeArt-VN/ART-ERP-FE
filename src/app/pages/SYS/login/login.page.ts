@@ -93,7 +93,7 @@ export class LoginPage extends PageBase {
           .forgotPassword(this.formGroup.controls.UserName.value)
           .then((data) => {
             loading.dismiss();
-            this.env.showTranslateMessage(
+            this.env.showMessage(
               'System has sent email for changing password, please check and follow instruction.',
               'danger',
               null,
@@ -105,11 +105,11 @@ export class LoginPage extends PageBase {
             loading.dismiss();
 
             if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-              this.env.showTranslateMessage('Cannot connect to server, please recheck');
+              this.env.showMessage('Cannot connect to server, please recheck');
             } else if (err.status == 404) {
-              this.env.showTranslateMessage('Cannot find email, please recheck');
+              this.env.showMessage('Cannot find email, please recheck');
             } else {
-              this.env.showTranslateMessage('Unable to send email, please try again');
+              this.env.showMessage('Unable to send email, please try again');
             }
           });
       });
@@ -127,23 +127,23 @@ export class LoginPage extends PageBase {
     let account = this.formGroup.getRawValue();
 
     this.env
-      .showLoading2('Vui lòng chờ đăng nhập và đồng bộ dữ liệu...', this.accountService.login(account.UserName, account.Password))
+      .showLoading('Please wait for a few moments', this.accountService.login(account.UserName, account.Password))
       .then((data) => {
         this.goBack();
       })
       .catch((err) => {
         if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-          this.env.showTranslateMessage('Cannot connect to server, please recheck', 'danger');
+          this.env.showMessage('Cannot connect to server, please recheck', 'danger');
         } else if (err.error && err.error.error_description && err.error.error_description.indexOf('locked out') > -1) {
-          this.env.showTranslateMessage('Account is not activated or being locked', 'danger');
+          this.env.showMessage('Account is not activated or being locked', 'danger');
         } else if (
           err.error &&
           err.error.error_description &&
           err.error.error_description.indexOf('user name or password is incorrect') > -1
         ) {
-          this.env.showTranslateMessage('Username or password is incorrect, please check again.', 'danger');
+          this.env.showMessage('Username or password is incorrect, please check again.', 'danger');
         } else {
-          this.env.showTranslateMessage('Unable to log in, please try again', 'danger');
+          this.env.showMessage('Unable to log in, please try again', 'danger');
         }
       });
   }
@@ -151,7 +151,7 @@ export class LoginPage extends PageBase {
   ObtainLocalAccessToken(provider, externalAccessToken) {
     this.loadingCtrl
       .create({
-        message: 'Vui lòng chờ đăng nhập và đồng bộ dữ liệu...',
+        message: 'Please wait for a few moments',
       })
       .then((loading) => {
         loading.present();
@@ -164,7 +164,7 @@ export class LoginPage extends PageBase {
           })
           .catch((err) => {
             loading.dismiss();
-            this.env.showTranslateMessage('Unable to log in, please try again');
+            this.env.showMessage('Unable to log in, please try again');
           });
       });
   }
@@ -180,7 +180,7 @@ export class LoginPage extends PageBase {
 
     this.loadingCtrl
       .create({
-        message: 'Vui lòng chờ đăng nhập và đồng bộ dữ liệu...',
+        message: 'Please wait for a few moments',
       })
       .then((loading) => {
         loading.present();
@@ -200,7 +200,7 @@ export class LoginPage extends PageBase {
           })
           .catch((err) => {
             loading.dismiss();
-            this.env.showTranslateMessage('Unable to log in, please try again', 'danger');
+            this.env.showMessage('Unable to log in, please try again', 'danger');
           });
       });
   }
@@ -208,7 +208,7 @@ export class LoginPage extends PageBase {
   googlelogin() {
     this.loadingCtrl
       .create({
-        message: 'Vui lòng chờ đăng nhập và đồng bộ dữ liệu...',
+        message: 'Please wait for a few moments',
       })
       .then((loading) => {
         loading.present();
@@ -228,7 +228,7 @@ export class LoginPage extends PageBase {
           })
           .catch((err) => {
             loading.dismiss();
-            this.env.showTranslateMessage('Unable to log in, please try again');
+            this.env.showMessage('Unable to log in, please try again');
           });
       });
   }

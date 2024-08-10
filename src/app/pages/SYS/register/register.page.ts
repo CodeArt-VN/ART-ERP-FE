@@ -80,7 +80,7 @@ export class RegisterPage extends PageBase {
       }
       if (validateMessage.length) {
         message += validateMessage.join(', ');
-        this.env.showTranslateMessage(message, 'danger');
+        this.env.showMessage(message, 'danger');
         return;
       }
       this.postRegister();
@@ -90,7 +90,7 @@ export class RegisterPage extends PageBase {
   postRegister() {
     this.loadingCtrl
       .create({
-        message: 'Vui lòng chờ đăng nhập và đồng bộ dữ liệu...',
+        message: 'Please wait for a few moments',
       })
       .then((loading) => {
         loading.present();
@@ -109,13 +109,13 @@ export class RegisterPage extends PageBase {
           .catch((err) => {
             loading.dismiss();
             if (err.error && err.error.ModelState[''] && err.error.ModelState[''].toString().indexOf('already taken')) {
-              this.env.showTranslateMessage(
+              this.env.showMessage(
                 'Email {{value}} has been registered. Please log in or register with another email.',
                 '',
                 this.item.EmailAddress,
               );
             } else {
-              this.env.showTranslateMessage('Registration failed. Please try again.');
+              this.env.showMessage('Registration failed. Please try again.');
             }
           });
       });

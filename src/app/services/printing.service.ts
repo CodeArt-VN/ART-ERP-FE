@@ -137,7 +137,7 @@ export class PrintingService {
                         qzDatas.push(p.Printer.Data);
                       }
                     } else {
-                      this.env.showTranslateMessage(
+                      this.env.showMessage(
                         'Printer ' + p + ' Not Found! Check Printers Info Database!',
                         'warning',
                       );
@@ -153,7 +153,7 @@ export class PrintingService {
                     // ---------------
                   });
                 } else {
-                  this.env.showTranslateMessage(
+                  this.env.showMessage(
                     "No Printers Available, Please Check Printers' IP  / Printers' Power",
                     'warning',
                   );
@@ -184,7 +184,7 @@ export class PrintingService {
   async ConnectionPrompt(options, printers) {
     return new Promise((resolve, reject) => {
       this.env
-        .showPrompt2('Bạn có muốn tiếp tục in?', options.host, 'Có lỗi khi gọi đến server')
+        .showPrompt('Bạn có muốn tiếp tục in?', options.host, 'Có lỗi khi gọi đến server')
         .then((_) => {
           this.QZCloseConnection().then(() => {
             this.sendQZTray(printers);
