@@ -272,13 +272,18 @@ export class IntegrationActionDetailPage extends PageBase {
   deleteItems() {
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length;
-      this.env.showPrompt('Bạn có chắc muốn xóa Runners đang chọn?', null, {code: 'Xóa {{value}} đang chọn?', value: { value: length }}).then((_) => {
-        this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
-          this.Runners.clear();
-          this.convertRunnerConfig();
-          this.env.showMessage('Saved change!', 'success');
+      this.env
+        .showPrompt('Bạn có chắc muốn xóa Runners đang chọn?', null, {
+          code: 'Xóa {{value}} đang chọn?',
+          value: length,
+        })
+        .then((_) => {
+          this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
+            this.Runners.clear();
+            this.convertRunnerConfig();
+            this.env.showMessage('Saved change!', 'success');
+          });
         });
-      });
     }
   }
   removeField(fg, j) {
