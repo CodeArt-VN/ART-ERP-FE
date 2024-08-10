@@ -208,11 +208,10 @@ export class IntegrationActionDetailPage extends PageBase {
     let detailLength = this.Runners.controls.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt(
-          'Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?',
-          null,
-          'Xóa ' + detailLength + ' dòng',
-        )
+        .showPrompt2('Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?', null, {
+          code: 'Xóa {{value}} dòng?',
+          value: { value: length },
+        })
         .then((_) => {
           this.query.IDProvider = providerId;
           this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
@@ -273,7 +272,7 @@ export class IntegrationActionDetailPage extends PageBase {
   deleteItems() {
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length;
-      this.env.showPrompt('Bạn chắc muốn xóa Runners đang chọn?', null, 'Xóa ' + length + ' dòng').then((_) => {
+      this.env.showPrompt2('Bạn có chắc muốn xóa Runners đang chọn?', null, {code: 'Xóa {{value}} đang chọn?', value: { value: length }}).then((_) => {
         this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
           this.Runners.clear();
           this.convertRunnerConfig();
@@ -286,7 +285,7 @@ export class IntegrationActionDetailPage extends PageBase {
     let itemToDelete = fg.getRawValue();
     if (!itemToDelete.Id) this.Runners.removeAt(j);
     else {
-      this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then((_) => {
+      this.env.showPrompt2('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
         this.actionAPIRunnerProvider.delete(itemToDelete).then((result) => {
           this.Runners.removeAt(j);
           this.convertRunnerConfig();

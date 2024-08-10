@@ -51,7 +51,7 @@ export class IntegrationActionPage extends PageBase {
         this.groupControl.groupList = res['data'];
       })
       .catch((err) => {
-        this.env.showMessage(err, 'danger');
+        this.env.showTranslateMessage(err, 'danger');
       })
       .finally(() => {
         super.preLoadData(event);
