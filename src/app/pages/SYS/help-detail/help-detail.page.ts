@@ -228,8 +228,11 @@ export class HelpDetailComponent extends PageBase {
     if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
       this.formGroup?.disable();
     }
-    this.formGroup.controls.Code.setValue(this._helpCode);
-    this.formGroup.controls.Code.markAsDirty();
+    
+    if(!this.item?.Id) {
+      this.formGroup.controls.Code.setValue(this._helpCode);
+      this.formGroup.controls.Code.markAsDirty();
+    }
   }
 
   edit() {

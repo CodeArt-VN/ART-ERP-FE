@@ -53,8 +53,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
     super.loadedData(event, ignoredFromGroup);
-    this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
-    this.formGroup.get('IDTrigger').markAsDirty();
+    if(!this.id) {
+      this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
+      this.formGroup.get('IDTrigger').markAsDirty();
+    }
     this.actionDataSource = [];
 
     let queryProvider = {
