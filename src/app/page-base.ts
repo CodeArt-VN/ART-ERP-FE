@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
@@ -16,6 +16,8 @@ import {
   mergeMap,
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { FormControlComponent } from './components/controls/form-control.component';
+import { InputControlComponent } from './components/controls/input-control.component';
 
 @Component({
   template: '',
@@ -534,11 +536,18 @@ export abstract class PageBase implements OnInit {
   }
 
   saveChange(publishEventCode = this.pageConfig.pageName) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.formGroup.updateValueAndValidity();
 
       if (!this.formGroup.valid) {
-        this.env.showMessage('Please recheck information highlighted in red above', 'warning');
+        let invalidControls = this.findInvalidControlsRecursive(this.formGroup); 
+        const translationPromises = invalidControls.map(control => this.env.translateResource(control));
+        Promise.all(translationPromises).then((values) => {
+          invalidControls = values;
+          this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+          reject('form invalid');
+          });
+       
       } else if (this.submitAttempt == false) {
         this.submitAttempt = true;
         //lib.copyPropertiesValue(this.formGroup.value, this.item);
@@ -602,11 +611,17 @@ export abstract class PageBase implements OnInit {
   }
 
   saveChange2(form = this.formGroup, publishEventCode = this.pageConfig.pageName, provider = this.pageProvider) {
-    return new Promise((resolve, reject) => {
+    return new Promise( (resolve, reject) => {
       form.updateValueAndValidity();
       if (!form.valid) {
-        this.env.showMessage('Please recheck information highlighted in red above', 'warning');
-        reject('form invalid');
+        let invalidControls = this.findInvalidControlsRecursive(form); 
+        const translationPromises = invalidControls.map(control => this.env.translateResource(control));
+        Promise.all(translationPromises).then((values) => {
+          invalidControls = values;
+          this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+          reject('form invalid');
+          });
+       
       } else if (this.submitAttempt == false) {
         this.submitAttempt = true;
         let submitItem = this.getDirtyValues(form);
@@ -1015,4 +1030,33 @@ export abstract class PageBase implements OnInit {
   closePopListToolBar() {
     this.env.publishEvent({ Code: 'app:closePopListToolBar' });
   }
+
+  @ViewChildren(FormControlComponent) formControls: QueryList<FormControlComponent>;
+  @ViewChildren(InputControlComponent) inputControls: QueryList<InputControlComponent>;
+
+  findInvalidControlLabelsRecursive(form: FormGroup | FormArray): string[] {
+    const invalidControls: string[] = [];
+    const recursiveFunc = (form: FormGroup | FormArray) => {
+        // Handle FormGroup
+        Object.keys(form.controls).forEach(field => {
+          const control = form.get(field);
+          if(control){
+
+            if (control instanceof FormGroup || control instanceof FormArray) {
+              recursiveFunc(control);
+            }
+            else if(control.invalid) {
+              let label = this.formControls.find(d => d.id === field && d.form === form)?.label;
+              if (!label) label = this.inputControls.find(d => d.id === field && d.form === form)?.label;
+              invalidControls.push(label ?? field);
+            }
+          }
+          
+        
+        });
+    };
+    recursiveFunc(form);
+    return invalidControls;
+  }
+
 }
