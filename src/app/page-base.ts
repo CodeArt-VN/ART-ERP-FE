@@ -1034,7 +1034,7 @@ export abstract class PageBase implements OnInit {
   @ViewChildren(FormControlComponent) formControls: QueryList<FormControlComponent>;
   @ViewChildren(InputControlComponent) inputControls: QueryList<InputControlComponent>;
 
-  findInvalidControlLabelsRecursive(form: FormGroup | FormArray): string[] {
+  findInvalidControlsRecursive(form: FormGroup | FormArray): string[] {
     const invalidControls: string[] = [];
     const recursiveFunc = (form: FormGroup | FormArray) => {
         // Handle FormGroup
