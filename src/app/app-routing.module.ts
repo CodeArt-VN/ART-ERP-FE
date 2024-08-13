@@ -27,6 +27,13 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  { path: 'flat', loadChildren: () => import('./pages/_template/flat/flat.module').then(m => m.FlatPageModule), canActivate: [AuthGuard] },
+  { path: 'flat/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [AuthGuard] },
+    
+  { path: 'flat-tree', loadChildren: () => import('./pages/_template/tree/tree.module').then(m => m.TreePageModule), canActivate: [AuthGuard] },
+  { path: 'flat-tree/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [AuthGuard] },
+    
+
   //BI
   { path: 'staff-dashboard', loadChildren: () => import('./pages/BI/HRM/staff-dashboard/staff-dashboard.module').then(m => m.StaffDashboardPageModule), canActivate: [AuthGuard] },
   { path: 'finance-management', loadChildren: () => import('./pages/BI/finance-management/finance-management.module').then(m => m.FinanceManagementPageModule), canActivate: [AuthGuard] },

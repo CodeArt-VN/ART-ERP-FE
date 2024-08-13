@@ -56,7 +56,7 @@ export class CommonService {
     }
 
     if (URL.indexOf('http') != 0) {
-      URL = pmethod != 'Login'? ApiSetting.apiDomain(URL) :  ApiSetting.appDomain(URL) ;
+      URL = pmethod != 'Login' ? ApiSetting.apiDomain(URL) : ApiSetting.appDomain(URL);
     }
 
     if (
@@ -147,7 +147,7 @@ export class CommonService {
               })
               .toPromise()
               .then((data: any) => {
-                that.cacheLocal(apiPath.url(), data);
+                that.env.setStorage(apiPath.url(), data);
                 that.searchInItems(keyword, fields, page, pageSize, data).then((result) => {
                   resolve(result);
                 });
@@ -166,10 +166,6 @@ export class CommonService {
           reject(err);
         });
     });
-  }
-
-  cacheLocal(URL, Data) {
-    return this.env.setStorage(URL, Data);
   }
 
   getToken() {
@@ -505,7 +501,7 @@ export class CommonService {
     //console.log(err);
     if (err.status == 417 && err.statusText) {
       let vers = err.statusText.split('|');
-      this.env.showTranslateMessage(
+      this.env.showMessage(
         'Please update the software ( to min version {{value}}).',
         'danger',
         vers[0],
@@ -516,13 +512,13 @@ export class CommonService {
     } else if (err.status == 401) {
       this.env.publishEvent({ Code: 'app:silentlogout' });
 
-      this.env.showTranslateMessage('Your session has expired, please log in again.');
+      this.env.showMessage('Your session has expired, please log in again.');
     } else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
-      this.env.showTranslateMessage('Cannot connect to server, please try again.', 'danger');
+      this.env.showMessage('Cannot connect to server, please try again.', 'danger');
       this.env.publishEvent({ Code: 'app:ConnectFail' });
     } else {
       if (!environment.production) {
-        this.env.showMessage(err.message, 'danger');
+        this.env.showMessage('To dev message: {{value}}', 'danger', err.message);
       }
     }
 
@@ -579,7 +575,13 @@ export class exService {
           .toPromise()
           .then((data: any) => {
             var result = { count: data.length, data: data };
-            resolve(result);
+            if (that.allowCache) {
+              that.commonService.env.setStorage(apiPath.url(), data).then(() => {
+                resolve(result);
+              });
+            } else {
+              resolve(result);
+            }
           })
           .catch((err) => {
             that.commonService.checkError(err);

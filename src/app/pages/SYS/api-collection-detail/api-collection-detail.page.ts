@@ -54,7 +54,6 @@ export class APICollectionDetailPage extends PageBase {
     setTimeout(() => {
       this.loadAceEditor();
     }, 1);
-    
   }
 
   buildFormGroup() {
@@ -422,7 +421,9 @@ export class APICollectionDetailPage extends PageBase {
     if (this.pageConfig.canDelete) {
       let length = groups.getRawValue().length;
       this.env
-        .showPrompt('Bạn chắc muốn xóa ' + controlName + ' đang chọn?', null, 'Xóa ' + length + ' dòng')
+        .showPrompt(
+          { code: 'Bạn có chắc muốn xóa {{value}} đang chọn?', value: { value: controlName } },null,{ code: 'Xóa {{value1}} đang chọn?', value: { value1: length } },
+        )
         .then((_) => {
           groups.clear();
           if (!saveControl) saveControl = controlName;
@@ -520,7 +521,7 @@ export class APICollectionDetailPage extends PageBase {
       }
     });
   }
-  async exportJson() {
+  async export() {
     if (this.submitAttempt) return;
     this.submitAttempt = true;
     let obj = {
@@ -568,9 +569,8 @@ export class APICollectionDetailPage extends PageBase {
   chartScriptId;
   chartScriptEditor;
 
-editor = null;
+  editor = null;
   initAce() {
-
     let control;
     let saveControl = '';
     let formattedValue = '';

@@ -154,7 +154,7 @@ export class ReportService extends BI_ReportProvider {
    */
   getReport(reportId: number, reportCode: string = '', forceReload = false): BIReport {
     let report = this.items.find((d) => d.Id == reportId || (d.Code == reportCode && reportCode));
-    if (!report && !reportId) this.env.showTranslateMessage('Report with Id=' + reportId + ' not found!', 'danger');
+    if (!report && !reportId) this.env.showMessage('Report with Id=' + reportId + ' not found!', 'danger');
     if (report && forceReload) {
       this.getAnItem(report.Id).then((resp: any) => {
         let originalReport = resp;
@@ -195,7 +195,7 @@ export class ReportService extends BI_ReportProvider {
           if (resp == 'Yes') {
             this.getDatasetFromServer(reportId);
           } else {
-            this.env.showTranslateMessage('You are viewing the latest data', 'success');
+            this.env.showMessage('You are viewing the latest data', 'success');
           }
         },
         (error) => {
@@ -267,7 +267,7 @@ export class ReportService extends BI_ReportProvider {
             //this.env.showTranslateMessage('You just loaded the latest data!', 'success');
             this.env.setStorage('ReportDataset-' + reportId, localDataset);
           } else {
-            this.env.showTranslateMessage(resp.Message);
+            this.env.showMessage(resp.Message);
           }
         },
         (error) => {

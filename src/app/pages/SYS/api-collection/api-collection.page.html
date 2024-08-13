@@ -1,30 +1,20 @@
 <ion-header>
 	
-	<app-list-toolbar
+	<app-toolbar
 	  pageTitle="{{'Organization structure' | translate}}"
-	  [pageConfig]="pageConfig"
-	  [selectedItems]="selectedItems"
-	  [query]="query"
-	  (add)="add()"
-	  (refresh)="refresh()"
-	  (export)="export()"
-	  (import)="import($event)"
-	  (help)="help()"
-	  (unselect)="unselect()"
-	  (archiveItems)="archiveItems()"
-	  (deleteItems)="deleteItems()"
+	[page]="this" AcceptFile=".json"
 	>
-	<ion-buttons slot="start"*ngIf="pageConfig.canImport" class="ion-hide-sm-down_">
+	<!-- <ion-buttons slot="start"*ngIf="pageConfig.canImport" class="ion-hide-sm-down_">
 		<ion-button fill="clear" title="Import Json"  (click)="presentPopover($event)" >
 			<ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
 		</ion-button>
-	</ion-buttons>
+	</ion-buttons> -->
 	
-</app-list-toolbar>
+</app-toolbar>
   </ion-header>
   
   <ion-content appScrollbarTheme class="scrollx" scroll-x="true">
-    <input class="hide-all" #importfileJson type="file" accept=".json" (change)="importJson($event)" />
+    <!-- <input class="hide-all" #importfileJson type="file" accept=".json" (change)="importJson($event)" /> -->
 	<ion-refresher
 	  [disabled]="!pageConfig.refresher"
 	  [disabled]="!pageConfig.refresher"

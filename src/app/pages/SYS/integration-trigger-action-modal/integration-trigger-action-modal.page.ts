@@ -53,8 +53,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
     super.loadedData(event, ignoredFromGroup);
-    this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
-    this.formGroup.get('IDTrigger').markAsDirty();
+    if(!this.id) {
+      this.formGroup.get('IDTrigger').setValue(this.IDTrigger);
+      this.formGroup.get('IDTrigger').markAsDirty();
+    }
     this.actionDataSource = [];
 
     let queryProvider = {
@@ -91,12 +93,13 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           if (data) {
             this.varibles = JSON.parse(data.Varibles);
             this.schemaDetailDataSource = [];
-            if (data.IDSchema) {
-              let querySchema = {
-                Id: data.IDSchema,
-                IDProvider: data.IDProvider,
-              };
-              this.schemaService.commonService
+            let querySchema = {
+              IDProvider: data.IDProvider,
+              Id: '',
+            };
+            if (data.IDSchema) querySchema.Id = data.IDSchema;
+
+            this.schemaService.commonService
               .connect('GET', 'BI/Schema/GetSchemaWithProvider', querySchema)
               .toPromise()
               .then((data: any) => {
@@ -105,7 +108,6 @@ export class IntegrationTriggerActionModalPage extends PageBase {
                   if (this.varibles) this.patchFieldsValue();
                 }
               });
-              }
           }
         });
       }
@@ -142,11 +144,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     let detailLength = ids.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt(
-          'Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?',
-          null,
-          'Xóa ' + detailLength + ' dòng',
-        )
+        .showPrompt('Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
+          code: 'Xóa {{value}} dòng',
+          value: { value: detailLength },
+        })
         .then((_) => {
           let deletedFields = ids;
           this.formGroup.get('DeletedFields').setValue(deletedFields);
@@ -246,11 +247,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
     let detailLength = ids.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt(
-          'Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?',
-          null,
-          'Xóa ' + detailLength + ' dòng',
-        )
+        .showPrompt('Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
+          code: 'Xóa {{value}} dòng',
+          value: { value: detailLength },
+        })
         .then((_) => {
           let deletedFields = ids;
           this.formGroup.get('DeletedFields').setValue(deletedFields);
@@ -283,6 +283,10 @@ export class IntegrationTriggerActionModalPage extends PageBase {
               });
             }
           });
+      } else {
+        this.getObjectKeys(this.varibles).forEach((e) => {
+          this.addField({}, e);
+        });
       }
       this.saveChange2();
     }

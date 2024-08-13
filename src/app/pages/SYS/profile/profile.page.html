@@ -297,24 +297,7 @@
                 </ion-list>
               </ion-col>
               <ion-col size="12" size-sm size-md="8" size-xl="6">
-                <ion-list *ngIf="userSetting && userSetting.isLoaded">
-                  <ion-item class="ion-no-padding">
-                    <ion-label class="ion-text-wrap">
-                      <ion-text color="dark">
-                        <h3>Dark theme</h3>
-                      </ion-text>
-                      <ion-text color="medium">
-                        <p>{{'Dark mode' | translate}}</p>
-                      </ion-text>
-                    </ion-label>
-                    <ion-toggle
-                      (click)="updateUserSetting(userSetting.IsDarkTheme); changeTheme();"
-                      slot="end"
-                      color="primary"
-                      [checked]="userSetting.IsDarkTheme.Value"
-                    ></ion-toggle>
-                  </ion-item>
-
+                <ion-list lines="full" *ngIf="userSetting && userSetting.isLoaded">
                   <ion-item class="ion-no-padding">
                     <ion-label class="ion-text-wrap">
                       <ion-text color="dark">
@@ -332,6 +315,24 @@
                     </ion-toggle>
                   </ion-item>
 
+                  <ion-radio-group
+                    [value]="userSetting.Theme.Value"
+                    (ionChange)="updateTheme($event); changeTheme()"
+                  >
+                    <ion-item>
+                      <ion-icon color="primary" name="contrast" slot="start"></ion-icon>
+                      <ion-radio value="OS">{{ 'OS default' | translate }}</ion-radio>
+                    </ion-item>
+                    <ion-item>
+                      <ion-icon color="warning" name="sunny" slot="start"></ion-icon>
+                      <ion-radio value="Light">{{ 'Light mode' | translate }}</ion-radio>
+                    </ion-item>
+                    <ion-item>
+                      <ion-icon color="purple" name="moon" slot="start"></ion-icon>
+                      <ion-radio value="Dark">{{ 'Dark mode' | translate }}</ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+
                   <!-- <ion-item class="ion-no-padding">
 										<ion-label class="ion-text-wrap">
 											<ion-text color="dark">
@@ -344,6 +345,7 @@
 										<ion-toggle (ionChange)="updateUserSetting(userSetting.IsCacheQuery, $event)" slot="end" [checked]="userSetting.IsCacheQuery.Value">
 										</ion-toggle>
 									</ion-item> -->
+
                 </ion-list>
               </ion-col>
             </ion-row>

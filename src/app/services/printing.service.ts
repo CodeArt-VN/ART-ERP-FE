@@ -137,7 +137,7 @@ export class PrintingService {
                         qzDatas.push(p.Printer.Data);
                       }
                     } else {
-                      this.env.showTranslateMessage(
+                      this.env.showMessage(
                         'Printer ' + p + ' Not Found! Check Printers Info Database!',
                         'warning',
                       );
@@ -153,7 +153,7 @@ export class PrintingService {
                     // ---------------
                   });
                 } else {
-                  this.env.showTranslateMessage(
+                  this.env.showMessage(
                     "No Printers Available, Please Check Printers' IP  / Printers' Power",
                     'warning',
                   );

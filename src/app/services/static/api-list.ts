@@ -488,6 +488,55 @@ export var APIListBase = {
 		
 	},
 
+	AC_PeriodCategory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "AC/PeriodCategory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "AC/PeriodCategory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "AC/PeriodCategory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "AC/PeriodCategory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "AC/PeriodCategory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "AC/PeriodCategory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "AC/PeriodCategory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "AC/PeriodCategory/" + id} 
+        }
+		
+	},
+
 	AC_PostingPeriod:{
         getSearchList:{
             method: "GET",
@@ -880,6 +929,55 @@ export var APIListBase = {
 		
 	},
 
+	BANK_Account:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/Account/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/Account"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/Account/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/Account/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/Account/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/Account"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/Account/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/Account/" + id} 
+        }
+		
+	},
+
 	BANK_IncomingPayment:{
         getSearchList:{
             method: "GET",
@@ -978,6 +1076,55 @@ export var APIListBase = {
 		
 	},
 
+	BANK_OutgoingPayment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/OutgoingPayment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/OutgoingPayment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        }
+		
+	},
+
 	BANK_PaymentTerm:{
         getSearchList:{
             method: "GET",
@@ -1023,6 +1170,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "BANK/PaymentTerm/" + id} 
+        }
+		
+	},
+
+	BANK_StatementMatchingCriteria:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/StatementMatchingCriteria/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/StatementMatchingCriteria"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/StatementMatchingCriteria/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/StatementMatchingCriteria/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/StatementMatchingCriteria"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/StatementMatchingCriteria/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        }
+		
+	},
+
+	BANK_Transaction:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/Transaction/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/Transaction"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/Transaction/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/Transaction/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/Transaction/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/Transaction"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/Transaction/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/Transaction/" + id} 
         }
 		
 	},
@@ -9602,6 +9847,55 @@ export var APIListBase = {
 		
 	},
 
+	SYS_AccountGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/AccountGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/AccountGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/AccountGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/AccountGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/AccountGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/AccountGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/AccountGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/AccountGroup/" + id} 
+        }
+		
+	},
+
 	SYS_Action:{
         getSearchList:{
             method: "GET",
@@ -9843,6 +10137,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/Apps/" + id} 
+        }
+		
+	},
+
+	SYS_BranchInGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/BranchInGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/BranchInGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/BranchInGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/BranchInGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/BranchInGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/BranchInGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/BranchInGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/BranchInGroup/" + id} 
         }
 		
 	},
@@ -10484,55 +10827,6 @@ export var APIListBase = {
 		
 	},
 
-	SYS_Role:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "SYS/Role/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "SYS/Role"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "SYS/Role/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "SYS/Role/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "SYS/Role/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "SYS/Role/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "SYS/Role"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "SYS/Role/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "SYS/Role/" + id} 
-        }
-		
-	},
-
 	SYS_RuningNo:{
         getSearchList:{
             method: "GET",
@@ -11166,6 +11460,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/UserDevice/" + id} 
+        }
+		
+	},
+
+	SYS_UserInGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/UserInGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/UserInGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/UserInGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/UserInGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/UserInGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/UserInGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/UserInGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/UserInGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/UserInGroup/" + id} 
         }
 		
 	},
@@ -12591,6 +12934,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_AllocationStrategy:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/AllocationStrategy/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/AllocationStrategy/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        }
+		
+	},
+
 	WMS_Carrier:{
         getSearchList:{
             method: "GET",
@@ -13081,6 +13473,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_ItemBalance:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemBalance/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemBalance"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemBalance/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemBalance/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemBalance/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemBalance"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemBalance/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemBalance/" + id} 
+        }
+		
+	},
+
 	WMS_ItemGroup:{
         getSearchList:{
             method: "GET",
@@ -13126,6 +13567,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/ItemGroup/" + id} 
+        }
+		
+	},
+
+	WMS_ItemGroupAccountInBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/ItemGroupAccountInBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/ItemGroupAccountInBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/ItemGroupAccountInBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/ItemGroupAccountInBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/ItemGroupAccountInBranch/" + id} 
         }
 		
 	},
@@ -13665,6 +14155,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/OutboundOrderDetail/" + id} 
+        }
+		
+	},
+
+	WMS_OutboundTag:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundTag/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/OutboundTag"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/OutboundTag/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/OutboundTag/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/OutboundTag/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/OutboundTag/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/OutboundTag"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/OutboundTag/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/OutboundTag/" + id} 
         }
 		
 	},
@@ -14939,6 +15478,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "vw/SYS/SyncJob/" + id} 
+        }
+		
+	},
+
+	vw_SYS_Tracking:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Tracking/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Tracking"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/SYS/Tracking/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/SYS/Tracking/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Tracking/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/SYS/Tracking"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/SYS/Tracking/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/SYS/Tracking/" + id} 
         }
 		
 	},

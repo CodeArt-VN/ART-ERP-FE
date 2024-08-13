@@ -1,10 +1,11 @@
 <ion-header>
-	<app-toolbar [page]="this">
-		<ion-buttons slot="start" class="ion-hide-sm-down_" *ngIf="pageConfig.canExportJson">
-			<ion-button fill="clear" title="Export Json"  (click)="exportJson()" >
-				<ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+	<app-toolbar [page]="this" AcceptFile=".json">
+		<ion-buttons slot="start" class="ion-hide-sm-down_" *ngIf="pageConfig.canExport">
+			<ion-button fill="clear" title="Export Json"  (click)="export()" >
+				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
+	
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
@@ -44,7 +45,7 @@
 							<label class="c-label" for="IDBranch">{{'Parent' | translate}}
 								<span *ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)" ion-text color="danger">(*)</span>
 							</label>
-							<ng-select class="c-input no-check-dirty" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'erp.app.pages.purchase.purchase-order.search-placeholder' | translate}}">
+							<ng-select class="c-input no-check-dirty" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'Search...' | translate}}">
 								<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 									<div *ngIf="i">
 										<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
@@ -131,7 +132,7 @@
 							<div *ngFor="let c of formGroup.get('_Params')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<ng-container [formGroup]="c" >
 									<div class="col-checkbox cell">
-										<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
+										<input   class="c-checkbox"type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
 										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 									</div>
 									<div class="col-name cell">
@@ -254,7 +255,7 @@
 									</ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-									<div [id]="chartScriptId" style="min-height: 500px; width: 100%">
+									<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%">
 									</div>
 								</div>
 							</ion-accordion>
@@ -318,12 +319,12 @@
 							<ion-accordion value="beforeScirpt" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 									<ion-label>{{ 'Script' | translate }}</ion-label>
-									<ion-button fill="clear" title="Save" (click)="saveScript($event); ">
+									<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
 										<ion-icon name="save-outline"></ion-icon>
 									</ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-									<div [id]="chartScriptId" style="min-height: 500px; width: 100%">
+									<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%">
 										<!-- {{ _report.ChartConfigScript }} -->
 									</div>
 								</div>
@@ -340,12 +341,12 @@
 							<ion-accordion value="afterScirpt" fixed style="background: transparent">
 								<ion-item slot="header" color="light">
 									<ion-label>{{ 'Script' | translate }}</ion-label>
-									<ion-button fill="clear" title="Save" (click)="saveScript($event);">
+									<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();saveChange()">
 										<ion-icon name="save-outline"></ion-icon>
 									</ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-									<div [id]="chartScriptId" style="min-height: 500px; width: 100%">
+									<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%">
 										<!-- {{ _report.ChartConfigScript }} -->
 									</div>
 								</div>

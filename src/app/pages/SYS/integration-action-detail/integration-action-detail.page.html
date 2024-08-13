@@ -65,10 +65,10 @@
                   <div class="col-name cell">{{'API' | translate}}</div>
                   <div class="col-icon cell clickable">
                     <ion-icon
-                      (click)="toggleFullscreen()"
+                      (click)="toggleShowCode()"
                       slot="icon-only"
                       size="large"
-                      name="tablet-landscape"
+                      [name]="isShowCode?'code-slash':'code'"
                       slot="start"
                     ></ion-icon>
                   </div>
@@ -174,22 +174,22 @@
                           </div>
                           <ion-reorder *ngIf="pageConfig.canEdit"></ion-reorder>
 
-                          <div class="break" *ngIf="isFullScreen"></div>
+                          <div class="break" *ngIf="isShowCode"></div>
 
                           <div
                             class="col-id cell"
-                            *ngIf="isFullScreen && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
+                            *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
                           ></div>
                           <div
                             class="col-name cell"
-                            *ngIf="isFullScreen && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
+                            *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
                           >
-                            <div class="ion-padding">
-                              <div *ngIf="isFullScreen && c.get('BeforeRequestScript').value">
+                            <div class="ion-padding script-editor">
+                              <div *ngIf="isShowCode && c.get('BeforeRequestScript').value">
                                 <ion-label color="primary">{{'Before request script' | translate}}</ion-label>
                                 <pre>{{ c.get('BeforeRequestScript').value }}</pre>
                               </div>
-                              <div *ngIf="isFullScreen && c.get('AfterResponseScript').value">
+                              <div *ngIf="isShowCode && c.get('AfterResponseScript').value">
                                 <ion-label color="primary">{{'After response script' | translate}}</ion-label>
                                 <pre>{{ c.get('AfterResponseScript').value }}</pre>
                               </div>

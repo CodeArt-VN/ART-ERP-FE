@@ -25,7 +25,20 @@
 @import '@ionic/angular/css/text-transformation.css';
 @import '@ionic/angular/css/flex-utils.css';
 
-@import 'intro.js/introjs.css';
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+/* Custome theme */
+//@import 'intro.js/introjs.css';
 @import '@ng-select/ng-select/themes/default.theme.css';
 
 @import "./theme/_default-theme.scss";
@@ -35,7 +48,9 @@
 @import './theme/common.scss';
 @import './theme/data-table.scss';
 @import './theme/form-control.scss';
-@import './theme/introjs.scss';@import './theme/gantt.scss';
-@import './theme/ng-select.scss';@import './theme/fullcalendar.scss';
+@import './theme/introjs.scss';
+@import './theme/gantt.scss';
+@import './theme/ng-select.scss';
+@import './theme/fullcalendar.scss';
 @import './theme/angular-tree-component.scss';
 @import './theme/print.scss';

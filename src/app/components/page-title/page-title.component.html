@@ -1,7 +1,7 @@
 <div class="page-title">
   <ion-icon [color]="color || 'primary'" [name]="icon || 'layers'"></ion-icon>
   <div class="content">
-    <h1>{{ title ? title : ('Untitled' | translate) }}</h1>
+    <h1>{{ (title ? title : 'Untitled') | translate }}</h1>
     <p>
       {{ remark | translate }}
     </p>

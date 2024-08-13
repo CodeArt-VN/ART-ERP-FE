@@ -18,6 +18,7 @@ export class APICollectionPage extends PageBase {
   isAllRowOpened = true;
   itemsView = [];
   statusList: [];
+  fileImport : any;
   providerDataSource :[];
    constructor(
     public pageProvider: SYS_APICollectionProvider,
@@ -75,7 +76,91 @@ export class APICollectionPage extends PageBase {
     if (!apply) {
       // this.form.patchValue(this._reportConfig?.DataConfig);
     } else {
-      this.onClickImport();
+      this.submitAttempt = true;
+      this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: true, Id: 'FileImport', Icon: 'flash', IsBlink: true, Color: 'danger', Message: 'đang import' });
+            const reader = new FileReader();
+
+            if (this.fileImport.type === "application/json") {
+            reader.onload = (e) => {
+                try {
+                  if(!this.formGroup.get('IDProvider').value){
+                    this.submitAttempt = false;
+
+                  }
+                  const jsonObject = JSON.parse(reader.result as string);
+                  let queryPostMan = {
+                    Code : jsonObject.info._postman_id
+                  }
+                  let obj = {
+                    IDProvider : this.formGroup.get('IDProvider').value,
+                    apicollection : jsonObject,
+                    ForceDelete : true
+                  }
+                  this.pageProvider.read(queryPostMan, false).then((result: any) => {
+                    if (result.data.length > 0) {
+                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?')
+                      .then((_) => {
+                          obj.ForceDelete = false;
+                          this.env.showLoading('Please wait for a few moments', 
+                          this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                              .then((resp:any) => {
+                                  this.submitAttempt = false;
+                                  this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                  this.refresh();
+                                
+                              }).catch(err => {
+                                  this.submitAttempt = false;
+                                  this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                  this.refresh();
+                                  this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                              })
+                      })
+                      .catch((_) => {
+                        this.env.showLoading('Please wait for a few moments', 
+                        this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                            .then((resp:any) => {
+                                this.submitAttempt = false;
+                                this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                this.refresh();
+                              
+                            }).catch(err => {
+                                this.submitAttempt = false;
+                                this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                this.refresh();
+                                this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                            })
+                      });
+                    }
+                    else{
+                        this.env.showLoading('Please wait for a few moments', 
+                        this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
+                            .then((resp:any) => {
+                                this.submitAttempt = false;
+                                this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                this.refresh();
+                              
+                            }).catch(err => {
+                                this.submitAttempt = false;
+                                this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
+                                this.refresh();
+                                this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
+                            })
+                      };
+                });
+              
+                
+                } catch (error) {
+                  this.env.showMessage("Error parsing JSON:", 'danger');
+                }
+              };
+              reader.onerror = (e) => {
+                this.env.showMessage("File could not be read:", 'danger');
+              };
+              reader.readAsText(this.fileImport);
+            } else {
+              this.env.showMessage("Please select a valid JSON file.", 'danger');
+            }
+
     }
     this.isOpenPopover = false;
   }
@@ -98,104 +183,20 @@ export class APICollectionPage extends PageBase {
     this.itemsView = this.itemsState.filter((d) => d.show);
   }
   
-  @ViewChild('importfileJson') importfileJson: any;
+  @ViewChild('importfile') importfileJson: any;
   onClickImport() {
-      this.importfileJson.nativeElement.value = "";
-      this.importfileJson.nativeElement.click();
+      this.presentPopover(null);
+    
   }
 
-  async importJson(event) {
+  async import(event) {
       
     if (this.submitAttempt) {
-      this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.importing', 'primary');
+      this.env.showMessage('erp.app.pages.sale.sale-order.message.importing', 'primary');
       return;
     }
-    this.submitAttempt = true;
-    this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: true, Id: 'FileImport', Icon: 'flash', IsBlink: true, Color: 'danger', Message: 'đang import' });
-      const reader = new FileReader();
-      const file = event.target.files[0];
-
-      if (file.type === "application/json") {
-       reader.onload = (e) => {
-          try {
-            if(!this.formGroup.get('IDProvider').value){
-              this.submitAttempt = false;
-
-            }
-            const jsonObject = JSON.parse(reader.result as string);
-            let queryPostMan = {
-              IDPostman : jsonObject.info._postman_id
-            }
-            let obj = {
-              IDProvider : this.formGroup.get('IDProvider').value,
-              apicollection : jsonObject,
-              ForceDelete : true
-            }
-            this.pageProvider.read(queryPostMan, false).then((result: any) => {
-              if (result.data.length > 0) {
-                this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy ?')
-                .then((_) => {
-                    obj.ForceDelete = false;
-                    this.env.showLoading('Vui lòng chờ import dữ liệu...', 
-                    this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
-                        .then((resp:any) => {
-                            this.submitAttempt = false;
-                            this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                            this.refresh();
-                          
-                        }).catch(err => {
-                            this.submitAttempt = false;
-                            this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                            this.refresh();
-                            this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
-                        })
-                })
-                .catch((_) => {
-                  this.env.showLoading('Vui lòng chờ import dữ liệu...', 
-                  this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
-                      .then((resp:any) => {
-                          this.submitAttempt = false;
-                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                          this.refresh();
-                        
-                      }).catch(err => {
-                          this.submitAttempt = false;
-                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                          this.refresh();
-                          this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
-                      })
-                });
-              }
-              else{
-                   this.env.showLoading('Vui lòng chờ import dữ liệu...', 
-                  this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
-                      .then((resp:any) => {
-                          this.submitAttempt = false;
-                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                          this.refresh();
-                        
-                      }).catch(err => {
-                          this.submitAttempt = false;
-                          this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
-                          this.refresh();
-                          this.env.showTranslateMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
-                      })
-                };
-          });
-        
-           
-          } catch (error) {
-            this.env.showTranslateMessage("Error parsing JSON:", 'danger');
-          }
-        };
-        reader.onerror = (e) => {
-          this.env.showTranslateMessage("File could not be read:", 'danger');
-        };
-        reader.readAsText(file);
-      } else {
-        this.env.showTranslateMessage("Please select a valid JSON file.", 'danger');
-      }
-     
+    this.fileImport = event.target.files[0];
+    this.presentPopover(event)
   }
  
 }

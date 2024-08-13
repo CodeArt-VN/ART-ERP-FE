@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
+
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -96,15 +97,13 @@ export class EnvService {
   /** Last message was shown */
   lastMessage = '';
 
-  /** @deprecated This is an internal implementation detail, do not use. */
-  private _storage: Storage | null = null;
-
   /** app event tracking */
   public EventTracking = new Subject<any>();
 
   constructor(
     public plt: Platform,
-    public storage: Storage,
+
+    public storage: StorageService,
     public toastController: ToastController,
     public alertCtrl: AlertController,
     public loadingController: LoadingController,
@@ -124,8 +123,9 @@ export class EnvService {
    * Connet SignalR
    */
   async init() {
-    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-    this._storage = await this.storage.create();
+    await this.storage.init();
+    this.typeList = await this.storage.get('SYS/Type');
+    this.statusList = await this.storage.get('SYS/Status');
     this.publishEvent({ Code: 'app:loadLang' });
     Network.addListener('networkStatusChange', (status) => {
       this.publishEvent({ Code: 'app:networkStatusChange', status });
@@ -230,88 +230,75 @@ export class EnvService {
   /**
    * Translate message and pass to showMessage method
    *
-   * @param messageToTranslate The message in en-US language
+   * @param message The message in en-US language
    * @param [color=''] The color of message
    * @param [value=null] The value to bind in message
    * @param duration The time (ms) to show message
    * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
    */
-  showTranslateMessage(messageToTranslate, color = '', value = null, duration = 5000, showCloseButton = false) {
-    this.translate.get(messageToTranslate, { value: value }).subscribe((message: string) => {
-      this.showMessage(message, color, duration, showCloseButton);
+  showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false) {
+    this.translate.get(message, { value: value }).subscribe((translatedMessage: string) => {
+      if (this.lastMessage == translatedMessage) return;
+      this.lastMessage = translatedMessage;
+
+      setTimeout(() => {
+        this.lastMessage = '';
+      }, 5000);
+
+      if (!showCloseButton) {
+        this.toastController
+          .create({
+            message: translatedMessage,
+            color: color,
+            duration: duration,
+            buttons: [showCloseButton ? { text: 'Close', role: 'close' } : {}],
+          })
+          .then((toast) => {
+            toast.present();
+          });
+      } else {
+        this.alertCtrl
+          .create({
+            message: translatedMessage,
+            buttons: [
+              {
+                text: 'OK',
+                cssClass: 'danger-btn',
+                handler: () => {},
+              },
+            ],
+          })
+          .then((alert) => {
+            alert.present();
+          });
+      }
     });
   }
 
-  /**
-   * Show the message to end-user. Ignored if message equal to the last message in 5 seconds
-   * @param message The message to show
-   * @param color The color of message
-   * @param duration The time (ms) to show message
-   * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
-   */
-  showMessage(message, color = 'warning', duration = 5000, showCloseButton = false) {
-    if (this.lastMessage == message) return;
-    this.lastMessage = message;
-
-    setTimeout(() => {
-      this.lastMessage = '';
-    }, 5000);
-
-    if (!showCloseButton) {
-      this.toastController
-        .create({
-          message: message,
-          color: color,
-          duration: duration,
-          buttons: [showCloseButton ? { text: 'Close', role: 'close' } : {}],
-        })
-        .then((toast) => {
-          toast.present();
-        });
-    } else {
-      this.alertCtrl
-        .create({
-          //header: 'DMS',
-          //subHeader: '---',
-          message: message,
-          buttons: [
-            // {
-            //     text: 'Không',
-            //     role: 'cancel',
-            //     handler: () => {
-            //         //console.log('Không xóa');
-            //     }
-            // },
-            {
-              text: 'OK',
-              cssClass: 'danger-btn',
-              handler: () => {},
-            },
-          ],
-        })
-        .then((alert) => {
-          alert.present();
-        });
-    }
-  }
-
   /** @deprecated Deprecated, do not use. */
-  showAlert(message, subHeader = null, header = null, okText = 'OK') {
-    let option: any = {
-      header: header,
-      subHeader: subHeader,
-      message: message,
-      buttons: [
-        {
-          text: okText,
-          cssClass: 'danger-btn',
-          handler: () => {},
-        },
-      ],
-    };
+  showAlert(message, subHeader = null, header = null, okText = 'Ok') {
+    Promise.all([
+      this.translateResource(message),
+      this.translateResource(subHeader),
+      this.translateResource(header),
+      this.translateResource(okText),
+    ]).then((values) => {
+      let option: any = {
+        header: values[2],
+        subHeader: values[1],
+        message: values[0],
+        buttons: [
+          {
+            text: values[3],
+            cssClass: 'danger-btn',
+            handler: () => {},
+          },
+        ],
+      };
 
-    this.alertCtrl.create(option).then((alert) => {
-      alert.present();
+      this.alertCtrl.create(option).then((alert) => {
+        alert.present();
+      });
     });
   }
 
@@ -325,38 +312,46 @@ export class EnvService {
    * @param inputs Extra input
    * @returns Promise resolve if end-user click ok button, reject if not.
    */
-  showPrompt(message, subHeader = null, header = null, okText = 'Đồng ý', cancelText = 'Không', inputs = null) {
+  showPrompt(message, subHeader = null, header = null, okText = 'Ok', cancelText = 'Cancel', inputs = null) {
     return new Promise((resolve, reject) => {
-      let option: any = {
-        header: header,
-        subHeader: subHeader,
-        message: message,
-        buttons: [],
-      };
+      Promise.all([
+        this.translateResource(message),
+        this.translateResource(subHeader),
+        this.translateResource(header),
+        this.translateResource(okText),
+        this.translateResource(cancelText),
+      ]).then((values) => {
+        let option: any = {
+          header: values[2],
+          subHeader: values[1],
+          message: values[0],
+          buttons: [],
+        };
 
-      if (cancelText)
-        option.buttons.push({
-          text: cancelText,
-          role: 'cancel',
-          handler: () => {
-            reject(false);
-          },
+        if (cancelText)
+          option.buttons.push({
+            text: values[4],
+            role: 'cancel',
+            handler: () => {
+              reject(false);
+            },
+          });
+
+        if (okText) {
+          option.buttons.push({
+            text: values[3],
+            cssClass: 'danger-btn',
+            handler: (alertData) => {
+              resolve(alertData);
+            },
+          });
+        }
+
+        if (inputs) option.inputs = inputs;
+
+        this.alertCtrl.create(option).then((alert) => {
+          alert.present();
         });
-
-      if (okText) {
-        option.buttons.push({
-          text: okText,
-          cssClass: 'danger-btn',
-          handler: (alertData) => {
-            resolve(alertData);
-          },
-        });
-      }
-
-      if (inputs) option.inputs = inputs;
-
-      this.alertCtrl.create(option).then((alert) => {
-        alert.present();
       });
     });
   }
@@ -369,22 +364,40 @@ export class EnvService {
    */
   showLoading(message, promise) {
     return new Promise((resolve, reject) => {
-      this.loadingController.create({ cssClass: 'my-custom-class', message: message }).then((loading) => {
-        loading.present();
-        setTimeout(() => {
-          if (typeof promise == 'function') promise = promise();
-
-          promise
-            .then((result) => {
-              if (loading) loading.dismiss();
-              resolve(result);
-            })
-            .catch((err) => {
-              if (loading) loading.dismiss();
-              reject(err);
-            });
-        }, 0);
+      this.translateResource(message).then((transMessage: string) => {
+        this.loadingController.create({ cssClass: 'my-custom-class', message: transMessage }).then((loading) => {
+          loading.present();
+          setTimeout(() => {
+            if (typeof promise == 'function') promise = promise();
+            promise
+              .then((result) => {
+                if (loading) loading.dismiss();
+                resolve(result);
+              })
+              .catch((err) => {
+                if (loading) loading.dismiss();
+                reject(err);
+              });
+          }, 0);
+        });
       });
+    });
+  }
+
+  translateResource(resource) {
+    return new Promise((resolve) => {
+      if (resource == null) {
+        resolve(null);
+      } else {
+        let key = typeof resource === 'object' ? resource.code : resource;
+        let value = typeof resource === 'object' ? resource : { value: null };
+
+        this.translate.get(key, value).subscribe((translatedValue: string) => {
+          console.log(key, value, translatedValue);
+
+          resolve(translatedValue);
+        });
+      }
     });
   }
 
@@ -394,7 +407,7 @@ export class EnvService {
    * @returns Return the storage
    */
   getStorage(key) {
-    return this._storage?.get(key)!;
+    return this.storage.get(key)!;
   }
 
   /**
@@ -404,7 +417,7 @@ export class EnvService {
    * @returns Return promise
    */
   setStorage(key: string, value: any) {
-    return this._storage?.set(key, value)!;
+    return this.storage.set(key, value)!;
   }
 
   /**
@@ -412,7 +425,7 @@ export class EnvService {
    * @returns Return promise
    */
   clearStorage() {
-    return this._storage?.clear()!;
+    return this.storage.clear()!;
   }
 
   /**
@@ -464,6 +477,8 @@ export class EnvService {
       lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
         this.branchList = [];
         this.jobTitleList = [];
+        console.log('reset branch + jobTitleList');
+
         for (let ix = 0; ix < resp.length; ix++) {
           const i: any = resp[ix];
           i.Name = i.ShortName ? i.ShortName : i.Name;
@@ -536,6 +551,32 @@ export class EnvService {
     this.publishEvent({ Code: 'changeBranch' });
 
     this.configTracking.next(this.configs.filter((d) => d.IDBranch == this.selectedBranch));
+  }
+
+  /**
+   * Check form permission
+   * @param functionCode Function code to check permission
+   * @returns Return promise and resolve true if have permission
+   */
+  checkFormPermission(functionCode) {
+    return new Promise<boolean>((resolve) => {
+      //Chưa đăng nhập
+      if (!this.user || !this.user.Id) {
+        resolve(false);
+      } else {
+        if (functionCode == '/default') {
+          resolve(false);
+        } else if (functionCode == '/not-found') {
+          resolve(true);
+        } else {
+          functionCode = functionCode + '/';
+          let form = this.user.Forms.find(
+            (d) => functionCode.startsWith('/' + d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2),
+          );
+          resolve(form != null);
+        }
+      }
+    });
   }
 
   getConfig() {}

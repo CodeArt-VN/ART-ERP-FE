@@ -334,16 +334,13 @@ export interface AC_JournalEntryRow
     
 }
 
-export interface AC_PostingPeriod
+export interface AC_PeriodCategory
 {
     IDBranch?: number;
     Id?: number;
-    RefID?: number;
     Code?: string;
     Name?: string;
     ForeignName?: string;
-    FromDate?: Date;
-    ToDate?: Date;
     Remark?: string;
     ForeignRemark?: string;
     Sort?: number;
@@ -353,6 +350,44 @@ export interface AC_PostingPeriod
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    FinancialYear?: number;
+    FinancialYearFirstDate?: Date;
+    PostingPeriodType?: string;
+    NumberOfPeriods?: number;
+    PostingDateFrom?: Date;
+    PostingDateTo?: Date;
+    DueDateFrom?: Date;
+    DueDateTo?: Date;
+    DocumentDateFrom?: Date;
+    DocumentDateTo?: Date;
+    
+}
+
+export interface AC_PostingPeriod
+{
+    IDBranch?: number;
+    IDPeriodsCategory?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Status?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    PostingDateFrom?: Date;
+    PostingDateTo?: Date;
+    DueDateFrom?: Date;
+    DueDateTo?: Date;
+    DocumentDateFrom?: Date;
+    DocumentDateTo?: Date;
+    SubPeriod?: number;
     
 }
 
@@ -594,19 +629,32 @@ export interface APPROVAL_Template
     
 }
 
-export interface BANK_IncomingPayment
+export interface BANK_Account
 {
-    IDJournalEntry?: number;
     IDBranch?: number;
-    IDStaff?: number;
-    IDCustomer?: number;
-    IDType?: number;
+    IDParent?: number;
     Id?: number;
     Code?: string;
     Name?: string;
-    ForeignName?: string;
+    Product?: string;
+    Type?: string;
+    SWIFT?: string;
+    Currency?: string;
+    WorkingBalance?: number;
+    LastCheckedDate?: Date;
+    NextCheckNo?: number;
+    GLAccount?: string;
+    DebtOfDiscountedBoEAccount?: string;
+    BankOnCollectionAccount?: string;
+    BankOnDiscounted?: string;
+    GLInterimAccount?: string;
+    FineAccount?: string;
+    InterestAccount?: string;
+    DiscountAccount?: string;
+    ServiceFeeAccount?: string;
+    OtherExpensesAccount?: string;
+    OtherIncomesAccount?: string;
     Remark?: string;
-    ForeignRemark?: string;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -614,20 +662,45 @@ export interface BANK_IncomingPayment
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    
+}
+
+export interface BANK_IncomingPayment
+{
+    IDJournalEntry?: number;
+    IDBranch?: number;
+    IDStaff?: number;
+    IDCustomer?: number;
+    IDType?: number;
+    IDTransaction?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
     Amount?: number;
-    IsCanceled?: boolean;
-    IsPrinted?: boolean;
     PostingDate?: Date;
     DueDate?: Date;
     DocumentDate?: Date;
     Type?: string;
+    SubType?: string;
     Status?: string;
     PaymentURL?: string;
-    IDTransaction?: string;
+    ReferenceNumber?: string;
+    TransactionDate?: Date;
     TransactionFee?: number;
     IsRefundTransaction?: boolean;
     IDOriginalTransaction?: number;
-    SubType?: string;
+    Sort?: number;
+    IsCanceled?: boolean;
+    IsPrinted?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -656,6 +729,44 @@ export interface BANK_IncomingPaymentDetail
     
 }
 
+export interface BANK_OutgoingPayment
+{
+    IDJournalEntry?: number;
+    IDBranch?: number;
+    IDStaff?: number;
+    IDBusinessPartner?: number;
+    IDTransaction?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Amount?: number;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    Type?: string;
+    SubType?: string;
+    Status?: string;
+    PaymentURL?: string;
+    ReferenceNumber?: string;
+    TransactionDate?: Date;
+    TransactionFee?: number;
+    IsRefundTransaction?: boolean;
+    IDOriginalTransaction?: number;
+    Sort?: number;
+    IsCanceled?: boolean;
+    IsPrinted?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface BANK_PaymentTerm
 {
     IDBranch?: number;
@@ -679,6 +790,49 @@ export interface BANK_PaymentTerm
     FirstPartialPayment?: number;
     OpenIncomingPayment?: string;
     IDPriceList?: number;
+    
+}
+
+export interface BANK_StatementMatchingCriteria
+{
+    IDBranch?: number;
+    IDParent?: number;
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface BANK_Transaction
+{
+    IDBranch?: number;
+    IDAccount?: number;
+    IDContact?: number;
+    Id?: number;
+    Remark?: string;
+    ReferenceNumber?: string;
+    Amount?: number;
+    TransactionDate?: Date;
+    ReciprocalAccount?: string;
+    ReciprocalName?: string;
+    Currency?: string;
+    TransactionStatus?: string;
+    ReconciliationStatus?: string;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    IDBusinessPartner?: number;
     
 }
 
@@ -3692,6 +3846,7 @@ export interface PM_Space
 export interface PM_SpaceStatus
 {
     IDSpace?: number;
+    IDProject?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -4690,6 +4845,9 @@ export interface SALE_Forecast
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    Multiply?: number;
+    Filter?: string;
+    Config?: string;
     
 }
 
@@ -5076,6 +5234,23 @@ export interface SHIP_Vehicle
     
 }
 
+export interface SYS_AccountGroup
+{
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface SYS_Action
 {
     IDProvider?: number;
@@ -5181,6 +5356,24 @@ export interface SYS_Apps
     AccessTokenLifetime?: number;
     RequireConsent?: boolean;
     AppColor?: string;
+    
+}
+
+export interface SYS_BranchInGroup
+{
+    IDBranch?: number;
+    IDAccountGroup?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -5433,6 +5626,7 @@ export interface SYS_MessageTemplate
 export interface SYS_PermissionList
 {
     IDBranch?: number;
+    IDAccountGroup?: number;
     IDForm?: number;
     Id?: number;
     Value?: number;
@@ -5473,24 +5667,6 @@ export interface SYS_Printer
     MarginLeft?: number;
     PageSize?: string;
     Scale?: number;
-    
-}
-
-export interface SYS_Role
-{
-    IDBranch?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDefault?: boolean;
     
 }
 
@@ -5790,6 +5966,24 @@ export interface SYS_UserDevice
     IsCharging?: boolean;
     IsAllowCheckIn?: boolean;
     NotifyToken?: string;
+    
+}
+
+export interface SYS_UserInGroup
+{
+    IDUser?: string;
+    IDAccountGroup?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -6466,6 +6660,37 @@ export interface WMS_AdjustmentDetail
     
 }
 
+export interface WMS_AllocationStrategy
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsStrictLotRotation?: boolean;
+    IsOverallocateAssigned?: boolean;
+    IsUseSpeedPickLocations?: boolean;
+    Type?: string;
+    FindInZone?: number;
+    FindLocationType?: string;
+    FindLocationCategory?: string;
+    CanBreakPallets?: boolean;
+    SortPriority1?: string;
+    SortPriority2?: string;
+    SortPriority3?: string;
+    SortPriority4?: string;
+    SortPriority5?: string;
+    LPNQuantityRule?: string;
+    
+}
+
 export interface WMS_Carrier
 {
     Id?: number;
@@ -6742,10 +6967,82 @@ export interface WMS_Item
     
 }
 
+export interface WMS_ItemBalance
+{
+    IDBranch?: number;
+    IDStorer?: number;
+    IDPeriod?: number;
+    IDItem?: number;
+    Id?: number;
+    Quantity?: number;
+    
+}
+
 export interface WMS_ItemGroup
 {
     IDBranch?: number;
     IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsLocked?: boolean;
+    DataSource?: string;
+    AccountInventory?: string;
+    AccountCostOfGoodsSold?: string;
+    AccountAllocation?: string;
+    AccountRevenue?: string;
+    AccountRevenueReturns?: string;
+    AccountVariance?: string;
+    AccountInventoryOffsetDecrease?: string;
+    AccountInventoryOffsetIncrease?: string;
+    AccountSalesReturns?: string;
+    AccountSalesCredit?: string;
+    AccountExpense?: string;
+    AccountExpenseClearing?: string;
+    AccountExpenseOffset?: string;
+    AccountExemptRevenue?: string;
+    AccountPriceDifference?: string;
+    AccountExchangeRateDifferences?: string;
+    AccountGoodsClearing?: string;
+    AccountPurchase?: string;
+    AccountPurchaseCredit?: string;
+    AccountPurchaseReturn?: string;
+    AccountPurchaseOffset?: string;
+    AccountShippedGoods?: string;
+    AccountVATInRevenue?: string;
+    AccountGLDecrease?: string;
+    AccountGLIncrease?: string;
+    AccountInventoryRevaluation?: string;
+    AccountInventoryRevaluationOffset?: string;
+    AccountWIPInventory?: string;
+    AccountWIPInventoryVariance?: string;
+    AccountCOGSRevaluation?: string;
+    AccountCOGSRevaluationOffset?: string;
+    AccountTaxExemptCredit?: string;
+    AccountStockInTransit?: string;
+    AccountPurchaseBalance?: string;
+    AccountWIPOffsetPnL?: string;
+    AccountInventoryOffsetPnL?: string;
+    AccountFreeOfChargeSales?: string;
+    AccountFreeOfChargePurchase?: string;
+    Account?: string;
+    General?: string;
+    Accounting?: string;
+    
+}
+
+export interface WMS_ItemGroupAccountInBranch
+{
+    IDItemGroup?: number;
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -7109,6 +7406,7 @@ export interface WMS_OutboundOrderDetail
     QuantityShipped?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Type?: string;
     Remark?: string;
     Sort?: number;
@@ -7121,14 +7419,37 @@ export interface WMS_OutboundOrderDetail
     
 }
 
+export interface WMS_OutboundTag
+{
+    IDOutboundOrder?: number;
+    IDShipment?: number;
+    IDCustomer?: number;
+    IDSaleOrder?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    QRCode?: string;
+    Line1?: string;
+    Line2?: string;
+    
+}
+
 export interface WMS_Packing
 {
     IDOutboundOrder?: number;
+    IDTag?: number;
     Id?: number;
     Code?: string;
     Name?: string;
     Status?: string;
-    Tag?: string;
     ExpectedDate?: Date;
     PackagedDate?: Date;
     Remark?: string;
@@ -7151,6 +7472,7 @@ export interface WMS_PackingDetail
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Type?: string;
     FromLocation?: number;
     ToLocation?: number;
@@ -7203,6 +7525,7 @@ export interface WMS_PickingDetail
     QuantityPicked?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -7344,12 +7667,16 @@ export interface WMS_PutawayStrategyDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    PutawayType?: number;
-    PutawayZone?: number;
+    Type?: string;
+    FromZone?: number;
+    ToZone?: number;
     FromLocation?: number;
     ToLocation?: number;
-    ChecksRestrictions?: boolean;
-    DimensionRestriction?: number;
+    IsSinglePutawayForMultiplePallets?: boolean;
+    IsChecksRestrictions?: boolean;
+    DimensionRestriction?: string;
+    LocationSortType?: string;
+    AreaTypeRestrictions?: string;
     
 }
 
@@ -7484,9 +7811,11 @@ export interface WMS_ShippingDetail
     IDShipping?: number;
     IDItem?: number;
     IDUoM?: number;
+    IDTag?: number;
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     FromLocation?: number;
     Lot?: number;
     LPN?: number;
@@ -7500,6 +7829,7 @@ export interface WMS_ShippingDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    IDParent?: number;
     
 }
 
@@ -7541,6 +7871,7 @@ export interface WMS_Storer
     StandardCarrierAlphaCode?: string;
     CreditLimit?: number;
     Name?: string;
+    DefaultAllocationStrategy?: number;
     
 }
 
@@ -7594,6 +7925,7 @@ export interface WMS_Transaction
     FromLPN?: number;
     ToLPN?: number;
     SourceKey?: number;
+    SourceLine?: number;
     SourceType?: string;
     Status?: string;
     IDUoM?: number;
@@ -7795,6 +8127,22 @@ export interface vw_SYS_SyncJob
     IsRunning?: boolean;
     ErrorMessage?: string;
     Priority?: number;
+    
+}
+
+export interface vw_SYS_Tracking
+{
+    Id?: number;
+    Type?: string;
+    Command?: string;
+    IDBranch?: number;
+    RefNum1?: number;
+    RefNum2?: number;
+    RefChar1?: string;
+    RefChar2?: string;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    IsScheduled?: boolean;
     
 }
 

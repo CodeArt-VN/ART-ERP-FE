@@ -98,7 +98,7 @@
     >
       <ion-icon color="warning" slot="icon-only" name="cloud-upload-outline"></ion-icon>
     </ion-button>
-    <input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
+    <input class="hide-all" #importfile type="file" [accept]="AcceptFile" (change)="importFileChange($event)" />
 
     <!-- Unselect -->
     <ion-button title="{{ 'Unselect' | translate }}" (click)="page.unselect()" *ngIf="page.selectedItems?.length">
@@ -120,10 +120,10 @@
       <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
     </ion-button>
 
-    <!-- Change Branch -->
+    <!-- Change branch -->
     <ion-button
       class="ion-hide-md-down"
-      title="{{ 'Change Branch' | translate }}"
+      title="{{ 'Change branch' | translate }}"
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canChangeBranch &&
@@ -416,9 +416,9 @@
                 <ion-label> {{ 'Copy' | translate }}</ion-label>
               </ion-item>
 
-              <!-- Change Branch -->
+              <!-- Change branch -->
               <ion-item
-                title="{{ 'Change Branch' | translate }}"
+                title="{{ 'Change branch' | translate }}"
                 [button]="true"
                 [detail]="false"
                 *ngIf="
@@ -430,7 +430,7 @@
                 (click)="isToolBarPopoverOpen = false; page.changeBranch()"
               >
                 <ion-icon color="warning" slot="start" name="sitemap"></ion-icon>
-                <ion-label> {{ 'Change Branch' | translate }}</ion-label>
+                <ion-label> {{ 'Change branch' | translate }}</ion-label>
               </ion-item>
 
               <!-- Submit -->

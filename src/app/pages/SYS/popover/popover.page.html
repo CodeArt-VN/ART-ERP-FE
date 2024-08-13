@@ -139,7 +139,7 @@
             [items]="branchList"
             [virtualScroll]="true"
             bindLabel="Name"
-            placeholder="{{'id-branch-placeholder' | translate}}"
+            placeholder="{{'Select unit...' | translate}}"
           >
             <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
               <div *ngIf="i">
@@ -156,7 +156,7 @@
 
         <div class="c-control">
           <ion-button color="primary" expand="block" (click)="command(popData)">
-            {{popConfig.submitButtonLabel}}
+            {{popConfig.submitButtonLabel | translate}}
           </ion-button>
         </div>
       </div>

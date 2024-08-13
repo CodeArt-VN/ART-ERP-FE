@@ -5,17 +5,18 @@ import { PageBase } from 'src/app/page-base';
 import {
   BRA_BranchProvider,
   SYS_ActionProvider,
+  SYS_APICollectionProvider,
   SYS_IntegrationProviderProvider,
 } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-flat',
-  templateUrl: 'flat.page.html',
-  styleUrls: ['flat.page.scss'],
+  selector: 'app-tree',
+  templateUrl: 'tree.page.html',
+  styleUrls: ['tree.page.scss'],
 })
-export class FlatPage extends PageBase {
+export class TreePage extends PageBase {
   groupControl = {
     showReorder: false,
     showPopover: false,
@@ -25,7 +26,7 @@ export class FlatPage extends PageBase {
   itemsState: any = [];
   isAllRowOpened = true;
   constructor(
-    public pageProvider: SYS_ActionProvider,
+    public pageProvider: SYS_APICollectionProvider,
     public providerService: SYS_IntegrationProviderProvider,
     public branchProvider: BRA_BranchProvider,
     public modalController: ModalController,
@@ -44,6 +45,7 @@ export class FlatPage extends PageBase {
   preLoadData(event?: any): void {
     let sorted: SortConfig[] = [{ Dimension: 'Id', Order: 'DESC' }];
     this.pageConfig.sort = sorted;
+    this.query.Take = 10000;
     this.pageConfig.pageIcon = 'flash-outline';
     this.providerService
       .read()

@@ -67,17 +67,15 @@ export class IntegrationTriggerDetailPage extends PageBase {
   providerDataSource: any;
   preLoadData(event?: any): void {
     Promise.all([
-      this.integrationProvider.read({IsTriggerable: true}, false), 
+      this.integrationProvider.read({ IsTriggerable: true }, false),
       this.env.getType('IntegrationTriggerType'),
-      this.actionProvider.read(this.query, false)
-    ]).then(
-      (values: any) => {
-        this.providerDataSource = values[0].data;
-        this.typeList = values[1];
-        this.actionDataSource = values[2].data;
-        super.preLoadData(event);
-      },
-    );
+      this.actionProvider.read(this.query, false),
+    ]).then((values: any) => {
+      this.providerDataSource = values[0].data;
+      this.typeList = values[1];
+      this.actionDataSource = values[2].data;
+      super.preLoadData(event);
+    });
   }
 
   loadedData(event?: any, ignoredFromGroup?: boolean): void {
@@ -88,7 +86,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     this.query.Id = undefined;
     this.actionDataSource = [];
     if (this.formGroup.controls.IDProvider?.value) {
-      this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
+      //   this.query.IDProvider = this.formGroup.controls.IDProvider?.value;
       this.query.IsTriggerable = true;
       this.actionProvider.read(this.query, false).then((listAction: any) => {
         if (listAction != null && listAction.data.length > 0) {
@@ -157,10 +155,10 @@ export class IntegrationTriggerDetailPage extends PageBase {
   removeField(fg, j) {
     let groups = <FormArray>this.formGroup.controls.TriggerActions;
     let itemToDelete = fg.getRawValue();
-    this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then((_) => {
+    this.env.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
       this.triggerActionProvider.delete(itemToDelete).then((result) => {
         groups.removeAt(j);
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       });
     });
   }
@@ -201,9 +199,9 @@ export class IntegrationTriggerDetailPage extends PageBase {
         .toPromise()
         .then((rs) => {
           if (rs) {
-            this.env.showTranslateMessage('Saving completed!', 'success');
+            this.env.showMessage('Saving completed!', 'success');
           } else {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
           }
         });
     }
@@ -212,9 +210,9 @@ export class IntegrationTriggerDetailPage extends PageBase {
   changeEnableAction(fg, e) {
     this.triggerActionProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
       if (resp) {
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       } else {
-        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        this.env.showMessage('Cannot save, please try again', 'danger');
       }
     });
   }
@@ -227,7 +225,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
     return new Promise((resolve, reject) => {
       this.formGroup.updateValueAndValidity();
       if (!form.valid) {
-        this.env.showTranslateMessage('Please recheck information highlighted in red above', 'warning');
+        this.env.showMessage('Please recheck information highlighted in red above', 'warning');
       } else if (this.submitAttempt == false) {
         this.submitAttempt = true;
         let submitItem = this.getDirtyValues(form);
@@ -242,12 +240,28 @@ export class IntegrationTriggerDetailPage extends PageBase {
             if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
           })
           .catch((err) => {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
             this.cdr.detectChanges();
             this.submitAttempt = false;
             reject(err);
           });
       }
     });
+  }
+
+  runTrigger() {
+    this.env
+      .showLoading(
+        'Please wait for a few moments',
+        this.pageProvider.commonService.connect('POST', 'SYS/Trigger/Run', { Id: this.item.Id }).toPromise(),
+      )
+      .then((_) => {
+        this.env.showMessage('Running completed!', 'success');
+        console.log(_);
+      })
+      .catch((err) => {
+        this.env.showMessage('Cannot run, please try again', 'danger');
+        console.log(err);
+      });
   }
 }

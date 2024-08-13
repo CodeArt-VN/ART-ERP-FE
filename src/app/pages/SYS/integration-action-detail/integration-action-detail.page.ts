@@ -12,6 +12,9 @@ import {
 } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+declare var ace: any;
 
 @Component({
   selector: 'app-integration-action-detail',
@@ -42,6 +45,7 @@ export class IntegrationActionDetailPage extends PageBase {
     public cdr: ChangeDetectorRef,
     public loadingController: LoadingController,
     public commonService: CommonService,
+    public dynamicScriptLoaderService: DynamicScriptLoaderService,
   ) {
     super();
     this.pageConfig.isDetailPage = true;
@@ -78,7 +82,6 @@ export class IntegrationActionDetailPage extends PageBase {
       this.schemaDataSource = values[0].data;
       this.providerDataSource = values[1].data;
       this.typeList = values[2];
-      
     });
     super.preLoadData(event);
   }
@@ -155,40 +158,60 @@ export class IntegrationActionDetailPage extends PageBase {
     this.Runners.push(runner);
   }
 
-  isFullScreen = false;
-  toggleFullscreen(){
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-      this.isFullScreen = false;
+  isShowCode = false;
+
+  toggleShowCode() {
+    this.isShowCode = !this.isShowCode;
+    if (this.isShowCode) {
+      setTimeout(() => {
+        this.loadAceEditor();
+      }, 1);
     } else {
-      const elem = this.divRef.nativeElement;
-
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      }
-
-      this.isFullScreen = true;
-     
+      this.editors.forEach((e) => {
+        e.destroy();
+      });
+      this.editors = [];
     }
-
   }
+
+  loadAceEditor() {
+    if (typeof ace !== 'undefined') this.initAce();
+    else
+      this.dynamicScriptLoaderService
+        .loadResources(thirdPartyLibs.aceEditor.source)
+        .then(() => {
+          this.dynamicScriptLoaderService.loadResources(thirdPartyLibs.aceEditor.ext.beautify.source).then(() => {
+            this.initAce();
+          });
+        })
+        .catch((error) => console.error('Error loading script', error));
+  }
+
+  editors = [];
+  initAce() {
+    document.querySelectorAll('.script-editor pre').forEach((el) => {
+      var beautify = ace.require('ace/ext/beautify');
+      let editor = ace.edit(el, {
+        mode: 'ace/mode/javascript',
+        autoScrollEditorIntoView: true,
+        maxLines: 30,
+      });
+      beautify?.beautify(editor.session);
+      editor.setReadOnly(true);
+      this.editors.push(editor);
+    });
+  }
+
   changeProvider() {
     let providerId = this.formGroup.get('IDProvider').value;
     this.query.IDProvider = providerId;
     let detailLength = this.Runners.controls.length;
     if (detailLength > 0) {
       this.env
-        .showPrompt(
-          'Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?',
-          null,
-          'Xóa ' + detailLength + ' dòng',
-        )
+        .showPrompt('Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?', null, {
+          code: 'Xóa {{value}} dòng?',
+          value: { value: length },
+        })
         .then((_) => {
           this.query.IDProvider = providerId;
           this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
@@ -238,9 +261,9 @@ export class IntegrationActionDetailPage extends PageBase {
     this.actionAPIRunnerProvider.disable(fg.getRawValue(), !e.target.checked).then((resp) => {
       if (resp) {
         fg.get('IsDisabled').setValue(!e.target.checked);
-        this.env.showTranslateMessage('Saving completed!', 'success');
+        this.env.showMessage('Saving completed!', 'success');
       } else {
-        this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+        this.env.showMessage('Cannot save, please try again', 'danger');
       }
       this.convertRunnerConfig();
     });
@@ -249,20 +272,25 @@ export class IntegrationActionDetailPage extends PageBase {
   deleteItems() {
     if (this.pageConfig.canDelete) {
       let length = this.Runners.controls.length;
-      this.env.showPrompt('Bạn chắc muốn xóa Runners đang chọn?', null, 'Xóa ' + length + ' dòng').then((_) => {
-        this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
-          this.Runners.clear();
-          this.convertRunnerConfig();
-          this.env.showTranslateMessage('Saved change!', 'success');
+      this.env
+        .showPrompt('Bạn có chắc muốn xóa Runners đang chọn?', null, {
+          code: 'Xóa {{value}} đang chọn?',
+          value: length,
+        })
+        .then((_) => {
+          this.actionAPIRunnerProvider.delete(this.Runners.getRawValue()).then((_) => {
+            this.Runners.clear();
+            this.convertRunnerConfig();
+            this.env.showMessage('Saved change!', 'success');
+          });
         });
-      });
     }
   }
   removeField(fg, j) {
     let itemToDelete = fg.getRawValue();
     if (!itemToDelete.Id) this.Runners.removeAt(j);
     else {
-      this.env.showPrompt('Bạn chắc muốn xóa ?', null, 'Xóa ' + 1 + ' dòng').then((_) => {
+      this.env.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
         this.actionAPIRunnerProvider.delete(itemToDelete).then((result) => {
           this.Runners.removeAt(j);
           this.convertRunnerConfig();
@@ -310,9 +338,9 @@ export class IntegrationActionDetailPage extends PageBase {
         .toPromise()
         .then((rs) => {
           if (rs) {
-            this.env.showTranslateMessage('Saving completed!', 'success');
+            this.env.showMessage('Saving completed!', 'success');
           } else {
-            this.env.showTranslateMessage('Cannot save, please try again', 'danger');
+            this.env.showMessage('Cannot save, please try again', 'danger');
           }
         });
     }
