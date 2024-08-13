@@ -12,8 +12,8 @@ import { ShareModule } from 'src/app/share.module';
     CommonModule,
     FormsModule,
     ShareModule,
-    RouterModule.forChild([{ path: '', component: FlatPage }]),
+    RouterModule.forChild([{ path: '', component: FlatPage }])
   ],
-  declarations: [FlatPage],
+  declarations: [FlatPage]
 })
 export class FlatPageModule {}

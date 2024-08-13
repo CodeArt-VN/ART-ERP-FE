@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FlatTreePage } from './flat-tree.page';
+import { TreePage } from './tree.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { ShareModule } from 'src/app/share.module';
     CommonModule,
     FormsModule,
     ShareModule,
-    RouterModule.forChild([{ path: '', component: FlatTreePage }]),
+    RouterModule.forChild([{ path: '', component: TreePage }])
   ],
-  declarations: [FlatTreePage],
+  declarations: [TreePage]
 })
-export class FlatTreePageModule {}
+export class TreePageModule {}
