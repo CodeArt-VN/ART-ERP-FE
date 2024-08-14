@@ -14992,6 +14992,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_StorerConfig:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/StorerConfig/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/StorerConfig"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/StorerConfig/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/StorerConfig/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/StorerConfig/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/StorerConfig"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/StorerConfig/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/StorerConfig/" + id} 
+        }
+		
+	},
+
 	WMS_TaskDispatchStrategy:{
         getSearchList:{
             method: "GET",
