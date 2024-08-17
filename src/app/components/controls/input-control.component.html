@@ -42,6 +42,17 @@
     />
   </ng-container>
 
+
+
+<ion-toggle *ngSwitchCase="'toggle'"
+  class="c-checkbox"
+  [id]="id"
+  [name]="id"
+  [formControlName]="id"
+  (ionChange)="onInputChange($event)"
+ 
+></ion-toggle>
+
   <!-- select -->
   <select
     *ngSwitchCase="'select'"
