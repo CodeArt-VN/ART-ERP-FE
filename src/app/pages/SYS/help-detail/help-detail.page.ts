@@ -190,22 +190,49 @@ export class HelpDetailComponent extends PageBase {
   // }
 
   loadData() {
-    this.query.Code = this._helpCode;
-    this.pageProvider.read(this.query).then((result: any) => {
-      if (result.data.length == 0) {
-        this.id = 0;
-        this.isShowAdd = true;
-        this.isShowEdit = false;
-        this.formGroup.controls.Id.setValue(0);
-      } else {
-        this.item = result.data[0];
-        this.id = this.item.Id;
-        this.contentBefore = this.item.Content;
-        this.isShowAdd = false;
-        this.isShowEdit = true;
-      }
-      this.loadedData();
-    });
+    let code = this._helpCode;
+    // _helpCode when not language
+    if ((this._helpCode.match(/\//g) || []).length == 1) {
+      this.env.getStorage('lang').then((lang) => {
+        const parts = code.split('/');
+        //add language
+        this._helpCode = `${parts[0]}/${lang}/${parts[1]}`;
+        this.query.Code = this._helpCode;
+        this.pageProvider.read(this.query).then((result: any) => {
+          if (result.data.length == 0) {
+            this.id = 0;
+            this.isShowAdd = true;
+            this.isShowEdit = false;
+            this.add();
+          } else {
+            this.item = result.data[0];
+            this.id = this.item.Id;
+            this.contentBefore = this.item.Content;
+            this.isShowAdd = false;
+            this.isShowEdit = true;
+          }
+          this.loadedData();
+        });
+      });
+    }else {
+      // _helpCode when have language
+      this.query.Code = this._helpCode;
+      this.pageProvider.read(this.query).then((result: any) => {
+        if (result.data.length == 0) {
+          this.id = 0;
+          this.isShowAdd = true;
+          this.isShowEdit = false;
+          this.add();
+        } else {
+          this.item = result.data[0];
+          this.id = this.item.Id;
+          this.contentBefore = this.item.Content;
+          this.isShowAdd = false;
+          this.isShowEdit = true;
+        }
+        this.loadedData();
+      });
+    }
     this.formLoaded = true;
   }
 
@@ -289,6 +316,7 @@ export class HelpDetailComponent extends PageBase {
     } else {
       this.item.Id = savedItem.Id;
     }
+    this.loadedData();
   }
 
   deleted() {

@@ -399,6 +399,7 @@ export class AppComponent implements OnInit {
 
   changeLanguage(lang = null) {
     this.env.setLang(lang);
+    this.env.publishEvent({ Code: 'app:changeLanguage', Value: lang });
   }
 
   closeHelp() {
