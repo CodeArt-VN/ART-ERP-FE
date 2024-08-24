@@ -41,6 +41,7 @@ export class HelpDetailComponent extends PageBase {
   showEditorContent = false;
   contentBefore = '';
   subscription;
+  isChangeLanguage = false;
 
 
   @ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
@@ -63,6 +64,7 @@ export class HelpDetailComponent extends PageBase {
     this.pageConfig.pageCode = 'help';
     this.subscription = this.env.getEvents().subscribe((data) => {
       if (data.Code == 'app:changeLanguage') {
+        this.isChangeLanguage = true;
         this.loadData();
       }
     });
@@ -226,10 +228,17 @@ export class HelpDetailComponent extends PageBase {
       this.query.Code = this._helpCode;
       this.pageProvider.read(this.query).then((result: any) => {
         if (result.data.length == 0) {
+          if(this.isChangeLanguage) {
+            this.isChangeLanguage = false;
+            this.item = {
+              Id: 0,
+              Name: '',
+              Content: '',
+            };
+          }
           this.id = 0;
           this.isShowAdd = true;
           this.isShowEdit = false;
-          this.add();
         } else {
           this.item = result.data[0];
           this.id = this.item.Id;
