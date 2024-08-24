@@ -40,6 +40,8 @@ export class HelpDetailComponent extends PageBase {
   isShowEdit = false;
   showEditorContent = false;
   contentBefore = '';
+  subscription;
+
 
   @ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
 
@@ -59,8 +61,18 @@ export class HelpDetailComponent extends PageBase {
     super();
     this.pageConfig.showSpinner = false;
     this.pageConfig.pageCode = 'help';
-    //this.id = this.route.snapshot?.paramMap?.get('id');
+    this.subscription = this.env.getEvents().subscribe((data) => {
+      if (data.Code == 'app:changeLanguage') {
+        this.loadData();
+      }
+    });
     this.buildFormGroup();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   @Output() closeHelp = new EventEmitter();
@@ -189,33 +201,28 @@ export class HelpDetailComponent extends PageBase {
   //   }.bind(this);
   // }
 
+  preLoadData(event?: any): void {
+    if ((this._helpCode.match(/\//g) || []).length == 2) {
+      //case isDetailPage
+      const parts = this._helpCode.split('/');
+      parts.splice(2, 1);
+      this._helpCode = parts.join('/');
+    }
+    this.loadData();
+  }
+
   loadData() {
-    let code = this._helpCode;
-    // _helpCode when not language
-    if ((this._helpCode.match(/\//g) || []).length == 1) {
-      this.env.getStorage('lang').then((lang) => {
-        const parts = code.split('/');
-        //add language
+
+    this.env.getStorage('lang').then((lang) => {
+      if ((this._helpCode.match(/\//g) || []).length == 1) {
+        //case _helpCode have 1 /
+        const parts = this._helpCode.split('/');
         this._helpCode = `${parts[0]}/${lang}/${parts[1]}`;
-        this.query.Code = this._helpCode;
-        this.pageProvider.read(this.query).then((result: any) => {
-          if (result.data.length == 0) {
-            this.id = 0;
-            this.isShowAdd = true;
-            this.isShowEdit = false;
-            this.add();
-          } else {
-            this.item = result.data[0];
-            this.id = this.item.Id;
-            this.contentBefore = this.item.Content;
-            this.isShowAdd = false;
-            this.isShowEdit = true;
-          }
-          this.loadedData();
-        });
-      });
-    }else {
-      // _helpCode when have language
+      } else {
+        //case _helpCode have 2 /
+        this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${lang}$2`);
+      }
+    
       this.query.Code = this._helpCode;
       this.pageProvider.read(this.query).then((result: any) => {
         if (result.data.length == 0) {
@@ -232,7 +239,7 @@ export class HelpDetailComponent extends PageBase {
         }
         this.loadedData();
       });
-    }
+    });
     this.formLoaded = true;
   }
 
