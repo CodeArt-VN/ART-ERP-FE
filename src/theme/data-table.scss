@@ -612,17 +612,18 @@ app-data-table,
       header,
       .row.header {
         display: none;
-
+        width: auto;
         &.filter {
           display: flex;
           flex-wrap: wrap;
           height: fit-content;
           max-width: 100%;
           padding: 16px;
+          margin: 0;
 
           .cell {
             height: fit-content;
-            padding: 0px !important;
+            padding: 2px !important;
             min-width: 25%;
             max-width: 100%;
             justify-content: left !important;

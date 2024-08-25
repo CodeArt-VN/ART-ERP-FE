@@ -20,6 +20,8 @@ export class PageMessageComponent implements OnInit {
     }
 
     this._imgSrc = '../../../'+ this._imgSrc;
+    console.log(this._imgSrc);
+    
   }
   
   constructor() {}
@@ -30,6 +32,9 @@ export class PageMessageComponent implements OnInit {
     }
     if (!this.subMessage) {
       this.subMessage = 'Please check again';
+    }
+    if(!this._imgSrc) {
+      this._imgSrc = '../../../assets/undraw_no_data_qbuo.svg';
     }
   }
 }
