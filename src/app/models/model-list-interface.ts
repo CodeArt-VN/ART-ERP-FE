@@ -817,6 +817,7 @@ export interface BANK_Transaction
     IDBranch?: number;
     IDAccount?: number;
     IDContact?: number;
+    IDBusinessPartner?: number;
     Id?: number;
     Remark?: string;
     ReferenceNumber?: string;
@@ -832,7 +833,6 @@ export interface BANK_Transaction
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
-    IDBusinessPartner?: number;
     
 }
 
@@ -7812,6 +7812,7 @@ export interface WMS_ShippingDetail
     IDItem?: number;
     IDUoM?: number;
     IDTag?: number;
+    IDParent?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -7829,28 +7830,37 @@ export interface WMS_ShippingDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDParent?: number;
     
 }
 
 export interface WMS_Storer
 {
     Id?: number;
+    Code?: string;
+    Name?: string;
     Remark?: string;
     Sort?: number;
-    isActivated?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    
+}
+
+export interface WMS_StorerConfig
+{
+    IDWarehouse?: number;
+    IDStorer?: number;
+    Id?: number;
     IDCartonGroup?: number;
+    isActivated?: boolean;
     IsEnablePacking?: boolean;
     IsQCInspectAtPack?: boolean;
     IsAllowMultiZoneRainbowPallet?: boolean;
     DefaultItemRotation?: string;
     DefaultRotation?: string;
-    DefaultStrategy?: number;
+    DefaultAllocationStrategy?: number;
     DefaultPutawayStrategy?: number;
     DefaultInboundQCLocation?: number;
     DefaultOutboundQCLocation?: number;
@@ -7870,8 +7880,6 @@ export interface WMS_Storer
     LabelTemplate?: number;
     StandardCarrierAlphaCode?: string;
     CreditLimit?: number;
-    Name?: string;
-    DefaultAllocationStrategy?: number;
     
 }
 

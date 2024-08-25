@@ -406,8 +406,9 @@ export class AppComponent implements OnInit {
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };
 
-  changeLanguage(lang = null) {
-    this.env.setLang(lang);
+  async changeLanguage(lang = null) {
+    await this.env.setLang(lang);
+    this.env.publishEvent({ Code: 'app:changeLanguage', Value: lang });
   }
 
   closeHelp() {

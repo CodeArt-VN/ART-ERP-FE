@@ -8,7 +8,7 @@
       min-width: 100%;
 
       .cell {
-        padding: calc(10/16 * 0.2rem);
+        padding: calc(10 / 16 * 0.2rem);
       }
     }
   }
@@ -69,9 +69,9 @@ app-data-table,
         // -webkit-appearance: none;
 
         //max-width: 250px;
-        padding-right: calc(10/16 * 1.6rem);
+        padding-right: calc(10 / 16 * 1.6rem);
         background-position-x: calc(100% - 8px);
-        font-size: calc(10/16 * 1.2rem);
+        font-size: calc(10 / 16 * 1.2rem);
 
         &.active,
         &:focus,
@@ -136,15 +136,15 @@ app-data-table,
     display: flex;
     padding: 0;
     margin: 0;
-    line-height: calc(10/16 * 1.5rem);
+    line-height: calc(10 / 16 * 1.5rem);
     border-bottom: solid 1px var(--menu-right-border-color);
     position: relative;
 
     &:hover {
       background-color: var(--table-row-hover-background);
       .col-sticky {
-         background-color: var(--table-cell-sticky-background);
-         backdrop-filter: blur(10px);
+        background-color: var(--table-cell-sticky-background);
+        backdrop-filter: blur(10px);
       }
     }
 
@@ -152,8 +152,8 @@ app-data-table,
       background-color: var(--table-row-selected-background);
 
       .col-sticky {
-         background-color: var(--table-cell-sticky-background);
-         backdrop-filter: blur(10px);
+        background-color: var(--table-cell-sticky-background);
+        backdrop-filter: blur(10px);
       }
     }
 
@@ -192,7 +192,8 @@ app-data-table,
       background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
     }
 
-    &.disabled, &.disabled a{
+    &.disabled,
+    &.disabled a {
       color: var(--ion-color-medium);
     }
 
@@ -279,7 +280,7 @@ app-data-table,
       display: block;
       border-radius: 3px;
       border: 1px solid var(--menu-right-border-color) !important;
-      padding: calc(10/16 * 0.5rem);
+      padding: calc(10 / 16 * 0.5rem);
       width: 100%;
       height: unset !important;
       text-overflow: ellipsis;
@@ -290,7 +291,7 @@ app-data-table,
       appearance: none;
       background-color: var(--menu-background-bottom);
 
-      font-size: calc(10/16 * 1.3rem);
+      font-size: calc(10 / 16 * 1.3rem);
       color: var(--ion-color-light-contrast);
 
       // &::-webkit-inner-spin-button,
@@ -326,39 +327,34 @@ app-data-table,
         padding: 0;
 
         .ng-select-container {
-          padding: calc(10/16 * 0.5rem);
+          padding: calc(10 / 16 * 0.5rem);
         }
       }
-      &.breadcrumbs{
-        
-          
-          padding: 0px !important;
-     
+      &.breadcrumbs {
+        padding: 0px !important;
 
-          ion-breadcrumbs {
-            display: flex;
-            //flex-wrap: nowrap;
-            
+        ion-breadcrumbs {
+          display: flex;
+          //flex-wrap: nowrap;
 
-            ion-breadcrumb{
-              font-size: calc(10/16 * 1.3rem);
+          ion-breadcrumb {
+            font-size: calc(10 / 16 * 1.3rem);
 
-              .breadcrumb-native{
-                padding-top: 0;
-                padding-bottom:0;
-              }
+            .breadcrumb-native {
+              padding-top: 0;
+              padding-bottom: 0;
             }
           }
-      
+        }
       }
     }
 
     .c-checkbox {
       display: inline-block;
       margin: 0;
-      width: calc(10/16 * 2rem);
-      height: calc(10/16 * 2rem);
-      min-width: calc(10/16 * 2rem);
+      width: calc(10 / 16 * 2rem);
+      height: calc(10 / 16 * 2rem);
+      min-width: calc(10 / 16 * 2rem);
       vertical-align: top;
       background-color: transparent; //var(--ion-color-primary-contrast);
       background-repeat: no-repeat;
@@ -405,7 +401,7 @@ app-data-table,
     .date::-webkit-calendar-picker-indicator {
       background-image: url('./../assets/ddown.svg'), none;
       background-repeat: no-repeat;
-      background-size: calc(10/16 * 2.6rem);
+      background-size: calc(10 / 16 * 2.6rem);
       background-position-x: right !important;
       background-position-y: center;
     }
@@ -452,8 +448,8 @@ app-data-table,
       min-width: 50px;
 
       ion-icon {
-        height: calc(10/16 * 3rem);
-        width: calc(10/16 * 3rem);
+        height: calc(10 / 16 * 3rem);
+        width: calc(10 / 16 * 3rem);
       }
     }
   }
@@ -464,15 +460,15 @@ app-data-table,
   }
 
   .col-id {
-    max-width: calc(10/16 * 9rem);
-    min-width: calc(10/16 * 9rem);
+    max-width: calc(10 / 16 * 9rem);
+    min-width: calc(10 / 16 * 9rem);
     justify-content: center;
     //font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--ion-color-primary) !important;
-    font-size: calc(10/16 * 1.2rem);
+    font-size: calc(10 / 16 * 1.2rem);
     cursor: pointer;
   }
 
@@ -616,16 +612,18 @@ app-data-table,
       header,
       .row.header {
         display: none;
-
+        width: auto;
         &.filter {
           display: flex;
           flex-wrap: wrap;
           height: fit-content;
           max-width: 100%;
           padding: 16px;
+          margin: 0;
 
           .cell {
             height: fit-content;
+            padding: 2px !important;
             min-width: 25%;
             max-width: 100%;
             justify-content: left !important;
@@ -650,8 +648,16 @@ app-data-table,
             select {
               text-align: left;
               max-width: 100%;
-              height: calc(10/16 * 2.5rem);
+              height: calc(10 / 16 * 2.5rem);
             }
+          }
+
+          .money,
+          .col-number,
+          .col-status {
+            position: unset;
+            right: unset;
+            margin: auto;
           }
 
           .col-checkbox {
@@ -670,7 +676,7 @@ app-data-table,
         margin: 16px;
         border-radius: 10px;
         background-color: var(--table-row-background);
-        line-height: calc(10/16 * 1.8rem);
+        line-height: calc(10 / 16 * 1.8rem);
         min-width: auto;
 
         @media screen and (max-width: calc(320px)) {
@@ -723,7 +729,7 @@ app-data-table,
           padding-right: 0 !important;
           white-space: nowrap !important;
 
-          span {
+          > span {
             padding: 1px 7px 1px 0 !important;
             border-left: solid 3px rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
             background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
@@ -738,14 +744,20 @@ app-data-table,
 
         .col-date {
           order: 1;
-          border-left: solid 3px rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
-          background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
-          border-radius: 2px;
           font-size: 80%;
-          margin-bottom: 5px;
-          margin-right: 5px;
-          max-width: fit-content !important;
           min-width: fit-content !important;
+          max-width: fit-content !important;
+          padding-right: 0 !important;
+
+          > span {
+            padding: 1px 7px 1px 0 !important;
+            border-left: solid 3px rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.2);
+            background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+            border-radius: 2px;
+            margin-right: 5px;
+            max-width: fit-content !important;
+            min-width: fit-content !important;
+          }
         }
 
         .col-status {
@@ -769,7 +781,7 @@ app-data-table,
           position: absolute;
           right: 8px;
           min-width: fit-content;
-          margin-top: calc(10/16 * 2rem);
+          margin-top: calc(10 / 16 * 2rem);
           font-size: 160%;
           color: var(--ion-color-primary) !important;
           font-weight: bold;
@@ -881,7 +893,7 @@ app-data-table,
   .data-sub-sub-title {
     padding: 5px 16px;
     width: 100%;
-    font-size: calc(10/16 * 1.3rem);
+    font-size: calc(10 / 16 * 1.3rem);
     color: var(--ion-color-dark);
     white-space: nowrap;
 
@@ -927,7 +939,7 @@ app-data-table,
     }
 
     & ion-icon {
-      font-size: calc(10/16 * 1.4rem);
+      font-size: calc(10 / 16 * 1.4rem);
       vertical-align: bottom;
     }
   }
@@ -938,7 +950,7 @@ app-data-table,
 
     .min-btn {
       margin-right: -5px;
-      font-size: calc(10/16 * 1.4rem);
+      font-size: calc(10 / 16 * 1.4rem);
       vertical-align: bottom;
     }
   }

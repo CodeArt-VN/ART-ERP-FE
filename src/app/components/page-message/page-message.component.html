@@ -4,7 +4,7 @@
   </div>
   <div class="empty-message" *ngIf="!itemsLength && showSpinner == false">
     <div class="icon">
-      <img appSvgImage style="width: 51vw; max-width: 300px" src="../../../assets/undraw_no_data_qbuo.svg" />
+      <img appSvgImage style="width: 51vw; max-width: 300px" [src]="_imgSrc" />
     </div>
     <div class="message">
       <div class="title">
