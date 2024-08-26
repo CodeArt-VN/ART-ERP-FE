@@ -42,6 +42,7 @@ export class HelpDetailComponent extends PageBase {
   contentBefore = '';
   subscription;
   isChangeLanguage = false;
+  isFullScreen = false;
 
 
   @ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
@@ -148,36 +149,54 @@ export class HelpDetailComponent extends PageBase {
       }
       this.editor = new Quill('#editor', {
         modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            ['blockquote', 'code-block'],
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+              ['blockquote', 'code-block'],
 
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-            [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-            [{ direction: 'rtl' }], // text direction
+              [{ header: 1 }, { header: 2 }], // custom button values
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+              [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+              [{ direction: 'rtl' }], // text direction
 
-            [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-            [{ font: [] }],
-            [{ align: [] }],
+              [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+              [{ font: [] }],
+              [{ align: [] }],
+              ['image', 'code-block'],
 
-            ['clean'], // remove formatting button
-          ],
+              ['clean'], // remove formatting button
+              ['fullscreen'],
+            ],
+            handlers: {
+              image: this.imageHandler.bind(this),
+              fullscreen: () => this.toggleFullscreen()
+            },
+          }
         },
         theme: 'snow',
         placeholder: 'Typing ...',
       });
       //choose image
-      //this.editor.getModule("toolbar").addHandler("image", imageHandler);
+      //this.editor.getModule("toolbar").addHandler("image", this.imageHandler.bind(this));
 
       this.editor.on('text-change', (delta, oldDelta, source) => {
         this.item.Content = this.editor.root.innerHTML;
       });
 
+      const toolbarCustom = this.editor.getModule('toolbar');
+      const button = toolbarCustom.container.querySelector('button.ql-fullscreen');
+
+      if (button) {
+        const icon = document.createElement('ion-icon');
+        icon.setAttribute('name', 'resize');
+        icon.setAttribute('color', 'dark');
+        button.innerHTML = '';
+        button.appendChild(icon);
+      }
       const toolbar = document.querySelector('.ql-toolbar');
       toolbar.addEventListener('mousedown', (event) => {
         event.preventDefault();
@@ -185,6 +204,29 @@ export class HelpDetailComponent extends PageBase {
     }
   }
 
+  imageHandler() {
+    const imageUrl = prompt('Please enter the image URL:');
+    if (imageUrl) {
+      const range = this.editor.getSelection();
+      this.editor.insertEmbed(range.index, 'image', imageUrl);
+    }
+
+    // const input = document.createElement('input');
+    // input.setAttribute('type', 'file');
+    // input.setAttribute('accept', 'image/*');
+    // input.click();
+    // input.onchange = async function() {
+    //   const file = input.files[0];
+    //   const formData = new FormData();
+    //   formData.append('image', file);
+    //   //const upload = await uploadFile(formData);
+
+    //   const range = this.quill.getSelection();
+    //   let link = `https://i.pinimg.com/474x/d3/a5/6e/d3a56e4bf36c6426ed82b68a2221127c.jpg`;
+
+    //   this.quill.insertEmbed(range.index, 'image', link);
+    // }.bind(this);
+  }
   // imageHandler() {
   //   const input = document.createElement('input');
   //   input.setAttribute('type', 'file');
@@ -203,6 +245,19 @@ export class HelpDetailComponent extends PageBase {
   //   }.bind(this);
   // }
 
+  toggleFullscreen() {
+    this.isFullScreen = !this.isFullScreen;
+    const screenElement = document.getElementById('screenEditor');
+    const editorElement = document.getElementById('editor');
+    if (this.isFullScreen) {
+      screenElement.classList.add('quill-fullscreen');
+      editorElement.style.minHeight = 'calc(100vh - 125px)';
+    } else {
+      screenElement.classList.remove('quill-fullscreen');
+      editorElement.style.minHeight = 'calc(100vh - 400px)';
+    }
+  }
+
   preLoadData(event?: any): void {
     if ((this._helpCode.match(/\//g) || []).length == 2) {
       //case isDetailPage
@@ -214,7 +269,6 @@ export class HelpDetailComponent extends PageBase {
   }
 
   loadData() {
-
     this.env.getStorage('lang').then((lang) => {
       if ((this._helpCode.match(/\//g) || []).length == 1) {
         //case _helpCode have 1 /
@@ -224,11 +278,11 @@ export class HelpDetailComponent extends PageBase {
         //case _helpCode have 2 /
         this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${lang}$2`);
       }
-    
+
       this.query.Code = this._helpCode;
       this.pageProvider.read(this.query).then((result: any) => {
         if (result.data.length == 0) {
-          if(this.isChangeLanguage) {
+          if (this.isChangeLanguage) {
             this.isChangeLanguage = false;
             this.item = {
               Id: 0,
@@ -271,8 +325,8 @@ export class HelpDetailComponent extends PageBase {
     if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
       this.formGroup?.disable();
     }
-    
-    if(!this.item?.Id) {
+
+    if (!this.item?.Id) {
       this.formGroup.controls.Code.setValue(this._helpCode);
       this.formGroup.controls.Code.markAsDirty();
     }

@@ -70,12 +70,12 @@
           </ion-segment-button>
         </ion-segment>
       </ion-toolbar>
-      <form [formGroup]="formGroup">
+      <form [formGroup]="formGroup" id="screenEditor">
         <div class="ion-padding" *ngIf="segmentView == 's1'">
           <!-- Create the editor container -->
           <div
             #quillEditor
-            style="min-height: 200px"
+            style="min-height: calc(100vh - 400px);"
             id="editor"
             [innerHTML]="formGroup.controls.Content.value | safeHtml"
             (focusout)="saveChange()"
@@ -137,5 +137,5 @@
       </div>
     </div>
   </div>
-  <app-page-message [itemsLength]="(item && this.item?.Id != 0) ? 1 : 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  <app-page-message [itemsLength]="(item && item?.Id != 0)  || showEditorContent ? 1 : 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>
