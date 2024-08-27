@@ -210,22 +210,6 @@ export class HelpDetailComponent extends PageBase {
       const range = this.editor.getSelection();
       this.editor.insertEmbed(range.index, 'image', imageUrl);
     }
-
-    // const input = document.createElement('input');
-    // input.setAttribute('type', 'file');
-    // input.setAttribute('accept', 'image/*');
-    // input.click();
-    // input.onchange = async function() {
-    //   const file = input.files[0];
-    //   const formData = new FormData();
-    //   formData.append('image', file);
-    //   //const upload = await uploadFile(formData);
-
-    //   const range = this.quill.getSelection();
-    //   let link = `https://i.pinimg.com/474x/d3/a5/6e/d3a56e4bf36c6426ed82b68a2221127c.jpg`;
-
-    //   this.quill.insertEmbed(range.index, 'image', link);
-    // }.bind(this);
   }
   // imageHandler() {
   //   const input = document.createElement('input');
