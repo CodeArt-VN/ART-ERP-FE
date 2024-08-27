@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  appVersion: '0.19.76',
+  appVersion: '0.19.80',
   appDomain: 'https://artlogistics.vn/',
   appServers: [
     { Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
