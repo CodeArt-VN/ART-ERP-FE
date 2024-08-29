@@ -929,6 +929,55 @@ export var APIListBase = {
 		
 	},
 
+	BANK_Account:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/Account/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/Account"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/Account/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/Account/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/Account/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Account/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/Account"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/Account/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/Account/" + id} 
+        }
+		
+	},
+
 	BANK_IncomingPayment:{
         getSearchList:{
             method: "GET",
@@ -1027,6 +1076,55 @@ export var APIListBase = {
 		
 	},
 
+	BANK_OutgoingPayment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/OutgoingPayment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/OutgoingPayment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/OutgoingPayment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/OutgoingPayment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/OutgoingPayment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/OutgoingPayment/" + id} 
+        }
+		
+	},
+
 	BANK_PaymentTerm:{
         getSearchList:{
             method: "GET",
@@ -1072,6 +1170,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "BANK/PaymentTerm/" + id} 
+        }
+		
+	},
+
+	BANK_StatementMatchingCriteria:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/StatementMatchingCriteria/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/StatementMatchingCriteria"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/StatementMatchingCriteria/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/StatementMatchingCriteria/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/StatementMatchingCriteria/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/StatementMatchingCriteria"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/StatementMatchingCriteria/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/StatementMatchingCriteria/" + id} 
+        }
+		
+	},
+
+	BANK_Transaction:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "BANK/Transaction/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "BANK/Transaction"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "BANK/Transaction/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "BANK/Transaction/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "BANK/Transaction/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "BANK/Transaction/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "BANK/Transaction"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "BANK/Transaction/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "BANK/Transaction/" + id} 
         }
 		
 	},
@@ -12738,6 +12934,55 @@ export var APIListBase = {
 		
 	},
 
+	WMS_AllocationStrategy:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/AllocationStrategy"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/AllocationStrategy/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/AllocationStrategy/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/AllocationStrategy/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/AllocationStrategy/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/AllocationStrategy/" + id} 
+        }
+		
+	},
+
 	WMS_Carrier:{
         getSearchList:{
             method: "GET",
@@ -14743,6 +14988,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/Storer/" + id} 
+        }
+		
+	},
+
+	WMS_StorerConfig:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "WMS/StorerConfig/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "WMS/StorerConfig"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "WMS/StorerConfig/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "WMS/StorerConfig/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "WMS/StorerConfig/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "WMS/StorerConfig/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "WMS/StorerConfig"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "WMS/StorerConfig/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "WMS/StorerConfig/" + id} 
         }
 		
 	},

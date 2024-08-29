@@ -2,10 +2,11 @@
   <ion-toolbar>
     <ion-buttons slot="start" [collapse]="true">
       <ion-back-button
-      *ngIf="pageConfig.isDetailPage"
-      [defaultHref]="BackHref ? BackHref : pageConfig.pageName"
-      [text]="(pageConfig.pageTitle ? pageConfig.pageTitle : 'Back') | translate">
-    </ion-back-button>
+        *ngIf="pageConfig.isDetailPage"
+        [defaultHref]="BackHref ? BackHref : pageConfig.pageName"
+        [text]="(pageConfig.pageTitle ? pageConfig.pageTitle : 'Back') | translate"
+      >
+      </ion-back-button>
       <ion-button color="dark" *ngIf="item"> {{formGroup.controls.Name.value}} </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
@@ -36,9 +37,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding" style="height: 100vh">
-  <div *ngIf="!showEditorContent && item?.Content">
-    <div [innerHtml]=" item?.Content | safeHtml" class="ql-editor"></div>
-  </div>
+  <ion-grid fixed *ngIf="!showEditorContent && item?.Content">
+    <ion-row>
+      <ion-col>
+        <div [innerHtml]=" item?.Content | safeHtml" class="ql-editor"></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <div class="main-view" *ngIf="item && pageConfig.showSpinner==false && showEditorContent">
     <ion-grid fixed>
       <form [formGroup]="formGroup">
@@ -64,12 +70,12 @@
           </ion-segment-button>
         </ion-segment>
       </ion-toolbar>
-      <form [formGroup]="formGroup">
+      <form [formGroup]="formGroup" id="screenEditor">
         <div class="ion-padding" *ngIf="segmentView == 's1'">
           <!-- Create the editor container -->
           <div
             #quillEditor
-            style="min-height: 200px"
+            style="min-height: calc(100vh - 400px);"
             id="editor"
             [innerHTML]="formGroup.controls.Content.value | safeHtml"
             (focusout)="saveChange()"
@@ -131,5 +137,5 @@
       </div>
     </div>
   </div>
-  <app-page-message [itemsLength]="item ? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  <app-page-message [itemsLength]="(item && item?.Id != 0)  || showEditorContent ? 1 : 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

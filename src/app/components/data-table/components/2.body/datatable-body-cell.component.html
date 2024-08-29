@@ -15,8 +15,9 @@
   [ngTemplateOutletContext]="cellContext"
 >
 </ng-template>
-<span *ngIf="!column.cellTemplate && !column.checkbox && column.property != 'Id'">
+
+<ng-container *ngIf="value && !column.cellTemplate && !column.checkbox && column.property != 'Id'">
   <span *ngIf="dataType == 'string'">{{ value }}</span>
   <span *ngIf="dataType == 'number'">{{ value | number: format }}</span>
   <span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
-</span>
+</ng-container>

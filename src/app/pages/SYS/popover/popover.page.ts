@@ -103,7 +103,7 @@ export class PopoverPage {
         });
       });
 
-      this.translate.get('wating-allocation').subscribe((message: string) => {
+      this.translate.get('Please wait for a few moments').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
           Id: '[104,113]',
           Name: message,

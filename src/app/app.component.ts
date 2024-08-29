@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
         case 'app:logout':
           accountService.logout().then((_) => {
             this.router.navigateByUrl('/login');
-            this.env.showTranslateMessage('You have log out of the system', 'danger');
+            this.env.showMessage('You have log out of the system', 'danger');
           });
           break;
         case 'app:silentlogout':
@@ -414,8 +414,9 @@ export class AppComponent implements OnInit {
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };
 
-  changeLanguage(lang = null) {
-    this.env.setLang(lang);
+  async changeLanguage(lang = null) {
+    await this.env.setLang(lang);
+    this.env.publishEvent({ Code: 'app:changeLanguage', Value: lang });
   }
 
   closeHelp() {

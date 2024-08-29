@@ -16,13 +16,13 @@ import { lib } from 'src/app/services/static/global-functions';
             {{ field.label }}
             <a
               (click)="reset(field)"
-              class="clickable"
+              class="clickable danger"
               *ngIf="field.data.ValueObject != null && !field.data._InheritedConfig"
               >[reset]</a
             >
             <a
               (click)="field.showInherited = !field.showInherited"
-              class="clickable"
+              class="clickable success"
               *ngIf="field.data._InheritedConfig"
               >[Inherit]</a
             >

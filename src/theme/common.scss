@@ -294,6 +294,9 @@ input[type='number'] {
   align-items: center;
   justify-content: center;
 }
+.flex-break{
+  flex-basis: 100% !important; /* Forces a line break */
+}
 
 .alert-text-left {
   .alert-message {
@@ -316,6 +319,14 @@ input[type='number'] {
 
 .bold {
   font-weight: bold !important;
+}
+
+
+.success{
+  color: var(--ion-color-success) !important;
+}
+.danger{
+  color: var(--ion-color-danger) !important;
 }
 
 .clickable {

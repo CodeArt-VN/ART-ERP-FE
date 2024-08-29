@@ -11,17 +11,20 @@ export class ReorderComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+  @Input() labelField = 'Name';
+  @Input() sortProperty = 'Sort';
 
-  @Input() set items(values) {}
-
-  get items() {
-    return this._items;
+  @Input() set items(values) {
+    this._items = [...values];
   }
 
   @Output() reoder = new EventEmitter();
 
   onReoder(ev: CustomEvent<ItemReorderEventDetail>) {
+    this._items = ev.detail.complete(this._items );
+    for(let i = 0; i < this._items.length ; i++){
+      this._items[i][this.sortProperty] = i;
+    }
     this.reoder.emit(this._items);
-    ev.detail.complete();
   }
 }

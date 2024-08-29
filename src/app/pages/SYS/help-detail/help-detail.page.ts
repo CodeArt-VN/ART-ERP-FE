@@ -40,6 +40,10 @@ export class HelpDetailComponent extends PageBase {
   isShowEdit = false;
   showEditorContent = false;
   contentBefore = '';
+  subscription;
+  isChangeLanguage = false;
+  isFullScreen = false;
+
 
   @ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
 
@@ -59,8 +63,19 @@ export class HelpDetailComponent extends PageBase {
     super();
     this.pageConfig.showSpinner = false;
     this.pageConfig.pageCode = 'help';
-    //this.id = this.route.snapshot?.paramMap?.get('id');
+    this.subscription = this.env.getEvents().subscribe((data) => {
+      if (data.Code == 'app:changeLanguage') {
+        this.isChangeLanguage = true;
+        this.loadData();
+      }
+    });
     this.buildFormGroup();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   @Output() closeHelp = new EventEmitter();
@@ -134,36 +149,54 @@ export class HelpDetailComponent extends PageBase {
       }
       this.editor = new Quill('#editor', {
         modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            ['blockquote', 'code-block'],
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+              ['blockquote', 'code-block'],
 
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-            [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-            [{ direction: 'rtl' }], // text direction
+              [{ header: 1 }, { header: 2 }], // custom button values
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+              [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+              [{ direction: 'rtl' }], // text direction
 
-            [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-            [{ font: [] }],
-            [{ align: [] }],
+              [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+              [{ font: [] }],
+              [{ align: [] }],
+              ['image', 'code-block'],
 
-            ['clean'], // remove formatting button
-          ],
+              ['clean'], // remove formatting button
+              ['fullscreen'],
+            ],
+            handlers: {
+              image: this.imageHandler.bind(this),
+              fullscreen: () => this.toggleFullscreen()
+            },
+          }
         },
         theme: 'snow',
         placeholder: 'Typing ...',
       });
       //choose image
-      //this.editor.getModule("toolbar").addHandler("image", imageHandler);
+      //this.editor.getModule("toolbar").addHandler("image", this.imageHandler.bind(this));
 
       this.editor.on('text-change', (delta, oldDelta, source) => {
         this.item.Content = this.editor.root.innerHTML;
       });
 
+      const toolbarCustom = this.editor.getModule('toolbar');
+      const button = toolbarCustom.container.querySelector('button.ql-fullscreen');
+
+      if (button) {
+        const icon = document.createElement('ion-icon');
+        icon.setAttribute('name', 'resize');
+        icon.setAttribute('color', 'dark');
+        button.innerHTML = '';
+        button.appendChild(icon);
+      }
       const toolbar = document.querySelector('.ql-toolbar');
       toolbar.addEventListener('mousedown', (event) => {
         event.preventDefault();
@@ -171,6 +204,13 @@ export class HelpDetailComponent extends PageBase {
     }
   }
 
+  imageHandler() {
+    const imageUrl = prompt('Please enter the image URL:');
+    if (imageUrl) {
+      const range = this.editor.getSelection();
+      this.editor.insertEmbed(range.index, 'image', imageUrl);
+    }
+  }
   // imageHandler() {
   //   const input = document.createElement('input');
   //   input.setAttribute('type', 'file');
@@ -189,22 +229,63 @@ export class HelpDetailComponent extends PageBase {
   //   }.bind(this);
   // }
 
+  toggleFullscreen() {
+    this.isFullScreen = !this.isFullScreen;
+    const screenElement = document.getElementById('screenEditor');
+    const editorElement = document.getElementById('editor');
+    if (this.isFullScreen) {
+      screenElement.classList.add('quill-fullscreen');
+      editorElement.style.minHeight = 'calc(100vh - 125px)';
+    } else {
+      screenElement.classList.remove('quill-fullscreen');
+      editorElement.style.minHeight = 'calc(100vh - 400px)';
+    }
+  }
+
+  preLoadData(event?: any): void {
+    if ((this._helpCode.match(/\//g) || []).length == 2) {
+      //case isDetailPage
+      const parts = this._helpCode.split('/');
+      parts.splice(2, 1);
+      this._helpCode = parts.join('/');
+    }
+    this.loadData();
+  }
+
   loadData() {
-    this.query.Code = this._helpCode;
-    this.pageProvider.read(this.query).then((result: any) => {
-      if (result.data.length == 0) {
-        this.id = 0;
-        this.isShowAdd = true;
-        this.isShowEdit = false;
-        this.formGroup.controls.Id.setValue(0);
+    this.env.getStorage('lang').then((lang) => {
+      if ((this._helpCode.match(/\//g) || []).length == 1) {
+        //case _helpCode have 1 /
+        const parts = this._helpCode.split('/');
+        this._helpCode = `${parts[0]}/${lang}/${parts[1]}`;
       } else {
-        this.item = result.data[0];
-        this.id = this.item.Id;
-        this.contentBefore = this.item.Content;
-        this.isShowAdd = false;
-        this.isShowEdit = true;
+        //case _helpCode have 2 /
+        this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${lang}$2`);
       }
-      this.loadedData();
+
+      this.query.Code = this._helpCode;
+      this.pageProvider.read(this.query).then((result: any) => {
+        if (result.data.length == 0) {
+          if (this.isChangeLanguage) {
+            this.isChangeLanguage = false;
+            this.item = {
+              Id: 0,
+              Name: '',
+              Content: '',
+            };
+          }
+          this.id = 0;
+          this.isShowAdd = true;
+          this.isShowEdit = false;
+        } else {
+          this.item = result.data[0];
+          this.id = this.item.Id;
+          this.contentBefore = this.item.Content;
+          this.isShowAdd = false;
+          this.isShowEdit = true;
+        }
+        this.loadedData();
+      });
     });
     this.formLoaded = true;
   }
@@ -228,8 +309,11 @@ export class HelpDetailComponent extends PageBase {
     if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
       this.formGroup?.disable();
     }
-    this.formGroup.controls.Code.setValue(this._helpCode);
-    this.formGroup.controls.Code.markAsDirty();
+
+    if (!this.item?.Id) {
+      this.formGroup.controls.Code.setValue(this._helpCode);
+      this.formGroup.controls.Code.markAsDirty();
+    }
   }
 
   edit() {
@@ -286,6 +370,7 @@ export class HelpDetailComponent extends PageBase {
     } else {
       this.item.Id = savedItem.Id;
     }
+    this.loadedData();
   }
 
   deleted() {

@@ -629,6 +629,42 @@ export interface APPROVAL_Template
     
 }
 
+export interface BANK_Account
+{
+    IDBranch?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Product?: string;
+    Type?: string;
+    SWIFT?: string;
+    Currency?: string;
+    WorkingBalance?: number;
+    LastCheckedDate?: Date;
+    NextCheckNo?: number;
+    GLAccount?: string;
+    DebtOfDiscountedBoEAccount?: string;
+    BankOnCollectionAccount?: string;
+    BankOnDiscounted?: string;
+    GLInterimAccount?: string;
+    FineAccount?: string;
+    InterestAccount?: string;
+    DiscountAccount?: string;
+    ServiceFeeAccount?: string;
+    OtherExpensesAccount?: string;
+    OtherIncomesAccount?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface BANK_IncomingPayment
 {
     IDJournalEntry?: number;
@@ -636,6 +672,7 @@ export interface BANK_IncomingPayment
     IDStaff?: number;
     IDCustomer?: number;
     IDType?: number;
+    IDTransaction?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -650,12 +687,9 @@ export interface BANK_IncomingPayment
     SubType?: string;
     Status?: string;
     PaymentURL?: string;
-    IDTransaction?: string;
+    ReferenceNumber?: string;
     TransactionDate?: Date;
     TransactionFee?: number;
-    AccountNumber?: string;
-    ReciprocalAccount?: string;
-    ReciprocalName?: string;
     IsRefundTransaction?: boolean;
     IDOriginalTransaction?: number;
     Sort?: number;
@@ -695,6 +729,44 @@ export interface BANK_IncomingPaymentDetail
     
 }
 
+export interface BANK_OutgoingPayment
+{
+    IDJournalEntry?: number;
+    IDBranch?: number;
+    IDStaff?: number;
+    IDBusinessPartner?: number;
+    IDTransaction?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Amount?: number;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    Type?: string;
+    SubType?: string;
+    Status?: string;
+    PaymentURL?: string;
+    ReferenceNumber?: string;
+    TransactionDate?: Date;
+    TransactionFee?: number;
+    IsRefundTransaction?: boolean;
+    IDOriginalTransaction?: number;
+    Sort?: number;
+    IsCanceled?: boolean;
+    IsPrinted?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface BANK_PaymentTerm
 {
     IDBranch?: number;
@@ -718,6 +790,49 @@ export interface BANK_PaymentTerm
     FirstPartialPayment?: number;
     OpenIncomingPayment?: string;
     IDPriceList?: number;
+    
+}
+
+export interface BANK_StatementMatchingCriteria
+{
+    IDBranch?: number;
+    IDParent?: number;
+    Id?: number;
+    Type?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface BANK_Transaction
+{
+    IDBranch?: number;
+    IDAccount?: number;
+    IDContact?: number;
+    IDBusinessPartner?: number;
+    Id?: number;
+    Remark?: string;
+    ReferenceNumber?: string;
+    Amount?: number;
+    TransactionDate?: Date;
+    ReciprocalAccount?: string;
+    ReciprocalName?: string;
+    Currency?: string;
+    TransactionStatus?: string;
+    ReconciliationStatus?: string;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -6545,6 +6660,37 @@ export interface WMS_AdjustmentDetail
     
 }
 
+export interface WMS_AllocationStrategy
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsStrictLotRotation?: boolean;
+    IsOverallocateAssigned?: boolean;
+    IsUseSpeedPickLocations?: boolean;
+    Type?: string;
+    FindInZone?: number;
+    FindLocationType?: string;
+    FindLocationCategory?: string;
+    CanBreakPallets?: boolean;
+    SortPriority1?: string;
+    SortPriority2?: string;
+    SortPriority3?: string;
+    SortPriority4?: string;
+    SortPriority5?: string;
+    LPNQuantityRule?: string;
+    
+}
+
 export interface WMS_Carrier
 {
     Id?: number;
@@ -7666,6 +7812,7 @@ export interface WMS_ShippingDetail
     IDItem?: number;
     IDUoM?: number;
     IDTag?: number;
+    IDParent?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -7689,21 +7836,31 @@ export interface WMS_ShippingDetail
 export interface WMS_Storer
 {
     Id?: number;
+    Code?: string;
+    Name?: string;
     Remark?: string;
     Sort?: number;
-    isActivated?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    
+}
+
+export interface WMS_StorerConfig
+{
+    IDWarehouse?: number;
+    IDStorer?: number;
+    Id?: number;
     IDCartonGroup?: number;
+    isActivated?: boolean;
     IsEnablePacking?: boolean;
     IsQCInspectAtPack?: boolean;
     IsAllowMultiZoneRainbowPallet?: boolean;
     DefaultItemRotation?: string;
     DefaultRotation?: string;
-    DefaultStrategy?: number;
+    DefaultAllocationStrategy?: number;
     DefaultPutawayStrategy?: number;
     DefaultInboundQCLocation?: number;
     DefaultOutboundQCLocation?: number;
@@ -7723,7 +7880,6 @@ export interface WMS_Storer
     LabelTemplate?: number;
     StandardCarrierAlphaCode?: string;
     CreditLimit?: number;
-    Name?: string;
     
 }
 
