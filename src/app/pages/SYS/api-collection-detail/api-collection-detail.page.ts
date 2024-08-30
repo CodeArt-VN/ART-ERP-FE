@@ -524,7 +524,7 @@ export class APICollectionDetailPage extends PageBase {
     if (this.submitAttempt) return;
     this.submitAttempt = true;
     let obj = {
-      id: this.item.Id,
+      ids: [this.item.Id],
     };
     this.pageProvider.commonService
       .connect('POST', '/SYS/APICollection/ExportJson', obj)

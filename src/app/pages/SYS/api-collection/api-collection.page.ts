@@ -59,7 +59,6 @@ export class APICollectionPage extends PageBase {
       this.itemsState = resp;
       this.itemsView = this.itemsState.filter((d) => d.show);
     });
-    this.pageConfig.canExport = false; // hide export button
     super.loadedData(event);
   }
 
@@ -197,5 +196,34 @@ export class APICollectionPage extends PageBase {
     this.fileImport = event.target.files[0];
     this.presentPopover(event)
   }
- 
+  async export() {
+    if (this.submitAttempt) return;
+    this.submitAttempt = true;
+    let obj = {
+      ids:null
+    };
+    this.pageProvider.commonService
+      .connect('POST', '/SYS/APICollection/ExportJson', obj)
+      .toPromise()
+      .then((response: any) => {
+        const blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: 'application/json',
+        });
+        let date = new Date();
+        let filename =
+          'API Collection |'+date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        this.submitAttempt = false;
+      })
+      .catch((err) => {
+        this.submitAttempt = false;
+      });
+  }
+
 }
