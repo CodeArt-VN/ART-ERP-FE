@@ -36,8 +36,6 @@ export class APICollectionPage extends PageBase {
   ) {
     super();
     this.query.Take = 5000;
-    this.pageConfig.canDelete = true;
-    this.pageConfig.canAdd = true;
     this.formGroup = this.formBuilder.group({
         IDProvider:['']
     });
@@ -61,6 +59,7 @@ export class APICollectionPage extends PageBase {
       this.itemsState = resp;
       this.itemsView = this.itemsState.filter((d) => d.show);
     });
+    this.pageConfig.canExport = false; // hide export button
     super.loadedData(event);
   }
 
@@ -94,13 +93,13 @@ export class APICollectionPage extends PageBase {
                   let obj = {
                     IDProvider : this.formGroup.get('IDProvider').value,
                     apicollection : jsonObject,
-                    ForceDelete : true
+                    ForceUpdate : true
                   }
                   this.pageProvider.read(queryPostMan, false).then((result: any) => {
                     if (result.data.length > 0) {
-                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?')
+                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?', null, null, "Ok", "Update")
                       .then((_) => {
-                          obj.ForceDelete = false;
+                          obj.ForceUpdate = false;
                           this.env.showLoading('Please wait for a few moments', 
                           this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                               .then((resp:any) => {

@@ -1,11 +1,8 @@
 <ion-header>
 	<app-toolbar [page]="this" AcceptFile=".json">
-		<ion-buttons slot="start" class="ion-hide-sm-down_" *ngIf="pageConfig.canExport">
-			<ion-button fill="clear" title="Export Json"  (click)="export()" >
+			<ion-button fill="clear" title="Export Json"  (click)="export()" *ngIf="pageConfig.canExport">
 				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 			</ion-button>
-		</ion-buttons>
-	
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>

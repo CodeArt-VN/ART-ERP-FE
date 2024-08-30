@@ -44,7 +44,6 @@ export class APICollectionDetailPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
-    this.pageConfig.canEdit = true;
     this.buildFormGroup();
   }
 
