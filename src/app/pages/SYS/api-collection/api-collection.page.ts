@@ -36,8 +36,6 @@ export class APICollectionPage extends PageBase {
   ) {
     super();
     this.query.Take = 5000;
-    this.pageConfig.canDelete = true;
-    this.pageConfig.canAdd = true;
     this.formGroup = this.formBuilder.group({
         IDProvider:['']
     });
@@ -94,13 +92,13 @@ export class APICollectionPage extends PageBase {
                   let obj = {
                     IDProvider : this.formGroup.get('IDProvider').value,
                     apicollection : jsonObject,
-                    ForceDelete : true
+                    ForceUpdate : true
                   }
                   this.pageProvider.read(queryPostMan, false).then((result: any) => {
                     if (result.data.length > 0) {
-                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?')
+                      this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?', null, null, "Ok", "Update")
                       .then((_) => {
-                          obj.ForceDelete = false;
+                          obj.ForceUpdate = false;
                           this.env.showLoading('Please wait for a few moments', 
                           this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                               .then((resp:any) => {
@@ -198,5 +196,34 @@ export class APICollectionPage extends PageBase {
     this.fileImport = event.target.files[0];
     this.presentPopover(event)
   }
- 
+  async export() {
+    if (this.submitAttempt) return;
+    this.submitAttempt = true;
+    let obj = {
+      ids:null
+    };
+    this.pageProvider.commonService
+      .connect('POST', '/SYS/APICollection/ExportJson', obj)
+      .toPromise()
+      .then((response: any) => {
+        const blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: 'application/json',
+        });
+        let date = new Date();
+        let filename =
+          'API Collection |'+date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        this.submitAttempt = false;
+      })
+      .catch((err) => {
+        this.submitAttempt = false;
+      });
+  }
+
 }

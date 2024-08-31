@@ -265,7 +265,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           this.submitAttempt = false;
         });
     } else {
-      if (ev.IDSchema) {
+      if (ev.IDSchema || ev.IDProvider) {
         let query = {
           Id: ev.IDSchema,
           IDProvider: ev.IDProvider,
