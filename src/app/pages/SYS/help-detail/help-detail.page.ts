@@ -184,7 +184,13 @@ export class HelpDetailComponent extends PageBase {
       //this.editor.getModule("toolbar").addHandler("image", this.imageHandler.bind(this));
 
       this.editor.on('text-change', (delta, oldDelta, source) => {
-        this.item.Content = this.editor.root.innerHTML;
+        if(typeof this.editor.root.innerHTML !== 'undefined' && this.item.Content !== this.editor.root.innerHTML) {
+          this.formGroup.controls.Content.setValue(this.editor.root.innerHTML);
+          this.formGroup.controls.Content.markAsDirty();
+        }
+        if(this.editor.root.innerHTML == "<p><br></p>") {
+          this.formGroup.controls.Content.setValue(null);
+        }
       });
 
       const toolbarCustom = this.editor.getModule('toolbar');
@@ -274,6 +280,7 @@ export class HelpDetailComponent extends PageBase {
               Content: '',
             };
           }
+          this.contentBefore = '';
           this.id = 0;
           this.isShowAdd = true;
           this.isShowEdit = false;
@@ -314,6 +321,7 @@ export class HelpDetailComponent extends PageBase {
       this.formGroup.controls.Code.setValue(this._helpCode);
       this.formGroup.controls.Code.markAsDirty();
     }
+    this.initQuill();
   }
 
   edit() {
@@ -322,6 +330,7 @@ export class HelpDetailComponent extends PageBase {
 
   preView() {
     this.showEditorContent = false;
+    this.contentBefore = this.item.Content;
   }
 
   emit(eventName) {
@@ -347,12 +356,7 @@ export class HelpDetailComponent extends PageBase {
   }
 
   async saveChange() {
-    if (typeof this.item.Content !== 'undefined' && this.contentBefore != typeof this.item.Content) {
-      this.formGroup.controls.Content.setValue(this.item.Content);
-      this.formGroup.controls.Content.markAsDirty();
-    }
-    await super.saveChange2();
-    await this.loadQuillEditor();
+      super.saveChange2();
   }
 
   savedChange(savedItem = null, form = this.formGroup) {
@@ -360,7 +364,6 @@ export class HelpDetailComponent extends PageBase {
     this.item = savedItem;
     if (this.pageConfig.isDetailPage) {
       if (this.item.Id) {
-        this.contentBefore = this.item.Content;
         this.isShowAdd = false;
         this.isShowEdit = true;
       } else {

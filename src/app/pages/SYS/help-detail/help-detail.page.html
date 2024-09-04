@@ -77,7 +77,7 @@
             #quillEditor
             style="min-height: calc(100vh - 400px);"
             id="editor"
-            [innerHTML]="formGroup.controls.Content.value | safeHtml"
+            [innerHTML]="contentBefore | safeHtml"
             (focusout)="saveChange()"
           ></div>
         </div>
