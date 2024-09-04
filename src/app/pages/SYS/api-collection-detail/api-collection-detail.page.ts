@@ -627,4 +627,21 @@ export class APICollectionDetailPage extends PageBase {
   onError() {
     console.log('IMG ERROR');
   }
+
+  runRequest(){
+    this.env
+    .showLoading(
+      'Please wait for a few moments',
+      this.pageProvider.commonService.connect('POST', 'SYS/APICollection/Run', { Id: this.item.Id }).toPromise(),
+    )
+    .then((_) => {
+      this.env.showMessage('Running completed!', 'success');
+    })
+    .catch((err) => {
+      this.env.showMessage('Cannot run, please try again', 'danger');
+      console.log(err);
+      
+    });
+  }
+
 }
