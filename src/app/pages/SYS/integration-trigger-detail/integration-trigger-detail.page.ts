@@ -249,13 +249,6 @@ export class IntegrationTriggerDetailPage extends PageBase {
     });
   }
   
-  isModalOpen = false;
-  segmentViewModal = 's1';
-  segmentChanged(ev){
-    this.segmentViewModal= ev.detail.value;
-    console.log( this.segmentViewModal);
-  }
-  ErrorMessage = null;
   runTrigger() {
     this.env
       .showLoading(
