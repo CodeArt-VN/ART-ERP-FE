@@ -269,20 +269,16 @@ export class IntegrationTriggerDetailPage extends PageBase {
       .catch((err:any) => {
         try{
           if(err.error?.Message){
-            this.ErrorMessage = JSON.parse(err.error?.Message);
-            if(this.ErrorMessage.Variables){
-              this.ErrorMessage.Variables = this.ErrorMessage.Variables.filter(d=>!d.IsDisabled)
-              this.ErrorMessage.Types =[...new Set(this.ErrorMessage.Variables.map(v => v.Type))];
-            }
-            console.log(this.ErrorMessage);
-            this.isModalOpen = true;
+            let message = JSON.parse(err.error?.Message);
+            console.log(message)
+            this.env.showMessage(message.Error, 'danger');
+
           }
         }
         catch(err){
           this.env.showMessage('Cannot run, please try again', 'danger');
         }
         // this.env.showMessage('Cannot run, please try again', 'danger');
-        console.log(err);
       });
   }
 }
