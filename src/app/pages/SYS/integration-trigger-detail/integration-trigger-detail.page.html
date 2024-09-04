@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
 <ion-header>
   <app-toolbar [page]="this">
     <ion-button
@@ -109,5 +110,82 @@
       </form>
     </ion-grid>
   </div>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="isModalOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title color="danger">Error</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content [fullscreen]="true" class="ion-padding" [scrollY]="false">
+        <!-- <ion-fab slot="fixed" vertical="top" horizontal="end">
+          <ion-fab-button (click)="isModalOpen = false">
+            <ion-icon name="close"></ion-icon>
+          </ion-fab-button>
+        </ion-fab> -->
+        <div class="ion-padding" class="customer-message">
+          <ion-toolbar>
+            <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentViewModal">
+              <ion-segment-button value="s1">
+                <ion-label>{{'General' | translate}}</ion-label>
+              </ion-segment-button>
+              <ion-segment-button  *ngFor="let type of ErrorMessage.Types" [value]="type">
+                <ion-label *ngIf="type == 'globalVariables'">{{'Global variables' | translate}}</ion-label>
+                <ion-label *ngIf="type == 'collectionVariables'">{{'Collection variables'| translate}}</ion-label>
+                <ion-label *ngIf="type == 'environmentVariables'">{{'Environment variables'| translate}}</ion-label>
+                <ion-label *ngIf="type == 'dataVariables'">{{'Data variables'| translate}}</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-toolbar>
+          <div  class="table-contain" *ngIf="segmentViewModal == 's1'">
+            <section class="table table-popover responsive" >
+              <header class="bold">
+                <div class="col-name cell">Property</div>
+                <div class="col-name cell">Value</div>
+              </header>
+              <div class="row" *ngIf="ErrorMessage.Action">
+                <div class="col-name cell">{{'Action' | translate}}</div>
+                <div class="col-name cell">{{ErrorMessage.Action}}</div>
+              </div>
+              <div class="row"*ngIf="ErrorMessage.Request">
+                <div class="col-name cell">{{'Request' | translate}}</div>
+                <div class="col-name cell">{{ErrorMessage.Request.Name}}</div>
+              </div>
+              <div class="row"*ngIf="ErrorMessage.Request?.Method">
+                <div class="col-name cell">{{'Method' | translate}}</div>
+                <div class="col-name cell">{{ErrorMessage.Request.Method}}</div>
+              </div>
+              <div class="row"*ngIf="ErrorMessage.Request?.URL">
+                <div class="col-name cell">{{'URL' | translate}}</div>
+                <div class="col-name cell">{{ErrorMessage.Request.URL}}</div>
+              </div>
+              <div class="row"*ngIf="ErrorMessage.Error">
+                <div class="col-name cell">{{'Error' | translate}}</div>
+                <div color="danger"class="col-name cell">{{ErrorMessage.Error}}</div>
+              </div>
+            </section> 
+          </div>
+          <ng-container  *ngFor="let type of ErrorMessage.Types">
+            <div class="table-contain">
+              <section class="table table-popover responsive"  *ngIf="segmentViewModal == type">
+                <header class="bold">
+                  <div class="col-name cell">Key</div>
+                  <div class="col-name cell">Value</div>
+                </header>
+            
+                  <ng-container *ngFor="let variable of ErrorMessage.Variables">
+                    <div class="row" *ngIf="variable.Type == type">
+                      <div class="col-name cell">{{variable.Key}}</div>
+                      <div class="col-name cell">{{variable.CurrentValue}}</div>
+                    </div>
+                  </ng-container>
+              </section> 
+            </div>
+          </ng-container>
+         
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
   <app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

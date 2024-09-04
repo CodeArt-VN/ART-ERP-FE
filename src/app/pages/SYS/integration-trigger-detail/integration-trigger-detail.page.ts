@@ -248,7 +248,14 @@ export class IntegrationTriggerDetailPage extends PageBase {
       }
     });
   }
-
+  
+  isModalOpen = false;
+  segmentViewModal = 's1';
+  segmentChanged(ev){
+    this.segmentViewModal= ev.detail.value;
+    console.log( this.segmentViewModal);
+  }
+  ErrorMessage = null;
   runTrigger() {
     this.env
       .showLoading(
@@ -259,8 +266,22 @@ export class IntegrationTriggerDetailPage extends PageBase {
         this.env.showMessage('Running completed!', 'success');
         console.log(_);
       })
-      .catch((err) => {
-        this.env.showMessage('Cannot run, please try again', 'danger');
+      .catch((err:any) => {
+        try{
+          if(err.error?.Message){
+            this.ErrorMessage = JSON.parse(err.error?.Message);
+            if(this.ErrorMessage.Variables){
+              this.ErrorMessage.Variables = this.ErrorMessage.Variables.filter(d=>!d.IsDisabled)
+              this.ErrorMessage.Types =[...new Set(this.ErrorMessage.Variables.map(v => v.Type))];
+            }
+            console.log(this.ErrorMessage);
+            this.isModalOpen = true;
+          }
+        }
+        catch(err){
+          this.env.showMessage('Cannot run, please try again', 'danger');
+        }
+        // this.env.showMessage('Cannot run, please try again', 'danger');
         console.log(err);
       });
   }

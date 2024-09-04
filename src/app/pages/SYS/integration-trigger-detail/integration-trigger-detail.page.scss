@@ -12,3 +12,12 @@
   max-width: 36px;
   min-width: 36px;
 }
+.table-popover{
+  height:500px;
+  min-height: 500px;
+  overflow:scroll;
+}
+.table-contain .table.table-popover .row .cell{
+  padding: 8px 8px;
+
+}
