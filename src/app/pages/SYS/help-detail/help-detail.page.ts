@@ -326,6 +326,7 @@ export class HelpDetailComponent extends PageBase {
 
   edit() {
     this.showEditorContent = true;
+    this.contentBefore = this.item.Content;
   }
 
   preView() {
