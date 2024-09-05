@@ -36,6 +36,8 @@ export class APICollectionPage extends PageBase {
   ) {
     super();
     this.query.Take = 5000;
+	this.query.AllChildren = true;
+    this.query.AllParent = true;
     this.formGroup = this.formBuilder.group({
         IDProvider:['']
     });
