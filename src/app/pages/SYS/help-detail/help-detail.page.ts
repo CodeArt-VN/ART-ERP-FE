@@ -171,10 +171,12 @@ export class HelpDetailComponent extends PageBase {
 
               ['clean'], // remove formatting button
               ['fullscreen'],
+              ['showhtml'],
             ],
             handlers: {
               image: this.imageHandler.bind(this),
-              fullscreen: () => this.toggleFullscreen()
+              fullscreen: () => this.toggleFullscreen(),
+              showhtml: () => this.showHtml()
             },
           }
         },
@@ -194,15 +196,25 @@ export class HelpDetailComponent extends PageBase {
         }
       });
 
+      // icon fullscreen
       const toolbarCustom = this.editor.getModule('toolbar');
-      const button = toolbarCustom.container.querySelector('button.ql-fullscreen');
+      const fullscreenButton = toolbarCustom.container.querySelector('button.ql-fullscreen');
+      if (fullscreenButton) {
+        const fullscreenIcon = document.createElement('ion-icon');
+        fullscreenIcon.setAttribute('name', 'resize');
+        fullscreenIcon.setAttribute('color', 'dark');
+        fullscreenButton.innerHTML = '';
+        fullscreenButton.appendChild(fullscreenIcon);
+      }
 
-      if (button) {
-        const icon = document.createElement('ion-icon');
-        icon.setAttribute('name', 'resize');
-        icon.setAttribute('color', 'dark');
-        button.innerHTML = '';
-        button.appendChild(icon);
+      // icon show HTML
+      const showHtmlButton = toolbarCustom.container.querySelector('button.ql-showhtml');
+      if (showHtmlButton) {
+        const showHtmlIcon = document.createElement('ion-icon');
+        showHtmlIcon.setAttribute('name', 'logo-html5');
+        showHtmlIcon.setAttribute('color', 'dark');
+        showHtmlButton.innerHTML = '';
+        showHtmlButton.appendChild(showHtmlIcon);
       }
       const toolbar = document.querySelector('.ql-toolbar');
       toolbar.addEventListener('mousedown', (event) => {
@@ -247,6 +259,25 @@ export class HelpDetailComponent extends PageBase {
       screenElement.classList.remove('quill-fullscreen');
       editorElement.style.minHeight = 'calc(100vh - 400px)';
     }
+  }
+
+  showHtml() {
+    const editorContent = this.editor.root;
+    const isHtmlMode = /&lt;|&gt;|&amp;|&quot;|&#39;/.test(editorContent.innerHTML);
+    if (isHtmlMode) {
+      const htmlContent = editorContent.textContent || '';
+      this.editor.root.innerHTML = htmlContent;
+    } else {
+      const richTextContent = this.editor.root.innerHTML;
+      this.editor.root.textContent = richTextContent;
+    }
+
+    this.formGroup.controls.Content.setValue(this.editor.root.innerHTML);
+    if(this.editor.root.innerHTML == "<p><br></p>") {
+      this.formGroup.controls.Content.setValue(null);
+    }
+    this.formGroup.controls.Content.markAsDirty();
+    this.saveChange();
   }
 
   preLoadData(event?: any): void {
@@ -336,11 +367,13 @@ export class HelpDetailComponent extends PageBase {
 
   edit() {
     this.showEditorContent = true;
+    this.item.Content = this.item.Content ?? this.editor?.root?.innerHTML ?? '';
     this.contentBefore = this.item.Content;
   }
 
   preView() {
     this.showEditorContent = false;
+    this.item.Content = this.item.Content ?? this.editor?.root?.innerHTML ?? '';
     this.contentBefore = this.item.Content;
   }
 
