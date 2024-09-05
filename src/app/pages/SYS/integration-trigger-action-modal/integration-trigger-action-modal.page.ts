@@ -264,11 +264,11 @@ export class IntegrationTriggerActionModalPage extends PageBase {
           this.formGroup.get('IDAction').setValue(this.IDActionBefore);
           this.submitAttempt = false;
         });
-    } else {
-      if (ev.IDSchema) {
+    } 
+    else {
         let query = {
           Id: ev.IDSchema,
-          IDProvider: ev.IDProvider,
+          IDProvider:  this.formGroup.get('IDProvider').value,
         };
         this.schemaDetailDataSource = [];
         this.schemaService.commonService
@@ -278,16 +278,15 @@ export class IntegrationTriggerActionModalPage extends PageBase {
             if (data) {
               this.schemaDetailDataSource = data.Fields;
               this.clearTriggerActionMapping();
-              this.getObjectKeys(this.varibles).forEach((e) => {
-                this.addField({}, e);
-              });
             }
+            this.getObjectKeys(this.varibles).forEach((e) => {
+              this.addField({}, e);
+            });
+          }).catch(err =>{
+            this.getObjectKeys(this.varibles).forEach((e) => {
+              this.addField({}, e);
+            });
           });
-      } else {
-        this.getObjectKeys(this.varibles).forEach((e) => {
-          this.addField({}, e);
-        });
-      }
       this.saveChange2();
     }
   }
