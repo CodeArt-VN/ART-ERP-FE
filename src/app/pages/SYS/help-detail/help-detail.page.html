@@ -46,18 +46,7 @@
   </ion-grid>
 
   <div class="main-view" *ngIf="item && pageConfig.showSpinner==false && showEditorContent">
-    <ion-grid fixed>
-      <form [formGroup]="formGroup">
-        <ion-row class="hr-group">
-          <ion-col size="12">
-            <app-form-control
-              [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-          </ion-col>
-        </ion-row>
-      </form>
-    </ion-grid>
+
 
     <div class="row-full shadow full-screen">
       <ion-toolbar color="primary">
@@ -101,6 +90,12 @@
                   [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }"
                   (change)="saveChange()"
                 ></app-form-control>
+
+                <app-form-control
+                  [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }"
+                  (change)="saveChange()"
+                ></app-form-control>
+
                 <app-form-control
                   [field]="{id:'Summary', type : 'textarea', label: 'Summary', form : formGroup }"
                   (change)="saveChange()"

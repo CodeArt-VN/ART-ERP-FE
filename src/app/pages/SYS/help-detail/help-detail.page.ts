@@ -27,6 +27,7 @@ declare var Quill: any;
 })
 export class HelpDetailComponent extends PageBase {
   _helpCode;
+  _helpName;
   @Input() pageConfig;
   @Input() set helpCode(value: string) {
     this._helpCode = value;
@@ -249,6 +250,13 @@ export class HelpDetailComponent extends PageBase {
   }
 
   preLoadData(event?: any): void {
+    // set _helpName
+    const regex = /help\/(.+)/;
+    const match = this._helpCode.match(regex);
+    if (match) {
+      this._helpName = match[1];
+    }
+
     if ((this._helpCode.match(/\//g) || []).length == 2) {
       //case isDetailPage
       const parts = this._helpCode.split('/');
@@ -276,7 +284,7 @@ export class HelpDetailComponent extends PageBase {
             this.isChangeLanguage = false;
             this.item = {
               Id: 0,
-              Name: '',
+              Name: this._helpName,
               Content: '',
             };
           }
@@ -318,6 +326,8 @@ export class HelpDetailComponent extends PageBase {
     }
 
     if (!this.item?.Id) {
+      this.formGroup.controls.Name.setValue(this._helpName);
+      this.formGroup.controls.Name.markAsDirty();
       this.formGroup.controls.Code.setValue(this._helpCode);
       this.formGroup.controls.Code.markAsDirty();
     }
@@ -348,11 +358,13 @@ export class HelpDetailComponent extends PageBase {
     this.id = 0;
     this.item = {
       Id: 0,
-      Name: '',
+      Name: this._helpName,
       Content: '',
     };
     this.formGroup.controls.Code.setValue(this._helpCode);
     this.formGroup.controls.Code.markAsDirty();
+    this.formGroup.controls.Name.setValue(this._helpName);
+    this.formGroup.controls.Name.markAsDirty();
     this.showEditorContent = true;
   }
 
