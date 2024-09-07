@@ -44,7 +44,6 @@ export class APICollectionDetailPage extends PageBase {
   ) {
     super();
     this.pageConfig.isDetailPage = true;
-    this.pageConfig.canEdit = true;
     this.buildFormGroup();
   }
 
@@ -421,9 +420,10 @@ export class APICollectionDetailPage extends PageBase {
     if (this.pageConfig.canDelete) {
       let length = groups.getRawValue().length;
       this.env
-        .showPrompt(
-          { code: 'Bạn có chắc muốn xóa {{value}} đang chọn?', value: { value: controlName } },null,{ code: 'Xóa {{value1}} đang chọn?', value: { value1: length } },
-        )
+        .showPrompt({ code: 'Bạn có chắc muốn xóa {{value}} đang chọn?', value: { value: controlName } }, null, {
+          code: 'Xóa {{value1}} đang chọn?',
+          value: { value1: length },
+        })
         .then((_) => {
           groups.clear();
           if (!saveControl) saveControl = controlName;
@@ -525,7 +525,7 @@ export class APICollectionDetailPage extends PageBase {
     if (this.submitAttempt) return;
     this.submitAttempt = true;
     let obj = {
-      id: this.item.Id,
+      ids: [this.item.Id],
     };
     this.pageProvider.commonService
       .connect('POST', '/SYS/APICollection/ExportJson', obj)
@@ -627,5 +627,25 @@ export class APICollectionDetailPage extends PageBase {
 
   onError() {
     console.log('IMG ERROR');
+  }
+
+  runRequest() {
+    this.env.getStorage('Variables').then((result) => {
+      this.env
+        .showLoading(
+          'Please wait for a few moments',
+          this.pageProvider.commonService
+            .connect('POST', 'SYS/APICollection/Run', { Id: this.item.Id, Variables: result })
+            .toPromise(),
+        )
+        .then((res: any) => {
+          this.env.showMessage('Running completed!', 'success');
+          this.env.setStorage('Variables', res.Variables);
+        })
+        .catch((err) => {
+          this.env.showMessage('Cannot run, please try again', 'danger');
+          console.log(JSON.parse(err.error.Message));
+        });
+    });
   }
 }

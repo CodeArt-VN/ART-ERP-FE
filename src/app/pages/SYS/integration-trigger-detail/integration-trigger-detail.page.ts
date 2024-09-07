@@ -248,7 +248,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
       }
     });
   }
-
+  
   runTrigger() {
     this.env
       .showLoading(
@@ -259,9 +259,19 @@ export class IntegrationTriggerDetailPage extends PageBase {
         this.env.showMessage('Running completed!', 'success');
         console.log(_);
       })
-      .catch((err) => {
-        this.env.showMessage('Cannot run, please try again', 'danger');
-        console.log(err);
+      .catch((err:any) => {
+        try{
+          if(err.error?.Message){
+            let message = JSON.parse(err.error?.Message);
+            console.log(message)
+            this.env.showMessage(message.Error, 'danger');
+
+          }
+        }
+        catch(err){
+          this.env.showMessage('Cannot run, please try again', 'danger');
+        }
+        // this.env.showMessage('Cannot run, please try again', 'danger');
       });
   }
 }
