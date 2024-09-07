@@ -27,6 +27,7 @@ declare var Quill: any;
 })
 export class HelpDetailComponent extends PageBase {
   _helpCode;
+  _helpName;
   @Input() pageConfig;
   @Input() set helpCode(value: string) {
     this._helpCode = value;
@@ -170,10 +171,12 @@ export class HelpDetailComponent extends PageBase {
 
               ['clean'], // remove formatting button
               ['fullscreen'],
+              ['showhtml'],
             ],
             handlers: {
               image: this.imageHandler.bind(this),
-              fullscreen: () => this.toggleFullscreen()
+              fullscreen: () => this.toggleFullscreen(),
+              showhtml: () => this.showHtml()
             },
           }
         },
@@ -184,18 +187,34 @@ export class HelpDetailComponent extends PageBase {
       //this.editor.getModule("toolbar").addHandler("image", this.imageHandler.bind(this));
 
       this.editor.on('text-change', (delta, oldDelta, source) => {
-        this.item.Content = this.editor.root.innerHTML;
+        if(typeof this.editor.root.innerHTML !== 'undefined' && this.item.Content !== this.editor.root.innerHTML) {
+          this.formGroup.controls.Content.setValue(this.editor.root.innerHTML);
+          this.formGroup.controls.Content.markAsDirty();
+        }
+        if(this.editor.root.innerHTML == "<p><br></p>") {
+          this.formGroup.controls.Content.setValue(null);
+        }
       });
 
+      // icon fullscreen
       const toolbarCustom = this.editor.getModule('toolbar');
-      const button = toolbarCustom.container.querySelector('button.ql-fullscreen');
+      const fullscreenButton = toolbarCustom.container.querySelector('button.ql-fullscreen');
+      if (fullscreenButton) {
+        const fullscreenIcon = document.createElement('ion-icon');
+        fullscreenIcon.setAttribute('name', 'resize');
+        fullscreenIcon.setAttribute('color', 'dark');
+        fullscreenButton.innerHTML = '';
+        fullscreenButton.appendChild(fullscreenIcon);
+      }
 
-      if (button) {
-        const icon = document.createElement('ion-icon');
-        icon.setAttribute('name', 'resize');
-        icon.setAttribute('color', 'dark');
-        button.innerHTML = '';
-        button.appendChild(icon);
+      // icon show HTML
+      const showHtmlButton = toolbarCustom.container.querySelector('button.ql-showhtml');
+      if (showHtmlButton) {
+        const showHtmlIcon = document.createElement('ion-icon');
+        showHtmlIcon.setAttribute('name', 'logo-html5');
+        showHtmlIcon.setAttribute('color', 'dark');
+        showHtmlButton.innerHTML = '';
+        showHtmlButton.appendChild(showHtmlIcon);
       }
       const toolbar = document.querySelector('.ql-toolbar');
       toolbar.addEventListener('mousedown', (event) => {
@@ -242,7 +261,33 @@ export class HelpDetailComponent extends PageBase {
     }
   }
 
+  showHtml() {
+    const editorContent = this.editor.root;
+    const isHtmlMode = /&lt;|&gt;|&amp;|&quot;|&#39;/.test(editorContent.innerHTML);
+    if (isHtmlMode) {
+      const htmlContent = editorContent.textContent || '';
+      this.editor.root.innerHTML = htmlContent;
+    } else {
+      const richTextContent = this.editor.root.innerHTML;
+      this.editor.root.textContent = richTextContent;
+    }
+
+    this.formGroup.controls.Content.setValue(this.editor.root.innerHTML);
+    if(this.editor.root.innerHTML == "<p><br></p>") {
+      this.formGroup.controls.Content.setValue(null);
+    }
+    this.formGroup.controls.Content.markAsDirty();
+    this.saveChange();
+  }
+
   preLoadData(event?: any): void {
+    // set _helpName
+    const regex = /help\/(.+)/;
+    const match = this._helpCode.match(regex);
+    if (match) {
+      this._helpName = match[1];
+    }
+
     if ((this._helpCode.match(/\//g) || []).length == 2) {
       //case isDetailPage
       const parts = this._helpCode.split('/');
@@ -270,10 +315,11 @@ export class HelpDetailComponent extends PageBase {
             this.isChangeLanguage = false;
             this.item = {
               Id: 0,
-              Name: '',
+              Name: this._helpName,
               Content: '',
             };
           }
+          this.contentBefore = '';
           this.id = 0;
           this.isShowAdd = true;
           this.isShowEdit = false;
@@ -311,17 +357,24 @@ export class HelpDetailComponent extends PageBase {
     }
 
     if (!this.item?.Id) {
+      this.formGroup.controls.Name.setValue(this._helpName);
+      this.formGroup.controls.Name.markAsDirty();
       this.formGroup.controls.Code.setValue(this._helpCode);
       this.formGroup.controls.Code.markAsDirty();
     }
+    this.initQuill();
   }
 
   edit() {
     this.showEditorContent = true;
+    this.item.Content = this.item.Content ?? this.editor?.root?.innerHTML ?? '';
+    this.contentBefore = this.item.Content;
   }
 
   preView() {
     this.showEditorContent = false;
+    this.item.Content = this.item.Content ?? this.editor?.root?.innerHTML ?? '';
+    this.contentBefore = this.item.Content;
   }
 
   emit(eventName) {
@@ -338,21 +391,18 @@ export class HelpDetailComponent extends PageBase {
     this.id = 0;
     this.item = {
       Id: 0,
-      Name: '',
+      Name: this._helpName,
       Content: '',
     };
     this.formGroup.controls.Code.setValue(this._helpCode);
     this.formGroup.controls.Code.markAsDirty();
+    this.formGroup.controls.Name.setValue(this._helpName);
+    this.formGroup.controls.Name.markAsDirty();
     this.showEditorContent = true;
   }
 
   async saveChange() {
-    if (typeof this.item.Content !== 'undefined' && this.contentBefore != typeof this.item.Content) {
-      this.formGroup.controls.Content.setValue(this.item.Content);
-      this.formGroup.controls.Content.markAsDirty();
-    }
-    await super.saveChange2();
-    await this.loadQuillEditor();
+      super.saveChange2();
   }
 
   savedChange(savedItem = null, form = this.formGroup) {
@@ -360,7 +410,6 @@ export class HelpDetailComponent extends PageBase {
     this.item = savedItem;
     if (this.pageConfig.isDetailPage) {
       if (this.item.Id) {
-        this.contentBefore = this.item.Content;
         this.isShowAdd = false;
         this.isShowEdit = true;
       } else {
