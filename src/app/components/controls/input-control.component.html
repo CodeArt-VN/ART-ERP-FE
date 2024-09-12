@@ -465,7 +465,7 @@
 
     <ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
       <!-- <ion-icon color="dark" slot="start" name="radio-button-on"></ion-icon> -->
-      {{ lib.formatTimeConfig(form.controls[id].getRawValue()) }}
+      {{ (lib.formatTimeConfig(form.controls[id].getRawValue()) | translate) || ('From date' | translate) }}
     </ion-button>
     <ion-icon name="arrow-forward-outline"></ion-icon>
     <ion-button
@@ -474,7 +474,7 @@
       (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')"
     >
       <!-- <ion-icon slot="start" name="chevron-forward"></ion-icon> -->
-      {{ lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) }}
+      {{ (lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) | translate) || ('To date' | translate) }}
     </ion-button>
   </span>
 

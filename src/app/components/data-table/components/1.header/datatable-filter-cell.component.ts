@@ -34,7 +34,16 @@ export class DataTableFilterCellComponent {
 
   @Output() filterFieldReset: EventEmitter<any> = new EventEmitter();
   onFilterFieldReset() {
-    this.field.form.get(this.field.id).setValue('');
+    if(this.field.type === 'time-frame') {
+      this.field.form.controls.From.controls.IsNull.setValue(true);
+      this.field.form.controls.From.controls.Value.setValue(null);
+      this.field.form.controls.To.controls.IsNull.setValue(true);
+      this.field.form.controls.To.controls.Value.setValue(null);
+    }
+    else{
+      this.field.form.get(this.field.id).setValue('');
+    }
+    
     this.filterFieldReset.emit();
   }
 

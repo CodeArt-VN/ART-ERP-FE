@@ -89,6 +89,11 @@ export interface TimeConfig {
    * If absolute time
    */
   Value?: Date;
+
+  /**
+   * If null
+   */
+  IsNull?: boolean;
 }
 
 export interface Transform {

@@ -1,8 +1,11 @@
 <ion-header>
 	<app-toolbar [page]="this" AcceptFile=".json">
-			<ion-button fill="clear" title="Export Json"  (click)="export()" *ngIf="pageConfig.canExport">
+			<ion-button fill="clear" title="Export Json"  (click)="export()" *ngIf="pageConfig.canExport && formGroup.get('Type').value == 'Collection'">
 				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 			</ion-button>
+			<ion-button *ngIf="formGroup.get('Type').value == 'Request' && formGroup.get('Id').value != 0" title="{{ 'Run request' | translate }}"(click)="runRequest()">
+			<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
+		  </ion-button>
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
