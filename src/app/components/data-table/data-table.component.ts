@@ -2,7 +2,7 @@ import { Component, ContentChildren, EventEmitter, Input, OnInit, Output, QueryL
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
 import { TableColumn } from './interfaces/table-column.interface';
 import { Subscription } from 'rxjs';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
@@ -26,7 +26,6 @@ export class DataTableComponent implements OnInit {
     return this._selectedRows;
   }
 
-  
   @Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   onSelectedRowsChange(event) {
     this.selectedRowsChange.emit(this.selectedRows);
@@ -44,7 +43,7 @@ export class DataTableComponent implements OnInit {
   _query: any = {};
   @Input() set query(val: any) {
     this._query = val;
-    if (this.formGroup){
+    if (this.formGroup) {
       this.formGroup.patchValue(this._query);
       this.onFilterSubmit(null);
     }
@@ -61,6 +60,14 @@ export class DataTableComponent implements OnInit {
   @Output() filter: EventEmitter<any> = new EventEmitter();
   onFilterSubmit(e) {
     this.filterValue = this.formGroup.getRawValue();
+
+    this._allColumns.forEach((column) => {
+      if (column.canFilter && column.property && column.filterControlType === 'time-frame') {
+        this.filterValue[column.property + 'From'] = this.filterValue[column.property + 'TimeFrame'].From.Value;
+        this.filterValue[column.property + 'To'] = this.filterValue[column.property + 'TimeFrame'].To.Value;
+      }
+    });
+
     if (this.isQueryLocalOnly) {
       this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
       this._rows = this._rowsBeforeFilter.filter((row) => {
@@ -68,7 +75,6 @@ export class DataTableComponent implements OnInit {
           return String(row[key]).toLowerCase().includes(String(this.filterValue[key]).toLowerCase());
         });
       });
-      
     } else {
       this.filter.emit({ event: e, query: this.filterValue });
     }
@@ -80,6 +86,32 @@ export class DataTableComponent implements OnInit {
     this._allColumns.forEach((column) => {
       if (column.canFilter && column.property) {
         group[column.property] = new FormControl(this._query[column.property] || '');
+
+        if (column.filterControlType === 'time-frame') {
+          group[column.property + 'TimeFrame'] = this.formBuilder.group({
+            From: this.formBuilder.group({
+              Type: ['Relative'],
+              IsPastDate: [false],
+              Period: ['Day'],
+              Amount: [0],
+              Value: [null],
+              IsNull: [true],
+            }),
+            To: this.formBuilder.group({
+              Type: ['Relative'],
+              IsPastDate: [false],
+              Period: ['Day'],
+              Amount: [0],
+              Value: [null],
+              IsNull: [true],
+            }),
+          })
+        
+          group[column.property + 'From'] = new FormControl(this._query[column.property + 'From'] || '');
+          group[column.property + 'To'] = new FormControl(this._query[column.property + 'To'] || '');
+          // console.log(group);
+
+        }
       }
     });
     this.formGroup = new FormGroup(group);
@@ -137,7 +169,7 @@ export class DataTableComponent implements OnInit {
 
   @Output() dataInfinite: EventEmitter<any> = new EventEmitter();
 
-  constructor(private columnChangesService: ColumnChangesService) {}
+  constructor(private columnChangesService: ColumnChangesService, public formBuilder: FormBuilder) {}
 
   ngOnInit() {}
 
@@ -206,7 +238,9 @@ export class DataTableComponent implements OnInit {
   onSort(event) {
     if (this.isQueryLocalOnly) {
       if (this._isTreeList) {
-        this._rows.forEach((row) => {row.Sort = null});
+        this._rows.forEach((row) => {
+          row.Sort = null;
+        });
         if (event.length) {
         } else {
           event = [{ Dimension: 'levelSort', Order: 'ASC' }];
@@ -223,14 +257,12 @@ export class DataTableComponent implements OnInit {
       });
 
       if (this._isTreeList) {
-        lib.buildFlatTree(this._rows,[]).then((resp: any) => {
+        lib.buildFlatTree(this._rows, []).then((resp: any) => {
           this._rows = [...resp];
         });
       }
-
     } else {
       this.sort.emit(event);
     }
   }
-
 }

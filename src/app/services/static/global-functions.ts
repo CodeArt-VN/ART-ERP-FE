@@ -2,6 +2,8 @@ import { TimeConfig } from "src/app/models/options-interface";
 
 export var lib = {
   formatTimeConfig(time: TimeConfig, isPrevious = false) {
+    if (time.IsNull) return '';
+    
     if (time.Type == 'Absolute') {
       return lib.dateFormat(time.Value, 'dd/mm/yy hh:MM');
     }

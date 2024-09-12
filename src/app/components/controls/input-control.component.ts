@@ -15,6 +15,7 @@ export class InputControlComponent implements OnInit {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
     if (f.id) this.id = f.id;
+    if (f.secondaryId) this.secondaryId = f.secondaryId;
     if (f.label) this.label = f.label;
     if (f.placeholder) this.placeholder = f.placeholder;
     if (f.dataSource) this.dataSource = f.dataSource;
@@ -174,6 +175,10 @@ export class InputControlComponent implements OnInit {
   }
 
   setDate(pDate, control, isFullfillDate = false) {
+    if (control.controls.IsNull?.value) {
+      control.controls.IsNull.setValue(false);
+      control.controls.IsNull.markAsDirty();
+    }
     if (control.controls.Type.value != pDate.Type) {
       control.controls.Type.setValue(pDate.Type);
       control.controls.Type.markAsDirty();
