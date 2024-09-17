@@ -4,8 +4,8 @@
 				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 			</ion-button>
 			<ion-button *ngIf="formGroup.get('Type').value == 'Request' && formGroup.get('Id').value != 0" title="{{ 'Run request' | translate }}"(click)="runRequest()">
-			<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
-		  </ion-button>
+				<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
+				</ion-button>
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
@@ -101,7 +101,7 @@
 					<ion-segment-button value="s7" *ngIf="formGroup.get('Type').value == 'Collection'">
 						<ion-label>{{'Varibles' | translate }}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s8" *ngIf="formGroup.get('Type').value == 'Request'">
+					<ion-segment-button value="s8">
 						<ion-label>{{'Setting' | translate }}</ion-label>
 					</ion-segment-button>
 					<ion-segment-button value="s9">
@@ -411,7 +411,7 @@
 			</div>
 			<!-- Setting -->
 			<ion-grid fixed>
-				<div class="table-contain ion-padding" *ngIf="segmentView == 's8' && formGroup.get('Type').value == 'Request'">
+				<div class="table-contain ion-padding" *ngIf="segmentView == 's8'">
 					<section class="table responsive">
 						<header class="bold">
 							<div class="col-checkbox cell">
@@ -421,6 +421,9 @@
 							</div>
 							<div class="col-name cell">
 								{{'Value' | translate}}
+							</div>
+							<div class="col-name cell">
+								{{'Description' | translate}}
 							</div>
 							<div class="col-icon cell">
 								<ion-icon (click)="deleteItems('Setting')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
@@ -439,7 +442,9 @@
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
-
+								<div class="col-name cell">
+									<app-input-control [field]="{id:'Description', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
+								</div>
 								<div class="col-icon cell clickable" (click)="removeField(j,'Setting')">
 									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
 								</div>

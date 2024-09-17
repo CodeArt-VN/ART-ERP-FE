@@ -129,6 +129,7 @@ export class APICollectionDetailPage extends PageBase {
     this.authorizationList = [
       { Code: 'Bearer', Name: 'Bearer token' },
       { Code: 'Basic', Name: 'Basic auth' },
+      { Code: '', Name: 'Inherit auth from parent' },
     ];
     Promise.all([this.integrationProvider.read(this.query)]).then((values: any) => {
       this.providerDataSource = values[0].data;
@@ -188,7 +189,7 @@ export class APICollectionDetailPage extends PageBase {
           break;
 
         case 'Setting':
-          controls = ['Disabled', 'Key', 'Value'];
+          controls = ['Disabled', 'Key', 'Value','Description'];
           isArray = true;
           break;
         case 'Varibles':
@@ -393,7 +394,7 @@ export class APICollectionDetailPage extends PageBase {
         controls = ['Type', 'Token', 'Username', 'Password'];
         break;
       case 'Setting':
-        controls = ['Disabled', 'Key', 'Value'];
+        controls = ['Disabled', 'Key', 'Value','Description'];
         isArray = true;
         break;
       case 'Varibles':
@@ -536,7 +537,7 @@ export class APICollectionDetailPage extends PageBase {
         });
         let date = new Date();
         let filename =
-          date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' -' + this.formGroup.get('Name').value;
+          date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear() + ' -' + this.formGroup.get('Name').value;
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
