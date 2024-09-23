@@ -48,6 +48,19 @@
               [field]="{id:'Icon', secondaryId: 'Color', label: 'Icon', type: 'icon-color', form: formGroup }"
               (change)="saveChange()"
             ></app-form-control>
+            <div class="c-control">
+							<label class="c-label">
+							  {{'Reference triggers' | translate}}
+							</label>
+							<div class="col-name">
+								<div class="c-input disable">
+									<ng-container  *ngFor="let id of item.ReferenceTriggers; let j = index" >
+										<a [routerLink]="['/integration-trigger', id]" >{{id}}</a>
+										<span *ngIf="j != item.ReferenceTriggers.length-1"> | </span> 
+									</ng-container>
+								</div>
+							</div>
+						</div>
           </ion-col>
         </ion-row>
         <ion-row class="hr-group" style="position: relative">

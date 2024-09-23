@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
@@ -27,7 +27,6 @@ export class APICollectionDetailPage extends PageBase {
   bodyType: any = [];
   dataType: any = [];
   providerDataSource: any = [];
-  item: SYS_APICollection;
   constructor(
     public pageProvider: SYS_APICollectionProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
@@ -35,6 +34,7 @@ export class APICollectionDetailPage extends PageBase {
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
+    private router: Router,
     public modalController: ModalController,
     public alertCtrl: AlertController,
     public formBuilder: FormBuilder,
@@ -160,6 +160,10 @@ export class APICollectionDetailPage extends PageBase {
       this.segmentView = 's1';
     } else {
       this.segmentView = 's2';
+    }
+    if(this.item?.ListIdUsingRequest?.length>0){
+      this.pageConfig.canDelete = false;
+      this.formGroup.controls.Name.disable();
     }
   }
 

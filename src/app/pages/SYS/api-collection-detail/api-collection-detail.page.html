@@ -71,7 +71,37 @@
 					<ion-col size="12" size-sm size-xl="8">
 						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }" (change)="changeURL()"></app-form-control>
 					</ion-col>
-
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3"></ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<div class="c-control">
+							<label class="c-label">
+							  {{'Reference requests' | translate}}
+							</label>
+							<div class="col-name">
+								<div class="c-input disable">
+									<ng-container  *ngFor="let id of item.ListIdUsingRequest; let j = index" >
+										<a [routerLink]="['/api-collection', id]" target="_blank" rel="noopener noreferrer">{{id}}</a>
+										<span *ngIf="j != item.ListIdUsingRequest.length-1"> | </span> 
+									</ng-container>
+								</div>
+							</div>
+						</div>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<div class="c-control">
+							<label class="c-label">
+							  {{'Reference actions' | translate}}
+							</label>
+							<div class="col-name">
+								<div class="c-input disable">
+									<ng-container  *ngFor="let id of item.ListActionUsingRequest; let j = index" >
+										<a [routerLink]="['/integration-action/', id]">{{id}}</a>
+										<span *ngIf="j != item.ListActionUsingRequest.length-1">  | </span> 
+									</ng-container>
+								</div>
+							</div>
+						</div>
+					</ion-col>
 				</ion-row>
 			
 			</form>
