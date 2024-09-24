@@ -116,7 +116,9 @@ export class IntegrationActionDetailPage extends PageBase {
         },
       );
     }
-
+    if(this.item?.ReferenceTriggers?.length>0){
+      this.pageConfig.canDelete = false;
+    }
     // if(this.item.IntegrationProvider){
     //   this.providerDataSource.selected = [this.item.IntegrationProvider];
     // }
