@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
@@ -27,7 +27,6 @@ export class APICollectionDetailPage extends PageBase {
   bodyType: any = [];
   dataType: any = [];
   providerDataSource: any = [];
-  item: SYS_APICollection;
   constructor(
     public pageProvider: SYS_APICollectionProvider,
     public integrationProvider: SYS_IntegrationProviderProvider,
@@ -35,6 +34,7 @@ export class APICollectionDetailPage extends PageBase {
     public env: EnvService,
     public navCtrl: NavController,
     public route: ActivatedRoute,
+    private router: Router,
     public modalController: ModalController,
     public alertCtrl: AlertController,
     public formBuilder: FormBuilder,
@@ -129,6 +129,7 @@ export class APICollectionDetailPage extends PageBase {
     this.authorizationList = [
       { Code: 'Bearer', Name: 'Bearer token' },
       { Code: 'Basic', Name: 'Basic auth' },
+      { Code: '', Name: 'Inherit auth from parent' },
     ];
     Promise.all([this.integrationProvider.read(this.query)]).then((values: any) => {
       this.providerDataSource = values[0].data;
@@ -160,6 +161,10 @@ export class APICollectionDetailPage extends PageBase {
     } else {
       this.segmentView = 's2';
     }
+    if(this.item?.ListIdUsingRequest?.length>0){
+      this.pageConfig.canDelete = false;
+      this.formGroup.controls.Name.disable();
+    }
   }
 
   patchFieldValue() {
@@ -188,7 +193,7 @@ export class APICollectionDetailPage extends PageBase {
           break;
 
         case 'Setting':
-          controls = ['Disabled', 'Key', 'Value'];
+          controls = ['Disabled', 'Key', 'Value','Description'];
           isArray = true;
           break;
         case 'Varibles':
@@ -393,7 +398,7 @@ export class APICollectionDetailPage extends PageBase {
         controls = ['Type', 'Token', 'Username', 'Password'];
         break;
       case 'Setting':
-        controls = ['Disabled', 'Key', 'Value'];
+        controls = ['Disabled', 'Key', 'Value','Description'];
         isArray = true;
         break;
       case 'Varibles':
@@ -536,7 +541,7 @@ export class APICollectionDetailPage extends PageBase {
         });
         let date = new Date();
         let filename =
-          date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' -' + this.formGroup.get('Name').value;
+          date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear() + ' -' + this.formGroup.get('Name').value;
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

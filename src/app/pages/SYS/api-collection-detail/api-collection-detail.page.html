@@ -4,8 +4,8 @@
 				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 			</ion-button>
 			<ion-button *ngIf="formGroup.get('Type').value == 'Request' && formGroup.get('Id').value != 0" title="{{ 'Run request' | translate }}"(click)="runRequest()">
-			<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
-		  </ion-button>
+				<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
+				</ion-button>
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
@@ -71,7 +71,37 @@
 					<ion-col size="12" size-sm size-xl="8">
 						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }" (change)="changeURL()"></app-form-control>
 					</ion-col>
-
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3"></ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<div class="c-control">
+							<label class="c-label">
+							  {{'Reference requests' | translate}}
+							</label>
+							<div class="col-name">
+								<div class="c-input disable">
+									<ng-container  *ngFor="let id of item.ListIdUsingRequest; let j = index" >
+										<a [routerLink]="['/api-collection', id]" target="_blank" rel="noopener noreferrer">{{id}}</a>
+										<span *ngIf="j != item.ListIdUsingRequest.length-1"> | </span> 
+									</ng-container>
+								</div>
+							</div>
+						</div>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<div class="c-control">
+							<label class="c-label">
+							  {{'Reference actions' | translate}}
+							</label>
+							<div class="col-name">
+								<div class="c-input disable">
+									<ng-container  *ngFor="let id of item.ListActionUsingRequest; let j = index" >
+										<a [routerLink]="['/integration-action/', id]">{{id}}</a>
+										<span *ngIf="j != item.ListActionUsingRequest.length-1">  | </span> 
+									</ng-container>
+								</div>
+							</div>
+						</div>
+					</ion-col>
 				</ion-row>
 			
 			</form>
@@ -101,7 +131,7 @@
 					<ion-segment-button value="s7" *ngIf="formGroup.get('Type').value == 'Collection'">
 						<ion-label>{{'Varibles' | translate }}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s8" *ngIf="formGroup.get('Type').value == 'Request'">
+					<ion-segment-button value="s8">
 						<ion-label>{{'Setting' | translate }}</ion-label>
 					</ion-segment-button>
 					<ion-segment-button value="s9">
@@ -411,7 +441,7 @@
 			</div>
 			<!-- Setting -->
 			<ion-grid fixed>
-				<div class="table-contain ion-padding" *ngIf="segmentView == 's8' && formGroup.get('Type').value == 'Request'">
+				<div class="table-contain ion-padding" *ngIf="segmentView == 's8'">
 					<section class="table responsive">
 						<header class="bold">
 							<div class="col-checkbox cell">
@@ -421,6 +451,9 @@
 							</div>
 							<div class="col-name cell">
 								{{'Value' | translate}}
+							</div>
+							<div class="col-name cell">
+								{{'Description' | translate}}
 							</div>
 							<div class="col-icon cell">
 								<ion-icon (click)="deleteItems('Setting')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
@@ -439,7 +472,9 @@
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
-
+								<div class="col-name cell">
+									<app-input-control [field]="{id:'Description', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
+								</div>
 								<div class="col-icon cell clickable" (click)="removeField(j,'Setting')">
 									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
 								</div>

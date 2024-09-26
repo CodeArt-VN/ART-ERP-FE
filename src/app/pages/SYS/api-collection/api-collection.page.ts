@@ -94,13 +94,13 @@ export class APICollectionPage extends PageBase {
                   let obj = {
                     IDProvider : this.formGroup.get('IDProvider').value,
                     apicollection : jsonObject,
-                    ForceUpdate : true
+                    ForceUpdate : false
                   }
                   this.pageProvider.read(queryPostMan, false).then((result: any) => {
                     if (result.data.length > 0) {
                       this.env.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?', null, null, "Ok", "Update")
                       .then((_) => {
-                          obj.ForceUpdate = false;
+                       
                           this.env.showLoading('Please wait for a few moments', 
                           this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                               .then((resp:any) => {
@@ -116,6 +116,7 @@ export class APICollectionPage extends PageBase {
                               })
                       })
                       .catch((_) => {
+                        obj.ForceUpdate = true;
                         this.env.showLoading('Please wait for a few moments', 
                         this.commonService.connect("POST", "SYS/APICollection/ImportJson/",obj).toPromise())
                             .then((resp:any) => {
