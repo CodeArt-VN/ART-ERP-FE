@@ -16,9 +16,10 @@
   <datatable-filter-cell
     *ngIf="isFilter"
     [field]="{
-      form: formGroup,
+      form: (column.filterControlType == 'time-frame')? (formGroup.controls[column.property + 'TimeFrame']) : formGroup,
       type: column.filterControlType,
-      id: column.property,
+      id: column.filterControlType == 'time-frame'? 'From' : column.property,
+      secondaryId: column.filterControlType == 'time-frame'? 'To' : null,
       placeholder: column.name,
       dataSource: column.filterDataSource,
       noCheckDirty: true

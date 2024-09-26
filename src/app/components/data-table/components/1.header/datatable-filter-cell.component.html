@@ -4,11 +4,16 @@
   (change)="onFilterInputChange($event)"
 ></app-input-control>
 <ion-icon
-  *ngIf="!column.filterTemplate && column.canFilter && field.id && field.form.controls[field.id]?.value"
+  *ngIf="!column.filterTemplate && column.canFilter && field.id 
+  && (
+    (column.filterControlType != 'time-frame' && field.form.controls[field.id]?.value  ) 
+    || (column.filterControlType == 'time-frame' && (!field.form.controls.From?.controls.IsNull.value || !field.form.controls.To?.controls.IsNull.value))
+    )"
   class="min-btn"
   (click)="onFilterFieldReset()"
   name="close-circle-outline"
 ></ion-icon>
+
 <ng-template
   *ngIf="column.filterTemplate && column.canFilter"
   [ngTemplateOutlet]="column.filterTemplate"
