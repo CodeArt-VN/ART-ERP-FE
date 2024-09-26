@@ -77,9 +77,12 @@
   $wide-logo-url: '../assets/logos/art-logo-wide.png';
   $small-logo-url: '../assets/logos/art-logo.png';
 
+  $wide-logo-url-contrast: '../assets/logos/art-logo-white-wide.png';
+  $small-logo-url-contrast: '../assets/logos/art-logo-white.png';
+
   .login {
     .logo {
-      background-image: url($wide-logo-url);
+      background-image: url($wide-logo-url-contrast);
     }
   }
   #app-menu {
@@ -203,6 +206,9 @@
   color-scheme: dark;
   $wide-logo-url: '../assets/logos/art-logo-white-wide.png';
   $small-logo-url: '../assets/logos/art-logo-white.png';
+
+  $wide-logo-url-contrast: '../assets/logos/art-logo-wide.png';
+  $small-logo-url-contrast: '../assets/logos/art-logo.png';
 
   .login {
     .logo {
