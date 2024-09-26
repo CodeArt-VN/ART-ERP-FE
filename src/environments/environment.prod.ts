@@ -1,6 +1,6 @@
 export let environment = {
   production: true,
-  appVersion: '0.19.82',
+  appVersion: '0.19.83',
   //appDomain: window.location.origin + '/',
   //appDomain: 'https://demo.inholdings.vn/',
   appDomain: 'https://api.inholdings.vn/',
