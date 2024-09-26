@@ -50,23 +50,23 @@ export class PopoverPage {
     public popoverCtrl: PopoverController,
     public translate: TranslateService,
   ) {
-    this.translate.get('single-date-label').subscribe((message: string) => {
+    this.translate.get('Date').subscribe((message: string) => {
       this._popConfig.singleDateLabel = message;
     });
 
-    this.translate.get('date-range-label').subscribe((message: string) => {
+    this.translate.get('Time').subscribe((message: string) => {
       this._popConfig.dateRangeLabel = message;
     });
 
-    this.translate.get('staff-select-label').subscribe((message: string) => {
+    this.translate.get('Staff').subscribe((message: string) => {
       this._popConfig.staffSelectLabel = message;
     });
 
-    this.translate.get('sale-order-status-select-label').subscribe((message: string) => {
+    this.translate.get('Status').subscribe((message: string) => {
       this._popConfig.saleOrderStatusSelectLabel = message;
     });
 
-    this.translate.get('submit-button-label').subscribe((message: string) => {
+    this.translate.get('Search...').subscribe((message: string) => {
       this._popConfig.submitButtonLabel = message;
     });
   }
@@ -95,7 +95,7 @@ export class PopoverPage {
   initSaleOrderStatus() {
     this.env.getStatus('SalesOrder').then((data) => {
       this.saleOrderStatusList = data;
-      this.translate.get('not-shipping').subscribe((message: string) => {
+      this.translate.get('Not yet delivered').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
           Id: '[101,102,103,104,110]',
           Name: message,
@@ -103,7 +103,7 @@ export class PopoverPage {
         });
       });
 
-      this.translate.get('Please wait for a few moments').subscribe((message: string) => {
+      this.translate.get('Orders waiting for Driver allocation').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
           Id: '[104,113]',
           Name: message,
@@ -111,7 +111,7 @@ export class PopoverPage {
         });
       });
 
-      this.translate.get('pending-approve').subscribe((message: string) => {
+      this.translate.get('Order to be approved').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
           Id: '[103,110]',
           Name: message,
@@ -119,7 +119,7 @@ export class PopoverPage {
         });
       });
 
-      this.translate.get('all').subscribe((message: string) => {
+      this.translate.get('All').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
           Id: '',
           Name: message,
