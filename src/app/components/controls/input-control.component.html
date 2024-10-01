@@ -108,6 +108,39 @@
     </ng-template>
   </ng-select>
 
+
+<!-- ng-select-level -->
+<ng-select
+    *ngSwitchCase="'ng-select-level'"
+    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+    class="c-input"
+    [formControlName]="id"
+    [labelForId]="id"
+    [items]="dataSource"
+    [bindValue]="bindValue"
+    [bindLabel]="bindLabel"
+    [multiple]="multiple"
+    [clearable]="clearable"
+    (change)="onInputChange($event)"
+    appendTo="#ng-select-holder"
+  >
+  <ng-template ng-label-tmp let-i="item">
+      <ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text>
+  </ng-template>
+  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+    <div *ngIf="i">
+      <div>
+        <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
+        <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
+          i[bindLabel ? bindLabel : 'Name']
+        }}</ion-text>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-select>
+
+
   <!-- ng-select-status -->
   <ng-select
     *ngSwitchCase="'ng-select-status'"
@@ -487,7 +520,7 @@
       (click)="presentDatePicker($event, form.controls[id], 'CompareTo')"
     >
       <ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
-      {{ lib.formatTimeConfig(form.controls[id].getRawValue(), true) }}
+      <!-- {{ lib.formatTimeConfig(form.controls[id].getRawValue(), true) }} -->
     </ion-button>
   </span>
 

@@ -153,7 +153,9 @@ import { lib } from 'src/app/services/static/global-functions';
           [bindLabel]="field.bindLabel ? field.bindLabel : 'Name'"
           [bindValue]="field.bindValue"
           [virtualScroll]="true"
+          appendTo="#ng-select-holder"
           placeholder="Chọn đơn vị..."
+          
         >
           <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i">
