@@ -19,6 +19,11 @@ export var thirdPartyLibs = {
       { url: 'https://cdn.appcenter.vn/libs/quill/2.0.2/quill.js', type: 'js' },
     ],
   },
+  ggMap: {
+    source: [
+      { url: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAtyM-Th784YwQUTquYa0WlFIj8C6RB2uM', type: 'js' },
+    ],
+  },
 };
 
 
