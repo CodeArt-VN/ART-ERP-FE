@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { forwardRef, Inject, Injectable, Injector } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
 
@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
+import { CommonService } from './common.service';
+import { LIST_AddressSubdivisionProvider } from '../static/services.service';
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +87,9 @@ export class EnvService {
 
   /** Check is map library loaded */
   isMapLoaded = false;
+
+  /** Get all Address subdivision */
+  addressSubdivisionList = [];
 
   /** Get network infomation */
   networkInfo: any = {
