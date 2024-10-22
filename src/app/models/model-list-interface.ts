@@ -280,52 +280,72 @@ export interface AC_Case
 export interface AC_JournalEntry
 {
     IDBranch?: number;
+    IDPeriod?: number;
     Id?: number;
-    RefID?: number;
     Code?: string;
     Name?: string;
     ForeignName?: string;
     Remark?: string;
     ForeignRemark?: string;
+    Status?: string;
+    DocumentEntry?: number;
+    DocumentType?: string;
+    TotalInLocalCurrency?: number;
+    TotalInForeignCurrency?: number;
+    Currency?: string;
+    CurrencyRate?: number;
+    Total?: number;
+    PostDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    ReverseTransaction?: number;
+    ReversalDate?: Date;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
-    ModifiedBy?: string;
     CreatedDate?: Date;
+    ModifiedBy?: string;
     ModifiedDate?: Date;
-    OriginalJournalType?: number;
-    RefBase?: number;
-    Total?: number;
-    DueDate?: Date;
-    DocumentDate?: Date;
-    PostingPeriod?: number;
-    DataSource?: number;
     
 }
 
 export interface AC_JournalEntryRow
 {
-    IDBranch?: number;
+    IDJournalEntry?: number;
+    IDPostingPeriod?: number;
+    IDAccount?: number;
+    IDOffsetAccount?: number;
     Id?: number;
-    IDTransaction?: number;
-    RefTransaction?: number;
-    Line?: number;
-    Account?: number;
-    AccountCode?: string;
+    Name?: string;
+    Sort?: number;
+    Account?: string;
+    OffsetAccount?: string;
+    Currency?: string;
+    CurrencyRate?: number;
+    DebitInLocalCurrency?: number;
+    DebitInForeignCurrency?: number;
     Debit?: number;
+    CreditInLocalCurrency?: number;
+    CreditInForeignCurrency?: number;
     Credit?: number;
     DueDate?: Date;
-    IDAccount?: number;
-    RefAccountCode?: string;
-    OffsetAccount?: number;
-    RefOffsetAccount?: string;
-    RefCFTId?: number;
-    RefCFWId?: number;
-    Remark?: string;
+    DocumentEntry?: number;
+    DocumentType?: string;
     DocumentDate?: Date;
-    PostingPeriod?: number;
+    DocumentLine?: number;
+    Remark?: string;
     DistributionRule?: string;
+    CostingCode1?: string;
+    CostingCode2?: string;
+    CostingCode3?: string;
+    CostingCode4?: string;
+    CostingCode5?: string;
+    TaxGroup?: string;
+    TaxRate?: number;
+    BaseAmount?: number;
+    IsTaxLine?: boolean;
+    IsClosed?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
@@ -662,6 +682,20 @@ export interface BANK_Account
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    IDBank?: number;
+    IsLoanAccount?: boolean;
+    IsInDue?: boolean;
+    FixedPeriod?: number;
+    InterestRate?: number;
+    CurentInterestRate?: number;
+    IsStepdownInterestRateScheme?: boolean;
+    IsEarlyRepayment?: boolean;
+    LoanTenor?: number;
+    DisbursementDate?: Date;
+    EndDate?: Date;
+    IDAccountDebtCollection?: number;
+    TotalOutstandingLoans?: number;
+    PrincipalPaid?: number;
     
 }
 
@@ -767,6 +801,25 @@ export interface BANK_OutgoingPayment
     
 }
 
+export interface BANK_OutgoingPaymentDetail
+{
+    IDOutgoingpayment?: number;
+    Id?: number;
+    DocumentType?: string;
+    DocumentEntry?: number;
+    Amount?: number;
+    ModifiedDate?: Date;
+    Remark?: string;
+    ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    
+}
+
 export interface BANK_PaymentTerm
 {
     IDBranch?: number;
@@ -816,7 +869,6 @@ export interface BANK_Transaction
 {
     IDBranch?: number;
     IDAccount?: number;
-    IDContact?: number;
     IDBusinessPartner?: number;
     Id?: number;
     Remark?: string;
@@ -2586,18 +2638,28 @@ export interface HRM_StaffAcademicLevel
 export interface HRM_StaffAddress
 {
     Id?: number;
-    Code?: string;
-    Name?: string;
+    IDStaff?: number;
+    AddressLine1?: string;
+    AddressLine2?: string;
+    Type?: string;
+    Country?: string;
+    Province?: string;
+    District?: string;
+    Ward?: string;
+    ZipCode?: string;
+    Lat?: string;
+    Long?: string;
+    Contact?: string;
+    Phone1?: string;
+    Phone2?: string;
     Remark?: string;
     Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    PermanentAddress?: string;
-    TemporaryAddress?: string;
-    HomeAddress?: string;
-    IsDeleted?: boolean;
     
 }
 
@@ -3590,6 +3652,30 @@ export interface LIST_AddressSubdivision
     ToDate?: Date;
     Remark?: string;
     ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface LIST_Bank
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Type?: string;
+    Icon?: string;
+    Color?: string;
+    Logo?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Address?: string;
+    Hotline?: string;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -5323,6 +5409,15 @@ export interface SYS_APICollection
     
 }
 
+export interface SYS_APIController
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    
+}
+
 export interface SYS_AppleAppRedemption
 {
     Id?: number;
@@ -6042,6 +6137,90 @@ export interface SYS_VeifyPhoneNumber
     VerifyCode?: string;
     IsVerified?: boolean;
     VerifiedDate?: Date;
+    
+}
+
+export interface TRACK_Link
+{
+    IDBranch?: number;
+    Id?: number;
+    Type?: string;
+    LongURL?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    QRCodeLevel?: string;
+    QRCodeMode?: string;
+    QRCodeVersion?: string;
+    ExpiryDate?: Date;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface TRACK_LinkLog
+{
+    IDLink?: number;
+    Id?: number;
+    Code?: string;
+    Domain?: string;
+    IsFirstEventInVisit?: string;
+    IsLastEventInVisit?: string;
+    IsFirstEvent?: string;
+    IsCurrentEvent?: string;
+    EventName?: string;
+    EventDisplayName?: string;
+    Integration?: string;
+    Platform?: string;
+    IsHTTPS?: string;
+    EventType?: string;
+    EventDuration?: string;
+    EventTimestamp?: string;
+    Triggerable?: string;
+    CampaignName?: string;
+    CampaignSource?: string;
+    CampaignMedium?: string;
+    CampaignContent?: string;
+    CampaignTerm?: string;
+    CampaignID?: string;
+    FirstEventTimestamp?: string;
+    FirstReferrerType?: string;
+    FirstReferrerURL?: string;
+    FirstLandingPage?: string;
+    FirstCampaignName?: string;
+    FirstCampaignSource?: string;
+    FirstCampaignMedium?: string;
+    FirstCampaignContent?: string;
+    FirstCampaignTerm?: string;
+    City?: string;
+    State?: string;
+    Country?: string;
+    Continent?: string;
+    TimeZone?: string;
+    TimeZoneOffset?: string;
+    DeviceType?: string;
+    IPAddress?: string;
+    ScreenResolution?: string;
+    Language?: string;
+    OperatingSystem?: string;
+    Browser?: string;
+    VisitDate?: string;
+    HourOfVisit?: string;
+    DayOfVisit?: string;
+    WeekOfVisit?: string;
+    MonthOfVisit?: string;
+    YearOfVisit?: string;
+    DurationOfVisit?: string;
+    ReferrerType?: string;
+    ReferrerURL?: string;
+    LandingPagePath?: string;
+    TotalOfEventsperVisit?: string;
+    IsFirstVisit?: string;
     
 }
 
@@ -6964,6 +7143,15 @@ export interface WMS_Item
     RefNum?: number;
     RefChar?: string;
     IsLocked?: boolean;
+    Attribute1?: string;
+    Attribute2?: string;
+    Attribute3?: string;
+    Attribute4?: string;
+    Attribute5?: string;
+    Attribute6?: string;
+    Attribute7?: string;
+    Attribute8?: string;
+    Attribute9?: string;
     
 }
 
