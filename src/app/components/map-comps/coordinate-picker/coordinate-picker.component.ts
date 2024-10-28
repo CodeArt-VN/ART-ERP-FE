@@ -22,6 +22,16 @@ export class CoordinatePickerComponent implements OnInit {
     this.markerOptions.draggable = value;
   }
   @Input() set address(value) {
+    if(value.Lat){
+      try{
+        value.Lat =parseFloat(value.Lat.replace(',', '.'));
+      }catch(err){}
+    }
+    if(value.Long){
+      try{
+        value.Long = parseFloat(value.Long.replace(',', '.'));
+      }catch(err){}
+    }
     this.formGroup?.patchValue(value);
     this.formGroup?.markAsPristine();
   }
@@ -132,7 +142,7 @@ export class CoordinatePickerComponent implements OnInit {
       )
       .toPromise()
       .then((data: any) => {
-        this.geocoding = data.results[0].geometry.location;
+        this.geocoding = data.results[0]?.geometry?.location;
         console.log(data.results[0]);
         console.log(this.geocoding);
 

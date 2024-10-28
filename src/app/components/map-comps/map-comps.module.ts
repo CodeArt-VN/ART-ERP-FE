@@ -7,10 +7,11 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
 import { MapViewComponent } from './map-view/map-view.component';
 import { CoordinatePickerComponent } from './coordinate-picker/coordinate-picker.component';
+import { AddressComponent } from './address/address.component';
 
 @NgModule({
   imports: [IonicModule, CommonModule, ShareModule, RouterModule, FormsModule, ReactiveFormsModule, GoogleMapsModule],
-  declarations: [MapViewComponent, CoordinatePickerComponent],
-  exports: [MapViewComponent, CoordinatePickerComponent],
+  declarations: [MapViewComponent, CoordinatePickerComponent,AddressComponent],
+  exports: [MapViewComponent, CoordinatePickerComponent,AddressComponent],
 })
 export class MapCompsModule {}

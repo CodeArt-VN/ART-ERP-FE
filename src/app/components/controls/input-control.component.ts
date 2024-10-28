@@ -162,6 +162,7 @@ export class InputControlComponent implements OnInit {
   }
 
   pickDate(pDate, isQuickPick = false) {
+    if(pDate.Type =='Absolute') this.pickerControl.get('Amount').setValue(0);
     if (isQuickPick) {
       this.setDate(pDate.from, this.pickerControl, false);
       this.setDate(pDate.to, this.form.controls[this.secondaryId], true);
