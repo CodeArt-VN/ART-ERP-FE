@@ -1,3 +1,8 @@
+<style>
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:has(.hide-all) {
+    padding: 0 !important;
+  }
+</style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
   <!-- default -->
   <input
@@ -42,16 +47,14 @@
     />
   </ng-container>
 
-
-
-<ion-toggle *ngSwitchCase="'toggle'"
-  class="c-checkbox"
-  [id]="id"
-  [name]="id"
-  [formControlName]="id"
-  (ionChange)="onInputChange($event)"
- 
-></ion-toggle>
+  <ion-toggle
+    *ngSwitchCase="'toggle'"
+    class="c-checkbox"
+    [id]="id"
+    [name]="id"
+    [formControlName]="id"
+    (ionChange)="onInputChange($event)"
+  ></ion-toggle>
 
   <!-- select -->
   <select
@@ -81,22 +84,26 @@
     [bindLabel]="bindLabel"
     [multiple]="multiple"
     [clearable]="clearable"
+    [searchFn]="searchFn"
     (change)="onInputChange($event)"
     appendTo="#ng-select-holder"
   >
-  <ng-template ng-label-tmp let-i="item">
-    <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
-</ng-template>
-<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-<div *ngIf="i">
-  <div>
-    <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
-      i[bindLabel ? bindLabel : 'Name'] | translate
-    }}</ion-text>
-  </div>
-</div>
-</ng-template>
+    <ng-template ng-label-tmp let-i="item">
+      <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" *ngIf="isTree">
+      <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
+    </ng-template>
 
+    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree">
+      <div *ngIf="i">
+        <div>
+          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
+            i[bindLabel ? bindLabel : 'Name'] | translate
+          }}</ion-text>
+        </div>
+      </div>
+    </ng-template>
   </ng-select>
 
   <!-- ng-select-async -->
@@ -121,9 +128,8 @@
     </ng-template>
   </ng-select>
 
-
-<!-- ng-select-level -->
-<ng-select
+  <!-- ng-select-level -->
+  <ng-select
     *ngSwitchCase="'ng-select-level'"
     [ngClass]="{ 'no-check-dirty': noCheckDirty }"
     class="c-input"
@@ -132,27 +138,26 @@
     [items]="dataSource"
     [bindValue]="bindValue"
     [bindLabel]="bindLabel"
+    [searchFn]="searchFn"
     [multiple]="multiple"
     [clearable]="clearable"
     (change)="onInputChange($event)"
     appendTo="#ng-select-holder"
   >
-  <ng-template ng-label-tmp let-i="item">
+    <ng-template ng-label-tmp let-i="item">
       <ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text>
-  </ng-template>
-  <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-    <div *ngIf="i">
-      <div>
-        <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-        <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
-          i[bindLabel ? bindLabel : 'Name']| translate
-        }}</ion-text>
+    </ng-template>
+    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+      <div *ngIf="i">
+        <div>
+          <ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
+          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
+            i[bindLabel ? bindLabel : 'Name'] | translate
+          }}</ion-text>
+        </div>
       </div>
-    </div>
-  </ng-template>
-
-</ng-select>
-
+    </ng-template>
+  </ng-select>
 
   <!-- ng-select-status -->
   <ng-select
@@ -175,6 +180,7 @@
     </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
       <div *ngIf="i">
+        <ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
         <ion-text [color]="i.Color" [ngOptionHighlight]="search">{{ i.Name | translate }}</ion-text>
       </div>
     </ng-template>
@@ -630,3 +636,24 @@
     </ng-template>
   </ion-popover>
 </ng-container>
+
+<!-- Declare Template treeConfig -->
+<ng-template #treeConfigTemplate let-item="item" let-search="searchTerm">
+  <ng-container *ngIf="item && isTree">
+    <div style="width: 100%; position: relative" [ngClass]="{ 'hide-all': item.isHidedSearchBox }">
+      <div>
+        <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
+        <ion-text [color]="item.Color || 'dark'">{{ item[bindLabel || 'Name'] | translate }}</ion-text>
+        <!-- <span *ngIf="isTree && item.HasChild" (click)="toggleCollapse(item)" class="collapse-icon">{{ item.isCollapsed ? '+' : '-' }}</span> -->
+        <ion-icon
+          *ngIf="item.HasChild"
+          role="img"
+          (click)="$event.stopPropagation(); toggleCollapse(item)"
+          [name]="item.isCollapsed == false? 'chevron-forward-outline' : 'chevron-down-outline'"
+          style="flex: end; justify-content: flex-end; position: absolute; right: 0"
+        ></ion-icon>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
+<!-- end Template -->
