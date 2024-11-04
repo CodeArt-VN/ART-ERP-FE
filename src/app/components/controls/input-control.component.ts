@@ -68,11 +68,11 @@ export class InputControlComponent implements OnInit {
     if(this.treeConfig){
       if(this.treeConfig.searchFn) this.searchFn = this.treeConfig.searchFn;
       if(this.treeConfig.isTree) this.isTree = this.treeConfig.isTree;
-      if(this.treeConfig.isCollapsed ==false){
+      if(!this.treeConfig.isCollapsed){
         this.isCollapsed  = this.treeConfig.isCollapsed ;
-        this.dataSource.forEach(s=>{
-          s.isCollapsed =  !this.isCollapsed;
-          this.toggleCollapse(s);
+        this.dataSource.forEach(i=>{
+          i.isCollapsed =  this.isCollapsed;
+          this.toggleCollapse(i);
         })
       }
     }
