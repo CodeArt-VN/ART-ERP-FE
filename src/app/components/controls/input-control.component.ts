@@ -27,6 +27,7 @@ export class InputControlComponent implements OnInit {
   }
 
   @Input() form: FormGroup;
+  @Input()  treeConfig
 
   @Input() type: string = 'text';
 
@@ -53,13 +54,29 @@ export class InputControlComponent implements OnInit {
 
   @Input() inputControlTemplate: any;
 
+  @Input() searchFn? : any;
+
+  @Input() isTree : boolean = false;
+  @Input() isCollapsed : boolean = true;
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
     this.lib = lib;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.treeConfig){
+      if(this.treeConfig.searchFn) this.searchFn = this.treeConfig.searchFn;
+      if(this.treeConfig.isTree) this.isTree = this.treeConfig.isTree;
+      if(!this.treeConfig.isCollapsed){
+        this.isCollapsed  = this.treeConfig.isCollapsed ;
+        this.dataSource.forEach(i=>{
+          i.isCollapsed =  this.isCollapsed;
+          this.toggleCollapse(i);
+        })
+      }
+    }
+  }
 
   ngOnDestroy() {
     this.dismissDatePicker();
@@ -207,5 +224,19 @@ export class InputControlComponent implements OnInit {
         control.controls.Value.markAsDirty();
       }
     }
+  }
+  toggleCollapse(item: any) {
+    item.isCollapsed = !item.isCollapsed;
+    const hidedAllChildren = (IDParent)=>{
+      this.dataSource.filter(d=> d.IDParent == IDParent).forEach(child=> {
+        child.isHidedSearchBox = !item.isCollapsed;
+        if(this.dataSource.some(checkExistChild=> child.Id == checkExistChild.IDParent))
+        {
+          hidedAllChildren(child.Id);
+        }
+      })
+    }
+    hidedAllChildren(item.Id);
+
   }
 }

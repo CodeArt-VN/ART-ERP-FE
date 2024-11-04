@@ -21,7 +21,6 @@ export class FormControlComponent implements OnInit {
     return this._inputControlTemplateInput || this._inputControlTemplateQuery;
   }
 
-
   @Input() set field(f: InputControlField) {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
@@ -61,6 +60,7 @@ export class FormControlComponent implements OnInit {
   @Input() clearable: boolean = false;
 
   @Input() noCheckDirty: boolean = false;
+  @Input() treeConfig:any;
 
   get isValid() {
     return this.field.form.controls[this.field.id].valid;
