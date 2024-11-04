@@ -208,7 +208,7 @@
         <a
           [ngClass]="{ 'no-check-dirty': noCheckDirty }"
           class="clickable"
-          (click)="nav('/business-partner/' + i.Id)"
+          (click)="onNav('/business-partner/' + i.Id)"
           (mousedown)="$event.stopPropagation()"
           >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
         ></a>
@@ -257,7 +257,7 @@
         <a
           [ngClass]="{ 'no-check-dirty': noCheckDirty }"
           class="clickable"
-          (click)="nav('/item/' + i.Id)"
+          (click)="onNav('/item/' + i.Id)"
           (mousedown)="$event.stopPropagation()"
           >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
         ></a>
@@ -306,7 +306,7 @@
         <a
           [ngClass]="{ 'no-check-dirty': noCheckDirty }"
           class="clickable"
-          (click)="nav('/schema/' + i.Id)"
+          (click)="onNav('/schema/' + i.Id)"
           (mousedown)="$event.stopPropagation()"
           >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
         ></a>
