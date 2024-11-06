@@ -35,6 +35,11 @@ export class FormControlComponent implements OnInit {
     if (f.multiple) this.multiple = f.multiple;
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+    if(f.treeConfig){
+      if(f.treeConfig.isTree)this.isTree = f.treeConfig.isTree;
+      if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
+      if(f.treeConfig.isCollapsed)this.isCollapsed = f.treeConfig.isCollapsed;
+    }
   }
 
   @Input() form: FormGroup;
@@ -60,7 +65,12 @@ export class FormControlComponent implements OnInit {
   @Input() clearable: boolean = false;
 
   @Input() noCheckDirty: boolean = false;
-  @Input() treeConfig:any;
+
+  @Input() isTree?: boolean;
+
+  @Input() isCollapsed? : boolean;
+  
+  @Input() searchFn? : any;
 
   get isValid() {
     return this.field.form.controls[this.field.id].valid;

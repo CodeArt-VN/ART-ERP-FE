@@ -187,7 +187,7 @@
   </ng-select>
 
   <!-- ng-select-bp -->
-  <ng-select
+  <ng-select 
     *ngSwitchCase="'ng-select-bp'"
     [ngClass]="{ 'no-check-dirty': noCheckDirty }"
     class="c-input"
@@ -201,9 +201,8 @@
     [bindValue]="bindValue"
     placeholder="{{ placeholder | translate }}"
     (change)="onInputChange($event)"
-    appendTo="#ng-select-holder"
   >
-    <ng-template ng-label-tmp let-i="item">
+    <ng-template ng-label-tmp let-i="item" let-clear="clear">
       <div *ngIf="i.Id">
         <a
           [ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -213,6 +212,7 @@
           >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
         ></a>
         <small [title]="i.Name"> {{ i.Name }}</small>
+        <ion-icon  *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
       </div>
     </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
@@ -649,7 +649,7 @@
           *ngIf="item.HasChild"
           role="img"
           (click)="$event.stopPropagation(); toggleCollapse(item)"
-          [name]="item.isCollapsed == false? 'chevron-forward-outline' : 'chevron-down-outline'"
+          [name]="item.isCollapsed? 'chevron-forward-outline' : 'chevron-down-outline'"
           style="flex: end; justify-content: flex-end; position: absolute; right: 0"
         ></ion-icon>
       </div>

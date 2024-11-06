@@ -44,4 +44,10 @@ export interface InputControlField {
   clearable?: boolean;
 
   noCheckDirty?: boolean;
+
+  treeConfig?: {
+    isTree? : boolean;
+    isCollapsed? : boolean;
+    searchFn? : any;
+  }
 }
