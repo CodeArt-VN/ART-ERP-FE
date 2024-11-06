@@ -24,9 +24,15 @@ export class InputControlComponent implements OnInit {
     if (f.multiple) this.multiple = f.multiple;
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+    if(f.treeConfig){
+      if(f.treeConfig.isTree)this.isTree = f.treeConfig.isTree;
+      if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
+      if(f.treeConfig.isCollapsed)this.isCollapsed = f.treeConfig.isCollapsed;
+    }
   }
 
   @Input() form: FormGroup;
+  @Input()  treeConfig
 
   @Input() type: string = 'text';
 
@@ -53,13 +59,24 @@ export class InputControlComponent implements OnInit {
 
   @Input() inputControlTemplate: any;
 
+  @Input() searchFn? : any;
+
+  @Input() isTree : boolean = false;
+  @Input() isCollapsed? : boolean ;
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
     this.lib = lib;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.isCollapsed != undefined){
+      this.dataSource.forEach(i=>{
+        i.isCollapsed =  this.isCollapsed;
+        this.hidedAllChildren(i)
+      })
+    }
+  }
 
   ngOnDestroy() {
     this.dismissDatePicker();
@@ -67,7 +84,10 @@ export class InputControlComponent implements OnInit {
 
   @Output() change = new EventEmitter();
   @Output() inputChange = new EventEmitter();
-
+  @Output() select = new EventEmitter();
+  onSelect(event)  {
+    this.select.emit(event);
+  } 
   onInputChange(event) {
     this.inputChange.emit(event);
     if (
@@ -207,5 +227,18 @@ export class InputControlComponent implements OnInit {
         control.controls.Value.markAsDirty();
       }
     }
+  }
+  toggleCollapse(item: any) {
+    item.isCollapsed = !item.isCollapsed;
+    this.hidedAllChildren(item.Id);
+  }
+   hidedAllChildren = (item)=>{
+    this.dataSource.filter(d=> d.IDParent == item.Id).forEach(child=> {
+      child.isHidedSearchBox = item.isCollapsed;
+      if(this.dataSource.some(checkExistChild=> child.Id == checkExistChild.IDParent))
+      {
+        this.hidedAllChildren(child);
+      }
+    })
   }
 }

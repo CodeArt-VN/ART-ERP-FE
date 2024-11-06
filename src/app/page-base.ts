@@ -32,13 +32,12 @@ export abstract class PageBase implements OnInit {
   pageProvider;
   modalController;
   loadingController;
-
   //Detail page
   id: any;
   cdr;
   formGroup: FormGroup;
   submitAttempt = false;
-
+  
   item = null;
   items: any = [];
   selectedItems: any = [];
@@ -1019,10 +1018,11 @@ export abstract class PageBase implements OnInit {
   }
 
   searchResultIdList = { term: '', ids: [] };
-  searchShowAllChildren = (term: string, item: any) => {
+  searchShowAllChildren (term: string, item: any, dataSource = []) :any {
     if (this.searchResultIdList.term != term) {
       this.searchResultIdList.term = term;
-      this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
+      let source = dataSource.length>0 ? dataSource :  this.env.branchList
+      this.searchResultIdList.ids = lib.searchTreeReturnId(source, term);
     }
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };
