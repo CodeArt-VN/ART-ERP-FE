@@ -24,6 +24,11 @@ export class InputControlComponent implements OnInit {
     if (f.multiple) this.multiple = f.multiple;
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+    if(f.treeConfig){
+      if(f.treeConfig.isTree)this.isTree = f.treeConfig.isTree;
+      if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
+      if(f.treeConfig.isCollapsed)this.isCollapsed = f.treeConfig.isCollapsed;
+    }
   }
 
   @Input() form: FormGroup;
@@ -57,7 +62,7 @@ export class InputControlComponent implements OnInit {
   @Input() searchFn? : any;
 
   @Input() isTree : boolean = false;
-  @Input() isCollapsed : boolean = true;
+  @Input() isCollapsed? : boolean ;
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
@@ -65,16 +70,11 @@ export class InputControlComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.treeConfig){
-      if(this.treeConfig.searchFn) this.searchFn = this.treeConfig.searchFn;
-      if(this.treeConfig.isTree) this.isTree = this.treeConfig.isTree;
-      if(!this.treeConfig.isCollapsed){
-        this.isCollapsed  = this.treeConfig.isCollapsed ;
-        this.dataSource.forEach(i=>{
-          i.isCollapsed =  this.isCollapsed;
-          this.toggleCollapse(i);
-        })
-      }
+    if(this.isCollapsed != undefined){
+      this.dataSource.forEach(i=>{
+        i.isCollapsed =  this.isCollapsed;
+        this.hidedAllChildren(i)
+      })
     }
   }
 
@@ -84,7 +84,10 @@ export class InputControlComponent implements OnInit {
 
   @Output() change = new EventEmitter();
   @Output() inputChange = new EventEmitter();
-
+  @Output() select = new EventEmitter();
+  onSelect(event)  {
+    this.select.emit(event);
+  } 
   onInputChange(event) {
     this.inputChange.emit(event);
     if (
@@ -227,16 +230,15 @@ export class InputControlComponent implements OnInit {
   }
   toggleCollapse(item: any) {
     item.isCollapsed = !item.isCollapsed;
-    const hidedAllChildren = (IDParent)=>{
-      this.dataSource.filter(d=> d.IDParent == IDParent).forEach(child=> {
-        child.isHidedSearchBox = !item.isCollapsed;
-        if(this.dataSource.some(checkExistChild=> child.Id == checkExistChild.IDParent))
-        {
-          hidedAllChildren(child.Id);
-        }
-      })
-    }
-    hidedAllChildren(item.Id);
-
+    this.hidedAllChildren(item.Id);
+  }
+   hidedAllChildren = (item)=>{
+    this.dataSource.filter(d=> d.IDParent == item.Id).forEach(child=> {
+      child.isHidedSearchBox = item.isCollapsed;
+      if(this.dataSource.some(checkExistChild=> child.Id == checkExistChild.IDParent))
+      {
+        this.hidedAllChildren(child);
+      }
+    })
   }
 }
