@@ -32,7 +32,6 @@ export class InputControlComponent implements OnInit {
   }
 
   @Input() form: FormGroup;
-  @Input()  treeConfig
 
   @Input() type: string = 'text';
 
@@ -230,7 +229,7 @@ export class InputControlComponent implements OnInit {
   }
   toggleCollapse(item: any) {
     item.isCollapsed = !item.isCollapsed;
-    this.hidedAllChildren(item.Id);
+    this.hidedAllChildren(item);
   }
    hidedAllChildren = (item)=>{
     this.dataSource.filter(d=> d.IDParent == item.Id).forEach(child=> {
