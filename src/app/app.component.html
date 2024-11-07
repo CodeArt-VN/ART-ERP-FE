@@ -28,7 +28,7 @@
           </ion-toolbar>
         </div>
         <div class="app-logo-wrapper">
-          <a [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
+          <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
           <div class="c-control branch-select" *ngIf="env.branchList.length">
             <ng-select
               appendTo="#ng-select-holder"
