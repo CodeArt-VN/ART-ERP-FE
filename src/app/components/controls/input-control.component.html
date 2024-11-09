@@ -86,8 +86,8 @@
     [clearable]="clearable"
     [searchFn]="searchFn"
     (change)="onInputChange($event)"
-    appendTo="#ng-select-holder"
-  >
+    >
+    <!-- appendTo="#ng-select-holder" -->
     <ng-template ng-label-tmp let-i="item">
       <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
     </ng-template>
@@ -223,11 +223,11 @@
               i.Code
             }}</span></b
           >
-          <span style="white-space: normal"> {{ i.Name }}</span>
+          <span style="white-space: normal"  class="important" [ngOptionHighlight]="search"> {{ i.Name }}</span>
           <span *ngIf="i.WorkPhone">
             |
             <small>
-              <b>{{ i.WorkPhone }}</b></small
+              <b  class="important" [ngOptionHighlight]="search">{{ i.WorkPhone }}</b></small
             ></span
           >
         </div>
