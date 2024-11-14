@@ -34,7 +34,6 @@ export class InputControlComponent implements OnInit {
     if(this.type == 'ng-select-branch')this.configBranch();
     if(f.treeConfig){
       if(f.treeConfig.isTree != undefined)this.isTree = f.treeConfig.isTree;
-      if(f.treeConfig.searchFnDefault)this.searchFn = this.searchShowAllChildren;
       if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
       if(f.treeConfig.isCollapsed != undefined)this.isCollapsed = f.treeConfig.isCollapsed;
       if(f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
@@ -89,8 +88,8 @@ export class InputControlComponent implements OnInit {
     this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
   }
 
-  ngOnInit() {}
-  
+  ngOnInit() { if(this.searchFnDefault && !this.searchFn)this.searchFn = this.searchShowAllChildren;}
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['dataSource'] ) {
       if (this.type === 'ng-select-branch') {
@@ -110,7 +109,6 @@ export class InputControlComponent implements OnInit {
         let id = this.form.get(this.id)?.value;
         let item = this.dataSource.find(d=>d[this.bindValue] == id);
         if(item?.Id) parents = this.getParent(item.Id,[]);
-
       }
       // collapsed|unCollapsed the rest of dataSorce
       this.dataSource.forEach(i => {
@@ -276,12 +274,36 @@ export class InputControlComponent implements OnInit {
     }
   }
 
+  onSearch(data) { // back to collapsed state 
+    if(this.searchFn == this.searchShowAllChildren){
+      if(!data.term){
+        this.dataSource.filter(d=> d.showStateBeforeSearch != undefined).forEach(p=>{
+          p.showdetail = !p.showStateBeforeSearch;
+          p.showStateBeforeSearch = undefined;
+          this.toggleRow(p);
+        });
+      }
+    }
+  }
+  
   searchResultIdList = { term: '', ids: [] };
   searchShowAllChildren (term: string, item: any) :any {
+    let parents = [];
     if (this.searchResultIdList.term != term) {
       this.searchResultIdList.term = term;
       this.searchResultIdList.ids = lib.searchTreeReturnId( this.dataSource, term);
     }
+    if(item?.Id) parents = this.getParent(item.Id,[]);
+    if(parents.length>0){
+      parents.forEach(p=> {
+        if(p.showStateBeforeSearch == undefined){
+          p.showStateBeforeSearch =  p.showdetail;
+        }
+        p.showdetail = false;
+        this.toggleRow(p)
+      })
+    }
+  
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };
   // #region private
