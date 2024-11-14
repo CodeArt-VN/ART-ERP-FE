@@ -21,9 +21,19 @@
     [multiple]="multiple"
     [clearable]="clearable"
     [noCheckDirty]="noCheckDirty"
+
     [isTree]="isTree"
+    [isCollapsed]="isCollapsed"
     [searchFn]="searchFn"
-    [isCollapsed] ="isCollapsed"
+    [searchFnDefault]="searchFnDefault"
+    [rootCollapsed]="rootCollapsed"
+
+    [showingType]="showingType"
+    [showingMode]="showingMode"
+    [showingDisable]="showingDisable"
+    [showingMode]="showingMode"
+    [selectedBranch]="selectedBranch"
+
     (change)="onChange($event)"
     (inputChange)="onInputChange($event)"
     (nav)="onNav($event)"

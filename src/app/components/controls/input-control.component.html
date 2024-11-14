@@ -129,6 +129,40 @@
     </ng-template>
   </ng-select>
 
+  <ng-select
+    *ngSwitchCase="'ng-select-branch'"
+    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+    class="c-input"
+    [formControlName]="id"
+    [labelForId]="id"
+    [items]="dataSource"
+    [bindValue]="bindValue"
+    [bindLabel]="bindLabel"
+    [multiple]="multiple"
+    [clearable]="clearable"
+    [searchFn]="searchFn"
+    (change)="onInputChange($event)"
+    appendTo="#ng-select-holder"
+    >
+    <!-- appendTo="#ng-select-holder" -->
+    <ng-template ng-label-tmp let-i="item">
+      <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" *ngIf="isTree">
+      <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
+    </ng-template>
+
+    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree">
+      <div *ngIf="i">
+        <div>
+          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
+            i[bindLabel ? bindLabel : 'Name'] | translate
+          }}</ion-text>
+        </div>
+      </div>
+    </ng-template>
+  </ng-select>
+
   <!-- ng-select-level -->
   <ng-select
     *ngSwitchCase="'ng-select-level'"
@@ -640,17 +674,20 @@
 <!-- Declare Template treeConfig -->
 <ng-template #treeConfigTemplate let-item="item" let-search="searchTerm">
   <ng-container *ngIf="item && isTree">
-    <div style="width: 100%; position: relative" [ngClass]="{ 'hide-all': item.isHidedSearchBox }">
-      <div>
+    <div style="width:100%;position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
+      <div class="flex-left">
         <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
-        <ion-text [color]="item.Color || 'dark'">{{ item[bindLabel || 'Name'] | translate }}</ion-text>
-        <!-- <span *ngIf="isTree && item.HasChild" (click)="toggleCollapse(item)" class="collapse-icon">{{ item.isCollapsed ? '+' : '-' }}</span> -->
+        <ion-text
+        class="text-warp"
+        [ngOptionHighlight]="search"
+        [color]="item.Color || 'dark'">{{ item[bindLabel || 'Name'] | translate }}</ion-text
+      >
         <ion-icon
-          *ngIf="item.HasChild"
+          *ngIf="item.hasChildInSearchBox"
           role="img"
-          (click)="$event.stopPropagation(); toggleCollapse(item)"
-          [name]="item.isCollapsed? 'chevron-forward-outline' : 'chevron-down-outline'"
-          style="flex: end; justify-content: flex-end; position: absolute; right: 0"
+          (click)="$event.stopPropagation(); toggleRow(item)"
+          [name]="!item.showdetail? 'chevron-forward-outline' : 'chevron-down-outline'"
+          style="flex: end; justify-content: flex-end; position: absolute; right: -5px;padding: 10px 0 10px 10px;"
         ></ion-icon>
       </div>
     </div>

@@ -38,7 +38,15 @@ export class FormControlComponent implements OnInit {
     if(f.treeConfig){
       if(f.treeConfig.isTree)this.isTree = f.treeConfig.isTree;
       if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
+      if(f.treeConfig.searchFnDefault)this.searchFnDefault = f.treeConfig.searchFnDefault;
       if(f.treeConfig.isCollapsed)this.isCollapsed = f.treeConfig.isCollapsed;
+    }
+    
+    if(f.branchConfig){
+      if(f.branchConfig.selectedBranch) this.selectedBranch = f.branchConfig.selectedBranch;
+      if(f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
+      if(f.branchConfig.showingDisable != undefined) this.showingDisable = f.branchConfig.showingDisable;
+      if(f.branchConfig.showingMode) this.showingMode = f.branchConfig.showingMode;
     }
   }
 
@@ -71,6 +79,18 @@ export class FormControlComponent implements OnInit {
   @Input() isCollapsed? : boolean;
   
   @Input() searchFn? : any;
+
+  @Input() searchFnDefault? : boolean = false;
+
+  @Input() rootCollapsed? : boolean;
+
+  @Input() branchConfig?: any;
+  @Input() selectedBranch?:number;
+  @Input() showingType? : string;
+  
+  @Input() showingDisable? : boolean;
+  
+  @Input() showingMode? : string;
 
   get isValid() {
     return this.field.form.controls[this.field.id].valid;

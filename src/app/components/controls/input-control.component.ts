@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
@@ -24,11 +24,22 @@ export class InputControlComponent implements OnInit {
     if (f.multiple) this.multiple = f.multiple;
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
-    if(f.treeConfig){
-      if(f.treeConfig.isTree)this.isTree = f.treeConfig.isTree;
-      if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
-      if(f.treeConfig.isCollapsed)this.isCollapsed = f.treeConfig.isCollapsed;
+
+    if(f.branchConfig){
+      if(f.branchConfig.selectedBranch) this.selectedBranch = f.branchConfig.selectedBranch;
+      if(f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
+      if(f.branchConfig.showingDisable != undefined) this.showingDisable = f.branchConfig.showingDisable;
+      if(f.branchConfig.showingMode) this.showingMode = f.branchConfig.showingMode;
     }
+    if(this.type == 'ng-select-branch')this.configBranch();
+    if(f.treeConfig){
+      if(f.treeConfig.isTree != undefined)this.isTree = f.treeConfig.isTree;
+      if(f.treeConfig.searchFnDefault)this.searchFn = this.searchShowAllChildren;
+      if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
+      if(f.treeConfig.isCollapsed != undefined)this.isCollapsed = f.treeConfig.isCollapsed;
+      if(f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
+    }
+  
   }
 
   @Input() form: FormGroup;
@@ -58,23 +69,59 @@ export class InputControlComponent implements OnInit {
 
   @Input() inputControlTemplate: any;
 
+  //treeConfig
   @Input() searchFn? : any;
-
+  @Input() searchFnDefault? : boolean = false;
   @Input() isTree : boolean = false;
   @Input() isCollapsed? : boolean ;
-  @Input() rt? : string ;
+  @Input() rootCollapsed?: boolean = true; // when isCollapsed,unCollapsed up to showingRootLevel 
+  //branchConfig
+  @Input() branchConfig?;
+  @Input() selectedBranch?:number;
+  @Input() showingType?: string;
+  @Input() showingDisable?: boolean;
+  @Input() showingMode? :string; //'showAll'  | 'showSelectedAndChildren' | default
+
   imgPath = environment.staffAvatarsServer;
 
-  constructor() {
+ constructor(private cdr: ChangeDetectorRef, private zone: NgZone)  {
     this.lib = lib;
+    this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
   }
 
-  ngOnInit() {
-    if(this.isCollapsed != undefined){
-      this.dataSource.forEach(i=>{
-        i.isCollapsed =  this.isCollapsed;
-        this.hidedAllChildren(i)
-      })
+  ngOnInit() {}
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['dataSource'] ) {
+      if (this.type === 'ng-select-branch') {
+        this.configBranch();
+      }
+    }
+    if (changes['field'] && this.field) {
+      if (this.field.type === 'ng-select-branch') {
+        this.configBranch();
+      }
+    }
+    if(this.isTree){
+      if(this.isCollapsed == undefined)this.isCollapsed = false;
+      //showing current value in tree
+      let parents = [];
+      if(this.form.get(this.id).value){
+        let id = this.form.get(this.id)?.value;
+        let item = this.dataSource.find(d=>d[this.bindValue] == id);
+        if(item?.Id) parents = this.getParent(item.Id,[]);
+
+      }
+      // collapsed|unCollapsed the rest of dataSorce
+      this.dataSource.forEach(i => {
+        i.hasChildInSearchBox = this.hasEligibleChild(i.Id);
+        if(parents?.includes(i)){
+          i.showdetail = false;
+        }else i.showdetail =  this.isCollapsed; 
+        this.toggleRow(i);
+      });
+      //show|unShow root level
+      if(this.rootCollapsed == false)  this.expandRoot();
     }
   }
 
@@ -228,17 +275,149 @@ export class InputControlComponent implements OnInit {
       }
     }
   }
-  toggleCollapse(item: any) {
-    item.isCollapsed = !item.isCollapsed;
-    this.hidedAllChildren(item);
-  }
-   hidedAllChildren = (item)=>{
-    this.dataSource.filter(d=> d.IDParent == item.Id).forEach(child=> {
-      child.isHidedSearchBox = item.isCollapsed;
-      if(this.dataSource.some(checkExistChild=> child.Id == checkExistChild.IDParent))
-      {
-        this.hidedAllChildren(child);
+
+  searchResultIdList = { term: '', ids: [] };
+  searchShowAllChildren (term: string, item: any) :any {
+    if (this.searchResultIdList.term != term) {
+      this.searchResultIdList.term = term;
+      this.searchResultIdList.ids = lib.searchTreeReturnId( this.dataSource, term);
+    }
+    return this.searchResultIdList.ids.indexOf(item.Id) > -1;
+  };
+  // #region private
+  private configBranch(){
+    if(this.dataSource?.length==0) return;
+    let parentList;
+    // this.dataSource = lib.cloneObject(this.dataSource);
+    let it = this.dataSource.find((d) => d.Id == this.selectedBranch);
+    if(this.selectedBranch) {
+      if(!this.showingMode) this.showingMode = '';
+      switch (this.showingMode){
+        case 'showAll':
+          break;
+        case 'showSelectedAndChildren':
+            this.dataSource = [it,...this.getAllNestedChildren(this.selectedBranch)];
+          break;
+        default:
+          parentList = this.getParent(it?.IDParent)
+          let selectedBranchAndChildren = this.getAllNestedChildren(this.selectedBranch);
+          this.dataSource = [...parentList,it,...selectedBranchAndChildren];
+          break;
       }
+    }
+    //show type , input : 'Warehouse' || '[Warehouse,TitlePosition]' || 'ne_Warehouse' || 'ne_[Warehouse,TitlePosition]'
+    if(this.showingType){
+      let showingTypeDraft = this.showingType;
+      if(showingTypeDraft.startsWith('ne_')){
+        showingTypeDraft = showingTypeDraft.substring(showingTypeDraft.indexOf('ne_')+3);
+        if(showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')){
+          let listTypeNE =  showingTypeDraft.replace(/[\[\]]/g, '').split(',');
+          this.dataSource.forEach(d=>{ if(listTypeNE.includes(d.Type)) d.disabled = true; })
+        }
+        else this.dataSource.forEach(d=>{if(d.Type == showingTypeDraft) d.disabled = true;})
+      }
+      else{
+        if(showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')){
+          let listType =  showingTypeDraft.replace(/[\[\]]/g, '').split(',');
+          this.dataSource.forEach(d=>{ if(!listType.includes(d.Type)) d.disabled = true;})
+        }else this.dataSource.forEach(d=>{if(d.Type != showingTypeDraft) d.disabled = true;})
+      }
+    }
+    if(!this.showingDisable){
+      // Only show: parent of current Branch, current Selected Branch, parent of valid branch with disabled state.
+      let parentDisabledList = new Set();
+      this.dataSource.filter(d=> !d.disabled).forEach(i=> {
+        parentDisabledList = new Set([...parentDisabledList,...this.getParent(i.IDParent).map(s=>s.Id)]);
+      })
+      this.dataSource.forEach(d=>{
+        if(d.Id != it?.Id && (!parentList?.some(p=> p.Id == d.Id)) && d.disabled && !parentDisabledList?.has(d.Id))
+        {
+          d.blockedShow = true // still in dataSource for collapsed children purpose but not render in UI
+        }
+      });
+    } 
+    if(!this.searchFn){
+      this.searchFn = this.searchShowAllChildren;
+    }
+    if(!this.isTree) {
+      this.isTree = true;
+      if(this.isCollapsed == undefined) this.isCollapsed = true;
+      if(this.isCollapsed){
+        if(this.rootCollapsed || this.rootCollapsed == undefined) this.rootCollapsed = false;
+      } 
+    }
+    this.cdr.detectChanges();
+  }
+
+  private expandRoot(){
+    const roots = this.dataSource.filter(d =>
+      !this.dataSource.some(ds => d.IDParent === ds.Id)
+    );
+    roots.forEach(root=>{
+      root.showdetail = false; // Ensure the root is expanded
+      this.toggleRow(root);
     })
   }
+
+  toggleRow(row) {
+    if (!row.hasChildInSearchBox) {
+      return;
+    }
+    row.showdetail= !row.showdetail;
+    let subRows = this.dataSource.filter((d) => d.IDParent == row.Id);
+    if (row.showdetail) {
+      subRows.forEach((it) => {
+        it.show= true;
+      });
+    } else {
+      subRows.forEach((it) => {
+        this.hideSubRows(it);
+      });
+    }
+  }
+
+  hideSubRows(row) {
+    row.show = false;
+    if (row.hasChildInSearchBox) {
+      row.showdetail = false;
+      let subRows = this.dataSource.filter((d) => d.IDParent == row.Id);
+
+      subRows.forEach((it) => {
+        this.hideSubRows(it);
+        it.show = false;
+      });
+    }
+  }
+
+  private hasEligibleChild(id: any): boolean {
+    // Check direct children
+    return this.dataSource.some(child => {
+      if (child.IDParent === id) {
+        // Check if the child is not disabled OR recursively check its children
+        return !child.disabled || this.hasEligibleChild(child.Id);
+      }
+      return false;
+    });
+  }
+
+  private getAllNestedChildren(Id: number,result = []) {
+    let children = this.dataSource.filter(d=> d.IDParent == Id);
+    children.forEach(c=> {
+      result.push(c); 
+      this.getAllNestedChildren(c.Id,result);
+    });
+    return result;
+  }
+
+  private getParent(Id: number,result = []) {
+    let parent = this.dataSource.find(d=> d.Id == Id);
+    if(parent){
+      result.unshift(parent)
+      if(parent.IDParent){
+        this.getParent(parent.IDParent,result);
+      }
+    }
+    return result;
+  }
+  // #endregion
 }
