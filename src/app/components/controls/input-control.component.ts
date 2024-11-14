@@ -62,6 +62,7 @@ export class InputControlComponent implements OnInit {
 
   @Input() isTree : boolean = false;
   @Input() isCollapsed? : boolean ;
+  @Input() rt? : string ;
   imgPath = environment.staffAvatarsServer;
 
   constructor() {
@@ -90,7 +91,7 @@ export class InputControlComponent implements OnInit {
   onInputChange(event) {
     this.inputChange.emit(event);
     if (
-      '|ng-select|ng-select-async|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|icon-color|time-frame|'.includes(
+      '|ng-select|ng-select-async|ng-select-branch|ng-select-item|ng-select-staff|ng-select-schema|ng-select-status|ng-select-bp|color|icon|icon-color|time-frame|'.includes(
         this.type,
       )
     ) {

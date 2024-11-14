@@ -86,6 +86,7 @@
     [clearable]="clearable"
     [searchFn]="searchFn"
     (change)="onInputChange($event)"
+    appendTo="#ng-select-holder"
     >
     <!-- appendTo="#ng-select-holder" -->
     <ng-template ng-label-tmp let-i="item">
@@ -299,7 +300,6 @@
     [bindValue]="bindValue"
     placeholder="{{ placeholder | translate }}"
     (change)="onInputChange($event)"
-    appendTo="#ng-select-holder"
   >
     <ng-template ng-label-tmp let-i="item">
       <div *ngIf="i.Id">
