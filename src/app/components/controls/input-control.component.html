@@ -84,6 +84,7 @@
     [bindLabel]="bindLabel"
     [multiple]="multiple"
     [clearable]="clearable"
+    placeholder="{{ placeholder | translate }}"
     [searchFn]="searchFn"
     (search)="onSearch($event)"
     (change)="onInputChange($event)"
@@ -674,15 +675,14 @@
 </ng-container>
 
 <!-- Declare Template treeConfig -->
-<ng-template #treeConfigTemplate let-item="item" let-search="searchTerm">
+<ng-template #treeConfigTemplate ng-option-tmp let-item="item" let-search="searchTerm">
   <ng-container *ngIf="item && isTree">
       <div class="flex-left"style="width:100%;position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
         <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
         <ion-text
         class="text-warp"
-        [ngOptionHighlight]="search"
-        [color]="item.Color || 'dark'">{{ item[bindLabel || 'Name'] | translate }}</ion-text
-      >
+        [color]="item.Color || 'dark'">
+        <span class="important" [ngOptionHighlight]="search">{{ item[bindLabel || 'Name'] | translate }}</span></ion-text >
         <ion-icon
           *ngIf="item.hasChildInSearchBox"
           role="img"

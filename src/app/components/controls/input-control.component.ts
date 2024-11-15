@@ -91,7 +91,7 @@ export class InputControlComponent implements OnInit {
   ngOnInit() { if(this.searchFnDefault && !this.searchFn)this.searchFn = this.searchShowAllChildren;}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['dataSource'] ) {
+    if (changes['dataSource'] || changes['selectedBranch']) {
       if (this.type === 'ng-select-branch') {
         this.configBranch();
       }
