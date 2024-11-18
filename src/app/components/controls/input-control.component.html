@@ -639,19 +639,11 @@
           <ion-item>
             <app-input-control
               style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
-              [form]="pickerControl"
-              type="select"
-              id="Period"
-              [dataSource]="_timePeriodList"
-              bindValue="code"
-              bindLabel="name"
+              [field]="{ id: 'Period', type: 'select', dataSource: _timePeriodList, bindValue: 'code', bindLabel: 'name', form: pickerControl }"
             ></app-input-control>
             <app-form-control
               style="width: 100%"
-              [form]="pickerControl"
-              type="number"
-              id="Amount"
-              label=""
+              [field]="{ id: 'Amount', type: 'number', label: '', form: pickerControl }"
             ></app-form-control>
           </ion-item>
         </ion-list>
@@ -679,7 +671,7 @@
   <ng-container *ngIf="item && isTree">
       <div class="flex-left"style="width:100%;position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
         <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
-        <ion-text
+        <ion-text style="margin-right:8px"
         class="text-warp"
         [color]="item.Color || 'dark'">
         <span class="important" [ngOptionHighlight]="search">{{ item[bindLabel || 'Name'] | translate }}</span></ion-text >
@@ -688,7 +680,7 @@
           role="img"
           (click)="$event.stopPropagation(); toggleRow(item)"
           [name]="!item.showdetail? 'chevron-forward-outline' : 'chevron-down-outline'"
-          style="flex: end; justify-content: flex-end; position: absolute; right: -5px;padding: 10px 0 10px 10px;"
+          style="flex: end; justify-content: flex-end; position: absolute; right: -8px;padding: 8px;"
         ></ion-icon>
       </div>
   </ng-container>

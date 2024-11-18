@@ -24,9 +24,10 @@ export class InputControlComponent implements OnInit {
     if (f.multiple) this.multiple = f.multiple;
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+    if (f.color) this.color = f.color;
 
     if(f.branchConfig){
-      if(f.branchConfig.selectedBranch) this.selectedBranch = f.branchConfig.selectedBranch;
+      if(f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
       if(f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
       if(f.branchConfig.showingDisable != undefined) this.showingDisable = f.branchConfig.showingDisable;
       if(f.branchConfig.showingMode) this.showingMode = f.branchConfig.showingMode;
@@ -38,7 +39,26 @@ export class InputControlComponent implements OnInit {
       if(f.treeConfig.isCollapsed != undefined)this.isCollapsed = f.treeConfig.isCollapsed;
       if(f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
     }
-  
+    if(this.isTree){
+          if(this.isCollapsed == undefined)this.isCollapsed = false;
+          //showing current value in tree
+          let parents = [];
+          if(this.form.get(this.id).value){
+            let id = this.form.get(this.id)?.value;
+            let item = this.dataSource.find(d=>d[this.bindValue] == id);
+            if(item?.Id) parents = this.getParent(item.Id,[]);
+          }
+          // collapsed|unCollapsed the rest of dataSorce
+          this.dataSource.forEach(i => {
+            i.hasChildInSearchBox = this.hasEligibleChild(i.Id);
+            if(parents?.includes(i)){
+              i.showdetail = false;
+            }else i.showdetail =  this.isCollapsed; 
+            this.toggleRow(i);
+          });
+          //show|unShow root level
+          if(this.rootCollapsed == false)  this.expandRoot();
+        }
   }
 
   @Input() form: FormGroup;
@@ -89,40 +109,6 @@ export class InputControlComponent implements OnInit {
   }
 
   ngOnInit() { if(this.searchFnDefault && !this.searchFn)this.searchFn = this.searchShowAllChildren;}
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['dataSource'] || changes['selectedBranch']) {
-      if (this.type === 'ng-select-branch') {
-        this.configBranch();
-      }
-    }
-    if (changes['field'] && this.field) {
-      if (this.field.type === 'ng-select-branch') {
-        this.configBranch();
-      }
-    }
-    if(this.isTree){
-      if(this.isCollapsed == undefined)this.isCollapsed = false;
-      //showing current value in tree
-      let parents = [];
-      if(this.form.get(this.id).value){
-        let id = this.form.get(this.id)?.value;
-        let item = this.dataSource.find(d=>d[this.bindValue] == id);
-        if(item?.Id) parents = this.getParent(item.Id,[]);
-      }
-      // collapsed|unCollapsed the rest of dataSorce
-      this.dataSource.forEach(i => {
-        i.hasChildInSearchBox = this.hasEligibleChild(i.Id);
-        if(parents?.includes(i)){
-          i.showdetail = false;
-        }else i.showdetail =  this.isCollapsed; 
-        this.toggleRow(i);
-      });
-      //show|unShow root level
-      if(this.rootCollapsed == false)  this.expandRoot();
-    }
-  }
-
   ngOnDestroy() {
     this.dismissDatePicker();
   }
@@ -312,7 +298,7 @@ export class InputControlComponent implements OnInit {
     let parentList;
     // this.dataSource = lib.cloneObject(this.dataSource);
     let it = this.dataSource.find((d) => d.Id == this.selectedBranch);
-    if(this.selectedBranch) {
+    if(it) {
       if(!this.showingMode) this.showingMode = '';
       switch (this.showingMode){
         case 'showAll':
@@ -368,7 +354,6 @@ export class InputControlComponent implements OnInit {
         if(this.rootCollapsed || this.rootCollapsed == undefined) this.rootCollapsed = false;
       } 
     }
-    this.cdr.detectChanges();
   }
 
   private expandRoot(){
