@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
@@ -103,7 +103,7 @@ export class InputControlComponent implements OnInit {
 
   imgPath = environment.staffAvatarsServer;
 
- constructor(private cdr: ChangeDetectorRef, private zone: NgZone)  {
+ constructor()  {
     this.lib = lib;
     this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
   }
