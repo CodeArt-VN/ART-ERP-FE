@@ -392,7 +392,7 @@
         <ion-avatar
           ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
         ></ion-avatar>
-        <ion-label>{{ i.FullName }}</ion-label>
+        <ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
         <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
       </ion-chip>
     </ng-template>
@@ -401,7 +401,7 @@
         <ion-avatar
           ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
         ></ion-avatar>
-        <ion-label>{{ i.FullName }}</ion-label>
+        <ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
       </ion-chip>
     </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
