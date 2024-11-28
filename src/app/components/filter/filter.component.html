@@ -76,29 +76,21 @@
   <ng-template #formControlTemplate let-form="form" let-parent="parent">
     <div class="cell col-name">
       <app-input-control
-        appendTo="#ng-select-holder"
-        [form]="form"
-        type="ng-select"
-        id="Dimension"
-        label="Dimension"
-        placeholder="Select dimension..."
-        [dataSource]="_schema.Fields"
-        bindLabel="Name"
-        bindValue="Code"
+        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name'}"
         (change)="changeDimension(form)"
       ></app-input-control>
     </div>
     <div class="cell col-code">
       <app-input-control
-        appendTo="#ng-select-holder"
-        [form]="form"
-        type="select"
-        id="Operator"
-        label="Operator"
-        placeholder="Select operator..."
-        [dataSource]="form.get('Dimension')?.value == 'logical' ? logicalOperators : transformOperators"
-        bindLabel="name"
-        bindValue="code"
+        [field]="{
+          id: 'Operator', 
+          type: 'ng-select', 
+          label: 'Operator', 
+          placeholder: 'Select operator...', 
+          dataSource: form.get('Dimension')?.value === 'logical' ? logicalOperators : transformOperators, 
+          bindLabel: 'name', 
+          bindValue: 'code'
+        }"
         (change)="onInputChange()"
       ></app-input-control>
     </div>
