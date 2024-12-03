@@ -17,6 +17,19 @@
     (keydown)="onKeydown($event)"
   />
 
+  <!-- number -->
+  <input
+ *ngSwitchCase="'number'"
+  mask="separator.2"
+  thousandSeparator=","
+  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+  class="c-input"
+  [id]="id"
+  placeholder="{{ placeholder | translate }}"
+  [formControlName]="id"
+  (change)="onInputChange($event)"
+  (keydown)="onKeydown($event)"
+/>
   <!-- radio -->
   <ng-container *ngSwitchCase="'radio'">
     <ng-container *ngFor="let i of dataSource; let j = index">

@@ -2591,10 +2591,25 @@
     "When changing the amount of money, you need to adjust the orders/invoices!": "When changing the amount of money, you need to adjust the orders/invoices!",
     "When making changes, the customer will delete all previous invoices": "When making changes, the customer will delete all previous invoices",
     "Are you sure you want to mark as paid?": "Are you sure you want to mark as paid?",
-    "Are you sure you want approve {{value}} selected item(s)?": "Are you sure you want approve {{value}} selected item(s)?",
-    "Are you sure you want submit {{value}} selected item(s)?": "Are you sure you want submit {{value}} selected item(s)?",
+    "Are you sure you want to approve {{value}} selected item(s)?": "Are you sure you want to approve {{value}} selected item(s)?",
+    "Are you sure you want to disapprove {{value}} selected item(s)?": "Are you sure you want to disapprove {{value}} selected item(s)?",
+    "Are you sure you want to submit {{value}} selected item(s)?": "Are you sure you want to submit {{value}} selected item(s)?",
+    "Are you sure you want to cancel {{value}} selected item(s)?": "Are you sure you want to cancel {{value}} selected item(s)?",
     "This feature will be available soon": "This feature will be available soon",
     "Amount is over than debt's AP invoice {{value}}": "Amount is over than debt's AP invoice {{value}}",
     "Amount is over than debt's PO {{value}}": "Amount is over than debt's PO {{value}}",
-    "Please recheck these outgoing payments: {{value}}": "Please recheck these outgoing payments: {{value}}"
+    "Please recheck these outgoing payments: {{value}}": "Please recheck these outgoing payments: {{value}}",
+    "Not submitted yet": "Not submitted yet",
+    "Submitted": "Submitted",
+    "WaitForPayment": "Wait for payment",
+    "PartiallyPaid": "Partially paid",
+    "Paid": "Paid",
+    "Cancelled": "Đã hủy",
+    "Pay for A/P invoices #{{value}}":"Pay for A/P invoices #{{value}}",
+    "Pay for A/P invoices [{{value}}]":"Pay for A/P invoices [{{value}}]",
+    "Pay for PO #{{value}}":"Pay for PO #{{value}}",
+    "Pay for PO [{{value}}]":"Pay for PO [{{value}}]",
+    "Payment reason":"Payment reason",
+
+    
 }
