@@ -2610,6 +2610,10 @@
     "Pay for A/P invoices [{{value}}]":"Thanh toán cho hóa đơn A/P [{{value}}]",
     "Pay for PO #{{value}}":"Thanh toán cho đơn mua hàng #{{value}}",
     "Pay for PO [{{value}}]":"Thanh toán cho đơn mua hàng [{{value}}]",
-    "Payment reason":"Lý do thanh toán"
+    "Payment reason":"Lý do thanh toán",
+    "You are attaching new PO/Receipt!": "Bạn đang đính kèm PO/Receipt mới!",
+    "Do you want to delete all current invoice details?": "Bạn có muốn xóa hết danh sách sản phẩm?",
+    "Price list was changed, invoice details would be deleted!":"Bảng giá đã thay đổi, danh sách sản phẩm sẽ bị xóa!",
+    "Are you sure to continue ?": "Bạn có chắc muốn tiếp tục ?"
 
 }

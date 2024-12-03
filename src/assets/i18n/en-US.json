@@ -2609,7 +2609,13 @@
     "Pay for A/P invoices [{{value}}]":"Pay for A/P invoices [{{value}}]",
     "Pay for PO #{{value}}":"Pay for PO #{{value}}",
     "Pay for PO [{{value}}]":"Pay for PO [{{value}}]",
-    "Payment reason":"Payment reason"
+    "Payment reason":"Payment reason",
+    "You are attaching new PO/Receipt!": "You are attaching new PO/Receipt!",
+    "Do you want to delete all current invoice details?": "Do you want to delete all current invoice details?",
+    "Price list was changed, invoice details would be deleted!":"Price list was changed, invoice details would be deleted!",
+    "Are you sure to continue ?": "Are you sure to continue ?"
+
+
 
     
 }
