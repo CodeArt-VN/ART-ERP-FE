@@ -2610,6 +2610,6 @@
     "Pay for A/P invoices [{{value}}]":"Thanh toán cho hóa đơn A/P [{{value}}]",
     "Pay for PO #{{value}}":"Thanh toán cho đơn mua hàng #{{value}}",
     "Pay for PO [{{value}}]":"Thanh toán cho đơn mua hàng [{{value}}]",
-    "Payment reason":"Lý do thanh toán",
+    "Payment reason":"Lý do thanh toán"
 
 }
