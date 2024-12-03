@@ -2613,9 +2613,16 @@
     "You are attaching new PO/Receipt!": "You are attaching new PO/Receipt!",
     "Do you want to delete all current invoice details?": "Do you want to delete all current invoice details?",
     "Price list was changed, invoice details would be deleted!":"Price list was changed, invoice details would be deleted!",
-    "Are you sure to continue ?": "Are you sure to continue ?"
-
-
+    "Are you sure to continue ?": "Are you sure to continue ?",
+    "Sent to administration manager":"Sent to administration manager",
+    "Sent to specialized manager":"Sent to specialized manager",
+    "Selectable approvers":"Selectable approvers",
+    "Fixed approvers":"Fixed approvers",
+    "Super approvers":"Super approvers",
+    "Approval mode":"Approval mode",
+    "Limit hours":"Limit hours",
+    "Sub type": "Sub type",
+    "User can choose approver":"User can choose approver"
 
     
 }
