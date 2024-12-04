@@ -76,7 +76,7 @@
   <ng-template #formControlTemplate let-form="form" let-parent="parent">
     <div class="cell col-name">
       <app-input-control
-        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name'}"
+        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name',form:form}"
         (change)="changeDimension(form)"
       ></app-input-control>
     </div>
@@ -89,7 +89,8 @@
           placeholder: 'Select operator...', 
           dataSource: form.get('Dimension')?.value === 'logical' ? logicalOperators : transformOperators, 
           bindLabel: 'name', 
-          bindValue: 'code'
+          bindValue: 'code',
+          form:form
         }"
         (change)="onInputChange()"
       ></app-input-control>
