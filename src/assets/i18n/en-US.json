@@ -2622,7 +2622,18 @@
     "Approval mode":"Approval mode",
     "Limit hours":"Limit hours",
     "Sub type": "Sub type",
-    "User can choose approver":"User can choose approver"
+    "User can choose approver":"User can choose approver",
+    "Request has been existed!": "Request has been existed!",
+    "Request did approve, cannot revert!":"Request did approve, cannot revert!",
+    "Data correction :":"Data correction :",
+    "Data correction":"Data correction",
+    "Addresses" : "Addresses",
+    "IDBranch":"IDBranch",
+    "Old value":"Old value",
+    "Show compare":"Show compare",
+    "Show difference":"Show difference",
+    "Show properties":"Show properties",
+    "Not show properties":"Not show properties",
+    "Request data correction": "Request data correction"
 
-    
 }

@@ -1,0 +1,40 @@
+
+<app-data-table class="box-shadow responsive" *ngIf="dataSourceState" [rows]="dataSourceState" [isQueryLocalOnly]="true" [isTreeList]="true"  >
+    <datatable-column class="col-name" name="Name" property="Property">
+        <ng-template datatable-header-template>
+          <ion-icon
+            class="min-btn"
+            [name]="!isAllRowOpened? 'add-circle-outline':'remove-circle-outline'"
+            (click)="toggleRowAll()"
+          ></ion-icon>
+          <span (click)="toggleRowAll()">{{'Name' | translate}}</span>
+        </ng-template>
+        <ng-template let-i="row" datatable-cell-template>
+          <ng-container *ngFor="let w of i.levels; let k = index;"
+            ><span class="spacing" *ngIf="k>0"></span
+          ></ng-container>
+          <ion-icon
+            (click)="toggleRow(dataSourceState, i, true);"
+            class="min-btn clickable"
+            [name]="!i.showdetail? 'chevron-forward-outline':'chevron-down-outline'"
+            *ngIf="i.HasChild"
+          ></ion-icon>
+          <ion-icon class="min-btn clickable" [name]="''" *ngIf="!i.HasChild"></ion-icon>
+          <ion-text
+            class="clickable"
+            [ngClass]="i.HasChild? ('bold ') : ('')"
+            [color]="i.Color"
+            >{{i.Property}}</ion-text
+          >
+        </ng-template>
+      </datatable-column>
+
+    <datatable-column class="col-id" name="Value" property="Value">
+    </datatable-column>
+
+    <datatable-column *ngIf="isCompare" class="col-id" name="Old value" property="OldValue">
+    </datatable-column>
+
+
+    
+</app-data-table>

@@ -44,6 +44,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
+import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -100,6 +101,7 @@ export function createTranslateLoader(http: HttpClient) {
     FullCalendarModule,
     NgSelectModule,
     NgOptionHighlightModule,
+    DataCorrectionRequestModalPageModule,
 
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

@@ -2623,6 +2623,17 @@
     "Approval mode":"Chế độ duyệt",
     "Limit hours":"Giới hạn giờ",
     "Sub type": "Phân loại phụ",
-    "User can choose approver":"Người dùng có thể chọn người phê duyệt"
- 
+    "User can choose approver":"Người dùng có thể chọn người phê duyệt",
+    "Request has been existed!": "Yêu cầu đã tồn tại!",
+    "Request did approve, cannot revert!":"Không thể từ chối yêu cầu đã chấp thuận!",
+    "Data correction :":"Điều chỉnh thông tin :",
+    "Data correction":"Điều chỉnh thông tin",
+    "Addresses" : "Địa chỉ",
+    "IDBranch":"Mã chi nhánh",
+    "Old value":"Giá trị cũ",
+    "Show compare":"Hiển thị so sánh",
+    "Show difference":"Hiển thị thay đổi",
+    "Show properties":"Hiển thị thuộc tính",
+    "Not show properties":"Ẩn thuộc tính",
+    "Request data correction": "Yêu cầu điều chỉnh thông tin"
 }
