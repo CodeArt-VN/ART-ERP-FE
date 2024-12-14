@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  appVersion: '0.19.88',
+  appVersion: '0.19.89',
   appDomain: 'https://artlogistics.vn/',
   appServers: [
     { Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
@@ -13,6 +13,6 @@ export const environment = {
   showScrollbar: true, // (navigator.appVersion.indexOf("Win") > -1)
   signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
   appStoreURL: 'http://itunes.apple.com/lb/app/art-dms/id1540404648?mt=8',
-  playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms&hl=vn',
+  playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.art.dms2&hl=vn',
   loginEmail: '@artlogistics.vn'
 };
