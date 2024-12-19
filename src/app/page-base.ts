@@ -38,6 +38,7 @@ export abstract class PageBase implements OnInit {
   cdr;
   formGroup: FormGroup;
   submitAttempt = false;
+  isAutoSave = true;
   
   item = null;
   items: any = [];
