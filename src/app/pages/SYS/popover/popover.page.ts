@@ -8,9 +8,10 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-popover',
-  templateUrl: './popover.page.html',
-  styleUrls: ['./popover.page.scss'],
+    selector: 'app-popover',
+    templateUrl: './popover.page.html',
+    styleUrls: ['./popover.page.scss'],
+    standalone: false
 })
 export class PopoverPage {
   popConfig = null;

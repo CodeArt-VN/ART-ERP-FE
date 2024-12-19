@@ -8,9 +8,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-system-type-detail',
-  templateUrl: './system-type-detail.page.html',
-  styleUrls: ['./system-type-detail.page.scss'],
+    selector: 'app-system-type-detail',
+    templateUrl: './system-type-detail.page.html',
+    styleUrls: ['./system-type-detail.page.scss'],
+    standalone: false
 })
 export class SystemTypeDetailPage extends PageBase {
   colorList = [

@@ -10,9 +10,10 @@ import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 
 @Component({
-  selector: 'app-map-view',
-  templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.scss'],
+    selector: 'app-map-view',
+    templateUrl: './map-view.component.html',
+    styleUrls: ['./map-view.component.scss'],
+    standalone: false
 })
 export class MapViewComponent extends PageBase {
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;

@@ -10,9 +10,10 @@ import { E, I } from '@fullcalendar/resource/internal-common';
 import { TypeFormatFlags } from 'typescript';
 
 @Component({
-  selector: 'app-data-correction-request-modal',
-  templateUrl: './data-correction-request-modal.html',
-  styleUrls: ['./data-correction-request-modal.scss'],
+    selector: 'app-data-correction-request-modal',
+    templateUrl: './data-correction-request-modal.html',
+    styleUrls: ['./data-correction-request-modal.scss'],
+    standalone: false
 })
 export class DataCorrectionRequestModalPage extends PageBase {
 

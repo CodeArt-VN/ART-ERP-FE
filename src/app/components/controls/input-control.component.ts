@@ -6,8 +6,9 @@ import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
 
 @Component({
-  selector: 'app-input-control',
-  templateUrl: './input-control.component.html',
+    selector: 'app-input-control',
+    templateUrl: './input-control.component.html',
+    standalone: false
 })
 export class InputControlComponent implements OnInit {
   lib;

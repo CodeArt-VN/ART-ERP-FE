@@ -3,9 +3,10 @@ import { PageBase } from 'src/app/page-base';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-json-viewer',
-  templateUrl: './json-viewer.component.html',
-  styleUrls: ['./json-viewer.component.scss'],
+    selector: 'app-json-viewer',
+    templateUrl: './json-viewer.component.html',
+    styleUrls: ['./json-viewer.component.scss'],
+    standalone: false
 })
 export class JsonViewerComponent implements OnInit {
 

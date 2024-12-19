@@ -4,8 +4,9 @@ import { FormGroup } from '@angular/forms';
 import { InputControlTempateDirective } from './input-control-template.directive';
 
 @Component({
-  selector: 'app-form-control',
-  templateUrl: './form-control.component.html',
+    selector: 'app-form-control',
+    templateUrl: './form-control.component.html',
+    standalone: false
 })
 export class FormControlComponent implements OnInit {
 

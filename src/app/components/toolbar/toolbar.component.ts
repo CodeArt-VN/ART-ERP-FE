@@ -3,9 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { EnvService } from 'src/app/services/core/env.service';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss'],
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    styleUrls: ['./toolbar.component.scss'],
+    standalone: false
 })
 export class ToolbarComponent implements OnInit {
   @ViewChild('importfile') importfile: any;

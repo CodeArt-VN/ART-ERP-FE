@@ -6,9 +6,10 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-data-table',
-  templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss'],
+    selector: 'app-data-table',
+    templateUrl: './data-table.component.html',
+    styleUrls: ['./data-table.component.scss'],
+    standalone: false
 })
 export class DataTableComponent implements OnInit {
   _allColumns: TableColumn[];

@@ -12,9 +12,10 @@ import {
 import { TableColumn } from '../../interfaces/table-column.interface';
 
 @Component({
-  selector: 'datatable-body-cell',
-  templateUrl: './datatable-body-cell.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'datatable-body-cell',
+    templateUrl: './datatable-body-cell.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableBodyCellComponent {
   _column: TableColumn;

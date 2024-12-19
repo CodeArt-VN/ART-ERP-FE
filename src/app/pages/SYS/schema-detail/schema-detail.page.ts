@@ -8,9 +8,10 @@ import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@ang
 import { CommonService } from 'src/app/services/core/common.service';
 
 @Component({
-  selector: 'app-schema-detail',
-  templateUrl: './schema-detail.page.html',
-  styleUrls: ['./schema-detail.page.scss'],
+    selector: 'app-schema-detail',
+    templateUrl: './schema-detail.page.html',
+    styleUrls: ['./schema-detail.page.scss'],
+    standalone: false
 })
 export class SchemaDetailPage extends PageBase {
   dataTypes;

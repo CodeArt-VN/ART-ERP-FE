@@ -20,8 +20,9 @@ import { FormControlComponent } from './components/controls/form-control.compone
 import { InputControlComponent } from './components/controls/input-control.component';
 
 @Component({
-  template: '',
-  providers: [PopoverPage],
+    template: '',
+    providers: [PopoverPage],
+    standalone: false
 })
 export abstract class PageBase implements OnInit {
   env;

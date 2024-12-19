@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-detail-toolbar',
-  templateUrl: './detail-toolbar.component.html',
-  styleUrls: ['./detail-toolbar.component.scss'],
+    selector: 'app-detail-toolbar',
+    templateUrl: './detail-toolbar.component.html',
+    styleUrls: ['./detail-toolbar.component.scss'],
+    standalone: false
 })
 export class DetailToolbarComponent implements OnInit {
   @Input() page;
