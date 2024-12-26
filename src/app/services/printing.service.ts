@@ -78,7 +78,7 @@ export class PrintingService {
       this.qzConnect(printer.Host, printer.Port, printer.IsSecure).then(() => {
         qz.print(config, printingData.data)
           .then((success) => {})
-          .catch(function (e) {
+          .catch( (e) =>{
             console.error(e);
           });
       });
@@ -209,9 +209,7 @@ export class PrintingService {
         <html>
             <head>
                 <style>
-                body>*{
-                  margin:0 auto !important;
-                }
+             
                 ` +
       style+
         `
