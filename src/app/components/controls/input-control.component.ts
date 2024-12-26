@@ -12,6 +12,7 @@ import { GlobalData } from 'src/app/services/static/global-variable';
 })
 export class InputControlComponent implements OnInit {
   lib;
+  searchTerm='';
   @Input() set field(f: InputControlField) {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
@@ -262,6 +263,7 @@ export class InputControlComponent implements OnInit {
   }
 
   onSearch(data) { // back to collapsed state 
+    this.searchTerm = data.term;
     if(this.searchFn == this.searchShowAllChildren){
       if(!data.term){
         this.dataSource.filter(d=> d.showStateBeforeSearch != undefined).forEach(p=>{

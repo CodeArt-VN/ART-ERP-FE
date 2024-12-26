@@ -103,20 +103,28 @@
     (change)="onInputChange($event)"
     appendTo="#ng-select-holder"
     >
+    <ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
+      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+    </ng-template>
+    <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+    </ng-template>
+    
     <!-- appendTo="#ng-select-holder" -->
-    <ng-template ng-label-tmp let-i="item">
+    <ng-template *ngIf="!inputControlTemplate" ng-label-tmp let-i="item">
+      <ion-icon *ngIf="i.Icon" [name]="i.Icon" slot="start" [color]="i.Color"></ion-icon>
       <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
     </ng-template>
-    <ng-template ng-option-tmp let-item="item" *ngIf="isTree">
+    <ng-template ng-option-tmp let-item="item" *ngIf="isTree && !inputControlTemplate">
       <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
     </ng-template>
 
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree">
+    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree && !inputControlTemplate">
       <div *ngIf="i">
         <div>
           <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
             i[bindLabel ? bindLabel : 'Name'] | translate
-          }}</ion-text>
+            }}</ion-text>
         </div>
       </div>
     </ng-template>
@@ -168,15 +176,6 @@
       <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
     </ng-template>
 
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree">
-      <div *ngIf="i">
-        <div>
-          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
-            i[bindLabel ? bindLabel : 'Name'] | translate
-          }}</ion-text>
-        </div>
-      </div>
-    </ng-template>
   </ng-select>
 
   <!-- ng-select-level -->
@@ -683,20 +682,17 @@
 <!-- Declare Template treeConfig -->
 <ng-template #treeConfigTemplate ng-option-tmp let-item="item" let-search="searchTerm">
   <ng-container *ngIf="item && isTree">
-      <div class="flex-left"style="width:100%;position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
-        <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
-        <ion-text style="margin-right:8px"
-        class="text-warp"
-        [color]="item.Color || 'dark'">
-        <span class="important" [ngOptionHighlight]="search">{{ item[bindLabel || 'Name'] | translate }}</span></ion-text >
-        <ion-icon
-          *ngIf="item.hasChildInSearchBox"
-          role="img"
-          (click)="$event.stopPropagation(); toggleRow(item)"
-          [name]="!item.showdetail? 'chevron-forward-outline' : 'chevron-down-outline'"
-          style="flex: end; justify-content: flex-end; position: absolute; right: -8px;padding: 8px;"
-        ></ion-icon>
-      </div>
+    <div class="flex-left" style="width:100%;position: relative"
+      [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
+      <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
+      <ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
+        <ion-text style="margin-right:8px" class="text-warp" [color]="item.Color || 'dark'" [ngOptionHighlight]="searchTerm" >{{
+          item[bindLabel ? bindLabel : 'Name'] | translate
+          }}</ion-text>
+      <ion-icon *ngIf="item.hasChildInSearchBox" role="img" (click)="$event.stopPropagation(); toggleRow(item)"
+        [name]="!item.showdetail? 'chevron-forward-outline' : 'chevron-down-outline'"
+        style="flex: end; justify-content: flex-end; position: absolute; right: -8px;padding: 8px;"></ion-icon>
+    </div>
   </ng-container>
 </ng-template>
 <!-- end Template -->

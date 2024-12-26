@@ -29,34 +29,12 @@
         </div>
         <div class="app-logo-wrapper">
           <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
-          <div class="c-control branch-select" *ngIf="env.branchList.length">
-            <ng-select
-              appendTo="#ng-select-holder"
-              [(ngModel)]="env.selectedBranch"
-              [searchFn]="searchShowAllChildren"
-              (change)="changeBranch()"
-              class="c-input"
-              [clearable]="false"
-              #IDBranch
-              labelForId="IDBranch"
-              [items]="env.branchList"
-              [virtualScroll]="false"
-              bindLabel="Name"
-              bindValue="Id"
-              placeholder="{{ 'Select unit...' | translate }}"
-            >
-              <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                <div *ngIf="i" class="flex-left">
-                  <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-                  <ion-text
-                    class="text-warp"
-                    [color]="i.Type == 'Company' ? 'primary' : 'dark'"
-                    [ngOptionHighlight]="search"
-                    >{{ i.Name }}</ion-text
-                  >
-                </div>
-              </ng-template>
-            </ng-select>
+          <div class="c-control branch-select" *ngIf="env.branchList.length > 0">
+            <app-form-control (change)="changeBranch()" [field]="{
+              id:'IDBranch',label:'Branch',type:'ng-select-branch',
+              dataSource:branchList,bindLabel:'Name',bindValue:'Id', placeholder:'Search',
+              form:branchFormGroup}">
+              </app-form-control>
           </div>
         </div>
       </ion-header>
