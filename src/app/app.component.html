@@ -30,11 +30,11 @@
         <div class="app-logo-wrapper">
           <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
           <div class="c-control branch-select" *ngIf="env.branchList.length > 0">
-            <app-form-control (change)="changeBranch()" [field]="{
+            <app-input-control (change)="changeBranch()" [field]="{
               id:'IDBranch',label:'Branch',type:'ng-select-branch',
               dataSource:branchList,bindLabel:'Name',bindValue:'Id', placeholder:'Search',
               form:branchFormGroup}">
-              </app-form-control>
+              </app-input-control>
           </div>
         </div>
       </ion-header>
