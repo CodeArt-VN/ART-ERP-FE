@@ -209,9 +209,7 @@ export class PrintingService {
         <html>
             <head>
                 <style>
-                body>*{
-                  margin:0 auto !important;
-                }
+             
                 ` +
       style+
         `
