@@ -15,8 +15,9 @@ import { CommonService } from 'src/app/services/core/common.service';
 })
 export class SchemaDetailPage extends PageBase {
   dataTypes;
-  openedFields;
+  openedFields: any = [];;
   schemaTypeList: any;
+
   public isDisabled = true;
   constructor(
     public pageProvider: SYS_SchemaProvider,
@@ -93,31 +94,21 @@ export class SchemaDetailPage extends PageBase {
       this.item.Fields.forEach((i) => this.addField(i));
     }
 
-    if (!this.pageConfig.canEdit || this.item.IDSaleOrder || this.item._HasChild) {
+    if (!this.pageConfig.canEdit) {
       this.formGroup.controls.Fields.disable();
     }
   }
 
   addField(field: any, markAsDirty = false) {
-    if (Object.keys(field).length === 0) field.IsExpanded = true;
-    if (this.openedFields?.length) {
-      this.openedFields = this.openedFields.filter((x) => {
-        if (x.get('Code').value === field.Code) {
-          field.IsExpanded = true;
-          return false;
-        }
-        return true;
-      });
-    }
-
     let groups = <FormArray>this.formGroup.controls.Fields;
     let group = this.formBuilder.group({
       IDSchema: [this.item.Id],
-      Id: new FormControl({ value: field.Id, disabled: true }),
-      Code: [field.Code],
+      Id:[field?.Id],
+      // Id: new FormControl({ value: field?.Id, disabled: true }),
+      Code: [field.Code,Validators.required],
       Name: [field.Name, Validators.required],
       Remark: [field.Remark],
-      DataType: [field.DataType || 'Text'],
+      DataType: [field.DataType || 'text'],
       PropertyType: [field.PropertyType || 'Field'],
       Aggregate: [field.Aggregate],
       Sort: [field.Sort],
@@ -147,7 +138,6 @@ export class SchemaDetailPage extends PageBase {
         value: field.ModifiedDate,
         disabled: true,
       }),
-      IsExpanded: [{ value: field.IsExpanded || false, disabled: true }],
       IsColorModalOpened: [{ value: false, disabled: true }],
       IsIconModalOpened: [{ value: false, disabled: true }],
     });
@@ -194,16 +184,34 @@ export class SchemaDetailPage extends PageBase {
     super.saveChange2();
   }
 
-  savedChange(savedItem?: any, form?: FormGroup<any>): void {
-    //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
-    let groups = <FormArray>this.formGroup.controls.Fields;
-
-    this.openedFields = groups.controls.filter((field: FormGroup) => field.get('IsExpanded').value);
-
-    super.savedChange(savedItem, form);
+  
+  savedChange(savedItem = null, form = this.formGroup) {
+    super.savedChange(savedItem);
+    let groups = this.formGroup.get('Fields') as FormArray;
+    let idsBeforeSaving = new Set(groups.controls.map((g) => g.get('Id').value));
     this.item = savedItem;
-    //this.loadedData();
+
+    if (this.item.Fields?.length > 0) {
+      let newIds = new Set(this.item.Fields.map((i) => i.Id));
+      const diff = [...newIds].filter((item) => !idsBeforeSaving.has(item));
+      if (diff?.length > 0) {
+        groups.controls .find((d) => d.get('Id').value == null) ?.get('Id') .setValue(diff[0]);
+        this.openedFields = [...this.openedFields, diff[0].toString()];
+    console.log(this.openedFields);
+
+      }
+    }
   }
+  // savedChange(savedItem?: any, form?: FormGroup<any>): void {
+  //   //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
+  //   let groups = <FormArray>this.formGroup.controls.Fields;
+
+  //   this.openedFields = groups.controls.filter((field: FormGroup) => field.get('IsExpanded').value);
+
+  //   super.savedChange(savedItem, form);
+  //   this.item = savedItem;
+  //   //this.loadedData();
+  // }
   onSelectColor(e, fg) {
     fg.get('Color').setValue(e.Code);
     fg.get('IsColorModalOpened').setValue(false);
@@ -231,4 +239,17 @@ export class SchemaDetailPage extends PageBase {
   toggleReorder() {
     this.isDisabled = !this.isDisabled;
   }
+
+    //#region  According
+    accordionGroupChange(e) {
+      this.openedFields = e.detail.value;
+      console.log(this.openedFields);
+    }
+  
+    isAccordionExpanded(id: string): boolean {
+      return this.openedFields.includes(id?.toString());
+    }
+  
+    //#endregion
+  
 }
