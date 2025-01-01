@@ -2635,5 +2635,9 @@
     "Show difference":"Hiển thị thay đổi",
     "Show properties":"Hiển thị thuộc tính",
     "Not show properties":"Ẩn thuộc tính",
-    "Request data correction": "Yêu cầu điều chỉnh thông tin"
+    "Request data correction": "Yêu cầu điều chỉnh thông tin",
+    "Create purchase order successfully" : "Đã tạo đơn hàng mua",
+    "Do you want to navigate to purchase order?" : "Bạn có muốn chuyển đến đơn hàng mua mới tạo?",
+    "Pallet assignment failed. No pallets were successfully allocated.": "Phân bổ pallet thất bại. Không có pallet nào được phân bổ thành công.",
+    "Create purchase order successfully!"  : "Tạo đơn mua hàng thành công!"
 }
