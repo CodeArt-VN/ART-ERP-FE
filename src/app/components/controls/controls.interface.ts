@@ -45,6 +45,8 @@ export interface InputControlField {
   clearable?: boolean;
 
   noCheckDirty?: boolean;
+  
+  appendTo:string;
 
   treeConfig?: {
     isTree? : boolean;

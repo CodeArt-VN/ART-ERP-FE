@@ -27,7 +27,7 @@ export class InputControlComponent implements OnInit {
     if (f.clearable) this.clearable = f.clearable;
     if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
     if (f.color) this.color = f.color;
-
+    if(f.appendTo !== undefined) this.appendTo = f.appendTo;
     if(f.branchConfig){
       if(f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
       if(f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
@@ -66,6 +66,7 @@ export class InputControlComponent implements OnInit {
   @Input() form: FormGroup;
 
   @Input() type: string = 'text';
+  @Input() appendTo: string = '#ng-select-holder';
 
   @Input() id: string;
   @Input() secondaryId: string;

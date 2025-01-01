@@ -121,7 +121,7 @@
           <label class="c-label">{{popConfig.saleOrderStatusSelectLabel}}</label>
           <select
             class="c-input c-dropdown"
-            [(ngModel)]="popData.IDSaleOrderStatus"
+            [(ngModel)]="popData.saleOrderStatus"
             [ngModelOptions]="{standalone: true}"
           >
             <option *ngFor="let t of saleOrderStatusList" [value]="t.Id">{{t.Name}}</option>

@@ -89,69 +89,7 @@ export class ToolbarComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.page.pageConfig?.pageName == 'sale-order') {
-      this.ShowSubmit = true;
-      this.ShowApprove = true;
-      this.ShowDisapprove = true;
-      this.ShowCancel = true;
-      this.ShowDelete = true;
-
-      this.page.selectedItems.forEach((i) => {
-        // 101	new	Mới
-        // 102	unapproved	Không duyệt
-        // 103	submitted	Chờ duyệt
-        // 104	approved	Đã duyệt
-        // 105	scheduled	Đã giao việc
-        // 106	picking	Đang lấy hàng - đóng gói
-        // 107	in-carrier	Đã giao đơn vị vận chuyển
-        // 108	in-delivery	Đang giao hàng
-        // 109	delivered	Đã giao hàng
-        // 110	pending	Chờ xử lý
-        // 111	split	Đơn đã chia
-        // 112	merged	Đơn đã gộp
-        // 113	debt	Còn nợ
-        // 114	done	Đã xong
-        // 115	cancelled	Đã hủy
-
-        // [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-
-        let notShowSubmitOrdersForApproval = [103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-        if (notShowSubmitOrdersForApproval.indexOf(i._Status.IDStatus) > -1) {
-          this.ShowSubmit = false;
-        }
-
-        let notShowApproveOrders = [101, 102, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-        if (notShowApproveOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.ShowApprove = false;
-        }
-
-        let notShowDisapproveOrders = [101, 102, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
-        if (notShowDisapproveOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.ShowDisapprove = false;
-        }
-
-        let notShowCancelOrders = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-        if (notShowCancelOrders.indexOf(i._Status.IDStatus) > -1) {
-          this.ShowCancel = false;
-        }
-
-        let notShowDelete = [103, 104, 105, 106, 107, 108, 109, 111, 112, 113, 114];
-        if (notShowDelete.indexOf(i._Status.IDStatus) > -1) {
-          this.ShowDelete = false;
-        }
-
-        // let notShowSplit = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-        // if (notShowSplit.indexOf(i.Status) > -1) {
-        // 	this.ShowSplit = false;
-        // }
-
-        // let notShowMerge = [104, 105, 106, 107, 108, 109, 111, 112, 113, 114, 115];
-        // if (notShowMerge.indexOf(i.Status) > -1) {
-        // 	this.ShowMerge = false;
-        // }
-      });
-    }
-
+   
     if (this.page.pageConfig?.pageName == 'purchase-order') {
       this.ShowSubmit = true;
       this.ShowApprove = true;

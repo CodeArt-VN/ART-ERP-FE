@@ -98,7 +98,7 @@ export class PopoverPage {
       this.saleOrderStatusList = data;
       this.translate.get('Not yet delivered').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
-          Id: '[101,102,103,104,110]',
+          Code: "['New','Unapproved','Submitted','Approved','Redelivery']",
           Name: message,
           Color: 'primary',
         });
@@ -106,7 +106,7 @@ export class PopoverPage {
 
       this.translate.get('Orders waiting for Driver allocation').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
-          Id: '[104,113]',
+          Code: "['Approved','Debt']",
           Name: message,
           Color: 'success',
         });
@@ -114,7 +114,7 @@ export class PopoverPage {
 
       this.translate.get('Order to be approved').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
-          Id: '[103,110]',
+          Code: "['Submitted','Redelivery']",
           Name: message,
           Color: 'warning',
         });
@@ -122,7 +122,7 @@ export class PopoverPage {
 
       this.translate.get('All').subscribe((message: string) => {
         this.saleOrderStatusList.unshift({
-          Id: '',
+          Code: '',
           Name: message,
           Color: 'primary',
         });
@@ -155,7 +155,7 @@ export class PopoverPage {
 
   command(returnData) {
     if (this.popConfig.isShowSaleOrderStatusSelect) {
-      let selectedStatus = this.saleOrderStatusList.find((e) => e.Id == this.popData.IDSaleOrderStatus);
+      let selectedStatus = this.saleOrderStatusList.find((e) => e.Code == this.popData.saleOrderStatus);
       this.popData.selectedStatus = selectedStatus;
     }
 
