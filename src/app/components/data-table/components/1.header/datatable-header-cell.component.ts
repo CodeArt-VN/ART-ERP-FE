@@ -11,9 +11,10 @@ import { TableColumn } from '../../interfaces/table-column.interface';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'datatable-header-cell',
-  templateUrl: './datatable-header-cell.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'datatable-header-cell',
+    templateUrl: './datatable-header-cell.component.html',
+    standalone: false
 })
 export class DataTableHeaderCellComponent {
   _column: TableColumn;

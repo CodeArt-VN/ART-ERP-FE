@@ -11,9 +11,10 @@ import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-integration-provider',
-  templateUrl: 'integration-provider.page.html',
-  styleUrls: ['integration-provider.page.scss'],
+    selector: 'app-integration-provider',
+    templateUrl: 'integration-provider.page.html',
+    styleUrls: ['integration-provider.page.scss'],
+    standalone: false
 })
 export class IntegrationProviderPage extends PageBase {
   constructor(

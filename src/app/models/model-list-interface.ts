@@ -30,6 +30,7 @@ export interface AC_APInvoice
     RefCode?: string;
     Type?: string;
     Status?: string;
+    PaymentStatus?: string;
     InvoiceForm?: string;
     InvoiceSerial?: string;
     InvoiceNo?: string;
@@ -652,6 +653,7 @@ export interface APPROVAL_Template
 export interface BANK_Account
 {
     IDBranch?: number;
+    IDBank?: number;
     IDParent?: number;
     Id?: number;
     Code?: string;
@@ -682,7 +684,6 @@ export interface BANK_Account
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDBank?: number;
     IsLoanAccount?: boolean;
     IsInDue?: boolean;
     FixedPeriod?: number;
@@ -719,6 +720,7 @@ export interface BANK_IncomingPayment
     DocumentDate?: Date;
     Type?: string;
     SubType?: string;
+    PaymentReason?: string;
     Status?: string;
     PaymentURL?: string;
     ReferenceNumber?: string;
@@ -782,6 +784,7 @@ export interface BANK_OutgoingPayment
     DocumentDate?: Date;
     Type?: string;
     SubType?: string;
+    PaymentReason?: string;
     Status?: string;
     PaymentURL?: string;
     ReferenceNumber?: string;
@@ -4913,6 +4916,67 @@ export interface PURCHASE_OrderDetail
     
 }
 
+export interface PURCHASE_Request
+{
+    IDBranch?: number;
+    IDRequester?: number;
+    IDRequestBranch?: number;
+    IDVendor?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    ContentType?: string;
+    Status?: string;
+    RequiredDate?: Date;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PURCHASE_RequestDetail
+{
+    IDRequest?: number;
+    IDItem?: number;
+    IDItemUoM?: number;
+    IDBaseUoM?: number;
+    IDVendor?: number;
+    Id?: number;
+    Sort?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    Remark?: string;
+    RequiredDate?: Date;
+    UoMPrice?: number;
+    Quantity?: number;
+    QuantityRemainingOpen?: number;
+    UoMSwap?: number;
+    UoMSwapAlter?: number;
+    IDTax?: number;
+    TaxRate?: number;
+    TotalAfterTax?: number;
+    TotalBeforeDiscount?: number;
+    TotalDiscount?: number;
+    TotalAfterDiscount?: number;
+    Tax?: number;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface SALE_Forecast
 {
     IDBranch?: number;
@@ -7135,14 +7199,6 @@ export interface WMS_Item
     Lottable7?: string;
     Lottable8?: string;
     Lottable9?: string;
-    ExpiryUnit?: string;
-    IsPhantomItem?: boolean;
-    TreeType?: string;
-    TI?: number;
-    HI?: number;
-    RefNum?: number;
-    RefChar?: string;
-    IsLocked?: boolean;
     Attribute1?: string;
     Attribute2?: string;
     Attribute3?: string;
@@ -7152,6 +7208,14 @@ export interface WMS_Item
     Attribute7?: string;
     Attribute8?: string;
     Attribute9?: string;
+    ExpiryUnit?: string;
+    IsPhantomItem?: boolean;
+    TreeType?: string;
+    TI?: number;
+    HI?: number;
+    RefNum?: number;
+    RefChar?: string;
+    IsLocked?: boolean;
     
 }
 
@@ -7162,7 +7226,8 @@ export interface WMS_ItemBalance
     IDPeriod?: number;
     IDItem?: number;
     Id?: number;
-    Quantity?: number;
+    OpenQuantity?: number;
+    ClosedQuantity?: number;
     
 }
 

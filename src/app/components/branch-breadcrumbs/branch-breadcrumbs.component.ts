@@ -1,9 +1,10 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-branch-breadcrumbs',
-  templateUrl: './branch-breadcrumbs.component.html',
-  styleUrls: ['./branch-breadcrumbs.component.scss'],
+    selector: 'app-branch-breadcrumbs',
+    templateUrl: './branch-breadcrumbs.component.html',
+    styleUrls: ['./branch-breadcrumbs.component.scss'],
+    standalone: false
 })
 export class BranchBreadcrumbsComponent implements OnInit {
   @ViewChild('popover') popover;

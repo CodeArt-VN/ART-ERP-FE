@@ -9406,6 +9406,104 @@ export var APIListBase = {
 		
 	},
 
+	PURCHASE_Request:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/Request/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/Request"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/Request/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/Request/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/Request/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Request/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Request/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Request/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/Request"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/Request/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/Request/" + id} 
+        }
+		
+	},
+
+	PURCHASE_RequestDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/RequestDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/RequestDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/RequestDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/RequestDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/RequestDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/RequestDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/RequestDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/RequestDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/RequestDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/RequestDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/RequestDetail/" + id} 
+        }
+		
+	},
+
 	SALE_Forecast:{
         getSearchList:{
             method: "GET",

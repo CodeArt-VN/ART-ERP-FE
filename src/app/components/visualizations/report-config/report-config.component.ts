@@ -12,9 +12,10 @@ import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 declare var ace: any;
 
 @Component({
-  selector: 'app-report-config',
-  templateUrl: './report-config.component.html',
-  styleUrls: ['./report-config.component.scss'],
+    selector: 'app-report-config',
+    templateUrl: './report-config.component.html',
+    styleUrls: ['./report-config.component.scss'],
+    standalone: false
 })
 export class ReportConfigComponent implements OnInit {
   subscriptions: Subscription[] = []; //Subscriptions

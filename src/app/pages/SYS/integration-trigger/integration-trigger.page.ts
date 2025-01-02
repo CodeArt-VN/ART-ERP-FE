@@ -7,9 +7,10 @@ import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-integration-trigger',
-  templateUrl: 'integration-trigger.page.html',
-  styleUrls: ['integration-trigger.page.scss'],
+    selector: 'app-integration-trigger',
+    templateUrl: 'integration-trigger.page.html',
+    styleUrls: ['integration-trigger.page.scss'],
+    standalone: false
 })
 export class IntegrationTriggerPage extends PageBase {
   groupControl = {

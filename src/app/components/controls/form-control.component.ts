@@ -4,8 +4,9 @@ import { FormGroup } from '@angular/forms';
 import { InputControlTempateDirective } from './input-control-template.directive';
 
 @Component({
-  selector: 'app-form-control',
-  templateUrl: './form-control.component.html',
+    selector: 'app-form-control',
+    templateUrl: './form-control.component.html',
+    standalone: false
 })
 export class FormControlComponent implements OnInit {
 
@@ -21,46 +22,27 @@ export class FormControlComponent implements OnInit {
     return this._inputControlTemplateInput || this._inputControlTemplateQuery;
   }
 
-
   @Input() set field(f: InputControlField) {
     if (f.form) this.form = f.form;
     if (f.type) this.type = f.type;
     if (f.id) this.id = f.id;
-    if (f.secondaryId) this.secondaryId = f.secondaryId;
     if (f.label) this.label = f.label;
-    if (f.color) this.color = f.color;
-    if (f.placeholder) this.placeholder = f.placeholder;
-    if (f.dataSource) this.dataSource = f.dataSource;
-    if (f.bindValue) this.bindValue = f.bindValue;
-    if (f.bindLabel) this.bindLabel = f.bindLabel;
-    if (f.multiple) this.multiple = f.multiple;
-    if (f.clearable) this.clearable = f.clearable;
-    if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+    this._field = f;
   }
+
+  get field(): InputControlField {
+    return this._field;
+  }
+
+private _field!: InputControlField;
 
   @Input() form: FormGroup;
 
   @Input() type: string = 'text';
 
   @Input() id: string;
-  @Input() secondaryId: string;
 
   @Input() label: string;
-  @Input() color: string;
-
-  @Input() placeholder?: string;
-
-  @Input() dataSource?: any[] | any;
-
-  @Input() bindValue?: string = 'Code';
-
-  @Input() bindLabel?: string = 'Name';
-
-  @Input() multiple: boolean = false;
-
-  @Input() clearable: boolean = false;
-
-  @Input() noCheckDirty: boolean = false;
 
   get isValid() {
     return this.field.form.controls[this.field.id].valid;

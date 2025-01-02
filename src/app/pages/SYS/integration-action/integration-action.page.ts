@@ -11,9 +11,10 @@ import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-integration-action',
-  templateUrl: 'integration-action.page.html',
-  styleUrls: ['integration-action.page.scss'],
+    selector: 'app-integration-action',
+    templateUrl: 'integration-action.page.html',
+    styleUrls: ['integration-action.page.scss'],
+    standalone: false
 })
 export class IntegrationActionPage extends PageBase {
   groupControl = {

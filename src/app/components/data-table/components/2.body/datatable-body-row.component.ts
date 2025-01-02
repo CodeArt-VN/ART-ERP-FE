@@ -1,8 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'datatable-body-row',
-  templateUrl: './datatable-body-row.component.html',
+    selector: 'datatable-body-row',
+    templateUrl: './datatable-body-row.component.html',
+    standalone: false
 })
 export class DataTablBodyRowComponent implements OnInit {
   _columns: any[];

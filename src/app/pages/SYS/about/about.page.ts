@@ -4,9 +4,10 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: 'about.page.html',
-  styleUrls: ['about.page.scss'],
+    selector: 'app-about',
+    templateUrl: 'about.page.html',
+    styleUrls: ['about.page.scss'],
+    standalone: false
 })
 export class AboutPage extends PageBase {
   constructor(

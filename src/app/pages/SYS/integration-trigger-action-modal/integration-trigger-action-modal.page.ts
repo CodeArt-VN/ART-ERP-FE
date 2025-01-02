@@ -13,9 +13,10 @@ import {
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-integration-trigger-action-modal',
-  templateUrl: './integration-trigger-action-modal.page.html',
-  styleUrls: ['./integration-trigger-action-modal.page.scss'],
+    selector: 'app-integration-trigger-action-modal',
+    templateUrl: './integration-trigger-action-modal.page.html',
+    styleUrls: ['./integration-trigger-action-modal.page.scss'],
+    standalone: false
 })
 export class IntegrationTriggerActionModalPage extends PageBase {
   Id;

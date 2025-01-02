@@ -4,7 +4,8 @@ import { map } from 'rxjs/operators';
 import { lib } from '../services/static/global-functions';
 
 @Pipe({
-  name: 'dateFriendly',
+    name: 'dateFriendly',
+    standalone: false
 })
 export class DateFriendlyPipe implements PipeTransform {
   transform(date: string): Observable<string> {
@@ -17,7 +18,8 @@ export class DateFriendlyPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'numberFriendly',
+    name: 'numberFriendly',
+    standalone: false
 })
 export class NumberFriendlyPipe implements PipeTransform {
   transform(value) {
