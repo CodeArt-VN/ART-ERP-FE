@@ -1,7 +1,8 @@
 import { Directive, Input, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appSvgImage]',
+    selector: '[appSvgImage]',
+    standalone: false
 })
 export class SvgImageDirective {
   @Input() src;

@@ -20,8 +20,9 @@ import { FormControlComponent } from './components/controls/form-control.compone
 import { InputControlComponent } from './components/controls/input-control.component';
 
 @Component({
-  template: '',
-  providers: [PopoverPage],
+    template: '',
+    providers: [PopoverPage],
+    standalone: false
 })
 export abstract class PageBase implements OnInit {
   env;
@@ -37,6 +38,7 @@ export abstract class PageBase implements OnInit {
   cdr;
   formGroup: FormGroup;
   submitAttempt = false;
+  isAutoSave = true;
   
   item = null;
   items: any = [];
@@ -793,6 +795,7 @@ export abstract class PageBase implements OnInit {
   events(e) {}
 
   ngOnInit() {
+    // this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
     let pageUrl = '';
 
     if (this.route && !this.pageConfig.pageCode) {
@@ -1018,11 +1021,10 @@ export abstract class PageBase implements OnInit {
   }
 
   searchResultIdList = { term: '', ids: [] };
-  searchShowAllChildren (term: string, item: any, dataSource = []) :any {
+  searchShowAllChildren (term: string, item: any) :any {
     if (this.searchResultIdList.term != term) {
       this.searchResultIdList.term = term;
-      let source = dataSource.length>0 ? dataSource :  this.env.branchList
-      this.searchResultIdList.ids = lib.searchTreeReturnId(source, term);
+      this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
     }
     return this.searchResultIdList.ids.indexOf(item.Id) > -1;
   };

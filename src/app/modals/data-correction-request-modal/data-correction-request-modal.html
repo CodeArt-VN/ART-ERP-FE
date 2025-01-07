@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> {{'Data correction : '| translate}} {{model.Type| translate}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="ion-padding">
+  <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+    <ion-grid fixed>
+      <ng-container>
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ng-container *ngTemplateOutlet="Recursion; context:{ fg: formGroup}"></ng-container>
+          </ion-col>
+
+        </ion-row>
+      </ng-container>
+
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ng-template #Recursion let-fg="fg">
+  <ng-container *ngFor="let i of  getKeys(fg.controls)">
+    <ng-container *ngIf="fg.get(i).field.type != 'nonRender'">
+      <!-- Render Form Control -->
+      <ng-container *ngIf="isFormControl(fg.get(i))">
+        <ng-container *ngIf="fg.get(i).field">
+          <app-form-control [field]="getField(fg,fg.get(i).field)">
+          </app-form-control>
+        </ng-container>
+      </ng-container>
+
+      <!-- Render Form Group -->
+      <ng-container *ngIf="isFormGroup(fg.get(i))">
+        <ion-row class="hr-group" *ngIf="fg.get(i).field.label">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+            <ion-list-header class="ion-no-padding">
+              <ion-label color="primary">{{fg.get(i).field.label | translate}}</ion-label>
+            </ion-list-header>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngTemplateOutlet="Recursion; context:{ fg: fg.get(i)}">
+        </ng-container>
+      </ng-container>
+
+      <!-- Render Form Array -->
+      <ng-container *ngIf="isFormArray(fg.get(i))">
+        <ion-row class="hr-group" *ngIf="fg.get(i).field.label">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+            <ion-list-header class="ion-no-padding">
+              <ion-label color="primary">{{fg.get(i).field.label | translate}}</ion-label>
+            </ion-list-header>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngFor="let a of fg.get(i)['controls']">
+          <!-- <ng-container *ngIf="!fg.get(i).field.component">
+          </ng-container>
+        -->
+        <!-- {{a.value | json }} -->
+          <ng-container *ngTemplateOutlet="Recursion; context:{ fg: a}">
+          </ng-container>
+          <!-- <ng-container *ngIf="fg.get(i).field.component">
+            <ng-container *ngTemplateOutlet="RenderComponent; context:{ data: a,component:fg.get(i).field.component}">
+            </ng-container>
+          </ng-container> -->
+
+        </ng-container>
+
+      </ng-container>
+
+    </ng-container>
+
+  </ng-container>
+
+</ng-template>
+
+<!-- Ng-TemPlate Switch Component -->
+<!-- <ng-template #RenderComponent let-data="data" let-component="component">
+  <ng-container [ngSwitch]="component">
+    <ng-container *ngSwitchCase="'Address'">
+      <app-address [address]="data.value" [canEdit]="pageConfig.canEdit" [mapLoading]="env.isMapLoaded"
+        (onChange)="changeAddress($event,data)" (onDelete)="removeAddress($event)"></app-address>
+      <ion-row>
+        <ion-col size="12" size-xl="4"
+          *ngIf="formGroup.get('Addresses')?.valid && pageConfig.canEdit">
+          <ion-button (click)="addAddress({})">
+            {{ 'Add address' | translate }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'TaxAddress'">
+      <app-bp-tax-address [bpId]="item.Id" [canEdit]="pageConfig.canEdit" *ngIf="item.Id"></app-bp-tax-address>
+    </ng-container>
+
+  </ng-container>
+</ng-template>
+ -->
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button size="large" slot="end" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+  </ion-toolbar>
+
+</ion-footer>

@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-field-control',
-  template: `
+    selector: 'app-field-control',
+    template: `
     <div class="c-control" *ngIf="field.data">
       <ion-item
         class="ion-no-padding ion-no-margin"
@@ -260,6 +260,7 @@ import { lib } from 'src/app/services/static/global-functions';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class FieldControlComponent implements OnInit {
   @Input() field: any;

@@ -12,9 +12,10 @@ import { MapMarker } from '@angular/google-maps';
 import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-coordinate-picker',
-  templateUrl: './coordinate-picker.component.html',
-  styleUrls: ['./coordinate-picker.component.scss'],
+    selector: 'app-coordinate-picker',
+    templateUrl: './coordinate-picker.component.html',
+    styleUrls: ['./coordinate-picker.component.scss'],
+    standalone: false
 })
 export class CoordinatePickerComponent implements OnInit {
   item;

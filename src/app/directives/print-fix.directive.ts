@@ -1,7 +1,8 @@
 import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[appPrintFix]',
+    selector: '[appPrintFix]',
+    standalone: false
 })
 export class PrintFixDirective {
   constructor(el: ElementRef) {

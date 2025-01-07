@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
@@ -10,14 +10,16 @@ import { environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
+import { FormBuilder } from '@angular/forms';
 
 register();
 let ga: any;
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   @ViewChild('search') search: any;
@@ -29,6 +31,8 @@ export class AppComponent implements OnInit {
   showScrollbar = false;
   showAppMenu = true;
 
+  branchFormGroup;
+  branchList= [];
   countForm = 0;
   showMenu = true;
   randomImg = './assets/undraw_art_museum_8or4.svg';
@@ -55,6 +59,7 @@ export class AppComponent implements OnInit {
     public env: EnvService,
     public accountService: AccountService,
     public platform: Platform,
+    public formBuilder: FormBuilder,
   ) {
     this.appVersion = 'v' + this.env.version;
     let imgs = [
@@ -112,6 +117,8 @@ export class AppComponent implements OnInit {
             if (this.countForm == 1 && this.env.branchList.filter((d) => !d.disabled).length == 1) {
               this.showMenu = false;
             }
+            this.branchList = lib.cloneObject(this.env.branchList);
+            this.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
             this.loadPinnedMenu();
             this.updateStatusbar();
           }
@@ -159,6 +166,9 @@ export class AppComponent implements OnInit {
       //   // (<any>window).ga('set', 'page', event.urlAfterRedirects);
       //   // (<any>window).ga('send', 'pageview');
       // }
+    });
+    this.branchFormGroup = this.formBuilder.group({
+      IDBranch: ['']
     });
   }
 
@@ -345,6 +355,7 @@ export class AppComponent implements OnInit {
 
   logo = '';
   async changeBranch() {
+    this.env.selectedBranch = this.branchFormGroup.get('IDBranch').value;
     await this.env.changeBranch();
     let sb = this.env.branchList.find((d) => d.Id == this.env.selectedBranch);
 

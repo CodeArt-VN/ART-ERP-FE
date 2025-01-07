@@ -6,24 +6,9 @@
       >(*<ng-content select="[message]"></ng-content>)</ion-text
     >
   </label>
-  <app-input-control
-    [inputControlTemplate]="inputControlTemplate"
-    [form]="form"
-    [type]="type"
-    [id]="id"
-    [secondaryId]="secondaryId"
-    [label]="label"
-    [color]="color"
-    [placeholder]="placeholder"
-    [dataSource]="dataSource"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [noCheckDirty]="noCheckDirty"
-    [isTree]="isTree"
-    [searchFn]="searchFn"
-    [isCollapsed] ="isCollapsed"
+  <app-input-control *ngIf="field"
+  [field]="field"
+  [inputControlTemplate]="inputControlTemplate"
     (change)="onChange($event)"
     (inputChange)="onInputChange($event)"
     (nav)="onNav($event)"

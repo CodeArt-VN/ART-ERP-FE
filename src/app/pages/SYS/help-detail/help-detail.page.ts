@@ -21,9 +21,10 @@ import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 declare var Quill: any;
 
 @Component({
-  selector: 'app-help-detail',
-  templateUrl: './help-detail.page.html',
-  styleUrls: ['./help-detail.page.scss'],
+    selector: 'app-help-detail',
+    templateUrl: './help-detail.page.html',
+    styleUrls: ['./help-detail.page.scss'],
+    standalone: false
 })
 export class HelpDetailComponent extends PageBase {
   _helpCode;

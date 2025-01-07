@@ -11,9 +11,10 @@ import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-flat',
-  templateUrl: 'flat.page.html',
-  styleUrls: ['flat.page.scss'],
+    selector: 'app-flat',
+    templateUrl: 'flat.page.html',
+    styleUrls: ['flat.page.scss'],
+    standalone: false
 })
 export class FlatPage extends PageBase {
   groupControl = {

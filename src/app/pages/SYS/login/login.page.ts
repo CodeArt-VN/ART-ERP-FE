@@ -14,9 +14,10 @@ import { environment } from 'src/environments/environment';
 var URLSearchParams: any;
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+    selector: 'app-login',
+    templateUrl: './login.page.html',
+    styleUrls: ['./login.page.scss'],
+    standalone: false
 })
 export class LoginPage extends PageBase {
   password: string = '';

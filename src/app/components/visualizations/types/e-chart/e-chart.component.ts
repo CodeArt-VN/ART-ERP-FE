@@ -1,11 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { lib } from 'src/app/services/static/global-functions';
-import * as echarts from 'echarts';
-import 'echarts-gl';
+
+import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+
+declare var echarts: any;
+
 @Component({
   selector: 'app-e-chart',
   template: '<div style="height: 100%;" [id]="elId"></div>',
+  standalone: false,
 })
 export class EChartComponent implements OnInit {
   elId: string = ''; //Chart element Id
@@ -13,7 +18,7 @@ export class EChartComponent implements OnInit {
 
   @Input() chartType: string = 'auto';
   @Input() viewMode: 'full' | 'mini' | 'dashboard';
-  @Input() chartOption: echarts.EChartsOption = {};
+  @Input() chartOption: any = {};
   @Input() dimensions: string[] = [];
   @Input() viewDimension: string;
   @Input() compareBy: string[] = [];
@@ -26,23 +31,27 @@ export class EChartComponent implements OnInit {
   @Input() data: any[] = [];
   @Input() comparitionData: any[] = [];
 
-
-  constructor(public rpt: ReportService) {
+  constructor(
+    public rpt: ReportService,
+    public dynamicScriptLoaderService: DynamicScriptLoaderService,
+  ) {
     this.elId = lib.generateCode();
   }
 
   ngOnInit() {}
 
   ngAfterViewInit() {
-    var chartDom = document.getElementById(this.elId);
-    this.chart = echarts.init(chartDom);
-    this.chart.on('click', (params) => {
-      this.onChartClick(params);
-    });
-    setTimeout(() => {
-      this.updateChart();
-    }, 0);
-    new ResizeObserver(() => this.chart.resize()).observe(chartDom);
+    this.loadEchartLib();
+    new ResizeObserver(() => this.chart?.resize()).observe(document.getElementById(this.elId));
+  }
+
+  loadEchartLib() {
+    if (typeof echarts !== 'undefined') this.initChart();
+    else
+      this.dynamicScriptLoaderService
+        .loadResources(thirdPartyLibs.echart.source)
+        .then(() => this.initChart())
+        .catch((error) => console.error('Error loading script', error));
   }
 
   ngOnChanges(changes: any) {
@@ -56,6 +65,14 @@ export class EChartComponent implements OnInit {
 
   ngOnDestroy() {
     this.chart?.dispose();
+  }
+
+  initChart() {
+    this.chart = echarts.init(document.getElementById(this.elId));
+    this.chart.on('click', (params) => {
+      this.onChartClick(params);
+    });
+    this.updateChart();
   }
 
   updateChart() {
@@ -98,7 +115,7 @@ export class EChartComponent implements OnInit {
     }, 0);
   }
 
-  calcChartOption(option: echarts.EChartsOption, js: string): echarts.EChartsOption {
+  calcChartOption(option, js: string) {
     let li = lib;
     let ec = echarts;
     eval(js);

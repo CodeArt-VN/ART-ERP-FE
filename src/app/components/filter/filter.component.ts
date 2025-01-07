@@ -5,9 +5,10 @@ import { FilterConfig, Schema } from 'src/app/models/options-interface';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss'],
+    selector: 'app-filter',
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.scss'],
+    standalone: false
 })
 export class FilterComponent implements OnInit {
   form: FormGroup;

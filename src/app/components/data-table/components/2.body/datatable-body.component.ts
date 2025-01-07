@@ -4,8 +4,9 @@ import { filter } from 'rxjs';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'datatable-body',
-  templateUrl: './datatable-body.component.html',
+    selector: 'datatable-body',
+    templateUrl: './datatable-body.component.html',
+    standalone: false
 })
 export class DataTablBodyComponent implements OnInit {
   //@ViewChild('scrollViewport') private cdkVirtualScrollViewport;

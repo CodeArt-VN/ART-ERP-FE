@@ -10,9 +10,10 @@ import {
 import { TableColumn } from '../../interfaces/table-column.interface';
 
 @Component({
-  selector: 'datatable-filter-cell',
-  templateUrl: './datatable-filter-cell.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'datatable-filter-cell',
+    templateUrl: './datatable-filter-cell.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableFilterCellComponent {
   _column: TableColumn;

@@ -8,9 +8,10 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 
 @Component({
-  selector: 'app-integration-provider-detail',
-  templateUrl: './integration-provider-detail.page.html',
-  styleUrls: ['./integration-provider-detail.page.scss'],
+    selector: 'app-integration-provider-detail',
+    templateUrl: './integration-provider-detail.page.html',
+    styleUrls: ['./integration-provider-detail.page.scss'],
+    standalone: false
 })
 export class IntegrationProviderDetailPage extends PageBase {
   constructor(

@@ -2,7 +2,8 @@ import { Directive, ElementRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Directive({
-  selector: '[appScrollbarTheme]',
+    selector: '[appScrollbarTheme]',
+    standalone: false
 })
 export class ScrollbarThemeDirective {
   constructor(el: ElementRef) {
