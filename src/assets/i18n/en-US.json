@@ -2471,7 +2471,7 @@
     "Khi dự đoán tự động sẽ xoá hết dữ liệu dự báo hiện tại, bạn có tiếp tục?": "When automatic forecast deleting the current forecast data,do you want to continue?",
     "Khi thay đổi hệ số nhân dũ liệu cũ sẽ bị thay đổi thành dữ liệu mới, bạn có muốn  thay đổi không?": "When changing the multiplier factor, old data will be changed to new data, do you want apply?",
     "Thay đổi hệ số nhân": "Change the multiplier factor",
-    "Bạn có chắc muốn DUYỆT {{value}} đơn hàng đang chọn?": "Are you sure you want to APPROVE {value}} selecting order?",
+    "Bạn có chắc muốn DUYỆT {{value}} đơn hàng đang chọn?": "Are you sure you want to APPROVE {{value}} selecting order?",
     "Duyệt {{value}} đơn hàng": "Approve the order",
     "Bạn có chắc muốn TRẢ LẠI {{value}} đơn hàng đang chọn?": "Are you sure you want to RETURN {{value}} the selecting order?",
     "Bạn có chắc muốn HỦY {{value}} đơn hàng đang chọn?": "Are you sure you want to CANCEL {{value}} the selecting order?",
@@ -2638,5 +2638,12 @@
     "Create purchase order successfully" : "Create purchase order successfully",
     "Do you want to navigate to purchase order?" : "Do you want to navigate to purchase order?",
     "Pallet assignment failed. No pallets were successfully allocated.":"Pallet assignment failed. No pallets were successfully allocated.",
-    "Create purchase order successfully!" : "Create purchase order successfully!"
+    "Create purchase order successfully!" : "Create purchase order successfully!",
+    "Are you sure you want to APPROVE {{value}} selecting programs?": "Are you sure you want to APPROVE {{value}} selecting programs?",
+    "APPROVE {{value}} programs": "APPROVE {{value}} program(s)",
+    "SUBMIT {{value}} programs": "SUBMIT {{value}} program(s)",
+    "Are you sure you want to DISAPPROVE {{value}} selecting programs?" : "Are you sure you want to DISAPPROVE {{value}} selecting programs?",
+    "Are you sure you want to SUBMIT {{value}} selecting programs?": "Are you sure you want to SUBMIT {{value}} selecting programs?",
+    "selecting programs": "selecting programs",
+    "programs": "programs"
 }

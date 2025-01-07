@@ -2639,5 +2639,12 @@
     "Create purchase order successfully" : "Đã tạo đơn hàng mua",
     "Do you want to navigate to purchase order?" : "Bạn có muốn chuyển đến đơn hàng mua mới tạo?",
     "Pallet assignment failed. No pallets were successfully allocated.": "Phân bổ pallet thất bại. Không có pallet nào được phân bổ thành công.",
-    "Create purchase order successfully!"  : "Tạo đơn mua hàng thành công!"
+    "Create purchase order successfully!"  : "Tạo đơn mua hàng thành công!",
+    "Are you sure you want to APPROVE {{value}} selecting programs?": "Bạn có chắc muốn DUYỆT {{value}} chương trình đang chọn?",
+    "APPROVE {{value}} programs": "DUYỆT {{value}} chương trình",
+    "SUBMIT {{value}} programs": "GỬI DUYỆT {{value}} chương trình",
+    "Are you sure you want to DISAPPROVE {{value}} selecting programs?": "Bạn có chắc muốn KHÔNG DUYỆT {{value}} chương trình đang chọn?",
+    "Are you sure you want to SUBMIT {{value}} selecting programs?": "Bạn có chắc muốn GỬI DUYỆT {{value}} chương trình đang chọn?",
+    "selecting programs": "chương trình đang chọn",
+    "programs": "chương trình"
 }
