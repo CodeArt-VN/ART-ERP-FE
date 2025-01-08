@@ -4,6 +4,8 @@
   [ngClass]="{ 'small-width': smallWidth === true }"
   *ngIf="_schema"
 >
+<div id="ng-select-filterComponent" style="position: absolute; z-index: 30005"></div>
+
   <ng-template #recursiveList let-parent="parent" let-list="list" let-depth="depth">
     <div
       *ngIf="parent"
@@ -76,7 +78,7 @@
   <ng-template #formControlTemplate let-form="form" let-parent="parent">
     <div class="cell col-name">
       <app-input-control
-        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name',form:form}"
+        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name',form:form,appendTo:'#ng-select-filterComponent'}"
         (change)="changeDimension(form)"
       ></app-input-control>
     </div>
@@ -90,19 +92,20 @@
           dataSource: form.get('Dimension')?.value === 'logical' ? logicalOperators : transformOperators, 
           bindLabel: 'name', 
           bindValue: 'code',
-          form:form
+          form:form,
+          appendTo:'#ng-select-filterComponent'
         }"
         (change)="onInputChange()"
       ></app-input-control>
     </div>
     <div class="cell col-value">
       <app-input-control
-        appendTo="#ng-select-holder"
         [field]="{
           id: 'Value',
           label: 'Value',
           type: getSchemaDetailType(form),
-          form: form
+          form: form,
+          appendTo:'#ng-select-filterComponent'
         }"
         *ngIf="form.get('Dimension')?.value != 'logical'"
         (change)="onInputChange()"
