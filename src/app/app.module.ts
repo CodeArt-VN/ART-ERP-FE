@@ -1,20 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-import { IonicStorageModule } from '@ionic/storage-angular';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { AppComponent } from './app.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { IonicModule } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { AppRoutingModule } from './app-routing.module';
-import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { AppComponent } from './app.component';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopoverPage } from './pages/SYS/popover/popover.page';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ShareModule } from './share.module';
 import { PipesModule } from './pipes/pipes.module';
+import { ShareModule } from './share.module';
 
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+
 
 import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
 import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
@@ -35,16 +33,19 @@ import { POSMemoModalPage } from './pages/POS/pos-memo-modal/pos-memo-modal.page
 import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-add-contact-modal.page';
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
+import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
+import { DataCorrectionRequestModalPage } from './modals/data-correction-request-modal/data-correction-request-modal.page';
+import { ItemInVendorModalPage } from './modals/item-in-vendor-modal/item-in-vendor-modal.component';
+
 
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { environment } from '../environments/environment';
 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
-import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,6 +73,8 @@ export function createTranslateLoader(http: HttpClient) {
         POSAddContactModalPage,
         POSCancelModalPage,
         POSNotifyModalPage,
+        DataCorrectionRequestModalPage,
+        ItemInVendorModalPage
     ],
     exports: [],
     bootstrap: [AppComponent], imports: [BrowserModule,
@@ -98,7 +101,6 @@ export function createTranslateLoader(http: HttpClient) {
         FullCalendarModule,
         NgSelectModule,
         NgOptionHighlightModule,
-        DataCorrectionRequestModalPageModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production,
             // Register the ServiceWorker as soon as the app is stable

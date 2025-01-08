@@ -1,13 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { ModalController } from '@ionic/angular';
-import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
-import { E, I } from '@fullcalendar/resource/internal-common';
-import { TypeFormatFlags } from 'typescript';
+// import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
 
 @Component({
     selector: 'app-data-correction-request-modal',
@@ -21,7 +18,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
   @Input() item: any;
   @Input() model: any;
   constructor(public formBuilder: FormBuilder,
-    public pageProvider: APPROVAL_RequestProvider,
+    //public pageProvider: APPROVAL_RequestProvider,
     public route: ActivatedRoute,
     public router: Router,
     public navCtrl: NavController,

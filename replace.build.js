@@ -1,5 +1,6 @@
 const fs = require('fs');
-var replace = require('replace-in-file');
+//var replace = require('replace-in-file');
+
 var package = require('./package.json');
 
 var androidProjectFile = './android/app/build.gradle';
@@ -100,12 +101,19 @@ const webBaseHref = {
 //const webIndex = { files: 'angular.json', from: /index-(.*)\"/g, to: 'v' + buildVersion + '-index.html"', allowEmptyPaths: false };
 
 try {
-  replace.sync(environmentPROD);
-  replace.sync(configXML);
-  replace.sync(androidVersion);
-  replace.sync(androidVersionCode);
-  replace.sync(iosVersion);
-  replace.sync(iosProjectVersion);
+
+  import('replace-in-file').then(replace => {
+    console.log(replace);
+    
+    replace.replaceInFile(environmentPROD);
+    //replace.replaceInFile(configXML);
+    replace.replaceInFile(androidVersion);
+    replace.replaceInFile(androidVersionCode);
+    replace.replaceInFile(iosVersion);
+    replace.replaceInFile(iosProjectVersion);
+  });
+
+
 
   //Beta only
   //replace.sync(webOutput);

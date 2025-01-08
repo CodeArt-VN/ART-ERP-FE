@@ -27,7 +27,6 @@ import { HelpDetailComponent } from '../pages/SYS/help-detail/help-detail.page';
 import { PipesModule } from '../pipes/pipes.module';
 import { ReorderComponent } from './reorder/reorder.component';
 import { JsonViewerComponent } from './json-viewer/json-viewer.component';
-import { ItemInVendorModalPage } from '../modals/item-in-vendor-modal/item-in-vendor-modal.component';
 
 @NgModule({
   imports: [
@@ -59,7 +58,6 @@ import { ItemInVendorModalPage } from '../modals/item-in-vendor-modal/item-in-ve
     HelpDetailComponent,
     ReorderComponent,
     JsonViewerComponent,
-    ItemInVendorModalPage,
    
 
   ],
@@ -80,8 +78,7 @@ import { ItemInVendorModalPage } from '../modals/item-in-vendor-modal/item-in-ve
     ScrollingModule,
     IonicModule,
     ReactiveFormsModule,
-    JsonViewerComponent,  
-    ItemInVendorModalPage,
+    JsonViewerComponent,
     //NgxMaskDirective,  NgxMaskPipe,
     TranslateModule,
     NgSelectModule,
