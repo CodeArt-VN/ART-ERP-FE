@@ -37,6 +37,7 @@ export class InputControlComponent implements OnInit {
     if(this.type == 'ng-select-branch')this.configBranch();
     if(f.treeConfig){
       if(f.treeConfig.isTree != undefined)this.isTree = f.treeConfig.isTree;
+      if(f.treeConfig.searchFnDefault)this.searchFn = this.searchShowAllChildren;
       if(f.treeConfig.searchFn)this.searchFn = f.treeConfig.searchFn;
       if(f.treeConfig.isCollapsed != undefined)this.isCollapsed = f.treeConfig.isCollapsed;
       if(f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
