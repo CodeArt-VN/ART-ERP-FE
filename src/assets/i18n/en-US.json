@@ -2649,6 +2649,7 @@
     "Only show items with transactions":"Only show items with transactions",
     "Open quantity":"Open quantity",
     "Input quantity":"Input quantity",
-    "Output quantity":"Output quantity"
+    "Output quantity":"Output quantity",
+    "Closing Inventory": "Closing Inventory"
 
 }

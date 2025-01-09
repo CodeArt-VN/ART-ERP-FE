@@ -2616,6 +2616,7 @@
     "Only show items with transactions":"Chỉ hiện các vật tư có giao dịch",
     "Open quantity":"Đầu kỳ",
     "Input quantity":"Nhập",
-    "Output quantity":"Xuất"
+    "Output quantity":"Xuất",
+    "Closing Inventory": "Tồn"
 
 }
