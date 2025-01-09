@@ -1006,7 +1006,7 @@
     "unit-placeholder": "unit-placeholder",
     "Unit/Job title": "Unit/Job title",
     "Unselect all": "Unselect all",
-    "UoM": "UoM",
+    "UoM": "Đơn vị",
     "uom-price": "uom-price",
     "Update": "Update",
     "Update coordinates": "Update coordinates",
@@ -2645,5 +2645,7 @@
     "Are you sure you want to DISAPPROVE {{value}} selecting programs?" : "Are you sure you want to DISAPPROVE {{value}} selecting programs?",
     "Are you sure you want to SUBMIT {{value}} selecting programs?": "Are you sure you want to SUBMIT {{value}} selecting programs?",
     "selecting programs": "selecting programs",
-    "programs": "programs"
+    "programs": "programs",
+    "Only show items with transactions":"Only show items with transactions"
+
 }

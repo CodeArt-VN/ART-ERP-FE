@@ -1006,7 +1006,7 @@
     "unit-placeholder": "unit-placeholder",
     "Unit/Job title": "Đơn vị / Chức danh",
     "Unselect all": "Bỏ chọn tất cả",
-    "UoM": "UoM",
+    "UoM": "Đơn vị",
     "uom-price": "uom-price",
     "Update": "Cập nhật",
     "Update coordinates": "Cập nhật tọa độ",
@@ -2646,5 +2646,7 @@
     "Are you sure you want to DISAPPROVE {{value}} selecting programs?": "Bạn có chắc muốn KHÔNG DUYỆT {{value}} chương trình đang chọn?",
     "Are you sure you want to SUBMIT {{value}} selecting programs?": "Bạn có chắc muốn GỬI DUYỆT {{value}} chương trình đang chọn?",
     "selecting programs": "chương trình đang chọn",
-    "programs": "chương trình"
+    "programs": "chương trình",
+    "Only show items with transactions":"Chỉ hiện các vật tư có giao dịch"
+
 }
