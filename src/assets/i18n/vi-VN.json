@@ -2613,5 +2613,9 @@
     "Are you sure you want to SUBMIT {{value}} selecting programs?": "Are you sure you want to SUBMIT {{value}} selecting programs?",
     "selecting programs": "selecting programs",
     "programs": "programs",
-    "Only show items with transactions":"Chỉ hiện các vật tư có giao dịch"
+    "Only show items with transactions":"Chỉ hiện các vật tư có giao dịch",
+    "Open quantity":"Đầu kỳ",
+    "Input quantity":"Nhập",
+    "Output quantity":"Xuất"
+
 }

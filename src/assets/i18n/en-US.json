@@ -2646,6 +2646,9 @@
     "Are you sure you want to SUBMIT {{value}} selecting programs?": "Are you sure you want to SUBMIT {{value}} selecting programs?",
     "selecting programs": "selecting programs",
     "programs": "programs",
-    "Only show items with transactions":"Only show items with transactions"
+    "Only show items with transactions":"Only show items with transactions",
+    "Open quantity":"Open quantity",
+    "Input quantity":"Input quantity",
+    "Output quantity":"Output quantity"
 
 }
