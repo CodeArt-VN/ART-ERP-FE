@@ -103,14 +103,12 @@ const webBaseHref = {
 try {
 
   import('replace-in-file').then(replace => {
-    console.log(replace);
-    
-    replace.replaceInFile(environmentPROD);
-    //replace.replaceInFile(configXML);
-    replace.replaceInFile(androidVersion);
-    replace.replaceInFile(androidVersionCode);
-    replace.replaceInFile(iosVersion);
-    replace.replaceInFile(iosProjectVersion);
+    try {replace.replaceInFile(environmentPROD);} catch (error) {console.error('Error occurred:', error);}
+    try {replace.replaceInFile(configXML);} catch (error) {console.error('Error occurred:', error);}
+    try {replace.replaceInFile(androidVersion);} catch (error) {console.error('Error occurred:', error);}
+    try {replace.replaceInFile(androidVersionCode);} catch (error) {console.error('Error occurred:', error);}
+    try {replace.replaceInFile(iosVersion);} catch (error) {console.error('Error occurred:', error);}
+    try {replace.replaceInFile(iosProjectVersion);} catch (error) {console.error('Error occurred:', error);}
   });
 
 
