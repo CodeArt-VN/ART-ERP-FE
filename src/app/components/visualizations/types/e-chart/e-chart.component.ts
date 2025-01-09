@@ -104,6 +104,9 @@ export class EChartComponent implements OnInit {
       case 'fixed':
         finalChartOption = this.rpt.echartDefaultOption.mergeDefaultChartOption(this.chartOption, this.viewMode);
         break;
+      case 'manual':
+        finalChartOption = this.chartOption;
+        break;
     }
 
     if (this.chartScript) {
