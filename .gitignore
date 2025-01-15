@@ -79,10 +79,25 @@ Content/
 
 
 
+android/**/*
+!android/variables.gradle
+!android/build.gradle
+
+!android/app/
+!android/app/build.gradle
+
+ios/**/*
+!ios/
+!ios/App/
+!ios/App/App/
+!ios/App/App/Info.plist
+
+!ios/App/App.xcodeproj/
+!ios/App/App.xcodeproj/project.pbxproj
+
 resources/android/
 resources/ios/
-android/
-ios/
+
 src/app/pages/_tem/
 _publish.*/
 
