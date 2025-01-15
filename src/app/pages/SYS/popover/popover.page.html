@@ -124,7 +124,7 @@
             [(ngModel)]="popData.saleOrderStatus"
             [ngModelOptions]="{standalone: true}"
           >
-            <option *ngFor="let t of saleOrderStatusList" [value]="t.Id">{{t.Name}}</option>
+            <option *ngFor="let t of saleOrderStatusList" [value]="t.Code">{{t.Name}}</option>
           </select>
         </div>
 

@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  appVersion: '0.19.75',
+  appVersion: '0.20.15',
   appDomain: 'https://erp.codeart.vn/',
   appServers: [
     { Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
