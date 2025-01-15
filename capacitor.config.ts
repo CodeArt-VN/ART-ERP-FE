@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
   server: {
     cleartext: true,
+    allowNavigation: ['*']
   },
   plugins: {
     PushNotifications: {
@@ -18,6 +19,7 @@ const config: CapacitorConfig = {
       keystorePath: 'undefined',
       keystoreAlias: 'undefined',
     },
+    allowMixedContent: true,
   },
 };
 
