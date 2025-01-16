@@ -1,10 +1,4 @@
 <ion-app class="default-palette">
-  <!-- [class]="appTheme"
-[ngClass]="{
-  dark: env?.user?.UserSetting?.Theme?.Value == 'Dark',
-  light: env?.user?.UserSetting?.Theme?.Value == 'Light',
-  showScrollbar: showScrollbar
-}" -->
   <div id="ng-select-holder" style="position: absolute; z-index: 30005"></div>
   <ion-split-pane contentId="main-content">
     <ion-menu
@@ -12,7 +6,7 @@
       type="overlay"
       [ngClass]="{
         'less-menu': countForm < 7,
-        'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+        'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
       }"
       [hidden]="!showAppMenu || !(env.user && env.user.Id)"
       id="app-menu"
@@ -30,11 +24,20 @@
         <div class="app-logo-wrapper">
           <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
           <div class="c-control branch-select" *ngIf="env.branchList.length > 0">
-            <app-input-control (change)="changeBranch()" [field]="{
-              id:'IDBranch',label:'Branch',type:'ng-select-branch',
-              dataSource:branchList,bindLabel:'Name',bindValue:'Id', placeholder:'Search',
-              form:branchFormGroup}">
-              </app-input-control>
+            <app-input-control
+              (change)="changeBranch()"
+              [field]="{
+                id: 'IDBranch',
+                label: 'Branch',
+                type: 'ng-select-branch',
+                dataSource: branchList,
+                bindLabel: 'Name',
+                bindValue: 'Id',
+                placeholder: 'Search',
+                form: branchFormGroup,
+              }"
+            >
+            </app-input-control>
           </div>
         </div>
       </ion-header>
@@ -45,7 +48,7 @@
           class="menu-items"
           [ngClass]="{
             'less-menu': countForm < 7,
-            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
           }"
           *ngIf="isShowSearch && env.user"
         >
@@ -95,7 +98,7 @@
           class="menu-items"
           [ngClass]="{
             'less-menu': countForm < 7,
-            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
           }"
           *ngIf="!isShowSearch"
         >

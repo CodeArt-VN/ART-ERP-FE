@@ -19,17 +19,17 @@
 
   <!-- number -->
   <input
- *ngSwitchCase="'number'"
-  mask="separator.2"
-  thousandSeparator=","
-  [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-  class="c-input"
-  [id]="id"
-  placeholder="{{ placeholder | translate }}"
-  [formControlName]="id"
-  (change)="onInputChange($event)"
-  (keydown)="onKeydown($event)"
-/>
+    *ngSwitchCase="'number'"
+    mask="separator.2"
+    thousandSeparator=","
+    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
+    class="c-input"
+    [id]="id"
+    placeholder="{{ placeholder | translate }}"
+    [formControlName]="id"
+    (change)="onInputChange($event)"
+    (keydown)="onKeydown($event)"
+  />
   <!-- radio -->
   <ng-container *ngSwitchCase="'radio'">
     <ng-container *ngFor="let i of dataSource; let j = index">
@@ -102,14 +102,14 @@
     (search)="onSearch($event)"
     (change)="onInputChange($event)"
     [appendTo]="appendTo"
-    >
+  >
     <ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
       <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
     </ng-template>
     <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
       <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
     </ng-template>
-    
+
     <!-- [appendTo]="appendTo" -->
     <ng-template *ngIf="!inputControlTemplate" ng-label-tmp let-i="item">
       <ion-icon *ngIf="i.Icon" [name]="i.Icon" slot="start" [color]="i.Color"></ion-icon>
@@ -124,7 +124,7 @@
         <div>
           <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
             i[bindLabel ? bindLabel : 'Name'] | translate
-            }}</ion-text>
+          }}</ion-text>
         </div>
       </div>
     </ng-template>
@@ -167,7 +167,7 @@
     (search)="onSearch($event)"
     (change)="onInputChange($event)"
     [appendTo]="appendTo"
-    >
+  >
     <!-- [appendTo]="appendTo" -->
     <ng-template ng-label-tmp let-i="item">
       <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
@@ -175,7 +175,6 @@
     <ng-template ng-option-tmp let-item="item" *ngIf="isTree">
       <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
     </ng-template>
-
   </ng-select>
 
   <!-- ng-select-level -->
@@ -237,7 +236,7 @@
   </ng-select>
 
   <!-- ng-select-bp -->
-  <ng-select 
+  <ng-select
     *ngSwitchCase="'ng-select-bp'"
     [ngClass]="{ 'no-check-dirty': noCheckDirty }"
     class="c-input"
@@ -263,7 +262,7 @@
           >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
         ></a>
         <small [title]="i.Name"> {{ i.Name }}</small>
-        <ion-icon  *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+        <ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
       </div>
     </ng-template>
     <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
@@ -274,11 +273,11 @@
               i.Code
             }}</span></b
           >
-          <span style="white-space: normal"  class="important" [ngOptionHighlight]="search"> {{ i.Name }}</span>
+          <span style="white-space: normal" class="important" [ngOptionHighlight]="search"> {{ i.Name }}</span>
           <span *ngIf="i.WorkPhone">
             |
             <small>
-              <b  class="important" [ngOptionHighlight]="search">{{ i.WorkPhone }}</b></small
+              <b class="important" [ngOptionHighlight]="search">{{ i.WorkPhone }}</b></small
             ></span
           >
         </div>
@@ -652,7 +651,14 @@
           <ion-item>
             <app-input-control
               style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
-              [field]="{ id: 'Period', type: 'select', dataSource: _timePeriodList, bindValue: 'code', bindLabel: 'name', form: pickerControl }"
+              [field]="{
+                id: 'Period',
+                type: 'select',
+                dataSource: _timePeriodList,
+                bindValue: 'code',
+                bindLabel: 'name',
+                form: pickerControl,
+              }"
             ></app-input-control>
             <app-form-control
               style="width: 100%"
@@ -682,16 +688,35 @@
 <!-- Declare Template treeConfig -->
 <ng-template #treeConfigTemplate ng-option-tmp let-item="item" let-search="searchTerm">
   <ng-container *ngIf="item && isTree">
-    <div class="flex-left" style="width:100%;position: relative"
-      [ngClass]="{ 'hide-all': !item.show || item.blockedShow}">
-      <span *ngFor="let l of item.levels">&nbsp;&nbsp;&nbsp;</span>
+    <div
+      class="flex-left"
+      style="width: 100%; position: relative"
+      [ngClass]="{ 'hide-all': !item.show || item.blockedShow }"
+    >
+      <ng-container *ngFor="let w of item.levels; let k = index"
+        ><span class="spacing" *ngIf="k > 0"></span
+      ></ng-container>
+      <ion-icon
+        (click)="$event.stopPropagation(); toggleRow(item)"
+        class="min-btn clickable"
+        [name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
+      ></ion-icon>
+
       <ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
-        <ion-text style="margin-right:8px" class="text-warp" [color]="item.Color || 'dark'" [ngOptionHighlight]="searchTerm" >{{
-          item[bindLabel ? bindLabel : 'Name'] | translate
-          }}</ion-text>
-      <ion-icon *ngIf="item.hasChildInSearchBox" role="img" (click)="$event.stopPropagation(); toggleRow(item)"
-        [name]="!item.showdetail? 'chevron-forward-outline' : 'chevron-down-outline'"
-        style="flex: end; justify-content: flex-end; position: absolute; right: -8px;padding: 8px;"></ion-icon>
+      <ion-text
+        class="text-warp"
+		[ngClass]="item.hasChildInSearchBox? ('bold ') : ('')"
+        [color]="item.Type == 'Company'? 'primary' : (item.Color || 'dark')"
+        [ngOptionHighlight]="searchTerm"
+        >{{ item[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text
+      >
+      <!-- <ion-icon
+        *ngIf="item.hasChildInSearchBox"
+        role="img"
+        (click)="$event.stopPropagation(); toggleRow(item)"
+        [name]="!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline'"
+        style="flex: end; justify-content: flex-end; position: absolute; right: -8px; padding: 8px"
+      ></ion-icon> -->
     </div>
   </ng-container>
 </ng-template>
