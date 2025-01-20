@@ -111,26 +111,37 @@ const webBaseHref = {
 };
 
 
-Promise.all([backupAndroidFolder(), backupIosFolder()]).then(() => {
-  console.log('Backup android + ios folders.');
-})
-.catch((err) => {
-  console.error(err);
-})
-.finally(() => {
-  restoreAndroidAndIosFolder().then(() => {
-    console.log('Restore android + ios folders.');
+// Promise.all([backupAndroidFolder(), backupIosFolder()]).then(() => {
+//   console.log('Backup android + ios folders.');
+// })
+// .catch((err) => {
+//   console.error(err);
+// })
+// .finally(() => {
 
-    import('replace-in-file').then(replace => {
-      try { replace.replaceInFile(environmentPROD); } catch { console.error('Error updating environmentPROD'); }
-      try { replace.replaceInFile(androidVersion); } catch { console.error('Error updating androidVersion'); }
-      try { replace.replaceInFile(androidVersionCode); } catch { console.error('Error updating androidVersionCode'); }
-      try { replace.replaceInFile(iosVersion); } catch { console.error('Error updating iosVersion'); }
-      try { replace.replaceInFile(iosProjectVersion); } catch { console.error('Error updating iosProjectVersion'); }
+//   restoreAndroidAndIosFolder().then(() => {
+//     console.log('Restore android + ios folders.');
 
-      console.log('Build version updated.');
-    });
+//     import('replace-in-file').then(replace => {
+//       try { replace.replaceInFile(environmentPROD); } catch { console.error('Error updating environmentPROD'); }
+//       try { replace.replaceInFile(androidVersion); } catch { console.error('Error updating androidVersion'); }
+//       try { replace.replaceInFile(androidVersionCode); } catch { console.error('Error updating androidVersionCode'); }
+//       try { replace.replaceInFile(iosVersion); } catch { console.error('Error updating iosVersion'); }
+//       try { replace.replaceInFile(iosProjectVersion); } catch { console.error('Error updating iosProjectVersion'); }
 
-  });
+//       console.log('Build version updated.');
+//     });
+
+//   });
+
+// });
+
+import('replace-in-file').then(replace => {
+  try { replace.replaceInFile(environmentPROD); } catch { console.error('Error updating environmentPROD'); }
+  try { replace.replaceInFile(androidVersion); } catch { console.error('Error updating androidVersion'); }
+  try { replace.replaceInFile(androidVersionCode); } catch { console.error('Error updating androidVersionCode'); }
+  try { replace.replaceInFile(iosVersion); } catch { console.error('Error updating iosVersion'); }
+  try { replace.replaceInFile(iosProjectVersion); } catch { console.error('Error updating iosProjectVersion'); }
+
+  console.log('Build version updated.');
 });
-
