@@ -90,120 +90,120 @@ export class ToolbarComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
    
-    if (this.page.pageConfig?.pageName == 'purchase-order') {
-      this.ShowSubmit = true;
-      this.ShowApprove = true;
-      this.ShowDisapprove = true;
-      this.ShowCancel = true;
-      this.ShowSubmit = true;
-      this.ShowDelete = true;
+    // if (this.page.pageConfig?.pageName == 'purchase-order') {
+    //   this.ShowSubmit = true;
+    //   this.ShowApprove = true;
+    //   this.ShowDisapprove = true;
+    //   this.ShowCancel = true;
+    //   this.ShowSubmit = true;
+    //   this.ShowDelete = true;
 
-      this.page.selectedItems.forEach((i) => {
-        // Draft	Nháp
-        // Unapproved	Không duyệt
-        // Submitted	Chờ duyệt
-        // Approved	Đã duyệt
-        // Ordered	Đã đặt mua
+    //   this.page.selectedItems.forEach((i) => {
+    //     // Draft	Nháp
+    //     // Unapproved	Không duyệt
+    //     // Submitted	Chờ duyệt
+    //     // Approved	Đã duyệt
+    //     // Ordered	Đã đặt mua
 
-        // PORequestQuotation	Chờ báo giá
-        // Confirmed	NCC đã xác nhận
-        // Shipping	Đang vận chuyển
-        // PartiallyReceived	Đã nhận một phần
-        // Received	Đã nhận hàng
-        // Cancelled	Đã Hủy
+    //     // PORequestQuotation	Chờ báo giá
+    //     // Confirmed	NCC đã xác nhận
+    //     // Shipping	Đang vận chuyển
+    //     // PartiallyReceived	Đã nhận một phần
+    //     // Received	Đã nhận hàng
+    //     // Cancelled	Đã Hủy
 
-        //['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+    //     //['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
 
-        let notShowSubmitOrdersForApproval = [
-          'Ordered',
-          'Submitted',
-          'Approved',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-          'Cancelled',
-        ];
-        if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
-          this.ShowSubmit = false;
-        }
+    //     let notShowSubmitOrdersForApproval = [
+    //       'Ordered',
+    //       'Submitted',
+    //       'Approved',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //       'Cancelled',
+    //     ];
+    //     if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
+    //       this.ShowSubmit = false;
+    //     }
 
-        let notShowApproveOrders = [
-          'Draft',
-          'Unapproved',
-          'Ordered',
-          'Approved',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-          'Cancelled',
-        ];
-        if (notShowApproveOrders.indexOf(i.Status) > -1) {
-          this.ShowApprove = false;
-        }
+    //     let notShowApproveOrders = [
+    //       'Draft',
+    //       'Unapproved',
+    //       'Ordered',
+    //       'Approved',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //       'Cancelled',
+    //     ];
+    //     if (notShowApproveOrders.indexOf(i.Status) > -1) {
+    //       this.ShowApprove = false;
+    //     }
 
-        let notShowDisapproveOrders = [
-          'Draft',
-          'Unapproved',
-          'Ordered',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-          'Cancelled',
-        ];
-        if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
-          this.ShowDisapprove = false;
-        }
+    //     let notShowDisapproveOrders = [
+    //       'Draft',
+    //       'Unapproved',
+    //       'Ordered',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //       'Cancelled',
+    //     ];
+    //     if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
+    //       this.ShowDisapprove = false;
+    //     }
 
-        let notShowCancelOrders = [
-          'Ordered',
-          'Approved',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-          'Cancelled',
-        ];
-        if (notShowCancelOrders.indexOf(i.Status) > -1) {
-          this.ShowCancel = false;
-        }
+    //     let notShowCancelOrders = [
+    //       'Ordered',
+    //       'Approved',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //       'Cancelled',
+    //     ];
+    //     if (notShowCancelOrders.indexOf(i.Status) > -1) {
+    //       this.ShowCancel = false;
+    //     }
 
-        let notShowSubmitOrders = [
-          'Draft',
-          'Unapproved',
-          'Ordered',
-          'Submitted',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-          'Cancelled',
-        ];
-        if (notShowSubmitOrders.indexOf(i.Status) > -1) {
-          this.ShowSubmit = false;
-        }
+    //     let notShowSubmitOrders = [
+    //       'Draft',
+    //       'Unapproved',
+    //       'Ordered',
+    //       'Submitted',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //       'Cancelled',
+    //     ];
+    //     if (notShowSubmitOrders.indexOf(i.Status) > -1) {
+    //       this.ShowSubmit = false;
+    //     }
 
-        let notShowDelete = [
-          'Ordered',
-          'Approved',
-          'PORequestQuotation',
-          'Confirmed',
-          'Shipping',
-          'PartiallyReceived',
-          'Received',
-        ];
-        if (notShowDelete.indexOf(i.Status) > -1) {
-          this.ShowDelete = false;
-        }
-      });
-    }
+    //     let notShowDelete = [
+    //       'Ordered',
+    //       'Approved',
+    //       'PORequestQuotation',
+    //       'Confirmed',
+    //       'Shipping',
+    //       'PartiallyReceived',
+    //       'Received',
+    //     ];
+    //     if (notShowDelete.indexOf(i.Status) > -1) {
+    //       this.ShowDelete = false;
+    //     }
+    //   });
+    // }
 
     if (this.page.pageConfig?.pageName == 'arinvoice') {
       this.ShowSubmit = true;
