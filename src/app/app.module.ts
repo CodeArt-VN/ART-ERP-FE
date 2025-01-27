@@ -35,7 +35,6 @@ import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-moda
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
 import { DataCorrectionRequestModalPage } from './modals/data-correction-request-modal/data-correction-request-modal.page';
-import { ItemInVendorModalPage } from './modals/item-in-vendor-modal/item-in-vendor-modal.component';
 
 
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -74,7 +73,6 @@ export function createTranslateLoader(http: HttpClient) {
         POSCancelModalPage,
         POSNotifyModalPage,
         DataCorrectionRequestModalPage,
-        ItemInVendorModalPage
     ],
     exports: [],
     bootstrap: [AppComponent], imports: [BrowserModule,

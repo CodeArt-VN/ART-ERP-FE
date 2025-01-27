@@ -23,7 +23,7 @@
         </div>
         <div class="app-logo-wrapper">
           <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
-          <div class="c-control branch-select" *ngIf="env.branchList.length > 0">
+          <div class="c-control branch-select" *ngIf="env.branchList.length > 0 && env.user.StaffID >0">
             <app-input-control
               (change)="changeBranch()"
               [field]="{
