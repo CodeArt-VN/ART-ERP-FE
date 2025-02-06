@@ -50,7 +50,7 @@
       title="{{ 'Add' | translate }}"
       *ngIf="
         !page.selectedItems?.length &&
-        ShowAdd &&
+        page.pageConfig.ShowAdd &&
         page.pageConfig.canAdd &&
         !page.query.IsDisabled &&
         !page.pageConfig.isDetailPage
@@ -64,7 +64,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="{{ 'Search' | translate }}"
-      *ngIf="!page.selectedItems?.length && ShowSearch && !page.pageConfig.isDetailPage"
+      *ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
       (click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
     >
       <ion-icon slot="icon-only" name="search-outline"></ion-icon>
@@ -73,7 +73,7 @@
     <!-- Refresh -->
     <ion-button
       title="{{ 'Refresh' | translate }}"
-      *ngIf="!page.selectedItems?.length && ShowRefresh"
+      *ngIf="!page.selectedItems?.length && page.pageConfig.ShowRefresh"
       (click)="page.refresh()"
     >
       <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
@@ -83,7 +83,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="{{ 'Export' | translate }}"
-      *ngIf="!page.selectedItems?.length && ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
+      *ngIf="!page.selectedItems?.length && page.pageConfig.ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
       (click)="page.export()"
     >
       <ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
@@ -93,7 +93,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="{{ 'Import' | translate }}"
-      *ngIf="!page.selectedItems?.length && ShowImport && page.pageConfig.canImport && !page.pageConfig.isDetailPage"
+      *ngIf="!page.selectedItems?.length && page.pageConfig.ShowImport && page.pageConfig.canImport && !page.pageConfig.isDetailPage"
       (click)="onClickImport()"
     >
       <ion-icon color="warning" slot="icon-only" name="cloud-upload-outline"></ion-icon>
@@ -114,7 +114,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="Copy"
-      *ngIf="page.selectedItems?.length && page.pageConfig.canCopy && !page.pageConfig.isDetailPage && ShowCopy"
+      *ngIf="page.selectedItems?.length && page.pageConfig.canCopy && !page.pageConfig.isDetailPage && page.pageConfig.ShowCopy"
       (click)="page.copy()"
     >
       <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
@@ -127,7 +127,7 @@
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canChangeBranch &&
-        ShowChangeBranch
+        page.pageConfig.ShowChangeBranch
       "
       (click)="page.changeBranch($event)"
     >
@@ -140,9 +140,9 @@
       *ngIf="
         page.selectedItems?.length &&
         page.pageConfig.canSubmit &&
-        ShowSubmit &&
+        page.pageConfig.ShowSubmit &&
         !page.pageConfig.isDetailPage &&
-        ShowSubmit &&
+        page.pageConfig.ShowSubmit &&
         !page.query.IsDisabled
       "
       (click)="page.submit()"
@@ -157,7 +157,7 @@
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canApprove &&
-        ShowApprove &&
+        page.pageConfig.ShowApprove &&
         !page.pageConfig.isDetailPage
       "
       (click)="page.approve()"
@@ -171,7 +171,7 @@
       title="{{ 'Disapprove' | translate }}"
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
-        ((page.pageConfig.canDisapprove && ShowDisapprove) || (page.pageConfig.canApprove && ShowDisapprove)) &&
+        ((page.pageConfig.canDisapprove && page.pageConfig.ShowDisapprove) || (page.pageConfig.canApprove && page.pageConfig.ShowDisapprove)) &&
         !page.pageConfig.isDetailPage
       "
       (click)="page.disapprove()"
@@ -188,7 +188,7 @@
         !page.query.IsDisabled &&
         !page.pageConfig.isDetailPage &&
         page.pageConfig.canMerge &&
-        ShowMerge
+        page.pageConfig.ShowMerge
       "
       (click)="page.merge()"
     >
@@ -204,7 +204,7 @@
         !page.query.IsDisabled &&
         !page.pageConfig.isDetailPage &&
         page.pageConfig.canSplit &&
-        ShowSplit
+        page.pageConfig.ShowSplit
       "
       (click)="page.split()"
     >
@@ -218,7 +218,7 @@
       *ngIf="
         ((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canCancel &&
-        ShowCancel &&
+        page.pageConfig.ShowCancel &&
         !page.pageConfig.isDetailPage
       "
       (click)="page.cancel()"
@@ -238,7 +238,7 @@
       *ngIf="
         (page.selectedItems?.length || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canArchive &&
-        ShowArchive
+        page.pageConfig.ShowArchive
       "
       (click)="page.archiveItems()"
     >
@@ -261,7 +261,7 @@
       *ngIf="
         (page.selectedItems?.length || (page.pageConfig.isDetailPage && page.item?.Id)) &&
         page.pageConfig.canDelete &&
-        ShowDelete
+        page.pageConfig.ShowDelete
       "
       (click)="deleteItem()"
     >
@@ -271,7 +271,7 @@
     <!-- Archive -->
     <ion-button
       class="ion-hide-md-down"
-      *ngIf="ShowArchive && !page.pageConfig.isDetailPage && !page.selectedItems?.length"
+      *ngIf="page.pageConfig.ShowArchive && !page.pageConfig.isDetailPage && !page.selectedItems?.length"
       (click)="page.query.IsDisabled = !page.query.IsDisabled; page.refresh()"
       title="{{ 'View archived items' | translate }}"
     >
@@ -282,7 +282,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="{{ 'Help' | translate }}"
-      *ngIf="!page.selectedItems?.length && ShowHelp"
+      *ngIf="!page.selectedItems?.length && page.pageConfig.ShowHelp"
       (click)="page.help()"
     >
       <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
@@ -292,7 +292,7 @@
     <ion-button
       class="ion-hide-md-down"
       title="{{ 'Show feature' | translate }}"
-      *ngIf="ShowFeature"
+      *ngIf="page.pageConfig.ShowFeature"
       (click)="toggleFeature()"
     >
       <ion-icon

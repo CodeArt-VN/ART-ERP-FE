@@ -75,6 +75,24 @@ export abstract class PageBase implements OnInit {
     isSubActive: false,
     isFeatureAsMain: false,
     sort: [],
+    ShowAdd : true,
+    ShowSearch : true,
+    ShowRefresh : true,
+    ShowExport : true,
+    ShowImport : true,
+    ShowCopy : true,
+    ShowChangeBranch : true,
+    ShowSubmit : true,
+    ShowApprove : true,
+    ShowDisapprove : true,
+    ShowMerge : true,
+    ShowSplit : true,
+    ShowCancel : true,
+    ShowArchive : true,
+    ShowDelete : true,
+    ShowHelp : true,
+    ShowFeature : false,
+
   };
 
   subscriptions: Subscription[] = [];
