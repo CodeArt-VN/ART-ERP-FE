@@ -75,11 +75,15 @@ export abstract class PageBase implements OnInit {
     isSubActive: false,
     isFeatureAsMain: false,
     sort: [],
+
     ShowAdd : true,
     ShowSearch : true,
     ShowRefresh : true,
     ShowExport : true,
     ShowImport : true,
+    ShowHelp : true,
+    ShowFeature : false,
+
     ShowCopy : true,
     ShowChangeBranch : true,
     ShowSubmit : true,
@@ -90,8 +94,9 @@ export abstract class PageBase implements OnInit {
     ShowCancel : true,
     ShowArchive : true,
     ShowDelete : true,
-    ShowHelp : true,
-    ShowFeature : false,
+    ShowPrint : false,
+
+    ShowCommandRules: [],
 
   };
 
@@ -353,6 +358,27 @@ export abstract class PageBase implements OnInit {
 
     //e?.preventDefault();
     e?.stopPropagation();
+
+    this.showCommandBySelectedRows(this.selectedItems);
+  }
+
+  showCommandBySelectedRows(selectedRows) {
+    const statuses = selectedRows.map(row => row.Status);
+    const filteredRules = this.pageConfig.ShowCommandRules.filter(rule => statuses.includes(rule.Status));
+    
+    if (filteredRules.length === 0) {
+      return;
+    }
+  
+    const commonButtons = filteredRules.reduce((acc, rule) => {
+      return acc.filter(btn => rule.ShowBtns.includes(btn));
+    }, filteredRules[0].ShowBtns);
+  
+    const keysToUpdate = new Set(this.pageConfig.ShowCommandRules.flatMap(rule => rule.ShowBtns));
+  
+    keysToUpdate.forEach((key:string) => {
+      this.pageConfig[key] = commonButtons.includes(key);
+    });
   }
 
   deleteItems(publishEventCode = this.pageConfig.pageName) {
