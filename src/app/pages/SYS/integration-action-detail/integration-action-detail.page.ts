@@ -17,9 +17,10 @@ import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 declare var ace: any;
 
 @Component({
-  selector: 'app-integration-action-detail',
-  templateUrl: './integration-action-detail.page.html',
-  styleUrls: ['./integration-action-detail.page.scss'],
+    selector: 'app-integration-action-detail',
+    templateUrl: './integration-action-detail.page.html',
+    styleUrls: ['./integration-action-detail.page.scss'],
+    standalone: false
 })
 export class IntegrationActionDetailPage extends PageBase {
   @ViewChild('runnerList') divRef;

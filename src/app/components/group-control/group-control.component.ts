@@ -3,8 +3,9 @@ import { NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-group-control',
-  templateUrl: './group-control.component.html',
+    selector: 'app-group-control',
+    templateUrl: './group-control.component.html',
+    standalone: false
 })
 export class GroupControlComponent implements OnInit {
   @Input() title;

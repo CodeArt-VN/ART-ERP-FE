@@ -1,10 +1,4 @@
 <ion-app class="default-palette">
-  <!-- [class]="appTheme"
-[ngClass]="{
-  dark: env?.user?.UserSetting?.Theme?.Value == 'Dark',
-  light: env?.user?.UserSetting?.Theme?.Value == 'Light',
-  showScrollbar: showScrollbar
-}" -->
   <div id="ng-select-holder" style="position: absolute; z-index: 30005"></div>
   <ion-split-pane contentId="main-content">
     <ion-menu
@@ -12,7 +6,7 @@
       type="overlay"
       [ngClass]="{
         'less-menu': countForm < 7,
-        'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+        'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
       }"
       [hidden]="!showAppMenu || !(env.user && env.user.Id)"
       id="app-menu"
@@ -28,35 +22,22 @@
           </ion-toolbar>
         </div>
         <div class="app-logo-wrapper">
-          <a [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
-          <div class="c-control branch-select" *ngIf="env.branchList.length">
-            <ng-select
-              appendTo="#ng-select-holder"
-              [(ngModel)]="env.selectedBranch"
-              [searchFn]="searchShowAllChildren"
+          <a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
+          <div class="c-control branch-select" *ngIf="env.branchList.length > 0 && env.user.StaffID >0">
+            <app-input-control
               (change)="changeBranch()"
-              class="c-input"
-              [clearable]="false"
-              #IDBranch
-              labelForId="IDBranch"
-              [items]="env.branchList"
-              [virtualScroll]="false"
-              bindLabel="Name"
-              bindValue="Id"
-              placeholder="{{ 'Select unit...' | translate }}"
+              [field]="{
+                id: 'IDBranch',
+                label: 'Branch',
+                type: 'ng-select-branch',
+                dataSource: branchList,
+                bindLabel: 'Name',
+                bindValue: 'Id',
+                placeholder: 'Search',
+                form: branchFormGroup,
+              }"
             >
-              <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                <div *ngIf="i" class="flex-left">
-                  <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-                  <ion-text
-                    class="text-warp"
-                    [color]="i.Type == 'Company' ? 'primary' : 'dark'"
-                    [ngOptionHighlight]="search"
-                    >{{ i.Name }}</ion-text
-                  >
-                </div>
-              </ng-template>
-            </ng-select>
+            </app-input-control>
           </div>
         </div>
       </ion-header>
@@ -67,7 +48,7 @@
           class="menu-items"
           [ngClass]="{
             'less-menu': countForm < 7,
-            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
           }"
           *ngIf="isShowSearch && env.user"
         >
@@ -117,7 +98,7 @@
           class="menu-items"
           [ngClass]="{
             'less-menu': countForm < 7,
-            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value
+            'compact-menu': env?.user?.UserSetting?.IsCompactMenu?.Value,
           }"
           *ngIf="!isShowSearch"
         >

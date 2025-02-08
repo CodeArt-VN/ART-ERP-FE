@@ -12,9 +12,10 @@ import { SYS_APICollection } from 'src/app/models/model-list-interface';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 declare var ace: any;
 @Component({
-  selector: 'app-api-collection-detail',
-  templateUrl: './api-collection-detail.page.html',
-  styleUrls: ['./api-collection-detail.page.scss'],
+    selector: 'app-api-collection-detail',
+    templateUrl: './api-collection-detail.page.html',
+    styleUrls: ['./api-collection-detail.page.scss'],
+    standalone: false
 })
 export class APICollectionDetailPage extends PageBase {
   statusList: [];

@@ -350,6 +350,17 @@ input[type='number'] {
   }
 }
 
+.min-btn {
+  vertical-align: bottom;
+  height: 14px;
+  min-width: 14px;
+  margin-right: 7px;
+  /* background: #e4e4e4; */
+  padding: 3px 7px;
+  margin: 0;
+  border-radius: 5px;
+}
+
 .shadow {
   /* box-shadow: 0px 5px 20px 0px #0072ff; */
   --box-shadow: 0px 5px 20px 0px var(--ion-color-base);

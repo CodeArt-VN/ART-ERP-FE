@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-field-control',
-  template: `
+    selector: 'app-field-control',
+    template: `
     <div class="c-control" *ngIf="field.data">
       <ion-item
         class="ion-no-padding ion-no-margin"
@@ -153,7 +153,9 @@ import { lib } from 'src/app/services/static/global-functions';
           [bindLabel]="field.bindLabel ? field.bindLabel : 'Name'"
           [bindValue]="field.bindValue"
           [virtualScroll]="true"
+          appendTo="#ng-select-holder"
           placeholder="Chọn đơn vị..."
+          
         >
           <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
             <div *ngIf="i">
@@ -258,6 +260,7 @@ import { lib } from 'src/app/services/static/global-functions';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class FieldControlComponent implements OnInit {
   @Input() field: any;

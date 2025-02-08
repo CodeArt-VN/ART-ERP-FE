@@ -79,10 +79,23 @@ Content/
 
 
 
+android/**/*
+!android/variables.gradle
+!android/build.gradle
+
+
+
+ios/**/*
+!ios/
+!ios/App/
+!ios/App/App/
+!ios/App/App/Info.plist
+
+
+
 resources/android/
 resources/ios/
-android/
-ios/
+
 src/app/pages/_tem/
 _publish.*/
 

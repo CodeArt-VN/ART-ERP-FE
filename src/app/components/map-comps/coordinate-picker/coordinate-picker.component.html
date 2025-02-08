@@ -3,9 +3,9 @@
     <label class="c-label"
       >{{ 'coordinates' | translate }}
       <small>
-        {{ formGroup.controls.Lat.value || ('lat' | translate) }}
+        {{ formGroup.controls.Lat.value || ('Latitude' | translate) }}
         -
-        {{ formGroup.controls.Long.value || ('long' | translate) }}
+        {{ formGroup.controls.Long.value || ('Longitude' | translate) }}
       </small>
     </label>
     <google-map
@@ -18,7 +18,7 @@
         formGroup.controls.Lat.value
           ? {
               lat: formGroup.controls.Lat.value,
-              lng: formGroup.controls.Long.value
+              lng: formGroup.controls.Long.value,
             }
           : center
       "
@@ -29,7 +29,7 @@
           formGroup.controls.Lat.value
             ? {
                 lat: formGroup.controls.Lat.value,
-                lng: formGroup.controls.Long.value
+                lng: formGroup.controls.Long.value,
               }
             : center
         "
@@ -39,9 +39,21 @@
       ></map-marker>
     </google-map>
     <label class="c-label coordinate">
-      <ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="findCoordinate()"
-        >Tìm tọa độ theo địa chỉ</ion-button
-      >
+      <div>
+        <ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="findCoordinate()"
+          >{{'Find coordinates by address' | translate}}</ion-button
+        >
+
+        <ion-button
+          color="primary"
+          size="small"
+          *ngIf="markerOptions.draggable"
+          (click)="GetCurrentPosition()"
+          fill="outline"
+        >
+          {{ 'Get current coordinates' | translate }}
+        </ion-button>
+      </div>
     </label>
   </div>
 </form>

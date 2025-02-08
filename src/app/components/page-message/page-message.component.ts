@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-page-message',
-  templateUrl: './page-message.component.html',
-  styleUrls: ['./page-message.component.scss'],
+    selector: 'app-page-message',
+    templateUrl: './page-message.component.html',
+    styleUrls: ['./page-message.component.scss'],
+    standalone: false
 })
 export class PageMessageComponent implements OnInit {
   @Input() itemsLength;

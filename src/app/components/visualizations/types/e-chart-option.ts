@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { br } from '@fullcalendar/core/internal-common';
-import { DatasetComponentOption, EChartsOption } from 'echarts/types/dist/echarts';
-import { BIReport } from 'src/app/models/options-interface';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Injectable({
@@ -19,11 +16,11 @@ export class EChartDefaultOption {
   viewMode: 'full' | 'mini' | 'dashboard' = 'dashboard';
 
   /** Chart options */
-  chartOption: echarts.EChartsOption;
+  chartOption: any;
 
   /** default option */
 
-  get eChartsOption(): EChartsOption {
+  get eChartsOption(): any {
     return {
       backgroundColor: lib.getCssVariableValue('--ion-color-tint'),
       textStyle: {
@@ -80,8 +77,8 @@ export class EChartDefaultOption {
     dimensions: string[] = null,
     data: any[] = null,
     comparitionData: any[] = null,
-  ): EChartsOption {
-    let fullOption: EChartsOption = {};
+  ): any {
+    let fullOption: any = {};
     if (type === 'auto') {
       type = this.suggestChartType(intervalProperty, dimensions, data, comparitionData);
       this.suggestDataSeries(fullOption, type, intervalProperty, intervalType, dimensions, data, comparitionData);
@@ -189,7 +186,7 @@ export class EChartDefaultOption {
     return this.mergeDefaultChartOption(fullOption, viewMode);
   }
 
-  mergeDefaultChartOption(option: EChartsOption, viewMode: string) {
+  mergeDefaultChartOption(option: any, viewMode: string) {
     let defaultOption = { ...this.eChartsOption };
 
     switch (viewMode) {
@@ -226,7 +223,7 @@ export class EChartDefaultOption {
     return defaultOption;
   }
 
-  updateSeriesByDimension(option: EChartsOption, type: string, dimensions: string[]) {
+  updateSeriesByDimension(option: any, type: string, dimensions: string[]) {
     if (option && dimensions.length > 1) {
       switch (type) {
         // case 'pie':
@@ -252,12 +249,12 @@ export class EChartDefaultOption {
     }
   }
 
-  setupBarConfig(option: EChartsOption, x: string, y: string, legendField: string, rawData: any[]) {
+  setupBarConfig(option: any, x: string, y: string, legendField: string, rawData: any[]) {
     let legendList = rawData.map((d) => {
       return { name: d[legendField] };
     });
 
-    let dataset: DatasetComponentOption[] = [{ source: rawData }];
+    let dataset: any[] = [{ source: rawData }];
     let seriesList = [];
 
     for (let i = 0; i < legendList.length; i++) {
@@ -298,7 +295,7 @@ export class EChartDefaultOption {
   }
 
   suggestDataSeries(
-    fullOption: EChartsOption,
+    fullOption: any,
     type: string,
     intervalProperty: string,
     intervalType: string,

@@ -3,8 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { SortConfig, Transform } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'datatable-header',
-  templateUrl: './datatable-header.component.html',
+    selector: 'datatable-header',
+    templateUrl: './datatable-header.component.html',
+    standalone: false
 })
 export class DataTableHeaderComponent implements OnInit {
   _columns: any[];

@@ -1,6 +1,5 @@
 # Getting Started
 
-node ./replace.translate.js
 
 git submodule update --init --recursive
 git submodule foreach 'git checkout main || :'

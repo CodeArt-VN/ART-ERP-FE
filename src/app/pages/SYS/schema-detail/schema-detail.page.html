@@ -38,7 +38,7 @@
           </ion-segment-button>
         </ion-segment>
         <ion-buttons slot="end" *ngIf="segmentView=='s1'">
-          <ion-button (click)="addField({},true)">
+          <ion-button *ngIf="formGroup.get('Fields').valid" (click)="addField({},true)">
             <ion-icon slot="start" name="add"></ion-icon>
             {{'Add' | translate}}
           </ion-button>
@@ -54,7 +54,7 @@
                   <ion-label>{{'Properties' | translate }}</ion-label>
                   <ion-button (click)="toggleReorder()" fill="outline">{{'Sort' | translate }}</ion-button>
                 </ion-list-header>
-                <ion-accordion-group [multiple]="true">
+                <ion-accordion-group [multiple]="true"   [value]="openedFields"  (ionChange)="accordionGroupChange($event)">
                   <ion-reorder-group
                     [disabled]="isDisabled"
                     (ionItemReorder)="doReorder($event, formGroup.get('Fields')['controls'])"
@@ -62,11 +62,11 @@
                     <ng-container *ngFor="let g of formGroup.get('Fields')['controls']; let idx = index;">
                       <ion-accordion [value]="g.get('Id').value">
                         <ion-item slot="header" [style.order]="g.get('Sort').value" lines="full">
+
                           <ion-icon
                             [name]="g.get('Icon').value"
                             slot="start"
                             [color]="g.get('Color').value || 'primary'"
-                            (click)="g.get('IsExpanded').setValue(!g.get('IsExpanded').value)"
                           ></ion-icon>
 
                           <ion-label style="margin-right: 0" class="ion-text-wrap clickable">
@@ -80,13 +80,13 @@
                           <ion-reorder slot="end"></ion-reorder>
                         </ion-item>
 
-                        <div class="ion-padding" slot="content">
+                        <div class="ion-padding" slot="content"[ngStyle]="{ 'background': !isAccordionExpanded(g.get('Id').value) ? 'none' : 'var(--table-header-background)' }">
                           <ion-grid fixed>
                             <form [formGroup]="g" (click)="$event.stopPropagation()" [ngClass]="{'transition':show}">
                               <ion-row>
                                 <ion-col size="12" size-xl="6">
                                   <app-form-control
-                                    [field]="{id:'Id', label: 'Id', type : 'number', form : g }"
+                                    [field]="{id:'Id', label: 'Id', type : 'span-text', form : g }"
                                   ></app-form-control>
 
                                   <app-form-control

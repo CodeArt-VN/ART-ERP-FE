@@ -4,9 +4,10 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
 
 @Component({
-  selector: 'app-not-found',
-  templateUrl: './not-found.page.html',
-  styleUrls: ['./not-found.page.scss'],
+    selector: 'app-not-found',
+    templateUrl: './not-found.page.html',
+    styleUrls: ['./not-found.page.scss'],
+    standalone: false
 })
 export class NotFoundPage extends PageBase {
   isShowFeature = true;

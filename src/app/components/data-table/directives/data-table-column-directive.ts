@@ -5,7 +5,10 @@ import { DataTableColumnHeaderDirective } from './data-table-header-template-dir
 import { Subject, Observable } from 'rxjs';
 import { InputControlField } from '../../controls/controls.interface';
 
-@Directive({ selector: 'datatable-column' })
+@Directive({
+    selector: 'datatable-column',
+    standalone: false
+})
 export class DataTableColumnDirective implements OnChanges {
   @Input() checkbox: boolean;
   @Input() name: string;

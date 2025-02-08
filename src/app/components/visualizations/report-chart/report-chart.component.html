@@ -237,11 +237,13 @@
   <form [formGroup]="form" (submit)="onChangeTimeRange($event)">
     <ion-label color="primary" class="ion-text-nowrap ion-no-margin flex-nowrap" *ngIf="viewMode != 'mini'">
       <app-input-control
-        [form]="form.controls.TimeFrame"
-        type="time-frame"
-        id="From"
-        secondaryId="To"
-        label="Time range"
+        [field]="{
+          id: 'From', 
+          secondaryId: 'To', 
+          type: 'time-frame', 
+          label: 'Time range', 
+          form: form.controls.TimeFrame
+        }"
         (change)="onChangeTimeRange($event)"
       ></app-input-control>
 

@@ -8288,7 +8288,7 @@ var res = [
   },
   {
     From: 'erp.app.pages.wms.receipt-detail.asn-receipt-title',
-    To: 'ASN / Receipt',
+    To: 'ASN/Receipt',
   },
   { From: 'erp.app.pages.wms.receipt-detail.carrier-title', To: 'Delivery' },
   {

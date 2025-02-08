@@ -15,9 +15,10 @@ import { CommonService } from 'src/app/services/core/common.service';
 import { IntegrationTriggerActionModalPage } from '../integration-trigger-action-modal/integration-trigger-action-modal.page';
 
 @Component({
-  selector: 'app-integration-trigger-detail',
-  templateUrl: './integration-trigger-detail.page.html',
-  styleUrls: ['./integration-trigger-detail.page.scss'],
+    selector: 'app-integration-trigger-detail',
+    templateUrl: './integration-trigger-detail.page.html',
+    styleUrls: ['./integration-trigger-detail.page.scss'],
+    standalone: false
 })
 export class IntegrationTriggerDetailPage extends PageBase {
   typeList: any = [];

@@ -6,9 +6,10 @@ import { SYS_StatusProvider } from 'src/app/services/static/services.service';
 import { SystemStatusDetailPage } from '../system-status-detail/system-status-detail.page';
 
 @Component({
-  selector: 'app-system-status',
-  templateUrl: 'system-status.page.html',
-  styleUrls: ['system-status.page.scss'],
+    selector: 'app-system-status',
+    templateUrl: 'system-status.page.html',
+    styleUrls: ['system-status.page.scss'],
+    standalone: false
 })
 export class SystemStatusPage extends PageBase {
   itemsState: any = [];

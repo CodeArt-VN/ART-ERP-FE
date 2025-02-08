@@ -8,6 +8,7 @@ import { throwError } from 'rxjs';
 import { EnvService } from './core/env.service';
 import { ApiSetting } from './static/api-setting';
 import { environment } from 'src/environments/environment';
+import { LIST_AddressSubdivisionProvider } from './static/services.service';
 
 @Injectable({
   providedIn: 'root',
@@ -383,5 +384,29 @@ export class DynamicScriptLoaderService {
 
     return Promise.all(promises);
 
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class AddressService {
+  constructor(public addressSubdivisionProvider: LIST_AddressSubdivisionProvider,
+    public envService : EnvService
+  ) {}
+  getAddressSubdivision(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.envService.addressSubdivisionList && this.envService.addressSubdivisionList.length) {
+        resolve(this.envService.addressSubdivisionList);
+      } else {
+        this.addressSubdivisionProvider.read({ Take: 12000 }).then(
+          (rs: any) => {
+            if (rs) {
+              this.envService.addressSubdivisionList = rs.data;
+              resolve(rs.data);
+            }
+          },
+          (error) => reject(error)
+        );
+      }
+    });
   }
 }

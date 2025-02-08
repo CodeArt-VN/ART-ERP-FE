@@ -1,5 +1,3 @@
-import { EChartsOption } from 'echarts/types/dist/echarts';
-
 //Wiget interface
 //{"x":0,"y":4,"cols":3,"rows":1,"IDReport":7,"Id":0, WidgetConfig: { ViewDimension: 'CalcTotal'}},
 export interface Widget {
@@ -24,7 +22,7 @@ export interface WidgetConfig {
 
 export interface BIReport extends Schema {
   DataConfig?: ReportDataConfig;
-  ChartConfig?: EChartsOption;
+  ChartConfig?: any;
   ChartConfigScript?: string;
   ChartScript?: string;
   MockDataAPI?: string;

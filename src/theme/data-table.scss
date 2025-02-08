@@ -54,7 +54,7 @@ app-data-table,
     //font-size: calc(10/16 * 1.2rem);
     width: max-content;
     min-width: 100%;
-    height: 35px;
+    min-height: 35px;
     //border-bottom: solid 2px rgba(var(--ion-color-primary-rgb, 0, 0, 0), .9);
     border-bottom: solid 1px var(--menu-right-border-color);
     background: var(--table-header-background) !important;
@@ -287,6 +287,7 @@ app-data-table,
       height: 14px;
       min-width: 14px;
       margin-right: 2px;
+      padding: 0;
     }
 
     .c-input {

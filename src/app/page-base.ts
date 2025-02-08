@@ -20,8 +20,9 @@ import { FormControlComponent } from './components/controls/form-control.compone
 import { InputControlComponent } from './components/controls/input-control.component';
 
 @Component({
-  template: '',
-  providers: [PopoverPage],
+    template: '',
+    providers: [PopoverPage],
+    standalone: false
 })
 export abstract class PageBase implements OnInit {
   env;
@@ -32,13 +33,13 @@ export abstract class PageBase implements OnInit {
   pageProvider;
   modalController;
   loadingController;
-
   //Detail page
   id: any;
   cdr;
   formGroup: FormGroup;
   submitAttempt = false;
-
+  isAutoSave = true;
+  
   item = null;
   items: any = [];
   selectedItems: any = [];
@@ -74,6 +75,29 @@ export abstract class PageBase implements OnInit {
     isSubActive: false,
     isFeatureAsMain: false,
     sort: [],
+
+    ShowAdd : true,
+    ShowSearch : true,
+    ShowRefresh : true,
+    ShowExport : true,
+    ShowImport : true,
+    ShowHelp : true,
+    ShowFeature : false,
+
+    ShowCopy : true,
+    ShowChangeBranch : true,
+    ShowSubmit : true,
+    ShowApprove : true,
+    ShowDisapprove : true,
+    ShowMerge : true,
+    ShowSplit : true,
+    ShowCancel : true,
+    ShowArchive : true,
+    ShowDelete : true,
+    ShowPrint : false,
+
+    ShowCommandRules: [],
+
   };
 
   subscriptions: Subscription[] = [];
@@ -334,6 +358,27 @@ export abstract class PageBase implements OnInit {
 
     //e?.preventDefault();
     e?.stopPropagation();
+
+    this.showCommandBySelectedRows(this.selectedItems);
+  }
+
+  showCommandBySelectedRows(selectedRows) {
+    const statuses = selectedRows.map(row => row.Status);
+    const filteredRules = this.pageConfig.ShowCommandRules.filter(rule => statuses.includes(rule.Status));
+    
+    if (filteredRules.length === 0) {
+      return;
+    }
+  
+    const commonButtons = filteredRules.reduce((acc, rule) => {
+      return acc.filter(btn => rule.ShowBtns.includes(btn));
+    }, filteredRules[0].ShowBtns);
+  
+    const keysToUpdate = new Set(this.pageConfig.ShowCommandRules.flatMap(rule => rule.ShowBtns));
+  
+    keysToUpdate.forEach((key:string) => {
+      this.pageConfig[key] = commonButtons.includes(key);
+    });
   }
 
   deleteItems(publishEventCode = this.pageConfig.pageName) {
@@ -794,6 +839,7 @@ export abstract class PageBase implements OnInit {
   events(e) {}
 
   ngOnInit() {
+    // this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
     let pageUrl = '';
 
     if (this.route && !this.pageConfig.pageCode) {
@@ -1019,7 +1065,7 @@ export abstract class PageBase implements OnInit {
   }
 
   searchResultIdList = { term: '', ids: [] };
-  searchShowAllChildren = (term: string, item: any) => {
+  searchShowAllChildren (term: string, item: any) :any {
     if (this.searchResultIdList.term != term) {
       this.searchResultIdList.term = term;
       this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);

@@ -12,9 +12,10 @@ import { MapMarker } from '@angular/google-maps';
 import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-coordinate-picker',
-  templateUrl: './coordinate-picker.component.html',
-  styleUrls: ['./coordinate-picker.component.scss'],
+    selector: 'app-coordinate-picker',
+    templateUrl: './coordinate-picker.component.html',
+    styleUrls: ['./coordinate-picker.component.scss'],
+    standalone: false
 })
 export class CoordinatePickerComponent implements OnInit {
   item;
@@ -22,6 +23,16 @@ export class CoordinatePickerComponent implements OnInit {
     this.markerOptions.draggable = value;
   }
   @Input() set address(value) {
+    if(value.Lat){
+      try{
+        value.Lat =parseFloat(value.Lat.replace(',', '.'));
+      }catch(err){}
+    }
+    if(value.Long){
+      try{
+        value.Long = parseFloat(value.Long.replace(',', '.'));
+      }catch(err){}
+    }
     this.formGroup?.patchValue(value);
     this.formGroup?.markAsPristine();
   }
@@ -132,7 +143,7 @@ export class CoordinatePickerComponent implements OnInit {
       )
       .toPromise()
       .then((data: any) => {
-        this.geocoding = data.results[0].geometry.location;
+        this.geocoding = data.results[0]?.geometry?.location;
         console.log(data.results[0]);
         console.log(this.geocoding);
 
@@ -147,5 +158,19 @@ export class CoordinatePickerComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  GetCurrentPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.formGroup.controls.Lat.setValue(position.coords.latitude);
+        this.formGroup.controls.Lat.markAsDirty();
+        this.formGroup.controls.Long.setValue(position.coords.longitude);
+        this.formGroup.controls.Long.markAsDirty();
+        this.saveChange();
+      });
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
   }
 }

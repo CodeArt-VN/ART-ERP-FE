@@ -12,9 +12,10 @@ import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-tree',
-  templateUrl: 'tree.page.html',
-  styleUrls: ['tree.page.scss'],
+    selector: 'app-tree',
+    templateUrl: 'tree.page.html',
+    styleUrls: ['tree.page.scss'],
+    standalone: false
 })
 export class TreePage extends PageBase {
   groupControl = {

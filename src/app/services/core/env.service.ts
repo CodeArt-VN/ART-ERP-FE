@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { forwardRef, Inject, Injectable, Injector } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
 
@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
+import { CommonService } from './common.service';
+import { LIST_AddressSubdivisionProvider } from '../static/services.service';
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +88,9 @@ export class EnvService {
   /** Check is map library loaded */
   isMapLoaded = false;
 
+  /** Get all Address subdivision */
+  addressSubdivisionList = [];
+
   /** Get network infomation */
   networkInfo: any = {
     isOnline: false,
@@ -109,7 +114,7 @@ export class EnvService {
     public loadingController: LoadingController,
     public translate: TranslateService,
   ) {
-    this.isMobile = this.plt.is('mobile');
+    this.isMobile =((this.plt.is('ios') || this.plt.is('android')));
     this.ready = new Promise((resolve, reject) => {
       this.init().then(resolve).catch(reject);
     });
@@ -478,7 +483,6 @@ export class EnvService {
         this.branchList = [];
         this.jobTitleList = [];
         console.log('reset branch + jobTitleList');
-
         for (let ix = 0; ix < resp.length; ix++) {
           const i: any = resp[ix];
           i.Name = i.ShortName ? i.ShortName : i.Name;
@@ -505,16 +509,16 @@ export class EnvService {
               this.enablePermissionNode(b, this.branchList);
               this.enablePermissionNode(b, this.jobTitleList);
             }
-
             setTimeout(() => {
               for (let ix = 0; ix < this.jobTitleList.length; ix++) {
                 const i: any = this.jobTitleList[ix];
                 if (i.Type != 'TitlePosition') {
                   i.disabled = true;
                 }
-              }
+              }          
+              
             }, 0);
-
+      
             this.branchList = [...this.branchList];
           }
 

@@ -8,9 +8,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-system-status-detail',
-  templateUrl: './system-status-detail.page.html',
-  styleUrls: ['./system-status-detail.page.scss'],
+    selector: 'app-system-status-detail',
+    templateUrl: './system-status-detail.page.html',
+    styleUrls: ['./system-status-detail.page.scss'],
+    standalone: false
 })
 export class SystemStatusDetailPage extends PageBase {
   colorList = [

@@ -106,13 +106,7 @@
 				<ion-row>
 				<ion-col size="12" size-sm size-xl="12">
 			    <app-form-control
-				[form]="formGroup"
-				type="ng-select"
-				label = "Provider"
-				id="IDProvider"
-				[dataSource]="providerDataSource"
-				bindValue="Id"
-				bindLabel="Name"
+				[field]="{ id: 'IDProvider', type: 'ng-select', label: 'Provider', dataSource: providerDataSource, bindValue: 'Id', bindLabel: 'Name', form: formGroup }"
 				></app-form-control>
 				</ion-col>
 			</ion-row>

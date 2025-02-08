@@ -7,9 +7,10 @@ import { Location } from '@angular/common';
 import { Schema } from 'src/app/models/options-interface';
 
 @Component({
-  selector: 'app-schema',
-  templateUrl: 'schema.page.html',
-  styleUrls: ['schema.page.scss'],
+    selector: 'app-schema',
+    templateUrl: 'schema.page.html',
+    styleUrls: ['schema.page.scss'],
+    standalone: false
 })
 export class SchemaPage extends PageBase {
   constructor(

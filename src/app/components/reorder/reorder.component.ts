@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
 
 @Component({
-  selector: 'app-reorder',
-  templateUrl: './reorder.component.html',
-  styleUrls: ['./reorder.component.scss'],
+    selector: 'app-reorder',
+    templateUrl: './reorder.component.html',
+    styleUrls: ['./reorder.component.scss'],
+    standalone: false
 })
 export class ReorderComponent implements OnInit {
   _items;

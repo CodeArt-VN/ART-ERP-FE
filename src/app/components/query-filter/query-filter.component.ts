@@ -5,9 +5,10 @@ import { ReportService } from 'src/app/services/report.service';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 
 @Component({
-  selector: 'app-query-filter',
-  templateUrl: './query-filter.component.html',
-  styleUrls: ['./query-filter.component.scss'],
+    selector: 'app-query-filter',
+    templateUrl: './query-filter.component.html',
+    styleUrls: ['./query-filter.component.scss'],
+    standalone: false
 })
 export class QueryFilterComponent extends PageBase {
   reportBranchList = [];

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ScrollingModule as ExperimentalScrollingModule } from '@angular/cdk-experimental/scrolling';
 
 //3th party
 import { IonicModule } from '@ionic/angular';
@@ -30,7 +29,6 @@ import { ShareInputControlsModule } from '../controls/share-input-controls.modul
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
-    ExperimentalScrollingModule,
     IonicModule,
     TranslateModule,
     ShareInputControlsModule,

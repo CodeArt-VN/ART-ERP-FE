@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 
 @Component({
-  selector: 'app-pos-notify-modal',
-  templateUrl: './pos-notify-modal.page.html',
-  styleUrls: ['./pos-notify-modal.page.scss'],
+    selector: 'app-pos-notify-modal',
+    templateUrl: './pos-notify-modal.page.html',
+    styleUrls: ['./pos-notify-modal.page.scss'],
+    standalone: false
 })
 export class POSNotifyModalPage extends PageBase {
   typeList = [];

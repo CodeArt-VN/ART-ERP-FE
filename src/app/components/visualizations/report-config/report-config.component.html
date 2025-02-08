@@ -23,33 +23,40 @@
         </ng-container>
         <app-form-control
           *ngIf="canChangeReportConfig"
-          [form]="form.controls.TimeFrame"
-          type="ng-select"
-          id="Dimension"
-          label="Time field"
-          placeholder="Please enter data.."
-          [dataSource]="_schemaDetailsList"
-          bindValue="Code"
-          bindLabel="Name"
+          [field]="{
+            id: 'Dimension', 
+            type: 'ng-select', 
+            label: 'Time field', 
+            placeholder: 'Please enter data..', 
+            dataSource: _schemaDetailsList, 
+            bindValue: 'Code', 
+            bindLabel: 'Name', 
+            form: form.controls.TimeFrame
+          }"
           (change)="onChange($event)"
         ></app-form-control>
 
         <app-form-control
           *ngIf="form.controls.TimeFrame.controls.Dimension.value"
-          [form]="form.controls.TimeFrame"
-          type="time-frame"
-          id="From"
-          secondaryId="To"
-          label="Time range"
+          [field]="{
+            id: 'From', 
+            secondaryId: 'To', 
+            type: 'time-frame', 
+            label: 'Time range', 
+            form: form.controls.TimeFrame, 
+            condition: form.controls.TimeFrame.controls.Dimension.value
+          }"
           (change)="onChange($event)"
         ></app-form-control>
 
         <app-form-control
           *ngIf="form.controls.TimeFrame.controls.Dimension.value"
-          [form]="form"
-          type="date-compare-to"
-          id="CompareTo"
-          label="Commpare to"
+          [field]="{
+            id: 'CompareTo', 
+            type: 'date-compare-to', 
+            label: 'Compare to', 
+            form: form
+          }"
           (change)="onChange($event)"
         ></app-form-control>
 
@@ -360,20 +367,12 @@
           <ion-item>
             <app-input-control
               style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
-              [form]="pickerControl"
-              type="select"
-              id="Period"
-              [dataSource]="_timePeriodList"
-              bindValue="code"
-              bindLabel="name"
+              [field]="{ id: 'Period', type: 'select', dataSource: _timePeriodList, bindValue: 'code', bindLabel: 'name', form: pickerControl }"
               (change)="onChange($event)"
             ></app-input-control>
             <app-form-control
               style="width: 100%"
-              [form]="pickerControl"
-              type="number"
-              id="Amount"
-              label=""
+              [field]="{ id: 'Amount', type: 'number', label: '', form: pickerControl }"
               (change)="onChange($event)"
             ></app-form-control>
           </ion-item>

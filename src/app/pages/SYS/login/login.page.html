@@ -13,19 +13,11 @@
 
     <div class="ion-padding">
       <app-form-control
-          [form]="formGroup"
-          type="email"
-          id="UserName"
-          label="UserName"
-          placeholder="Account - email"
+        [field]="{ id: 'UserName', type: 'email', label: 'UserName', placeholder: 'Account - email', form: formGroup }"
         ></app-form-control> 
 
         <app-form-control
-          [form]="formGroup"
-          type="password"
-          id="Password"
-          label="Password"
-          placeholder="Password"
+        [field]="{ id: 'Password', type: 'password', label: 'Password', placeholder: 'Password', form: formGroup }"
         ></app-form-control> 
       
   

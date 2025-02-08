@@ -3,9 +3,10 @@ import { em } from '@fullcalendar/core/internal-common';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-list-toolbar',
-  templateUrl: './list-toolbar.component.html',
-  styleUrls: ['./list-toolbar.component.scss'],
+    selector: 'app-list-toolbar',
+    templateUrl: './list-toolbar.component.html',
+    styleUrls: ['./list-toolbar.component.scss'],
+    standalone: false
 })
 export class ListToolbarComponent implements OnInit {
   @ViewChild('importfile') importfile: any;

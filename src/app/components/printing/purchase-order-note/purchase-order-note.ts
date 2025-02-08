@@ -9,9 +9,10 @@ import QRCode from 'qrcode';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-po-note',
-  templateUrl: 'purchase-order-note.html',
-  styleUrls: ['purchase-order-note.scss'],
+    selector: 'app-po-note',
+    templateUrl: 'purchase-order-note.html',
+    styleUrls: ['purchase-order-note.scss'],
+    standalone: false
 })
 export class PurchaseOrderNoteComponent extends PageBase {
   @Input() ID;

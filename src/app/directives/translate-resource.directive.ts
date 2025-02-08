@@ -3,7 +3,8 @@ import { EnvService } from '../services/core/env.service';
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appTranslateResource]',
+    selector: '[appTranslateResource]',
+    standalone: false
 })
 export class TranslateResourceDirective {
   item: any = null;

@@ -13,6 +13,7 @@ export interface InputControlField {
     | 'radio'
     | 'select'
     | 'ng-select'
+    | 'ng-select-branch'
     | 'ng-select-status'
     | 'ng-select-bp'
     | 'ng-select-item'
@@ -44,4 +45,23 @@ export interface InputControlField {
   clearable?: boolean;
 
   noCheckDirty?: boolean;
+  
+  appendTo:string;
+
+  treeConfig?: {
+    isTree? : boolean;
+    isCollapsed? : boolean;
+    searchFn? : any;
+    searchFnDefault?:boolean;
+    rootCollapsed?:boolean;
+  }
+
+  branchConfig?:{
+    selectedBranch?:number,
+    showingType?: string,
+    showingDisable?: boolean,
+    showingMode: 
+    | 'showAll'
+    | 'showSelectedAndChildren'
+  }
 }

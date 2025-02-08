@@ -9,9 +9,10 @@ import { SortConfig } from 'src/app/models/options-interface';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-api-collection',
-  templateUrl: 'api-collection.page.html',
-  styleUrls: ['api-collection.page.scss'],
+    selector: 'app-api-collection',
+    templateUrl: 'api-collection.page.html',
+    styleUrls: ['api-collection.page.scss'],
+    standalone: false
 })
 export class APICollectionPage extends PageBase {
   itemsState: any = [];

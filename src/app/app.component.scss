@@ -75,8 +75,19 @@
     .app-info {
       color: var(--ion-color-medium);
     }
-
-    .c-control {
+    ::ng-deep {
+      .c-control{
+        position: unset;
+        margin: 0;
+  
+        .c-input {
+          width: calc(100% - 16px);
+          border-color: var(--ion-color-primary);
+          margin: 4px;
+          color: var(--ion-color-primary);
+        }
+    }}
+    .c-control{
       position: unset;
       margin: 0;
 
@@ -330,7 +341,7 @@ ion-split-pane {
   padding-right: 8px;
   padding-left: 8px;
 
-  height: calc(10/16 * 2rem);
+  min-height: calc(10/16 * 2rem);
   bottom: 0;
   position: absolute;
   font-size: calc(10/16 * 1.2rem);

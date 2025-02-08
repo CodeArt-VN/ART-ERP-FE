@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-icon-picker',
-  templateUrl: './icon-picker.component.html',
-  styleUrls: ['./icon-picker.component.scss'],
+    selector: 'app-icon-picker',
+    templateUrl: './icon-picker.component.html',
+    styleUrls: ['./icon-picker.component.scss'],
+    standalone: false
 })
 export class IconPickerComponent implements OnInit {
   @Input() icon: string;

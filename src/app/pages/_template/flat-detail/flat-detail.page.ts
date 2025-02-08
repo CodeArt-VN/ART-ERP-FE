@@ -8,9 +8,10 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 
 @Component({
-  selector: 'app-flat-detail',
-  templateUrl: './flat-detail.page.html',
-  styleUrls: ['./flat-detail.page.scss'],
+    selector: 'app-flat-detail',
+    templateUrl: './flat-detail.page.html',
+    styleUrls: ['./flat-detail.page.scss'],
+    standalone: false
 })
 export class FlatDetailPage extends PageBase {
   constructor(

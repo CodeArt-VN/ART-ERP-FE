@@ -6,9 +6,10 @@ import { SYS_TypeProvider } from 'src/app/services/static/services.service';
 import { SystemTypeDetailPage } from '../system-type-detail/system-type-detail.page';
 
 @Component({
-  selector: 'app-system-type',
-  templateUrl: 'system-type.page.html',
-  styleUrls: ['system-type.page.scss'],
+    selector: 'app-system-type',
+    templateUrl: 'system-type.page.html',
+    styleUrls: ['system-type.page.scss'],
+    standalone: false
 })
 export class SystemTypePage extends PageBase {
   itemsState: any = [];

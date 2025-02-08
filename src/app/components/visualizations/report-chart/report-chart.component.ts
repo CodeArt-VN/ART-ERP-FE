@@ -4,12 +4,12 @@ import { Subscription } from 'rxjs';
 import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ReportService } from 'src/app/services/report.service';
-import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-  selector: 'app-report-chart',
-  templateUrl: './report-chart.component.html',
-  styleUrls: ['./report-chart.component.scss'],
+    selector: 'app-report-chart',
+    templateUrl: './report-chart.component.html',
+    styleUrls: ['./report-chart.component.scss'],
+    standalone: false
 })
 export class ReportChartComponent implements OnInit {
   subscriptions: Subscription[] = []; //Subscriptions
@@ -27,7 +27,7 @@ export class ReportChartComponent implements OnInit {
 
   chartType: string = 'auto'; //Chart type
   chartScript: string; //Chart script
-  chartOption: echarts.EChartsOption = null; //Chart option
+  chartOption: any = null; //Chart option
 
   /** Set data directly to the component without going through the data subscription */
   @Input() set data(ds) {

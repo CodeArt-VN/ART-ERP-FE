@@ -6,9 +6,10 @@ import { LoadingController, AlertController, NavController } from '@ionic/angula
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
+    selector: 'app-register',
+    templateUrl: './register.page.html',
+    styleUrls: ['./register.page.scss'],
+    standalone: false
 })
 export class RegisterPage extends PageBase {
   constructor(

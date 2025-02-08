@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { lib } from 'src/app/services/static/global-functions';
 
-@Pipe({ name: 'safeFrame' })
+@Pipe({
+    name: 'safeFrame',
+    standalone: false
+})
 export class SafeFrame implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
   transform(url) {
@@ -10,7 +13,10 @@ export class SafeFrame implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'safeHtml' })
+@Pipe({
+    name: 'safeHtml',
+    standalone: false
+})
 export class SafeHtml {
   constructor(private sanitizer: DomSanitizer) {}
   transform(html) {
@@ -18,7 +24,10 @@ export class SafeHtml {
   }
 }
 
-@Pipe({ name: 'safeStyle' })
+@Pipe({
+    name: 'safeStyle',
+    standalone: false
+})
 export class SafeStyle {
   constructor(private sanitizer: DomSanitizer) {}
   transform(style) {
@@ -26,14 +35,20 @@ export class SafeStyle {
   }
 }
 
-@Pipe({ name: 'isNotDeleted' })
+@Pipe({
+    name: 'isNotDeleted',
+    standalone: false
+})
 export class isNotDeleted {
   transform(items: any[]) {
     return items.filter((ite) => ite.IsDeleted === false);
   }
 }
 
-@Pipe({ name: 'filter', pure: false })
+@Pipe({
+    name: 'filter', pure: false,
+    standalone: false
+})
 export class filterProperties implements PipeTransform {
   transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
     return items.filter((item) => {
@@ -48,7 +63,10 @@ export class filterProperties implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'search', pure: false })
+@Pipe({
+    name: 'search', pure: false,
+    standalone: false
+})
 export class searchProperties implements PipeTransform {
   transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
     return items.filter((item) => {
@@ -64,7 +82,8 @@ export class searchProperties implements PipeTransform {
 }
 
 @Pipe({
-  name: 'myPipe',
+    name: 'myPipe',
+    standalone: false
 })
 export class MyPipe implements PipeTransform {
   transform(value: string, ...args) {
@@ -72,7 +91,10 @@ export class MyPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'searchNoAccent', pure: false })
+@Pipe({
+    name: 'searchNoAccent', pure: false,
+    standalone: false
+})
 export class searchNoAccents implements PipeTransform {
   transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
     return items.filter((item) => {
