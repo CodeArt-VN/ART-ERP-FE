@@ -159,4 +159,18 @@ export class CoordinatePickerComponent implements OnInit {
         console.log(error);
       });
   }
+
+  GetCurrentPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.formGroup.controls.Lat.setValue(position.coords.latitude);
+        this.formGroup.controls.Lat.markAsDirty();
+        this.formGroup.controls.Long.setValue(position.coords.longitude);
+        this.formGroup.controls.Long.markAsDirty();
+        this.saveChange();
+      });
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
+  }
 }
