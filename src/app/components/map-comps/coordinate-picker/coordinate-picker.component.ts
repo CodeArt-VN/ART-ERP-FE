@@ -37,6 +37,7 @@ export class CoordinatePickerComponent implements OnInit {
     this.formGroup?.markAsPristine();
   }
   @Output() change = new EventEmitter();
+  @Output() toggleLatLong = new EventEmitter();
 
   options = {
     scrollwheel: false,
@@ -122,6 +123,10 @@ export class CoordinatePickerComponent implements OnInit {
     this.formGroup.controls.Long.setValue(marker.getPosition().lng());
     this.formGroup.controls.Long.markAsDirty();
     this.saveChange();
+  }
+
+  toggleLatLongChange() {
+    this.toggleLatLong.emit();
   }
 
   geocoding;
