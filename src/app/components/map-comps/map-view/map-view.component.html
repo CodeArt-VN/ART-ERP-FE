@@ -28,5 +28,8 @@
       <span *ngIf="item.AddressLine2">{{ item.AddressLine2 }} <br /></span>
     </div>
   </map-info-window>
+  <ng-container *ngIf="directionsResults$ | async; as directionsResults">
+    <map-directions-renderer [directions]="directionsResults" />
+  </ng-container>
 </google-map>
 <app-page-message [itemsLength]="this.items?.length" [showSpinner]="!env.isMapLoaded"></app-page-message>
