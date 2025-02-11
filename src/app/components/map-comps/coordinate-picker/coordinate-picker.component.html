@@ -1,6 +1,6 @@
 <form [formGroup]="formGroup">
   <div class="c-control">
-    <label class="c-label"
+    <label class="c-label" (click)="toggleLatLongChange()"
       >{{ 'coordinates' | translate }}
       <small>
         {{ formGroup.controls.Lat.value || ('Latitude' | translate) }}

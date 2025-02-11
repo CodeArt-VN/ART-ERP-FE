@@ -1,19 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { MapMarker } from '@angular/google-maps';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { LIST_AddressSubdivision } from 'src/app/models/model-list-interface';
+import { Observable } from 'rxjs';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
 import { CRM_PartnerAddressProvider, LIST_AddressSubdivisionProvider } from 'src/app/services/static/services.service';
-import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
-declare var ggMap: any;
+
 
 @Component({
     selector: 'app-address',
@@ -29,6 +25,8 @@ export class AddressComponent extends PageBase {
   provinceDataSource;
   districtDataSource;
   wardDataSource;
+
+  showLatLong = false;
   typeList:any = [];
   @Input() canEdit;
 

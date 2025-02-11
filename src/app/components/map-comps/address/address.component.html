@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup">
   <div class="ion-no-padding" slot="content">
     <ion-row>
-      <ion-col size="12" size-md="12" size-lg="12" size-xl="6">
+      <ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
         <app-form-control
           *ngIf="typeList.length > 0"
           [field]="{
@@ -103,7 +103,7 @@
         >
         </app-form-control>
       </ion-col>
-      <ion-col size="12" size-md="12" size-lg="12" size-xl="6">
+      <ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
         <app-form-control
           [field]="{ id: 'Contact', label: 'Contact', type: 'text', form: formGroup }"
           (change)="submitChange()"
@@ -121,6 +121,7 @@
         </app-form-control>
 
         <app-form-control
+          *ngIf="showLatLong"
           [field]="{
             id: 'Lat',
             label: 'Latitude',
@@ -132,6 +133,7 @@
         </app-form-control>
 
         <app-form-control
+          *ngIf="showLatLong"
           [field]="{
             id: 'Long',
             label: 'Longitude',
@@ -146,13 +148,14 @@
           #coordinatePicker
           *ngIf="env.isMapLoaded"
           (change)="changeCoordinate($event, formGroup)"
+          (toggleLatLong)="showLatLong = !showLatLong"
           [canEdit]="pageConfig.canEdit"
           [address]="formGroup.value"
         ></app-coordinate-picker>
       </ion-col>
-      <ion-col size="12" size-sm="12" size-xl="6">
+      <ion-col size="12">
         <div class="c-control">
-          <b>{{ formGroup.controls.Contact.value || ('contact-person' | translate) }}</b>
+          <b>{{ formGroup.controls.Contact.value || ('Contact point' | translate) }}</b>
           ({{ formGroup.controls.Phone1.value || ('Telephone' | translate) }}
           <span>
             /
