@@ -8270,10 +8270,14 @@ export interface WMS_Zone
     
 }
 
-export interface vw_SYS_LogDetail
+export interface vw_SYS_Log
 {
+    StaffId?: number;
+    StaffCode?: string;
+    FullName?: string;
+    Email?: string;
+    PhoneNumber?: string;
     Id?: number;
-    LoggedBy?: string;
     Date?: Date;
     Method?: string;
     IPAddress?: string;
@@ -8285,6 +8289,7 @@ export interface vw_SYS_LogDetail
     Segment7?: string;
     Segment8?: string;
     Segment9?: string;
+    Bars?: string;
     
 }
 

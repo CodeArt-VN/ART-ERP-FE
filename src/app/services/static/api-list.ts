@@ -15629,51 +15629,51 @@ export var APIListBase = {
 		
 	},
 
-	vw_SYS_LogDetail:{
+	vw_SYS_Log:{
         getSearchList:{
             method: "GET",
-            url: function(){return "vw/SYS/LogDetail/Search"}  
+            url: function(){return "vw/SYS/Log/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "vw/SYS/LogDetail"}  
+            url: function(){return "vw/SYS/Log"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "vw/SYS/LogDetail/Export"}  
+            url: function(){return "vw/SYS/Log/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "vw/SYS/LogDetail/Import"}  
+            url: function(){return "vw/SYS/Log/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "vw/SYS/LogDetail/" + id} 
+            url: function(id){return "vw/SYS/Log/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "vw/SYS/LogDetail/" + id} 
+            url: function(id){return "vw/SYS/Log/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "vw/SYS/LogDetail/Disable/" + id} 
+            url: function(id){return "vw/SYS/Log/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "vw/SYS/LogDetail/Enable/" + id} 
+            url: function(id){return "vw/SYS/Log/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "vw/SYS/LogDetail"}
+            url: function(){return "vw/SYS/Log"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "vw/SYS/LogDetail/ChangeBranch"} 
+            url: function(){return "vw/SYS/Log/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "vw/SYS/LogDetail/" + id} 
+            url: function(id){return "vw/SYS/Log/" + id} 
         }
 		
 	},
