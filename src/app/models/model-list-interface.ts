@@ -2033,6 +2033,208 @@ export interface CRM_Voucher
     
 }
 
+export interface DCM_Collection
+{
+    IDPartner?: number;
+    IDProject?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    IsLocked?: boolean;
+    InPage?: number;
+    IsTrackChange?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_CollectionData
+{
+    IDPartner?: number;
+    IDCollection?: number;
+    IDDataDictionary?: number;
+    Id?: number;
+    Value?: string;
+    CommentCount?: number;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_CollectionDataComment
+{
+    IDPartner?: number;
+    IDProject?: number;
+    IDCollectionData?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_CollectionDataLog
+{
+    IDPartner?: number;
+    IDCollection?: number;
+    IDDataDictionary?: number;
+    IDCollectionData?: number;
+    Id?: number;
+    DataDictionaryCode?: string;
+    DataDictionaryName?: string;
+    Value?: string;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_Comment
+{
+    IDPartner?: number;
+    IDProject?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_DataDictionary
+{
+    IDPartner?: number;
+    IDPage?: number;
+    IDDataType?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Options?: string;
+    Formula?: string;
+    UDFListID?: number;
+    ImageURL?: string;
+    YouTubeVideoURL?: string;
+    IsRequired?: boolean;
+    IsHidden?: boolean;
+    HiddenFormula?: string;
+    IsValidated?: boolean;
+    ValidatePattern?: string;
+    ValidateMessage?: string;
+    IsRedirectToPage?: boolean;
+    RedirectCondition?: string;
+    RedirectToPage?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_DataType
+{
+    IDPartner?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Type?: number;
+    Validate?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_Page
+{
+    IDPartner?: number;
+    IDProject?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    ToDoNext?: number;
+    NextPage?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_Project
+{
+    IDPartner?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    IsPublished?: boolean;
+    SurveyCount?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface DCM_ProjectPerson
+{
+    IDPartner?: number;
+    IDProject?: number;
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
 export interface FINANCE_CostCenter
 {
     IDBranch?: number;
@@ -4387,6 +4589,15 @@ export interface PR_Program
     IsDiscount?: boolean;
     IsItemPromotion?: boolean;
     NumberOfUsed?: number;
+    ApplicableFromHour?: Date;
+    ApplicableToHour?: Date;
+    ExclusionFromHour?: Date;
+    ExclusionToHour?: Date;
+    ConfigItem?: string;
+    ConfigContact?: string;
+    ConfigBranch?: string;
+    IsUseWithOrthersPromotion?: boolean;
+    IsApplyAllBranch?: boolean;
     
 }
 
@@ -4862,6 +5073,8 @@ export interface PURCHASE_Order
     Id?: number;
     Code?: string;
     Name?: string;
+    SourceType?: string;
+    SourceKey?: number;
     ForeignName?: string;
     Remark?: string;
     ForeignRemark?: string;
@@ -4890,6 +5103,8 @@ export interface PURCHASE_OrderDetail
     ForeignRemark?: string;
     IDItem?: number;
     IDUoM?: number;
+    SourceLineType?: string;
+    SourceLineKey?: string;
     IDBaseUoM?: number;
     UoMSwap?: number;
     UoMSwapAlter?: number;
@@ -4913,6 +5128,70 @@ export interface PURCHASE_OrderDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     SuggestedQuantity?: number;
+    
+}
+
+export interface PURCHASE_Quotation
+{
+    IDBranch?: number;
+    IDBusinessPartner?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Status?: string;
+    ContentType?: string;
+    ValidUntilDate?: Date;
+    RequiredDate?: Date;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    SourceType?: string;
+    SourceKey?: number;
+    Remark?: string;
+    ForeignRemark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PURCHASE_QuotationDetail
+{
+    Id?: number;
+    IDPurchaseQuotation?: number;
+    IDItem?: number;
+    IDItemUoM?: number;
+    Quantity?: number;
+    Price?: number;
+    RequiredDate?: Date;
+    QuotedDate?: Date;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    IsPromotionItem?: boolean;
+    IDPromotion?: number;
+    IDTax?: number;
+    TotalDiscount?: number;
+    TotalAfterDiscount?: number;
+    Tax?: number;
+    TaxRate?: number;
+    TotalAfterTax?: number;
+    TotalBeforeDiscount?: number;
+    SourceLine?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -5029,7 +5308,6 @@ export interface SALE_Order
     IDOpportunity?: number;
     IDContact?: number;
     IDContract?: number;
-    IDStatus?: number;
     IDType?: number;
     IDParent?: number;
     Id?: number;
@@ -5249,6 +5527,70 @@ export interface SALE_OrderDetail
     IDDeal?: number;
     IDPriceList?: number;
     CancellationReason?: string;
+    
+}
+
+export interface SALE_Quotation
+{
+    IDBranch?: number;
+    IDBusinessPartner?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    ContentType?: string;
+    Status?: string;
+    SourceType?: string;
+    SourceKey?: number;
+    ValidUntilDate?: Date;
+    RequiredDate?: Date;
+    PostingDate?: Date;
+    DueDate?: Date;
+    DocumentDate?: Date;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface SALE_QuotationDetail
+{
+    Id?: number;
+    IDSaleQuotation?: number;
+    IDItem?: number;
+    IDItemUoM?: number;
+    Quantity?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    RequiredDate?: Date;
+    QuotedDate?: Date;
+    Price?: number;
+    IsPromotionItem?: boolean;
+    IDPromotion?: number;
+    IDTax?: number;
+    Tax?: number;
+    TaxRate?: number;
+    TotalDiscount?: number;
+    TotalBeforeDiscount?: number;
+    TotalAfterDiscount?: number;
+    TotalAfterTax?: number;
+    SourceLine?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 }
 
@@ -6414,452 +6756,6 @@ export interface WEB_Tag
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
-export interface WH_Branches
-{
-    Id?: number;
-    IDParent?: number;
-    IDType?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    TaxCode?: string;
-    BankAccount?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_CashFlows
-{
-    Id?: number;
-    IDBranch?: number;
-    IDParent?: number;
-    Level?: number;
-    Drawer?: number;
-    Name?: string;
-    Code?: string;
-    Remark?: string;
-    IsActive?: boolean;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    CreatedDate?: Date;
-    ModifiedBy?: string;
-    ModifiedDate?: Date;
-    
-}
-
-export interface WH_ContactGroups
-{
-    Id?: number;
-    IDBranch?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IDGroupType?: number;
-    IsLocked?: boolean;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_Contacts
-{
-    Id?: number;
-    IDBranch?: number;
-    IDBusinessPartnerGroup?: number;
-    RefId?: number;
-    Code?: string;
-    Name?: string;
-    CompanyName?: string;
-    TaxCode?: string;
-    IsStaff?: boolean;
-    IsCustomer?: boolean;
-    IsVendor?: boolean;
-    IsBranch?: boolean;
-    IsWholeSale?: boolean;
-    IsDistributor?: boolean;
-    IsStorer?: boolean;
-    IsCarrier?: boolean;
-    IsOutlets?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_GeneralLedgers
-{
-    Id?: number;
-    IDParent?: number;
-    IDBranch?: number;
-    RefParentCode?: string;
-    Code?: string;
-    Name?: string;
-    ForeignName?: string;
-    Remark?: string;
-    ForeignRemark?: string;
-    CurrentBalance?: number;
-    OpeningBalance?: number;
-    IsTaxIncome?: boolean;
-    IsCashAccount?: boolean;
-    IsBudget?: boolean;
-    IsFrozenAccount?: boolean;
-    Level?: number;
-    Counter?: number;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_InvoiceRows
-{
-    IDBranch?: number;
-    Id?: number;
-    IDInvoice?: number;
-    IDTransaction?: number;
-    Line?: number;
-    ItemCode?: string;
-    ItemGroup?: string;
-    BPCode?: string;
-    AccountCode?: string;
-    CostCenter?: string;
-    CostCenter3?: string;
-    Total?: number;
-    Remark?: string;
-    DocumentDate?: Date;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
-export interface WH_Invoices
-{
-    IDBranch?: number;
-    Id?: number;
-    IDSaleOrder?: number;
-    IDContact?: number;
-    IDTransaction?: number;
-    IDReceipt?: number;
-    IDType?: number;
-    IsCanceled?: boolean;
-    IsManual?: boolean;
-    IsCreateJournalEntry?: boolean;
-    InvoiceStatus?: boolean;
-    EInvoiceCode?: string;
-    EInvoiceSerial?: string;
-    EInvoiceDate?: Date;
-    WarehouseStatus?: boolean;
-    PostingPeriod?: number;
-    IssuedDate?: Date;
-    DueDate?: Date;
-    TaxDate?: Date;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    VATPercent?: number;
-    VATSum?: number;
-    DiscountPercent?: number;
-    DiscountSum?: number;
-    Currency?: string;
-    Total?: number;
-    PaidToDate?: number;
-    PaidSum?: number;
-    GrossProfit?: number;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    
-}
-
-export interface WH_ItemGroups
-{
-    Id?: number;
-    IDParent?: number;
-    IDBranch?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_ItemPriceLists
-{
-    Id?: number;
-    IDPriceList?: number;
-    IDItem?: number;
-    IDItemUoM?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Price?: number;
-    Price1?: number;
-    Price2?: number;
-    IsManual?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_Items
-{
-    Id?: number;
-    IDItemGroup?: number;
-    IDBranch?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    IsInventoryItem?: boolean;
-    IsSalesItem?: boolean;
-    IsPurchaseItem?: boolean;
-    IsPhantomItem?: boolean;
-    UoMInventory?: number;
-    UoMSales?: number;
-    UoMPurchasing?: number;
-    UoMBase?: number;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsExpired?: boolean;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_ItemUoM
-{
-    Id?: number;
-    IDItem?: number;
-    IDUoM?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    IsBaseUoM?: boolean;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_JournalEntries
-{
-    IDBranch?: number;
-    Id?: number;
-    RefID?: number;
-    Code?: string;
-    Name?: string;
-    ForeignName?: string;
-    Remark?: string;
-    ForeignRemark?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    OriginalJournalType?: number;
-    RefBase?: number;
-    Total?: number;
-    DueDate?: Date;
-    ARStatus?: string;
-    DocumentDate?: Date;
-    PostingPeriod?: number;
-    DataSource?: number;
-    Sort?: number;
-    
-}
-
-export interface WH_JournalEntryRows
-{
-    IDBranch?: number;
-    Id?: number;
-    IDTransaction?: number;
-    RefTransaction?: number;
-    Line?: number;
-    Account?: number;
-    AccountCode?: string;
-    Debit?: number;
-    Credit?: number;
-    DueDate?: Date;
-    IDAccount?: number;
-    RefAccountCode?: string;
-    OffsetAccount?: number;
-    RefOffsetAccount?: string;
-    RefCFTId?: number;
-    RefCFWId?: number;
-    Remark?: string;
-    ARStatus?: string;
-    DocumentDate?: Date;
-    PostingPeriod?: number;
-    DistributionRule?: string;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    CostCenter?: string;
-    CostCenter2?: string;
-    ItemGroupCode?: string;
-    ItemCode?: string;
-    
-}
-
-export interface WH_PostingPeriods
-{
-    Id?: number;
-    IDBranch?: number;
-    RefID?: number;
-    Code?: string;
-    Name?: string;
-    ForeignName?: string;
-    FromDate?: Date;
-    ToDate?: Date;
-    Remark?: string;
-    ForeignRemark?: string;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_PriceLists
-{
-    Id?: number;
-    IDBranch?: number;
-    IDBasePriceList?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Factor?: number;
-    RoundingMethod?: number;
-    ValidFrom?: Date;
-    ValidTo?: Date;
-    PrimaryDefaultCurrency?: string;
-    PrimaryDefaultCurrency1?: string;
-    PrimaryDefaultCurrency2?: string;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_Staff
-{
-    IDBranch?: number;
-    IDDepartment?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Title?: string;
-    FullName?: string;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_UoM
-{
-    Id?: number;
-    IDBranch?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    Sort?: number;
-    
-}
-
-export interface WH_VTB_Statements
-{
-    Id?: number;
-    TransactionDate?: Date;
-    TransactionContent?: string;
-    Debit?: number;
-    Credit?: number;
-    AccountBalance?: number;
-    TransactionNumber?: string;
-    CorresponsiveAccount?: string;
-    CorresponsiveAccountName?: string;
-    Agency?: string;
-    CorresponsiveBankID?: number;
-    CorresponsiveBankName?: string;
-    ServiceBranchID?: number;
-    ServiceBranchName?: string;
-    Channel?: string;
-    CreatedDate?: Date;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
     ModifiedDate?: Date;
     
 }
@@ -8371,6 +8267,24 @@ export interface WMS_Zone
     MaxCube?: number;
     MaxWeight?: number;
     IDEquipmentProfile?: number;
+    
+}
+
+export interface vw_SYS_LogDetail
+{
+    Id?: number;
+    LoggedBy?: string;
+    Date?: Date;
+    Method?: string;
+    IPAddress?: string;
+    AppVersion?: string;
+    Segment3?: string;
+    Segment4?: string;
+    Segment5?: string;
+    Segment6?: string;
+    Segment7?: string;
+    Segment8?: string;
+    Segment9?: string;
     
 }
 
