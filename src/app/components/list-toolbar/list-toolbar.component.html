@@ -91,7 +91,7 @@
       *ngIf="ShowPopover"
       outline="true"
       color="primary"
-      (click)="emit('presentPopover')"
+      (click)="emit('presentPopover', $event)"
       title="{{ 'Open filter' | translate }}"
     >
       <ion-icon name="calendar-outline"></ion-icon>

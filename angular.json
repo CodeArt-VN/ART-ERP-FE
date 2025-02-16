@@ -52,9 +52,6 @@
           },
           "configurations": {
             "production": {
-              "buildOptimizer": false,
-              "optimization": false,
-              
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -148,7 +145,8 @@
   "cli": {
     "schematicCollections": [
       "@ionic/angular-toolkit"
-    ]
+    ],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

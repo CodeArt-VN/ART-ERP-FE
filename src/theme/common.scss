@@ -1,16 +1,12 @@
-html {
-  // font-size: 10px !important;
 
-  // &.mobile-font {
-  //   font-size: 12px !important;
-  // }
-  //font-size: 16px !important;
-  --ion-dynamic-font: var(--ion-default-dynamic-font);
-  //--ion-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
+
+//html without class mobile-font
+html:not(.mobile-font) {
+  font-size: calc(10 / 16 * 1.4rem);
 }
 
 body {
-  font-size: calc(10 / 16 * 1.4rem);
+  //font-size: calc(10 / 16 * 1.4rem);
 }
 
 a {
