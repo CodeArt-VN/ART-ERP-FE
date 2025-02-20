@@ -27,6 +27,7 @@ import { HelpDetailComponent } from '../pages/SYS/help-detail/help-detail.page';
 import { PipesModule } from '../pipes/pipes.module';
 import { ReorderComponent } from './reorder/reorder.component';
 import { JsonViewerComponent } from './json-viewer/json-viewer.component';
+import { FormatQuantityComponent } from './format-quantity/format-quantity.component';
 
 @NgModule({
   imports: [
@@ -58,7 +59,7 @@ import { JsonViewerComponent } from './json-viewer/json-viewer.component';
     HelpDetailComponent,
     ReorderComponent,
     JsonViewerComponent,
-   
+    FormatQuantityComponent,
 
   ],
   exports: [
@@ -79,6 +80,7 @@ import { JsonViewerComponent } from './json-viewer/json-viewer.component';
     IonicModule,
     ReactiveFormsModule,
     JsonViewerComponent,
+    FormatQuantityComponent,
     //NgxMaskDirective,  NgxMaskPipe,
     TranslateModule,
     NgSelectModule,

@@ -97,8 +97,8 @@ export class ListToolbarComponent implements OnInit {
       });
   }
 
-  emit(eventName) {
-    this[eventName].emit();
+  emit(eventName, e = null) {
+    this[eventName].emit(e);
   }
 
   onClickImport() {
