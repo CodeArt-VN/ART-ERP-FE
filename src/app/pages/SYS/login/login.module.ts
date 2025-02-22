@@ -7,21 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { LoginPage } from './login.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: LoginPage,
-  },
+	{
+		path: '',
+		component: LoginPage,
+	},
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    ShareModule,
-    RouterModule.forChild(routes),
-  ],
-  declarations: [LoginPage],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [LoginPage],
 })
 export class LoginPageModule {}

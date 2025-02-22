@@ -7,14 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { IntegrationProviderDetailPage } from './integration-provider-detail.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: IntegrationProviderDetailPage,
-  },
+	{
+		path: '',
+		component: IntegrationProviderDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
-  declarations: [IntegrationProviderDetailPage],
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [IntegrationProviderDetailPage],
 })
 export class IntegrationProviderDetailPageModule {}

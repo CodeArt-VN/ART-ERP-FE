@@ -1,21 +1,21 @@
 .col1 {
-  max-width: 60px;
-  text-align: center;
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--ion-color-primary) !important;
-  cursor: pointer;
+	max-width: 60px;
+	text-align: center;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: var(--ion-color-primary) !important;
+	cursor: pointer;
 }
 
 .col2 {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .col3 {
-  max-width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	max-width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

@@ -3,111 +3,105 @@ import { TranslateService } from '@ngx-translate/core';
 import { EnvService } from 'src/app/services/core/env.service';
 
 @Component({
-    selector: 'app-toolbar',
-    templateUrl: './toolbar.component.html',
-    styleUrls: ['./toolbar.component.scss'],
-    standalone: false
+	selector: 'app-toolbar',
+	templateUrl: './toolbar.component.html',
+	styleUrls: ['./toolbar.component.scss'],
+	standalone: false,
 })
 export class ToolbarComponent implements OnInit {
-  @ViewChild('importfile') importfile: any;
+	@ViewChild('importfile') importfile: any;
 
-  @Input() NoBorder = false;
+	@Input() NoBorder = false;
 
-  @Input() page;
+	@Input() page;
 
+	@Input() pageConfig; //remove this line
 
-  @Input() pageConfig; //remove this line
-  
-  @Input() BackHref;
-  @Input() pageTitle;
-  @Input() selectedTitle;
-  @Input() selectedItems; //remove this line
+	@Input() BackHref;
+	@Input() pageTitle;
+	@Input() selectedTitle;
+	@Input() selectedItems; //remove this line
 
-  @Input() query: any = {}; //remove this line
+	@Input() query: any = {}; //remove this line
 
+	@Input() CenterTitle;
 
-  @Input() CenterTitle;
-  
-  @Input() ShowAdd = true;
-  @Input() ShowSearch = true;
-  @Input() ShowRefresh = true;
-  
-  @Input() ShowExport = true;
-  @Input() ShowImport = true;
+	@Input() ShowAdd = true;
+	@Input() ShowSearch = true;
+	@Input() ShowRefresh = true;
 
-  @Input() ShowCopy = true;
-  @Input() ShowChangeBranch = true;
+	@Input() ShowExport = true;
+	@Input() ShowImport = true;
 
-  @Input() ShowSubmit = true;
-  @Input() ShowApprove = true;
-  @Input() ShowDisapprove = true;
-  
-  @Input() ShowMerge = true;
-  @Input() ShowSplit = true;
+	@Input() ShowCopy = true;
+	@Input() ShowChangeBranch = true;
 
-  @Input() ShowCancel = true;
-  @Input() ShowArchive = true;
-  @Input() ShowDelete = true;
+	@Input() ShowSubmit = true;
+	@Input() ShowApprove = true;
+	@Input() ShowDisapprove = true;
 
-  
-  @Input() ShowHelp = true;
-  @Input() ShowFeature = false;
+	@Input() ShowMerge = true;
+	@Input() ShowSplit = true;
 
-  @Input() AcceptFile = '.xlsx';
-  
+	@Input() ShowCancel = true;
+	@Input() ShowArchive = true;
+	@Input() ShowDelete = true;
 
-  constructor(
-    public translate: TranslateService,
-    public env: EnvService,
-  ) {
-    this.env.getEvents().subscribe((data) => {
-      if (data.Code == 'app:closePopListToolBar') {
-        this.toolBarPopover.dismiss();
-        this.isToolBarPopoverOpen = false;
-      }
-    });
-  }
+	@Input() ShowHelp = true;
+	@Input() ShowFeature = false;
 
-  ngOnInit() {
-    if (this.page.pageConfig?.pageTitle)
-      this.translate.get(this.page.pageConfig.pageTitle).subscribe((text: string) => {
-        this.pageTitle = text;
-        window.document.title = text;
-      });
-    //  this.initShowButtons();
-  }
+	@Input() AcceptFile = '.xlsx';
 
-  toggleFeature() {
-    if (this.page) {
-      this.page.toggleFeature();
-    } else {
-      this.page.pageConfig.isShowFeature = !this.page.pageConfig.isShowFeature;
-    }
-  }
+	constructor(
+		public translate: TranslateService,
+		public env: EnvService
+	) {
+		this.env.getEvents().subscribe((data) => {
+			if (data.Code == 'app:closePopListToolBar') {
+				this.toolBarPopover.dismiss();
+				this.isToolBarPopoverOpen = false;
+			}
+		});
+	}
 
-  deleteItem() {
-    if (this.page?.item?.Id) {
-      this.page.delete();
-    } else {
-      this.page.deleteItems();
-    }
-  }
+	ngOnInit() {
+		if (this.page.pageConfig?.pageTitle)
+			this.translate.get(this.page.pageConfig.pageTitle).subscribe((text: string) => {
+				this.pageTitle = text;
+				window.document.title = text;
+			});
+		//  this.initShowButtons();
+	}
 
-  onClickImport() {
-    this.importfile.nativeElement.value = '';
-    this.importfile.nativeElement.click();
-  }
+	toggleFeature() {
+		if (this.page) {
+			this.page.toggleFeature();
+		} else {
+			this.page.pageConfig.isShowFeature = !this.page.pageConfig.isShowFeature;
+		}
+	}
 
-  importFileChange(event) {
-    this.page.import(event);
-  }
-  
+	deleteItem() {
+		if (this.page?.item?.Id) {
+			this.page.delete();
+		} else {
+			this.page.deleteItems();
+		}
+	}
 
-  @ViewChild('toolBarPopover') toolBarPopover;
-  isToolBarPopoverOpen = false;
-  presentToolBarPopover(e: Event) {
-    this.toolBarPopover.event = e;
-    this.isToolBarPopoverOpen = true;
-  }
+	onClickImport() {
+		this.importfile.nativeElement.value = '';
+		this.importfile.nativeElement.click();
+	}
 
+	importFileChange(event) {
+		this.page.import(event);
+	}
+
+	@ViewChild('toolBarPopover') toolBarPopover;
+	isToolBarPopoverOpen = false;
+	presentToolBarPopover(e: Event) {
+		this.toolBarPopover.event = e;
+		this.isToolBarPopoverOpen = true;
+	}
 }

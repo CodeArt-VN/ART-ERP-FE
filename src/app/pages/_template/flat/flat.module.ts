@@ -7,13 +7,7 @@ import { FlatPage } from './flat.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: FlatPage }])
-  ],
-  declarations: [FlatPage]
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: FlatPage }])],
+	declarations: [FlatPage],
 })
 export class FlatPageModule {}

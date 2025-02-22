@@ -1,69 +1,66 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start" class="ion-hide-sm-down_">
-      <ion-button color="dark" class="ion-hide-sm-down"> {{'Trigger action mapping' | translate}} </ion-button>
-    </ion-buttons>
+	<ion-toolbar>
+		<ion-buttons slot="start" class="ion-hide-sm-down_">
+			<ion-button color="dark" class="ion-hide-sm-down"> {{'Trigger action mapping' | translate}} </ion-button>
+		</ion-buttons>
 
-    <ion-buttons slot="primary">
+		<ion-buttons slot="primary">
+			<ion-button [disabled]="false" fill="solid" size="small" color="primary" (click)="saveActionMapping()"> {{'Save' | translate}} </ion-button>
 
-      <ion-button [disabled]="false" fill="solid" size="small" color="primary" (click)="saveActionMapping()">
-        {{'Save' | translate}}
-      </ion-button>
+			<ion-button (click)="refresh()" title="{{'Refresh' | translate}}">
+				<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+			</ion-button>
 
+			<ion-button title="{{'Help' | translate}}" (click)="help()">
+				<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+			</ion-button>
 
-      <ion-button (click)="refresh()" title="{{'Refresh' | translate}}">
-        <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button title="{{'Help' | translate}}" (click)="help()">
-        <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button title="{{'Close' | translate}}" color="secondary" (click)="closeModal()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
+			<ion-button title="{{'Close' | translate}}" color="secondary" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="header-table">
-  <div class="main-view">
-    <ion-grid fixed>
-      <form [formGroup]="formGroup">
-        <ion-row class="hr-group" style="justify-content: space-around;">
-          <ion-col size="12" size-md="6" size-sm="6" size-xl="4">
-            <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">{{'Provider/Action' | translate}}</ion-label>
-            </ion-list-header>
-            <app-form-control
-              [field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeProvider()">
-            </app-form-control>
-            <app-form-control *ngIf="formGroup.get('IDProvider').value"
-              [field]="{id:'IDAction', label: 'Action', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
-              (change)="changeAction($event)">
-            </app-form-control>
+	<div class="main-view">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row class="hr-group" style="justify-content: space-around">
+					<ion-col size="12" size-md="6" size-sm="6" size-xl="4">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Provider/Action' | translate}}</ion-label>
+						</ion-list-header>
+						<app-form-control
+							[field]="{id:'IDProvider', label: 'Provider', type : 'ng-select', dataSource: providerDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
+							(change)="changeProvider()"
+						>
+						</app-form-control>
+						<app-form-control
+							*ngIf="formGroup.get('IDProvider').value"
+							[field]="{id:'IDAction', label: 'Action', type : 'ng-select', dataSource: actionDataSource, bindValue:'Id', bindLabel:'Name', form : formGroup }"
+							(change)="changeAction($event)"
+						>
+						</app-form-control>
+					</ion-col>
+					<ion-col size="12" size-md="6" size-sm="6" size-xl="4">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Mapping' | translate}}</ion-label>
+						</ion-list-header>
 
-          </ion-col>
-          <ion-col size="12" size-md="6" size-sm="6" size-xl="4">
-            <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">{{'Mapping' | translate}}</ion-label>
-            </ion-list-header>
-
-            <div class="c-control" *ngIf="varibles">
-              <ng-container *ngFor="let c of formGroup.controls.TriggerActionDataMappings['controls']">
-                <form [formGroup]="c">
-                  <app-form-control (change)="changeERPProperty(c)"
-                    [field]="{id:'ERPProperty', label:c.get('ProviderProperty').value, type : 'ng-select', dataSource: c.get('_schemaDetailDataSource').value, bindValue:'Code', bindLabel:'Name', form : c }">
-                  </app-form-control>
-                </form>
-              </ng-container>
-            </div>
-
-          </ion-col>
-        </ion-row>
-      </form>
-    </ion-grid>
-
-  </div>
+						<div class="c-control" *ngIf="varibles">
+							<ng-container *ngFor="let c of formGroup.controls.TriggerActionDataMappings['controls']">
+								<form [formGroup]="c">
+									<app-form-control
+										(change)="changeERPProperty(c)"
+										[field]="{id:'ERPProperty', label:c.get('ProviderProperty').value, type : 'ng-select', dataSource: c.get('_schemaDetailDataSource').value, bindValue:'Code', bindLabel:'Name', form : c }"
+									>
+									</app-form-control>
+								</form>
+							</ng-container>
+						</div>
+					</ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+	</div>
 </ion-content>

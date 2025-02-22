@@ -1,34 +1,28 @@
-<datatable-header
-  [columns]="_allColumns"
-  [query]="_query"
-  [filterValue]="filterValue"
-  (sort)="onSort($event)"
-  class="row header sticky-header bold"
-></datatable-header>
+<datatable-header [columns]="_allColumns" [query]="_query" [filterValue]="filterValue" (sort)="onSort($event)" class="row header sticky-header bold"></datatable-header>
 <form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup">
-  <datatable-header
-    [formGroup]="formGroup"
-    (filterInputChange)="onFilterSubmit($event)"
-    (filterFieldReset)="onFilterSubmit(null)"
-    [query]="_query"
-    [columns]="_allColumns"
-    class="row header filter sticky-header"
-    [isFilter]="true"
-  ></datatable-header>
-  <button mat-raised-button type="submit" style="display: none">Search</button>
+	<datatable-header
+		[formGroup]="formGroup"
+		(filterInputChange)="onFilterSubmit($event)"
+		(filterFieldReset)="onFilterSubmit(null)"
+		[query]="_query"
+		[columns]="_allColumns"
+		class="row header filter sticky-header"
+		[isFilter]="true"
+	></datatable-header>
+	<button mat-raised-button type="submit" style="display: none">Search</button>
 </form>
 
 <datatable-body
-  [columns]="_allColumns"
-  [emptyMessage]="emptyMessageTemplate"
-  [rows]="_rows"
-  [trackBy]="trackBy"
-  [(selectedRows)]="selectedRows"
-  [showSpinner]="showSpinner"
-  (activate)="onSelectedRowsChange($event)"
-  (dataInfinite)="onDataInfinite($event)"
+	[columns]="_allColumns"
+	[emptyMessage]="emptyMessageTemplate"
+	[rows]="_rows"
+	[trackBy]="trackBy"
+	[(selectedRows)]="selectedRows"
+	[showSpinner]="showSpinner"
+	(activate)="onSelectedRowsChange($event)"
+	(dataInfinite)="onDataInfinite($event)"
 ></datatable-body>
 <div *ngIf="showInfinitespinner" style="text-align: center">
-  <ion-spinner name="dots"></ion-spinner>
+	<ion-spinner name="dots"></ion-spinner>
 </div>
 <!-- <datatable-footer></datatable-footer> -->

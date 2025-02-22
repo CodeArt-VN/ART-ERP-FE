@@ -1,181 +1,159 @@
 <form [formGroup]="formGroup">
-  <div class="ion-no-padding" slot="content">
-    <ion-row>
-      <ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
-        <app-form-control
-          *ngIf="typeList.length > 0"
-          [field]="{
-            id: 'Type',
-            type: 'ng-select',
-            dataSource: typeList,
-            bindLabel: 'Name',
-            bindValue: 'Code',
-            form: formGroup,
-          }"
-          (change)="submitChange()"
-        >
-        </app-form-control>
+	<div class="ion-no-padding" slot="content">
+		<ion-row>
+			<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
+				<app-form-control
+					*ngIf="typeList.length > 0"
+					[field]="{
+						id: 'Type',
+						type: 'ng-select',
+						dataSource: typeList,
+						bindLabel: 'Name',
+						bindValue: 'Code',
+						form: formGroup,
+					}"
+					(change)="submitChange()"
+				>
+				</app-form-control>
 
-        <div class="c-control">
-          <label class="c-label" for="Province">
-            <span>{{ 'Provinces' | translate }}</span>
-          </label>
-          <ng-select
-            class="c-input"
-            [items]="provinceDataSource"
-            bindLabel="Name"
-            bindValue="Name"
-            [hideSelected]="true"
-            [addTag]="true"
-            typeToSearchText="Please enter 2 or more characters"
-            formControlName="Province"
-            appendTo="#ng-select-holder"
-            (change)="changeProvince(true)"
-          >
-          </ng-select>
-        </div>
-        <div class="c-control">
-          <label class="c-label" for="District">
-            <span>{{ 'District' | translate }}</span>
-          </label>
-          <ng-select
-            class="c-input"
-            [items]="districtDataSource"
-            bindLabel="Name"
-            bindValue="Name"
-            [hideSelected]="true"
-            [addTag]="true"
-            typeToSearchText="Please enter 2 or more characters"
-            formControlName="District"
-            appendTo="#ng-select-holder"
-            (change)="changeDistrict(true)"
-          >
-          </ng-select>
-        </div>
+				<div class="c-control">
+					<label class="c-label" for="Province">
+						<span>{{ 'Provinces' | translate }}</span>
+					</label>
+					<ng-select
+						class="c-input"
+						[items]="provinceDataSource"
+						bindLabel="Name"
+						bindValue="Name"
+						[hideSelected]="true"
+						[addTag]="true"
+						typeToSearchText="Please enter 2 or more characters"
+						formControlName="Province"
+						appendTo="#ng-select-holder"
+						(change)="changeProvince(true)"
+					>
+					</ng-select>
+				</div>
+				<div class="c-control">
+					<label class="c-label" for="District">
+						<span>{{ 'District' | translate }}</span>
+					</label>
+					<ng-select
+						class="c-input"
+						[items]="districtDataSource"
+						bindLabel="Name"
+						bindValue="Name"
+						[hideSelected]="true"
+						[addTag]="true"
+						typeToSearchText="Please enter 2 or more characters"
+						formControlName="District"
+						appendTo="#ng-select-holder"
+						(change)="changeDistrict(true)"
+					>
+					</ng-select>
+				</div>
 
-        <div class="c-control">
-          <label class="c-label" for="District">
-            <span>{{ 'Ward' | translate }}</span>
-          </label>
-          <ng-select
-            class="c-input"
-            [items]="wardDataSource"
-            bindLabel="Name"
-            bindValue="Name"
-            [hideSelected]="true"
-            [addTag]="true"
-            typeToSearchText="Please enter 2 or more characters"
-            formControlName="Ward"
-            appendTo="#ng-select-holder"
-            (change)="submitChange($event)"
-          >
-          </ng-select>
-        </div>
+				<div class="c-control">
+					<label class="c-label" for="District">
+						<span>{{ 'Ward' | translate }}</span>
+					</label>
+					<ng-select
+						class="c-input"
+						[items]="wardDataSource"
+						bindLabel="Name"
+						bindValue="Name"
+						[hideSelected]="true"
+						[addTag]="true"
+						typeToSearchText="Please enter 2 or more characters"
+						formControlName="Ward"
+						appendTo="#ng-select-holder"
+						(change)="submitChange($event)"
+					>
+					</ng-select>
+				</div>
 
-        <app-form-control
-          [field]="{
-            id: 'AddressLine1',
-            label: 'House number, street name, quarter',
-            type: 'text',
-            form: formGroup,
-          }"
-          (change)="submitChange($event)"
-        >
-        </app-form-control>
-        <app-form-control
-          [field]="{
-            id: 'AddressLine2',
-            label: 'Apartment, Building, Unit…',
-            type: 'text',
-            form: formGroup,
-          }"
-          (change)="submitChange($event)"
-        >
-        </app-form-control>
-        <app-form-control
-          [field]="{ id: 'ZipCode', label: 'Zip code', type: 'text', form: formGroup }"
-          (change)="submitChange()"
-        >
-        </app-form-control>
-        <app-form-control
-          [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: formGroup }"
-          (change)="submitChange($event)"
-        >
-        </app-form-control>
-      </ion-col>
-      <ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
-        <app-form-control
-          [field]="{ id: 'Contact', label: 'Contact', type: 'text', form: formGroup }"
-          (change)="submitChange()"
-        >
-        </app-form-control>
-        <app-form-control
-          [field]="{ id: 'Phone1', label: 'Telephone', type: 'text', form: formGroup }"
-          (change)="submitChange()"
-        >
-        </app-form-control>
-        <app-form-control
-          [field]="{ id: 'Phone2', label: 'Telephone number (other)', type: 'text', form: formGroup }"
-          (change)="submitChange()"
-        >
-        </app-form-control>
+				<app-form-control
+					[field]="{
+						id: 'AddressLine1',
+						label: 'House number, street name, quarter',
+						type: 'text',
+						form: formGroup,
+					}"
+					(change)="submitChange($event)"
+				>
+				</app-form-control>
+				<app-form-control
+					[field]="{
+						id: 'AddressLine2',
+						label: 'Apartment, Building, Unit…',
+						type: 'text',
+						form: formGroup,
+					}"
+					(change)="submitChange($event)"
+				>
+				</app-form-control>
+				<app-form-control [field]="{ id: 'ZipCode', label: 'Zip code', type: 'text', form: formGroup }" (change)="submitChange()"> </app-form-control>
+				<app-form-control [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: formGroup }" (change)="submitChange($event)"> </app-form-control>
+			</ion-col>
+			<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="6">
+				<app-form-control [field]="{ id: 'Contact', label: 'Contact', type: 'text', form: formGroup }" (change)="submitChange()"> </app-form-control>
+				<app-form-control [field]="{ id: 'Phone1', label: 'Telephone', type: 'text', form: formGroup }" (change)="submitChange()"> </app-form-control>
+				<app-form-control [field]="{ id: 'Phone2', label: 'Telephone number (other)', type: 'text', form: formGroup }" (change)="submitChange()"> </app-form-control>
 
-        <app-form-control
-          *ngIf="showLatLong"
-          [field]="{
-            id: 'Lat',
-            label: 'Latitude',
-            type: 'text',
-            form: formGroup,
-          }"
-          (change)="submitChange($event)"
-        >
-        </app-form-control>
+				<app-form-control
+					*ngIf="showLatLong"
+					[field]="{
+						id: 'Lat',
+						label: 'Latitude',
+						type: 'text',
+						form: formGroup,
+					}"
+					(change)="submitChange($event)"
+				>
+				</app-form-control>
 
-        <app-form-control
-          *ngIf="showLatLong"
-          [field]="{
-            id: 'Long',
-            label: 'Longitude',
-            type: 'text',
-            form: formGroup,
-          }"
-          (change)="submitChange($event)"
-        >
-        </app-form-control>
+				<app-form-control
+					*ngIf="showLatLong"
+					[field]="{
+						id: 'Long',
+						label: 'Longitude',
+						type: 'text',
+						form: formGroup,
+					}"
+					(change)="submitChange($event)"
+				>
+				</app-form-control>
 
-        <app-coordinate-picker
-          #coordinatePicker
-          *ngIf="env.isMapLoaded"
-          (change)="changeCoordinate($event, formGroup)"
-          (toggleLatLong)="showLatLong = !showLatLong"
-          [canEdit]="pageConfig.canEdit"
-          [address]="formGroup.value"
-        ></app-coordinate-picker>
-      </ion-col>
-      <ion-col size="12">
-        <div class="c-control">
-          <b>{{ formGroup.controls.Contact.value || ('Contact point' | translate) }}</b>
-          ({{ formGroup.controls.Phone1.value || ('Telephone' | translate) }}
-          <span>
-            /
-            {{ formGroup.controls.Phone2.value || ('Telephone number (other)' | translate) }}</span
-          >) <br />
-          {{ formGroup.controls.AddressLine1.value || ('House number, street name, quarter' | translate) }},
-          {{ formGroup.controls.Ward.value || ('Ward' | translate) }},
-          {{ formGroup.controls.District.value || ('District' | translate) }},
-          {{ formGroup.controls.Province.value || ('Provinces' | translate) }},
-          {{ formGroup.controls.Country.value || ('country' | translate) }}<br />
-          {{ formGroup.controls.AddressLine2.value || ('Apartment, Building, Unit…' | translate) }}
-          <br />
-        </div>
-        <div class="c-control" *ngIf="pageConfig.canEdit">
-          <ion-button (click)="removeAddress()" size="small" fill="outline">
-            <ion-icon slot="start" name="trash"></ion-icon>
-            {{ 'Delete this address' | translate }}
-          </ion-button>
-        </div>
-      </ion-col>
-    </ion-row>
-  </div>
+				<app-coordinate-picker
+					#coordinatePicker
+					*ngIf="env.isMapLoaded"
+					(change)="changeCoordinate($event, formGroup)"
+					(toggleLatLong)="showLatLong = !showLatLong"
+					[canEdit]="pageConfig.canEdit"
+					[address]="formGroup.value"
+				></app-coordinate-picker>
+			</ion-col>
+			<ion-col size="12">
+				<div class="c-control">
+					<b>{{ formGroup.controls.Contact.value || ('Contact point' | translate) }}</b>
+					({{ formGroup.controls.Phone1.value || ('Telephone' | translate) }}
+					<span>
+						/
+						{{ formGroup.controls.Phone2.value || ('Telephone number (other)' | translate) }}</span
+					>) <br />
+					{{ formGroup.controls.AddressLine1.value || ('House number, street name, quarter' | translate) }}, {{ formGroup.controls.Ward.value || ('Ward' | translate) }},
+					{{ formGroup.controls.District.value || ('District' | translate) }}, {{ formGroup.controls.Province.value || ('Provinces' | translate) }},
+					{{ formGroup.controls.Country.value || ('country' | translate) }}<br />
+					{{ formGroup.controls.AddressLine2.value || ('Apartment, Building, Unit…' | translate) }}
+					<br />
+				</div>
+				<div class="c-control" *ngIf="pageConfig.canEdit">
+					<ion-button (click)="removeAddress()" size="small" fill="outline">
+						<ion-icon slot="start" name="trash"></ion-icon>
+						{{ 'Delete this address' | translate }}
+					</ion-button>
+				</div>
+			</ion-col>
+		</ion-row>
+	</div>
 </form>

@@ -1,32 +1,32 @@
 <google-map width="100%" height="100%" *ngIf="env.isMapLoaded || (mapLoaded | async)" [options]="options">
-  <ng-container *ngIf="this.items?.length">
-    <ng-container *ngFor="let i of items">
-      <map-marker
-        #somemarker="mapMarker"
-        *ngIf="i.option"
-        [label]="i.option?.label"
-        [title]="i.option?.title"
-        [options]="i.option"
-        (mapDragend)="changePosition(somemarker, i)"
-        (mapClick)="openInfo(somemarker, i)"
-      ></map-marker>
-    </ng-container>
-  </ng-container>
-  <map-info-window>
-    <div *ngIf="item">
-      <b *ngIf="item.Contact">{{ item.Contact }}</b>
-      <span *ngIf="item.Phone1">
-        ({{ item.Phone1 }}<span *ngIf="item.Phone2"> / {{ item.Phone2 }}</span
-        >) <br
-      /></span>
-      {{
-        (item.AddressLine1 ? item.AddressLine1 + ', ' : '') +
-          (item.Ward ? item.Ward + ', ' : '') +
-          (item.District ? item.District + ', ' : '') +
-          (item.Province ? item.Province : '')
-      }}<br />
-      <span *ngIf="item.AddressLine2">{{ item.AddressLine2 }} <br /></span>
-    </div>
-  </map-info-window>
+	<ng-container *ngIf="this.items?.length">
+		<ng-container *ngFor="let i of items">
+			<map-marker
+				#somemarker="mapMarker"
+				*ngIf="i.option"
+				[label]="i.option?.label"
+				[title]="i.option?.title"
+				[options]="i.option"
+				(mapDragend)="changePosition(somemarker, i)"
+				(mapClick)="openInfo(somemarker, i)"
+			></map-marker>
+		</ng-container>
+	</ng-container>
+	<map-info-window>
+		<div *ngIf="item">
+			<b *ngIf="item.Contact">{{ item.Contact }}</b>
+			<span *ngIf="item.Phone1">
+				({{ item.Phone1 }}<span *ngIf="item.Phone2"> / {{ item.Phone2 }}</span
+				>) <br
+			/></span>
+			{{
+				(item.AddressLine1 ? item.AddressLine1 + ', ' : '') +
+					(item.Ward ? item.Ward + ', ' : '') +
+					(item.District ? item.District + ', ' : '') +
+					(item.Province ? item.Province : '')
+			}}<br />
+			<span *ngIf="item.AddressLine2">{{ item.AddressLine2 }} <br /></span>
+		</div>
+	</map-info-window>
 </google-map>
 <app-page-message [itemsLength]="this.items?.length" [showSpinner]="!env.isMapLoaded"></app-page-message>

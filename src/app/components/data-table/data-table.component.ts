@@ -137,21 +137,19 @@ export class DataTableComponent implements OnInit {
 	 * Empty message templates gathered from `ContentChildren`
 	 * if described in your markup.
 	 */
-  _emptyMessageTemplates: QueryList<DataTableEmptyMessageDirective>;
+	_emptyMessageTemplates: QueryList<DataTableEmptyMessageDirective>;
 
-  @ContentChildren(DataTableEmptyMessageDirective)
+	@ContentChildren(DataTableEmptyMessageDirective)
 	set emptyMessageTemplates(val: QueryList<DataTableEmptyMessageDirective>) {
 		this._emptyMessageTemplates = val;
-		
 	}
 
 	get emptyMessageTemplate(): DataTableEmptyMessageDirective {
-    if (this._emptyMessageTemplates.length) {
-      return this._emptyMessageTemplates.first;
-    }
-    return null;
+		if (this._emptyMessageTemplates.length) {
+			return this._emptyMessageTemplates.first;
+		}
+		return null;
 	}
-	
 
 	_rows: any[];
 	/**

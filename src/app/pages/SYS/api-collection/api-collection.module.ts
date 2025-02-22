@@ -7,13 +7,7 @@ import { APICollectionPage } from './api-collection.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: APICollectionPage }])
-  ],
-  declarations: [APICollectionPage]
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: APICollectionPage }])],
+	declarations: [APICollectionPage],
 })
 export class APICollectionPageModule {}

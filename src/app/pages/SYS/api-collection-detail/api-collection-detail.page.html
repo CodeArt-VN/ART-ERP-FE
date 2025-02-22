@@ -1,11 +1,11 @@
 <ion-header>
 	<app-toolbar [page]="this" AcceptFile=".json">
-			<ion-button fill="clear" title="Export Json"  (click)="export()" *ngIf="pageConfig.canExport && formGroup.get('Type').value == 'Collection'">
-				<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
-			</ion-button>
-			<ion-button *ngIf="formGroup.get('Type').value == 'Request' && formGroup.get('Id').value != 0" title="{{ 'Run request' | translate }}"(click)="runRequest()">
-				<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
-				</ion-button>
+		<ion-button fill="clear" title="Export Json" (click)="export()" *ngIf="pageConfig.canExport && formGroup.get('Type').value == 'Collection'">
+			<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="formGroup.get('Type').value == 'Request' && formGroup.get('Id').value != 0" title="{{ 'Run request' | translate }}" (click)="runRequest()">
+			<ion-icon color="success" slot="icon-only" name="play-circle-outline"></ion-icon>
+		</ion-button>
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
@@ -13,14 +13,13 @@
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">
-
 				<ion-row class="hr-group">
 					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
 						<ion-list-header class="ion-no-padding">
 							<ion-label color="primary">{{'API collection' | translate}}</ion-label>
 						</ion-list-header>
 					</ion-col>
-				
+
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()">
 							<small label *ngIf="item?.Id">Id: {{item.Id}}</small>
@@ -28,13 +27,24 @@
 
 						<div class="c-control">
 							<label class="c-label" for="IDProvider">{{'Provider' | translate}}</label>
-							<ng-select [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="c-input no-check-dirty" formControlName="IDProvider" labelForId="IDProvider" [items]="providerDataSource" bindLabel="Name" bindValue="Id" [clearable]="true" (change)="changeProvider()" appendTo="#ng-select-holder">
-					
+							<ng-select
+								[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+								class="c-input no-check-dirty"
+								formControlName="IDProvider"
+								labelForId="IDProvider"
+								[items]="providerDataSource"
+								bindLabel="Name"
+								bindValue="Id"
+								[clearable]="true"
+								(change)="changeProvider()"
+								appendTo="#ng-select-holder"
+							>
 								<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 									<div *ngIf="i">
 										<ion-avatar><ion-img #img [src]="i.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
 										<span [ngOptionHighlight]="search">{{ i.Name }}</span><br />
-										<small>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
+										<small
+											>#<b><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b>
 										</small>
 									</div>
 								</ng-template>
@@ -42,13 +52,30 @@
 						</div>
 
 						<div class="c-control" *ngIf="formGroup.get('Type').value != 'Collection'">
-							<label class="c-label" for="IDBranch">{{'Parent' | translate}}
-								<span *ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+							<label class="c-label" for="IDBranch"
+								>{{'Parent' | translate}}
+								<span
+									*ngIf="!formGroup.controls.IDParent.valid && !formGroup.controls.IDParent.pending && (formGroup.controls.IDParent.dirty || submitAttempt)"
+									ion-text
+									color="danger"
+									>(*)</span
+								>
 							</label>
-							<ng-select class="c-input no-check-dirty" (change)="saveChange()" labelForId="IDParent" formControlName="IDParent" [items]="parentList" [virtualScroll]="true" bindLabel="Name" bindValue="Id" placeholder="{{'Search...' | translate}}">
+							<ng-select
+								class="c-input no-check-dirty"
+								(change)="saveChange()"
+								labelForId="IDParent"
+								formControlName="IDParent"
+								[items]="parentList"
+								[virtualScroll]="true"
+								bindLabel="Name"
+								bindValue="Id"
+								placeholder="{{'Search...' | translate}}"
+							>
 								<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 									<div *ngIf="i">
-										<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
+										<div>
+											<span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
 											<ion-icon *ngIf="i.Type == 'Folder'" name="folder-outline"></ion-icon>
 											<ion-icon *ngIf="i.Type == 'Collection'" name="keypad-outline"></ion-icon>
 											<span [ngOptionHighlight]="search">{{i.Name}}</span>
@@ -57,31 +84,38 @@
 								</ng-template>
 							</ng-select>
 						</div>
-
 					</ion-col>
 
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
-						<app-form-control [field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="changeType()"></app-form-control>
+						<app-form-control
+							[field]="{id:'Type', label: 'Type', dataSource: typeList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }"
+							(change)="changeType()"
+						></app-form-control>
 
-						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }" (change)="saveChange()"></app-form-control>
-
+						<app-form-control
+							*ngIf="formGroup.get('Type').value == 'Request' "
+							[field]="{id:'Method', label: 'Method', dataSource: methodList, type : 'ng-select',bindValue:'Code',bindLabel:'Code', form : formGroup }"
+							(change)="saveChange()"
+						></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm="12" size-md="12" size-xl="3"></ion-col>
 					<ion-col size="12" size-sm size-xl="8">
-						<app-form-control *ngIf="formGroup.get('Type').value == 'Request' " [field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }" (change)="changeURL()"></app-form-control>
+						<app-form-control
+							*ngIf="formGroup.get('Type').value == 'Request' "
+							[field]="{id:'_URL', label: 'URL', type : 'text', form : formGroup }"
+							(change)="changeURL()"
+						></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm="12" size-md="12" size-xl="3"></ion-col>
 					<ion-col size="12" size-sm size-xl="4">
 						<div class="c-control">
-							<label class="c-label">
-							  {{'Reference requests' | translate}}
-							</label>
+							<label class="c-label"> {{'Reference requests' | translate}} </label>
 							<div class="col-name">
 								<div class="c-input disable">
-									<ng-container  *ngFor="let id of item.ListIdUsingRequest; let j = index" >
+									<ng-container *ngFor="let id of item.ListIdUsingRequest; let j = index">
 										<a [routerLink]="['/api-collection', id]" target="_blank" rel="noopener noreferrer">{{id}}</a>
-										<span *ngIf="j != item.ListIdUsingRequest.length-1"> | </span> 
+										<span *ngIf="j != item.ListIdUsingRequest.length-1"> | </span>
 									</ng-container>
 								</div>
 							</div>
@@ -89,21 +123,18 @@
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4">
 						<div class="c-control">
-							<label class="c-label">
-							  {{'Reference actions' | translate}}
-							</label>
+							<label class="c-label"> {{'Reference actions' | translate}} </label>
 							<div class="col-name">
 								<div class="c-input disable">
-									<ng-container  *ngFor="let id of item.ListActionUsingRequest; let j = index" >
+									<ng-container *ngFor="let id of item.ListActionUsingRequest; let j = index">
 										<a [routerLink]="['/integration-action/', id]">{{id}}</a>
-										<span *ngIf="j != item.ListActionUsingRequest.length-1">  | </span> 
+										<span *ngIf="j != item.ListActionUsingRequest.length-1"> | </span>
 									</ng-container>
 								</div>
 							</div>
 						</div>
 					</ion-col>
 				</ion-row>
-			
 			</form>
 		</ion-grid>
 		<div class="row-full shadow full-screen">
@@ -142,17 +173,12 @@
 
 			<!-- Params -->
 			<ion-grid fixed>
-				<div class="table-contain  ion-padding" *ngIf="segmentView == 's1' && formGroup.get('Type').value == 'Request'">
+				<div class="table-contain ion-padding" *ngIf="segmentView == 's1' && formGroup.get('Type').value == 'Request'">
 					<section class="table responsive">
 						<header class="bold">
-							<div class="col-checkbox cell">
-							</div>
-							<div class="col-name cell">
-								{{'Key' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Value' | translate}}
-							</div>
+							<div class="col-checkbox cell"></div>
+							<div class="col-name cell">{{'Key' | translate}}</div>
+							<div class="col-name cell">{{'Value' | translate}}</div>
 							<div class="col-icon cell">
 								<ion-icon (click)="deleteItems('Params')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
 							</div>
@@ -160,34 +186,44 @@
 						<app-page-message [itemsLength]="formGroup.get('_Params')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Params')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
-								<ng-container [formGroup]="c" >
+								<ng-container [formGroup]="c">
 									<div class="col-checkbox cell">
-										<input   class="c-checkbox"type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)"/>
+										<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)" />
 										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 									</div>
 									<div class="col-name cell">
-										<app-input-control [field]="{id:'Key', type : 'text', form : c, }" (change)="renderURL(); saveChangeJson('Params', true)"></app-input-control>
+										<app-input-control
+											[field]="{id:'Key', type : 'text', form : c, }"
+											(change)="renderURL(); saveChangeJson('Params', true)"
+										></app-input-control>
 									</div>
 
 									<div class="col-name cell">
-										<app-input-control [field]="{id:'Value', type : 'text', form : c, }" (change)="renderURL(); saveChangeJson('Params', true)"></app-input-control>
+										<app-input-control
+											[field]="{id:'Value', type : 'text', form : c, }"
+											(change)="renderURL(); saveChangeJson('Params', true)"
+										></app-input-control>
 									</div>
 
 									<div class="col-icon cell clickable">
-										<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" (click)="removeField(j,'Params');renderURL()" name="trash"></ion-icon>
+										<ion-icon
+											color="danger"
+											*ngIf="pageConfig.canEdit && pageConfig.canDelete"
+											(click)="removeField(j,'Params');renderURL()"
+											name="trash"
+										></ion-icon>
 									</div>
 								</ng-container>
-								</div>
+							</div>
 							<div class="row">
 								<div class="col-name cell">
 									<ion-button fill="clear" size="small" (click)="newField($event,'Params')">
 										<ion-icon slot="start" name="add-circle-outline"></ion-icon>
 										{{'Add' | translate}}
-									  </ion-button>
+									</ion-button>
 								</div>
 							</div>
 						</ng-container>
-
 					</section>
 				</div>
 			</ion-grid>
@@ -196,14 +232,26 @@
 				<form [formGroup]="formGroup.get('_Authorization')">
 					<ion-row class="hr-group ion-padding">
 						<ion-col size="12" size-sm size-xl="4">
-							<app-form-control [field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+							<app-form-control
+								[field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : formGroup.get('_Authorization') }"
+								(change)="saveChangeJson('Authorization')"
+							></app-form-control>
 						</ion-col>
 						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Bearer'">
-							<app-form-control [field]="{id:'Token', type : 'text', label: 'Token', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+							<app-form-control
+								[field]="{id:'Token', type : 'text', label: 'Token', form : formGroup.get('_Authorization') }"
+								(change)="saveChangeJson('Authorization')"
+							></app-form-control>
 						</ion-col>
 						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Basic'">
-							<app-form-control [field]="{id:'Username', type : 'text', label: 'Username', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
-							<app-form-control [field]="{id:'Password', type : 'text', label: 'Password', form : formGroup.get('_Authorization') }" (change)="saveChangeJson('Authorization')"></app-form-control>
+							<app-form-control
+								[field]="{id:'Username', type : 'text', label: 'Username', form : formGroup.get('_Authorization') }"
+								(change)="saveChangeJson('Authorization')"
+							></app-form-control>
+							<app-form-control
+								[field]="{id:'Password', type : 'text', label: 'Password', form : formGroup.get('_Authorization') }"
+								(change)="saveChangeJson('Authorization')"
+							></app-form-control>
 						</ion-col>
 					</ion-row>
 				</form>
@@ -213,17 +261,10 @@
 				<div class="table-contain ion-padding">
 					<section class="table responsive">
 						<header class="bold">
-							<div class="col-checkbox cell">
-							</div>
-							<div class="col-name cell">
-								{{'Key' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Value' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Remark' | translate}}
-							</div>
+							<div class="col-checkbox cell"></div>
+							<div class="col-name cell">{{'Key' | translate}}</div>
+							<div class="col-name cell">{{'Value' | translate}}</div>
+							<div class="col-name cell">{{'Remark' | translate}}</div>
 							<div class="col-icon cell">
 								<ion-icon (click)="deleteItems('Header')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
 							</div>
@@ -231,8 +272,8 @@
 						<app-page-message [itemsLength]="formGroup.get('_Header')['controls']" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Header')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
-								<div class="col-checkbox cell"> 
-									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Header', 'Value')"/>
+								<div class="col-checkbox cell">
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Header', 'Value')" />
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
@@ -243,7 +284,10 @@
 								</div>
 
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Description', label:'Remark', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
+									<app-input-control
+										[field]="{id:'Description', label:'Remark', type : 'text', form : c }"
+										(change)="saveChangeJson('Header',true)"
+									></app-input-control>
 								</div>
 
 								<div class="col-icon cell clickable" (click)="removeField(j,'Header')">
@@ -255,11 +299,10 @@
 									<ion-button fill="clear" size="small" (click)="newField($event,'Header')">
 										<ion-icon slot="start" name="add-circle-outline"></ion-icon>
 										{{'Add' | translate}}
-									  </ion-button>
+									</ion-button>
 								</div>
 							</div>
 						</ng-container>
-
 					</section>
 				</div>
 			</ion-grid>
@@ -267,12 +310,17 @@
 			<ion-grid fixed *ngIf="segmentView == 's4' && formGroup.get('Type').value == 'Request'">
 				<ion-row class="hr-group ion-padding">
 					<ion-col size="12" size-sm size-xl="4">
-						<app-form-control [field]="{id:'BodyType', type : 'ng-select', dataSource: bodyType, bindLabel:'Name', bindValue:'Code', label: 'Body type', form : formGroup.get('_Body') }" (change)="changeBodyType()"></app-form-control>
+						<app-form-control
+							[field]="{id:'BodyType', type : 'ng-select', dataSource: bodyType, bindLabel:'Name', bindValue:'Code', label: 'Body type', form : formGroup.get('_Body') }"
+							(change)="changeBodyType()"
+						></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4" *ngIf="formGroup.get('_Body').get('BodyType').value =='raw'">
-						<app-form-control [field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : formGroup.get('_Body') }" (change)="saveChangeJson('Body')"></app-form-control>
+						<app-form-control
+							[field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : formGroup.get('_Body') }"
+							(change)="saveChangeJson('Body')"
+						></app-form-control>
 					</ion-col>
-
 				</ion-row>
 				<ion-row class="hr-group ion-padding" *ngIf="formGroup.get('_Body').get('BodyType').value !='x-www-form-urlencoded'">
 					<ion-col size="12">
@@ -285,35 +333,33 @@
 									</ion-button>
 								</ion-item>
 								<div slot="content" style="background: transparent">
-									<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%">
-									</div>
+									<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%"></div>
 								</div>
 							</ion-accordion>
 						</ion-accordion-group>
-
 					</ion-col>
-
 				</ion-row>
 				<div class="table-contain ion-padding" *ngIf="formGroup.get('_Body').get('BodyType').value =='x-www-form-urlencoded'">
 					<section class="table responsive">
 						<header class="bold">
-							<div class="col-checkbox cell">
-						
-							</div>
-							<div class="col-name cell">
-								{{'Key' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Value' | translate}}
-							</div>
+							<div class="col-checkbox cell"></div>
+							<div class="col-name cell">{{'Key' | translate}}</div>
+							<div class="col-name cell">{{'Value' | translate}}</div>
 							<div class="col-icon cell">
-								<ion-icon (click)="deleteItems('Value',formGroup.get('_Body'),'Body','Value')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+								<ion-icon
+									(click)="deleteItems('Value',formGroup.get('_Body'),'Body','Value')"
+									color="danger"
+									slot="icon-only"
+									size="large"
+									name="trash"
+									slot="start"
+								></ion-icon>
 							</div>
 						</header>
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Body').get('Value')['controls']; let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
-								<div class="col-checkbox cell"> 
-									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')"/>
+								<div class="col-checkbox cell">
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')" />
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
@@ -327,15 +373,13 @@
 									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
 								</div>
 							</div>
-
 						</ng-container>
 						<div class="row">
-						
 							<div class="col-name cell">
 								<ion-button fill="clear" size="small" (click)="newField($event,'Body/Value',true)">
 									<ion-icon slot="start" name="add-circle-outline"></ion-icon>
 									{{'Add' | translate}}
-								  </ion-button>
+								</ion-button>
 							</div>
 						</div>
 					</section>
@@ -389,17 +433,10 @@
 			<div class="table-contain ion-padding" *ngIf="segmentView == 's7' && formGroup.get('Type').value == 'Collection'">
 				<section class="table responsive">
 					<header class="bold">
-						<div class="col-checkbox cell">
-						</div>
-						<div class="col-name cell">
-							{{'Varible' | translate}}
-						</div>
-						<div class="col-name cell">
-							{{'Inital value' | translate}}
-						</div>
-						<div class="col-name cell">
-							{{'Current value' | translate}}
-						</div>
+						<div class="col-checkbox cell"></div>
+						<div class="col-name cell">{{'Varible' | translate}}</div>
+						<div class="col-name cell">{{'Inital value' | translate}}</div>
+						<div class="col-name cell">{{'Current value' | translate}}</div>
 						<div class="col-icon cell">
 							<ion-icon (click)="deleteItems('Varibles')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
 						</div>
@@ -408,7 +445,7 @@
 					<ng-container *ngIf="!pageConfig.showSpinner">
 						<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 							<div class="col-checkbox cell">
-								<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)"/>
+								<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)" />
 								<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 							</div>
 							<div class="col-name cell">
@@ -426,17 +463,16 @@
 								<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
 							</div>
 						</div>
-					
+
 						<div class="row">
 							<div class="col-name cell">
 								<ion-button fill="clear" size="small" (click)="newField($event,'Varibles')">
 									<ion-icon slot="start" name="add-circle-outline"></ion-icon>
 									{{'Add' | translate}}
-								  </ion-button>
+								</ion-button>
 							</div>
 						</div>
 					</ng-container>
-
 				</section>
 			</div>
 			<!-- Setting -->
@@ -444,17 +480,10 @@
 				<div class="table-contain ion-padding" *ngIf="segmentView == 's8'">
 					<section class="table responsive">
 						<header class="bold">
-							<div class="col-checkbox cell">
-							</div>
-							<div class="col-name cell">
-								{{'Name' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Value' | translate}}
-							</div>
-							<div class="col-name cell">
-								{{'Description' | translate}}
-							</div>
+							<div class="col-checkbox cell"></div>
+							<div class="col-name cell">{{'Name' | translate}}</div>
+							<div class="col-name cell">{{'Value' | translate}}</div>
+							<div class="col-name cell">{{'Description' | translate}}</div>
 							<div class="col-icon cell">
 								<ion-icon (click)="deleteItems('Setting')" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
 							</div>
@@ -463,7 +492,7 @@
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Setting')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<div class="col-checkbox cell">
-									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)"/>
+									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)" />
 								</div>
 								<div class="col-name cell">
 									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
@@ -479,17 +508,16 @@
 									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
 								</div>
 							</div>
-						
+
 							<div class="row">
 								<div class="col-name cell">
 									<ion-button fill="clear" size="small" (click)="newField($event,'Setting')">
 										<ion-icon slot="start" name="add-circle-outline"></ion-icon>
 										{{'Add' | translate}}
-									  </ion-button>
+									</ion-button>
 								</div>
 							</div>
 						</ng-container>
-
 					</section>
 				</div>
 			</ion-grid>

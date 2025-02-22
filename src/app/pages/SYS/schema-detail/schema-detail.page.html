@@ -1,285 +1,239 @@
 <ion-header>
-  <app-detail-toolbar [page]="this"></app-detail-toolbar>
+	<app-detail-toolbar [page]="this"></app-detail-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding">
-  <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
-    <ion-grid fixed>
-      <form [formGroup]="formGroup">
-        <ion-row>
-          <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
-            <app-page-title
-              [icon]="formGroup.get('Icon').value"
-              [color]="formGroup.get('Color').value"
-              [title]="formGroup.get('Name').value"
-              [remark]="formGroup.get('Remark').value"
-            >
-            </app-page-title>
-          </ion-col>
-          <ion-col size="12" size-sm size-xl="5">
-            <app-form-control [field]="{id:'Code', label: 'Code', type : 'span-text', form : formGroup }">
-              <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
-            </app-form-control>
+	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row>
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+						<app-page-title
+							[icon]="formGroup.get('Icon').value"
+							[color]="formGroup.get('Color').value"
+							[title]="formGroup.get('Name').value"
+							[remark]="formGroup.get('Remark').value"
+						>
+						</app-page-title>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="5">
+						<app-form-control [field]="{id:'Code', label: 'Code', type : 'span-text', form : formGroup }">
+							<small label *ngIf="item?.Id">Id: {{item.Id}}</small>
+						</app-form-control>
 
-            <app-form-control
-              [field]="{id:'Name', label: 'Name', type : 'span-text', form : formGroup }"
-            ></app-form-control>
-          </ion-col>
-        </ion-row>
-      </form>
-    </ion-grid>
-    <div class="row-full shadow full-screen">
-      <ion-toolbar color="primary">
-        <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
-          <ion-segment-button value="s1">
-            <ion-label>{{'Properties' | translate }}</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="s2">
-            <ion-label>{{'Other information' | translate}}</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-        <ion-buttons slot="end" *ngIf="segmentView=='s1'">
-          <ion-button *ngIf="formGroup.get('Fields').valid" (click)="addField({},true)">
-            <ion-icon slot="start" name="add"></ion-icon>
-            {{'Add' | translate}}
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
+						<app-form-control [field]="{id:'Name', label: 'Name', type : 'span-text', form : formGroup }"></app-form-control>
+					</ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+		<div class="row-full shadow full-screen">
+			<ion-toolbar color="primary">
+				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+					<ion-segment-button value="s1">
+						<ion-label>{{'Properties' | translate }}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s2">
+						<ion-label>{{'Other information' | translate}}</ion-label>
+					</ion-segment-button>
+				</ion-segment>
+				<ion-buttons slot="end" *ngIf="segmentView=='s1'">
+					<ion-button *ngIf="formGroup.get('Fields').valid" (click)="addField({},true)">
+						<ion-icon slot="start" name="add"></ion-icon>
+						{{'Add' | translate}}
+					</ion-button>
+				</ion-buttons>
+			</ion-toolbar>
 
-      <div *ngIf="segmentView == 's1'">
-        <ion-grid fixed>
-          <ion-row>
-            <ion-col size="12">
-              <ion-list>
-                <ion-list-header lines="full">
-                  <ion-label>{{'Properties' | translate }}</ion-label>
-                  <ion-button (click)="toggleReorder()" fill="outline">{{'Sort' | translate }}</ion-button>
-                </ion-list-header>
-                <ion-accordion-group [multiple]="true"   [value]="openedFields"  (ionChange)="accordionGroupChange($event)">
-                  <ion-reorder-group
-                    [disabled]="isDisabled"
-                    (ionItemReorder)="doReorder($event, formGroup.get('Fields')['controls'])"
-                  >
-                    <ng-container *ngFor="let g of formGroup.get('Fields')['controls']; let idx = index;">
-                      <ion-accordion [value]="g.get('Id').value">
-                        <ion-item slot="header" [style.order]="g.get('Sort').value" lines="full">
+			<div *ngIf="segmentView == 's1'">
+				<ion-grid fixed>
+					<ion-row>
+						<ion-col size="12">
+							<ion-list>
+								<ion-list-header lines="full">
+									<ion-label>{{'Properties' | translate }}</ion-label>
+									<ion-button (click)="toggleReorder()" fill="outline">{{'Sort' | translate }}</ion-button>
+								</ion-list-header>
+								<ion-accordion-group [multiple]="true" [value]="openedFields" (ionChange)="accordionGroupChange($event)">
+									<ion-reorder-group [disabled]="isDisabled" (ionItemReorder)="doReorder($event, formGroup.get('Fields')['controls'])">
+										<ng-container *ngFor="let g of formGroup.get('Fields')['controls']; let idx = index;">
+											<ion-accordion [value]="g.get('Id').value">
+												<ion-item slot="header" [style.order]="g.get('Sort').value" lines="full">
+													<ion-icon [name]="g.get('Icon').value" slot="start" [color]="g.get('Color').value || 'primary'"></ion-icon>
 
-                          <ion-icon
-                            [name]="g.get('Icon').value"
-                            slot="start"
-                            [color]="g.get('Color').value || 'primary'"
-                          ></ion-icon>
+													<ion-label style="margin-right: 0" class="ion-text-wrap clickable"> {{g.get('Name').value}} </ion-label>
 
-                          <ion-label style="margin-right: 0" class="ion-text-wrap clickable">
-                            {{g.get('Name').value}}
-                          </ion-label>
+													<ion-button color="danger" (click)="removeField(g,dx)" fill="clear" slot="end">
+														<ion-icon slot="icon-only" name="trash"></ion-icon>
+													</ion-button>
 
-                          <ion-button color="danger" (click)="removeField(g,dx)" fill="clear" slot="end">
-                            <ion-icon slot="icon-only" name="trash"></ion-icon>
-                          </ion-button>
+													<ion-reorder slot="end"></ion-reorder>
+												</ion-item>
 
-                          <ion-reorder slot="end"></ion-reorder>
-                        </ion-item>
+												<div
+													class="ion-padding"
+													slot="content"
+													[ngStyle]="{ 'background': !isAccordionExpanded(g.get('Id').value) ? 'none' : 'var(--table-header-background)' }"
+												>
+													<ion-grid fixed>
+														<form [formGroup]="g" (click)="$event.stopPropagation()" [ngClass]="{'transition':show}">
+															<ion-row>
+																<ion-col size="12" size-xl="6">
+																	<app-form-control [field]="{id:'Id', label: 'Id', type : 'span-text', form : g }"></app-form-control>
 
-                        <div class="ion-padding" slot="content"[ngStyle]="{ 'background': !isAccordionExpanded(g.get('Id').value) ? 'none' : 'var(--table-header-background)' }">
-                          <ion-grid fixed>
-                            <form [formGroup]="g" (click)="$event.stopPropagation()" [ngClass]="{'transition':show}">
-                              <ion-row>
-                                <ion-col size="12" size-xl="6">
-                                  <app-form-control
-                                    [field]="{id:'Id', label: 'Id', type : 'span-text', form : g }"
-                                  ></app-form-control>
+																	<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : g }" (change)="saveChange()">
+																		<small label>
+																			<a class="clickable" (click)="g.get('IsColorModalOpened').setValue(true)"
+																				>{{'Change color' | translate}}</a
+																			>
+																			&nbsp;
+																			<a class="clickable" (click)="g.get('IsIconModalOpened').setValue(true)"
+																				>{{'Change icon' | translate}}</a
+																			>
+																			<ion-modal
+																				#modal
+																				[isOpen]="g.get('IsColorModalOpened').value"
+																				(willDismiss)="g.get('IsColorModalOpened').setValue(false); "
+																				[initialBreakpoint]="0.5"
+																				[breakpoints]="[0, 0.25, 0.5, 0.75]"
+																			>
+																				<ng-template>
+																					<ion-content>
+																						<app-color-picker (selected)="onSelectColor($event,g)"></app-color-picker>
+																					</ion-content>
+																				</ng-template>
+																			</ion-modal>
+																			<ion-modal
+																				#modal
+																				[isOpen]="g.get('IsIconModalOpened').value"
+																				(willDismiss)="g.get('IsIconModalOpened').setValue(false); "
+																				[initialBreakpoint]="0.5"
+																				[breakpoints]="[0, 0.25, 0.5, 0.75]"
+																			>
+																				<ng-template>
+																					<ion-content>
+																						<app-icon-picker
+																							(selected)="onSelectIcon($event,g)"
+																							[color]="g.get('Color').value"
+																						></app-icon-picker>
+																					</ion-content>
+																				</ng-template>
+																			</ion-modal>
+																		</small>
+																	</app-form-control>
 
-                                  <app-form-control
-                                    [field]="{id:'Name', label: 'Name', type : 'text', form : g }"
-                                    (change)="saveChange()"
-                                  >
-                                    <small label>
-                                      <a class="clickable" (click)="g.get('IsColorModalOpened').setValue(true)"
-                                        >{{'Change color' | translate}}</a
-                                      >
-                                      &nbsp;
-                                      <a class="clickable" (click)="g.get('IsIconModalOpened').setValue(true)"
-                                        >{{'Change icon' | translate}}</a
-                                      >
-                                      <ion-modal
-                                        #modal
-                                        [isOpen]="g.get('IsColorModalOpened').value"
-                                        (willDismiss)="g.get('IsColorModalOpened').setValue(false); "
-                                        [initialBreakpoint]="0.5"
-                                        [breakpoints]="[0, 0.25, 0.5, 0.75]"
-                                      >
-                                        <ng-template>
-                                          <ion-content>
-                                            <app-color-picker (selected)="onSelectColor($event,g)"></app-color-picker>
-                                          </ion-content>
-                                        </ng-template>
-                                      </ion-modal>
-                                      <ion-modal
-                                        #modal
-                                        [isOpen]="g.get('IsIconModalOpened').value"
-                                        (willDismiss)="g.get('IsIconModalOpened').setValue(false); "
-                                        [initialBreakpoint]="0.5"
-                                        [breakpoints]="[0, 0.25, 0.5, 0.75]"
-                                      >
-                                        <ng-template>
-                                          <ion-content>
-                                            <app-icon-picker
-                                              (selected)="onSelectIcon($event,g)"
-                                              [color]="g.get('Color').value"
-                                            ></app-icon-picker>
-                                          </ion-content>
-                                        </ng-template>
-                                      </ion-modal>
-                                    </small>
-                                  </app-form-control>
+																	<app-form-control
+																		[field]="{id:'DataType', label: 'DataType', type : 'select', dataSource:dataTypes, bindValue:'Name',bindLabel:'Name',form : g }"
+																		(change)="saveChange()"
+																	>
+																	</app-form-control>
+																	<app-form-control
+																		[field]="{id:'Aggregate', label: 'Aggregate', type : 'text', form : g }"
+																		(change)="saveChange()"
+																	>
+																	</app-form-control>
+																</ion-col>
+																<ion-col size="12" size-xl="6">
+																	<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : g }" (change)="saveChange()">
+																	</app-form-control>
+																	<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : g }" (change)="saveChange()">
+																	</app-form-control>
 
-                                  <app-form-control
-                                    [field]="{id:'DataType', label: 'DataType', type : 'select', dataSource:dataTypes, bindValue:'Name',bindLabel:'Name',form : g }"
-                                    (change)="saveChange()"
-                                  >
-                                  </app-form-control>
-                                  <app-form-control
-                                    [field]="{id:'Aggregate', label: 'Aggregate', type : 'text', form : g }"
-                                    (change)="saveChange()"
-                                  >
-                                  </app-form-control>
-                                </ion-col>
-                                <ion-col size="12" size-xl="6">
-                                  <app-form-control
-                                    [field]="{id:'Code', label: 'Code', type : 'text', form : g }"
-                                    (change)="saveChange()"
-                                  >
-                                  </app-form-control>
-                                  <app-form-control
-                                    [field]="{id:'Sort', label: 'Sort', type : 'number', form : g }"
-                                    (change)="saveChange()"
-                                  >
-                                  </app-form-control>
+																	<app-form-control
+																		[field]="{id:'Remark', type : 'textarea', label: 'Remark', form : g }"
+																		(change)="saveChange()"
+																	></app-form-control>
+																</ion-col>
+															</ion-row>
+														</form>
+													</ion-grid>
+												</div>
+											</ion-accordion>
+										</ng-container>
+									</ion-reorder-group>
+								</ion-accordion-group>
+							</ion-list>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
 
-                                  <app-form-control
-                                    [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : g }"
-                                    (change)="saveChange()"
-                                  ></app-form-control>
-                                </ion-col>
-                              </ion-row>
-                            </form>
-                          </ion-grid>
-                        </div>
-                      </ion-accordion>
-                    </ng-container>
-                  </ion-reorder-group>
-                </ion-accordion-group>
-              </ion-list>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
+			<!-- Order information -->
+			<div *ngIf="segmentView == 's2'">
+				<ion-grid fixed>
+					<form [formGroup]="formGroup">
+						<!-- General information -->
+						<ion-row class="hr-group">
+							<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+								<ion-list-header class="ion-no-padding">
+									<ion-label color="primary">{{'General information' | translate}}</ion-label>
+								</ion-list-header>
+							</ion-col>
+							<ion-col size="12" size-sm size-xl="4">
+								<app-form-control [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }" (change)="saveChange()"> </app-form-control>
+								<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }">
+									<small label>
+										<a class="clickable" (click)="formGroup.get('IsColorModalOpened').setValue(true)">{{'Change color' | translate}}</a>
+										&nbsp;
+										<a class="clickable" (click)="formGroup.get('IsIconModalOpened').setValue(true)">{{'Change icon' | translate}}</a>
+										<ion-modal
+											#modal
+											[isOpen]="formGroup.get('IsColorModalOpened').value"
+											(willDismiss)="formGroup.get('IsColorModalOpened').setValue(false); "
+											[initialBreakpoint]="0.5"
+											[breakpoints]="[0, 0.25, 0.5, 0.75]"
+										>
+											<ng-template>
+												<ion-content>
+													<app-color-picker (selected)="onSelectColor($event,formGroup)"></app-color-picker>
+												</ion-content>
+											</ng-template>
+										</ion-modal>
+										<ion-modal
+											#modal
+											[isOpen]="formGroup.get('IsIconModalOpened').value"
+											(willDismiss)="formGroup.get('IsIconModalOpened').setValue(false); "
+											[initialBreakpoint]="0.5"
+											[breakpoints]="[0, 0.25, 0.5, 0.75]"
+										>
+											<ng-template>
+												<ion-content>
+													<app-icon-picker (selected)="onSelectIcon($event,formGroup)"></app-icon-picker>
+												</ion-content>
+											</ng-template>
+										</ion-modal>
+									</small>
+								</app-form-control>
 
-      <!-- Order information -->
-      <div *ngIf="segmentView == 's2'">
-        <ion-grid fixed>
-          <form [formGroup]="formGroup">
-            <!-- General information -->
-            <ion-row class="hr-group">
-              <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-                <ion-list-header class="ion-no-padding">
-                  <ion-label color="primary">{{'General information' | translate}}</ion-label>
-                </ion-list-header>
-              </ion-col>
-              <ion-col size="12" size-sm size-xl="4">
-                <app-form-control
-                  [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }"
-                  (change)="saveChange()"
-                >
-                </app-form-control>
-                <app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }">
-                  <small label>
-                    <a class="clickable" (click)="formGroup.get('IsColorModalOpened').setValue(true)"
-                      >{{'Change color' | translate}}</a
-                    >
-                    &nbsp;
-                    <a class="clickable" (click)="formGroup.get('IsIconModalOpened').setValue(true)"
-                      >{{'Change icon' | translate}}</a
-                    >
-                    <ion-modal
-                      #modal
-                      [isOpen]="formGroup.get('IsColorModalOpened').value"
-                      (willDismiss)="formGroup.get('IsColorModalOpened').setValue(false); "
-                      [initialBreakpoint]="0.5"
-                      [breakpoints]="[0, 0.25, 0.5, 0.75]"
-                    >
-                      <ng-template>
-                        <ion-content>
-                          <app-color-picker (selected)="onSelectColor($event,formGroup)"></app-color-picker>
-                        </ion-content>
-                      </ng-template>
-                    </ion-modal>
-                    <ion-modal
-                      #modal
-                      [isOpen]="formGroup.get('IsIconModalOpened').value"
-                      (willDismiss)="formGroup.get('IsIconModalOpened').setValue(false); "
-                      [initialBreakpoint]="0.5"
-                      [breakpoints]="[0, 0.25, 0.5, 0.75]"
-                    >
-                      <ng-template>
-                        <ion-content>
-                          <app-icon-picker (selected)="onSelectIcon($event,formGroup)"></app-icon-picker>
-                        </ion-content>
-                      </ng-template>
-                    </ion-modal>
-                  </small>
-                </app-form-control>
+								<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"> </app-form-control>
+								<app-form-control
+									[field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: schemaTypeList ,bindLabel:'Name', bindValue:'Code', form : formGroup }"
+									(change)="saveChange()"
+								>
+								</app-form-control>
+							</ion-col>
+							<ion-col size="12" size-sm size-xl="4">
+								<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : formGroup }" (change)="saveChange()"> </app-form-control>
+								<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
+							</ion-col>
+						</ion-row>
 
-                <app-form-control
-                  [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }"
-                  (change)="saveChange()"
-                >
-                </app-form-control>
-                <app-form-control
-                  [field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: schemaTypeList ,bindLabel:'Name', bindValue:'Code', form : formGroup }"
-                  (change)="saveChange()"
-                >
-                </app-form-control>
-              </ion-col>
-              <ion-col size="12" size-sm size-xl="4">
-                <app-form-control
-                  [field]="{id:'Sort', label: 'Sort', type : 'number', form : formGroup }"
-                  (change)="saveChange()"
-                >
-                </app-form-control>
-                <app-form-control
-                  [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }"
-                  (change)="saveChange()"
-                ></app-form-control>
-              </ion-col>
-            </ion-row>
-
-            <!-- Other information -->
-            <ion-row class="hr-group" *ngIf="item.Id">
-              <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-                <ion-list-header class="ion-no-padding">
-                  <ion-label color="primary">{{'Other information' | translate}}</ion-label>
-                </ion-list-header>
-              </ion-col>
-              <ion-col size="12" size-sm size-xl="4">
-                <app-form-control
-                  [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"
-                ></app-form-control>
-                <app-form-control
-                  [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"
-                ></app-form-control>
-                <app-form-control
-                  [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"
-                ></app-form-control>
-                <app-form-control
-                  [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
-                ></app-form-control>
-              </ion-col>
-            </ion-row>
-          </form>
-        </ion-grid>
-      </div>
-    </div>
-  </div>
-  <app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+						<!-- Other information -->
+						<ion-row class="hr-group" *ngIf="item.Id">
+							<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+								<ion-list-header class="ion-no-padding">
+									<ion-label color="primary">{{'Other information' | translate}}</ion-label>
+								</ion-list-header>
+							</ion-col>
+							<ion-col size="12" size-sm size-xl="4">
+								<app-form-control [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
+								<app-form-control [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
+								<app-form-control [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
+								<app-form-control [field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"></app-form-control>
+							</ion-col>
+						</ion-row>
+					</form>
+				</ion-grid>
+			</div>
+		</div>
+	</div>
+	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

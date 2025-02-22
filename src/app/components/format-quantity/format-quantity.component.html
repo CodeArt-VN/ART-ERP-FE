@@ -1,4 +1,4 @@
 <ion-text [color]="quantity < 0 ? 'danger' : ''" *ngFor="let u of splitQuantityList"
-  ><strong>&nbsp;<span *ngIf="quantity < 0">-</span>{{ u.Quantity | number: '1.0-0' }}</strong>
-  <small>{{ u.UoMName }}</small>
+	><strong>&nbsp;<span *ngIf="quantity < 0">-</span>{{ u.Quantity | number: '1.0-0' }}</strong>
+	<small>{{ u.UoMName }}</small>
 </ion-text>

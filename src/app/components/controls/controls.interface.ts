@@ -1,67 +1,65 @@
 import { FormGroup } from '@angular/forms';
 
 export interface InputControlField {
-  form: FormGroup;
+	form: FormGroup;
 
-  type:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'date'
-    | 'datetime-local'
-    | 'checkbox'
-    | 'radio'
-    | 'select'
-    | 'ng-select'
-    | 'ng-select-branch'
-    | 'ng-select-status'
-    | 'ng-select-bp'
-    | 'ng-select-item'
-    | 'textarea'
-    | 'branch-breadcrumbs'
-    | 'span-text'
-    | 'span-number'
-    | 'span-date'
-    | 'span-datetime'
-    | 'icon'
-    | 'color';
+	type:
+		| 'text'
+		| 'number'
+		| 'email'
+		| 'date'
+		| 'datetime-local'
+		| 'checkbox'
+		| 'radio'
+		| 'select'
+		| 'ng-select'
+		| 'ng-select-branch'
+		| 'ng-select-status'
+		| 'ng-select-bp'
+		| 'ng-select-item'
+		| 'textarea'
+		| 'branch-breadcrumbs'
+		| 'span-text'
+		| 'span-number'
+		| 'span-date'
+		| 'span-datetime'
+		| 'icon'
+		| 'color';
 
-  id: string;
-  secondaryId: string;
+	id: string;
+	secondaryId: string;
 
-  label: string;
-  color: string;
+	label: string;
+	color: string;
 
-  placeholder?: string;
+	placeholder?: string;
 
-  dataSource?: any[] | any;
+	dataSource?: any[] | any;
 
-  bindValue?: string;
+	bindValue?: string;
 
-  bindLabel?: string;
+	bindLabel?: string;
 
-  multiple?: boolean;
+	multiple?: boolean;
 
-  clearable?: boolean;
+	clearable?: boolean;
 
-  noCheckDirty?: boolean;
-  
-  appendTo:string;
+	noCheckDirty?: boolean;
 
-  treeConfig?: {
-    isTree? : boolean;
-    isCollapsed? : boolean;
-    searchFn? : any;
-    searchFnDefault?:boolean;
-    rootCollapsed?:boolean;
-  }
+	appendTo: string;
 
-  branchConfig?:{
-    selectedBranch?:number,
-    showingType?: string,
-    showingDisable?: boolean,
-    showingMode: 
-    | 'showAll'
-    | 'showSelectedAndChildren'
-  }
+	treeConfig?: {
+		isTree?: boolean;
+		isCollapsed?: boolean;
+		searchFn?: any;
+		searchFnDefault?: boolean;
+		rootCollapsed?: boolean;
+	};
+
+	branchConfig?: {
+		selectedBranch?: number;
+		showingType?: string;
+		showingDisable?: boolean;
+		showingMode: 'showAll' | 'showSelectedAndChildren';
+	};
 }

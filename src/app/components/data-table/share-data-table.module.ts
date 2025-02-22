@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 //Custom component
 import { DataTableComponent } from './data-table.component';
-import { EmptyMessageChangesService, DataTableEmptyMessageDirective, } from './directives/data-table-empty-message-directive';
+import { EmptyMessageChangesService, DataTableEmptyMessageDirective } from './directives/data-table-empty-message-directive';
 import { DataTableEmptyMessageTemplateDirective } from './directives/data-table-empty-message-template-directive';
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
 import { DataTableColumnCellDirective } from './directives/data-table-cell-template-directive';
@@ -26,55 +26,43 @@ import { SvgImageDirective } from 'src/app/directives/svg-image.directive';
 import { DataTableFilterCellComponent } from './components/1.header/datatable-filter-cell.component';
 import { ShareInputControlsModule } from '../controls/share-input-controls.modules';
 
-
-
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ScrollingModule,
-    IonicModule,
-    TranslateModule,
-    ShareInputControlsModule,
-  ],
-  providers: [ColumnChangesService, EmptyMessageChangesService],
-  declarations: [
-    SvgImageDirective,
-    PageMessageComponent,
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, ScrollingModule, IonicModule, TranslateModule, ShareInputControlsModule],
+	providers: [ColumnChangesService, EmptyMessageChangesService],
+	declarations: [
+		SvgImageDirective,
+		PageMessageComponent,
 
-    DataTableComponent,
-    DataTableEmptyMessageDirective,
-    DataTableEmptyMessageTemplateDirective,
-    DataTableColumnDirective,
-    DataTableColumnCellDirective,
-    DataTableColumnFilterDirective,
-    DataTableColumnHeaderDirective,
-    DataTableHeaderComponent,
-    DataTableHeaderCellComponent,
-    DataTableFilterCellComponent,
-    DataTablBodyComponent,
-    DataTablBodyRowComponent,
-    DataTableBodyCellComponent,
-  ],
-  exports: [
-    SvgImageDirective,
-    PageMessageComponent,
-    DataTableComponent,
-    DataTableEmptyMessageDirective,
-    DataTableEmptyMessageTemplateDirective,
-    DataTableColumnDirective,
-    DataTableColumnCellDirective,
-    DataTableColumnFilterDirective,
-    DataTableColumnHeaderDirective,
-    DataTableHeaderComponent,
-    DataTableHeaderCellComponent,
-    DataTableFilterCellComponent,
-    DataTablBodyComponent,
-    DataTablBodyRowComponent,
-    DataTableBodyCellComponent,
-  ],
+		DataTableComponent,
+		DataTableEmptyMessageDirective,
+		DataTableEmptyMessageTemplateDirective,
+		DataTableColumnDirective,
+		DataTableColumnCellDirective,
+		DataTableColumnFilterDirective,
+		DataTableColumnHeaderDirective,
+		DataTableHeaderComponent,
+		DataTableHeaderCellComponent,
+		DataTableFilterCellComponent,
+		DataTablBodyComponent,
+		DataTablBodyRowComponent,
+		DataTableBodyCellComponent,
+	],
+	exports: [
+		SvgImageDirective,
+		PageMessageComponent,
+		DataTableComponent,
+		DataTableEmptyMessageDirective,
+		DataTableEmptyMessageTemplateDirective,
+		DataTableColumnDirective,
+		DataTableColumnCellDirective,
+		DataTableColumnFilterDirective,
+		DataTableColumnHeaderDirective,
+		DataTableHeaderComponent,
+		DataTableHeaderCellComponent,
+		DataTableFilterCellComponent,
+		DataTablBodyComponent,
+		DataTablBodyRowComponent,
+		DataTableBodyCellComponent,
+	],
 })
 export class ShareDataTableModule {}

@@ -7,13 +7,7 @@ import { IntegrationProviderPage } from './integration-provider.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: IntegrationProviderPage }]),
-  ],
-  declarations: [IntegrationProviderPage],
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: IntegrationProviderPage }])],
+	declarations: [IntegrationProviderPage],
 })
 export class IntegrationProviderPageModule {}

@@ -1,251 +1,189 @@
 <ion-header>
-  <app-toolbar [page]="this"></app-toolbar>
+	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding">
-  <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
-    <ion-grid fixed>
-      <form [formGroup]="formGroup">
-        <ion-row class="hr-group">
-          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-            <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">{{'Integration action' | translate}}</ion-label>
-            </ion-list-header>
-          </ion-col>
+	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row class="hr-group">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Integration action' | translate}}</ion-label>
+						</ion-list-header>
+					</ion-col>
 
-          <ion-col size="12" size-sm size-xl="4">
-            <app-form-control [field]="{id:'Code', form: formGroup }" (change)="saveChange()">
-              <small label *ngIf="item?.Id">Id: {{item.Id}}</small>
-            </app-form-control>
-            <app-form-control
-              [field]="{id:'Name', label: 'Name', type: 'text', form: formGroup }"
-              (change)="saveChange()"
-            >
-            </app-form-control>
-            <app-form-control
-              [field]="{id:'Type', label: 'Type', dataSource: typeList, type: 'ng-select', bindValue:'Code', bindLabel:'Name', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'Group', label: 'Group', type: 'text', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'IsTriggerable', label: 'Is triggerable', type: 'checkbox', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-          </ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Code', form: formGroup }" (change)="saveChange()">
+							<small label *ngIf="item?.Id">Id: {{item.Id}}</small>
+						</app-form-control>
+						<app-form-control [field]="{id:'Name', label: 'Name', type: 'text', form: formGroup }" (change)="saveChange()"> </app-form-control>
+						<app-form-control
+							[field]="{id:'Type', label: 'Type', dataSource: typeList, type: 'ng-select', bindValue:'Code', bindLabel:'Name', form: formGroup }"
+							(change)="saveChange()"
+						></app-form-control>
+						<app-form-control [field]="{id:'Group', label: 'Group', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
+						<app-form-control [field]="{id:'IsTriggerable', label: 'Is triggerable', type: 'checkbox', form: formGroup }" (change)="saveChange()"></app-form-control>
+					</ion-col>
 
-          <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'IDProvider', label: 'Provider', dataSource: providerDataSource, type: 'ng-select', clearable: false, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
-              (change)="changeProvider()"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'IDSchema', label: 'Schema', dataSource: schemaDataSource, type: 'ng-select', clearable: true, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'Icon', secondaryId: 'Color', label: 'Icon', type: 'icon-color', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-            <div class="c-control">
-							<label class="c-label">
-							  {{'Reference triggers' | translate}}
-							</label>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control
+							[field]="{id:'IDProvider', label: 'Provider', dataSource: providerDataSource, type: 'ng-select', clearable: false, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
+							(change)="changeProvider()"
+						></app-form-control>
+						<app-form-control
+							[field]="{id:'IDSchema', label: 'Schema', dataSource: schemaDataSource, type: 'ng-select', clearable: true, bindValue: 'Id',bindLabel: 'Name', form: formGroup }"
+							(change)="saveChange()"
+						></app-form-control>
+						<app-form-control
+							[field]="{id:'Icon', secondaryId: 'Color', label: 'Icon', type: 'icon-color', form: formGroup }"
+							(change)="saveChange()"
+						></app-form-control>
+						<div class="c-control">
+							<label class="c-label"> {{'Reference triggers' | translate}} </label>
 							<div class="col-name">
 								<div class="c-input disable">
-									<ng-container  *ngFor="let id of item.ReferenceTriggers; let j = index" >
-										<a [routerLink]="['/integration-trigger', id]" >{{id}}</a>
-										<span *ngIf="j != item.ReferenceTriggers.length-1"> | </span> 
+									<ng-container *ngFor="let id of item.ReferenceTriggers; let j = index">
+										<a [routerLink]="['/integration-trigger', id]">{{id}}</a>
+										<span *ngIf="j != item.ReferenceTriggers.length-1"> | </span>
 									</ng-container>
 								</div>
 							</div>
 						</div>
-          </ion-col>
-        </ion-row>
-        <ion-row class="hr-group" style="position: relative">
-          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-            <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">{{'Runner' | translate}}</ion-label>
-            </ion-list-header>
-          </ion-col>
-          <ion-col size="12" size-sm size-xl="8">
-            <div class="table-contain" #runnerList style="overflow: auto">
-              <div id="table_id_holder"></div>
-              <section class="table">
-                <header class="bold">
-                  <div class="col-id cell">{{'No.' | translate}}</div>
-                  <div class="col-name cell">{{'API' | translate}}</div>
-                  <div class="col-icon cell clickable">
-                    <ion-icon
-                      (click)="toggleShowCode()"
-                      slot="icon-only"
-                      size="large"
-                      [name]="isShowCode?'code-slash':'code'"
-                      slot="start"
-                    ></ion-icon>
-                  </div>
-                  <div class="col-icon cell clickable">
-                    <ion-icon
-                      (click)="deleteItems()"
-                      color="danger"
-                      slot="icon-only"
-                      size="large"
-                      name="trash"
-                      slot="start"
-                    ></ion-icon>
-                  </div>
+					</ion-col>
+				</ion-row>
+				<ion-row class="hr-group" style="position: relative">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Runner' | translate}}</ion-label>
+						</ion-list-header>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="8">
+						<div class="table-contain" #runnerList style="overflow: auto">
+							<div id="table_id_holder"></div>
+							<section class="table">
+								<header class="bold">
+									<div class="col-id cell">{{'No.' | translate}}</div>
+									<div class="col-name cell">{{'API' | translate}}</div>
+									<div class="col-icon cell clickable">
+										<ion-icon (click)="toggleShowCode()" slot="icon-only" size="large" [name]="isShowCode?'code-slash':'code'" slot="start"></ion-icon>
+									</div>
+									<div class="col-icon cell clickable">
+										<ion-icon (click)="deleteItems()" color="danger" slot="icon-only" size="large" name="trash" slot="start"></ion-icon>
+									</div>
 
-                  <div class="col-reorder cell clickable">
-                    <ion-icon
-                      color="primary"
-                      size="large"
-                      (click)="addRunner({},true)"
-                      *ngIf="pageConfig.canAdd"
-                      name="add"
-                    ></ion-icon>
-                  </div>
-                </header>
-                <app-page-message
-                  [itemsLength]="Runners.controls"
-                  [showSpinner]="pageConfig.showSpinner"
-                ></app-page-message>
-                <ion-reorder-group (ionItemReorder)="doReorder($event, Runners.controls)" [disabled]="false">
-                  <ng-container *ngFor="let c of Runners.controls ;let j = index">
-                    <ng-container [formGroup]="c">
-                      <ng-container>
-                        <div class="row" [ngClass]="{odd: j % 2 != 0}">
-                          <a class="col-id cell" [routerLink]="['/api-collection/'+c.get('IDAPICollection').value]"
-                            >{{j+1}}</a
-                          >
+									<div class="col-reorder cell clickable">
+										<ion-icon color="primary" size="large" (click)="addRunner({},true)" *ngIf="pageConfig.canAdd" name="add"></ion-icon>
+									</div>
+								</header>
+								<app-page-message [itemsLength]="Runners.controls" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+								<ion-reorder-group (ionItemReorder)="doReorder($event, Runners.controls)" [disabled]="false">
+									<ng-container *ngFor="let c of Runners.controls ;let j = index">
+										<ng-container [formGroup]="c">
+											<ng-container>
+												<div class="row" [ngClass]="{odd: j % 2 != 0}">
+													<a class="col-id cell" [routerLink]="['/api-collection/'+c.get('IDAPICollection').value]">{{j+1}}</a>
 
-                          <div class="col-name cell">
-                            <ng-select
-                              [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-                              class="c-input"
-                              formControlName="IDAPICollection"
-                              [items]="apiCollectionDataSource"
-                              [clearable]="true"
-                              bindLabel="Name"
-                              bindValue="Id"
-                              placeholder="{{ 'Select api' | translate }}"
-                              appendTo="#table_id_holder"
-                              (change)="changeAPICollection(c)"
-                            >
-                              <ng-template ng-label-tmp let-i="item">
-                                <div [attr.disabled]="i.disabled">
-                                  <div>
-                                    <ion-text
-                                      *ngIf="i.Type === 'Request'"
-                                      [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"
-                                    >
-                                      {{ i.Method }}
-                                    </ion-text>
-                                    <ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>
-                                    <ion-icon *ngIf="i.Type === 'Collection'" name="keypad-outline"></ion-icon>
-                                    {{ i.Name }}
-                                    <small *ngIf="i.Remark" [title]="i.Remark">{{i.Remark}}</small>
-                                  </div>
-                                </div>
-                              </ng-template>
-                              <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-                                <div [attr.disabled]="i.disabled">
-                                  <div>
-                                    <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-                                    <span [ngOptionHighlight]="search">
-                                      <ion-text
-                                        *ngIf="i.Type === 'Request'"
-                                        [color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"
-                                      >
-                                        {{ i.Method }}
-                                      </ion-text>
-                                      <ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>
-                                      <ion-icon *ngIf="i.Type === 'Collection'" name="keypad-outline"></ion-icon>
-                                      {{ i.Name }}
-                                    </span>
-                                  </div>
-                                </div>
-                              </ng-template>
-                            </ng-select>
-                          </div>
+													<div class="col-name cell">
+														<ng-select
+															[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+															class="c-input"
+															formControlName="IDAPICollection"
+															[items]="apiCollectionDataSource"
+															[clearable]="true"
+															bindLabel="Name"
+															bindValue="Id"
+															placeholder="{{ 'Select api' | translate }}"
+															appendTo="#table_id_holder"
+															(change)="changeAPICollection(c)"
+														>
+															<ng-template ng-label-tmp let-i="item">
+																<div [attr.disabled]="i.disabled">
+																	<div>
+																		<ion-text
+																			*ngIf="i.Type === 'Request'"
+																			[color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"
+																		>
+																			{{ i.Method }}
+																		</ion-text>
+																		<ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>
+																		<ion-icon *ngIf="i.Type === 'Collection'" name="keypad-outline"></ion-icon>
+																		{{ i.Name }}
+																		<small *ngIf="i.Remark" [title]="i.Remark">{{i.Remark}}</small>
+																	</div>
+																</div>
+															</ng-template>
+															<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+																<div [attr.disabled]="i.disabled">
+																	<div>
+																		<span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
+																		<span [ngOptionHighlight]="search">
+																			<ion-text
+																				*ngIf="i.Type === 'Request'"
+																				[color]="i.Method=='GET'?'success':i.Method=='DELETE'? 'danger':i.Method=='PATCH'?'purple':i.Method=='PUT'?'bluegreen':'warning'"
+																			>
+																				{{ i.Method }}
+																			</ion-text>
+																			<ion-icon *ngIf="i.Type === 'Folder'" name="folder-outline"></ion-icon>
+																			<ion-icon *ngIf="i.Type === 'Collection'" name="keypad-outline"></ion-icon>
+																			{{ i.Name }}
+																		</span>
+																	</div>
+																</div>
+															</ng-template>
+														</ng-select>
+													</div>
 
-                          <div class="col-checkbox cell">
-                            <input
-                              class="c-checkbox"
-                              [checked]="!c.get('IsDisabled').value"
-                              type="checkbox"
-                              (change)="changeEnableRunner(c, $event)"
-                            />
-                          </div>
+													<div class="col-checkbox cell">
+														<input class="c-checkbox" [checked]="!c.get('IsDisabled').value" type="checkbox" (change)="changeEnableRunner(c, $event)" />
+													</div>
 
-                          <div class="col-icon cell clickable" (click)="removeField(c,j)">
-                            <ion-icon
-                              color="danger"
-                              *ngIf="pageConfig.canEdit && pageConfig.canDelete"
-                              name="trash"
-                            ></ion-icon>
-                          </div>
-                          <ion-reorder *ngIf="pageConfig.canEdit"></ion-reorder>
+													<div class="col-icon cell clickable" (click)="removeField(c,j)">
+														<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>
+													</div>
+													<ion-reorder *ngIf="pageConfig.canEdit"></ion-reorder>
 
-                          <div class="break" *ngIf="isShowCode"></div>
+													<div class="break" *ngIf="isShowCode"></div>
 
-                          <div
-                            class="col-id cell"
-                            *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
-                          ></div>
-                          <div
-                            class="col-name cell"
-                            *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"
-                          >
-                            <div class="ion-padding script-editor">
-                              <div *ngIf="isShowCode && c.get('BeforeRequestScript').value">
-                                <ion-label color="primary">{{'Before request script' | translate}}</ion-label>
-                                <pre>{{ c.get('BeforeRequestScript').value }}</pre>
-                              </div>
-                              <div *ngIf="isShowCode && c.get('AfterResponseScript').value">
-                                <ion-label color="primary">{{'After response script' | translate}}</ion-label>
-                                <pre>{{ c.get('AfterResponseScript').value }}</pre>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
-                </ion-reorder-group>
-              </section>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row class="hr-group" *ngIf="item?.Id">
-          <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-            <ion-list-header class="ion-no-padding">
-              <ion-label color="primary">{{'Other information' | translate}}</ion-label>
-            </ion-list-header>
-          </ion-col>
-          <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'CreatedBy', type: 'span-text', label: 'Created by', form: formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'CreatedDate', type: 'span-datetime', label: 'Created date', form: formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'ModifiedBy', type: 'span-text', label: 'Last modified by', form: formGroup }"
-            ></app-form-control>
-            <app-form-control
-              [field]="{id:'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"
-            ></app-form-control>
-          </ion-col>
-          <ion-col size="12" size-sm size-xl="4">
-            <app-form-control
-              [field]="{id:'Remark', type: 'textarea', label: 'Remark', form: formGroup }"
-              (change)="saveChange()"
-            ></app-form-control>
-          </ion-col>
-        </ion-row>
-      </form>
-    </ion-grid>
-  </div>
-  <app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+													<div class="col-id cell" *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)"></div>
+													<div class="col-name cell" *ngIf="isShowCode && (c.get('BeforeRequestScript').value || c.get('AfterResponseScript').value)">
+														<div class="ion-padding script-editor">
+															<div *ngIf="isShowCode && c.get('BeforeRequestScript').value">
+																<ion-label color="primary">{{'Before request script' | translate}}</ion-label>
+																<pre>{{ c.get('BeforeRequestScript').value }}</pre>
+															</div>
+															<div *ngIf="isShowCode && c.get('AfterResponseScript').value">
+																<ion-label color="primary">{{'After response script' | translate}}</ion-label>
+																<pre>{{ c.get('AfterResponseScript').value }}</pre>
+															</div>
+														</div>
+													</div>
+												</div>
+											</ng-container>
+										</ng-container>
+									</ng-container>
+								</ion-reorder-group>
+							</section>
+						</div>
+					</ion-col>
+				</ion-row>
+				<ion-row class="hr-group" *ngIf="item?.Id">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Other information' | translate}}</ion-label>
+						</ion-list-header>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'CreatedBy', type: 'span-text', label: 'Created by', form: formGroup }"></app-form-control>
+						<app-form-control [field]="{id:'CreatedDate', type: 'span-datetime', label: 'Created date', form: formGroup }"></app-form-control>
+						<app-form-control [field]="{id:'ModifiedBy', type: 'span-text', label: 'Last modified by', form: formGroup }"></app-form-control>
+						<app-form-control [field]="{id:'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Remark', type: 'textarea', label: 'Remark', form: formGroup }" (change)="saveChange()"></app-form-control>
+					</ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+	</div>
+	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

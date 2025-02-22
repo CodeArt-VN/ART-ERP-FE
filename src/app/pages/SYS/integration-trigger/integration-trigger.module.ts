@@ -7,13 +7,7 @@ import { IntegrationTriggerPage } from './integration-trigger.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: IntegrationTriggerPage }]),
-  ],
-  declarations: [IntegrationTriggerPage],
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: IntegrationTriggerPage }])],
+	declarations: [IntegrationTriggerPage],
 })
 export class IntegrationTriggerPageModule {}

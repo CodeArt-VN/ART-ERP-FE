@@ -1,21 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-group-control',
-  templateUrl: './group-control.component.html',
+	selector: 'app-group-control',
+	templateUrl: './group-control.component.html',
 })
 export class GroupControlComponent implements OnInit {
-  @Input() title;
-  @Input() hideBorder;
-  @Input() fields: any[] = [];
+	@Input() title;
+	@Input() hideBorder;
+	@Input() fields: any[] = [];
 
-  @Output() onChange = new EventEmitter();
+	@Output() onChange = new EventEmitter();
 
-  constructor() {}
+	constructor() {}
 
-  ngOnInit() {}
+	ngOnInit() {}
 
-  trackChange(data) {
-    this.onChange.emit(data);
-  }
+	trackChange(data) {
+		this.onChange.emit(data);
+	}
 }

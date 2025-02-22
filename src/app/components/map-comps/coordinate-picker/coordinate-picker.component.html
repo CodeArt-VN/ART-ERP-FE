@@ -1,59 +1,51 @@
 <form [formGroup]="formGroup">
-  <div class="c-control">
-    <label class="c-label" (click)="toggleLatLongChange()"
-      >{{ 'coordinates' | translate }}
-      <small>
-        {{ formGroup.controls.Lat.value || ('Latitude' | translate) }}
-        -
-        {{ formGroup.controls.Long.value || ('Longitude' | translate) }}
-      </small>
-    </label>
-    <google-map
-      class="c-input marker"
-      width="100%"
-      height="100%"
-      *ngIf="center"
-      [options]="options"
-      [center]="
-        formGroup.controls.Lat.value
-          ? {
-              lat: formGroup.controls.Lat.value,
-              lng: formGroup.controls.Long.value,
-            }
-          : center
-      "
-    >
-      <map-marker
-        #somemarker="mapMarker"
-        [position]="
-          formGroup.controls.Lat.value
-            ? {
-                lat: formGroup.controls.Lat.value,
-                lng: formGroup.controls.Long.value,
-              }
-            : center
-        "
-        [title]="formGroup.controls.Contact.value"
-        [options]="markerOptions"
-        (mapDragend)="changePosition(somemarker)"
-      ></map-marker>
-    </google-map>
-    <label class="c-label coordinate">
-      <div>
-        <ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="findCoordinate()"
-          >{{'Find coordinates by address' | translate}}</ion-button
-        >
+	<div class="c-control">
+		<label class="c-label" (click)="toggleLatLongChange()"
+			>{{ 'coordinates' | translate }}
+			<small>
+				{{ formGroup.controls.Lat.value || ('Latitude' | translate) }}
+				-
+				{{ formGroup.controls.Long.value || ('Longitude' | translate) }}
+			</small>
+		</label>
+		<google-map
+			class="c-input marker"
+			width="100%"
+			height="100%"
+			*ngIf="center"
+			[options]="options"
+			[center]="
+				formGroup.controls.Lat.value
+					? {
+							lat: formGroup.controls.Lat.value,
+							lng: formGroup.controls.Long.value,
+						}
+					: center
+			"
+		>
+			<map-marker
+				#somemarker="mapMarker"
+				[position]="
+					formGroup.controls.Lat.value
+						? {
+								lat: formGroup.controls.Lat.value,
+								lng: formGroup.controls.Long.value,
+							}
+						: center
+				"
+				[title]="formGroup.controls.Contact.value"
+				[options]="markerOptions"
+				(mapDragend)="changePosition(somemarker)"
+			></map-marker>
+		</google-map>
+		<label class="c-label coordinate">
+			<div>
+				<ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="findCoordinate()">{{ 'Find coordinates by address' | translate }}</ion-button>
 
-        <ion-button
-          color="primary"
-          size="small"
-          *ngIf="markerOptions.draggable"
-          (click)="GetCurrentPosition()"
-          fill="outline"
-        >
-          {{ 'Get current coordinates' | translate }}
-        </ion-button>
-      </div>
-    </label>
-  </div>
+				<ion-button color="primary" size="small" *ngIf="markerOptions.draggable" (click)="GetCurrentPosition()" fill="outline">
+					{{ 'Get current coordinates' | translate }}
+				</ion-button>
+			</div>
+		</label>
+	</div>
 </form>

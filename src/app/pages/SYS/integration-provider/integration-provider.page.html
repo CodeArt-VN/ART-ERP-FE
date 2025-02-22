@@ -1,57 +1,52 @@
 <ion-header>
-  <app-toolbar [page]="this"></app-toolbar>
+	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
 <ion-content appScrollbarTheme class="left" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
-  <ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
 
-  <div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
-    <app-page-title [pageConfig]="pageConfig"></app-page-title>
-  </div>
+	<div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
+		<app-page-title [pageConfig]="pageConfig"></app-page-title>
+	</div>
 
-  <div style="max-width: 1440px; margin: auto; width: 100%">
-    <app-data-table
-      style="width: fit-content; min-width: calc(100% - 32px)"
-      class="box-shadow responsive"
-      [rows]="items"
-      [trackBy]="'Id'"
-      [(selectedRows)]="selectedItems"
-      [showSpinner]="pageConfig.showSpinner"
-      [showFilter]="pageConfig.isShowSearch"
-      [(query)]="query"
-      (dataInfinite)="loadData($event)"
-      (filter)="onDatatableFilter($event)"
-      (sort)="onSort($event)"
-    >
-      <datatable-column [checkbox]="true" name=""></datatable-column>
-      <datatable-column class="col-id" name="#" property="Id"></datatable-column>
-      <datatable-column class="col-icon large" name="" property="Icon">
-        <ng-template let-i="row" datatable-cell-template>
-          <ion-img slot="start" #img [src]="i.Icon" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-img>
-        </ng-template>
-      </datatable-column>
-      <datatable-column class="col-name" name="Name" property="Name">
-        <ng-template let-i="row" datatable-cell-template>
-          <div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
-            <a class="bold">
-              <ion-text color="dark">{{i.Name}}</ion-text>
-            </a>
-            <div *ngIf="i.Remark">{{i.Remark}}</div>
-          </div>
-        </ng-template>
-      </datatable-column>
-    </app-data-table>
-  </div>
+	<div style="max-width: 1440px; margin: auto; width: 100%">
+		<app-data-table
+			style="width: fit-content; min-width: calc(100% - 32px)"
+			class="box-shadow responsive"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id"></datatable-column>
+			<datatable-column class="col-icon large" name="" property="Icon">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-img slot="start" #img [src]="i.Icon" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-img>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name">
+				<ng-template let-i="row" datatable-cell-template>
+					<div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{i.Name}}</ion-text>
+						</a>
+						<div *ngIf="i.Remark">{{i.Remark}}</div>
+					</div>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
 
-  <div class="ion-padding"></div>
-  <ion-infinite-scroll
-    color="primary"
-    threshold="30%"
-    (ionInfinite)="loadData($event)"
-    [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData"
-  >
-    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+	<div class="ion-padding"></div>
+	<ion-infinite-scroll color="primary" threshold="30%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>

@@ -9,14 +9,14 @@ import { NotFoundPage } from './not-found.page';
 import { ShareModule } from 'src/app/share.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: NotFoundPage,
-  },
+	{
+		path: '',
+		component: NotFoundPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ShareModule, RouterModule.forChild(routes)],
-  declarations: [NotFoundPage],
+	imports: [CommonModule, FormsModule, IonicModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [NotFoundPage],
 })
 export class NotFoundPageModule {}

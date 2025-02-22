@@ -8,18 +8,15 @@
 </ion-segment> -->
 <!-- App Color -->
 <div class="ion-padding" *ngIf="segmentView == 's1'">
-  <div class="ion-padding ion-text-center">
-    <ion-button shape="round" size="small" [color]="r.Code" *ngFor="let r of items" (click)="onSelected(r)" >
-      
-    </ion-button>
-
-  </div>
+	<div class="ion-padding ion-text-center">
+		<ion-button shape="round" size="small" [color]="r.Code" *ngFor="let r of items" (click)="onSelected(r)"> </ion-button>
+	</div>
 </div>
 <!-- Palettes -->
 <div *ngIf="segmentView == 's2'">
-  <div>
-    <div>
-      <input type="color" value="#3880ff" />
-    </div>
-  </div>
+	<div>
+		<div>
+			<input type="color" value="#3880ff" />
+		</div>
+	</div>
 </div>
