@@ -14,7 +14,7 @@
 			{{ page.pageConfig.pageTitle | translate }}
 		</ion-button>
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">
-			{{ selectedTitle || page.selectedItems?.length + ' dòng' }}
+			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}
 		</ion-button>
 		<ng-content select="[startTitle]"></ng-content>
 		<ng-content select="[tollbarTitle]"></ng-content>

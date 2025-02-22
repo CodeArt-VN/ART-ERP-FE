@@ -39,7 +39,9 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { environment } from '../environments/environment';
 
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateMessageFormatCompiler } from "ngx-translate-messageformat-compiler";
+
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 
@@ -82,6 +84,10 @@ export function createTranslateLoader(http: HttpClient) {
 				provide: TranslateLoader,
 				useFactory: createTranslateLoader,
 				deps: [HttpClient],
+			},
+			compiler: {
+				provide: TranslateCompiler,
+				useClass: TranslateMessageFormatCompiler,
 			},
 		}),
 		IonicModule.forRoot({
