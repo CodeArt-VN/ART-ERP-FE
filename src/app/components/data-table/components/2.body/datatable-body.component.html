@@ -1,8 +1,26 @@
-<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner"></app-page-message>
+<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc">
+	<ng-container *ngIf="emptyMessage">
+		<ng-template [ngTemplateOutlet]="emptyMessage.emptyMessageTemplate" [ngTemplateOutletContext]="{}"></ng-template>
+	</ng-container>
+</app-page-message>
+
 <!-- [style.height]="calculateContainerHeight()" autosize -->
 <div *ngIf="rows.length && !showSpinner">
-  <ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
-    <datatable-body-row
+	<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
+		<datatable-body-row
+			class="row"
+			[ngClass]="{ selected: row.checked, bold: row.HasChild }"
+			[columns]="columns"
+			[row]="row"
+			[isSelected]="row.checked"
+			[rowIndex]="idx"
+			(activate)="changeSelection(row, $event)"
+			*ngIf="row.show != false"
+		></datatable-body-row>
+	</ng-container>
+
+	<!-- <cdk-virtual-scroll-viewport  [id]="elId" itemSize="31"  minBufferPx="2000" maxBufferPx="2000" #scrollViewport> 
+    <datatable-body-row 
     class="row"
     [ngClass]="{ selected: row.checked, 'bold': row.HasChild }"
     [columns]="columns"
@@ -11,23 +29,6 @@
     [rowIndex]="idx"
     (activate)="changeSelection(row, $event)"
     *ngIf="row.show != false"
-  ></datatable-body-row>
-  </ng-container>
-
-  
-
-
-  
-
-  <!-- <cdk-virtual-scroll-viewport  [id]="elId" itemSize="31"  minBufferPx="2000" maxBufferPx="2000" #scrollViewport> 
-    <datatable-body-row 
-    class="row" 
-    [ngClass]="{'selected': row.checked}"
-    [columns]="columns" 
-    [row]="row" 
-    [isSelected] = "row.checked"
-    [rowIndex]="idx" 
-    (activate)="changeSelection (row, $event)"
     *cdkVirtualFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)"></datatable-body-row>
 </cdk-virtual-scroll-viewport> -->
 </div>

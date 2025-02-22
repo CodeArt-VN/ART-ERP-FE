@@ -1,724 +1,629 @@
 <style>
-  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:has(.hide-all) {
-    padding: 0 !important;
-  }
+	::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:has(.hide-all) {
+		padding: 0 !important;
+	}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
-  <!-- default -->
-  <input
-    *ngSwitchDefault
-    [type]="type"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
+	<!-- default -->
+	<input
+		*ngSwitchDefault
+		[type]="type"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[id]="id"
+		placeholder="{{ placeholder | translate }}"
+		[formControlName]="id"
+		(change)="onInputChange($event)"
+		(keydown)="onKeydown($event)"
+	/>
 
-  <!-- number -->
-  <input
-    *ngSwitchCase="'number'"
-    mask="separator.2"
-    thousandSeparator=","
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  />
-  <!-- radio -->
-  <ng-container *ngSwitchCase="'radio'">
-    <ng-container *ngFor="let i of dataSource; let j = index">
-      <input
-        [type]="'radio'"
-        class="c-checkbox"
-        [id]="id + '_' + j"
-        [value]="i[bindValue]"
-        [name]="id"
-        [formControlName]="id"
-        (change)="onInputChange($event)"
-      />
-      <label class="c-label radio" [for]="id + '_' + j">
-        <span>{{ i[bindLabel] | translate }}</span>
-      </label>
-    </ng-container>
-  </ng-container>
+	<!-- number -->
+	<input
+		*ngSwitchCase="'number'"
+		mask="separator.2"
+		thousandSeparator=","
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[id]="id"
+		placeholder="{{ placeholder | translate }}"
+		[formControlName]="id"
+		(change)="onInputChange($event)"
+		(keydown)="onKeydown($event)"
+	/>
+	<!-- radio -->
+	<ng-container *ngSwitchCase="'radio'">
+		<ng-container *ngFor="let i of dataSource; let j = index">
+			<input [type]="'radio'" class="c-checkbox" [id]="id + '_' + j" [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
+			<label class="c-label radio" [for]="id + '_' + j">
+				<span>{{ i[bindLabel] | translate }}</span>
+			</label>
+		</ng-container>
+	</ng-container>
 
-  <!-- checkbox -->
-  <ng-container *ngSwitchCase="'checkbox'">
-    <input
-      type="checkbox"
-      class="c-checkbox"
-      [id]="id"
-      [name]="id"
-      [formControlName]="id"
-      (change)="onInputChange($event)"
-    />
-  </ng-container>
+	<!-- checkbox -->
+	<ng-container *ngSwitchCase="'checkbox'">
+		<input type="checkbox" class="c-checkbox" [id]="id" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
+	</ng-container>
 
-  <ion-toggle
-    *ngSwitchCase="'toggle'"
-    class="c-checkbox"
-    [id]="id"
-    [name]="id"
-    [formControlName]="id"
-    (ionChange)="onInputChange($event)"
-  ></ion-toggle>
+	<ion-toggle *ngSwitchCase="'toggle'" class="c-checkbox" [id]="id" [name]="id" [formControlName]="id" (ionChange)="onInputChange($event)"></ion-toggle>
 
-  <!-- select -->
-  <select
-    *ngSwitchCase="'select'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input c-dropdown"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-  >
-    <option *ngFor="let i of dataSource" [ngValue]="i[bindValue]" [disabled]="i.disabled">
-      {{ i[bindLabel] | translate }}
-    </option>
-  </select>
+	<!-- select -->
+	<select
+		*ngSwitchCase="'select'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input c-dropdown"
+		[id]="id"
+		placeholder="{{ placeholder | translate }}"
+		[formControlName]="id"
+		(change)="onInputChange($event)"
+		(keydown)="onKeydown($event)"
+	>
+		<option *ngFor="let i of dataSource" [ngValue]="i[bindValue]" [disabled]="i.disabled">
+			{{ i[bindLabel] | translate }}
+		</option>
+	</select>
 
-  <!-- ng-select -->
-  <ng-select
-    *ngSwitchCase="'ng-select'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    placeholder="{{ placeholder | translate }}"
-    [searchFn]="searchFn"
-    (search)="onSearch($event)"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
-      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-    </ng-template>
-    <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
-      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-    </ng-template>
+	<!-- ng-select -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource"
+		[bindValue]="bindValue"
+		[bindLabel]="bindLabel"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		placeholder="{{ placeholder | translate }}"
+		[searchFn]="searchFn"
+		(search)="onSearch($event)"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
+		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
 
-    <!-- [appendTo]="appendTo" -->
-    <ng-template *ngIf="!inputControlTemplate" ng-label-tmp let-i="item" let-clear="clear">
-      <ion-icon *ngIf="i.Icon" [name]="i.Icon" slot="start" [color]="i.Color"></ion-icon>
-      <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
-      <ion-icon  *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item" *ngIf="isTree && !inputControlTemplate">
-      <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
-    </ng-template>
+		<!-- [appendTo]="appendTo" -->
+		<ng-template *ngIf="!inputControlTemplate" ng-label-tmp let-i="item" let-clear="clear">
+			<ion-icon *ngIf="i.Icon" [name]="i.Icon" slot="start" [color]="i.Color"></ion-icon>
+			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+			<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+		</ng-template>
+		<ng-template ng-option-tmp let-item="item" *ngIf="isTree && !inputControlTemplate">
+			<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
+		</ng-template>
 
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree && !inputControlTemplate">
-      <div *ngIf="i">
-        <div>
-          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
-            i[bindLabel ? bindLabel : 'Name'] | translate
-          }}</ion-text>
-        </div>
-      </div>
-    </ng-template>
-  </ng-select>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm" *ngIf="!isTree && !inputControlTemplate">
+			<div *ngIf="i">
+				<div>
+					<ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+				</div>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-async -->
-  <ng-select
-    *ngSwitchCase="'ng-select-async'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource.items$ | async"
-    [typeahead]="dataSource.input$"
-    [loading]="dataSource.loading"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
-      <ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-async -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-async'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource.items$ | async"
+		[typeahead]="dataSource.input$"
+		[loading]="dataSource.loading"
+		[bindValue]="bindValue"
+		[bindLabel]="bindLabel"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
+	</ng-select>
 
-  <ng-select
-    *ngSwitchCase="'ng-select-branch'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [searchFn]="searchFn"
-    (search)="onSearch($event)"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <!-- [appendTo]="appendTo" -->
-    <ng-template ng-label-tmp let-i="item">
-      <ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item" *ngIf="isTree">
-      <ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
-    </ng-template>
-  </ng-select>
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-branch'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource"
+		[bindValue]="bindValue"
+		[bindLabel]="bindLabel"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		[searchFn]="searchFn"
+		(search)="onSearch($event)"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<!-- [appendTo]="appendTo" -->
+		<ng-template ng-label-tmp let-i="item">
+			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+		</ng-template>
+		<ng-template ng-option-tmp let-item="item" *ngIf="isTree">
+			<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-level -->
-  <ng-select
-    *ngSwitchCase="'ng-select-level'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource"
-    [bindValue]="bindValue"
-    [bindLabel]="bindLabel"
-    [searchFn]="searchFn"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template ng-label-tmp let-i="item">
-      <ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text>
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <div>
-          <ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
-          <ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{
-            i[bindLabel ? bindLabel : 'Name'] | translate
-          }}</ion-text>
-        </div>
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-level -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-level'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource"
+		[bindValue]="bindValue"
+		[bindLabel]="bindLabel"
+		[searchFn]="searchFn"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template ng-label-tmp let-i="item">
+			<ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<div>
+					<ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
+					<ion-text [color]="i.Color || 'dark'" [ngOptionHighlight]="search">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+				</div>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-status -->
-  <ng-select
-    *ngSwitchCase="'ng-select-status'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource"
-    [bindValue]="bindValue"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template ng-label-tmp let-i="item">
-      <b
-        ><ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text></b
-      >
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
-        <ion-text [color]="i.Color" [ngOptionHighlight]="search">{{ i.Name | translate }}</ion-text>
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-status -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-status'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource"
+		[bindValue]="bindValue"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template ng-label-tmp let-i="item">
+			<b
+				><ion-text [color]="i.Color">{{ i.Name | translate }}</ion-text></b
+			>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<ng-container *ngIf="isTree"><span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span></ng-container>
+				<ion-text [color]="i.Color" [ngOptionHighlight]="search">{{ i.Name | translate }}</ion-text>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-bp -->
-  <ng-select
-    *ngSwitchCase="'ng-select-bp'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource.items$ | async"
-    [typeahead]="dataSource.input$"
-    [loading]="dataSource.loading"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [bindValue]="bindValue"
-    [appendTo]="appendTo"
-    placeholder="{{ placeholder | translate }}"
-    (change)="onInputChange($event)"
-  >
-    <ng-template ng-label-tmp let-i="item" let-clear="clear">
-      <div *ngIf="i.Id">
-        <a
-          [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-          class="clickable"
-          (click)="onNav('/business-partner/' + i.Id)"
-          (mousedown)="$event.stopPropagation()"
-          >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
-        ></a>
-        <small [title]="i.Name"> {{ i.Name }}</small>
-        <ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
-      </div>
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <div>
-          <b *ngIf="i.Code"
-            ><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search">{{
-              i.Code
-            }}</span></b
-          >
-          <span style="white-space: normal" class="important" [ngOptionHighlight]="search"> {{ i.Name }}</span>
-          <span *ngIf="i.WorkPhone">
-            |
-            <small>
-              <b class="important" [ngOptionHighlight]="search">{{ i.WorkPhone }}</b></small
-            ></span
-          >
-        </div>
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-bp -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-bp'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource.items$ | async"
+		[typeahead]="dataSource.input$"
+		[loading]="dataSource.loading"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		[bindValue]="bindValue"
+		[appendTo]="appendTo"
+		placeholder="{{ placeholder | translate }}"
+		(change)="onInputChange($event)"
+	>
+		<ng-template ng-label-tmp let-i="item" let-clear="clear">
+			<div *ngIf="i.Id">
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/business-partner/' + i.Id)" (mousedown)="$event.stopPropagation()"
+					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				></a>
+				<small [title]="i.Name"> {{ i.Name }}</small>
+				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+			</div>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<div>
+					<b *ngIf="i.Code"
+						><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search">{{ i.Code }}</span></b
+					>
+					<span style="white-space: normal" class="important" [ngOptionHighlight]="search"> {{ i.Name }}</span>
+					<span *ngIf="i.WorkPhone">
+						|
+						<small>
+							<b class="important" [ngOptionHighlight]="search">{{ i.WorkPhone }}</b></small
+						></span
+					>
+				</div>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-item -->
-  <ng-select
-    *ngSwitchCase="'ng-select-item'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource.items$ | async"
-    [typeahead]="dataSource.input$"
-    [loading]="dataSource.loading"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [bindValue]="bindValue"
-    placeholder="{{ placeholder | translate }}"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template ng-label-tmp let-i="item">
-      <div *ngIf="i.Id">
-        <a
-          [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-          class="clickable"
-          (click)="onNav('/item/' + i.Id)"
-          (mousedown)="$event.stopPropagation()"
-          >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
-        ></a>
-        &nbsp;
-        <span [title]="i.Name">
-          <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{ i.Code }}</b>
-          {{ i.Name }}
-        </span>
-      </div>
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <div>
-          <span [ngOptionHighlight]="search">{{ i.Name }}</span>
-        </div>
-        <small
-          >#<b
-            ><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search"
-              >{{ i.Id }} - {{ i.Code }}</span
-            ></b
-          ></small
-        >
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-item -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-item'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource.items$ | async"
+		[typeahead]="dataSource.input$"
+		[loading]="dataSource.loading"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		[bindValue]="bindValue"
+		placeholder="{{ placeholder | translate }}"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template ng-label-tmp let-i="item">
+			<div *ngIf="i.Id">
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/item/' + i.Id)" (mousedown)="$event.stopPropagation()"
+					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				></a>
+				&nbsp;
+				<span [title]="i.Name">
+					<b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{ i.Code }}</b>
+					{{ i.Name }}
+				</span>
+			</div>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<div>
+					<span [ngOptionHighlight]="search">{{ i.Name }}</span>
+				</div>
+				<small
+					>#<b
+						><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b
+					></small
+				>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-schema -->
-  <ng-select
-    *ngSwitchCase="'ng-select-schema'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource.items$ | async"
-    [typeahead]="dataSource.input$"
-    [loading]="dataSource.loading"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [bindValue]="bindValue"
-    placeholder="{{ placeholder | translate }}"
-    (change)="onInputChange($event)"
-  >
-    <ng-template ng-label-tmp let-i="item">
-      <div *ngIf="i.Id">
-        <a
-          [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-          class="clickable"
-          (click)="onNav('/schema/' + i.Id)"
-          (mousedown)="$event.stopPropagation()"
-          >#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
-        ></a>
-        &nbsp;
-        <span [title]="i.Name">
-          <b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{ i.Code }}</b>
-          {{ i.Name }}
-        </span>
-      </div>
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <div>
-          <span [ngOptionHighlight]="search">{{ i.Name }}</span>
-        </div>
-        <small
-          >#<b
-            ><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search"
-              >{{ i.Id }} - {{ i.Code }}</span
-            ></b
-          ></small
-        >
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-schema -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-schema'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource.items$ | async"
+		[typeahead]="dataSource.input$"
+		[loading]="dataSource.loading"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		[bindValue]="bindValue"
+		placeholder="{{ placeholder | translate }}"
+		(change)="onInputChange($event)"
+	>
+		<ng-template ng-label-tmp let-i="item">
+			<div *ngIf="i.Id">
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/schema/' + i.Id)" (mousedown)="$event.stopPropagation()"
+					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				></a>
+				&nbsp;
+				<span [title]="i.Name">
+					<b *ngIf="i.Code" (mousedown)="$event.stopPropagation()">{{ i.Code }}</b>
+					{{ i.Name }}
+				</span>
+			</div>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<div>
+					<span [ngOptionHighlight]="search">{{ i.Name }}</span>
+				</div>
+				<small
+					>#<b
+						><span [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b
+					></small
+				>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- ng-select-staff -->
-  <ng-select
-    *ngSwitchCase="'ng-select-staff'"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input"
-    [formControlName]="id"
-    [labelForId]="id"
-    [items]="dataSource.items$ | async"
-    [typeahead]="dataSource.input$"
-    [loading]="dataSource.loading"
-    [multiple]="multiple"
-    [clearable]="clearable"
-    [bindValue]="bindValue"
-    placeholder="{{ placeholder | translate }}"
-    (change)="onInputChange($event)"
-    [appendTo]="appendTo"
-  >
-    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-      <ion-chip *ngFor="let i of items">
-        <ion-avatar
-          ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-        ></ion-avatar>
-        <ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
-        <ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
-      </ion-chip>
-    </ng-template>
-    <ng-template ng-label-tmp let-i="item">
-      <ion-chip *ngIf="i">
-        <ion-avatar
-          ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-        ></ion-avatar>
-        <ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
-      </ion-chip>
-    </ng-template>
-    <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-      <div *ngIf="i">
-        <ion-avatar
-          ><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
-        ></ion-avatar>
-        <span [ngOptionHighlight]="search">{{ i.FullName }}</span
-        ><br />
-        <small
-          >#<b
-            ><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b
-          >
-          <span *ngIf="i.Phone">
-            | điện thoại:
-            <b [ngOptionHighlight]="search">{{ i.Phone }}</b></span
-          ></small
-        >
-      </div>
-    </ng-template>
-  </ng-select>
+	<!-- ng-select-staff -->
+	<ng-select
+		[virtualScroll]="true"
+		typeToSearchText="{{ 'Type to search...' | translate }}"
+		*ngSwitchCase="'ng-select-staff'"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input staff-select"
+		[formControlName]="id"
+		[labelForId]="id"
+		[items]="dataSource.items$ | async"
+		[typeahead]="dataSource.input$"
+		[loading]="dataSource.loading"
+		[multiple]="multiple"
+		[clearable]="clearable"
+		[bindValue]="bindValue"
+		placeholder="{{ placeholder | translate }}"
+		(change)="onInputChange($event)"
+		[appendTo]="appendTo"
+	>
+		<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+			<ion-chip *ngFor="let i of items">
+				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
+				<ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
+			</ion-chip>
+		</ng-template>
+		<ng-template ng-label-tmp let-i="item">
+			<ion-chip *ngIf="i">
+				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
+			</ion-chip>
+		</ng-template>
+		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+			<div *ngIf="i">
+				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<span [ngOptionHighlight]="search">{{ i.FullName }}</span
+				><br />
+				<small
+					>#<b
+						><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b
+					>
+					<span *ngIf="i.Phone">
+						| điện thoại:
+						<b [ngOptionHighlight]="search">{{ i.Phone }}</b></span
+					></small
+				>
+			</div>
+		</ng-template>
+	</ng-select>
 
-  <!-- textarea -->
-  <textarea
-    *ngSwitchCase="'textarea'"
-    type="textarea"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input remark"
-    [id]="id"
-    placeholder="{{ placeholder | translate }}"
-    [formControlName]="id"
-    (change)="onInputChange($event)"
-    (keydown)="onKeydown($event)"
-    rows="3"
-  ></textarea>
+	<!-- textarea -->
+	<textarea
+		*ngSwitchCase="'textarea'"
+		type="textarea"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input remark"
+		[id]="id"
+		placeholder="{{ placeholder | translate }}"
+		[formControlName]="id"
+		(change)="onInputChange($event)"
+		(keydown)="onKeydown($event)"
+		rows="3"
+	></textarea>
 
-  <!-- branch-breadcrumbs -->
-  <app-branch-breadcrumbs
-    *ngSwitchCase="'branch-breadcrumbs'"
-    [maxItems]="3"
-    [Id]="form.controls[id].value"
-    [Items]="dataSource"
-    [ngClass]="{ 'no-check-dirty': noCheckDirty }"
-    class="c-input disable breadcrumbs"
-  ></app-branch-breadcrumbs>
+	<!-- branch-breadcrumbs -->
+	<app-branch-breadcrumbs
+		*ngSwitchCase="'branch-breadcrumbs'"
+		[maxItems]="3"
+		[Id]="form.controls[id].value"
+		[Items]="dataSource"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input disable breadcrumbs"
+	></app-branch-breadcrumbs>
 
-  <!-- span-text -->
-  <span *ngSwitchCase="'span-text'" class="c-input disable">{{ form.controls[id].value || '&nbsp;' }}</span>
+	<!-- span-text -->
+	<span *ngSwitchCase="'span-text'" class="c-input disable">
+		<ng-container *ngIf="inputControlTemplate">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ form: form }"></ng-template>
+		</ng-container>
+		<span *ngIf="!inputControlTemplate">{{ form.controls[id].value || '&nbsp;' }}</span>
+	</span>
 
-  <!-- span-number -->
-  <span *ngSwitchCase="'span-number'" class="c-input disable"
-    >{{ form.controls[id].value | number: '1.0-0' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}
-  </span>
+	<!-- span-number -->
+	<span *ngSwitchCase="'span-number'" class="c-input disable"> {{ form.controls[id].value | number: '1.0-0' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }} </span>
 
-  <!-- span-date -->
-  <span *ngSwitchCase="'span-date'" class="c-input disable"
-    >{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span
-  >
+	<!-- span-date -->
+	<span *ngSwitchCase="'span-date'" class="c-input disable">{{ form.controls[id].value | date: 'yyyy/MM/dd' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span>
 
-  <!-- span-datetime -->
-  <span *ngSwitchCase="'span-datetime'" class="c-input disable"
-    >{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span
-  >
+	<!-- span-datetime -->
+	<span *ngSwitchCase="'span-datetime'" class="c-input disable"
+		>{{ form.controls[id].value | date: 'yyyy/MM/dd HH:mm' }}{{ form.controls[id].value == null ? '&nbsp;' : '' }}</span
+	>
 
-  <!-- color -->
-  <span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-    <ion-button [color]="form.controls[id].value || color" fill="clear" size="small" (click)="presentPicker($event)">
-      <ion-icon slot="start" name="radio-button-on"></ion-icon>
-      {{ form.controls[id].value || 'Change color' | translate }}
-    </ion-button>
+	<!-- color -->
+	<span *ngSwitchCase="'color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+		<ion-button [color]="form.controls[id].value || color" fill="clear" size="small" (click)="presentPicker($event)">
+			<ion-icon slot="start" name="radio-button-on"></ion-icon>
+			{{ form.controls[id].value || 'Change color' | translate }}
+		</ion-button>
 
-    <ion-popover class="w300" #popover [isOpen]="isOpenPicker" (didDismiss)="isOpenPicker = false">
-      <ng-template>
-        <ion-content scroll-y="false">
-          <app-color-picker
-            (selected)="onSelectColor($event, form.controls[id])"
-            [color]="form.controls[id].value || 'dark'"
-          ></app-color-picker>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
-  </span>
+		<ion-popover class="w300" #popover [isOpen]="isOpenPicker" (didDismiss)="isOpenPicker = false">
+			<ng-template>
+				<ion-content scroll-y="false">
+					<app-color-picker (selected)="onSelectColor($event, form.controls[id])" [color]="form.controls[id].value || 'dark'"></app-color-picker>
+				</ion-content>
+			</ng-template>
+		</ion-popover>
+	</span>
 
-  <!-- icon -->
-  <span *ngSwitchCase="'icon'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-    <ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
-      <ion-icon [color]="color" slot="start" [name]="form.controls[id].value || 'layers'"></ion-icon>
-      {{ form.controls[id].value || 'Change icon' | translate }}
-    </ion-button>
+	<!-- icon -->
+	<span *ngSwitchCase="'icon'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+		<ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
+			<ion-icon [color]="color" slot="start" [name]="form.controls[id].value || 'layers'"></ion-icon>
+			{{ form.controls[id].value || 'Change icon' | translate }}
+		</ion-button>
 
-    <ion-modal
-      [isOpen]="isOpenPicker"
-      (willDismiss)="isOpenPicker = false"
-      [initialBreakpoint]="0.75"
-      [breakpoints]="[0.5, 0.75]"
-    >
-      <ng-template>
-        <ion-content appScrollbarTheme>
-          <app-icon-picker
-            (selected)="onSelectIcon($event, form.controls[id])"
-            [color]="color"
-            [icon]="form.controls[id].value"
-          ></app-icon-picker>
-          <div style="padding-top: 25vh"></div>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
-  </span>
+		<ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
+			<ng-template>
+				<ion-content appScrollbarTheme>
+					<app-icon-picker (selected)="onSelectIcon($event, form.controls[id])" [color]="color" [icon]="form.controls[id].value"></app-icon-picker>
+					<div style="padding-top: 25vh"></div>
+				</ion-content>
+			</ng-template>
+		</ion-modal>
+	</span>
 
-  <!-- icon-color -->
-  <span *ngSwitchCase="'icon-color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-    <ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
-      <ion-icon
-        [color]="form.controls[secondaryId].value || color"
-        slot="start"
-        [name]="form.controls[id].value || 'layers'"
-      ></ion-icon>
-      {{ form.controls[id].value || 'Change icon' | translate }}
-    </ion-button>
+	<!-- icon-color -->
+	<span *ngSwitchCase="'icon-color'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+		<ion-button color="dark" fill="clear" size="small" (click)="presentPopupPicker()">
+			<ion-icon [color]="form.controls[secondaryId].value || color" slot="start" [name]="form.controls[id].value || 'layers'"></ion-icon>
+			{{ form.controls[id].value || 'Change icon' | translate }}
+		</ion-button>
 
-    <ion-modal
-      [isOpen]="isOpenPicker"
-      (willDismiss)="isOpenPicker = false"
-      [initialBreakpoint]="0.75"
-      [breakpoints]="[0.5, 0.75]"
-    >
-      <ng-template>
-        <app-color-picker
-          (selected)="onSelectColor($event, form.controls[secondaryId])"
-          [color]="form.controls[secondaryId].value || 'dark'"
-        ></app-color-picker>
-        <ion-content appScrollbarTheme>
-          <app-icon-picker
-            (selected)="onSelectIcon($event, form.controls[id])"
-            [color]="form.controls[secondaryId].value || color"
-            [icon]="form.controls[id].value"
-          ></app-icon-picker>
-          <div style="padding-top: 25vh"></div>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
-  </span>
+		<ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
+			<ng-template>
+				<app-color-picker (selected)="onSelectColor($event, form.controls[secondaryId])" [color]="form.controls[secondaryId].value || 'dark'"></app-color-picker>
+				<ion-content appScrollbarTheme>
+					<app-icon-picker
+						(selected)="onSelectIcon($event, form.controls[id])"
+						[color]="form.controls[secondaryId].value || color"
+						[icon]="form.controls[id].value"
+					></app-icon-picker>
+					<div style="padding-top: 25vh"></div>
+				</ion-content>
+			</ng-template>
+		</ion-modal>
+	</span>
 
-  <!-- time-frame -->
-  <span *ngSwitchCase="'time-frame'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-    <ion-button fill="outline" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-Range')">
-      <ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
-      <ion-icon color="dark" slot="end" name="chevron-down"></ion-icon>
-    </ion-button>
+	<!-- time-frame -->
+	<span *ngSwitchCase="'time-frame'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+		<ion-button fill="outline" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-Range')">
+			<ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
+			<ion-icon color="dark" slot="end" name="chevron-down"></ion-icon>
+		</ion-button>
 
-    <ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
-      <!-- <ion-icon color="dark" slot="start" name="radio-button-on"></ion-icon> -->
-      {{ (lib.formatTimeConfig(form.controls[id].getRawValue()) | translate) || ('From date' | translate) }}
-    </ion-button>
-    <ion-icon name="arrow-forward-outline"></ion-icon>
-    <ion-button
-      fill="clear"
-      size="small"
-      (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')"
-    >
-      <!-- <ion-icon slot="start" name="chevron-forward"></ion-icon> -->
-      {{ (lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) | translate) || ('To date' | translate) }}
-    </ion-button>
-  </span>
+		<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
+			<!-- <ion-icon color="dark" slot="start" name="radio-button-on"></ion-icon> -->
+			{{ (lib.formatTimeConfig(form.controls[id].getRawValue()) | translate) || ('From date' | translate) }}
+		</ion-button>
+		<ion-icon name="arrow-forward-outline"></ion-icon>
+		<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')">
+			<!-- <ion-icon slot="start" name="chevron-forward"></ion-icon> -->
+			{{ (lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) | translate) || ('To date' | translate) }}
+		</ion-button>
+	</span>
 
-  <!-- date-compare-to -->
-  <span *ngSwitchCase="'date-compare-to'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-    <ion-button
-      class="no-padding"
-      fill="clear"
-      size="small"
-      (click)="presentDatePicker($event, form.controls[id], 'CompareTo')"
-    >
-      <ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
-      {{ lib.formatTimeConfig(form.controls[id].getRawValue(), true) }}
-    </ion-button>
-  </span>
+	<!-- date-compare-to -->
+	<span *ngSwitchCase="'date-compare-to'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
+		<ion-button class="no-padding" fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'CompareTo')">
+			<ion-icon color="dark" slot="start" name="timer-outline"></ion-icon>
+			{{ lib.formatTimeConfig(form.controls[id].getRawValue(), true) }}
+		</ion-button>
+	</span>
 
-  <!-- datepicker -->
-  <ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
-    <ng-template>
-      <ion-content appScrollbarTheme>
-        <ion-segment
-          scrollable="false"
-          (ionChange)="segmentTimeframeChanged($event)"
-          [value]="pickerControl.controls.Type.value"
-          mode="md"
-        >
-          <ion-segment-button value="Relative">
-            <ion-label>{{ 'Relative' | translate }}</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="Absolute">
-            <ion-label>{{ 'Absolute' | translate }}</ion-label>
-          </ion-segment-button>
-        </ion-segment>
+	<!-- datepicker -->
+	<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
+		<ng-template>
+			<ion-content appScrollbarTheme>
+				<ion-segment scrollable="false" (ionChange)="segmentTimeframeChanged($event)" [value]="pickerControl.controls.Type.value" mode="md">
+					<ion-segment-button value="Relative">
+						<ion-label>{{ 'Relative' | translate }}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="Absolute">
+						<ion-label>{{ 'Absolute' | translate }}</ion-label>
+					</ion-segment-button>
+				</ion-segment>
 
-        <ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
-          <div>
-            <ng-container *ngIf="pickerGroupName == 'CompareTo'">
-              <ion-item
-                button
-                detail="false"
-                *ngFor="let i of commonOptions.compareTo"
-                (click)="pickDate(i.timeConfig)"
-              >
-                <ion-icon name="timer-outline" slot="start"></ion-icon>
-                <ion-label>{{ i.name | translate }}</ion-label>
-              </ion-item>
-            </ng-container>
+				<ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
+					<div>
+						<ng-container *ngIf="pickerGroupName == 'CompareTo'">
+							<ion-item button detail="false" *ngFor="let i of commonOptions.compareTo" (click)="pickDate(i.timeConfig)">
+								<ion-icon name="timer-outline" slot="start"></ion-icon>
+								<ion-label>{{ i.name | translate }}</ion-label>
+							</ion-item>
+						</ng-container>
 
-            <ng-container *ngIf="pickerGroupName == 'TimeFrame-Range'">
-              <ion-item
-                button
-                detail="false"
-                *ngFor="let i of commonOptions.quickPickTimeRange"
-                (click)="pickDate(i, true)"
-              >
-                <ion-icon name="timer-outline" slot="start"></ion-icon>
-                <ion-label>{{ i.name | translate }}</ion-label>
-              </ion-item>
-            </ng-container>
+						<ng-container *ngIf="pickerGroupName == 'TimeFrame-Range'">
+							<ion-item button detail="false" *ngFor="let i of commonOptions.quickPickTimeRange" (click)="pickDate(i, true)">
+								<ion-icon name="timer-outline" slot="start"></ion-icon>
+								<ion-label>{{ i.name | translate }}</ion-label>
+							</ion-item>
+						</ng-container>
 
-            <ng-container *ngIf="pickerGroupName == 'TimeFrame-From' || pickerGroupName == 'TimeFrame-To'">
-              <ion-item
-                button
-                detail="false"
-                *ngFor="let i of commonOptions.timeframe"
-                (click)="pickDate(i.timeConfig)"
-              >
-                <ion-icon name="timer-outline" slot="start"></ion-icon>
-                <ion-label>{{ i.name | translate }}</ion-label>
-              </ion-item>
-            </ng-container>
-          </div>
-          <ion-item>
-            <app-input-control
-              style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
-              [field]="{
-                id: 'Period',
-                type: 'select',
-                dataSource: _timePeriodList,
-                bindValue: 'code',
-                bindLabel: 'name',
-                form: pickerControl,
-              }"
-            ></app-input-control>
-            <app-form-control
-              style="width: 100%"
-              [field]="{ id: 'Amount', type: 'number', label: '', form: pickerControl }"
-            ></app-form-control>
-          </ion-item>
-        </ion-list>
+						<ng-container *ngIf="pickerGroupName == 'TimeFrame-From' || pickerGroupName == 'TimeFrame-To'">
+							<ion-item button detail="false" *ngFor="let i of commonOptions.timeframe" (click)="pickDate(i.timeConfig)">
+								<ion-icon name="timer-outline" slot="start"></ion-icon>
+								<ion-label>{{ i.name | translate }}</ion-label>
+							</ion-item>
+						</ng-container>
+					</div>
+					<ion-item>
+						<app-input-control
+							style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
+							[field]="{
+								id: 'Period',
+								type: 'select',
+								dataSource: _timePeriodList,
+								bindValue: 'code',
+								bindLabel: 'name',
+								form: pickerControl,
+							}"
+						></app-input-control>
+						<app-form-control style="width: 100%" [field]="{ id: 'Amount', type: 'number', label: '', form: pickerControl }"></app-form-control>
+					</ion-item>
+				</ion-list>
 
-        <div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
-          <!-- [locale]="env.language.current" -->
-          <ion-datetime
-            [value]="pickerControl.controls.Value.value"
-            [firstDayOfWeek]="1"
-            (ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
-            mode="ios"
-            format="YYYY-MM-DDTHH:mm"
-          ></ion-datetime>
-        </div>
-      </ion-content>
-      <ion-button class="ion-margin" size="small" expand="block" (click)="dismissDatePicker(true)">{{
-        'Apply' | translate
-      }}</ion-button>
-    </ng-template>
-  </ion-popover>
+				<div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
+					<!-- [locale]="env.language.current" -->
+					<ion-datetime
+						[value]="pickerControl.controls.Value.value"
+						[firstDayOfWeek]="1"
+						(ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
+						mode="ios"
+						format="YYYY-MM-DDTHH:mm"
+					></ion-datetime>
+				</div>
+			</ion-content>
+			<ion-button class="ion-margin" size="small" expand="block" (click)="dismissDatePicker(true)">{{ 'Apply' | translate }}</ion-button>
+		</ng-template>
+	</ion-popover>
 </ng-container>
 
 <!-- Declare Template treeConfig -->
 <ng-template #treeConfigTemplate ng-option-tmp let-item="item" let-search="searchTerm">
-  <ng-container *ngIf="item && isTree">
-    <div
-      class="flex-left"
-      style="width: 100%; position: relative"
-      [ngClass]="{ 'hide-all': !item.show || item.blockedShow }"
-    >
-      <ng-container *ngFor="let w of item.levels; let k = index"
-        ><span class="spacing" *ngIf="k > 0"></span
-      ></ng-container>
-      <ion-icon
-        (click)="$event.stopPropagation(); toggleRow(item)"
-        class="min-btn clickable"
-        [name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
-      ></ion-icon>
+	<ng-container *ngIf="item && isTree">
+		<div class="flex-left" style="width: 100%; position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
+			<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing" *ngIf="k > 0"></span></ng-container>
+			<ion-icon
+				(click)="$event.stopPropagation(); toggleRow(item)"
+				class="min-btn clickable"
+				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
+			></ion-icon>
 
-      <ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
-      <ion-text
-        class="text-warp"
-		[ngClass]="item.hasChildInSearchBox? ('bold ') : ('')"
-        [color]="item.Type == 'Company'? 'primary' : (item.Color || 'dark')"
-        [ngOptionHighlight]="searchTerm"
-        >{{ item[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text
-      >
-      <!-- <ion-icon
+			<ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
+			<ion-text
+				class="text-warp"
+				[ngClass]="item.hasChildInSearchBox ? 'bold ' : ''"
+				[color]="item.Type == 'Company' ? 'primary' : item.Color || 'dark'"
+				[ngOptionHighlight]="searchTerm"
+				>{{ item[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text
+			>
+			<!-- <ion-icon
         *ngIf="item.hasChildInSearchBox"
         role="img"
         (click)="$event.stopPropagation(); toggleRow(item)"
         [name]="!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline'"
         style="flex: end; justify-content: flex-end; position: absolute; right: -8px; padding: 8px"
       ></ion-icon> -->
-    </div>
-  </ng-container>
+		</div>
+	</ng-container>
 </ng-template>
 <!-- end Template -->

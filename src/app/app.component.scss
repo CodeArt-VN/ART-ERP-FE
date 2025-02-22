@@ -282,15 +282,15 @@ ion-app{
 }
 
 #noty-side {
-  @media print {
-    display: none;
-  }
-
-  border-left: none;
-  border-left: solid 1px var(--menu-right-border-color);
   --width: 270px;
   --background: linear-gradient(180deg, var(--menu-background-top), var(--menu-background-bottom));
 
+  border-left: none;
+  border-left: solid 1px var(--menu-right-border-color);
+  
+  @media print {
+    display: none;
+  }
   @media screen and (min-width: 992px) {
     --width: 270px;
     max-width: 270px !important;
@@ -299,13 +299,13 @@ ion-app{
 }
 
 .menu-toogle-btn {
-  @media print {
-    display: none;
-  }
-
   z-index: 1000;
   position: absolute;
   width: 50px;
+
+  @media print {
+    display: none;
+  }
 
   ion-toolbar {
     --background: transparent;
@@ -336,9 +336,7 @@ ion-split-pane {
 }
 
 .app-footer {
-  @media print {
-    display: none;
-  }
+
   padding-right: 8px;
   padding-left: 8px;
 
@@ -357,7 +355,10 @@ ion-split-pane {
   justify-content: space-between;
 
   
-
+  @media print {
+    display: none;
+  }
+  
   .text {
     cursor: pointer;
     display: flex;

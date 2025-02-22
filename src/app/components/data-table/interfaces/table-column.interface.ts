@@ -100,4 +100,6 @@ export interface TableColumn {
 
   canFilter?: boolean;
   canSort?: boolean;
+
+  navLink?: string;
 }

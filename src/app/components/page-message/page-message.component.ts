@@ -11,18 +11,18 @@ export class PageMessageComponent implements OnInit {
   @Input() showSpinner;
   @Input() message;
   @Input() subMessage;
-  _imgSrc: string;
+  _imgSrc: string = 'assets/undraw_no_data_qbuo.svg';
   @Input() set imgSrc(value: string) {
     if (value) {
-      this._imgSrc = value;
-    }
-    else {
-      this._imgSrc = 'assets/undraw_no_data_qbuo.svg';
-    }
 
-    this._imgSrc = '../../../'+ this._imgSrc;
-    console.log(this._imgSrc);
-    
+      if(value.indexOf('http') === 0) {
+        this._imgSrc = value;
+      }
+      else{
+        this._imgSrc = 'assets/' + value;
+      }
+      
+    }
   }
   
   constructor() {}
@@ -33,9 +33,6 @@ export class PageMessageComponent implements OnInit {
     }
     if (!this.subMessage) {
       this.subMessage = 'Please check again';
-    }
-    if(!this._imgSrc) {
-      this._imgSrc = '../../../assets/undraw_no_data_qbuo.svg';
     }
   }
 }

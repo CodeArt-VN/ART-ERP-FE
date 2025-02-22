@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
@@ -9,6 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 //Custom component
 import { DataTableComponent } from './data-table.component';
+import { EmptyMessageChangesService, DataTableEmptyMessageDirective, } from './directives/data-table-empty-message-directive';
+import { DataTableEmptyMessageTemplateDirective } from './directives/data-table-empty-message-template-directive';
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
 import { DataTableColumnCellDirective } from './directives/data-table-cell-template-directive';
 import { DataTableColumnFilterDirective } from './directives/data-table-filter-template-directive';
@@ -23,9 +26,13 @@ import { SvgImageDirective } from 'src/app/directives/svg-image.directive';
 import { DataTableFilterCellComponent } from './components/1.header/datatable-filter-cell.component';
 import { ShareInputControlsModule } from '../controls/share-input-controls.modules';
 
+
+
+
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
@@ -33,12 +40,14 @@ import { ShareInputControlsModule } from '../controls/share-input-controls.modul
     TranslateModule,
     ShareInputControlsModule,
   ],
-  providers: [ColumnChangesService],
+  providers: [ColumnChangesService, EmptyMessageChangesService],
   declarations: [
     SvgImageDirective,
     PageMessageComponent,
 
     DataTableComponent,
+    DataTableEmptyMessageDirective,
+    DataTableEmptyMessageTemplateDirective,
     DataTableColumnDirective,
     DataTableColumnCellDirective,
     DataTableColumnFilterDirective,
@@ -54,6 +63,8 @@ import { ShareInputControlsModule } from '../controls/share-input-controls.modul
     SvgImageDirective,
     PageMessageComponent,
     DataTableComponent,
+    DataTableEmptyMessageDirective,
+    DataTableEmptyMessageTemplateDirective,
     DataTableColumnDirective,
     DataTableColumnCellDirective,
     DataTableColumnFilterDirective,

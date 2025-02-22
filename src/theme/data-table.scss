@@ -82,16 +82,19 @@ app-data-table,
         /* Chrome, Safari, Edge, Opera */
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
+          appearance: none;
           -webkit-appearance: none;
           margin: 0;
         }
 
         /* Firefox */
         &[type='number'] {
+          appearance: textfield;
           -moz-appearance: textfield;
         }
 
         &.c-dropdown {
+          appearance: none;
           -webkit-appearance: none;
           -moz-appearance: none;
           text-indent: 1px;
@@ -380,7 +383,7 @@ app-data-table,
       -moz-appearance: none;
       appearance: none;
       -webkit-print-color-adjust: exact;
-      color-adjust: exact;
+      print-color-adjust: exact;
       print-color-adjust: exact;
 
       &:active {
@@ -484,11 +487,13 @@ app-data-table,
     text-overflow: ellipsis;
     color: var(--ion-color-primary) !important;
     font-size: calc(10 / 16 * 1.2rem);
-    cursor: pointer;
+
+     > a {
+      padding: 1px 7px;
+    }
   }
 
   .col-name {
-    cursor: pointer;
     min-width: 250px;
   }
 
@@ -618,7 +623,7 @@ app-data-table,
     @mixin smallWidth() {
       background-color: transparent;
       box-shadow: none;
-      min-width: unset !important;
+      //min-width: unset !important; //Fix no data message on responsive
 
       .show-small-inline {
         display: inline;
@@ -875,9 +880,6 @@ app-data-table,
     margin: 0 0 20px 0;
   }
 
-  tr {
-  }
-
   tr:hover {
     background-color: rgba(var(--ion-color-light-rgb, 0, 0, 0), 0.5);
   }
@@ -918,9 +920,7 @@ app-data-table,
   }
 
   .data-title {
-    &.l1 {
-    }
-
+    
     &.l2 {
       padding: 2px 0 2px 32px;
 

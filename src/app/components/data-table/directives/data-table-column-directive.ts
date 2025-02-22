@@ -47,6 +47,8 @@ export class DataTableColumnDirective implements OnChanges {
   @Input() width: number;
   @Input() maxWidth: number;
 
+  @Input() navLink: string;
+
   @Input('headerTemplate') _headerTemplateInput: TemplateRef<any>;
 
   @ContentChild(DataTableColumnHeaderDirective, {

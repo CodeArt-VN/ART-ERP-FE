@@ -1,0 +1,31 @@
+{
+    "printWidth": 180,
+    "tabWidth": 4,
+    "useTabs": true,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "bracketSameLine": false,
+    "overrides": [
+      {
+        "files": ["*.java"],
+        "options": {
+          "printWidth": 140,
+          "tabWidth": 4,
+          "useTabs": false,
+          "trailingComma": "none"
+        }
+      },
+      {
+        "files": "*.md",
+        "options": {
+          "parser": "mdx"
+        }
+      }
+    ]
+  }

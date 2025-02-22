@@ -2,11 +2,10 @@
 
 //html without class mobile-font
 html:not(.mobile-font) {
-  font-size: calc(10 / 16 * 1.4rem);
-}
-
-body {
-  //font-size: calc(10 / 16 * 1.4rem);
+  font-size: 16px;
+  body {
+    font-size: calc(10 / 16 * 1.4rem);
+  }
 }
 
 a {
@@ -55,6 +54,10 @@ ion-picker {
 }
 
 ion-popover {
+  --width: auto;
+  ion-label {
+    white-space: nowrap;
+  }
   &.w300 {
     --min-width: 260px;
     --width: 300px;
@@ -109,6 +112,9 @@ ion-popover {
 
 app-page-title {
   display: block;
+  position: sticky; 
+  left: 0;
+  margin-top: 16px !important;
 }
 
 ion-header,
@@ -173,6 +179,7 @@ input::-webkit-inner-spin-button {
 }
 
 input[type='number'] {
+  appearance: textfield; /* Standard */
   -moz-appearance: textfield; /* Firefox */
 }
 
@@ -723,9 +730,6 @@ ion-app{
     background-color: var(--ion-color-light);
     width: auto;
     margin-top: 55px !important;
-
-    &.kpi {
-    }
   }
 
   .ion-padding {
@@ -1214,12 +1218,6 @@ ion-content.cameraFrame {
   .modal90 {
     --height: 90vh;
     --width: 90vw;
-  }
-
-  .modal-hrm-point {
-    // @media screen and (min-width: 1024px) {
-    // --height: calc(10/16 * 96rem);
-    // }
   }
 
   .modal-welcome-page {

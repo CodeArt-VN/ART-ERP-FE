@@ -100,6 +100,8 @@ export class DataTableBodyCellComponent {
       this.cellContext.row = this.row;
       this.cellContext.value = value;
     }
+
+    this.cellContext.idx = this.rowIndex;
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();

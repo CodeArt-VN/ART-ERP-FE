@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { filter } from 'rxjs';
 import { lib } from 'src/app/services/static/global-functions';
 
@@ -13,6 +13,8 @@ export class DataTablBodyComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport)
   virtualScroll: CdkVirtualScrollViewport;
 
+  @Input() emptyMessage: any;
+ 
   _columns: any[];
   @Input() set columns(val: any[]) {
     this._columns = val;

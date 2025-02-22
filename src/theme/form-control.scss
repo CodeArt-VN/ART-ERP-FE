@@ -130,6 +130,15 @@
         padding-bottom: calc(10/16 * 1rem);
         padding-left: calc(10/16 * 1rem);
       }
+
+      &.staff-select.ng-select-single{
+        .ng-value-container {
+          overflow: visible;
+          ion-chip{
+            --background: transparent;
+          }
+        }
+      }
     }
     &.breadcrumbs {
       padding: 0;
