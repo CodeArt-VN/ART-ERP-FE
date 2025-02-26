@@ -5,18 +5,20 @@ git submodule foreach 'git checkout main || :'
 git submodule foreach git pull origin main
 
 # Commit changes in each submodule
-git submodule foreach 'git add . && git commit -m "Update translate + format"'
-git submodule foreach 'git add . && git commit -m "Commit message for submodule changes" && git push'
+
+git submodule foreach 'if [ -n "$(git status --porcelain)" ]; then git add . && git commit -m "Update Cancelled to Cancelded" && git push; else echo "No changes in submodule $name"; fi'
 
 # Stage the submodule updates in the main repository
+
 git add .
 
 # Commit the submodule updates in the main repository
+
 git commit -m "Update submodules to latest commits"
 
 # Push the changes in the main repository
-git push
 
+git push
 
 ## Init project
 

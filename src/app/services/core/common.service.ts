@@ -6,6 +6,7 @@ import { lib } from '../static/global-functions';
 import { EnvService } from './env.service';
 import { environment } from 'src/environments/environment';
 import { ApiSetting } from '../static/api-setting';
+import { toolbarCommandRules } from '../static/toolbar-command-rules';
 
 @Injectable({
 	providedIn: 'root',
@@ -322,7 +323,7 @@ export class CommonService {
 		});
 	}
 
-	cancel(items:any, apiPath) {
+	cancel(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
 				let Ids = [];
@@ -346,7 +347,6 @@ export class CommonService {
 			}
 		});
 	}
-
 
 	disable(items, apiPath) {
 		return new Promise((resolve, reject) => {
@@ -568,6 +568,9 @@ export class exService {
 		this.searchField = searchField.value.filelds;
 		this.allowCache = searchField.value.cache;
 		this.commonService = commonService;
+
+		console.log(this.serviceName + ' service is ready');
+		this.showCommandRules = toolbarCommandRules.getRules(this.serviceName);
 	}
 
 	getAnItem(Id, UID: string = '') {

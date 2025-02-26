@@ -206,7 +206,7 @@
 		[clearable]="clearable"
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
-		placeholder="{{ (placeholder || label) | translate }}"
+		placeholder="{{ placeholder || label | translate }}"
 	>
 		<ng-template ng-label-tmp let-i="item">
 			<b
@@ -398,7 +398,7 @@
 						><span class="important" [ngOptionHighlight]="search">{{ i.Id }} - {{ i.Code }}</span></b
 					>
 					<span *ngIf="i.Phone">
-						| {{'Phone' | translate}}: <b [ngOptionHighlight]="search">{{ i.Phone }}</b></span
+						| {{ 'Phone' | translate }}: <b [ngOptionHighlight]="search">{{ i.Phone }}</b></span
 					></small
 				>
 			</div>

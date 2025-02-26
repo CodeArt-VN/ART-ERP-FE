@@ -94,12 +94,7 @@
 		<span class="split" *ngIf="page.selectedItems?.length">|</span>
 
 		<!-- Copy -->
-		<ion-button
-			class="ion-hide-md-down"
-			title="Copy"
-			*ngIf="page.selectedItems?.length && page.pageConfig.canCopy && page.pageConfig.ShowCopy"
-			(click)="page.copy()"
-		>
+		<ion-button class="ion-hide-md-down" title="Copy" *ngIf="page.selectedItems?.length && page.pageConfig.canCopy && page.pageConfig.ShowCopy" (click)="page.copy()">
 			<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
 		</ion-button>
 
@@ -120,13 +115,7 @@
 		<!-- Submit -->
 		<ion-button
 			title="{{ 'Submit' | translate }}"
-			*ngIf="
-				page.selectedItems?.length &&
-				page.pageConfig.canSubmit &&
-				page.pageConfig.ShowSubmit &&
-				page.pageConfig.ShowSubmit &&
-				!page.query.IsDisabled
-			"
+			*ngIf="page.selectedItems?.length && page.pageConfig.canSubmit && page.pageConfig.ShowSubmit && page.pageConfig.ShowSubmit && !page.query.IsDisabled"
 			(click)="page.submitForApproval()"
 		>
 			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>

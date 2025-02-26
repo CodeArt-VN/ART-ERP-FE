@@ -394,9 +394,13 @@ export class EnvService {
 				{ code: 'ACTION_CONFIRM_HEADER', action: actionText, title: title }
 			)
 				.then((_) => {
-					this.showLoading('Please wait for a few moments', promise()).then(result=>{
-						resolve(result);
-					}).catch((err) => {reject(err);});
+					this.showLoading('Please wait for a few moments', promise())
+						.then((result) => {
+							resolve(result);
+						})
+						.catch((err) => {
+							reject(err);
+						});
 				})
 				.catch((e) => {
 					reject('User abort action');

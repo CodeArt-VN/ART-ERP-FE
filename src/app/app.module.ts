@@ -40,7 +40,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { environment } from '../environments/environment';
 
 import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateMessageFormatCompiler } from "ngx-translate-messageformat-compiler";
+import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
