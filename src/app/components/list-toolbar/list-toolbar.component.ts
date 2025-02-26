@@ -234,9 +234,9 @@ export class ListToolbarComponent implements OnInit {
 				// Shipping	Đang vận chuyển
 				// PartiallyReceived	Đã nhận một phần
 				// Received	Đã nhận hàng
-				// Cancelled	Đã Hủy
+				// Canceled	Đã Hủy
 
-				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Canceled'];
 
 				let notShowSubmitOrdersForApproval = [
 					'Ordered',
@@ -247,7 +247,7 @@ export class ListToolbarComponent implements OnInit {
 					'Shipping',
 					'PartiallyReceived',
 					'Received',
-					'Cancelled',
+					'Canceled',
 				];
 				if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1) {
 					this.showSubmitOrdersForApproval = false;
@@ -263,18 +263,18 @@ export class ListToolbarComponent implements OnInit {
 					'Shipping',
 					'PartiallyReceived',
 					'Received',
-					'Cancelled',
+					'Canceled',
 				];
 				if (notShowApproveOrders.indexOf(i.Status) > -1) {
 					this.showApproveOrders = false;
 				}
 
-				let notShowDisapproveOrders = ['Draft', 'Unapproved', 'Ordered', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+				let notShowDisapproveOrders = ['Draft', 'Unapproved', 'Ordered', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Canceled'];
 				if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
 					this.showDisapproveOrders = false;
 				}
 
-				let notShowCancelOrders = ['Ordered', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+				let notShowCancelOrders = ['Ordered', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Canceled'];
 				if (notShowCancelOrders.indexOf(i.Status) > -1) {
 					this.showCancelOrders = false;
 				}
@@ -289,7 +289,7 @@ export class ListToolbarComponent implements OnInit {
 					'Shipping',
 					'PartiallyReceived',
 					'Received',
-					'Cancelled',
+					'Canceled',
 				];
 				if (notShowSubmitOrders.indexOf(i.Status) > -1) {
 					this.showSubmitOrders = false;
@@ -449,13 +449,13 @@ export class ListToolbarComponent implements OnInit {
 			this.showDelete = true;
 
 			this.selectedItems.forEach((i) => {
-				// ['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'];
-				// if (['New', 'Unapproved', 'Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showCancelOrders = false;
+				// ['New', 'Unapproved', 'Submitted', 'Approved', 'Canceled'];
+				// if (['New', 'Unapproved', 'Submitted', 'Approved', 'Canceled'].indexOf(i.Status) > -1) this.showCancelOrders = false;
 
-				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showSubmitBusinessPartner = false;
-				if (['New', 'Unapproved', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showApproveBusinessPartner = false;
-				if (['New', 'Unapproved', 'Cancelled'].indexOf(i.Status) > -1) this.showDisapproveBusinessPartner = false;
-				if (['Submitted', 'Approved', 'Cancelled'].indexOf(i.Status) > -1) this.showDelete = false;
+				if (['Submitted', 'Approved', 'Canceled'].indexOf(i.Status) > -1) this.showSubmitBusinessPartner = false;
+				if (['New', 'Unapproved', 'Approved', 'Canceled'].indexOf(i.Status) > -1) this.showApproveBusinessPartner = false;
+				if (['New', 'Unapproved', 'Canceled'].indexOf(i.Status) > -1) this.showDisapproveBusinessPartner = false;
+				if (['Submitted', 'Approved', 'Canceled'].indexOf(i.Status) > -1) this.showDelete = false;
 			});
 		}
 
@@ -477,20 +477,20 @@ export class ListToolbarComponent implements OnInit {
 				// Shipping	Đang vận chuyển
 				// PartiallyReceived	Đã nhận một phần
 				// Received	Đã nhận hàng
-				// Cancelled	Đã Hủy
+				// Canceled	Đã Hủy
 
-				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Cancelled'];
+				//['Draft', 'Unapproved', 'Ordered', 'Submitted', 'Approved', 'PORequestQuotation', 'Confirmed', 'Shipping', 'PartiallyReceived', 'Received', 'Canceled'];
 
-				let notShowSubmitOrdersForApproval = ['Pending', 'Approved', 'InProgress', 'Forward', 'Denied', 'Cancelled'];
+				let notShowSubmitOrdersForApproval = ['Pending', 'Approved', 'InProgress', 'Forward', 'Denied', 'Canceled'];
 				if (notShowSubmitOrdersForApproval.indexOf(i.Status) > -1 || !i.canSubmitOrdersForApproval) {
 					this.showSubmitOrdersForApproval = false;
 				}
-				// let notShowDisapproveOrders = ['Draft', 'Unapproved','Cancelled'];
+				// let notShowDisapproveOrders = ['Draft', 'Unapproved','Canceled'];
 				// if (notShowDisapproveOrders.indexOf(i.Status) > -1) {
 				// 	this.showDisapproveOrders = false;
 				// }
 
-				let notShowCancelOrders = ['Cancelled', 'Draft'];
+				let notShowCancelOrders = ['Canceled', 'Draft'];
 				if (notShowCancelOrders.indexOf(i.Status) > -1) {
 					this.showCancelOrders = false;
 				}

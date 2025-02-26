@@ -84,8 +84,6 @@ export abstract class PageBase implements OnInit {
 		ShowArchive: true,
 		ShowDelete: true,
 		ShowPrint: false,
-
-		ShowCommandRules: [],
 	};
 
 	subscriptions: Subscription[] = [];
@@ -166,6 +164,8 @@ export abstract class PageBase implements OnInit {
 				this.cdr?.detectChanges();
 
 				if (this.item.IsDisabled) this.pageConfig.canEdit = false;
+
+				this.showCommandBySelectedRows([this.item]);
 			}
 
 			if ((!this.item || this.id == 0) && this.pageConfig.canAdd) {
@@ -351,48 +351,24 @@ export abstract class PageBase implements OnInit {
 	}
 
 	showCommandBySelectedRows(selectedRows) {
-		const statuses = selectedRows.map((row) => row.Status);
-		const filteredRules = this.pageConfig.ShowCommandRules.filter((rule) => statuses.includes(rule.Status));
+		const showCommandRules = this.pageProvider.showCommandRules;
+		if (showCommandRules?.length) {
+			const statuses = selectedRows.map((row) => row.Status);
+			const filteredRules = showCommandRules.filter((rule) => statuses.includes(rule.Status));
 
-		if (filteredRules.length === 0) {
-			return;
-		}
+			if (filteredRules.length === 0) {
+				return;
+			}
 
-		const commonButtons = filteredRules.reduce((acc, rule) => {
-			return acc.filter((btn) => rule.ShowBtns.includes(btn));
-		}, filteredRules[0].ShowBtns);
+			const commonButtons = filteredRules.reduce((acc, rule) => {
+				return acc.filter((btn) => rule.ShowBtns.includes(btn));
+			}, filteredRules[0].ShowBtns);
 
-		const keysToUpdate = new Set(this.pageConfig.ShowCommandRules.flatMap((rule) => rule.ShowBtns));
+			const keysToUpdate = new Set(showCommandRules.flatMap((rule) => rule.ShowBtns));
 
-		keysToUpdate.forEach((key: string) => {
-			this.pageConfig[key] = commonButtons.includes(key);
-		});
-	}
-
-	deleteItems(publishEventCode = this.pageConfig.pageName) {
-		if (this.pageConfig.canDelete) {
-			this.env
-				.showPrompt(
-					{
-						code: 'You can not undo this action.',
-						value: this.selectedItems.length,
-					},
-					null,
-					{ code: 'Are you sure you want to delete the {{value}} selected item(s)?', value: this.selectedItems.length }
-				)
-				.then((_) => {
-					this.env
-						.showLoading('Please wait for a few moments', this.pageProvider.delete(this.selectedItems))
-						.then((_) => {
-							this.removeSelectedItems();
-							this.env.showMessage('Deleted!', 'success');
-							this.env.publishEvent({ Code: publishEventCode });
-						})
-						.catch((err) => {
-							this.env.showMessage('Không xóa được, xin vui lòng kiểm tra lại.');
-							console.log(err);
-						});
-				});
+			keysToUpdate.forEach((key: string) => {
+				this.pageConfig[key] = commonButtons.includes(key);
+			});
 		}
 	}
 
@@ -716,44 +692,63 @@ export abstract class PageBase implements OnInit {
 		return dirtyValues;
 	}
 
-	delete(publishEventCode = this.pageConfig.pageName) {
-		if (this.pageConfig.canDelete) {
-			this.env
-				.showPrompt({
-					code: 'Bạn có chắc muốn xóa {{value}}?',
-					value: { value: this.item.Name ? ' ' : this.item.Name },
-				})
-				.then((_) => {
-					this.pageProvider
-						.delete(this.item)
-						.then(() => {
-							this.env.showMessage('Deleted!', 'success');
-							this.env.publishEvent({ Code: publishEventCode });
-
-							this.deleted();
-							this.closeModal();
-						})
-						.catch((err) => {
-							//console.log(err);
-						});
-				})
-				.catch((e) => {});
-		}
-	}
-
-	deleted() {}
-
-	submit() {}
+	submitForApproval() {}
 
 	approve() {}
 
 	disapprove() {}
 
-	cancel() {}
-
 	copy() {}
 	merge() {}
 	split() {}
+
+	cancel() {
+		if (!this.pageConfig.canCancel || !this.pageConfig.ShowCancel || this.submitAttempt) return;
+		this.env
+			.actionConfirm('cancel', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
+				this.pageProvider.cancel(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
+			)
+			.then((_) => {
+				this.env.publishEvent({
+					Code: this.pageConfig.pageName,
+				});
+				this.env.showMessage('Canceled successfully!', 'success');
+				this.submitAttempt = false;
+				this.refresh();
+			})
+			.catch((err: any) => {
+				if (err != 'User abort action') this.env.showMessage('Cannot cancel, please try again', 'danger');
+				console.log(err);
+			});
+	}
+
+	delete(publishEventCode = this.pageConfig.pageName) {
+		if (this.pageConfig.ShowDelete) {
+			this.env
+				.actionConfirm('delete', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
+					this.pageProvider.delete(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
+				)
+				.then((_) => {
+					this.env.showMessage('DELETE_RESULT_SUCCESS', 'success');
+					this.env.publishEvent({ Code: publishEventCode });
+
+					if (this.pageConfig.isDetailPage) {
+						this.goBack();
+						this.deleted();
+						this.closeModal();
+					} else {
+						this.removeSelectedItems();
+					}
+				})
+				.catch((err: any) => {
+					if (err != 'User abort action') this.env.showMessage('DELETE_RESULT_FAIL', 'danger');
+					console.log(err);
+				});
+		}
+	}
+
+	deleted() {}
+
 	async closeModal() {
 		try {
 			if (!this.modalController) {

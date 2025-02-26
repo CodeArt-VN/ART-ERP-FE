@@ -85,7 +85,7 @@ export class ToolbarComponent implements OnInit {
 		if (this.page?.item?.Id) {
 			this.page.delete();
 		} else {
-			this.page.deleteItems();
+			this.page.delete();
 		}
 	}
 

@@ -321,6 +321,33 @@ export class CommonService {
 			}
 		});
 	}
+
+	cancel(items:any, apiPath) {
+		return new Promise((resolve, reject) => {
+			if (items) {
+				let Ids = [];
+				if (Array.isArray(items)) {
+					Ids = items.map((m) => m.Id);
+				} else {
+					Ids = [items.Id];
+				}
+
+				this.connect('POST', apiPath.getItem.url('Cancel'), { Ids: Ids })
+					.toPromise()
+					.then(() => {
+						resolve(true);
+					})
+					.catch((err) => {
+						this.checkError(err);
+						reject(err);
+					});
+			} else {
+				reject('It looks like there is nothings to cancel!');
+			}
+		});
+	}
+
+
 	disable(items, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -352,6 +379,7 @@ export class CommonService {
 			}
 		});
 	}
+
 	changeBranch(item, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (item.Ids) {
@@ -532,6 +560,7 @@ export class exService {
 	allowCache = true;
 	serviceName = '';
 	commonService: CommonService;
+	showCommandRules = [];
 
 	constructor(apiPath: any, searchField, commonService: CommonService) {
 		this.apiPath = apiPath;
@@ -589,6 +618,10 @@ export class exService {
 
 	delete(items) {
 		return this.commonService.delete(items, this.apiPath);
+	}
+
+	cancel(items) {
+		return this.commonService.cancel(items, this.apiPath);
 	}
 
 	disable(items, IsDisabled = true) {

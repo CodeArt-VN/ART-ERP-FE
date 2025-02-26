@@ -97,7 +97,7 @@
 		<ion-button
 			class="ion-hide-md-down"
 			title="Copy"
-			*ngIf="page.selectedItems?.length && page.pageConfig.canCopy && !page.pageConfig.isDetailPage && page.pageConfig.ShowCopy"
+			*ngIf="page.selectedItems?.length && page.pageConfig.canCopy && page.pageConfig.ShowCopy"
 			(click)="page.copy()"
 		>
 			<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
@@ -124,11 +124,10 @@
 				page.selectedItems?.length &&
 				page.pageConfig.canSubmit &&
 				page.pageConfig.ShowSubmit &&
-				!page.pageConfig.isDetailPage &&
 				page.pageConfig.ShowSubmit &&
 				!page.query.IsDisabled
 			"
-			(click)="page.submit()"
+			(click)="page.submitForApproval()"
 		>
 			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
 		</ion-button>
@@ -140,8 +139,7 @@
 			*ngIf="
 				((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
 				page.pageConfig.canApprove &&
-				page.pageConfig.ShowApprove &&
-				!page.pageConfig.isDetailPage
+				page.pageConfig.ShowApprove
 			"
 			(click)="page.approve()"
 		>
@@ -154,8 +152,7 @@
 			title="{{ 'Disapprove' | translate }}"
 			*ngIf="
 				((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
-				((page.pageConfig.canDisapprove && page.pageConfig.ShowDisapprove) || (page.pageConfig.canApprove && page.pageConfig.ShowDisapprove)) &&
-				!page.pageConfig.isDetailPage
+				((page.pageConfig.canDisapprove && page.pageConfig.ShowDisapprove) || (page.pageConfig.canApprove && page.pageConfig.ShowDisapprove))
 			"
 			(click)="page.disapprove()"
 		>
@@ -176,7 +173,7 @@
 		<ion-button
 			class="ion-hide-md-down"
 			title="{{ 'Split' | translate }}"
-			*ngIf="page.selectedItems?.length == 1 && !page.query.IsDisabled && !page.pageConfig.isDetailPage && page.pageConfig.canSplit && page.pageConfig.ShowSplit"
+			*ngIf="page.selectedItems?.length == 1 && !page.query.IsDisabled && page.pageConfig.canSplit && page.pageConfig.ShowSplit"
 			(click)="page.split()"
 		>
 			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
@@ -189,15 +186,14 @@
 			*ngIf="
 				((page.selectedItems?.length && !page.query.IsDisabled) || (page.pageConfig.isDetailPage && page.item?.Id)) &&
 				page.pageConfig.canCancel &&
-				page.pageConfig.ShowCancel &&
-				!page.pageConfig.isDetailPage
+				page.pageConfig.ShowCancel
 			"
 			(click)="page.cancel()"
 		>
 			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
 		</ion-button>
 
-		<!-- Archive item -->
+		<!-- Archive command -->
 		<ion-button
 			class="ion-hide-md-down"
 			title="{{
@@ -227,7 +223,7 @@
 			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
 		</ion-button>
 
-		<!-- Archive -->
+		<!-- Archive filter -->
 		<ion-button
 			class="ion-hide-md-down"
 			*ngIf="page.pageConfig.ShowArchive && !page.pageConfig.isDetailPage && !page.selectedItems?.length"
@@ -371,7 +367,7 @@
 								*ngIf="
 									page.selectedItems?.length && page.pageConfig.canSubmit && ShowSubmit && !page.pageConfig.isDetailPage && ShowSubmit && !page.query.IsDisabled
 								"
-								(click)="isToolBarPopoverOpen = false; page.submit()"
+								(click)="isToolBarPopoverOpen = false; page.submitForApproval()"
 							>
 								<ion-icon color="success" slot="start" name="send-outline"></ion-icon>
 								<ion-label> {{ 'Gửi Duyệt' | translate }}</ion-label>

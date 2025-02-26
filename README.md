@@ -5,6 +5,7 @@ git submodule foreach 'git checkout main || :'
 git submodule foreach git pull origin main
 
 # Commit changes in each submodule
+git submodule foreach 'git add . && git commit -m "Update translate + format"'
 git submodule foreach 'git add . && git commit -m "Commit message for submodule changes" && git push'
 
 # Stage the submodule updates in the main repository

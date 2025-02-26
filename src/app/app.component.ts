@@ -118,8 +118,6 @@ export class AppComponent implements OnInit {
 							this.showMenu = false;
 						}
 						this.branchList = lib.cloneObject(this.env.branchList);
-						console.log(this.branchList);
-
 						this.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
 						this.loadPinnedMenu();
 						this.updateStatusbar();

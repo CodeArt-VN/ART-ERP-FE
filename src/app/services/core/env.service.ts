@@ -320,9 +320,10 @@ export class EnvService {
 				this.translateResource(header),
 				this.translateResource(okText),
 				this.translateResource(cancelText),
-			]).then((values) => {
+			]).then((values: any) => {
+				const headerUPPER = values[2] ? values[2].toUpperCase() : '';
 				let option: any = {
-					header: values[2],
+					header: headerUPPER,
 					subHeader: values[1],
 					message: values[0],
 					buttons: [],
@@ -384,6 +385,25 @@ export class EnvService {
 		});
 	}
 
+	actionConfirm(action, length, itemName, title, promise) {
+		let actionText = 'ACTION_' + action.toUpperCase();
+		return new Promise((resolve, reject) => {
+			this.showPrompt(
+				{ code: 'ACTION_CONFIRM_MESSAGE', action: actionText, count: length, value: itemName },
+				{ code: 'ACTION_CONFIRM_SUBHEADER', action: actionText, count: length, value: itemName },
+				{ code: 'ACTION_CONFIRM_HEADER', action: actionText, title: title }
+			)
+				.then((_) => {
+					this.showLoading('Please wait for a few moments', promise()).then(result=>{
+						resolve(result);
+					}).catch((err) => {reject(err);});
+				})
+				.catch((e) => {
+					reject('User abort action');
+				});
+		});
+	}
+
 	translateResource(resource) {
 		return new Promise((resolve) => {
 			if (resource == null) {
@@ -392,11 +412,18 @@ export class EnvService {
 				let key = typeof resource === 'object' ? resource.code : resource;
 				let value = typeof resource === 'object' ? resource : { value: null };
 
-				this.translate.get(key, value).subscribe((translatedValue: string) => {
-					console.log(key, value, translatedValue);
-
-					resolve(translatedValue);
-				});
+				if (resource.action) {
+					this.translate.get(resource.action).subscribe((translatedValue: string) => {
+						resource.action = translatedValue;
+						this.translate.get(key, value).subscribe((translatedValue: string) => {
+							resolve(translatedValue);
+						});
+					});
+				} else {
+					this.translate.get(key, value).subscribe((translatedValue: string) => {
+						resolve(translatedValue);
+					});
+				}
 			}
 		});
 	}

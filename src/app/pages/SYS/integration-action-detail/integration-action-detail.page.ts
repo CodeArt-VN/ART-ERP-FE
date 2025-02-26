@@ -266,7 +266,7 @@ export class IntegrationActionDetailPage extends PageBase {
 		});
 	}
 
-	deleteItems() {
+	delete() {
 		if (this.pageConfig.canDelete) {
 			let length = this.Runners.controls.length;
 			this.env

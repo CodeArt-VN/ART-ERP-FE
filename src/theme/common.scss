@@ -477,6 +477,7 @@ ion-app {
 		color: #ccc;
 		width: 51vw;
 		max-width: 300px;
+		max-height: 200px;
 	}
 
 	.message {
@@ -485,9 +486,10 @@ ion-app {
 		text-align: center;
 
 		.title {
-			line-height: 30px;
-			font-size: calc(10 / 16 * 2rem);
-			color: var(--ion-color-medium);
+			line-height: calc(10 / 16 * 3rem);;
+			text-transform: uppercase;
+			font-size: calc(10 / 16 * 2.4rem);
+			color: var(--ion-color-dark);
 		}
 
 		.detail {

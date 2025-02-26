@@ -410,7 +410,7 @@ export class APICollectionDetailPage extends PageBase {
 		this.addField(null, controlName, controls, isArray, fg);
 		// this.saveChangeJson(saveControl,isArray,fg,arrayName);
 	}
-	deleteItems(controlName, fg = null, saveControl = null, arrayName = null) {
+	delete(controlName, fg = null, saveControl = null, arrayName = null) {
 		if (!fg) {
 			fg = this.formGroup;
 		}
