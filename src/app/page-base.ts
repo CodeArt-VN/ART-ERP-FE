@@ -692,11 +692,67 @@ export abstract class PageBase implements OnInit {
 		return dirtyValues;
 	}
 
-	submitForApproval() {}
+	submitForApproval() {
+		if (!this.pageConfig.canSubmit || !this.pageConfig.ShowSubmit || this.submitAttempt) return;
+	
+		this.env
+			.actionConfirm('submit', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
+				this.pageProvider.submitForApproval(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
+			)
+			.then((_) => {
+				this.env.publishEvent({
+					Code: this.pageConfig.pageName,
+				});
+				this.env.showMessage('Submit successfully!', 'success');
+				this.submitAttempt = false;
+				this.refresh();
+			})
+			.catch((err: any) => {
+				if (err != 'User abort action') this.env.showMessage('Cannot submit, please try again', 'danger');
+				console.log(err);
+			});
+	}
 
-	approve() {}
+	approve() 
+	{
+		if (!this.pageConfig.canApprove || !this.pageConfig.ShowApprove || this.submitAttempt) return;
+		this.env
+			.actionConfirm('approve', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
+				this.pageProvider.approve(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
+			)
+			.then((_) => {
+				this.env.publishEvent({
+					Code: this.pageConfig.pageName,
+				});
+				this.env.showMessage('Approved successfully!', 'success');
+				this.submitAttempt = false;
+				this.refresh();
+			})
+			.catch((err: any) => {
+				if (err != 'User abort action') this.env.showMessage('Cannot approve, please try again', 'danger');
+				console.log(err);
+			});
+		}
 
-	disapprove() {}
+	disapprove() {
+		if (!this.pageConfig.canApprove || !this.pageConfig.ShowApprove || this.submitAttempt) return;
+		this.env
+			.actionConfirm('disapprove', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
+				this.pageProvider.disapprove(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
+			)
+			.then((_) => {
+				this.env.publishEvent({
+					Code: this.pageConfig.pageName,
+				});
+				this.env.showMessage('Disapprove successfully!', 'success');
+				this.submitAttempt = false;
+				this.refresh();
+			})
+			.catch((err: any) => {
+				if (err != 'User abort action') this.env.showMessage('Cannot disapprove, please try again', 'danger');
+				console.log(err);
+			});
+		}
 
 	copy() {}
 	merge() {}
@@ -721,7 +777,7 @@ export abstract class PageBase implements OnInit {
 				console.log(err);
 			});
 	}
-
+	deleteItems(event = null){}
 	delete(publishEventCode = this.pageConfig.pageName) {
 		if (this.pageConfig.ShowDelete) {
 			this.env
