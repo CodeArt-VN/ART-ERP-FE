@@ -9942,23 +9942,6 @@ export var APIListBase = {
             method: "DELETE",
             url: function(id){return "PURCHASE/Quotation/" + id} 
         },
-        approve:{
-            method:"POST",
-            url: function(){return "PURCHASE/Quotation/Approve"} 
-
-        },
-        submitForApproval:{
-            method:"POST",
-            url: function(){return "PURCHASE/Quotation/SubmitForApproval"} 
-        },
-        disapprove:{
-            method:"POST",
-            url: function(){return "PURCHASE/Quotation/Disapprove"} 
-        },
-        cancel:{
-            method:"POST",
-            url: function(){return "PURCHASE/Quotation/Cancel"} 
-        },
 	},
 
 	PURCHASE_QuotationDetail:{

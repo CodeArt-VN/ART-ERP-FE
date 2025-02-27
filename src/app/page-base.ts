@@ -735,7 +735,7 @@ export abstract class PageBase implements OnInit {
 		}
 
 	disapprove() {
-		if (!this.pageConfig.canApprove || !this.pageConfig.ShowApprove || this.submitAttempt) return;
+		if (!this.pageConfig.canApprove || !this.pageConfig.ShowDisapprove || this.submitAttempt) return;
 		this.env
 			.actionConfirm('disapprove', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
 				this.pageProvider.disapprove(this.pageConfig.isDetailPage ? this.item : this.selectedItems)

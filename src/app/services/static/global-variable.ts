@@ -220,6 +220,23 @@ APIList.POS_ForCustomer = {
 		},
 	},
 };
+APIList.PURCHASE_Quotation.approve = {
+	method:"POST",
+	url: function(){return "PURCHASE/Quotation/Approve"} 
+}
+APIList.PURCHASE_Quotation.submitForApproval = {
+	method:"POST",
+	url: function(){return "PURCHASE/Quotation/SubmitForApproval"} 
+}
+APIList.PURCHASE_Quotation.disapprove = {
+	method:"POST",
+	url: function(){return "PURCHASE/Quotation/Disapprove"} 
+}
+
+APIList.PURCHASE_Quotation.cancel = {
+	method:"POST",
+	url: function(){return "PURCHASE/Quotation/Cancel"} 
+}
 
 export var GlobalData: any = {
 	Filter: {

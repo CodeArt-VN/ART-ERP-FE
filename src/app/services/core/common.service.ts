@@ -692,6 +692,9 @@ export class exService {
 	approve(items: any, apiPath) {
 		return this.commonService.approve(items, this.apiPath);
 	}
+	disapprove(items: any, apiPath) {
+		return this.commonService.disapprove(items, this.apiPath);
+	}
 	delete(items) {
 		return this.commonService.delete(items, this.apiPath);
 	}
