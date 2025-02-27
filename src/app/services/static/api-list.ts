@@ -9941,8 +9941,7 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PURCHASE/Quotation/" + id} 
-        }
-		
+        },
 	},
 
 	PURCHASE_QuotationDetail:{
@@ -10039,7 +10038,24 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PURCHASE/Request/" + id} 
-        }
+        },
+        approve:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Approve"} 
+
+        },
+        submitForApproval:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/SubmitForApproval"} 
+        },
+        disapprove:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Disapprove"} 
+        },
+        cancel:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Cancel"} 
+        },
 		
 	},
 

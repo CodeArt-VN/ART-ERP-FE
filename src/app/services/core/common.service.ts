@@ -322,7 +322,75 @@ export class CommonService {
 			}
 		});
 	}
-
+	submitForApproval(items: any, apiPath) {
+		return new Promise((resolve, reject) => {
+			if (items) {
+				let Ids = [];
+				if (Array.isArray(items)) {
+					Ids = items.map((m) => m.Id);
+				} else {
+					Ids = [items.Id];
+				}
+				this.connect('POST', apiPath.submitForApproval.url(), { Ids: Ids })
+					.toPromise()
+					.then(() => {
+						resolve(true);
+					})
+					.catch((err) => {
+						this.checkError(err);
+						reject(err);
+					});
+			} else {
+				reject('It looks like there is nothings to cancel!');
+			}
+		});
+	}
+	approve(items: any, apiPath) {
+		return new Promise((resolve, reject) => {
+			if (items) {
+				let Ids = [];
+				if (Array.isArray(items)) {
+					Ids = items.map((m) => m.Id);
+				} else {
+					Ids = [items.Id];
+				}
+				this.connect('POST', apiPath.approve.url(), { Ids: Ids })
+					.toPromise()
+					.then(() => {
+						resolve(true);
+					})
+					.catch((err) => {
+						this.checkError(err);
+						reject(err);
+					});
+			} else {
+				reject('It looks like there is nothings to cancel!');
+			}
+		});
+	}
+	disapprove(items: any, apiPath) {
+		return new Promise((resolve, reject) => {
+			if (items) {
+				let Ids = [];
+				if (Array.isArray(items)) {
+					Ids = items.map((m) => m.Id);
+				} else {
+					Ids = [items.Id];
+				}
+				this.connect('POST', apiPath.disapprove.url(), { Ids: Ids })
+					.toPromise()
+					.then(() => {
+						resolve(true);
+					})
+					.catch((err) => {
+						this.checkError(err);
+						reject(err);
+					});
+			} else {
+				reject('It looks like there is nothings to cancel!');
+			}
+		});
+	}
 	cancel(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -618,7 +686,15 @@ export class exService {
 	save(item, isForceCreate = false) {
 		return this.commonService.save(item, this.apiPath, isForceCreate);
 	}
-
+	submitForApproval(items: any, apiPath) {
+		return this.commonService.submitForApproval(items, this.apiPath);
+	}
+	approve(items: any, apiPath) {
+		return this.commonService.approve(items, this.apiPath);
+	}
+	disapprove(items: any, apiPath) {
+		return this.commonService.disapprove(items, this.apiPath);
+	}
 	delete(items) {
 		return this.commonService.delete(items, this.apiPath);
 	}
