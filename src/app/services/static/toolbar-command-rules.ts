@@ -57,4 +57,16 @@ export var toolbarCommandRules = {
 		{ Status: 'Done', ShowBtns: ['ShowCopyToARInvoice', 'ShowArchive'] }, // Đã xong
 		{ Status: 'Canceled', ShowBtns: ['ShowDelete', 'ShowArchive'] }, // Đã hủy
 	],
+
+	CRM_Contact: [
+		{ Status: 'New', ShowBtns: ['ShowChangeBranch',  'ShowSubmit', 'ShowApprove', 'ShowArchive'] }, // Mới
+		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowArchive'] }, // Không duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove','ShowArchive'] }, // Chờ duyệt
+		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowArchive'] }, // Đã duyệt
+
+	],
+	
+
+
+
 };

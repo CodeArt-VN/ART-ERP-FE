@@ -238,6 +238,80 @@ APIList.PURCHASE_Quotation.cancel = {
 	url: function(){return "PURCHASE/Quotation/Cancel"} 
 }
 
+APIList.PURCHASE_Order.approve = {
+	method:"POST",
+	url: function(){return "PURCHASE/Order/Approve"} 
+}
+APIList.PURCHASE_Order.submitForApproval = {
+	method:"POST",
+	url: function(){return "PURCHASE/Order/SubmitForApproval"} 
+}
+APIList.PURCHASE_Order.disapprove = {
+	method:"POST",
+	url: function(){return "PURCHASE/Order/Disapprove"} 
+}
+
+APIList.PURCHASE_Order.cancel = {
+	method:"POST",
+	url: function(){return "PURCHASE/Order/Cancel"} 
+}
+
+APIList.PURCHASE_Request.approve = {
+	method:"POST",
+	url: function(){return "PURCHASE/Request/Approve"} 
+}
+APIList.PURCHASE_Request.submitForApproval = {
+	method:"POST",
+	url: function(){return "PURCHASE/Request/SubmitForApproval"} 
+}
+APIList.PURCHASE_Request.disapprove = {
+	method:"POST",
+	url: function(){return "PURCHASE/Request/Disapprove"} 
+}
+
+APIList.PURCHASE_Request.cancel = {
+	method:"POST",
+	url: function(){return "PURCHASE/Request/Cancel"} 
+}
+
+
+
+APIList.SALE_Order.approve = {
+	method:"POST",
+	url: function(){return "SALE/Order/Approve"} 
+}
+
+APIList.SALE_Order.disapprove = {
+	method:"POST",
+	url: function(){return "SALE/Order/Disapprove"} 
+}
+
+APIList.SALE_Order.cancel = {
+	method:"POST",
+	url: function(){return "SALE/Order/Cancel"} 
+}
+
+APIList.SALE_Order.submitForApproval = {
+	method:"POST",
+	url: function(){return "SALE/Order/SubmitForApproval"} 
+}
+
+APIList.CRM_Contact.submitForApproval = {
+	method:"POST",
+	url: function(){return "CRM/Contact/SubmitForApproval"} 
+}
+
+APIList.CRM_Contact.approve = {
+	method:"POST",
+	url: function(){return "CRM/Contact/Approve"} 
+}
+
+APIList.CRM_Contact.disapprove = {
+	method:"POST",
+	url: function(){return "CRM/Contact/Disapprove"} 
+}
+
+
 export var GlobalData: any = {
 	Filter: {
 		FromDate: new Date().setDate(1),
