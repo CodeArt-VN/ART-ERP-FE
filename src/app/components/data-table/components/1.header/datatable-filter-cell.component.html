@@ -7,7 +7,7 @@
 		((column.filterControlType != 'time-frame' && field.form.controls[field.id]?.value) ||
 			(column.filterControlType == 'time-frame' && (!field.form.controls.From?.controls.IsNull.value || !field.form.controls.To?.controls.IsNull.value)))
 	"
-	class="min-btn"
+	class="min-btn clickable"
 	(click)="onFilterFieldReset()"
 	name="close-circle-outline"
 ></ion-icon>

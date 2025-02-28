@@ -8,6 +8,9 @@
 	}
 	.content {
 		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+
 		h1 {
 			font-size: calc(10 / 16 * 3.8rem);
 			// font-weight: 700;

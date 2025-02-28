@@ -127,7 +127,7 @@ app-data-table,
 				}
 			}
 
-			ion-text {
+			.ng-arrow-wrapper {
 				display: none;
 			}
 		}
@@ -135,6 +135,7 @@ app-data-table,
 		datatable-header-cell,
 		.cell {
 			color: var(--ion-color-dark);
+			white-space: normal;
 
 			&.selected {
 				background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
@@ -586,8 +587,8 @@ app-data-table,
 	}
 
 	.col-number {
-		max-width: 100px;
-		min-width: 100px;
+		max-width: 120px;
+		min-width: 120px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1015,6 +1016,39 @@ app-data-table,
 			height: 3px;
 			background-color: var(--ion-color-primary);
 			margin-top: -4px;
+		}
+	}
+}
+
+@mixin timeFrame() {
+	.cell.time-frame {
+		app-input-control {
+			width: auto;
+			margin-right: 30px;
+			.text-display {
+				display: none;
+			}
+
+			.c-input:hover {
+				position: absolute;
+				width: 100%;
+				max-width: 300px;
+				top: 8px;
+				z-index: 10;
+
+				.text-display {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+app-data-table,
+.table {
+	@media screen and (min-width: calc(1164px + 0px)) {
+		&:not(.small-width) {
+			@include timeFrame();
 		}
 	}
 }

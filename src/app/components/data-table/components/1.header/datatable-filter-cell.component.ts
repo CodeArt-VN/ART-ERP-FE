@@ -33,7 +33,8 @@ export class DataTableFilterCellComponent {
 			this.field.form.controls.To.controls.IsNull.setValue(true);
 			this.field.form.controls.To.controls.Value.setValue(null);
 		} else {
-			this.field.form.get(this.field.id).setValue('');
+			if (this.field.type === 'text') this.field.form.get(this.field.id).setValue('');
+			else this.field.form.get(this.field.id).setValue(null);
 		}
 
 		this.filterFieldReset.emit();
@@ -54,6 +55,10 @@ export class DataTableFilterCellComponent {
 		}
 		if (this.column.filterClass) {
 			cls += ' ' + this.column.filterClass;
+		}
+
+		if (this.field.type === 'time-frame') {
+			cls += ' time-frame';
 		}
 
 		return cls;

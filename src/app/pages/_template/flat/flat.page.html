@@ -25,13 +25,10 @@
 		</ion-list>
 	</ion-fab>
 
-	<div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
-		<app-page-title [pageConfig]="pageConfig"></app-page-title>
-	</div>
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
-	<div style="max-width: 1440px; margin: auto; width: 100%">
+	<div class="safe-max-width">
 		<app-data-table
-			style="width: fit-content; min-width: calc(100% - 32px)"
 			class="box-shadow responsive"
 			[rows]="items"
 			[trackBy]="'Id'"
@@ -42,14 +39,17 @@
 			(dataInfinite)="loadData($event)"
 			(filter)="onDatatableFilter($event)"
 			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
 		>
 			<datatable-column [checkbox]="true" name=""></datatable-column>
-			<datatable-column class="col-id" name="#" property="Id"></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
 			<datatable-column class="col-icon large" name="" property="Id">
 				<ng-template let-i="row" datatable-cell-template>
 					<ion-icon [name]="i.Icon || 'flash'" [color]="i.Color || 'primary'" [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]"></ion-icon>
 				</ng-template>
 			</datatable-column>
+			<datatable-column class="col-date" format="yyyy-MM-dd" name="Required date" property="RequiredDate" filterControlType="date"></datatable-column>
+			<datatable-column class="col-name flex-break" name="Title" property="Name"></datatable-column>
 			<datatable-column class="col-name" name="Name" property="Name">
 				<ng-template let-i="row" datatable-cell-template>
 					<div [routerLink]="['/'+pageConfig.pageName+'/'+i.Id]">
@@ -61,6 +61,13 @@
 					</div>
 				</ng-template>
 			</datatable-column>
+			<datatable-column class="col-number bold" format="1.0-0" name="Total" property="TotalAfterTax"></datatable-column>
+
+			<!-- <datatable-column class="col-status" name="Status" property="Status" filterControlType="ng-select" [filterDataSource]="statusList">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-badge [color]="i._Status?.Color" [title]="i._Status?.Name"> {{i._Status?.Name | translate}} </ion-badge>
+				</ng-template>
+			</datatable-column> -->
 		</app-data-table>
 	</div>
 

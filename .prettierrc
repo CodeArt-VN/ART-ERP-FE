@@ -11,6 +11,7 @@
 	"quoteProps": "as-needed",
 	"jsxSingleQuote": false,
 	"bracketSameLine": false,
+	"embeddedLanguageFormatting": "auto",
 	"overrides": [
 		{
 			"files": ["*.java"],

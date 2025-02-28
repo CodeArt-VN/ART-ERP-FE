@@ -25,17 +25,13 @@
 		</ion-list>
 	</ion-fab>
 
-	<div style="max-width: 1440px; margin: auto; width: 100%; position: sticky; left: 0" class="ion-padding">
-		<app-page-title [pageConfig]="pageConfig"></app-page-title>
-	</div>
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
-	<div style="max-width: 1440px; margin: auto; width: 100%">
+	<div class="safe-max-width">
 		<app-data-table
-			style="width: fit-content; min-width: calc(100% - 32px)"
 			class="box-shadow responsive"
-			[rows]="itemsState"
+			[rows]="items"
 			[trackBy]="'Id'"
-			[isTreeList]="true"
 			[(selectedRows)]="selectedItems"
 			[showSpinner]="pageConfig.showSpinner"
 			[showFilter]="pageConfig.isShowSearch"
@@ -43,6 +39,7 @@
 			(dataInfinite)="loadData($event)"
 			(filter)="onDatatableFilter($event)"
 			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
 		>
 			<datatable-column [checkbox]="true" name=""></datatable-column>
 			<datatable-column class="col-id" name="#" property="Id"></datatable-column>
@@ -91,12 +88,7 @@
 	</div>
 
 	<div class="ion-padding"></div>
-	<!-- <ion-infinite-scroll
-    color="primary"
-    threshold="30%"
-    (ionInfinite)="loadData($event)"
-    [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData"
-  >
-    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-  </ion-infinite-scroll> -->
+	<ion-infinite-scroll color="primary" threshold="30%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>

@@ -65,7 +65,7 @@
 
 	<!-- ng-select -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -111,7 +111,7 @@
 
 	<!-- ng-select-async -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-async'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -133,8 +133,9 @@
 		</ng-template>
 	</ng-select>
 
+	<!-- ng-select-branch -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-branch'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -151,7 +152,6 @@
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
 	>
-		<!-- [appendTo]="appendTo" -->
 		<ng-template ng-label-tmp let-i="item">
 			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
 		</ng-template>
@@ -162,7 +162,7 @@
 
 	<!-- ng-select-level -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-level'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -193,7 +193,7 @@
 
 	<!-- ng-select-status -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-status'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -206,7 +206,7 @@
 		[clearable]="clearable"
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
-		placeholder="{{ placeholder || label | translate }}"
+		[placeholder]="placeholder || label | translate"
 	>
 		<ng-template ng-label-tmp let-i="item">
 			<b
@@ -223,7 +223,7 @@
 
 	<!-- ng-select-bp -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-bp'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -269,7 +269,7 @@
 
 	<!-- ng-select-item -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-item'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -314,7 +314,7 @@
 
 	<!-- ng-select-schema -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-schema'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -358,7 +358,7 @@
 
 	<!-- ng-select-staff -->
 	<ng-select
-		[virtualScroll]="true"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-staff'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -504,18 +504,23 @@
 	</span>
 
 	<!-- time-frame -->
-	<span *ngSwitchCase="'time-frame'" class="c-input btns" [ngClass]="{ disable: form.controls[id].disabled }">
-		<ion-button fill="outline" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-Range')">
-			<ion-icon color="dark" slot="start" name="calendar-outline"></ion-icon>
-			<ion-icon color="dark" slot="end" name="chevron-down"></ion-icon>
+	<span
+		*ngSwitchCase="'time-frame'"
+		class="c-input btns time-frame"
+		tabindex="0"
+		[ngClass]="{ disable: form.controls[id].disabled, 'is-null': form.controls[id].getRawValue().IsNull }"
+	>
+		<ion-button [fill]="form.controls[id].getRawValue().IsNull ? 'outline' : 'solid'" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-Range')">
+			<ion-icon slot="start" name="calendar-outline"></ion-icon>
+			<ion-icon slot="end" name="chevron-down"></ion-icon>
 		</ion-button>
 
-		<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
+		<ion-button class="text-display" fill="clear" size="small" (click)="presentDatePicker($event, form.controls[id], 'TimeFrame-From')">
 			<!-- <ion-icon color="dark" slot="start" name="radio-button-on"></ion-icon> -->
 			{{ (lib.formatTimeConfig(form.controls[id].getRawValue()) | translate) || ('From date' | translate) }}
 		</ion-button>
-		<ion-icon name="arrow-forward-outline"></ion-icon>
-		<ion-button fill="clear" size="small" (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')">
+		<ion-icon name="arrow-forward-outline" class="text-display"></ion-icon>
+		<ion-button class="text-display" fill="clear" size="small" (click)="presentDatePicker($event, form.controls[secondaryId], 'TimeFrame-To')">
 			<!-- <ion-icon slot="start" name="chevron-forward"></ion-icon> -->
 			{{ (lib.formatTimeConfig(form.controls[secondaryId].getRawValue()) | translate) || ('To date' | translate) }}
 		</ion-button>

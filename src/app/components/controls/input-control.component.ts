@@ -110,6 +110,7 @@ export class InputControlComponent implements OnInit {
 	constructor() {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
+		console.log('InputControlComponent');
 	}
 
 	ngOnInit() {

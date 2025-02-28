@@ -47,6 +47,8 @@ export class DataTableComponent implements OnInit {
 		this._query = val;
 		if (this.formGroup) {
 			this.formGroup.patchValue(this._query);
+			console.log(this._query);
+
 			this.onFilterSubmit(null);
 		}
 	}
@@ -87,7 +89,10 @@ export class DataTableComponent implements OnInit {
 		const group: any = {};
 		this._allColumns.forEach((column) => {
 			if (column.canFilter && column.property) {
-				group[column.property] = new FormControl(this._query[column.property] || '');
+				console.log(column);
+				const defaultValue = column.filterControlType == 'text' ? '' : null;
+
+				group[column.property] = new FormControl(this._query[column.property] || defaultValue);
 
 				if (column.filterControlType === 'time-frame') {
 					group[column.property + 'TimeFrame'] = this.formBuilder.group({
@@ -109,8 +114,8 @@ export class DataTableComponent implements OnInit {
 						}),
 					});
 
-					group[column.property + 'From'] = new FormControl(this._query[column.property + 'From'] || '');
-					group[column.property + 'To'] = new FormControl(this._query[column.property + 'To'] || '');
+					group[column.property + 'From'] = new FormControl(this._query[column.property + 'From'] || defaultValue);
+					group[column.property + 'To'] = new FormControl(this._query[column.property + 'To'] || defaultValue);
 					// console.log(group);
 				}
 			}

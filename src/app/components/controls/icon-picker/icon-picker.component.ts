@@ -11,6 +11,9 @@ export class IconPickerComponent implements OnInit {
 	@Input() color: string;
 
 	items = [
+		{ Name: 'quotation', Tags: 'price,quotation,money,document' },
+		{ Name: 'purchase-request', Tags: 'price,quotation,money,document' },
+
 		{ Name: 'project', Tags: 'project' },
 		{ Name: 'panel-right-active', Tags: 'panel,right,active' },
 		{ Name: 'panel-right', Tags: 'panel,right' },

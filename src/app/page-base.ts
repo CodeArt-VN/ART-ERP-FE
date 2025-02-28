@@ -694,7 +694,7 @@ export abstract class PageBase implements OnInit {
 
 	submitForApproval() {
 		if (!this.pageConfig.canSubmit || !this.pageConfig.ShowSubmit || this.submitAttempt) return;
-	
+
 		this.env
 			.actionConfirm('submit', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
 				this.pageProvider.submitForApproval(this.pageConfig.isDetailPage ? this.item : this.selectedItems)
@@ -713,8 +713,7 @@ export abstract class PageBase implements OnInit {
 			});
 	}
 
-	approve() 
-	{
+	approve() {
 		if (!this.pageConfig.canApprove || !this.pageConfig.ShowApprove || this.submitAttempt) return;
 		this.env
 			.actionConfirm('approve', this.selectedItems.length, this.item?.Name, this.pageConfig.pageTitle, () =>
@@ -732,7 +731,7 @@ export abstract class PageBase implements OnInit {
 				if (err != 'User abort action') this.env.showMessage('Cannot approve, please try again', 'danger');
 				console.log(err);
 			});
-		}
+	}
 
 	disapprove() {
 		if (!this.pageConfig.canApprove || !this.pageConfig.ShowDisapprove || this.submitAttempt) return;
@@ -752,7 +751,7 @@ export abstract class PageBase implements OnInit {
 				if (err != 'User abort action') this.env.showMessage('Cannot disapprove, please try again', 'danger');
 				console.log(err);
 			});
-		}
+	}
 
 	copy() {}
 	merge() {}
@@ -777,7 +776,7 @@ export abstract class PageBase implements OnInit {
 				console.log(err);
 			});
 	}
-	deleteItems(event = null){}
+	deleteItems(event = null) {}
 	delete(publishEventCode = this.pageConfig.pageName) {
 		if (this.pageConfig.ShowDelete) {
 			this.env
@@ -1081,6 +1080,7 @@ export abstract class PageBase implements OnInit {
 
 	onDatatableFilter(e) {
 		Object.assign(this.query, e.query);
+		Object.keys(this.query).forEach((key) => (this.query[key] === null || this.query[key] === '') && delete this.query[key]);
 		this.refresh();
 	}
 
