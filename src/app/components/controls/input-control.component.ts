@@ -305,7 +305,7 @@ export class InputControlComponent implements OnInit {
 	}
 	// #region private
 	private configBranch() {
-		if (this.dataSource?.length == 0) return;
+		if (!this.dataSource || this.dataSource?.length == 0) return;
 		let parentList;
 		// this.dataSource = lib.cloneObject(this.dataSource);
 		let it = this.dataSource.find((d) => d.Id == this.selectedBranch);

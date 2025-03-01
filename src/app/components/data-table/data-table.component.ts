@@ -49,7 +49,7 @@ export class DataTableComponent implements OnInit {
 			this.formGroup.patchValue(this._query);
 			console.log(this._query);
 
-			this.onFilterSubmit(null);
+			//this.onFilterSubmit(null);
 		}
 	}
 	filterValue: any;
@@ -89,9 +89,7 @@ export class DataTableComponent implements OnInit {
 		const group: any = {};
 		this._allColumns.forEach((column) => {
 			if (column.canFilter && column.property) {
-				console.log(column);
 				const defaultValue = column.filterControlType == 'text' ? '' : null;
-
 				group[column.property] = new FormControl(this._query[column.property] || defaultValue);
 
 				if (column.filterControlType === 'time-frame') {
