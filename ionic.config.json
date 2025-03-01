@@ -1,7 +1,7 @@
 {
-  "name": "ERP",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
+	"name": "ERP",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "angular"
 }

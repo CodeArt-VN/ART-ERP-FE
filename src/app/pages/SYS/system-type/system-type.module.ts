@@ -7,13 +7,7 @@ import { SystemTypePage } from './system-type.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: SystemTypePage }]),
-  ],
-  declarations: [SystemTypePage],
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: SystemTypePage }])],
+	declarations: [SystemTypePage],
 })
 export class SystemTypePageModule {}

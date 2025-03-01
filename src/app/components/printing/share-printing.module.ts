@@ -7,8 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, IonicModule, TranslateModule],
-  declarations: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
-  exports: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
+	imports: [CommonModule, IonicModule, TranslateModule],
+	declarations: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
+	exports: [PurchaseOrderNoteComponent, SaleOrderNoteComponent],
 })
 export class SharePrintingModule {}

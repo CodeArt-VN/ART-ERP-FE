@@ -7,14 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { SchemaDetailPage } from './schema-detail.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: SchemaDetailPage,
-  },
+	{
+		path: '',
+		component: SchemaDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
-  declarations: [SchemaDetailPage],
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [SchemaDetailPage],
 })
 export class SchemaDetailPageModule {}

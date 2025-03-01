@@ -7,22 +7,14 @@ import { SystemStatusDetailPage } from './system-status-detail.page';
 import { ShareModule } from 'src/app/share.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: SystemStatusDetailPage,
-  },
+	{
+		path: '',
+		component: SystemStatusDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ShareModule,
-    RouterModule.forChild(routes),
-  ],
-  declarations: [SystemStatusDetailPage],
+	imports: [CommonModule, FormsModule, ShareModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [SystemStatusDetailPage],
 })
 export class SystemStatusDetailPageModule {}

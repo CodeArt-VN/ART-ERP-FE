@@ -8,87 +8,87 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-    selector: 'app-system-type-detail',
-    templateUrl: './system-type-detail.page.html',
-    styleUrls: ['./system-type-detail.page.scss'],
-    standalone: false
+	selector: 'app-system-type-detail',
+	templateUrl: './system-type-detail.page.html',
+	styleUrls: ['./system-type-detail.page.scss'],
+	standalone: false,
 })
 export class SystemTypeDetailPage extends PageBase {
-  colorList = [
-    { Code: 'success' },
-    { Code: 'warning' },
-    { Code: 'danger' },
-    { Code: 'primary' },
-    { Code: 'secondary' },
-    { Code: 'tertiary' },
-    { Code: 'dark' },
-    { Code: 'medium' },
-    { Code: 'light' },
-  ];
-  constructor(
-    public pageProvider: SYS_TypeProvider,
-    public env: EnvService,
-    public navCtrl: NavController,
-    public route: ActivatedRoute,
+	colorList = [
+		{ Code: 'success' },
+		{ Code: 'warning' },
+		{ Code: 'danger' },
+		{ Code: 'primary' },
+		{ Code: 'secondary' },
+		{ Code: 'tertiary' },
+		{ Code: 'dark' },
+		{ Code: 'medium' },
+		{ Code: 'light' },
+	];
+	constructor(
+		public pageProvider: SYS_TypeProvider,
+		public env: EnvService,
+		public navCtrl: NavController,
+		public route: ActivatedRoute,
 
-    public modalController: ModalController,
-    public alertCtrl: AlertController,
-    public navParams: NavParams,
-    public formBuilder: FormBuilder,
-    public cdr: ChangeDetectorRef,
-    public loadingController: LoadingController,
-  ) {
-    super();
-    this.pageConfig.forceLoadData = true;
-    this.pageConfig.isDetailPage = true;
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.formGroup = formBuilder.group({
-      IDParent: [''],
-      Id: [''],
-      Code: ['', Validators.required],
-      Name: ['', Validators.required],
-      Remark: [''],
-      Sort: [''],
-      Icon: [''],
-      Color: [''],
-    });
-  }
+		public modalController: ModalController,
+		public alertCtrl: AlertController,
+		public navParams: NavParams,
+		public formBuilder: FormBuilder,
+		public cdr: ChangeDetectorRef,
+		public loadingController: LoadingController
+	) {
+		super();
+		this.pageConfig.forceLoadData = true;
+		this.pageConfig.isDetailPage = true;
+		this.id = this.route.snapshot.paramMap.get('id');
+		this.formGroup = formBuilder.group({
+			IDParent: [''],
+			Id: [''],
+			Code: ['', Validators.required],
+			Name: ['', Validators.required],
+			Remark: [''],
+			Sort: [''],
+			Icon: [''],
+			Color: [''],
+		});
+	}
 
-  preLoadData() {
-    if (this.navParams) {
-      this.items = lib.cloneObject(this.navParams.data.items);
-      this.items.forEach((i) => {
-        let prefix = '';
-        for (let j = 1; j < i.level; j++) {
-          prefix += '- ';
-        }
-        i.Name = prefix + i.Name;
-      });
-      this.item = lib.cloneObject(this.navParams.data.item);
-      this.id = this.navParams.data.id;
+	preLoadData() {
+		if (this.navParams) {
+			this.items = lib.cloneObject(this.navParams.data.items);
+			this.items.forEach((i) => {
+				let prefix = '';
+				for (let j = 1; j < i.level; j++) {
+					prefix += '- ';
+				}
+				i.Name = prefix + i.Name;
+			});
+			this.item = lib.cloneObject(this.navParams.data.item);
+			this.id = this.navParams.data.id;
 
-      this.removeCurrentNode();
-      this.cdr.detectChanges();
-      super.loadedData();
-    }
-  }
+			this.removeCurrentNode();
+			this.cdr.detectChanges();
+			super.loadedData();
+		}
+	}
 
-  refresh() {
-    this.preLoadData();
-  }
+	refresh() {
+		this.preLoadData();
+	}
 
-  removeCurrentNode() {
-    let currentItem = this.items.find((i) => i.Id == this.id);
-    if (currentItem) {
-      currentItem.Flag = true;
-      this.markNestedNode(this.items, this.id);
-    }
-  }
+	removeCurrentNode() {
+		let currentItem = this.items.find((i) => i.Id == this.id);
+		if (currentItem) {
+			currentItem.Flag = true;
+			this.markNestedNode(this.items, this.id);
+		}
+	}
 
-  markNestedNode(ls, Id) {
-    ls.filter((d) => d.IDParent == Id).forEach((i) => {
-      i.Flag = true;
-      this.markNestedNode(ls, i.Id);
-    });
-  }
+	markNestedNode(ls, Id) {
+		ls.filter((d) => d.IDParent == Id).forEach((i) => {
+			i.Flag = true;
+			this.markNestedNode(ls, i.Id);
+		});
+	}
 }

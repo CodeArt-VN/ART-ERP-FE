@@ -7,14 +7,7 @@ import { ProfilePage } from './profile.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: ProfilePage }]),
-  ],
-  declarations: [ProfilePage],
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild([{ path: '', component: ProfilePage }])],
+	declarations: [ProfilePage],
 })
 export class ProfilePageModule {}

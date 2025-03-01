@@ -1,127 +1,124 @@
-<div
-  cdkDropListGroup
-  class="table responsive form-container"
-  [ngClass]="{ 'small-width': smallWidth === true }"
-  *ngIf="_schema"
->
-<div id="ng-select-filterComponent" style="position: absolute; z-index: 30005"></div>
+<div cdkDropListGroup class="table responsive form-container" [ngClass]="{ 'small-width': smallWidth === true }" *ngIf="_schema">
+	<div id="ng-select-filterComponent" style="position: absolute; z-index: 30005"></div>
 
-  <ng-template #recursiveList let-parent="parent" let-list="list" let-depth="depth">
-    <div
-      *ngIf="parent"
-      [id]="parent.controls.UniqueId.value"
-      cdkDropList
-      [cdkDropListData]="parent.controls.Logicals"
-      [cdkDropListConnectedTo]="connectionList"
-      (cdkDropListDropped)="onDrop($event)"
-      style="padding-left: 15px; min-height: 16px; border-left: solid 1px var(--menu-right-border-color)"
-    >
-      <div cdkDrag *ngFor="let form of list; let i = index">
-        <form [formGroup]="form" (submit)="onFormSubmit()">
-          <div class="row drag-box">
-            <ng-container
-              [ngTemplateOutlet]="formControlTemplate"
-              [ngTemplateOutletContext]="{
-                form: form,
-                parent: parent
-              }"
-            ></ng-container>
-            <div
-              cdkDragHandle
-              class="cell col-reorder"
-              *ngIf="form.controls.Logicals.controls.length || form.get('Dimension')?.value != 'logical'"
-            >
-              <ion-icon name="reorder-two-outline"></ion-icon>
-            </div>
-          </div>
-        </form>
-        <ng-container *ngIf="form.get('Dimension')?.value == 'logical'">
-          <ng-container
-            *ngTemplateOutlet="
-              recursiveList;
-              context: {
-                list: form.controls.Logicals.controls,
-                parent: form
-              }
-            "
-          ></ng-container>
-        </ng-container>
-      </div>
-    </div>
-    <div *ngIf="!parent">
-      <div *ngFor="let form of list; let i = index">
-        <form [formGroup]="form" (submit)="onFormSubmit()">
-          <div class="row drag-box">
-            <ng-container
-              [ngTemplateOutlet]="formControlTemplate"
-              [ngTemplateOutletContext]="{ form: form }"
-            ></ng-container>
-            <div class="cell col-reorder">
-              <ion-icon name="reorder-two-outline"></ion-icon>
-            </div>
-          </div>
-        </form>
-        <div *ngIf="form.controls.Logicals?.controls.length > 0">
-          <ng-container
-            *ngTemplateOutlet="
-              recursiveList;
-              context: {
-                list: form.controls.Logicals.controls,
-                parent: form
-              }
-            "
-          ></ng-container>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  <ng-template #formControlTemplate let-form="form" let-parent="parent">
-    <div class="cell col-name">
-      <app-input-control
-        [field]="{id:'Dimension', type :'ng-select',label:'Dimension', placeholder:'Select dimension...',dataSource:_schema.Fields,  bindLabel:'Name',form:form,appendTo:'#ng-select-filterComponent'}"
-        (change)="changeDimension(form)"
-      ></app-input-control>
-    </div>
-    <div class="cell col-code">
-      <app-input-control
-        [field]="{
-          id: 'Operator', 
-          type: 'ng-select', 
-          label: 'Operator', 
-          placeholder: 'Select operator...', 
-          dataSource: form.get('Dimension')?.value === 'logical' ? logicalOperators : transformOperators, 
-          bindLabel: 'name', 
-          bindValue: 'code',
-          form:form,
-          appendTo:'#ng-select-filterComponent'
-        }"
-        (change)="onInputChange()"
-      ></app-input-control>
-    </div>
-    <div class="cell col-value">
-      <app-input-control
-        [field]="{
-          id: 'Value',
-          label: 'Value',
-          type: getSchemaDetailType(form),
-          form: form,
-          appendTo:'#ng-select-filterComponent'
-        }"
-        *ngIf="form.get('Dimension')?.value != 'logical'"
-        (change)="onInputChange()"
-      ></app-input-control>
-    </div>
-    <a class="cell col-icon addBtn" (click)="addForm(form)" *ngIf="form.get('Dimension')?.value == 'logical'">
-      <ion-icon color="success" class="min-btn" name="add-outline"></ion-icon>
-    </a>
-    <a
-      class="cell col-icon removeBtn"
-      (click)="removeForm(form, parent)"
-      *ngIf="parent && (form.get('Dimension')?.value != 'logical' || form.controls.Logicals.controls.length == 0)"
-    >
-      <ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
-    </a>
-  </ng-template>
+	<ng-template #recursiveList let-parent="parent" let-list="list" let-depth="depth">
+		<div
+			*ngIf="parent"
+			[id]="parent.controls.UniqueId.value"
+			cdkDropList
+			[cdkDropListData]="parent.controls.Logicals"
+			[cdkDropListConnectedTo]="connectionList"
+			(cdkDropListDropped)="onDrop($event)"
+			style="padding-left: 15px; min-height: 16px; border-left: solid 1px var(--menu-right-border-color)"
+		>
+			<div cdkDrag *ngFor="let form of list; let i = index">
+				<form [formGroup]="form" (submit)="onFormSubmit()">
+					<div class="row drag-box">
+						<ng-container
+							[ngTemplateOutlet]="formControlTemplate"
+							[ngTemplateOutletContext]="{
+								form: form,
+								parent: parent,
+							}"
+						></ng-container>
+						<div cdkDragHandle class="cell col-reorder" *ngIf="form.controls.Logicals.controls.length || form.get('Dimension')?.value != 'logical'">
+							<ion-icon name="reorder-two-outline"></ion-icon>
+						</div>
+					</div>
+				</form>
+				<ng-container *ngIf="form.get('Dimension')?.value == 'logical'">
+					<ng-container
+						*ngTemplateOutlet="
+							recursiveList;
+							context: {
+								list: form.controls.Logicals.controls,
+								parent: form,
+							}
+						"
+					></ng-container>
+				</ng-container>
+			</div>
+		</div>
+		<div *ngIf="!parent">
+			<div *ngFor="let form of list; let i = index">
+				<form [formGroup]="form" (submit)="onFormSubmit()">
+					<div class="row drag-box">
+						<ng-container [ngTemplateOutlet]="formControlTemplate" [ngTemplateOutletContext]="{ form: form }"></ng-container>
+						<div class="cell col-reorder">
+							<ion-icon name="reorder-two-outline"></ion-icon>
+						</div>
+					</div>
+				</form>
+				<div *ngIf="form.controls.Logicals?.controls.length > 0">
+					<ng-container
+						*ngTemplateOutlet="
+							recursiveList;
+							context: {
+								list: form.controls.Logicals.controls,
+								parent: form,
+							}
+						"
+					></ng-container>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	<ng-template #formControlTemplate let-form="form" let-parent="parent">
+		<div class="cell col-name">
+			<app-input-control
+				[field]="{
+					id: 'Dimension',
+					type: 'ng-select',
+					label: 'Dimension',
+					placeholder: 'Select dimension...',
+					dataSource: _schema.Fields,
+					bindLabel: 'Name',
+					form: form,
+					appendTo: '#ng-select-filterComponent',
+				}"
+				(change)="changeDimension(form)"
+			></app-input-control>
+		</div>
+		<div class="cell col-code">
+			<app-input-control
+				[field]="{
+					id: 'Operator',
+					type: 'ng-select',
+					label: 'Operator',
+					placeholder: 'Select operator...',
+					dataSource: form.get('Dimension')?.value === 'logical' ? logicalOperators : transformOperators,
+					bindLabel: 'name',
+					bindValue: 'code',
+					form: form,
+					appendTo: '#ng-select-filterComponent',
+				}"
+				(change)="onInputChange()"
+			></app-input-control>
+		</div>
+		<div class="cell col-value">
+			<app-input-control
+				[field]="{
+					id: 'Value',
+					label: 'Value',
+					type: getSchemaDetailType(form),
+					form: form,
+					appendTo: '#ng-select-filterComponent',
+				}"
+				*ngIf="form.get('Dimension')?.value != 'logical'"
+				(change)="onInputChange()"
+			></app-input-control>
+		</div>
+		<a class="cell col-icon addBtn" (click)="addForm(form)" *ngIf="form.get('Dimension')?.value == 'logical'">
+			<ion-icon color="success" class="min-btn" name="add-outline"></ion-icon>
+		</a>
+		<a
+			class="cell col-icon removeBtn"
+			(click)="removeForm(form, parent)"
+			*ngIf="parent && (form.get('Dimension')?.value != 'logical' || form.controls.Logicals.controls.length == 0)"
+		>
+			<ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
+		</a>
+	</ng-template>
 
-  <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{ list: [form] }"></ng-container>
+	<ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{ list: [form] }"></ng-container>
 </div>

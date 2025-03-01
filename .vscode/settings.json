@@ -1,26 +1,26 @@
 {
-    "search.exclude": {
-        "**/android": true,
-        "**/ios": true,
-        "**/www": true,
-        "_publish.*": true,
-    },
-    "files.exclude": {
-        "**/.vscode": true,
-        "**/*.apk": true,
-        "**/*.spec.ts": true,
-        "**/www": true,
-        "_publish.*": true,
-    },
-    "ionic.previewInEditor": true,
-    "ionic.externalAddress": true,
-    "editor.codeLens": true,
-    "lingua.flatTranslationKeys": true,
-    "prettier.bracketSameLine": false,
-    "prettier.bracketSpacing": false,
-    "prettier.printWidth": 180,
-    "prettier.requireConfig": false,
-    "prettier.singleQuote": true,
-    "prettier.jsxSingleQuote": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
+	"search.exclude": {
+		"**/android": true,
+		"**/ios": true,
+		"**/www": true,
+		"_publish.*": true
+	},
+	"files.exclude": {
+		"**/.vscode": true,
+		"**/*.apk": true,
+		"**/*.spec.ts": true,
+		"**/www": true,
+		"_publish.*": true
+	},
+	"ionic.previewInEditor": true,
+	"ionic.externalAddress": true,
+	"editor.codeLens": true,
+	"lingua.flatTranslationKeys": true,
+	"prettier.bracketSameLine": false,
+	"prettier.bracketSpacing": false,
+	"prettier.printWidth": 180,
+	"prettier.requireConfig": false,
+	"prettier.singleQuote": true,
+	"prettier.jsxSingleQuote": true,
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

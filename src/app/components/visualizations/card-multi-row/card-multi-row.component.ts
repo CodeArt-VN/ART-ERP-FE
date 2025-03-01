@@ -1,37 +1,37 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-    selector: 'app-card-multi-row',
-    templateUrl: './card-multi-row.component.html',
-    styleUrls: ['./card-multi-row.component.scss'],
-    standalone: false
+	selector: 'app-card-multi-row',
+	templateUrl: './card-multi-row.component.html',
+	styleUrls: ['./card-multi-row.component.scss'],
+	standalone: false,
 })
 export class CardMultiRowComponent implements OnInit {
-  @Output() onChange = new EventEmitter();
+	@Output() onChange = new EventEmitter();
 
-  @Input() title: any;
-  
-  _value: number = 0;
-  @Input() set value(val){
-    this._value = val;
-  }
+	@Input() title: any;
 
-  _comparitionValue: number = null;
-  @Input() set comparitionValue(val){
-    this._comparitionValue = val;
-  }
+	_value: number = 0;
+	@Input() set value(val) {
+		this._value = val;
+	}
 
-  get percent(){
-    return this._comparitionValue ? (this._value - this._comparitionValue) / this._comparitionValue * 100 : 0;
-  }
+	_comparitionValue: number = null;
+	@Input() set comparitionValue(val) {
+		this._comparitionValue = val;
+	}
 
-  @Input() selected: any;
+	get percent() {
+		return this._comparitionValue ? ((this._value - this._comparitionValue) / this._comparitionValue) * 100 : 0;
+	}
 
-  constructor() {}
+	@Input() selected: any;
 
-  ngOnInit() {}
+	constructor() {}
 
-  onClick(e) {
-    this.onChange.emit(e);
-  }
+	ngOnInit() {}
+
+	onClick(e) {
+		this.onChange.emit(e);
+	}
 }

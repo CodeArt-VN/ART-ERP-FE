@@ -1,165 +1,140 @@
 <ion-content [scrollY]="false">
-  <div>
-    <ion-list lines="none">
-      <div class="ion-padding">
-        <div class="c-control" *ngIf="popConfig.isShowSingleDate">
-          <label class="c-label" for="singleDate">{{popConfig.singleDateLabel}}</label>
-          <input
-            class="c-input"
-            name="singleDate"
-            type="date"
-            ngDefaultControl
-            type="date"
-            [(ngModel)]="popData.singleDate"
-          />
-        </div>
+	<div>
+		<ion-list lines="none">
+			<div class="ion-padding">
+				<div class="c-control" *ngIf="popConfig.isShowSingleDate">
+					<label class="c-label" for="singleDate">{{popConfig.singleDateLabel}}</label>
+					<input class="c-input" name="singleDate" type="date" ngDefaultControl type="date" [(ngModel)]="popData.singleDate" />
+				</div>
 
-        <div class="c-control" *ngIf="popConfig.isShowDateRange">
-          <label class="c-label"
-            >{{popConfig.dateRangeLabel}}
-            <small *ngIf="popData.fromDate">
-              {{popData.fromDate | date:'dd/MM/yy'}} - {{popData.toDate | date:'dd/MM/yy'}}
-            </small>
-          </label>
-          <ion-button
-            size="small"
-            [fill]="popData.selectedBTNDate=='today'? 'solid': 'outline'"
-            size="small"
-            (click)="changeDateFillter('today')"
-            (click)="command(popData)"
-          >
-            {{'Today' | translate}}
-          </ion-button>
-          <ion-button
-            size="small"
-            [fill]="popData.selectedBTNDate=='yesterday'? 'solid': 'outline'"
-            size="small"
-            (click)="changeDateFillter('yesterday')"
-            (click)="command(popData)"
-          >
-            {{'Yesterday' | translate}}
-          </ion-button>
-          <ion-button
-            size="small"
-            [fill]="popData.selectedBTNDate=='thisWeek'? 'solid': 'outline'"
-            size="small"
-            (click)="changeDateFillter('thisWeek')"
-            (click)="command(popData)"
-          >
-            {{'This week' | translate}}
-          </ion-button>
-          <ion-button
-            size="small"
-            (click)="isShowFromToDate = !isShowFromToDate"
-            [fill]="popData.selectedBTNDate=='setdone'? 'solid': 'outline'"
-            (click)="changeDateFillter('setdone')"
-          >
-            ...
-          </ion-button>
-        </div>
+				<div class="c-control" *ngIf="popConfig.isShowDateRange">
+					<label class="c-label"
+						>{{popConfig.dateRangeLabel}}
+						<small *ngIf="popData.fromDate"> {{popData.fromDate | date:'dd/MM/yy'}} - {{popData.toDate | date:'dd/MM/yy'}} </small>
+					</label>
+					<ion-button
+						size="small"
+						[fill]="popData.selectedBTNDate=='today'? 'solid': 'outline'"
+						size="small"
+						(click)="changeDateFillter('today')"
+						(click)="command(popData)"
+					>
+						{{'Today' | translate}}
+					</ion-button>
+					<ion-button
+						size="small"
+						[fill]="popData.selectedBTNDate=='yesterday'? 'solid': 'outline'"
+						size="small"
+						(click)="changeDateFillter('yesterday')"
+						(click)="command(popData)"
+					>
+						{{'Yesterday' | translate}}
+					</ion-button>
+					<ion-button
+						size="small"
+						[fill]="popData.selectedBTNDate=='thisWeek'? 'solid': 'outline'"
+						size="small"
+						(click)="changeDateFillter('thisWeek')"
+						(click)="command(popData)"
+					>
+						{{'This week' | translate}}
+					</ion-button>
+					<ion-button
+						size="small"
+						(click)="isShowFromToDate = !isShowFromToDate"
+						[fill]="popData.selectedBTNDate=='setdone'? 'solid': 'outline'"
+						(click)="changeDateFillter('setdone')"
+					>
+						...
+					</ion-button>
+				</div>
 
-        <div *ngIf="popConfig.isShowDateRange && isShowFromToDate">
-          <div class="c-control">
-            <label class="c-label" for="OrderDateFrom">{{'From date' | translate}}</label>
-            <input
-              (change)="changeDateFillter('setdone')"
-              class="c-input"
-              [(ngModel)]="popData.fromDate"
-              required
-              type="date"
-              pattern="\d{1,2}/\m{1,2}/\y{4}"
-              value=""
-            />
-          </div>
+				<div *ngIf="popConfig.isShowDateRange && isShowFromToDate">
+					<div class="c-control">
+						<label class="c-label" for="OrderDateFrom">{{'From date' | translate}}</label>
+						<input
+							(change)="changeDateFillter('setdone')"
+							class="c-input"
+							[(ngModel)]="popData.fromDate"
+							required
+							type="date"
+							pattern="\d{1,2}/\m{1,2}/\y{4}"
+							value=""
+						/>
+					</div>
 
-          <div class="c-control">
-            <label class="c-label" for="OrderDateTo">{{'To date' | translate}}</label>
-            <input
-              (change)="changeDateFillter('setdone')"
-              class="c-input"
-              [(ngModel)]="popData.toDate"
-              required
-              type="date"
-              pattern="\d{1,2}/\m{1,2}/\y{4}"
-              value=""
-            />
-          </div>
-        </div>
+					<div class="c-control">
+						<label class="c-label" for="OrderDateTo">{{'To date' | translate}}</label>
+						<input (change)="changeDateFillter('setdone')" class="c-input" [(ngModel)]="popData.toDate" required type="date" pattern="\d{1,2}/\m{1,2}/\y{4}" value="" />
+					</div>
+				</div>
 
-        <div class="c-control" *ngIf="popConfig.isShowStaffSelect">
-          <label class="c-label" for="IDstaff">{{popConfig.staffSelectLabel}}</label>
-          <ng-select
-            [(ngModel)]="popData.staff"
-            class="c-input"
-            #IDstaff
-            labelForId="IDstaff"
-            [items]="staffList$ | async"
-            [typeahead]="staffListInput$"
-            [loading]="staffListLoading"
-            [virtualScroll]="true"
-            bindLabel="FullName"
-            placeholder="{{'Search...' | translate}}"
-          >
-            <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-              <div *ngIf="i">
-                <div>
-                  <span [ngOptionHighlight]="search">{{i.FullName}}</span>
-                </div>
-                <small
-                  >#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b>
-                  <span *ngIf="i.Phone">
-                    | {{'phone' | translate}}:
-                    <b [ngOptionHighlight]="search">{{i.Phone}}</b></span
-                  ></small
-                >
-              </div>
-            </ng-template>
-          </ng-select>
-        </div>
+				<div class="c-control" *ngIf="popConfig.isShowStaffSelect">
+					<label class="c-label" for="IDstaff">{{popConfig.staffSelectLabel}}</label>
+					<ng-select
+						[(ngModel)]="popData.staff"
+						class="c-input"
+						#IDstaff
+						labelForId="IDstaff"
+						[items]="staffList$ | async"
+						[typeahead]="staffListInput$"
+						[loading]="staffListLoading"
+						[virtualScroll]="true"
+						bindLabel="FullName"
+						placeholder="{{'Search...' | translate}}"
+					>
+						<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+							<div *ngIf="i">
+								<div>
+									<span [ngOptionHighlight]="search">{{i.FullName}}</span>
+								</div>
+								<small
+									>#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b>
+									<span *ngIf="i.Phone">
+										| {{'phone' | translate}}:
+										<b [ngOptionHighlight]="search">{{i.Phone}}</b></span
+									></small
+								>
+							</div>
+						</ng-template>
+					</ng-select>
+				</div>
 
-        <div class="c-control" *ngIf="popConfig.isShowSaleOrderStatusSelect">
-          <label class="c-label">{{popConfig.saleOrderStatusSelectLabel}}</label>
-          <select
-            class="c-input c-dropdown"
-            [(ngModel)]="popData.saleOrderStatus"
-            [ngModelOptions]="{standalone: true}"
-          >
-            <option *ngFor="let t of saleOrderStatusList" [value]="t.Code">{{t.Name}}</option>
-          </select>
-        </div>
+				<div class="c-control" *ngIf="popConfig.isShowSaleOrderStatusSelect">
+					<label class="c-label">{{popConfig.saleOrderStatusSelectLabel}}</label>
+					<select class="c-input c-dropdown" [(ngModel)]="popData.saleOrderStatus" [ngModelOptions]="{standalone: true}">
+						<option *ngFor="let t of saleOrderStatusList" [value]="t.Code">{{t.Name}}</option>
+					</select>
+				</div>
 
-        <div class="c-control" *ngIf="popConfig.isShowBranchSelect">
-          <label class="c-label" for="IDBranch">{{popConfig.branchSelectLabel}}</label>
-          <ng-select
-            appendTo="#ng-select-holder"
-            [(ngModel)]="popData.branch"
-            class="c-input"
-            #IDBranch
-            labelForId="IDBranch"
-            [items]="branchList"
-            [virtualScroll]="true"
-            bindLabel="Name"
-            placeholder="{{'Select unit...' | translate}}"
-          >
-            <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-              <div *ngIf="i">
-                <div>
-                  <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-                  <ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search"
-                    >{{i.Name}}</ion-text
-                  >
-                </div>
-              </div>
-            </ng-template>
-          </ng-select>
-        </div>
+				<div class="c-control" *ngIf="popConfig.isShowBranchSelect">
+					<label class="c-label" for="IDBranch">{{popConfig.branchSelectLabel}}</label>
+					<ng-select
+						appendTo="#ng-select-holder"
+						[(ngModel)]="popData.branch"
+						class="c-input"
+						#IDBranch
+						labelForId="IDBranch"
+						[items]="branchList"
+						[virtualScroll]="true"
+						bindLabel="Name"
+						placeholder="{{'Select unit...' | translate}}"
+					>
+						<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+							<div *ngIf="i">
+								<div>
+									<span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
+									<ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text>
+								</div>
+							</div>
+						</ng-template>
+					</ng-select>
+				</div>
 
-        <div class="c-control">
-          <ion-button color="primary" expand="block" (click)="command(popData)">
-            {{popConfig.submitButtonLabel | translate}}
-          </ion-button>
-        </div>
-      </div>
-    </ion-list>
-  </div>
+				<div class="c-control">
+					<ion-button color="primary" expand="block" (click)="command(popData)"> {{popConfig.submitButtonLabel | translate}} </ion-button>
+				</div>
+			</div>
+		</ion-list>
+	</div>
 </ion-content>

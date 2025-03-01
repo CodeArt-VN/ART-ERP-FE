@@ -4,23 +4,23 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PopoverPage } from './popover.page';
 
 describe('PopoverPage', () => {
-  let component: PopoverPage;
-  let fixture: ComponentFixture<PopoverPage>;
+	let component: PopoverPage;
+	let fixture: ComponentFixture<PopoverPage>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PopoverPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [PopoverPage],
+			schemas: [CUSTOM_ELEMENTS_SCHEMA],
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PopoverPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(PopoverPage);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

@@ -7,14 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { FlatDetailPage } from './flat-detail.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: FlatDetailPage,
-  },
+	{
+		path: '',
+		component: FlatDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
-  declarations: [FlatDetailPage],
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [FlatDetailPage],
 })
 export class FlatDetailPageModule {}

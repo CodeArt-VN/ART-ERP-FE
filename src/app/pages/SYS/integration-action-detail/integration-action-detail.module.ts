@@ -7,21 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { IntegrationActionDetailPage } from './integration-action-detail.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: IntegrationActionDetailPage
-  }
+	{
+		path: '',
+		component: IntegrationActionDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ShareModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [IntegrationActionDetailPage]
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [IntegrationActionDetailPage],
 })
-export class IntegrationActionDetailPageModule { }
+export class IntegrationActionDetailPageModule {}

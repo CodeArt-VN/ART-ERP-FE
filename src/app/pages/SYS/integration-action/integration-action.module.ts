@@ -7,13 +7,7 @@ import { IntegrationActionPage } from './integration-action.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: IntegrationActionPage }])
-  ],
-  declarations: [IntegrationActionPage]
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: IntegrationActionPage }])],
+	declarations: [IntegrationActionPage],
 })
 export class IntegrationActionPageModule {}

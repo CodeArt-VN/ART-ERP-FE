@@ -7,22 +7,14 @@ import { SystemTypeDetailPage } from './system-type-detail.page';
 import { ShareModule } from 'src/app/share.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: SystemTypeDetailPage,
-  },
+	{
+		path: '',
+		component: SystemTypeDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ShareModule,
-    RouterModule.forChild(routes),
-  ],
-  declarations: [SystemTypeDetailPage],
+	imports: [CommonModule, FormsModule, ShareModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [SystemTypeDetailPage],
 })
 export class SystemTypeDetailPageModule {}

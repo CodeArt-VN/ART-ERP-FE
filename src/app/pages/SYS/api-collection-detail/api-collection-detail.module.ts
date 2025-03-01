@@ -7,21 +7,14 @@ import { ShareModule } from 'src/app/share.module';
 import { APICollectionDetailPage } from './api-collection-detail.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: APICollectionDetailPage
-  }
+	{
+		path: '',
+		component: APICollectionDetailPage,
+	},
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ShareModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [APICollectionDetailPage]
+	imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, ShareModule, RouterModule.forChild(routes)],
+	declarations: [APICollectionDetailPage],
 })
-export class APICollectionDetailPageModule { }
+export class APICollectionDetailPageModule {}

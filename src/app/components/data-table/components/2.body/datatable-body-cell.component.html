@@ -1,23 +1,13 @@
-<a class="clickable" *ngIf="!column.cellTemplate && column.property == 'Id'">
-  {{ value | number: format }}
+<a class="clickable" *ngIf="!column.cellTemplate && column.property == 'Id' && !column.navLink">
+	{{ value }}
 </a>
-<input
-  *ngIf="!column.cellTemplate && column.checkbox"
-  (click)="changeSelection(row, $event)"
-  class="c-checkbox"
-  [checked]="isSelected"
-  type="checkbox"
-/>
-<ng-template
-  #cellTemplate
-  *ngIf="column.cellTemplate"
-  [ngTemplateOutlet]="column.cellTemplate"
-  [ngTemplateOutletContext]="cellContext"
->
-</ng-template>
-
+<a [routerLink]="['/' + column.navLink + '/' + value]" class="clickable" *ngIf="!column.cellTemplate && column.property == 'Id' && column.navLink">
+	{{ value }}
+</a>
+<input *ngIf="!column.cellTemplate && column.checkbox" (click)="changeSelection(row, $event)" class="c-checkbox" [checked]="isSelected" type="checkbox" />
+<ng-template #cellTemplate *ngIf="column.cellTemplate" [ngTemplateOutlet]="column.cellTemplate" [ngTemplateOutletContext]="cellContext"></ng-template>
 <ng-container *ngIf="value && !column.cellTemplate && !column.checkbox && column.property != 'Id'">
-  <span *ngIf="dataType == 'string'">{{ value }}</span>
-  <span *ngIf="dataType == 'number'">{{ value | number: format }}</span>
-  <span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
+	<span *ngIf="dataType == 'string'">{{ value }}</span>
+	<span *ngIf="dataType == 'number'">{{ value | number: format }}</span>
+	<span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
 </ng-container>

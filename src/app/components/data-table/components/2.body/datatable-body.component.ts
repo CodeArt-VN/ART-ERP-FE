@@ -1,153 +1,155 @@
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { filter } from 'rxjs';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
-    selector: 'datatable-body',
-    templateUrl: './datatable-body.component.html',
-    standalone: false
+	selector: 'datatable-body',
+	templateUrl: './datatable-body.component.html',
+	standalone: false,
 })
 export class DataTablBodyComponent implements OnInit {
-  //@ViewChild('scrollViewport') private cdkVirtualScrollViewport;
-  @ViewChild(CdkVirtualScrollViewport)
-  virtualScroll: CdkVirtualScrollViewport;
+	//@ViewChild('scrollViewport') private cdkVirtualScrollViewport;
+	@ViewChild(CdkVirtualScrollViewport)
+	virtualScroll: CdkVirtualScrollViewport;
 
-  _columns: any[];
-  @Input() set columns(val: any[]) {
-    this._columns = val;
-  }
+	@Input() emptyMessage: any;
 
-  get columns(): any[] {
-    return this._columns;
-  }
+	_columns: any[];
+	@Input() set columns(val: any[]) {
+		this._columns = val;
+	}
 
-  _rows: any[];
-  @Input() set rows(val: any[]) {
-    this._rows = val;
-    this.isWaitingNewData = false;
-  }
+	get columns(): any[] {
+		return this._columns;
+	}
 
-  get rows(): any[] {
-    return this._rows;
-  }
+	_rows: any[];
+	@Input() set rows(val: any[]) {
+		this._rows = val;
+		this.isWaitingNewData = false;
+	}
 
-  @Input() trackBy: string;
+	get rows(): any[] {
+		return this._rows;
+	}
 
-  rowTrackingFn(index: number, row: any) {
-    if (this.trackBy) {
-      return row[this.trackBy];
-    } else {
-      return this._rows.indexOf(row);
-    }
-  }
+	@Input() trackBy: string;
 
-  _selectedRows: any[] = [];
+	rowTrackingFn(index: number, row: any) {
+		if (this.trackBy) {
+			return row[this.trackBy];
+		} else {
+			return this._rows.indexOf(row);
+		}
+	}
 
-  @Input() set selectedRows(val: any[]) {
-    this._selectedRows = val;
-    this.setCheckedRows();
-  }
+	_selectedRows: any[] = [];
 
-  get selectedRows(): any[] {
-    return this._selectedRows;
-  }
+	@Input() set selectedRows(val: any[]) {
+		this._selectedRows = val;
+		this.setCheckedRows();
+	}
 
-  @Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
+	get selectedRows(): any[] {
+		return this._selectedRows;
+	}
 
-  @Input() showSpinner: boolean;
+	@Output() selectedRowsChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-  @Output() activate: EventEmitter<any> = new EventEmitter();
+	@Input() showSpinner: boolean;
 
-  @Output() dataInfinite: EventEmitter<any> = new EventEmitter();
+	@Output() activate: EventEmitter<any> = new EventEmitter();
 
-  elId = '';
+	@Output() dataInfinite: EventEmitter<any> = new EventEmitter();
 
-  constructor(private scrollDispatcher: ScrollDispatcher) {
-    this.elId = lib.generateUID();
-  }
+	elId = '';
 
-  ngOnInit() {}
+	constructor(private scrollDispatcher: ScrollDispatcher) {
+		this.elId = lib.generateUID();
+	}
 
-  isWaitingNewData = false;
-  ngAfterViewInit() {
-    // let wrapperEl;
-    // let spacerEl;
-    // this.scrollDispatcher.scrolled().pipe(
-    //     filter(event => this.virtualScroll?.getRenderedRange().end === this.virtualScroll?.getDataLength())
-    // ).subscribe(event => {
-    //     if (this.isWaitingNewData === false) {
-    //         this.dataInfinite.emit({ DataLength: this.virtualScroll.getDataLength() });
-    //         this.isWaitingNewData = true;
-    //         if (!wrapperEl) {
-    //             wrapperEl = this.virtualScroll.elementRef.nativeElement.querySelector('.cdk-virtual-scroll-content-wrapper');
-    //             spacerEl = this.virtualScroll.elementRef.nativeElement.querySelector('.cdk-virtual-scroll-spacer');
-    //         }
-    //     }
-    //     let offset = this.virtualScroll.getOffsetToRenderedContentStart();
-    //     if (spacerEl && spacerEl.clientHeight < (wrapperEl.scrollHeight + offset)) {
-    //         spacerEl.style.height = `${wrapperEl.scrollHeight + offset}px`;
-    //     }
-    // })
-  }
+	ngOnInit() {}
 
-  lastchecked: any = null;
-  changeSelection(i, e = null) {
-    if (e && e.shiftKey) {
-      let from = this._rows.indexOf(this.lastchecked);
-      let to = this._rows.indexOf(i);
+	isWaitingNewData = false;
+	ngAfterViewInit() {
+		// let wrapperEl;
+		// let spacerEl;
+		// this.scrollDispatcher.scrolled().pipe(
+		//     filter(event => this.virtualScroll?.getRenderedRange().end === this.virtualScroll?.getDataLength())
+		// ).subscribe(event => {
+		//     if (this.isWaitingNewData === false) {
+		//         this.dataInfinite.emit({ DataLength: this.virtualScroll.getDataLength() });
+		//         this.isWaitingNewData = true;
+		//         if (!wrapperEl) {
+		//             wrapperEl = this.virtualScroll.elementRef.nativeElement.querySelector('.cdk-virtual-scroll-content-wrapper');
+		//             spacerEl = this.virtualScroll.elementRef.nativeElement.querySelector('.cdk-virtual-scroll-spacer');
+		//         }
+		//     }
+		//     let offset = this.virtualScroll.getOffsetToRenderedContentStart();
+		//     if (spacerEl && spacerEl.clientHeight < (wrapperEl.scrollHeight + offset)) {
+		//         spacerEl.style.height = `${wrapperEl.scrollHeight + offset}px`;
+		//     }
+		// })
+	}
 
-      let start = Math.min(from, to);
-      let end = Math.max(from, to) + 1;
+	lastchecked: any = null;
+	changeSelection(i, e = null) {
+		if (e && e.shiftKey) {
+			let from = this._rows.indexOf(this.lastchecked);
+			let to = this._rows.indexOf(i);
 
-      let itemsToCheck = this._rows.slice(start, end);
-      for (let j = 0; j < itemsToCheck.length; j++) {
-        const it = itemsToCheck[j];
+			let start = Math.min(from, to);
+			let end = Math.max(from, to) + 1;
 
-        it.checked = this.lastchecked.checked;
-        const index = this.selectedRows.indexOf(it, 0);
+			let itemsToCheck = this._rows.slice(start, end);
+			for (let j = 0; j < itemsToCheck.length; j++) {
+				const it = itemsToCheck[j];
 
-        if (this.lastchecked.checked && index == -1) {
-          this.selectedRows.push(it);
-        } else if (!this.lastchecked.checked && index > -1) {
-          this.selectedRows.splice(index, 1);
-        }
-      }
-    } else if (e) {
-      if (e.target.checked) {
-        this.selectedRows.push(i);
-      } else {
-        const index = this.selectedRows.indexOf(i, 0);
-        if (index > -1) {
-          this.selectedRows.splice(index, 1);
-        }
-      }
-    } else {
-      if (i.checked) {
-        this.selectedRows.push(i);
-      } else {
-        const index = this.selectedRows.indexOf(i, 0);
-        if (index > -1) {
-          this.selectedRows.splice(index, 1);
-        }
-      }
-    }
+				it.checked = this.lastchecked.checked;
+				const index = this.selectedRows.indexOf(it, 0);
 
-    this.selectedRows = [...this.selectedRows];
-    this.lastchecked = i;
+				if (this.lastchecked.checked && index == -1) {
+					this.selectedRows.push(it);
+				} else if (!this.lastchecked.checked && index > -1) {
+					this.selectedRows.splice(index, 1);
+				}
+			}
+		} else if (e) {
+			if (e.target.checked) {
+				this.selectedRows.push(i);
+			} else {
+				const index = this.selectedRows.indexOf(i, 0);
+				if (index > -1) {
+					this.selectedRows.splice(index, 1);
+				}
+			}
+		} else {
+			if (i.checked) {
+				this.selectedRows.push(i);
+			} else {
+				const index = this.selectedRows.indexOf(i, 0);
+				if (index > -1) {
+					this.selectedRows.splice(index, 1);
+				}
+			}
+		}
 
-    //e?.preventDefault();
-    e?.stopPropagation();
+		this.selectedRows = [...this.selectedRows];
+		this.lastchecked = i;
 
-    this.selectedRowsChange.emit(this.selectedRows);
+		//e?.preventDefault();
+		e?.stopPropagation();
 
-    this.activate.emit({ event: e, selectedItems: this.selectedRows });
-  }
+		this.selectedRowsChange.emit(this.selectedRows);
 
-  // Set checked rows by  selectedRows
-  setCheckedRows() {
-    this._rows.forEach((row) => {
-      row.checked = this.selectedRows.includes(row);
-    });
-  }
+		this.activate.emit({ event: e, selectedItems: this.selectedRows });
+	}
+
+	// Set checked rows by  selectedRows
+	setCheckedRows() {
+		this._rows.forEach((row) => {
+			row.checked = this.selectedRows.includes(row);
+		});
+	}
 }

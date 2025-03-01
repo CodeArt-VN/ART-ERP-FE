@@ -8,14 +8,14 @@ import { IonicModule } from '@ionic/angular';
 import { DefaultPage } from './default.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: DefaultPage,
-  },
+	{
+		path: '',
+		component: DefaultPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
-  declarations: [DefaultPage],
+	imports: [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
+	declarations: [DefaultPage],
 })
 export class DefaultPageModule {}

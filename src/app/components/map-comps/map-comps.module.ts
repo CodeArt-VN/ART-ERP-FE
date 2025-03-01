@@ -10,8 +10,8 @@ import { CoordinatePickerComponent } from './coordinate-picker/coordinate-picker
 import { AddressComponent } from './address/address.component';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, ShareModule, RouterModule, FormsModule, ReactiveFormsModule, GoogleMapsModule],
-  declarations: [MapViewComponent, CoordinatePickerComponent,AddressComponent],
-  exports: [MapViewComponent, CoordinatePickerComponent,AddressComponent],
+	imports: [IonicModule, CommonModule, ShareModule, RouterModule, FormsModule, ReactiveFormsModule, GoogleMapsModule],
+	declarations: [MapViewComponent, CoordinatePickerComponent, AddressComponent],
+	exports: [MapViewComponent, CoordinatePickerComponent, AddressComponent],
 })
 export class MapCompsModule {}

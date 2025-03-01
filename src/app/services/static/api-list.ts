@@ -3624,6 +3624,496 @@ export var APIListBase = {
 		
 	},
 
+	DCM_Collection:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/Collection/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/Collection"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/Collection/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/Collection/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/Collection/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Collection/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Collection/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Collection/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/Collection"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/Collection/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/Collection/" + id} 
+        }
+		
+	},
+
+	DCM_CollectionData:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionData/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionData"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/CollectionData/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/CollectionData/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/CollectionData/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionData/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionData/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionData/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/CollectionData"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/CollectionData/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/CollectionData/" + id} 
+        }
+		
+	},
+
+	DCM_CollectionDataComment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionDataComment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionDataComment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/CollectionDataComment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/CollectionDataComment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/CollectionDataComment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataComment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataComment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataComment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/CollectionDataComment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/CollectionDataComment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/CollectionDataComment/" + id} 
+        }
+		
+	},
+
+	DCM_CollectionDataLog:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionDataLog/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/CollectionDataLog"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/CollectionDataLog/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/CollectionDataLog/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/CollectionDataLog/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataLog/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataLog/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/CollectionDataLog/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/CollectionDataLog"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/CollectionDataLog/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/CollectionDataLog/" + id} 
+        }
+		
+	},
+
+	DCM_Comment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/Comment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/Comment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/Comment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/Comment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/Comment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Comment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Comment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Comment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/Comment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/Comment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/Comment/" + id} 
+        }
+		
+	},
+
+	DCM_DataDictionary:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/DataDictionary/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/DataDictionary"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/DataDictionary/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/DataDictionary/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/DataDictionary/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataDictionary/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataDictionary/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataDictionary/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/DataDictionary"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/DataDictionary/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/DataDictionary/" + id} 
+        }
+		
+	},
+
+	DCM_DataType:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/DataType/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/DataType"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/DataType/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/DataType/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/DataType/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataType/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataType/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/DataType/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/DataType"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/DataType/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/DataType/" + id} 
+        }
+		
+	},
+
+	DCM_Page:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/Page/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/Page"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/Page/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/Page/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/Page/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Page/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Page/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Page/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/Page"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/Page/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/Page/" + id} 
+        }
+		
+	},
+
+	DCM_Project:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/Project/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/Project"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/Project/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/Project/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/Project/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Project/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Project/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/Project/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/Project"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/Project/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/Project/" + id} 
+        }
+		
+	},
+
+	DCM_ProjectPerson:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DCM/ProjectPerson/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DCM/ProjectPerson"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DCM/ProjectPerson/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DCM/ProjectPerson/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DCM/ProjectPerson/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DCM/ProjectPerson/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/ProjectPerson/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DCM/ProjectPerson/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DCM/ProjectPerson"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DCM/ProjectPerson/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DCM/ProjectPerson/" + id} 
+        }
+		
+	},
+
 	FINANCE_CostCenter:{
         getSearchList:{
             method: "GET",
@@ -9406,6 +9896,103 @@ export var APIListBase = {
 		
 	},
 
+	PURCHASE_Quotation:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/Quotation/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/Quotation"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/Quotation/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/Quotation/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/Quotation/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Quotation/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Quotation/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/Quotation/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/Quotation"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/Quotation/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/Quotation/" + id} 
+        },
+	},
+
+	PURCHASE_QuotationDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/QuotationDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/QuotationDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/QuotationDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/QuotationDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/QuotationDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/QuotationDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/QuotationDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/QuotationDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/QuotationDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/QuotationDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/QuotationDetail/" + id} 
+        }
+		
+	},
+
 	PURCHASE_Request:{
         getSearchList:{
             method: "GET",
@@ -9451,7 +10038,24 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PURCHASE/Request/" + id} 
-        }
+        },
+        approve:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Approve"} 
+
+        },
+        submitForApproval:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/SubmitForApproval"} 
+        },
+        disapprove:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Disapprove"} 
+        },
+        cancel:{
+            method:"POST",
+            url: function(){return "PURCHASE/Request/Cancel"} 
+        },
 		
 	},
 
@@ -9794,6 +10398,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SALE/OrderDetail/" + id} 
+        }
+		
+	},
+
+	SALE_Quotation:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SALE/Quotation/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SALE/Quotation"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SALE/Quotation/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SALE/Quotation/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SALE/Quotation/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Quotation/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Quotation/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/Quotation/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SALE/Quotation"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SALE/Quotation/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SALE/Quotation/" + id} 
+        }
+		
+	},
+
+	SALE_QuotationDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SALE/QuotationDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SALE/QuotationDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SALE/QuotationDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SALE/QuotationDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SALE/QuotationDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SALE/QuotationDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/QuotationDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SALE/QuotationDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SALE/QuotationDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SALE/QuotationDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SALE/QuotationDetail/" + id} 
         }
 		
 	},
@@ -12293,888 +12995,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WEB/Tag/" + id} 
-        }
-		
-	},
-
-	WH_Branches:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/Branches/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/Branches"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/Branches/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/Branches/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/Branches/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/Branches/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Branches/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Branches/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/Branches"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/Branches/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/Branches/" + id} 
-        }
-		
-	},
-
-	WH_CashFlows:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/CashFlows/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/CashFlows"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/CashFlows/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/CashFlows/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/CashFlows/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/CashFlows/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/CashFlows/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/CashFlows/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/CashFlows"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/CashFlows/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/CashFlows/" + id} 
-        }
-		
-	},
-
-	WH_ContactGroups:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/ContactGroups/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/ContactGroups"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/ContactGroups/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/ContactGroups/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/ContactGroups/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/ContactGroups/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ContactGroups/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ContactGroups/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/ContactGroups"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/ContactGroups/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/ContactGroups/" + id} 
-        }
-		
-	},
-
-	WH_Contacts:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/Contacts/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/Contacts"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/Contacts/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/Contacts/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/Contacts/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/Contacts/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Contacts/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Contacts/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/Contacts"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/Contacts/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/Contacts/" + id} 
-        }
-		
-	},
-
-	WH_GeneralLedgers:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/GeneralLedgers/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/GeneralLedgers"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/GeneralLedgers/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/GeneralLedgers/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/GeneralLedgers/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/GeneralLedgers/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/GeneralLedgers/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/GeneralLedgers/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/GeneralLedgers"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/GeneralLedgers/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/GeneralLedgers/" + id} 
-        }
-		
-	},
-
-	WH_InvoiceRows:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/InvoiceRows/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/InvoiceRows"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/InvoiceRows/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/InvoiceRows/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/InvoiceRows/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/InvoiceRows/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/InvoiceRows/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/InvoiceRows/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/InvoiceRows"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/InvoiceRows/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/InvoiceRows/" + id} 
-        }
-		
-	},
-
-	WH_Invoices:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/Invoices/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/Invoices"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/Invoices/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/Invoices/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/Invoices/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/Invoices/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Invoices/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Invoices/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/Invoices"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/Invoices/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/Invoices/" + id} 
-        }
-		
-	},
-
-	WH_ItemGroups:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/ItemGroups/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/ItemGroups"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/ItemGroups/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/ItemGroups/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/ItemGroups/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemGroups/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemGroups/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemGroups/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/ItemGroups"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/ItemGroups/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/ItemGroups/" + id} 
-        }
-		
-	},
-
-	WH_ItemPriceLists:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/ItemPriceLists/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/ItemPriceLists"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/ItemPriceLists/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/ItemPriceLists/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/ItemPriceLists/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemPriceLists/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemPriceLists/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemPriceLists/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/ItemPriceLists"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/ItemPriceLists/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/ItemPriceLists/" + id} 
-        }
-		
-	},
-
-	WH_Items:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/Items/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/Items"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/Items/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/Items/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/Items/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/Items/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Items/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Items/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/Items"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/Items/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/Items/" + id} 
-        }
-		
-	},
-
-	WH_ItemUoM:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/ItemUoM/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/ItemUoM"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/ItemUoM/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/ItemUoM/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/ItemUoM/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemUoM/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemUoM/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/ItemUoM/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/ItemUoM"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/ItemUoM/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/ItemUoM/" + id} 
-        }
-		
-	},
-
-	WH_JournalEntries:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/JournalEntries/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/JournalEntries"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/JournalEntries/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/JournalEntries/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/JournalEntries/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntries/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntries/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntries/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/JournalEntries"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/JournalEntries/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/JournalEntries/" + id} 
-        }
-		
-	},
-
-	WH_JournalEntryRows:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/JournalEntryRows/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/JournalEntryRows"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/JournalEntryRows/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/JournalEntryRows/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/JournalEntryRows/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntryRows/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntryRows/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/JournalEntryRows/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/JournalEntryRows"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/JournalEntryRows/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/JournalEntryRows/" + id} 
-        }
-		
-	},
-
-	WH_PostingPeriods:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/PostingPeriods/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/PostingPeriods"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/PostingPeriods/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/PostingPeriods/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/PostingPeriods/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/PostingPeriods/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/PostingPeriods/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/PostingPeriods/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/PostingPeriods"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/PostingPeriods/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/PostingPeriods/" + id} 
-        }
-		
-	},
-
-	WH_PriceLists:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/PriceLists/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/PriceLists"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/PriceLists/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/PriceLists/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/PriceLists/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/PriceLists/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/PriceLists/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/PriceLists/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/PriceLists"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/PriceLists/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/PriceLists/" + id} 
-        }
-		
-	},
-
-	WH_Staff:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/Staff/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/Staff"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/Staff/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/Staff/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/Staff/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/Staff/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Staff/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/Staff/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/Staff"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/Staff/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/Staff/" + id} 
-        }
-		
-	},
-
-	WH_UoM:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/UoM/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/UoM"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/UoM/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/UoM/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/UoM/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/UoM/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/UoM/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/UoM/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/UoM"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/UoM/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/UoM/" + id} 
-        }
-		
-	},
-
-	WH_VTB_Statements:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "WH/VTB/Statements/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "WH/VTB/Statements"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "WH/VTB/Statements/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "WH/VTB/Statements/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "WH/VTB/Statements/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "WH/VTB/Statements/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "WH/VTB/Statements/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "WH/VTB/Statements/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "WH/VTB/Statements"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "WH/VTB/Statements/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "WH/VTB/Statements/" + id} 
         }
 		
 	},
@@ -15821,6 +15641,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "WMS/Zone/" + id} 
+        }
+		
+	},
+
+	vw_SYS_Log:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Log/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/SYS/Log"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/SYS/Log/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/SYS/Log/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/SYS/Log/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Log/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Log/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/Log/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/SYS/Log"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/SYS/Log/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/SYS/Log/" + id} 
         }
 		
 	},

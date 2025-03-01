@@ -7,13 +7,7 @@ import { TreePage } from './tree.page';
 import { ShareModule } from 'src/app/share.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ShareModule,
-    RouterModule.forChild([{ path: '', component: TreePage }])
-  ],
-  declarations: [TreePage]
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: TreePage }])],
+	declarations: [TreePage],
 })
 export class TreePageModule {}

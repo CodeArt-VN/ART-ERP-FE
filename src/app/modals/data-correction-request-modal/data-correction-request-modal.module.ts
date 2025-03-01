@@ -12,7 +12,6 @@
 // import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 // import { BusinessPartnerComponentsModule } from 'src/app/pages/CRM/business-partner-detail/components/business-partner-components.module';
 
-
 // const routes: Routes = [
 //   {
 //     path: '',

@@ -7,14 +7,14 @@ import { SettingPage } from './setting.page';
 import { ShareModule } from 'src/app/share.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: SettingPage,
-  },
+	{
+		path: '',
+		component: SettingPage,
+	},
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ShareModule, IonicModule, RouterModule.forChild(routes)],
-  declarations: [SettingPage],
+	imports: [CommonModule, FormsModule, ShareModule, IonicModule, RouterModule.forChild(routes)],
+	declarations: [SettingPage],
 })
 export class SettingPageModule {}

@@ -18,18 +18,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ShareDataTableModule } from '../data-table/share-data-table.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ScrollingModule,
-    IonicModule,
-    TranslateModule,
-    ShareInputControlsModule,
-    DragDropModule,
-    ShareDataTableModule
-  ],
-  declarations: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
-  exports: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, ScrollingModule, IonicModule, TranslateModule, ShareInputControlsModule, DragDropModule, ShareDataTableModule],
+	declarations: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
+	exports: [FilterComponent, ReportConfigComponent, ReportChartComponent, CardMultiRowComponent, EChartComponent],
 })
 export class ShareVisualizationsModule {}

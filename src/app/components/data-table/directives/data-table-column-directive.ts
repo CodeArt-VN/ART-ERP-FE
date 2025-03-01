@@ -6,104 +6,106 @@ import { Subject, Observable } from 'rxjs';
 import { InputControlField } from '../../controls/controls.interface';
 
 @Directive({
-    selector: 'datatable-column',
-    standalone: false
+	selector: 'datatable-column',
+	standalone: false,
 })
 export class DataTableColumnDirective implements OnChanges {
-  @Input() checkbox: boolean;
-  @Input() name: string;
-  @Input() property: string;
-  @Input() class: string | ((data: any) => string | any);
-  @Input() headerClass: string | ((data: any) => string | any);
-  @Input() filterClass: string | ((data: any) => string | any);
-  @Input() cellClass: string | ((data: any) => string | any);
-  @Input() sticky: boolean;
-  @Input() format: boolean;
-  @Input() dataType: string = 'string';
-  @Input() canFilter: boolean = true;
-  @Input() filterControlType:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'date'
-    | 'start'
-    | 'datetime-local'
-    | 'select'
-    | 'ng-select'
-    | 'ng-select-status'
-    | 'ng-select-bp'
-    | 'ng-select-item'
-    | 'textarea'
-    | 'branch-breadcrumbs'
-    | 'span-number'
-    | 'span-date'
-    | 'span-datetime' = 'text';
+	@Input() checkbox: boolean;
+	@Input() name: string;
+	@Input() property: string;
+	@Input() class: string | ((data: any) => string | any);
+	@Input() headerClass: string | ((data: any) => string | any);
+	@Input() filterClass: string | ((data: any) => string | any);
+	@Input() cellClass: string | ((data: any) => string | any);
+	@Input() sticky: boolean;
+	@Input() format: boolean;
+	@Input() dataType: string = 'string';
+	@Input() canFilter: boolean = true;
+	@Input() filterControlType:
+		| 'text'
+		| 'number'
+		| 'email'
+		| 'date'
+		| 'start'
+		| 'datetime-local'
+		| 'select'
+		| 'ng-select'
+		| 'ng-select-status'
+		| 'ng-select-bp'
+		| 'ng-select-item'
+		| 'textarea'
+		| 'branch-breadcrumbs'
+		| 'span-number'
+		| 'span-date'
+		| 'span-datetime' = 'text';
 
-  @Input() filterDataSource: any[];
+	@Input() filterDataSource: any[];
 
-  @Input() canSort: boolean = true;
+	@Input() canSort: boolean = true;
 
-  @Input() minWidth: number;
-  @Input() width: number;
-  @Input() maxWidth: number;
+	@Input() minWidth: number;
+	@Input() width: number;
+	@Input() maxWidth: number;
 
-  @Input('headerTemplate') _headerTemplateInput: TemplateRef<any>;
+	@Input() navLink: string;
 
-  @ContentChild(DataTableColumnHeaderDirective, {
-    read: TemplateRef,
-    static: true,
-  })
-  _headerTemplateQuery: TemplateRef<any>;
+	@Input('headerTemplate') _headerTemplateInput: TemplateRef<any>;
 
-  get headerTemplate(): TemplateRef<any> {
-    return this._headerTemplateInput || this._headerTemplateQuery;
-  }
+	@ContentChild(DataTableColumnHeaderDirective, {
+		read: TemplateRef,
+		static: true,
+	})
+	_headerTemplateQuery: TemplateRef<any>;
 
-  @Input('filterTemplate') _filterTemplateInput: TemplateRef<any>;
+	get headerTemplate(): TemplateRef<any> {
+		return this._headerTemplateInput || this._headerTemplateQuery;
+	}
 
-  @ContentChild(DataTableColumnFilterDirective, {
-    read: TemplateRef,
-    static: true,
-  })
-  _filterTemplateQuery: TemplateRef<any>;
+	@Input('filterTemplate') _filterTemplateInput: TemplateRef<any>;
 
-  get filterTemplate(): TemplateRef<any> {
-    return this._filterTemplateInput || this._filterTemplateQuery;
-  }
+	@ContentChild(DataTableColumnFilterDirective, {
+		read: TemplateRef,
+		static: true,
+	})
+	_filterTemplateQuery: TemplateRef<any>;
 
-  @Input('cellTemplate') _cellTemplateInput: TemplateRef<any>;
+	get filterTemplate(): TemplateRef<any> {
+		return this._filterTemplateInput || this._filterTemplateQuery;
+	}
 
-  @ContentChild(DataTableColumnCellDirective, {
-    read: TemplateRef,
-    static: true,
-  })
-  _cellTemplateQuery: TemplateRef<any>;
+	@Input('cellTemplate') _cellTemplateInput: TemplateRef<any>;
 
-  get cellTemplate(): TemplateRef<any> {
-    return this._cellTemplateInput || this._cellTemplateQuery;
-  }
+	@ContentChild(DataTableColumnCellDirective, {
+		read: TemplateRef,
+		static: true,
+	})
+	_cellTemplateQuery: TemplateRef<any>;
 
-  constructor(private columnChangesService: ColumnChangesService) {}
-  private isFirstChange = true;
+	get cellTemplate(): TemplateRef<any> {
+		return this._cellTemplateInput || this._cellTemplateQuery;
+	}
 
-  ngOnChanges() {
-    if (this.isFirstChange) {
-      this.isFirstChange = false;
-    } else {
-      this.columnChangesService.onInputChange();
-    }
-  }
+	constructor(private columnChangesService: ColumnChangesService) {}
+	private isFirstChange = true;
+
+	ngOnChanges() {
+		if (this.isFirstChange) {
+			this.isFirstChange = false;
+		} else {
+			this.columnChangesService.onInputChange();
+		}
+	}
 }
 
 @Injectable()
 export class ColumnChangesService {
-  private columnInputChanges = new Subject<void>();
+	private columnInputChanges = new Subject<void>();
 
-  get columnInputChanges$(): Observable<void> {
-    return this.columnInputChanges.asObservable();
-  }
+	get columnInputChanges$(): Observable<void> {
+		return this.columnInputChanges.asObservable();
+	}
 
-  onInputChange(): void {
-    this.columnInputChanges.next();
-  }
+	onInputChange(): void {
+		this.columnInputChanges.next();
+	}
 }

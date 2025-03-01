@@ -1,9 +1,9 @@
 ::ng-deep {
-    @media screen and (max-width: 1164px) {
-        app-data-table {
-            .col-name {
-                flex-basis: 100%;
-            }
-        }
-    }
+	@media screen and (max-width: 1164px) {
+		app-data-table {
+			.col-name {
+				flex-basis: 100%;
+			}
+		}
+	}
 }
