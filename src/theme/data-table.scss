@@ -407,7 +407,8 @@ app-data-table,
 			}
 
 			&[disabled] {
-				background-color: var(--menu-right-border-color);
+				// background-color: var(--menu-right-border-color);
+				background-color: var(--main-background-top);
 				opacity: 0.5;
 				cursor: not-allowed;
 			}
@@ -442,6 +443,7 @@ app-data-table,
 		max-width: 34px;
 		min-width: 35px;
 		justify-content: center;
+		text-align: center;
 
 		ion-checkbox {
 			height: 17px;
@@ -493,7 +495,13 @@ app-data-table,
 
 	.col-name {
 		min-width: 250px;
+
+		&.item-name {
+			min-width: 400px;
+		}
 	}
+
+
 
 	.col-sticky {
 		position: sticky;

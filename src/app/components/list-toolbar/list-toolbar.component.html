@@ -191,7 +191,7 @@
 		</ion-button>
 		<ion-button
 			title="{{ 'Disapprove Business Partner' | translate }}"
-			*ngIf="pageConfig.canDisapprove && showDisapproveBusinessPartner && !query.IsDisabled"
+			*ngIf="pageConfig.canApprove && showDisapproveBusinessPartner && !query.IsDisabled"
 			(click)="emit('disapproveBusinessPartner')"
 		>
 			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>

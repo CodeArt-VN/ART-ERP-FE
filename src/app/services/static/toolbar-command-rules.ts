@@ -59,9 +59,9 @@ export var toolbarCommandRules = {
 	],
 
 	CRM_Contact: [
-		{ Status: 'New', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowArchive'] }, // Mới
-		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowArchive'] }, // Không duyệt
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowArchive'] }, // Chờ duyệt
-		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowArchive'] }, // Đã duyệt
+		{ Status: 'New', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Mới
+		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Chờ duyệt
+		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCopyToARInvoice', 'ShowCancel', 'ShowArchive'] }, // Đã duyệt
 	],
 };

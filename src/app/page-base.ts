@@ -158,7 +158,6 @@ export abstract class PageBase implements OnInit {
 
 		if (this.pageConfig.isDetailPage) {
 			if (this.item) {
-				debugger;
 				if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 				this.formGroup?.patchValue(this.item);
 				this.formGroup?.markAsPristine();
