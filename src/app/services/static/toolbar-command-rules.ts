@@ -3,10 +3,23 @@ export var toolbarCommandRules = {
 		return this[serviceName] || [];
 	},
 
+	PURCHASE_Request: [
+		{ Status: 'Draft', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Mới
+		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
+		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowArchive', 'ShowCopyToPurchaseQuotation', 'ShowCopyToPO'] }, // Đã duyệt
+
+		{ Status: 'Open', ShowBtns: ['ShowArchive'] },
+		{ Status: 'Closed', ShowBtns: ['ShowArchive'] },
+
+		{ Status: 'Splitted', ShowBtns: ['ShowArchive'] },
+		{ Status: 'Merged', ShowBtns: ['ShowArchive'] },
+		{ Status: 'Canceled', ShowBtns: ['ShowArchive'] },
+	],
 	PURCHASE_Quotation: [
 		{ Status: 'Open', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
 		{ Status: 'Unapproved', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel'] },
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowConfirm', 'ShowAddPriceListVersion'] },
 		{ Status: 'Confirmed', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete'] },
 		{ Status: 'Canceled', ShowBtns: ['ShowDelete', 'ShowArchive'] },
@@ -15,8 +28,8 @@ export var toolbarCommandRules = {
 	PURCHASE_Order: [
 		{ Status: 'Draft', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
 		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Chờ duyệt
-		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowArchive', 'ShowSubmitOrders'] }, // Đã duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
+		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowArchive', 'ShowSubmitOrders'] },
 
 		{ Status: 'Ordered', ShowBtns: ['ShowArchive', 'ShowCopyToReceipt', 'ShowCopyToAPInvoice', 'ShowRequestOutgoingPayment'] }, // Đã đặt mua
 		{ Status: 'Confirmed', ShowBtns: ['ShowCopyToReceipt', 'ShowCopyToAPInvoice', 'ShowRequestOutgoingPayment'] }, // Đã xác nhận
@@ -34,7 +47,7 @@ export var toolbarCommandRules = {
 	SALE_Quotation: [
 		{ Status: 'Open', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
 		{ Status: 'Unapproved', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel'] },
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowConfirm'] },
 		{ Status: 'Confirmed', ShowBtns: [] },
 		{ Status: 'Canceled', ShowBtns: ['ShowDelete', 'ShowArchive'] },
@@ -43,7 +56,7 @@ export var toolbarCommandRules = {
 	SALE_Order: [
 		{ Status: 'New', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Mới
 		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Chờ duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] }, // Chờ duyệt
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCopyToARInvoice', 'ShowCancel', 'ShowArchive'] }, // Đã duyệt
 		{ Status: 'Scheduled', ShowBtns: ['ShowCopyToARInvoice', 'ShowArchive'] }, // Đã phân tài
 		{ Status: 'Picking', ShowBtns: ['ShowCopyToARInvoice', 'ShowArchive'] }, // Đang lấy hàng - đóng gói
@@ -61,7 +74,7 @@ export var toolbarCommandRules = {
 	CRM_Contact: [
 		{ Status: 'New', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Mới
 		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
-		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Chờ duyệt
+		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] }, // Chờ duyệt
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCopyToARInvoice', 'ShowCancel', 'ShowArchive'] }, // Đã duyệt
 	],
 };
