@@ -11,6 +11,7 @@ hooks/
 src/assets
 src/app/services/static/api-list.ts
 src/app/services/static/services.service.ts
+src/app/models/model-list-interface.ts
 src/app/app-routing.module.ts
 src/theme/print.scss
 src/index.html

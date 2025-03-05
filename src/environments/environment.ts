@@ -8,7 +8,7 @@ export let environment = {
 	//appDomain: 'https://demo.inholdings.vn/',
 	//appDomain: 'https://beta.inholdings.vn/',
 	//appDomain: 'https://artlogistics.vn/',
-	//appDomain: "http://192.168.1.12:54009/",
+	//appDomain: "http://10.211.55.3:54009/",
 	appDomain: 'http://art.appcenter.vn:54009/',
 	appServers: [
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
@@ -21,6 +21,7 @@ export let environment = {
 
 		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
+		{ Code: 'http://10.211.55.3:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
 	staffAvatarsServer: 'https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
 	posImagesServer: 'https://api.inholdings.vn/',

@@ -293,7 +293,7 @@ export class HelpDetailComponent extends PageBase {
 			if ((this._helpCode.match(/\//g) || []).length == 1) {
 				//case _helpCode have 1 /
 				const parts = this._helpCode.split('/');
-				this._helpCode = `${parts[0]}/${lang}/${parts[1]}`;
+				this._helpCode = `${parts[0]}/${lang||this.env.language.default}/${parts[1]}`;
 			} else {
 				//case _helpCode have 2 /
 				this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${lang}$2`);

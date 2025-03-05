@@ -29,13 +29,13 @@
 		<ion-button title="{{'Approve Business Partner' | translate}}" *ngIf="page.pageConfig.canApprove && !page.Item?.IsDisabled" (click)="page.approve()">
 			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
 		</ion-button>
-		<ion-button title="{{'Disapprove Business Partner' | translate}}" *ngIf="page.pageConfig.canDisapprove && !page.Item?.IsDisabled" (click)="page.disapprove()">
+		<ion-button title="{{'Disapprove Business Partner' | translate}}" *ngIf="page.pageConfig.canApprove && !page.Item?.IsDisabled" (click)="page.disapprove()">
 			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
 		</ion-button>
         <ion-button title="{{'Cancel Invoice' | translate}}" *ngIf="page.pageConfig.canCancel && !page.Item?.IsDisabled" (click)="page.cancel()">
 			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
 		</ion-button>
-        <span class="split ion-hide-sm-down" *ngIf="(page.pageConfig.canSubmitForApproval || page.pageConfig.canApprove || page.pageConfig.canDisapprove || page.pageConfig.canCancel) && !page.Item?.IsDisabled ">|</span> -->
+        <span class="split ion-hide-sm-down" *ngIf="(page.pageConfig.canSubmitForApproval || page.pageConfig.canApprove || page.pageConfig.canApprove || page.pageConfig.canCancel) && !page.Item?.IsDisabled ">|</span> -->
 
 		<ion-button *ngIf="ShowRefresh" title="{{ 'Refresh' | translate }}" (click)="page.refresh()">
 			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>

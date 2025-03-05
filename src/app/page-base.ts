@@ -158,7 +158,6 @@ export abstract class PageBase implements OnInit {
 
 		if (this.pageConfig.isDetailPage) {
 			if (this.item) {
-				debugger;
 				if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 				this.formGroup?.patchValue(this.item);
 				this.formGroup?.markAsPristine();
@@ -250,19 +249,26 @@ export abstract class PageBase implements OnInit {
 					this.input$.pipe(
 						distinctUntilChanged(),
 						tap(() => (this.loading = true)),
-						switchMap((term) =>
-							this.searchFunction(term).pipe(
-								catchError(() => of([])), // empty list on error
-								tap(() => (this.loading = false)),
-								mergeMap((e: any) => {
-									if (buildFlatTree) {
-										return lib.buildFlatTree(e, e);
-									}
-									return new Promise((resolve) => {
-										resolve(e);
-									});
-								})
-							)
+						switchMap((term) =>{
+							if(!term){
+								this.loading = false;
+								return of(this.selected);
+							}
+							else{
+								return this.searchFunction(term).pipe(
+									catchError(() => of([])), // empty list on error
+									tap(() => (this.loading = false)),
+									mergeMap((e: any) => {
+										if (buildFlatTree) {
+											return lib.buildFlatTree(e, e);
+										}
+										return new Promise((resolve) => {
+											resolve(e);
+										});
+									})
+								)
+							}
+						}
 						)
 					)
 				);
