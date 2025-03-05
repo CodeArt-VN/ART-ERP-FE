@@ -235,7 +235,7 @@ export abstract class PageBase implements OnInit {
 		}
 	}
 
-	buildSelectDataSource(searchFunction, buildFlatTree = false) {
+	buildSelectDataSource(searchFunction, buildFlatTree = false, initSelectedList = []) {
 		return {
 			searchFunction: searchFunction,
 			loading: false,
@@ -244,6 +244,7 @@ export abstract class PageBase implements OnInit {
 			items$: null,
 			initSearch() {
 				this.loading = false;
+				this.selected = [...this.selected , ...initSelectedList];
 				this.items$ = concat(
 					of(this.selected),
 					this.input$.pipe(
@@ -258,7 +259,8 @@ export abstract class PageBase implements OnInit {
 										return lib.buildFlatTree(e, e);
 									}
 									return new Promise((resolve) => {
-										resolve(e);
+										if(e) resolve(e);
+										else resolve([...initSelectedList]);
 									});
 								})
 							)
