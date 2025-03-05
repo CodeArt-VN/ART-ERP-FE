@@ -235,7 +235,7 @@ export abstract class PageBase implements OnInit {
 		}
 	}
 
-	buildSelectDataSource(searchFunction, buildFlatTree = false, initSelectedList = []) {
+	buildSelectDataSource(searchFunction, buildFlatTree = false) {
 		return {
 			searchFunction: searchFunction,
 			loading: false,
