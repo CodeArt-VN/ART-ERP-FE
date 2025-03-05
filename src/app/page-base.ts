@@ -244,26 +244,31 @@ export abstract class PageBase implements OnInit {
 			items$: null,
 			initSearch() {
 				this.loading = false;
-				this.selected = [...this.selected , ...initSelectedList];
 				this.items$ = concat(
 					of(this.selected),
 					this.input$.pipe(
 						distinctUntilChanged(),
 						tap(() => (this.loading = true)),
-						switchMap((term) =>
-							this.searchFunction(term).pipe(
-								catchError(() => of([])), // empty list on error
-								tap(() => (this.loading = false)),
-								mergeMap((e: any) => {
-									if (buildFlatTree) {
-										return lib.buildFlatTree(e, e);
-									}
-									return new Promise((resolve) => {
-										if(e) resolve(e);
-										else resolve([...initSelectedList]);
-									});
-								})
-							)
+						switchMap((term) =>{
+							if(!term){
+								this.loading = false;
+								return of(this.selected);
+							}
+							else{
+								return this.searchFunction(term).pipe(
+									catchError(() => of([])), // empty list on error
+									tap(() => (this.loading = false)),
+									mergeMap((e: any) => {
+										if (buildFlatTree) {
+											return lib.buildFlatTree(e, e);
+										}
+										return new Promise((resolve) => {
+											resolve(e);
+										});
+									})
+								)
+							}
+						}
 						)
 					)
 				);
