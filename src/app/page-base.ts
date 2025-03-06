@@ -3,7 +3,7 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
 import { PopoverPage } from './pages/SYS/popover/popover.page';
-import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap } from 'rxjs';
+import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
@@ -249,27 +249,20 @@ export abstract class PageBase implements OnInit {
 					this.input$.pipe(
 						distinctUntilChanged(),
 						tap(() => (this.loading = true)),
-						switchMap((term) =>{
-							if(!term){
-								this.loading = false;
-								return of(this.selected);
-							}
-							else{
-								return this.searchFunction(term).pipe(
-									catchError(() => of([])), // empty list on error
-									tap(() => (this.loading = false)),
-									mergeMap((e: any) => {
-										if (buildFlatTree) {
-											return lib.buildFlatTree(e, e);
-										}
-										return new Promise((resolve) => {
-											resolve(e);
-										});
-									})
-								)
-							}
-						}
-						)
+						switchMap((term) => {
+							return this.searchFunction(term).pipe(
+								catchError(() => of([])), // empty list on error
+								tap(() => (this.loading = false)),
+								mergeMap((e: any) => {
+									if (buildFlatTree) {
+										return lib.buildFlatTree(e, e);
+									}
+									return new Promise((resolve) => {
+										resolve(e);
+									});
+								})
+							);
+						})
 					)
 				);
 			},

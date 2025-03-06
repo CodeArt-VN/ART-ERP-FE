@@ -21,7 +21,7 @@ export var toolbarCommandRules = {
 		{ Status: 'Unapproved', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
 		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowConfirm', 'ShowAddPriceListVersion'] },
-		{ Status: 'Confirmed', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete'] },
+		{ Status: 'Confirmed', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete','ShowReopenConfirmedQuotation'] },
 		{ Status: 'Canceled', ShowBtns: ['ShowDelete', 'ShowArchive'] },
 		{ Status: 'Closed', ShowBtns: ['ShowAddPriceListVersion'] },
 	],

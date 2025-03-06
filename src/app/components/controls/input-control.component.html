@@ -134,9 +134,6 @@
 	<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
 		<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
 	</ng-template>
-		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
-			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-		</ng-template>
 	</ng-select>
 
 	<!-- ng-select-branch -->
@@ -243,7 +240,7 @@
 		[clearable]="clearable"
 		[bindValue]="bindValue"
 		[appendTo]="appendTo"
-		placeholder="{{ placeholder | translate }}"
+		[placeholder]="placeholder || label | translate"
 		(change)="onInputChange($event)"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
