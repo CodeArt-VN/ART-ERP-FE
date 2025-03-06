@@ -29,6 +29,22 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding" style="height: 100vh">
+	<div class="main-view" *ngIf="showEditorContent">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row class="hr-group">
+					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+				
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4"> </ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+	</div>
+
 	<ion-grid fixed *ngIf="!showEditorContent && item?.Content">
 		<ion-row>
 			<ion-col>
@@ -52,7 +68,11 @@
 			<form [formGroup]="formGroup" id="screenEditor">
 				<div class="ion-padding" *ngIf="segmentView == 's1'">
 					<!-- Create the editor container -->
-					<div #quillEditor style="min-height: calc(100vh - 400px)" id="editor" [innerHTML]="contentBefore | safeHtml" (focusout)="saveChange()"></div>
+					<div #quillEditor style="min-height: calc(100vh - 400px)" id="editor" [innerHTML]="contentBefore | safeHtml"></div>
+					<div class="c-control ion-text-right">
+						<label class="c-label" for=""></label>
+						<ion-button (click)="saveChange()">{{'Save' | translate}}</ion-button>
+					</div>
 				</div>
 			</form>
 

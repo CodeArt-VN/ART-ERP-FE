@@ -288,7 +288,7 @@ export class HelpDetailComponent extends PageBase {
 		if ((this._helpCode.match(/\//g) || []).length == 1) {
 			//case _helpCode have 1 /
 			const parts = this._helpCode.split('/');
-			this._helpCode = `${parts[0]}/${this.env.language.current || this.env.language.default}/${parts[1]}`;
+			this._helpCode = `${parts[0]}/${parts[1]}`;
 		} else {
 			//case _helpCode have 2 /
 			this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${this.env.language.current}$2`);
@@ -298,9 +298,10 @@ export class HelpDetailComponent extends PageBase {
 	}
 
 	loadData() {
-		this.query.Code = this._helpCode;
+		// this.query.Code = this._helpCode;
+		let query = { url: this._helpCode, language: this.env.language.current };
 		this.pageProvider.commonService
-			.connect('GET', 'WEB/Content/GeAnItemByCode', { code: this._helpCode })
+			.connect('GET', 'WEB/Content/GetAnItemByURL',query)
 			.toPromise()
 			.then((result) => {
 				this.item = result;
@@ -331,7 +332,6 @@ export class HelpDetailComponent extends PageBase {
 			this.isShowAdd = false;
 			this.isShowEdit = true;
 			this.cdr?.detectChanges();
-
 		} else {
 			if (this.isChangeLanguage) {
 				this.isChangeLanguage = false;
@@ -360,6 +360,8 @@ export class HelpDetailComponent extends PageBase {
 			this.formGroup.controls.Name.markAsDirty();
 			this.formGroup.controls.Code.setValue(this._helpCode);
 			this.formGroup.controls.Code.markAsDirty();
+			this.formGroup.controls.URL.setValue(this._helpCode);
+			this.formGroup.controls.URL.markAsDirty();
 		}
 
 		this.initQuill();
@@ -398,6 +400,8 @@ export class HelpDetailComponent extends PageBase {
 		this.formGroup.controls.Code.markAsDirty();
 		this.formGroup.controls.Name.setValue(this._helpName);
 		this.formGroup.controls.Name.markAsDirty();
+		this.formGroup.controls.URL.setValue(this._helpCode);
+		this.formGroup.controls.URL.markAsDirty();
 		this.showEditorContent = true;
 	}
 
