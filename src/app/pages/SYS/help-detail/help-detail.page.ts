@@ -88,7 +88,7 @@ export class HelpDetailComponent extends PageBase {
 			CreatedDate: new FormControl({ value: '', disabled: true }),
 			ModifiedBy: new FormControl({ value: '', disabled: true }),
 			ModifiedDate: new FormControl({ value: '', disabled: true }),
-			Type: [''],
+			Type: ['Help'],
 			ThumbnailImage: [''],
 			Image: [''],
 			AlternateImage: [''],
@@ -97,7 +97,7 @@ export class HelpDetailComponent extends PageBase {
 			Reviews: [''],
 			AllowComment: [''],
 			LikeCount: [''],
-			Language: [''],
+			Language: [this.env.language.current],
 			Summary: [''],
 			Content: ['', Validators.required],
 			AlterName: [''],
@@ -285,45 +285,35 @@ export class HelpDetailComponent extends PageBase {
 			parts.splice(2, 1);
 			this._helpCode = parts.join('/');
 		}
-		this.loadData();
+		if ((this._helpCode.match(/\//g) || []).length == 1) {
+			//case _helpCode have 1 /
+			const parts = this._helpCode.split('/');
+			this._helpCode = `${parts[0]}/${this.env.language.current || this.env.language.default}/${parts[1]}`;
+		} else {
+			//case _helpCode have 2 /
+			this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${this.env.language.current}$2`);
+		}
+		super.preLoadData(event);
+		// this.loadData();
 	}
 
 	loadData() {
-		this.env.getStorage('lang').then((lang) => {
-			if ((this._helpCode.match(/\//g) || []).length == 1) {
-				//case _helpCode have 1 /
-				const parts = this._helpCode.split('/');
-				this._helpCode = `${parts[0]}/${lang||this.env.language.default}/${parts[1]}`;
-			} else {
-				//case _helpCode have 2 /
-				this._helpCode = this._helpCode.replace(/(\/)[^\/]+(\/)/, `$1${lang}$2`);
-			}
-
-			this.query.Code = this._helpCode;
-			this.pageProvider.read(this.query).then((result: any) => {
-				if (result.data.length == 0) {
-					if (this.isChangeLanguage) {
-						this.isChangeLanguage = false;
-						this.item = {
-							Id: 0,
-							Name: this._helpName,
-							Content: '',
-						};
-					}
-					this.contentBefore = '';
-					this.id = 0;
-					this.isShowAdd = true;
-					this.isShowEdit = false;
-				} else {
-					this.item = result.data[0];
-					this.id = this.item.Id;
-					this.contentBefore = this.item.Content;
-					this.isShowAdd = false;
-					this.isShowEdit = true;
-				}
+		this.query.Code = this._helpCode;
+		this.pageProvider.commonService
+			.connect('GET', 'WEB/Content/GeAnItemByCode', { code: this._helpCode })
+			.toPromise()
+			.then((result) => {
+				this.item = result;
 				this.loadedData();
+			})
+			.catch((err) => {
+				if (err.message != null) {
+					this.env.showMessage(err.message, 'danger');
+				} else {
+					this.env.showMessage('Cannot extract data', 'danger');
+				}
 			});
-		});
+
 		this.formLoaded = true;
 	}
 
@@ -334,9 +324,27 @@ export class HelpDetailComponent extends PageBase {
 			if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 			this.formGroup?.patchValue(this.item);
 			this.formGroup?.markAsPristine();
-			this.cdr?.detectChanges();
 
 			if (this.item.IsDisabled) this.pageConfig.canEdit = false;
+			this.id = this.item.Id;
+			this.contentBefore = this.item.Content;
+			this.isShowAdd = false;
+			this.isShowEdit = true;
+			this.cdr?.detectChanges();
+
+		} else {
+			if (this.isChangeLanguage) {
+				this.isChangeLanguage = false;
+				this.item = {
+					Id: 0,
+					Name: this._helpName,
+					Content: '',
+				};
+			}
+			this.contentBefore = '';
+			this.id = 0;
+			this.isShowAdd = true;
+			this.isShowEdit = false;
 		}
 
 		if ((!this.item || this.id == 0) && this.pageConfig.canAdd) {
@@ -353,6 +361,7 @@ export class HelpDetailComponent extends PageBase {
 			this.formGroup.controls.Code.setValue(this._helpCode);
 			this.formGroup.controls.Code.markAsDirty();
 		}
+
 		this.initQuill();
 	}
 
@@ -392,7 +401,14 @@ export class HelpDetailComponent extends PageBase {
 		this.showEditorContent = true;
 	}
 
+	delete(publishEventCode?: any): void {
+		this.selectedItems = [this.item];
+		super.delete();
+	}
+
 	async saveChange() {
+		this.formGroup.controls.Type.markAsDirty();
+		this.formGroup.controls.Language.markAsDirty();
 		super.saveChange2();
 	}
 
@@ -410,6 +426,7 @@ export class HelpDetailComponent extends PageBase {
 		} else {
 			this.item.Id = savedItem.Id;
 		}
+		this.showEditorContent = false;
 		this.loadedData();
 	}
 
