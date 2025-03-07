@@ -17,13 +17,14 @@ export var toolbarCommandRules = {
 		{ Status: 'Canceled', ShowBtns: ['ShowArchive'] },
 	],
 	PURCHASE_Quotation: [
+		{ Status: 'Draft', ShowBtns: ['ShowSplit', 'ShowMerge','ShowSendQuotationRequest'] },
 		{ Status: 'Open', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
-		{ Status: 'Unapproved', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
+		{ Status: 'Unapproved', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive','ShowSendQuotationRequest'] },
 		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] },
-		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowConfirm', 'ShowAddPriceListVersion'] },
-		{ Status: 'Confirmed', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete','ShowReopenConfirmedQuotation'] },
+		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCancel', 'ShowConfirm', 'ShowCopyToPriceListVersion', 'ShowCopyToPurchaseOrder'] },
+		{ Status: 'Confirmed', ShowBtns: ['ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowReopenConfirmedQuotation','ShowSendQuotationRequest'] },
 		{ Status: 'Canceled', ShowBtns: ['ShowDelete', 'ShowArchive'] },
-		{ Status: 'Closed', ShowBtns: ['ShowAddPriceListVersion'] },
+		{ Status: 'Closed', ShowBtns: ['ShowCopyToPriceListVersion'] },
 	],
 	PURCHASE_Order: [
 		{ Status: 'Draft', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
@@ -76,5 +77,16 @@ export var toolbarCommandRules = {
 		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowMerge', 'ShowSplit', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
 		{ Status: 'Submitted', ShowBtns: ['ShowApprove', 'ShowDisapprove'] }, // Chờ duyệt
 		{ Status: 'Approved', ShowBtns: ['ShowDisapprove', 'ShowCopyToARInvoice', 'ShowCancel', 'ShowArchive'] }, // Đã duyệt
+	],
+
+	WMS_Receipt: [
+		{ Status: 'New', ShowBtns: ['ShowChangeBranch', 'ShowCancel', 'ShowDelete', 'ShowArchive'] },
+		{ Status: 'Confirmed', ShowBtns: ['ShowCancel', 'ShowDelete', 'ShowArchive', 'ShowDelivery'] },
+		{ Status: 'Scheduled', ShowBtns: ['ShowCancel', 'ShowArchive', 'ShowDelivery'] },
+		{ Status: 'Delivering', ShowBtns: ['ShowArchive', 'ShowReceive'] },
+		{ Status: 'Palletized', ShowBtns: ['ShowArchive', 'ShowReceive'] },
+		{ Status: 'Unloading', ShowBtns: ['ShowArchive',  'ShowReceive'] },
+		{ Status: 'Received', ShowBtns: ['ShowArchive',  'ShowCopyToAPInvoice'] },
+		{ Status: 'Canceled', ShowBtns: ['ShowArchive','ShowDelete'] },
 	],
 };

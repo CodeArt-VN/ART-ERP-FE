@@ -128,12 +128,12 @@
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
 	>
-	<ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
-		<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-	</ng-template>
-	<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
-		<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-	</ng-template>
+		<ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
+		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
 	</ng-select>
 
 	<!-- ng-select-branch -->
@@ -240,7 +240,7 @@
 		[clearable]="clearable"
 		[bindValue]="bindValue"
 		[appendTo]="appendTo"
-		[placeholder]="placeholder || label | translate"
+		[placeholder]="placeholder | translate"
 		(change)="onInputChange($event)"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
