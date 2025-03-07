@@ -84,7 +84,7 @@
 							class="min-btn clickable"
 							[name]="i.HasChild? (!i.showdetail? 'chevron-forward-outline':'chevron-down-outline') : ''"
 						></ion-icon>
-						<ion-text class="clickable" (click)="showModal(i)" [color]="i.Color">{{i.Name}}</ion-text>
+						<ion-text class="clickable" (click)="showModal(i)" [color]="i.Color">{{i.Name | translate}}</ion-text>
 					</div>
 					<div class="col-code cell">{{i.Code}}</div>
 					<div class="col-remark cell">{{i.Remark}}</div>

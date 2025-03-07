@@ -248,7 +248,7 @@
 				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/business-partner/' + i.Id)" (mousedown)="$event.stopPropagation()"
 					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
 				></a>
-				<small [title]="i.Name"> {{ i.Name }}</small>
+				<span [title]="i.Name"> {{ i.Name }}</span>
 				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
 			</div>
 		</ng-template>
