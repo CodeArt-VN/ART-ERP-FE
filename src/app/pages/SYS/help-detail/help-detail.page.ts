@@ -301,7 +301,7 @@ export class HelpDetailComponent extends PageBase {
 		// this.query.Code = this._helpCode;
 		let query = { url: this._helpCode, language: this.env.language.current };
 		this.pageProvider.commonService
-			.connect('GET', 'WEB/Content/GetAnItemByURL',query)
+			.connect('GET', 'WEB/Content/GetAnItemByURL', query)
 			.toPromise()
 			.then((result) => {
 				this.item = result;
