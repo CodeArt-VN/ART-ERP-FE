@@ -128,12 +128,9 @@
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
 	>
-	<ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
-		<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-	</ng-template>
-	<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
-		<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
-	</ng-template>
+		<ng-template *ngIf="inputControlTemplate" ng-label-tmp let-i="item">
+			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
 		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
 			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
 		</ng-template>
@@ -243,7 +240,7 @@
 		[clearable]="clearable"
 		[bindValue]="bindValue"
 		[appendTo]="appendTo"
-		placeholder="{{ placeholder | translate }}"
+		[placeholder]="placeholder | translate"
 		(change)="onInputChange($event)"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
@@ -251,7 +248,7 @@
 				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/business-partner/' + i.Id)" (mousedown)="$event.stopPropagation()"
 					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
 				></a>
-				<small [title]="i.Name"> {{ i.Name }}</small>
+				<span [title]="i.Name"> {{ i.Name }}</span>
 				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
 			</div>
 		</ng-template>
