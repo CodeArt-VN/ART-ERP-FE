@@ -1,7 +1,7 @@
 export var toolbarCommandRules = {
 	getRules: function (serviceName) {
 		console.log('Matrix button : ', this.convertArrayToObjects(this[serviceName]));
-		return this[serviceName] || [];
+		return this.convertArrayToObjects(this[serviceName]) || [];
 	},
 
 	convertArrayToObjects(matrix) {
