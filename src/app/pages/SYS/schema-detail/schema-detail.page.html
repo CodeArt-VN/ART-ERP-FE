@@ -168,8 +168,15 @@
 								</ion-list-header>
 							</ion-col>
 							<ion-col size="12" size-sm size-xl="4">
-								<app-form-control [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }" (change)="saveChange()"> </app-form-control>
-								<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }">
+								<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"> 
+									<small label *ngIf="formGroup.get('Id').value">Id: {{formGroup.get('Id').value}}</small>
+								</app-form-control>
+								<app-form-control
+									[field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: schemaTypeList ,bindLabel:'Name', bindValue:'Code', form : formGroup }"
+									(change)="saveChange()"
+								>
+								</app-form-control>
+								<app-form-control (change)="saveChange()"[field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }">
 									<small label>
 										<a class="clickable" (click)="formGroup.get('IsColorModalOpened').setValue(true)">{{'Change color' | translate}}</a>
 										&nbsp;
@@ -203,12 +210,7 @@
 									</small>
 								</app-form-control>
 
-								<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"> </app-form-control>
-								<app-form-control
-									[field]="{id:'Type', label: 'Type', type : 'ng-select', dataSource: schemaTypeList ,bindLabel:'Name', bindValue:'Code', form : formGroup }"
-									(change)="saveChange()"
-								>
-								</app-form-control>
+							
 							</ion-col>
 							<ion-col size="12" size-sm size-xl="4">
 								<app-form-control [field]="{id:'Sort', label: 'Sort', type : 'number', form : formGroup }" (change)="saveChange()"> </app-form-control>
