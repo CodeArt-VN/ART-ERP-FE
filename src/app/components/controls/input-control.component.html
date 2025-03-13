@@ -245,9 +245,11 @@
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<div *ngIf="i.Id">
-				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/business-partner/' + i.Id)" (mousedown)="$event.stopPropagation()"
-					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				<span (mousedown)="$event.stopPropagation()"> #{{ i.Id }} </span>
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" [routerLink]="['/business-partner/' + i.Id]" (mousedown)="$event.stopPropagation()"
+					><ion-icon name="open-outline"></ion-icon
 				></a>
+				&nbsp;
 				<span [title]="i.Name"> {{ i.Name }}</span>
 				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
 			</div>
@@ -291,8 +293,9 @@
 	>
 		<ng-template ng-label-tmp let-i="item">
 			<div *ngIf="i.Id">
-				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/item/' + i.Id)" (mousedown)="$event.stopPropagation()"
-					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				<span (mousedown)="$event.stopPropagation()"> #{{ i.Id }} </span>
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" [routerLink]="['/item/' + i.Id]" (mousedown)="$event.stopPropagation()"
+					><ion-icon name="open-outline"></ion-icon
 				></a>
 				&nbsp;
 				<span [title]="i.Name">

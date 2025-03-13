@@ -16,10 +16,12 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ShareDirectivesModule } from 'src/app/directives/share-directives.module';
 import { InputControlTempateDirective } from './input-control-template.directive';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
 	imports: [
 		CommonModule,
+		RouterModule,
 		FormsModule,
 		ReactiveFormsModule,
 		IonicModule,
