@@ -6,6 +6,7 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
 	selector: 'app-schema-detail',
@@ -65,7 +66,12 @@ export class SchemaDetailPage extends PageBase {
 		if (!this.item.Id) {
 			this.segmentView = 's2';
 		}
-		// this.item.Fields.forEach(x=> this.addField(x));
+		this.item.Fields?.forEach((e) => {
+			if (!e.Id) {
+				e.Id = lib.generateUID();
+				e.IsDisabled = true;
+			}
+		});
 		this.item.Fields = this.item.Fields?.sort((a, b) => a.Sort - b.Sort);
 		super.loadedData(event, ignoredFromGroup);
 		this.patchFormValue();
@@ -134,16 +140,15 @@ export class SchemaDetailPage extends PageBase {
 			IsColorModalOpened: [{ value: false, disabled: true }],
 			IsIconModalOpened: [{ value: false, disabled: true }],
 		});
-		console.log(field);
-		groups.push(group);
-
-		if (markAsDirty) {
+		if(field.IsDisabled)group.disable();
+		else if (markAsDirty) {
 			group.get('IDSchema').markAsDirty();
 			group.get('Icon').markAsDirty();
 			group.get('Color').markAsDirty();
 			group.get('DataType').markAsDirty();
 			group.get('PropertyType').markAsDirty();
 		}
+		groups.push(group);
 	}
 
 	removeField(g, index) {
