@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-	appId: 'vn.codeart.erp',
-	appName: 'ART-ERP',
+	appId: 'vn.inholdings.app.erp',
+	appName: 'In-Holdings',
 	webDir: 'www',
 	bundledWebRuntime: false,
 	server: {

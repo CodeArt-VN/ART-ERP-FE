@@ -42,6 +42,10 @@
 
 @use './theme/_default-theme.scss';
 
+@use './theme/_inholding-theme.scss';
+@use './theme/_gem-theme.scss';
+@use './theme/_the-log-theme.scss';
+
 @use './theme/dpr-query.scss';
 @use './theme/common.scss';
 @use './theme/data-table.scss';
