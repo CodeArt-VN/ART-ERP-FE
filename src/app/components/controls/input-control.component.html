@@ -29,6 +29,7 @@
 		[formControlName]="id"
 		(change)="onInputChange($event)"
 		(keydown)="onKeydown($event)"
+		[suffix]="suffix"
 	/>
 	<!-- radio -->
 	<ng-container *ngSwitchCase="'radio'">

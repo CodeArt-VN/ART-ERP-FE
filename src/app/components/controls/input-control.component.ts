@@ -28,6 +28,7 @@ export class InputControlComponent implements OnInit {
 		if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
 		if (f.color) this.color = f.color;
 		if (f.appendTo !== undefined) this.appendTo = f.appendTo;
+		if (f.suffix) this.suffix = f.suffix;
 		if (f.branchConfig) {
 			if (f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
 			if (f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
@@ -75,6 +76,7 @@ export class InputControlComponent implements OnInit {
 	@Input() label: string;
 
 	@Input() color: string = 'dark';
+	@Input() suffix: string = '';
 
 	@Input() placeholder?: string;
 
