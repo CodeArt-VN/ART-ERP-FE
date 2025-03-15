@@ -160,13 +160,13 @@
 			<ion-footer *ngIf="env.user && env.user.Id">
 				<a style="height: 56px; line-height: 56px" (click)="presentUserCPPopover($event)" class="menu-item" *ngIf="env?.user?.UserSetting?.IsCompactMenu?.Value">
 					<ion-avatar slot="start">
-						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+						<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
 				</a>
 
 				<ion-item (click)="presentUserCPPopover($event)" lines="none" button *ngIf="!env?.user?.UserSetting?.IsCompactMenu?.Value">
 					<ion-avatar slot="start">
-						<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+						<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
 					<ion-label>
 						<h3>
@@ -182,7 +182,7 @@
 							<ion-list lines="none">
 								<ion-item [routerLinkActive]="['is-active']" [routerLink]="['/profile']" button detail="false">
 									<ion-avatar slot="start">
-										<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+										<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 									</ion-avatar>
 									<ion-label>
 										<h3>

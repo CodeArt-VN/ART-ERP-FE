@@ -40,6 +40,9 @@ export class DataTableColumnDirective implements OnChanges {
 		| 'span-datetime' = 'text';
 
 	@Input() filterDataSource: any[];
+	@Input() filterBindValue: string;
+	@Input() filterBindLabel: string;
+
 
 	@Input() canSort: boolean = true;
 

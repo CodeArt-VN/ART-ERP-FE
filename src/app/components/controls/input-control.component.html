@@ -245,9 +245,11 @@
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<div *ngIf="i.Id">
-				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/business-partner/' + i.Id)" (mousedown)="$event.stopPropagation()"
-					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				<span (mousedown)="$event.stopPropagation()"> #{{ i.Id }} </span>
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" [routerLink]="['/business-partner/' + i.Id]" (mousedown)="$event.stopPropagation()"
+					><ion-icon name="open-outline"></ion-icon
 				></a>
+				&nbsp;
 				<span [title]="i.Name"> {{ i.Name }}</span>
 				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
 			</div>
@@ -291,8 +293,9 @@
 	>
 		<ng-template ng-label-tmp let-i="item">
 			<div *ngIf="i.Id">
-				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" (click)="onNav('/item/' + i.Id)" (mousedown)="$event.stopPropagation()"
-					>#{{ i.Id }} <ion-icon name="open-outline"></ion-icon
+				<span (mousedown)="$event.stopPropagation()"> #{{ i.Id }} </span>
+				<a [ngClass]="{ 'no-check-dirty': noCheckDirty }" class="clickable" [routerLink]="['/item/' + i.Id]" (mousedown)="$event.stopPropagation()"
+					><ion-icon name="open-outline"></ion-icon
 				></a>
 				&nbsp;
 				<span [title]="i.Name">
@@ -380,20 +383,20 @@
 	>
 		<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
 			<ion-chip *ngFor="let i of items">
-				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
 				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
 				<ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
 			</ion-chip>
 		</ng-template>
 		<ng-template ng-label-tmp let-i="item">
 			<ion-chip *ngIf="i">
-				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
 				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
 			</ion-chip>
 		</ng-template>
 		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 			<div *ngIf="i">
-				<ion-avatar><ion-img #img [src]="imgPath + i.Code + '.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
 				<span [ngOptionHighlight]="search">{{ i.FullName }}</span
 				><br />
 				<small

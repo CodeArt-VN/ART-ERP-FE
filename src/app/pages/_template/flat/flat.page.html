@@ -17,7 +17,7 @@
 			</ion-item>
 			<ion-reorder-group [disabled]="!groupControl.showReorder" (ionItemReorder)="handleReorder($any($event))">
 				<ion-item [color]="g.Id == groupControl.selectedGroup?.Id? 'primary': '' " lines="full" button *ngFor="let g of groupControl.groupList" (click)="onGroupChange(g)">
-					<ion-img slot="start" class="icon-30" #img [src]="g.Icon" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					<ion-img slot="start" class="icon-30" #img [src]="g.Icon || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					<ion-label [title]="g.Id">{{g.Name | translate}}</ion-label>
 					<ion-reorder slot="end"></ion-reorder>
 				</ion-item>
