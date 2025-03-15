@@ -75,7 +75,7 @@ export class InputControlComponent implements OnInit {
 	@Input() label: string;
 
 	@Input() color: string = 'dark';
-
+	@Input() suffix: string = '';
 	@Input() placeholder?: string;
 
 	@Input() dataSource?: any[] | any;
