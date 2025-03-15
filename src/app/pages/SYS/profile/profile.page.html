@@ -15,7 +15,7 @@
 	<div class="one-col ion-padding">
 		<div class="ion-text-center" *ngIf="env.user">
 			<ion-avatar class="avatar" slot="start">
-				<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+				<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 			</ion-avatar>
 			<div class="full-name">{{env.user.FullName}}</div>
 		</div>
