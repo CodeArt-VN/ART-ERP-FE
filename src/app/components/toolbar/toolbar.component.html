@@ -17,7 +17,6 @@
 			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}
 		</ion-button>
 		<ng-content select="[startTitle]"></ng-content>
-		<ng-content select="[tollbarTitle]"></ng-content>
 	</ion-buttons>
 
 	<!-- fake back -->
@@ -31,6 +30,7 @@
 	<!-- center-tool-bar -->
 	<ion-title [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }" *ngIf="page.pageConfig.isDetailPage && CenterTitle">
 		{{ CenterTitle }}
+		<ng-content select="[centerTitle]"></ng-content>
 	</ion-title>
 
 	<!-- slot-end -->

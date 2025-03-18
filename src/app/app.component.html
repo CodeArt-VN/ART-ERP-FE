@@ -373,7 +373,7 @@
 			</span>
 
 			<ng-container *ngFor="let s of _environment.appServers">
-				<span class="text" *ngIf="env.user?.Id && s.Name != 'Main server' && _environment.appDomain == s.Code" (click)="env.showTranslateMessage(s.Name, s.Color)">
+				<span class="text" *ngIf="env.user?.Id && s.Name != 'Main server' && _environment.appDomain == s.Code" (click)="env.showMessage(s.Name, s.Color)">
 					<ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name"></ion-icon>
 				</span>
 			</ng-container>
