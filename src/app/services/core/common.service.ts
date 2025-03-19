@@ -108,6 +108,7 @@ export class CommonService {
 		} else if (pmethod == 'UPLOAD') {
 			headers = new HttpHeaders({
 				Authorization: this.getToken(),
+				'App-Version': environment.appVersion,
 				withCredentials: 'true',
 			});
 			options = { headers: headers, params: null };
