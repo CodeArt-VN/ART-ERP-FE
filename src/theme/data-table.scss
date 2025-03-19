@@ -141,6 +141,16 @@ app-data-table,
 				background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
 			}
 		}
+
+		// .col-sticky {
+		// 	position: unset;
+		// 	z-index: 1;
+		// 	left: 0;
+		// 	background-color: unset;
+		// 	backdrop-filter: unset;
+		// 	border-right: unset;
+		// 	border-left: unset;
+		// }
 	}
 
 	.table-body {
@@ -649,7 +659,7 @@ app-data-table,
 					.cell {
 						height: fit-content;
 						padding: 2px !important;
-						min-width: 25%;
+						min-width: 25% !important;
 						max-width: 100%;
 						justify-content: left !important;
 
@@ -744,6 +754,16 @@ app-data-table,
 						background-color: var(--ion-color-primary);
 						color: var(--ion-color-primary-contrast) !important;
 					}
+				}
+
+				.col-sticky {
+					position: unset;
+					z-index: 1;
+					left: 0;
+					background-color: unset;
+					backdrop-filter: unset;
+					border-right: unset;
+					border-left: unset;
 				}
 
 				.col-code {

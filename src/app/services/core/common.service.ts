@@ -22,8 +22,10 @@ export class CommonService {
 			Authorization: this.getToken(),
 			'Content-Type': 'application/json',
 			'Data-type': 'json',
+			'App-Version': environment.appVersion,
 			//'withCredentials': 'true'
 		});
+
 		let options: any = {
 			headers: headers,
 			//withCredentials: true,
@@ -51,6 +53,8 @@ export class CommonService {
 			delete data.selected;
 		}
 
+		if (!environment.production || GlobalData?.Token?.dev == 'test') headers.append('IsDevMode', 'true');
+
 		if (data && data.hasOwnProperty('IgnoredBranch') && data.hasOwnProperty('IDBranch')) {
 			delete data.IDBranch;
 			delete data.SelectedBranch;
@@ -71,16 +75,15 @@ export class CommonService {
 			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'SelectedBranch=' + this.env.selectedBranch + '';
 		}
 
-		if (URL.indexOf('AppVersion') == -1) {
-			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'AppVersion=' + this.env.version + '';
-		}
-
 		if (pmethod == 'Login') {
 			headers = new HttpHeaders({
 				'Content-Type': 'application/x-www-form-urlencoded',
+				'App-Version': environment.appVersion,
+				Authorization: 'Basic ' + btoa(data.username + ':' + data.password),
 			});
 			options.headers = headers;
-			return this.http.post(URL, data, options);
+
+			return this.http.post(URL, 'grant_type=password', options);
 		} else if (pmethod == 'GET') {
 			if (data) {
 				let params: HttpParams = new HttpParams();

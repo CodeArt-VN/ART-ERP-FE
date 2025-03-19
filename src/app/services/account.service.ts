@@ -381,11 +381,6 @@ export class AccountService {
 		// }
 		var that = this;
 		return new Promise(async function (resolve, reject) {
-			let urlSearchParams = new URLSearchParams();
-			urlSearchParams.set('grant_type', 'password');
-			urlSearchParams.set('username', username);
-			urlSearchParams.set('password', password);
-
 			let deviceInfo: any = null;
 			if (Capacitor.isPluginAvailable('Device')) {
 				let info = await Device.getInfo();
@@ -412,7 +407,10 @@ export class AccountService {
 				};
 			}
 
-			let data = urlSearchParams.toString();
+			let data = {
+				username: username,
+				password: password,
+			};
 
 			that.commonService
 				.connect('Login', APIList.ACCOUNT.token.url, data)
