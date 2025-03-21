@@ -43,23 +43,33 @@ export class JsonViewerComponent implements OnInit {
 		if (typeof this.item != 'object') {
 			this.item = JSON.parse(this.item);
 		}
-		Object.keys(this.item).forEach((k) => {
+		if (typeof this.item !== 'object' && !Array.isArray(this.item)) {
 			let data: any = {};
 			data.Id = lib.generateUID();
-			data.Property = k;
-			data.Value = this.item[k];
-			data.OldValue = this.oldItem ? this.oldItem[k] : null;
+			data.Property = 'Data';
+			data.Value = this.item;
 			this.dataSource.push(data);
-			if (this.item[k] instanceof Array) {
-				let index = 0;
-				data.Value = data.OldValue = null;
-				this.item[k].forEach((i) => {
-					if (this.oldItem && this.oldItem[k] && this.oldItem[k][index]) this.buildDataArray(i, data.Id, index, this.oldItem[k][index]);
-					else this.buildDataArray(i, data.Id, index, null);
-					index++;
-				});
-			}
-		});
+		}
+		else{
+			Object.keys(this.item).forEach((k) => {
+				let data: any = {};
+				data.Id = lib.generateUID();
+				data.Property = k;
+				data.Value = this.item[k];
+				data.OldValue = this.oldItem ? this.oldItem[k] : null;
+				this.dataSource.push(data);
+				if (this.item[k] instanceof Array) {
+					let index = 0;
+					data.Value = data.OldValue = null;
+					this.item[k].forEach((i) => {
+						if (this.oldItem && this.oldItem[k] && this.oldItem[k][index]) this.buildDataArray(i, data.Id, index, this.oldItem[k][index]);
+						else this.buildDataArray(i, data.Id, index, null);
+						index++;
+					});
+				}
+			});
+		}
+	
 		this.dataSourceState = [...this.dataSource];
 
 		if (this._notShowProperties.length > 0) {

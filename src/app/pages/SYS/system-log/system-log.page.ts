@@ -5,6 +5,7 @@ import { PageBase } from 'src/app/page-base';
 import { SYS_TypeProvider, vw_SYS_LogProvider } from 'src/app/services/static/services.service';
 import { FormBuilder } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
+import { SystemLogDetailPage } from '../system-log-detail/system-log-detail.page';
 
 @Component({
 	selector: 'app-system-log',
@@ -153,6 +154,17 @@ export class SystemLogPage extends PageBase {
 			else this.typeGroupList = values;
 		});
 	}
+	async showModal(i) {
+			const modal = await this.modalController.create({
+				component: SystemLogDetailPage,
+				componentProps: {
+					id: i.Id,
+				},
+				cssClass: 'my-custom-class',
+			});
+			return await modal.present();
+		}
+
 	dateMinusDays(days: number): string {
 		const date = new Date();
 		date.setDate(date.getDate() - days); // Subtract days
@@ -163,3 +175,29 @@ export class SystemLogPage extends PageBase {
 		return new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
 	}
 }
+
+
+// [
+//     {
+//         "Id": "505",
+//         "AppName": "DMS-WIN-56LLEKKDRR1",
+//         "LoggedBy": "thinh.nguyen@metafood.com.vn",
+//         "Date": "2024-01-06 14:01:01.973",
+//         "Level": "INFO",
+//         "Logger": "AuthorizeAttribute",
+//         "Message": "{Action:'Call', Permission: 'get|wms/item/search;', URL: 'https://app.inholdings.vn:443/api/v1/WMS/Item/Search?AppVersion=0.19.31&IDSO=417885&IgnoredBranch=true&AllUoM=true&Id=%5B12626,12648,5418,58504,58512,58523,58527,5500,16141,5494,5495%5D'}",
+//         "Method": "GET",
+//         "API": "https://app.inholdings.vn:443/api/v1/WMS/Item/Search?AppVersion=0.19.31&IDSO=417885&IgnoredBranch=true&AllUoM=true&Id=%5B12626,12648,5418,58504,58512,58523,58527,5500,16141,5494,5495%5D",
+//         "Data": null,
+//         "Exception": null,
+//         "Thread": "142",
+//         "IPAddress": "14.161.43.134",
+//         "IPAddressLan": null,
+//         "IsDeleted": "0",
+//         "AppVersion": "0.19.31",
+//         "Segment0": "get|wms/item/search;",
+//         "Segment1": "api",
+//         "Segment2": "v1",
+//         "Segment3": "WMS"
+//     }
+// ]

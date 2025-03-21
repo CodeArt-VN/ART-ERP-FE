@@ -18,6 +18,7 @@ export const SYSRoutes: Routes = [
 
        
     { path: 'system-log', loadChildren: () => import('./system-log/system-log.module').then(m => m.SystemLogPageModule), canActivate: [AuthGuard] },
+    { path: 'system-log/:id', loadChildren: () => import('./system-log-detail/system-log-detail.module').then(m => m.SystemLogDetailPageModule), canActivate: [AuthGuard] },
 
     { path: 'schema', loadChildren: () => import('./schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
     { path: 'schema/:id', loadChildren: () => import('./schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
