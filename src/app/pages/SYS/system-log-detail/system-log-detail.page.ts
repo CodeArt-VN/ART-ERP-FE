@@ -1,0 +1,50 @@
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { NavController, ModalController, NavParams, LoadingController, AlertController } from '@ionic/angular';
+import { PageBase } from 'src/app/page-base';
+import { ActivatedRoute } from '@angular/router';
+import { EnvService } from 'src/app/services/core/env.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { lib } from 'src/app/services/static/global-functions';
+import {vw_SYS_LogProvider } from 'src/app/services/static/services.service';
+
+@Component({
+	selector: 'app-system-log-detail',
+	templateUrl: './system-log-detail.page.html',
+	styleUrls: ['./system-log-detail.page.scss'],
+	standalone: false,
+})
+export class SystemLogDetailPage extends PageBase {
+
+	constructor(
+		public pageProvider: vw_SYS_LogProvider,
+		public env: EnvService,
+		public navCtrl: NavController,
+		public route: ActivatedRoute,
+		public modalController: ModalController,
+		public alertCtrl: AlertController,
+		public navParams: NavParams,
+		public formBuilder: FormBuilder,
+		public cdr: ChangeDetectorRef,
+	) {
+		super();
+		this.pageConfig.isDetailPage = true;
+		this.id = this.route.snapshot.paramMap.get('id');
+		this.formGroup = formBuilder.group({
+			Id: [''],
+			Date: [''],
+			Method: [''],
+			API: [''],
+			Data: [''],
+			IPAddress: [''],
+			AppVersion: [''],
+			Segment3: [''],
+			Segment4: [''],
+		});
+	}
+	preLoadData(event) {
+		if (this.navParams) {
+			this.id = this.navParams.data.id;
+		}
+		super.preLoadData(event);
+	}
+}
