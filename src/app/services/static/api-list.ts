@@ -15678,6 +15678,55 @@ export var APIListBase = {
 		
 	},
 
+	vw_SYS_LogDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "vw/SYS/LogDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "vw/SYS/LogDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "vw/SYS/LogDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "vw/SYS/LogDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "vw/SYS/LogDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/LogDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/LogDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "vw/SYS/LogDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "vw/SYS/LogDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "vw/SYS/LogDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "vw/SYS/LogDetail/" + id} 
+        }
+		
+	},
+
 	vw_SYS_SyncJob:{
         getSearchList:{
             method: "GET",
