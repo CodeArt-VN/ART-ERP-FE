@@ -76,7 +76,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 			.catch((err) => {});
 	}
 	buildGroup() {
-		if (this.model.fields) {
+		if (this.model?.fields) {
 			let formGroup = this.formGroup as FormGroup;
 			this.model.fields.forEach(f => {
 				if(f.type == 'Group') {
