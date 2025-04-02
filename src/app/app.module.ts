@@ -32,7 +32,6 @@ import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-ad
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
-import { DataCorrectionRequestModalPage } from './modals/data-correction-request-modal/data-correction-request-modal.page';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
@@ -44,6 +43,7 @@ import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-comp
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,7 +72,6 @@ export function createTranslateLoader(http: HttpClient) {
 		POSAddContactModalPage,
 		POSCancelModalPage,
 		POSNotifyModalPage,
-		DataCorrectionRequestModalPage,
 	],
 	exports: [],
 	bootstrap: [AppComponent],
