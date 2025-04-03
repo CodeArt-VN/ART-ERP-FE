@@ -57,17 +57,17 @@ export class SystemTypeDetailPage extends PageBase {
 	preLoadData() {
 		if (this.navParams) {
 			this.items = lib.cloneObject(this.navParams.data.items);
-			this.items.forEach((i) => {
-				let prefix = '';
-				for (let j = 1; j < i.level; j++) {
-					prefix += '- ';
-				}
-				i.Name = prefix + i.Name;
-			});
+			// this.items.forEach((i) => {
+			// 	let prefix = '';
+			// 	for (let j = 1; j < i.level; j++) {
+			// 		prefix += '- ';
+			// 	}
+			// 	i.Name = prefix + i.Name;
+			// });
 			this.item = lib.cloneObject(this.navParams.data.item);
 			this.id = this.navParams.data.id;
 
-			this.removeCurrentNode();
+			// this.removeCurrentNode();
 			this.cdr.detectChanges();
 			super.loadedData();
 		}
@@ -77,18 +77,18 @@ export class SystemTypeDetailPage extends PageBase {
 		this.preLoadData();
 	}
 
-	removeCurrentNode() {
-		let currentItem = this.items.find((i) => i.Id == this.id);
-		if (currentItem) {
-			currentItem.Flag = true;
-			this.markNestedNode(this.items, this.id);
-		}
-	}
+	// removeCurrentNode() {
+	// 	let currentItem = this.items.find((i) => i.Id == this.id);
+	// 	if (currentItem) {
+	// 		currentItem.Flag = true;
+	// 		this.markNestedNode(this.items, this.id);
+	// 	}
+	// }
 
-	markNestedNode(ls, Id) {
-		ls.filter((d) => d.IDParent == Id).forEach((i) => {
-			i.Flag = true;
-			this.markNestedNode(ls, i.Id);
-		});
-	}
+	// markNestedNode(ls, Id) {
+	// 	ls.filter((d) => d.IDParent == Id).forEach((i) => {
+	// 		i.Flag = true;
+	// 		this.markNestedNode(ls, i.Id);
+	// 	});
+	// }
 }

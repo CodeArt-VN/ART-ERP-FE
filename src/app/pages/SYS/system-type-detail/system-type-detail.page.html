@@ -14,32 +14,16 @@
 		<ion-grid fixed>
 			<ion-row>
 				<ion-col size="12" size-sm="12" size-md="6">
-					<div class="c-control">
-						<label class="c-label" for="Code"
-							>{{'Code' | translate}}
-							<small *ngIf="id">(Id: {{id}})</small>
-							<span
-								*ngIf="!formGroup.controls.Code.valid && !formGroup.controls.Code.pending && (formGroup.controls.Code.dirty || submitAttempt)"
-								ion-text
-								color="danger"
-								>(*)</span
-							>
-						</label>
-						<input [readonly]="item.IsSysAttrib" class="c-input" id="Code" formControlName="Code" type="text" />
-					</div>
-					<div class="c-control">
-						<label class="c-label" for="Name"
-							>{{'Name' | translate}}
-							<span
-								*ngIf="!formGroup.controls.Name.valid && !formGroup.controls.Name.pending && (formGroup.controls.Name.dirty || submitAttempt)"
-								ion-text
-								color="danger"
-								>(*)</span
-							>
-						</label>
-						<input class="c-input" id="Name" formControlName="Name" type="text" />
-					</div>
-					<div class="c-control">
+
+					<app-form-control [field]="{id:'Code',label:'Code',type:'text',form:formGroup}"></app-form-control>
+
+					<app-form-control [field]="{id:'Name',label:'Name',type:'text',form:formGroup}"></app-form-control>
+
+					<app-form-control
+						[field]="{id:'IDParent',label:'Belonged to',type:'ng-select',dataSource:items,bindLable:'Name',bindValue:'Id',form:formGroup,
+						treeConfig:{searchFnDefault: true,isTree: true, isCollapsed: true}}"
+					></app-form-control>
+					<!-- <div class="c-control">
 						<label class="c-label" for="IDParent"
 							>{{'Belonged to' | translate}}
 							<span
@@ -53,29 +37,18 @@
 						<select [attr.disabled]="item.IsSysAttrib?'':null" class="c-input c-dropdown" formControlName="IDParent">
 							<option [disabled]="t.Flag" *ngFor="let t of items" [value]="t.Id">{{t.Name}}</option>
 						</select>
-					</div>
+					</div> -->
 					<app-form-control
 						[field]="{id:'Icon', secondaryId: 'Color', label: 'Icon',  type : 'icon-color', form : formGroup }"
 						(change)="saveChange()"
 					></app-form-control>
 				</ion-col>
 				<ion-col size="12" size-sm="12" size-md="6">
-					<div class="c-control">
-						<label class="c-label" for="Sort">{{'Sort' | translate}}</label>
-						<input class="c-input" id="Sort" formControlName="Sort" type="number" />
-					</div>
-					<div class="c-control">
-						<label class="c-label" for="Remark"
-							>{{'Description' | translate}}
-							<span
-								*ngIf="!formGroup.controls.Remark.valid && !formGroup.controls.Remark.pending && (formGroup.controls.Remark.dirty || submitAttempt)"
-								ion-text
-								color="danger"
-								>(*)</span
-							>
-						</label>
-						<textarea rows="3" class="c-input" id="Remark" formControlName="Remark" type="textarea"></textarea>
-					</div>
+					
+					<app-form-control [field]="{id:'Sort',label:'Sort',type:'number',form:formGroup}"></app-form-control>
+
+					<app-form-control [field]="{id:'Remark',label:'Description',type:'textarea',form:formGroup}"></app-form-control>
+				
 					<div class="c-control ion-text-right" *ngIf="item.Id==0">
 						<label class="c-label" for=""></label>
 						<ion-button (click)="saveChange()">{{'Add' | translate}}</ion-button>

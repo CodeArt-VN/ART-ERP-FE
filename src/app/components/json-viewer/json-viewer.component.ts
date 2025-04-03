@@ -49,6 +49,7 @@ export class JsonViewerComponent implements OnInit {
 			data.Id = lib.generateUID();
 			data.Property = 'Data';
 			data.Value = this.item;
+			data.OldValue = this.oldItem ? this.oldItem : null;
 			this.dataSource.push(data);
 		}
 		else{
@@ -57,8 +58,10 @@ export class JsonViewerComponent implements OnInit {
 				data.Id = lib.generateUID();
 				data.Property = this.getProperty(k)
 				let value = this.item[k];
+				let oldValue = this.oldItem ? this.oldItem[k] : null;
 				try{
 					if(typeof value === "string")value = this.saveParseJson(value);
+					if(typeof oldValue === "string")oldValue = this.saveParseJson(oldValue);
 				}
 				catch(e){
 				}
@@ -66,26 +69,25 @@ export class JsonViewerComponent implements OnInit {
 					this.dataSource.push(data);
 					let index = 0;
 					value.forEach((i) => {
-						if (this.oldItem && this.oldItem[k] && this.oldItem[k][index]) this.buildData(i, data.Id,k, this.oldItem[k][index]);
+						if (oldValue && oldValue[i]) this.buildData(i, index,k, oldValue[index]);
 						else this.buildData(i, index,data.Id, null);
 						index++;
 					});
 				}
 				else if(value instanceof Object) {
 					this.dataSource.push(data);
-					let index = 0;
 					Object.keys(value).forEach((k) => {
-						if (this.oldItem && this.oldItem[k]){
-							let oldValue = JSON.parse(this.oldItem[k]);
-							this.buildData(value[k], k, data.Id,  oldValue);
+						if (oldValue && oldValue[k] ){
+							
+							this.buildData(value[k], k, data.Id,  oldValue[k]);
 						}
 						else this.buildData(value[k], k, data.Id, null);
 					});
 					
 				}
 				else{
-					data.Value = this.item[k];
-					data.OldValue = this.oldItem ? this.oldItem[k] : null;
+					data.Value = value;
+					data.OldValue = oldValue;
 					this.dataSource.push(data);
 
 				}
@@ -123,20 +125,22 @@ export class JsonViewerComponent implements OnInit {
 		
 		try{
 			if(typeof value === "string")	value = this.saveParseJson(value);
+			if(typeof oldValue === "string")	oldValue = this.saveParseJson(oldValue);
 		}
 		catch(e){
 		}
 		if(Array.isArray(value) ){
 			let index = 0;
 			value.forEach((i) => {
-				this.buildData(i, index,source.Id,  oldValue);
+				if (oldValue && oldValue[index]) this.buildData(i, index,source.Id, oldValue[index]);
+				else this.buildData(i, index,source.Id,  null);
 				index++;
 			});
 		}
 		else if(value instanceof Object){
-			let index = 0;
 			Object.keys(value).forEach((v) => {
-				this.buildData(value[v], v, source.Id, null);
+				if (oldValue && oldValue[v]) this.buildData(value[v], v,source.Id, oldValue[v]);
+				else this.buildData(value[v], v, source.Id, null);
 			});
 		}
 		else{

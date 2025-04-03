@@ -14,7 +14,6 @@ import { APPROVAL_RequestProvider } from 'src/app/services/static/services.servi
 	styleUrls: ['./data-correction-request-modal.scss'],
 	standalone: false,
 })
-
 export class DataCorrectionRequestModalPage extends PageBase {
 	formArray: FormArray;
 	formGroup: FormGroup;
@@ -30,8 +29,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		public modalController: ModalController
 	) {
 		super();
-		this.formGroup = this.formBuilder.group({
-		});
+		this.formGroup = this.formBuilder.group({});
 		this.formArray = new FormArray([]);
 	}
 
@@ -45,42 +43,51 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		//this.buildFormGroup();
 		console.log(this.model);
 		console.log(this.formArray);
-		
+
 		// console.log(this.formGroup.get('Addresses').value.length)
 		// console.log('controls Addresses', this.formGroup.get('Addresses')['controls'])
 	}
 
 	submitForm() {
-		let object = {
-			Type: 'DataCorrection',
-			IDBranch: this.item.IDBranch,
-			SubType: this.model.type,
-			UDF01: this.item.Id,
-			UDF16: JSON.stringify(this.formGroup.getRawValue()),
-		};
-
-		console.log(object);
-		this.env
-			.showPrompt('Do you want to submit data ?', null, 'You are adjusting data !', 'Yes', 'No')
-			.then((_) => {
-				this.env
-					.showLoading('Please wait for a few moments', this.pageProvider.save(object))
-					.then((rs) => {
-						this.env.showMessage('Saved', 'success');
-						this.modalController.dismiss();
-					})
-					.catch((err) => {
-						this.env.showMessage(err.error?.InnerException?.ExceptionMessage || err, 'danger');
-					});
-			})
-			.catch((err) => {});
+		this.formGroup.updateValueAndValidity();
+		if (!this.formGroup.valid) {
+			let invalidControls = this.findInvalidControlsRecursive(this.formGroup);
+			const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
+			Promise.all(translationPromises).then((values) => {
+				let invalidControls = values;
+				this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+			});
+		} else {
+			let submitItem = this.getDirtyValues(this.formGroup);
+			let object = {
+				Type: 'DataCorrection',
+				IDBranch: this.item.IDBranch,
+				SubType: this.model.type,
+				UDF01: this.item.Id,
+				UDF16: JSON.stringify(submitItem),
+			};
+			this.env
+				.showPrompt('Do you want to submit data ?', null, 'You are adjusting data !', 'Yes', 'No')
+				.then((_) => {
+					this.env
+						.showLoading('Please wait for a few moments', this.pageProvider.save(object))
+						.then((rs) => {
+							this.env.showMessage('Saved', 'success');
+							this.modalController.dismiss();
+						})
+						.catch((err) => {
+							this.env.showMessage(err.error?.InnerException?.ExceptionMessage || err, 'danger');
+						});
+				})
+				.catch((err) => {});
+		}
 	}
 	buildGroup() {
 		if (this.model?.fields) {
 			let formGroup = this.formGroup as FormGroup;
-			this.model.fields.forEach(f => {
-				if(f.type == 'Group') {
-					f.groups.forEach(g => {
+			this.model.fields.forEach((f) => {
+				if (f.type == 'Group') {
+					f.groups.forEach((g) => {
 						if (g.cols) {
 							g.subCols = {};
 							Object.keys(g.cols).forEach((k) => {
@@ -93,13 +100,12 @@ export class DataCorrectionRequestModalPage extends PageBase {
 							subCols: g.subCols,
 						});
 						this.formArray.push(gr);
-						if(g.fields) {
-							this.patchData(g.fields, this.item, formGroup,g.subCols,gr)
-
+						if (g.fields) {
+							this.patchData(g.fields, this.item, formGroup, g.subCols, gr);
 						}
-					})
+					});
 				}
-			  })
+			});
 		} else return;
 	}
 	buildFormGroup() {
@@ -123,9 +129,9 @@ export class DataCorrectionRequestModalPage extends PageBase {
 						f.groups.forEach((g) => {
 							let gr = new FormGroup({}) as any;
 							let controlLabel = new FormControl(g.title) as any;
-							gr.addControl('title', controlLabel);								
+							gr.addControl('title', controlLabel);
 							let controlFields = new FormControl(g.fields) as any;
-							gr.addControl('fields', controlFields);						
+							gr.addControl('fields', controlFields);
 							if (g.cols) {
 								let controlCols = new FormControl(g.cols) as any;
 								gr.addControl('cols', controlCols);
@@ -152,15 +158,13 @@ export class DataCorrectionRequestModalPage extends PageBase {
 							});
 						});
 					}
-				} 
-				else if(f.type == 'addresses-component'){
+				} else if (f.type == 'addresses-component') {
 					let gr = new FormGroup({}) as any;
 					let controlValue = new FormControl({ value: this.item[f.id], disabled: false }) as any;
 					gr.addControl('value', controlValue);
-					gr.addControl('component', new FormControl({ value: f.type, disabled: false}));
+					gr.addControl('component', new FormControl({ value: f.type, disabled: false }));
 					fg.addControl(f.id, gr);
-				}
-				else {
+				} else {
 					let control = new FormControl({ value: this.item[f.id], disabled: f.disabled }) as any;
 					control.field = f;
 					if (f.cols) {
@@ -173,30 +177,8 @@ export class DataCorrectionRequestModalPage extends PageBase {
 				}
 			});
 		});
-		// this.model.fields.forEach(f => {
-		//   if (f.type == "FormGroup") {
-		//     let gr = new FormGroup({}) as any;
-		//     gr.field = f;
-		//     this.formGroup.addControl(f.id, gr);
-		//     this.patchFormGroup(f.fields, this.item[f.id], gr)
-		//   }
-		//   else if (f.type == "FormArray") {
-		//     this.formGroup.addControl(f.id, new FormArray([]));
-		//     let formArray = this.formGroup.get(f.id) as any;
-		//     formArray.field = f;
-		//     this.item[f.id].forEach(value => {
-		//       this.patchFormArray(f.fields, value, formArray)
-		//     })
-		//   }
-		//   else {
-		//     let control = new FormControl({ value: this.item[f.id], disabled: f.disabled }) as any;
-		//     control.field = f
-		//     this.formGroup.addControl(f.id, control);
-		//   }
-		// })
-		console.log(this.formArray);
 	}
-	patchData(fields, value, fg :FormGroup,fgsubCols,group:FormGroup) {
+	patchData(fields, value, fg: FormGroup, fgsubCols, group: FormGroup) {
 		fields.forEach((f) => {
 			if (f.type == 'FormGroup') {
 				let gr = new FormGroup({}) as any;
@@ -213,7 +195,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 				value[f.id].forEach((v) => {
 					this.patchFormArray(f.fields, v, formArray, fgsubCols);
 				});
-			} else if(f.type== 'addresses-component'){
+			} else if (f.type == 'addresses-component') {
 				let formArray = new FormArray([]) as any;
 				formArray.component = f.type;
 				group.addControl(f.id, formArray);
@@ -226,8 +208,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 					});
 					formArray.push(gr);
 				});
-			}
-			else if(f.type== 'tax-infos-component'){
+			} else if (f.type == 'tax-infos-component') {
 				let formArray = new FormArray([]) as any;
 				formArray.component = f.type;
 				group.addControl(f.id, formArray);
@@ -240,8 +221,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 					});
 					formArray.push(gr);
 				});
-			}
-			else{
+			} else {
 				let control = new FormControl({ value: value[f.id], disabled: f.disabled }) as any;
 				fg.addControl(f.id, control);
 				control.field = f;
@@ -292,14 +272,6 @@ export class DataCorrectionRequestModalPage extends PageBase {
 				control.field = f;
 				gr.addControl(f.id, control);
 			}
-			// f.attrs = {}; // Create an attrs object to store size attributes
-			// if (f.cols) {
-			//   f.cols.forEach(col => {
-			//     const key = Object.keys(col)[0]; // Get breakpoint key (e.g., 'sm', 'md', 'lg')
-			//     f.attrs[`size-${key === 'xs' ? '' : key}`] = col[key]; // Convert to Ionic size attributes
-			//   });
-			// }
-			// else  f.attrs['size']=12;
 		});
 		formArray.push(gr);
 	}
@@ -338,26 +310,25 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		return Object.keys(fg).filter((d) => !['fields', 'title', 'cols', 'subCols'].includes(d));
 	}
 	isFormControl(control: any): boolean {
-		return (control instanceof FormControl);
+		return control instanceof FormControl;
 	}
 
 	isFormGroup(control: any): boolean {
-		
-		return (!control.controls.isComponent?.value && control instanceof FormGroup );
+		return !control.controls.isComponent?.value && control instanceof FormGroup;
 	}
 
 	isFormArray(control: any): boolean {
-		return (control instanceof FormArray);
+		return control instanceof FormArray;
 	}
 
 	getControlType(control: any | null): 'control' | 'group' | 'array' | null {
 		if (!control) return null;
-		if(control.component) return control.component;
+		if (control.component) return control.component;
 		if (control instanceof FormControl) return 'control';
 		if (control instanceof FormGroup && !control.get('isComponent')?.value) return 'group';
 		if (control instanceof FormArray) return 'array';
 		return null;
-	  }
+	}
 
 	objectKeys(obj: any): string[] {
 		return Object.keys(obj);
@@ -365,56 +336,74 @@ export class DataCorrectionRequestModalPage extends PageBase {
 	changeAddress(addressCtrl: FormGroup, address: any, index: number) {
 		Object.keys(address).forEach((key) => {
 			if (!addressCtrl.contains(key)) {
-				addressCtrl.addControl(key, new FormControl(null)); // Add dynamically
+				addressCtrl.addControl(key, new FormControl( address[key])); // Add dynamically
+				addressCtrl.get(key).markAsDirty();
+			} else if (addressCtrl.get(key) && addressCtrl.get(key).value !== address[key]) {
+				addressCtrl.get(key).setValue(address[key]); // Update the value
+				addressCtrl.get(key).markAsDirty();
 			}
 		});
-	
+		addressCtrl.get('Id').markAsDirty();
+
 		// Now safely patch value
-		addressCtrl.patchValue(address);
+		//addressCtrl.patchValue(address);
 	}
-	removeAddress(addressFG: FormGroup,fg:FormGroup,index){
-		if(addressFG.get('Id').value){
-			if(!this.formGroup.get('DeletedAddressFields')){
+	removeAddress(addressFG: FormGroup, fg: FormGroup, index) {
+		if (addressFG.get('Id').value) {
+			if (!this.formGroup.get('DeletedAddressFields')) {
 				this.formGroup.addControl('DeletedAddressFields', new FormControl([]));
 			}
-			this.formGroup.get('DeletedAddressFields').setValue([...this.formGroup.get('DeletedAddressFields').value,addressFG.get('Id').value]);
+			this.formGroup.get('DeletedAddressFields').setValue([...this.formGroup.get('DeletedAddressFields').value, addressFG.get('Id').value]);
+			this.formGroup.get('DeletedAddressFields').markAsDirty();
 		}
 		let formArray = fg.get('Addresses') as FormArray;
 		formArray.removeAt(index);
 	}
-	addAddress(fg){
+	addAddress(fg) {
 		let formArray = fg.get('Addresses') as FormArray;
 		formArray.push(new FormGroup({}));
 		// fg.get('Addresses').controls.value.setValue([{},...fg.get('Addresses').controls.value.value])
 		// console.log(fg.get('Addresses').controls.value);
 	}
-	
-	changeTaxInfo(taxInfoFormGroup: FormGroup,fg:FormGroup, address: any, index: number) {
+
+	changeTaxInfo(taxInfoFormGroup: FormGroup, fg: FormGroup, address: any, index: number) {
 		let formArray = fg.get('TaxInfos') as FormArray;
-		if(address.IsDefault){
-			formArray.controls.filter(d=> d.value.Id != taxInfoFormGroup.value.Id).forEach((g) => {
-				g.get('IsDefault').setValue(false); // Update the value
-			});
+		if (address.IsDefault) {
+			formArray.controls
+				.filter((d) => d.value.Id != taxInfoFormGroup.value.Id)
+				.forEach((g) => {
+					if (g.get('IsDefault').value) {
+						g.get('IsDefault').setValue(false); // Update the value
+						g.get('IsDefault').markAsDirty();
+					}
+				});
 		}
 		Object.keys(address).forEach((key) => {
 			if (!taxInfoFormGroup.contains(key)) {
-				taxInfoFormGroup.addControl(key, new FormControl(null)); // Add dynamically
+				taxInfoFormGroup.addControl(key, new FormControl(address[key])); // Add dynamically
+				taxInfoFormGroup.get(key).markAsDirty();
+			} else if (taxInfoFormGroup.get(key) && taxInfoFormGroup.get(key).value !== address[key]) {
+				taxInfoFormGroup.get(key).setValue(address[key]); // Update the value
+				taxInfoFormGroup.get(key).markAsDirty();
 			}
+
 		});
-		// Now safely patch value
-		taxInfoFormGroup.patchValue(address);
+		taxInfoFormGroup.get('Id').markAsDirty();
+
 	}
-	removeTaxInfo(taxInfoFormGroup: FormGroup,fg,index){
-		if(taxInfoFormGroup.get('Id').value){
-			if(!this.formGroup.get('DeletedTaxInfoFields')){
+
+	removeTaxInfo(taxInfoFormGroup: FormGroup, fg, index) {
+		if (taxInfoFormGroup.get('Id').value) {
+			if (!this.formGroup.get('DeletedTaxInfoFields')) {
 				this.formGroup.addControl('DeletedTaxInfoFields', new FormControl([]));
 			}
-			this.formGroup.get('DeletedTaxInfoFields').setValue([...this.formGroup.get('DeletedTaxInfoFields').value,taxInfoFormGroup.get('Id').value]);
+			this.formGroup.get('DeletedTaxInfoFields').setValue([...this.formGroup.get('DeletedTaxInfoFields').value, taxInfoFormGroup.get('Id').value]);
+			this.formGroup.get('DeletedTaxInfoFields').markAsDirty();
 		}
 		let formArray = fg.get('TaxInfos') as FormArray;
 		formArray.removeAt(index);
 	}
-	addTaxInfo(fg){
+	addTaxInfo(fg) {
 		let formArray = fg.get('TaxInfos') as FormArray;
 		formArray.push(new FormGroup({}));
 		// fg.get('Addresses').controls.value.setValue([{},...fg.get('Addresses').controls.value.value])
