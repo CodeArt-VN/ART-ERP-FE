@@ -36,7 +36,9 @@
 							[attr.size-lg]="fg.get('subCols')?.value?.lg"
 							[attr.size-xl]="fg.get('subCols')?.value?.xl"
 						>
+						<ion-row>
 							<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
+						</ion-row>
 						</ion-col>
 					</ng-container>
 				</ion-row>

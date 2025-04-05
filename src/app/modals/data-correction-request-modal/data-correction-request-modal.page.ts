@@ -352,7 +352,10 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		if (addressFG.get('Id').value) {
 			if (!this.formGroup.get('DeletedAddressFields')) {
 				this.formGroup.addControl('DeletedAddressFields', new FormControl([]));
+				this.formGroup.addControl('DeletedAddress', new FormControl([]));
 			}
+			this.formGroup.get('DeletedAddress').setValue([...this.formGroup.get('DeletedAddress').value, addressFG.get('AddressLine1').value]);
+			this.formGroup.get('DeletedAddress').markAsDirty();
 			this.formGroup.get('DeletedAddressFields').setValue([...this.formGroup.get('DeletedAddressFields').value, addressFG.get('Id').value]);
 			this.formGroup.get('DeletedAddressFields').markAsDirty();
 		}
@@ -396,7 +399,11 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		if (taxInfoFormGroup.get('Id').value) {
 			if (!this.formGroup.get('DeletedTaxInfoFields')) {
 				this.formGroup.addControl('DeletedTaxInfoFields', new FormControl([]));
+				this.formGroup.addControl('DeletedTaxInfo', new FormControl([]));
 			}
+			this.formGroup.get('DeletedTaxInfo').setValue([...this.formGroup.get('DeletedTaxInfo').value, taxInfoFormGroup.get('TaxCode').value + ' - ' + taxInfoFormGroup.get('CompanyName').value ]);
+			this.formGroup.get('DeletedTaxInfo').markAsDirty();
+		
 			this.formGroup.get('DeletedTaxInfoFields').setValue([...this.formGroup.get('DeletedTaxInfoFields').value, taxInfoFormGroup.get('Id').value]);
 			this.formGroup.get('DeletedTaxInfoFields').markAsDirty();
 		}

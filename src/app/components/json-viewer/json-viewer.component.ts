@@ -69,8 +69,8 @@ export class JsonViewerComponent implements OnInit {
 					this.dataSource.push(data);
 					let index = 0;
 					value.forEach((i) => {
-						if (oldValue && oldValue[i]) this.buildData(i, index,k, oldValue[index]);
-						else this.buildData(i, index,data.Id, null);
+						if (oldValue && oldValue[i]) this.buildData(i, index+1,k, oldValue[index]);
+						else this.buildData(i, index+1,data.Id, null);
 						index++;
 					});
 				}
@@ -132,8 +132,8 @@ export class JsonViewerComponent implements OnInit {
 		if(Array.isArray(value) ){
 			let index = 0;
 			value.forEach((i) => {
-				if (oldValue && oldValue[index]) this.buildData(i, index,source.Id, oldValue[index]);
-				else this.buildData(i, index,source.Id,  null);
+				if (oldValue && oldValue[index]) this.buildData(i, index+1,source.Id, oldValue[index]);
+				else this.buildData(i, index+1,source.Id,  null);
 				index++;
 			});
 		}
