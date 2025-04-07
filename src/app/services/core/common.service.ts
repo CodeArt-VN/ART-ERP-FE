@@ -591,7 +591,6 @@ export class CommonService {
 	}
 
 	checkError(err) {
-		//console.log(err);
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
@@ -604,15 +603,11 @@ export class CommonService {
 			this.env.showMessage('Cannot connect to server, please try again.', 'danger');
 			this.env.publishEvent({ Code: 'app:ConnectFail' });
 		} else {
+			this.env.showErrorMessage(err);
 			if (!environment.production) {
-				this.env.showMessage('To dev message: {{value}}', 'danger', err.message);
+				this.env.showMessage('To dev message: {value}', 'danger', err.message);
 			}
 		}
-
-		// else {
-		// 	that.env.showMessage(err.message, 'warning');
-		// 	that.env.publishEvent({ Code: 'app:ConnectFail' });
-		// }
 	}
 
 	public handleError<T>(operation = 'operation', result?: T) {
