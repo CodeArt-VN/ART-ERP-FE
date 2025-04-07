@@ -119,9 +119,14 @@
 																			</ion-modal>
 																		</small>
 																	</app-form-control>
-
+																	
 																	<app-form-control
-																		[field]="{id:'DataType', label: 'DataType', type : 'select', dataSource:dataTypes, bindValue:'Name',bindLabel:'Name',form : g }"
+																		[field]="{id:'PropertyType', label: 'Control type', type : 'ng-select', dataSource: controlTypes, bindValue:'Code',bindLabel:'Name',form : g }"
+																		(change)="saveChange()"
+																	>
+																	</app-form-control>
+																	<app-form-control
+																		[field]="{id:'DataType', label: 'DataType', type : 'ng-select', dataSource:dataTypes, bindValue:'Name',bindLabel:'Name',form : g }"
 																		(change)="saveChange()"
 																	>
 																	</app-form-control>

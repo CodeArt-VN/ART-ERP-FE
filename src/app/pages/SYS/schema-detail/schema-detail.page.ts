@@ -16,6 +16,7 @@ import { lib } from 'src/app/services/static/global-functions';
 })
 export class SchemaDetailPage extends PageBase {
 	dataTypes;
+	controlTypes;
 	openedFields: any = [];
 	schemaTypeList: any;
 
@@ -56,9 +57,22 @@ export class SchemaDetailPage extends PageBase {
 		});
 	}
 	preLoadData(event) {
-		this.dataTypes = [{ Name: 'text' }, { Name: 'number' }, { Name: 'dataset' }, { Name: 'select' }, { Name: 'ng-select-staff' }, { Name: 'logical' }];
-		Promise.all([this.env.getType('SchemaType')]).then((values: any) => {
+		this.dataTypes = [
+			{ Name: 'int' },
+			{ Name: 'decimal' },
+			{ Name: 'text' },
+			{ Name: 'varchar' },
+			{ Name: 'datetime' },
+			{ Name: 'numeric' },
+			{ Name: 'nchar' },
+			{ Name: 'date' },
+			{ Name: 'nvarchar' },
+			{ Name: 'number' },
+			{ Name: 'bit' }
+		];
+		Promise.all([this.env.getType('SchemaType'),this.env.getType('ControlType')]).then((values: any) => {
 			this.schemaTypeList = values[0];
+			this.controlTypes = values[1]
 			super.preLoadData(event);
 		});
 	}
@@ -107,12 +121,12 @@ export class SchemaDetailPage extends PageBase {
 			Code: [field.Code, Validators.required],
 			Name: [field.Name, Validators.required],
 			Remark: [field.Remark],
-			DataType: [field.DataType || 'text'],
-			PropertyType: [field.PropertyType || 'Field'],
+			DataType: [field.DataType || 'nvarchar'],
+			PropertyType: [field.PropertyType || 'text'],
 			Aggregate: [field.Aggregate],
 			Sort: [field.Sort],
 			Icon: [field.Icon || 'star'],
-			Color: [field.Color || 'success'],
+			Color: [field.Color || 'dark'],
 			IsDisabled: new FormControl({
 				value: field.IsDisabled,
 				disabled: true,
