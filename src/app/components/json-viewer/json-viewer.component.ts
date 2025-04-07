@@ -14,6 +14,7 @@ export class JsonViewerComponent implements OnInit {
 	firstLoaded = false;
 	@Input() item: any;
 	@Input() oldItem: any;
+	@Input() properties: any;
 	@Input() isCompare = true;
 	_notShowProperties = [];
 	_isShowDifference = true;
@@ -40,45 +41,115 @@ export class JsonViewerComponent implements OnInit {
 
 	buildDataSource() {
 		this.dataSource = [];
-		if (typeof this.item != 'object') {
-			this.item = JSON.parse(this.item);
+		if (typeof this.item === 'string') {
+			this.item = this.saveParseJson(this.item);
 		}
 		if (typeof this.item !== 'object' && !Array.isArray(this.item)) {
 			let data: any = {};
 			data.Id = lib.generateUID();
 			data.Property = 'Data';
 			data.Value = this.item;
+			data.OldValue = this.oldItem ? this.oldItem : null;
 			this.dataSource.push(data);
 		}
 		else{
 			Object.keys(this.item).forEach((k) => {
 				let data: any = {};
 				data.Id = lib.generateUID();
-				data.Property = k;
-				data.Value = this.item[k];
-				data.OldValue = this.oldItem ? this.oldItem[k] : null;
-				this.dataSource.push(data);
-				if (this.item[k] instanceof Array) {
+				data.Property = this.getProperty(k)
+				let value = this.item[k];
+				let oldValue = this.oldItem ? this.oldItem[k] : null;
+				try{
+					if(typeof value === "string")value = this.saveParseJson(value);
+					if(typeof oldValue === "string")oldValue = this.saveParseJson(oldValue);
+				}
+				catch(e){
+				}
+				if (Array.isArray(value)) {
+					this.dataSource.push(data);
 					let index = 0;
-					data.Value = data.OldValue = null;
-					this.item[k].forEach((i) => {
-						if (this.oldItem && this.oldItem[k] && this.oldItem[k][index]) this.buildDataArray(i, data.Id, index, this.oldItem[k][index]);
-						else this.buildDataArray(i, data.Id, index, null);
+					value.forEach((i) => {
+						if (oldValue && oldValue[i]) this.buildData(i, index+1,k, oldValue[index]);
+						else this.buildData(i, index+1,data.Id, null);
 						index++;
 					});
 				}
+				else if(value instanceof Object) {
+					this.dataSource.push(data);
+					Object.keys(value).forEach((k) => {
+						if (oldValue && oldValue[k] ){
+							
+							this.buildData(value[k], k, data.Id,  oldValue[k]);
+						}
+						else this.buildData(value[k], k, data.Id, null);
+					});
+					
+				}
+				else{
+					data.Value = value;
+					data.OldValue = oldValue;
+					this.dataSource.push(data);
+
+				}
 			});
 		}
-	
-		this.dataSourceState = [...this.dataSource];
-
+		// this.dataSource= this.dataSource.sort((a, b) => {
+		// 	let valA = a.Property ? String(a.Property) : "";
+		// 	let valB = b.Property ? String(b.Property) : "";
+		// 	return valA.localeCompare(valB);
+		// });
+		lib.buildFlatTree(this.dataSource,this.dataSourceState,true).then((res:any) => {
+			this.dataSourceState =res
+			
 		if (this._notShowProperties.length > 0) {
 			this.dataSourceState = [...this.dataSourceState.filter((d) => !this._notShowProperties.includes(d.Property))];
 		}
 		if (this._isShowDifference) {
 			this.recurDifference();
 		}
+		})
+		// this.dataSourceState = [...this.dataSource];
+
 		console.log(this.dataSourceState);
+	}
+
+	buildData(data,property, IDParent,  oldValue) {
+		let source:any = {};
+			source.Id = lib.generateUID();
+			source.IDParent = IDParent;
+			source.Property = this.getProperty(property);
+			source.Value = source.OldValue = null;
+		this.dataSource.push(source);
+
+		let value = data;
+		
+		try{
+			if(typeof value === "string")	value = this.saveParseJson(value);
+			if(typeof oldValue === "string")	oldValue = this.saveParseJson(oldValue);
+		}
+		catch(e){
+		}
+		if(Array.isArray(value) ){
+			let index = 0;
+			value.forEach((i) => {
+				if (oldValue && oldValue[index]) this.buildData(i, index+1,source.Id, oldValue[index]);
+				else this.buildData(i, index+1,source.Id,  null);
+				index++;
+			});
+		}
+		else if(value instanceof Object){
+			Object.keys(value).forEach((v) => {
+				if (oldValue && oldValue[v]) this.buildData(value[v], v,source.Id, oldValue[v]);
+				else this.buildData(value[v], v, source.Id, null);
+			});
+		}
+		else{
+			source.Value = value;
+			source.OldValue = oldValue;
+
+		}
+	
+		
 	}
 
 	recurDifference() {
@@ -88,36 +159,33 @@ export class JsonViewerComponent implements OnInit {
 		}
 	}
 
-	buildDataArray(value, IDParent, index, oldValue) {
-		let IDSubParent = lib.generateUID();
-		let parentObj: any = {};
-		parentObj.Property = `(${index})`;
-		parentObj.Id = IDSubParent;
-		parentObj.IDParent = IDParent;
-		parentObj.Value = null;
-		parentObj.OldValue = null;
-		this.dataSource.push(parentObj);
+	getProperty(key){
+		if(this.properties){
+			if(this.properties[key])return this.properties[key];
+		}
+		return key;
+	}
+	saveParseJson(str){
+		let value = str.toString()?.replace(/([{,]\s*)([A-Za-z0-9_]+)\s*:/g, '$1"$2":');
 
-		Object.keys(value).forEach((k) => {
-			let data: any = {};
-			let childIndex = 0;
-			let value1 = null;
-			if (oldValue && oldValue[k]) value1 = oldValue[k];
-			data.Id = lib.generateUID();
-			data.Property = k;
-			data.Value = value[k];
-			data.OldValue = value1;
-			data.IDParent = IDSubParent;
-			this.dataSource.push(data);
-			if (value[k] instanceof Array) {
-				value1 = null;
-				if (oldValue && oldValue[childIndex]) value1 = oldValue[childIndex][k];
-				this.buildDataArray(k, data.Id, childIndex, value1);
+		// 2. Replace single-quoted string values with double quotes
+		value = value?.replace(/:\s*'([^']*)'/g, ': "$1"');
+		
+		console.log(str); // Now it is valid JSON
+		try{
+			if(value){
+				value = JSON.parse(value);
+				return value;
 			}
-			childIndex++;
-		});
+			return str;
+		}
+		catch(e){
+			return str;
+		}
+
 	}
 
+	
 	//#region toggleRow
 
 	toggleRowAll() {

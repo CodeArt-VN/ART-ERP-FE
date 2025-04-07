@@ -4,8 +4,7 @@ import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { lib } from 'src/app/services/static/global-functions';
-import {vw_SYS_LogProvider } from 'src/app/services/static/services.service';
+import { vw_SYS_LogDetailProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-system-log-detail',
@@ -16,7 +15,7 @@ import {vw_SYS_LogProvider } from 'src/app/services/static/services.service';
 export class SystemLogDetailPage extends PageBase {
 
 	constructor(
-		public pageProvider: vw_SYS_LogProvider,
+		public pageProvider: vw_SYS_LogDetailProvider,
 		public env: EnvService,
 		public navCtrl: NavController,
 		public route: ActivatedRoute,
@@ -29,17 +28,6 @@ export class SystemLogDetailPage extends PageBase {
 		super();
 		this.pageConfig.isDetailPage = true;
 		this.id = this.route.snapshot.paramMap.get('id');
-		this.formGroup = formBuilder.group({
-			Id: [''],
-			Date: [''],
-			Method: [''],
-			API: [''],
-			Data: [''],
-			IPAddress: [''],
-			AppVersion: [''],
-			Segment3: [''],
-			Segment4: [''],
-		});
 	}
 	preLoadData(event) {
 		if (this.navParams) {
@@ -47,4 +35,5 @@ export class SystemLogDetailPage extends PageBase {
 		}
 		super.preLoadData(event);
 	}
+	
 }

@@ -2779,6 +2779,20 @@ export interface HRM_Staff
     BackgroundColor?: string;
     ImageURL?: string;
     Area?: string;
+    POB?: string;
+    Nationality?: string;
+    Religion?: string;
+    Ethnic?: string;
+    MaritalStatus?: string;
+    Office?: string;
+    EmploymentType?: string;
+    PayrollPolicy?: string;
+    WorkType?: string;
+    BasicSalary?: number;
+    SocialInsuranceSalary?: number;
+    StartDate?: Date;
+    OfficialStartDate?: Date;
+    EndDate?: Date;
     
 }
 
@@ -2825,6 +2839,7 @@ export interface HRM_Staff_ConcurrentPosition
 export interface HRM_StaffAcademicLevel
 {
     Id?: number;
+    IDStaff?: number;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -2833,10 +2848,11 @@ export interface HRM_StaffAcademicLevel
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDAcademicLevel?: number;
-    IDAcademicRank?: number;
-    IDDegree?: number;
     IsDeleted?: boolean;
+    AcademicLevel?: string;
+    AcademicRank?: string;
+    Degree?: string;
+    Type?: string;
     
 }
 
@@ -2902,6 +2918,7 @@ export interface HRM_StaffAllowance
 export interface HRM_StaffAnotherSkill
 {
     Id?: number;
+    IDStaff?: number;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -2912,8 +2929,7 @@ export interface HRM_StaffAnotherSkill
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDStaff?: number;
-    IDAnotherSkill?: number;
+    Type?: string;
     
 }
 
@@ -2937,8 +2953,8 @@ export interface HRM_StaffAppointDecision
     DecisionEffectiveDate?: Date;
     IDDepartment?: number;
     IDJobTitle?: number;
-    IDJobTitleType?: number;
     IDSalaryDecision?: number;
+    JobTitleType?: string;
     
 }
 
@@ -2956,8 +2972,8 @@ export interface HRM_StaffBank
     CreatedDate?: Date;
     ModifiedDate?: Date;
     IDStaff?: number;
-    IDBank?: number;
-    IDBankBranch?: number;
+    Bank?: string;
+    BankBranch?: string;
     AccountNumber?: string;
     IsPayrollAccount?: boolean;
     
@@ -2974,7 +2990,6 @@ export interface HRM_StaffBasicInfo
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDNationality?: number;
     IDEthnic?: number;
     IDReligion?: number;
     MaritalStatus?: number;
@@ -2983,6 +2998,7 @@ export interface HRM_StaffBasicInfo
     Domicile?: string;
     POB?: string;
     IsDeleted?: boolean;
+    Nationality?: string;
     
 }
 
@@ -3154,7 +3170,7 @@ export interface HRM_StaffFamily
     CreatedDate?: Date;
     ModifiedDate?: Date;
     IDStaff?: number;
-    IDRelative?: number;
+    Relative?: string;
     FirstName?: string;
     LastName?: string;
     MiddleName?: string;
@@ -3170,17 +3186,18 @@ export interface HRM_StaffFamily
     DateOfIssuePassport?: Date;
     DateOfExpiryPassport?: Date;
     PlaceOfIssuePassport?: string;
-    IDTypeOfPassport?: number;
-    IDCountryOfIssuePassport?: number;
+    TypeOfPassport?: string;
     Age?: number;
     IsDependants?: boolean;
     HomeAddress?: string;
+    CountryOfIssuePassport?: string;
     
 }
 
 export interface HRM_StaffForeignLanguage
 {
     Id?: number;
+    IDStaff?: number;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -3191,17 +3208,16 @@ export interface HRM_StaffForeignLanguage
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDStaff?: number;
-    IDForeignLanguage?: number;
-    IDCertificateType?: number;
     CertificateNumber?: string;
     DateOfIssue?: Date;
     PlaceOfIssue?: string;
     DateOfExpiry?: Date;
-    IDListeningSkill?: number;
-    IDSpeakingSkill?: number;
-    IDReadingSkill?: number;
-    IDWritingSkill?: number;
+    ListeningSkill?: string;
+    SpeakingSkill?: string;
+    ReadingSkill?: string;
+    WritingSkill?: string;
+    CertificateType?: string;
+    ForeignLanguage?: string;
     
 }
 
@@ -3212,31 +3228,19 @@ export interface HRM_StaffIdentityCardAndPIT
     Name?: string;
     Remark?: string;
     Sort?: number;
+    IsDeleted?: boolean;
+    IsDisabled?: boolean;
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IdentityCardNumber?: string;
-    DateOfIssueID?: Date;
-    PlaceOfIssueID?: string;
-    DateOfExpiryID?: Date;
-    IdentityCardNumber1?: string;
-    DateOfIssueId1?: Date;
-    DateOfExpiry1?: Date;
-    TaxIdentificationNumber?: string;
-    RegistrationDateOfTaxId?: Date;
-    RegistrationPlaceOfTaxId?: string;
-    PassportNumber?: string;
-    DateOfIssuePassport?: Date;
-    DateOfExpiryPassport?: Date;
-    PlaceOfIssuePassport?: string;
-    IDTypeOfPassport?: number;
-    IDCountryOfIssuePassport?: number;
-    VisaNumber?: string;
-    DateOfIssueVisa?: Date;
-    DateOfExpiryVisa?: Date;
-    IDCountryOfIssueVisa?: number;
-    IsDeleted?: boolean;
+    CardNumber?: string;
+    DateOfIssue?: Date;
+    PlaceOfIssue?: string;
+    DateOfExpiry?: Date;
+    CountryOfIssue?: string;
+    IDStaff?: number;
+    Type?: string;
     
 }
 
@@ -3503,6 +3507,7 @@ export interface HRM_StaffSchedule
 export interface HRM_StaffSpecializedField
 {
     Id?: number;
+    IDStaff?: number;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -3513,14 +3518,14 @@ export interface HRM_StaffSpecializedField
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDStaff?: number;
-    IDSpecializedField?: number;
+    Type?: string;
     
 }
 
 export interface HRM_StaffSpecializedSkill
 {
     Id?: number;
+    IDStaff?: number;
     Code?: string;
     Name?: string;
     Remark?: string;
@@ -3531,13 +3536,12 @@ export interface HRM_StaffSpecializedSkill
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDStaff?: number;
-    IDSpecializedSkill?: number;
     Rating?: string;
     CertificateNumber?: string;
     DateOfIssue?: Date;
     PlaceOfIssue?: string;
     DateOfExpiry?: Date;
+    Type?: string;
     
 }
 
@@ -3666,9 +3670,8 @@ export interface HRM_StaffWorkExperience
     FromDate?: Date;
     ToDate?: Date;
     Workplace?: string;
-    IDField?: number;
-    IDJobTitle?: number;
-    Description?: string;
+    Field?: string;
+    JobTitle?: string;
     
 }
 
@@ -8297,6 +8300,36 @@ export interface vw_SYS_Log
     Segment8?: string;
     Segment9?: string;
     Bars?: string;
+    
+}
+
+export interface vw_SYS_LogDetail
+{
+    Id?: number;
+    AppName?: string;
+    LoggedBy?: string;
+    Date?: Date;
+    Level?: string;
+    Logger?: string;
+    Message?: string;
+    Method?: string;
+    API?: string;
+    Data?: string;
+    Exception?: string;
+    Thread?: string;
+    IPAddress?: string;
+    IPAddressLan?: string;
+    AppVersion?: string;
+    Segment0?: string;
+    Segment1?: string;
+    Segment2?: string;
+    Segment3?: string;
+    Segment4?: string;
+    Segment5?: string;
+    Segment6?: string;
+    Segment7?: string;
+    Segment8?: string;
+    Segment9?: string;
     
 }
 

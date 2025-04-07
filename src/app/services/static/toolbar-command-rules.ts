@@ -32,7 +32,7 @@ export var toolbarCommandRules = {
 		['Draft', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, null],
 		['Splitted', null, null, null, null, null, null, null, null, 'x', null, null],
 		['Merged', null, null, null, null, null, null, null, null, 'x', null, null],
-		['Canceled', null, null, null, null, null, null, null, 'x', 'x', null,null],
+		['Canceled', null, null, null, null, null, null, null, 'x', 'x', null, null],
 		['Submitted', null, null, null, null, 'x', 'x', null, null, null, null, null],
 		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, null],
 		['Approved', null, null, null, null, 'x', null, 'x', null, 'x', 'x', 'x'],
@@ -65,7 +65,7 @@ export var toolbarCommandRules = {
 		['Open', null, null, null, 'x', null, 'x', 'x', null, 'x', 'x', null, null, null, null],
 		['Confirmed', null, null, null, 'x', null, 'x', 'x', null, 'x', null, 'x', null, null, null],
 		['Submitted', null, null, null, null, 'x', 'x', null, null, null, null, null, null, null, null],
-		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, 'x', null, null,null],
+		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, 'x', null, null, null],
 		['Approved', null, null, null, null, 'x', null, 'x', null, 'x', null, null, 'x', 'x', 'x'],
 		['Closed', null, null, null, null, null, null, null, null, 'x', null, null, null, null, 'x'],
 	],
@@ -87,7 +87,7 @@ export var toolbarCommandRules = {
 			'CopyToAPInvoice',
 			'RequestOutgoingPayment',
 		],
-		['Draft', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, null, null,null],
+		['Draft', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null, null, null, null],
 		['Splitted', null, null, null, null, null, null, null, null, 'x', null, null, null, null],
 		['Merged', null, null, null, null, null, null, null, null, 'x', null, null, null, null],
 		['Canceled', null, null, null, null, null, null, null, 'x', 'x', null, null, null, null],
@@ -169,11 +169,11 @@ export var toolbarCommandRules = {
 	],
 
 	CRM_Contact: [
-		['Btns', 'ChangeBranch', 'Merge', 'Split', 'Submit', 'Disapprove', 'Approve', 'Cancel', 'Delete', 'Archive'],
-		['New', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
-		['Submitted', null, null, null, null, 'x', 'x', null, null, null],
-		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x'],
-		['Approved', null, null, null, null, 'x', null, 'x', null, 'x'],
+		['Btns', 'ChangeBranch', 'Merge', 'Split', 'Submit', 'Disapprove', 'Approve', 'Cancel', 'Delete', 'Archive', 'RequestDataCorrection'],
+		['New', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', null],
+		['Submitted', null, null, null, null, 'x', 'x', null, null, null, null],
+		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null],
+		['Approved', null, null, null, null, 'x', null, 'x', null, 'x', 'x'],
 	],
 
 	_PURCHASE_Request: [

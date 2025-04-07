@@ -47,9 +47,6 @@ export class FlatPage extends PageBase {
 			.then((res) => {
 				this.groupControl.groupList = res['data'];
 			})
-			.catch((err) => {
-				this.env.showMessage(err, 'danger');
-			})
 			.finally(() => {
 				super.preLoadData(event);
 			});

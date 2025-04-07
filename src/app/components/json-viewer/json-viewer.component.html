@@ -13,7 +13,7 @@
 				*ngIf="i.HasChild"
 			></ion-icon>
 			<ion-icon class="min-btn clickable" [name]="''" *ngIf="!i.HasChild"></ion-icon>
-			<ion-text class="clickable" [ngClass]="i.HasChild ? 'bold ' : ''" [color]="i.Color">{{ i.Property }}</ion-text>
+			<ion-text class="clickable" [ngClass]="i.HasChild ? 'bold ' : ''" [color]="i.Color">{{ i.Property | translate }}</ion-text>
 		</ng-template>
 	</datatable-column>
 
