@@ -1,9 +1,11 @@
 export const environment = {
 	production: true,
-	appVersion: '0.20.27',
+	appVersion: '0.20.36',
 	appServers: [
 		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demoERP.codeart.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
+
+		{ Code: 'https://art.appcenter.vn/', Name: 'ART server', Color: 'success', Icon: 'rocket' },
 
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
@@ -16,6 +18,8 @@ export const environment = {
 		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
+
+	appDomain: 'https://erp.codeart.vn/',
 	staffAvatarsServer: 'https://erp.codeart.vn/Uploads/HRM/Staffs/Avatars/',
 	posImagesServer: 'https://erp.codeart.vn/',
 	apiVersion: 'api/v1/',
