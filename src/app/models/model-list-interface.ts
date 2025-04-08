@@ -454,12 +454,13 @@ export interface APPROVAL_ApprovalRuleApprover
     
 }
 
-export interface APPROVAL_Changelog
+export interface APPROVAL_Comment
 {
+    IDStaff?: number;
     IDRequest?: number;
-    IDApprover?: number;
-    Status?: string;
     Id?: number;
+    Code?: string;
+    Name?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -471,13 +472,12 @@ export interface APPROVAL_Changelog
     
 }
 
-export interface APPROVAL_Comment
+export interface APPROVAL_Changelog
 {
-    IDStaff?: number;
     IDRequest?: number;
+    IDApprover?: number;
+    Status?: string;
     Id?: number;
-    Code?: string;
-    Name?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -2314,6 +2314,33 @@ export interface FINANCE_TaxDefinition
     
 }
 
+export interface HRM_DataDictionary
+{
+    IDSchema?: number;
+    IDParent?: number;
+    Id?: number;
+    PropertyType?: string;
+    DataType?: string;
+    Options?: string;
+    Formula?: string;
+    UDFList?: string;
+    Format?: string;
+    Aggregate?: string;
+    Icon?: string;
+    Color?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
 export interface HRM_DeductionOnSalary
 {
     Id?: number;
@@ -2438,6 +2465,23 @@ export interface HRM_PayrollPaySheetMasterSalaryDecision
     ModifiedDate?: Date;
     IDPaySheetMaster?: number;
     IDSalaryDecision?: number;
+    
+}
+
+export interface HRM_PayrollTemplate
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    UDFList?: string;
     
 }
 
@@ -2650,18 +2694,11 @@ export interface HRM_PolWelfare
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    AOMAccordingPol?: number;
-    AOMAccordingAct?: number;
-    DecisionNumber?: string;
-    DecisionSignDate?: Date;
-    IDDecisionSignedBy?: number;
-    DecisionEffectiveDate?: Date;
-    TimeOfEvent?: Date;
-    IsApproved?: boolean;
-    IDFrequency?: number;
-    IsPaidInKind?: boolean;
-    IsIncomePerMonth?: boolean;
-    IsIncomePerYear?: boolean;
+    Frequency?: string;
+    IsIncome?: boolean;
+    IsCurrency?: boolean;
+    IsManagerCanCreateBenefit?: boolean;
+    Status?: string;
     
 }
 
@@ -2686,6 +2723,43 @@ export interface HRM_PolWelfareApplyFor
     IsManager?: boolean;
     IsShareholder?: boolean;
     IDPOLWelfare?: number;
+    
+}
+
+export interface HRM_PolWelfareDetail
+{
+    IDUDF?: number;
+    IDPolWelfare?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Value?: number;
+    
+}
+
+export interface HRM_SalaryPolicy
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Status?: string;
+    BaseSalary?: number;
+    GrossSalary?: number;
     
 }
 
@@ -2793,6 +2867,9 @@ export interface HRM_Staff
     StartDate?: Date;
     OfficialStartDate?: Date;
     EndDate?: Date;
+    LeaveDaysAllocated?: number;
+    LeaveDaysUsed?: number;
+    LeaveDaysRemaining?: number;
     
 }
 
@@ -3191,6 +3268,9 @@ export interface HRM_StaffFamily
     IsDependants?: boolean;
     HomeAddress?: string;
     CountryOfIssuePassport?: string;
+    TaxIdentificationNumber?: string;
+    IsEmergencyContact?: boolean;
+    Job?: string;
     
 }
 
@@ -3348,26 +3428,6 @@ export interface HRM_StaffLearningProcess
     
 }
 
-export interface HRM_StaffPhone
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IDStaff?: number;
-    Classification?: string;
-    PhoneNumber?: string;
-    IsBelongToCompany?: boolean;
-    
-}
-
 export interface HRM_StaffPTOEnrollment
 {
     IDPolicyPTO?: number;
@@ -3390,6 +3450,26 @@ export interface HRM_StaffPTOEnrollment
     PTOLengthOfService?: number;
     PTOCompensatoryLeave?: number;
     StartWorkingDate?: Date;
+    
+}
+
+export interface HRM_StaffPhone
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDStaff?: number;
+    Classification?: string;
+    PhoneNumber?: string;
+    IsBelongToCompany?: boolean;
     
 }
 
@@ -3699,6 +3779,24 @@ export interface HRM_StaffWorkingDiary
     
 }
 
+export interface HRM_TaxPolicy
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    ContributionRate?: number;
+    Status?: string;
+    
+}
+
 export interface HRM_Timesheet
 {
     IDBranch?: number;
@@ -3743,24 +3841,6 @@ export interface HRM_TimesheetAndHoliday
     
 }
 
-export interface HRM_TimesheetCheckInCode
-{
-    IDOffice?: number;
-    IDStaff?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
 export interface HRM_TimesheetCycle
 {
     IDBranch?: number;
@@ -3784,6 +3864,24 @@ export interface HRM_TimesheetCycleDetail
 {
     IDTimesheetCycle?: number;
     IDTimesheet?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface HRM_TimesheetCheckInCode
+{
+    IDOffice?: number;
+    IDStaff?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -3840,6 +3938,79 @@ export interface HRM_TimesheetLog
     IsValidLog?: boolean;
     IsOpenLog?: boolean;
     IsMockLocation?: boolean;
+    
+}
+
+export interface HRM_TimesheetRecord
+{
+    IDTimeSheetCycle?: number;
+    IDTimesheet?: number;
+    IDShift?: number;
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    FullName?: string;
+    WorkingDate?: Date;
+    TimeOffType?: string;
+    WorkingStart?: Date;
+    WorkingEnd?: Date;
+    LogFrom?: Date;
+    LogTo?: Date;
+    WorkTime?: number;
+    StandardPoint?: number;
+    Breaks?: number;
+    EarliestCheckIn?: number;
+    LatestCheckIn?: number;
+    EarliestCheckOut?: number;
+    LatestCheckOut?: number;
+    LogCount?: number;
+    Checkin?: Date;
+    Checkout?: Date;
+    CheckinLate?: number;
+    CheckoutEarly?: number;
+    StdTimeIn?: Date;
+    StdTimeOut?: Date;
+    MinutesOfWorked?: number;
+    AnnualLeave?: number;
+    CompensateLeave?: number;
+    HolidayLeave?: number;
+    PaidLeave?: number;
+    TrainingOutside?: number;
+    Off?: number;
+    UnpaidLeave?: number;
+    MaternityLeave?: number;
+    Quit?: number;
+    Advance?: number;
+    Deduction?: number;
+    Addition?: number;
+    Point?: number;
+    
+}
+
+export interface HRM_UDF
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Group?: string;
+    DataType?: string;
+    ControlType?: string;
+    UDF?: string;
     
 }
 
@@ -5627,6 +5798,15 @@ export interface SHIFT_TimeSheet
     
 }
 
+export interface SHIP_Index
+{
+    Id?: number;
+    FromIDAddress?: number;
+    ToIDAddress?: number;
+    Distance?: number;
+    
+}
+
 export interface SHIP_Shipment
 {
     IDBranch?: number;
@@ -6245,6 +6425,20 @@ export interface SYS_SchemaDetail
     Code?: string;
     Name?: string;
     Remark?: string;
+    Options?: string;
+    Formula?: string;
+    UDFList?: string;
+    ImageURL?: string;
+    YouTubeVideoURL?: string;
+    IsRequired?: boolean;
+    IsHidden?: boolean;
+    HiddenFormula?: string;
+    IsValidated?: boolean;
+    ValidatePattern?: string;
+    ValidateMessage?: string;
+    IsRedirectToPage?: boolean;
+    RedirectCondition?: string;
+    RedirectToPage?: number;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -6312,6 +6506,31 @@ export interface SYS_SyncJob
     CreatedBy?: string;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    
+}
+
+export interface SYS_Type
+{
+    IDPartner?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ForeignName?: string;
+    Remark?: string;
+    ForeignRemark?: string;
+    Color?: string;
+    Sort?: number;
+    IsSysAttrib?: boolean;
+    IsDefault?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    Icon?: string;
     
 }
 
@@ -6419,31 +6638,6 @@ export interface SYS_TriggerActionDataMapping
     ProviderProperty?: string;
     DataType?: string;
     Format?: string;
-    
-}
-
-export interface SYS_Type
-{
-    IDPartner?: number;
-    IDParent?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    ForeignName?: string;
-    Remark?: string;
-    ForeignRemark?: string;
-    Color?: string;
-    Sort?: number;
-    IsSysAttrib?: boolean;
-    IsDefault?: boolean;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Type?: string;
-    Icon?: string;
     
 }
 

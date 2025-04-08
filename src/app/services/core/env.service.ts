@@ -243,9 +243,9 @@ export class EnvService {
 	 */
 	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
 		Promise.all([
-			this.translateResource(value ? { ...value, code: message } : message),
-			this.translateResource(value ? { ...value, code: subHeader } : subHeader),
-			this.translateResource(value ? { ...value, code: header } : header),
+			this.translateResource(value ? value instanceof Object ? { ...value, code: message } :{ value:value, code: message }: message),
+			this.translateResource(value ?value instanceof Object ? { ...value, code: subHeader }  :{ value:value, code: subHeader }: subHeader),
+			this.translateResource(value ?value instanceof Object ? { ...value, code: header } :{ value:value, code: header }: header),
 		]).then((values: any) => {
 			let translatedMessage = values[0];
 			if (this.lastMessage == translatedMessage) return;
