@@ -608,7 +608,7 @@ export abstract class PageBase implements OnInit {
 					})
 					.catch((err) => {
 						// if (loading) loading.dismiss();
-						this.env.showMessage('Cannot save, please try again', 'danger');
+					//	this.env.showMessage('Cannot save, please try again', 'danger');
 						this.cdr.detectChanges();
 						this.submitAttempt = false;
 						reject(err);
@@ -641,7 +641,7 @@ export abstract class PageBase implements OnInit {
 						if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
 					})
 					.catch((err) => {
-						this.env.showMessage('Cannot save, please try again', 'danger');
+						//this.env.showMessage('Cannot save, please try again', 'danger');
 						this.cdr.detectChanges();
 						this.submitAttempt = false;
 						reject(err);

@@ -7054,6 +7054,55 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffUDF:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffUDF/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffUDF"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffUDF/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffUDF/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffUDF/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffUDF/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffUDF/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffUDF/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffUDF"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffUDF/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffUDF/" + id} 
+        }
+		
+	},
+
 	HRM_StaffWelfare:{
         getSearchList:{
             method: "GET",
@@ -10872,55 +10921,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SHIFT/TimeSheet/" + id} 
-        }
-		
-	},
-
-	SHIP_Index:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "SHIP/Index/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "SHIP/Index"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "SHIP/Index/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "SHIP/Index/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "SHIP/Index/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "SHIP/Index/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "SHIP/Index/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "SHIP/Index/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "SHIP/Index"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "SHIP/Index/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "SHIP/Index/" + id} 
         }
 		
 	},
