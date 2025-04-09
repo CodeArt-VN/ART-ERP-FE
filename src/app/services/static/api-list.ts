@@ -4653,6 +4653,55 @@ export var APIListBase = {
 		
 	},
 
+	HRM_PayrollTemplateDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PayrollTemplateDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PayrollTemplateDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PayrollTemplateDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PayrollTemplateDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PayrollTemplateDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PayrollTemplateDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PayrollTemplateDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PayrollTemplateDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PayrollTemplateDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PayrollTemplateDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PayrollTemplateDetail/" + id} 
+        }
+		
+	},
+
 	HRM_PersonalIncomePaymentProcess:{
         getSearchList:{
             method: "GET",
@@ -5045,6 +5094,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_PolSalary:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolSalary/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolSalary"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolSalary/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolSalary/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolSalary/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolSalary/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolSalary/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolSalary/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolSalary"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolSalary/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolSalary/" + id} 
+        }
+		
+	},
+
+	HRM_PolTax:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolTax/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolTax"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolTax/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolTax/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolTax/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolTax/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolTax/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolTax/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolTax"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolTax/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolTax/" + id} 
+        }
+		
+	},
+
 	HRM_PolWelfare:{
         getSearchList:{
             method: "GET",
@@ -5188,55 +5335,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/PolWelfareDetail/" + id} 
-        }
-		
-	},
-
-	HRM_SalaryPolicy:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/SalaryPolicy/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/SalaryPolicy"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/SalaryPolicy/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/SalaryPolicy/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/SalaryPolicy/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/SalaryPolicy/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/SalaryPolicy/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/SalaryPolicy/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/SalaryPolicy"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/SalaryPolicy/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/SalaryPolicy/" + id} 
         }
 		
 	},
@@ -7246,55 +7344,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffWorkingDiary/" + id} 
-        }
-		
-	},
-
-	HRM_TaxPolicy:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/TaxPolicy/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/TaxPolicy"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/TaxPolicy/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/TaxPolicy/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/TaxPolicy/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/TaxPolicy/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/TaxPolicy/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/TaxPolicy/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/TaxPolicy"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/TaxPolicy/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/TaxPolicy/" + id} 
         }
 		
 	},

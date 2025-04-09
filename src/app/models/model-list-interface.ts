@@ -2470,9 +2470,11 @@ export interface HRM_PayrollPaySheetMasterSalaryDecision
 
 export interface HRM_PayrollTemplate
 {
+    IDPolSalary?: number;
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -2481,7 +2483,28 @@ export interface HRM_PayrollTemplate
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
-    UDFList?: string;
+    SalaryCalculationMethod?: string;
+    
+}
+
+export interface HRM_PayrollTemplateDetail
+{
+    IDPayrollTemplate?: number;
+    IDUDF?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Remark?: string;
+    Sort?: number;
+    IsLocked?: boolean;
+    IsHidden?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -2681,6 +2704,42 @@ export interface HRM_PolicyPaidTimeOffGrantsByLengthOfServices
     
 }
 
+export interface HRM_PolSalary
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Status?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    UDFList?: string;
+    
+}
+
+export interface HRM_PolTax
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    ContributionRate?: number;
+    Status?: string;
+    
+}
+
 export interface HRM_PolWelfare
 {
     Id?: number;
@@ -2742,24 +2801,6 @@ export interface HRM_PolWelfareDetail
     IsCurrency?: boolean;
     IsManagerCanCreateBenefit?: boolean;
     Value?: number;
-    
-}
-
-export interface HRM_SalaryPolicy
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Status?: string;
-    BaseSalary?: number;
-    GrossSalary?: number;
     
 }
 
@@ -3892,24 +3933,6 @@ export interface HRM_StaffWorkingDiary
     CustomerName?: string;
     StartTime?: Date;
     EndTime?: Date;
-    
-}
-
-export interface HRM_TaxPolicy
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Type?: string;
-    ContributionRate?: number;
-    Status?: string;
     
 }
 
