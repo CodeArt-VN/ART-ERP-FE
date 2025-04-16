@@ -332,20 +332,24 @@ export class InputControlComponent implements OnInit {
 					let listTypeNE = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
 					this.dataSource.forEach((d) => {
 						if (listTypeNE.includes(d.Type)) d.disabled = true;
+						else d.disabled = false;
 					});
 				} else
 					this.dataSource.forEach((d) => {
 						if (d.Type == showingTypeDraft) d.disabled = true;
+						else d.disabled = false;
 					});
 			} else {
 				if (showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')) {
 					let listType = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
 					this.dataSource.forEach((d) => {
 						if (!listType.includes(d.Type)) d.disabled = true;
+						else d.disabled = false;
 					});
 				} else
 					this.dataSource.forEach((d) => {
 						if (d.Type != showingTypeDraft) d.disabled = true;
+						else d.disabled = false;
 					});
 			}
 		}

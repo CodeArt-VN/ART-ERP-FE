@@ -155,8 +155,10 @@
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
 	>
-		<ng-template ng-label-tmp let-i="item">
+		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+			<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+
 		</ng-template>
 		<ng-template ng-option-tmp let-item="item" *ngIf="isTree">
 			<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
