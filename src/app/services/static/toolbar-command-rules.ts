@@ -1,6 +1,5 @@
 export var toolbarCommandRules = {
 	getRules: function (serviceName) {
-		console.log('Matrix button : ', this.convertArrayToObjects(this[serviceName]));
 		return this.convertArrayToObjects(this[serviceName]) || [];
 	},
 
@@ -174,6 +173,14 @@ export var toolbarCommandRules = {
 		['Submitted', null, null, null, null, 'x', 'x', null, null, null, null],
 		['Unapproved', 'x', 'x', 'x', 'x', null, 'x', 'x', 'x', 'x', null],
 		['Approved', null, null, null, null, 'x', null, 'x', null, 'x', 'x'],
+	],
+
+	HRM_StaffPolEmployeeDecision: [
+		['Btns', 'ChangeBranch', 'Submit', 'Disapprove', 'Approve', 'Cancel', 'Delete', 'Archive'],
+		['Draft', 'x', 'x', null, 'x', null, 'x', 'x'],
+		['Submitted', null, null, 'x', 'x', null, null,null],
+		['Unapproved', 'x', 'x', null, null,  'x', 'x', 'x' ],
+		['Approved', null, null, null, null, null, null,null],
 	],
 
 	_PURCHASE_Request: [
