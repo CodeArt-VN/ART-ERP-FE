@@ -347,6 +347,32 @@ APIList.CRM_Contact.disapprove = {
 	},
 };
 
+APIList.HRM_StaffPolEmployeeDecision.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Approve';
+	},
+};
+
+APIList.HRM_StaffPolEmployeeDecision.submit = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Submit';
+	},
+};
+
+APIList.HRM_StaffPolEmployeeDecision.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Disapprove';
+	},
+};
+APIList.HRM_StaffPolEmployeeDecision.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/cancel';
+	},
+};
 export var GlobalData: any = {
 	Filter: {
 		FromDate: new Date().setDate(1),
