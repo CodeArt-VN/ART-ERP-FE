@@ -13,11 +13,11 @@
 				*ngIf="i.HasChild"
 			></ion-icon>
 			<ion-icon class="min-btn clickable" [name]="''" *ngIf="!i.HasChild"></ion-icon>
-			<ion-text class="clickable" [ngClass]="i.HasChild ? 'bold ' : ''" [color]="i.Color">{{ i.Property }}</ion-text>
+			<ion-text class="clickable" [ngClass]="i.HasChild ? 'bold ' : ''" [color]="i.Color">{{ i.Property | translate }}</ion-text>
 		</ng-template>
 	</datatable-column>
 
-	<datatable-column class="col-id" name="Value" property="Value"> </datatable-column>
+	<datatable-column class="col-name" name="Value" property="Value"> </datatable-column>
 
-	<datatable-column *ngIf="isCompare" class="col-id" name="Old value" property="OldValue"> </datatable-column>
+	<datatable-column *ngIf="isCompare" class="col-name" name="Old value" property="OldValue"> </datatable-column>
 </app-data-table>

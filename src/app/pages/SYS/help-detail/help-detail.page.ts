@@ -306,13 +306,6 @@ export class HelpDetailComponent extends PageBase {
 			.then((result) => {
 				this.item = result;
 				this.loadedData();
-			})
-			.catch((err) => {
-				if (err.message != null) {
-					this.env.showMessage(err.message, 'danger');
-				} else {
-					this.env.showMessage('Cannot extract data', 'danger');
-				}
 			});
 
 		this.formLoaded = true;

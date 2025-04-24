@@ -241,8 +241,13 @@ export class EnvService {
 	 * @param duration The time (ms) to show message
 	 * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
 	 */
-	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false) {
-		this.translate.get(message, { value: value }).subscribe((translatedMessage: string) => {
+	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
+		Promise.all([
+			this.translateResource(value ? { ...value, code: message } : message),
+			this.translateResource(value ? { ...value, code: subHeader } : subHeader),
+			this.translateResource(value ? { ...value, code: header } : header),
+		]).then((values: any) => {
+			let translatedMessage = values[0];
 			if (this.lastMessage == translatedMessage) return;
 			this.lastMessage = translatedMessage;
 
@@ -264,6 +269,8 @@ export class EnvService {
 			} else {
 				this.alertCtrl
 					.create({
+						header: values[2],
+						subHeader: values[1],
 						message: translatedMessage,
 						buttons: [
 							{
@@ -278,6 +285,17 @@ export class EnvService {
 					});
 			}
 		});
+	}
+
+	showErrorMessage(err) {
+		if (err.error?.ExceptionMessage) {
+			try {
+				let message = JSON.parse(err.error.ExceptionMessage);
+				this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+			} catch (e) {
+				this.showMessage(err.error.ExceptionMessage, 'danger');
+			}
+		} else this.showMessage(err.error?.Message || 'Cannot save, please try again', 'danger');
 	}
 
 	/** @deprecated Deprecated, do not use. */
@@ -424,9 +442,11 @@ export class EnvService {
 						});
 					});
 				} else {
-					this.translate.get(key, value).subscribe((translatedValue: string) => {
-						resolve(translatedValue);
-					});
+					if (!key) resolve('');
+					else
+						this.translate.get(key, value).subscribe((translatedValue: string) => {
+							resolve(translatedValue);
+						});
 				}
 			}
 		});

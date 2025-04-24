@@ -22,8 +22,10 @@ export class CommonService {
 			Authorization: this.getToken(),
 			'Content-Type': 'application/json',
 			'Data-type': 'json',
+			'App-Version': environment.appVersion,
 			//'withCredentials': 'true'
 		});
+
 		let options: any = {
 			headers: headers,
 			//withCredentials: true,
@@ -51,6 +53,8 @@ export class CommonService {
 			delete data.selected;
 		}
 
+		if (!environment.production || GlobalData?.Token?.dev == 'test') headers.append('IsDevMode', 'true');
+
 		if (data && data.hasOwnProperty('IgnoredBranch') && data.hasOwnProperty('IDBranch')) {
 			delete data.IDBranch;
 			delete data.SelectedBranch;
@@ -71,16 +75,15 @@ export class CommonService {
 			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'SelectedBranch=' + this.env.selectedBranch + '';
 		}
 
-		if (URL.indexOf('AppVersion') == -1) {
-			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'AppVersion=' + this.env.version + '';
-		}
-
 		if (pmethod == 'Login') {
 			headers = new HttpHeaders({
 				'Content-Type': 'application/x-www-form-urlencoded',
+				'App-Version': environment.appVersion,
+				Authorization: 'Basic ' + btoa(data.username + ':' + data.password),
 			});
 			options.headers = headers;
-			return this.http.post(URL, data, options);
+
+			return this.http.post(URL, 'grant_type=password', options);
 		} else if (pmethod == 'GET') {
 			if (data) {
 				let params: HttpParams = new HttpParams();
@@ -105,6 +108,7 @@ export class CommonService {
 		} else if (pmethod == 'UPLOAD') {
 			headers = new HttpHeaders({
 				Authorization: this.getToken(),
+				'App-Version': environment.appVersion,
 				withCredentials: 'true',
 			});
 			options = { headers: headers, params: null };
@@ -587,7 +591,6 @@ export class CommonService {
 	}
 
 	checkError(err) {
-		//console.log(err);
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
@@ -600,15 +603,11 @@ export class CommonService {
 			this.env.showMessage('Cannot connect to server, please try again.', 'danger');
 			this.env.publishEvent({ Code: 'app:ConnectFail' });
 		} else {
+			this.env.showErrorMessage(err);
 			if (!environment.production) {
-				this.env.showMessage('To dev message: {{value}}', 'danger', err.message);
+				this.env.showMessage('To dev message: {value}', 'danger', err.message);
 			}
 		}
-
-		// else {
-		// 	that.env.showMessage(err.message, 'warning');
-		// 	that.env.publishEvent({ Code: 'app:ConnectFail' });
-		// }
 	}
 
 	public handleError<T>(operation = 'operation', result?: T) {

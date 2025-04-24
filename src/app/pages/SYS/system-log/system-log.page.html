@@ -1,0 +1,84 @@
+<ion-header>
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content  appScrollbarTheme class="left scrollx" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+	<ion-fab
+		[ngClass]="{withSearch: pageConfig.isShowSearch,'ion-hide-md-down': pageConfig.isSubActive}"
+		class="feature no-print"
+		vertical="bottom"
+		horizontal="start"
+		slot="fixed"
+	>
+		<ion-list-header>
+			<ion-label color="dark">{{'Filter' | translate}}</ion-label>
+		</ion-list-header>
+		<div class="ion-padding" style="padding-bottom: 0">
+			<app-form-control (change)="changeFilter()" [field]="{id:'From',secondaryId: 'To', label: 'Time range', type : 'time-frame', form : formGroup}"></app-form-control>
+			<app-form-control
+				(change)="changeFilter()"
+				[field]="{id:'Type', label: 'Type', type : 'ng-select',dataSource:typeList, bindLable:'Name',bindValue:'Code', form : formGroup}"
+			></app-form-control>
+		</div>
+		<ion-list>
+			<ng-container *ngIf="query.Type=='User'">
+				<ion-item [color]="currentTab == i.Email? 'primary': '' " *ngFor="let i of typeGroupList" [button]="true" (click)="loadNode(i)">
+					<ion-label>{{i.Email | translate}}</ion-label>
+					<ion-note slot="end">{{i.Count}}</ion-note>
+				</ion-item>
+			</ng-container>
+
+			<ng-container *ngIf="query.Type=='Function'">
+				<ng-container *ngFor="let i of typeGroupList; let j = index;">
+					<ion-item [color]="currentTab == i.Name? 'primary': '' " [ngClass]="{'bold': i.HasChild, 'odd': j % 2 !== 0}" class="clickable" *ngIf="i.show">
+						<ng-container *ngFor="let w of i.levels; let k = index;"><span class="spacing" *ngIf="k>0"></span></ng-container>
+						<ion-icon
+							(click)="toggleRow(typeGroupList, i, true);"
+							class="min-btn clickable"
+							[name]="i.HasChild? (!i.showdetail? 'chevron-forward-outline':'chevron-down-outline') : ''"
+						></ion-icon>
+						<!-- <ion-icon class="min-btn" [color]="i.IsHeadOfDepartment?'primary':''" [name]="i.Icon"></ion-icon> -->
+
+						<ion-label (click)="loadNode(i)"> {{i.Name}} </ion-label>
+						<ion-note slot="end">{{i.Count}}</ion-note>
+						<!-- <div class="col-number cell">
+							<span>{{i.Count | number: '1.0-2' }} </span>
+						</div> -->
+					</ion-item>
+				</ng-container>
+			</ng-container>
+		</ion-list>
+	</ion-fab>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column class="col-id" name="Id" property="Id">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="clickable" (click)="showModal(i)"> {{i.Id}} </span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-date" format="dd-MM-yyyy HH:mm" name="Date" property="Date" filterControlType="time-frame"></datatable-column>
+			<datatable-column class="col-name" name="Email" property="Email"></datatable-column>
+			<datatable-column class="col-code" name="IP address" property="IPAddress"></datatable-column>
+			<datatable-column class="col-code" name="App version" property="AppVersion"></datatable-column>
+			<datatable-column class="col-code" name="Method" property="Method"></datatable-column>
+			<datatable-column class="col-code" name="Module" property="Segment3"></datatable-column>
+			<datatable-column class="col-code" name="Function" property="Segment4"></datatable-column>
+		</app-data-table>
+	</div>
+	<ion-infinite-scroll color="primary" threshold="30%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

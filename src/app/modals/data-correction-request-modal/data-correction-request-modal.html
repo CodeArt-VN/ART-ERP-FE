@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title> {{'Data correction: '| translate}} {{model.Type| translate}} </ion-title>
+		<ion-title> {{'Data correction: '| translate}} {{model?.type| translate}} </ion-title>
 		<ion-buttons slot="end">
 			<ion-button (click)="closeModal()">
 				<ion-icon name="close"></ion-icon>
@@ -14,56 +14,121 @@
 		<ion-grid fixed>
 			<ng-container>
 				<ion-row class="hr-group">
-					<ion-col size="12" size-sm="12" size-md="12" size-xl="12">
-						<ng-container *ngTemplateOutlet="Recursion; context:{ fg: formGroup}"></ng-container>
-					</ion-col>
+					<ng-container *ngFor="let fg of formArray?.controls">
+						<ion-col
+							[attr.size]="fg.get('cols')?.value?.default"
+							[attr.size-xs]="fg.get('cols')?.value?.xs"
+							[attr.size-sm]="fg.get('cols')?.value?.sm"
+							[attr.size-md]="fg.get('cols')?.value?.md"
+							[attr.size-lg]="fg.get('cols')?.value?.lg"
+							[attr.size-xl]="fg.get('cols')?.value?.xl"
+						>
+							<ion-list-header class="ion-no-padding">
+								<ion-label color="primary">{{fg.get('title')?.value || 'Unknown' | translate}}</ion-label>
+							</ion-list-header>
+						</ion-col>
+						<ion-col
+							class="ion-no-padding"
+							[attr.size]="fg.get('subCols')?.value?.default"
+							[attr.size-xs]="fg.get('subCols')?.value?.xs"
+							[attr.size-sm]="fg.get('subCols')?.value?.sm"
+							[attr.size-md]="fg.get('subCols')?.value?.md"
+							[attr.size-lg]="fg.get('subCols')?.value?.lg"
+							[attr.size-xl]="fg.get('subCols')?.value?.xl"
+						>
+						<ion-row>
+							<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
+						</ion-row>
+						</ion-col>
+					</ng-container>
 				</ion-row>
 			</ng-container>
 		</ion-grid>
 	</div>
 </ion-content>
 
-<ng-template #Recursion let-fg="fg">
-	<ng-container *ngFor="let i of  getKeys(fg.controls)">
-		<ng-container *ngIf="fg.get(i).field.type != 'nonRender'">
-			<!-- Render Form Control -->
-			<ng-container *ngIf="isFormControl(fg.get(i))">
-				<ng-container *ngIf="fg.get(i).field">
-					<app-form-control [field]="getField(fg,fg.get(i).field)"> </app-form-control>
+<ng-template #RecursionForm let-fg="fg">
+	<ng-container *ngIf="fg.get('isGroup')?.value">
+		<ng-container *ngTemplateOutlet="GroupRecursion; context:{ fg: fg}"></ng-container>
+	</ng-container>
+	<ng-container *ngIf="!fg.get('isGroup')?.value">
+		<ng-container *ngFor="let i of getKeys(fg.controls)">
+			<ng-container *ngIf="getControlType(fg.get(i)) as type">
+				<ng-container *ngIf="type === 'control'">
+					<ng-container *ngIf="fg.get(i).field">
+						<ion-col
+							[attr.size]="fg.get(i).field.cols?.default"
+							[attr.size-xs]="fg.get(i).field.cols?.xs"
+							[attr.size-sm]="fg.get(i).field.cols?.sm"
+							[attr.size-md]="fg.get(i).field.cols?.md"
+							[attr.size-lg]="fg.get(i).field.cols?.lg"
+							[attr.size-xl]="fg.get(i).field.cols?.xl"
+						>
+							<app-form-control [field]="getField(fg,fg.get(i).field)"> </app-form-control>
+						</ion-col>
+					</ng-container>
 				</ng-container>
-			</ng-container>
+				<!-- Render Form Group -->
+				<ng-container *ngIf="type === 'group'">
+					<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg.get(i)}"></ng-container>
+				</ng-container>
+				<!-- Render Form Array -->
+				<ng-container *ngIf="type === 'array'">
+					<ion-row class="hr-group" *ngIf="fg.get(i).field.label">
+						<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+							<ion-list-header class="ion-no-padding">
+								<ion-label color="primary">{{fg.get(i).field.label | translate}}</ion-label>
+							</ion-list-header>
+						</ion-col>
+					</ion-row>
+					<ng-container *ngFor="let a of fg.get(i)['controls']">
+						<!-- <ng-container *ngIf="!fg.get(i).field.component">
+			  </ng-container>
+			-->
+						<!-- {{a.value | json }} -->
+						<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: a}"> </ng-container>
+						<!-- <ng-container *ngIf="fg.get(i).field.component">
+				<ng-container *ngTemplateOutlet="RenderComponent; context:{ data: a,component:fg.get(i).field.component}">
+				</ng-container>
+			  </ng-container> -->
+					</ng-container>
+				</ng-container>
 
-			<!-- Render Form Group -->
-			<ng-container *ngIf="isFormGroup(fg.get(i))">
-				<ion-row class="hr-group" *ngIf="fg.get(i).field.label">
-					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-						<ion-list-header class="ion-no-padding">
-							<ion-label color="primary">{{fg.get(i).field.label | translate}}</ion-label>
-						</ion-list-header>
-					</ion-col>
-				</ion-row>
-				<ng-container *ngTemplateOutlet="Recursion; context:{ fg: fg.get(i)}"> </ng-container>
-			</ng-container>
+				<!-- Render Form Array -->
+				<ng-container *ngIf="type === 'addresses-component'">
+					<app-address
+						*ngFor="let addressCtrl of fg.get(i).controls; let j = index"
+						[address]="addressCtrl.value"
+						[canEdit]="true"
+						[mapLoading]="env.isMapLoaded"
+						(onChange)="changeAddress(addressCtrl, $event)"
+						(onDelete)="removeAddress(addressCtrl,fg,j)"
+					>
+					</app-address>
 
-			<!-- Render Form Array -->
-			<ng-container *ngIf="isFormArray(fg.get(i))">
-				<ion-row class="hr-group" *ngIf="fg.get(i).field.label">
-					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-						<ion-list-header class="ion-no-padding">
-							<ion-label color="primary">{{fg.get(i).field.label | translate}}</ion-label>
-						</ion-list-header>
-					</ion-col>
-				</ion-row>
-				<ng-container *ngFor="let a of fg.get(i)['controls']">
-					<!-- <ng-container *ngIf="!fg.get(i).field.component">
-          </ng-container>
-        -->
-					<!-- {{a.value | json }} -->
-					<ng-container *ngTemplateOutlet="Recursion; context:{ fg: a}"> </ng-container>
-					<!-- <ng-container *ngIf="fg.get(i).field.component">
-            <ng-container *ngTemplateOutlet="RenderComponent; context:{ data: a,component:fg.get(i).field.component}">
-            </ng-container>
-          </ng-container> -->
+					<ion-row class="hr-group border">
+						<ion-button (click)="addAddress(fg)"> {{ 'Add address' | translate }} </ion-button>
+					</ion-row>
+					<!-- 					
+						(onChange)="changeAddress($event)"
+							(onDelete)="removeAddress($event)" -->
+				</ng-container>
+
+				<ng-container *ngIf="type === 'tax-infos-component'">
+					<app-tax-info
+						*ngFor="let taxInfo of fg.get(i).controls; let j = index"
+						[taxInfo]="taxInfo.value"
+						[canEdit]="pageConfig.canEdit"
+						(onChange)="changeTaxInfo(taxInfo,fg,$event)"
+						(onDelete)="removeTaxInfo(taxInfo,fg,j)"
+					></app-tax-info>
+
+					<ion-row class="hr-group border">
+						<ion-button (click)="addTaxInfo(fg)"> {{ 'Add billing information' | translate }} </ion-button>
+					</ion-row>
+					<!-- 					
+						(onChange)="changeAddress($event)"
+							(onDelete)="removeAddress($event)" -->
 				</ng-container>
 			</ng-container>
 		</ng-container>
@@ -93,6 +158,37 @@
   </ng-container>
 </ng-template>
  -->
+<ng-template #GroupRecursion let-fg="fg">
+	<ion-row class="hr-group">
+		<ion-col
+			[attr.size]="fg.get('cols')?.value?.default"
+			[attr.size-xs]="fg.get('cols')?.value?.xs"
+			[attr.size-sm]="fg.get('cols')?.value?.sm"
+			[attr.size-md]="fg.get('cols')?.value?.md"
+			[attr.size-lg]="fg.get('cols')?.value?.lg"
+			[attr.size-xl]="fg.get('cols')?.value?.xl"
+		>
+			<ion-list-header class="ion-no-padding">
+				<ion-label color="primary">{{fg.get('title')?.value || 'Unknown' | translate}}</ion-label>
+			</ion-list-header>
+		</ion-col>
+		<ion-col
+			class="ion-no-padding"
+			[attr.size]="fg.get('subCols')?.value?.default"
+			[attr.size-xs]="fg.get('subCols')?.value?.xs"
+			[attr.size-sm]="fg.get('subCols')?.value?.sm"
+			[attr.size-md]="fg.get('subCols')?.value?.md"
+			[attr.size-lg]="fg.get('subCols')?.value?.lg"
+			[attr.size-xl]="fg.get('subCols')?.value?.xl"
+		>
+			<ion-row>
+				<ng-container *ngFor="let control of getKeys(fg.controls)">
+					<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: control}"></ng-container>
+				</ng-container>
+			</ion-row>
+		</ion-col>
+	</ion-row>
+</ng-template>
 
 <ion-footer>
 	<ion-toolbar>

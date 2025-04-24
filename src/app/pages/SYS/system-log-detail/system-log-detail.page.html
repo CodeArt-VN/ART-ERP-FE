@@ -1,0 +1,14 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title *ngIf="item">{{item.LoggedBy}} - <small>{{item.Date | date: 'yyyy-MM-dd HH:mm'}}</small></ion-title>
+
+		<ion-buttons slot="primary">
+			<ion-button title="{{'Close' | translate}}" color="secondary" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme fullscreen class="scrollx">
+	<app-json-viewer *ngIf="item" [item]="item" [isCompare]="false"> </app-json-viewer>
+</ion-content>

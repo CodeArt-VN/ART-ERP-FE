@@ -23,7 +23,7 @@ let ga: any;
 })
 export class AppComponent implements OnInit {
 	@ViewChild('search') search: any;
-	appTheme = 'default-theme';
+	appTheme = 'artdistribution-theme';
 	isConnectFail = false;
 	appMessages = [];
 	appVersion = '';
