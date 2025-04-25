@@ -161,7 +161,7 @@ app-data-table,
 		display: flex;
 		padding: 0;
 		margin: 0;
-		line-height: calc(10 / 16 * 1.5rem);
+		line-height: calc(10 / 16 * 1.8rem);
 		border-bottom: solid 1px var(--menu-right-border-color);
 		position: relative;
 
@@ -212,6 +212,8 @@ app-data-table,
 		//font-size: calc(10/16 * 1.3rem);
 		color: var(--ion-color-dark);
 		white-space: pre-line;
+		overflow-wrap: anywhere;
+			
 
 		&.selected {
 			background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);

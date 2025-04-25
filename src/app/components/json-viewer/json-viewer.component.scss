@@ -1,0 +1,8 @@
+::ng-deep {
+	app-json-viewer {
+		.col-code {
+			min-width: min-content !important;
+			color: var(--ion-color-primary) !important;
+		}
+	}
+}

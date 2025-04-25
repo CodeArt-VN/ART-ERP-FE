@@ -591,6 +591,8 @@ export class CommonService {
 	}
 
 	checkError(err) {
+		console.log(err);
+		
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
@@ -605,7 +607,7 @@ export class CommonService {
 		} else {
 			this.env.showErrorMessage(err);
 			if (!environment.production) {
-				this.env.showMessage('To dev message: {value}', 'danger', err.message);
+				//this.env.showMessage('To dev message: {value}', 'danger', err.message);
 			}
 		}
 	}
