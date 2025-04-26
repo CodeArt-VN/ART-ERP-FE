@@ -4,6 +4,8 @@ import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
+import { MonacoEditorLoaderService } from 'src/app/services/custom.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-input-control',
@@ -44,6 +46,7 @@ export class InputControlComponent implements OnInit {
 		}
 		if (this.isTree) {
 			if (this.isCollapsed == undefined) this.isCollapsed = false;
+
 			//showing current value in tree
 			let parents = [];
 			if (this.form.get(this.id).value) {
@@ -107,7 +110,9 @@ export class InputControlComponent implements OnInit {
 
 	imgPath = environment.staffAvatarsServer;
 
-	constructor() {
+	constructor(public monacoProvider: MonacoEditorLoaderService,
+		public modalController: ModalController,
+	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
 	}
@@ -117,6 +122,122 @@ export class InputControlComponent implements OnInit {
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
+	}
+	ngAfterViewInit() {
+		// The DOM is fully loaded here
+		// You can access DOM elements and run your code
+		if (this.type == 'formula') {
+			if (this.type === 'formula') {
+				this.monacoProvider.load().then(() => this.initMonaco());
+			}
+		}
+	}
+	disposableCompletionItemProvider: any = null;
+
+	initMonaco() {
+		const monaco = (window as any).monaco;
+
+		// Load Google Font: JetBrains Mono
+		const fontLink = document.createElement('link');
+		fontLink.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap';
+		fontLink.rel = 'stylesheet';
+		document.head.appendChild(fontLink);
+
+		// 🧠 Gợi ý /Code
+		let dataSource = this.dataSource?.length > 0 ? [...this.dataSource] : [];
+		if (this.disposableCompletionItemProvider) {
+			this.disposableCompletionItemProvider.dispose();
+		}
+
+		this.disposableCompletionItemProvider = monaco.languages.registerCompletionItemProvider('markdown', {
+			triggerCharacters: ['/'],
+			provideCompletionItems: (model, position) => {
+				const textUntilPosition = model.getValueInRange({
+					startLineNumber: position.lineNumber,
+					startColumn: 1,
+					endLineNumber: position.lineNumber,
+					endColumn: position.column,
+				});
+				const match = textUntilPosition.match(/\/(\w*)$/);
+				if (!match) return { suggestions: [] };
+
+				const keyword = match[1].toLowerCase();
+				const suggestions = dataSource
+					.filter((item) => item.Code.toLowerCase().includes(keyword) || item.Name.toLowerCase().includes(keyword))
+					.map((item) => {
+						const startPosition = {
+							lineNumber: position.lineNumber,
+							column: position.column - match[0].length, // match[0] includes the slash
+						};
+						const endPosition = position;
+
+						return {
+							label: `/${item.Name}`,
+							kind: monaco.languages.CompletionItemKind.Snippet,
+							insertText: `[${item.Code}]`,
+							detail: item.Name,
+							documentation: `Chèn mã: ${item.Code}`,
+							range: {
+								startLineNumber: startPosition.lineNumber,
+								startColumn: startPosition.column,
+								endLineNumber: endPosition.lineNumber,
+								endColumn: endPosition.column,
+							},
+						};
+					});
+				return { suggestions };
+			},
+		});
+
+		// 🎨 Tạo editor với theme sáng và font "JetBrains Mono"
+		const container = document.getElementById('monaco-editor');
+		if (container) {
+			const editor = monaco.editor.create(container, {
+				value: this.form.get(this.id).value,
+				language: 'markdown',
+				theme: 'vs', // theme sáng (vs-dark là tối)
+				lineNumbersMinChars: 1,
+				fontFamily: 'JetBrains Mono, monospace',
+				fontSize: 14,
+				minimap: { enabled: false },
+				automaticLayout: true,
+			});
+			let latestContent = '';
+
+			editor.onDidChangeModelContent(() => {
+				// chỉ lưu tạm nội dung
+				latestContent = editor.getValue();
+				this.form.get(this.id)?.setValue(latestContent);
+				this.form.get(this.id)?.markAsDirty();
+			});
+
+			// // Khi người dùng rời editor thì mới emit
+			// editor.onDidBlurEditorWidget(() => {
+			//   this.change.emit(latestContent);
+			// });
+		}
+	}
+	async openFormulaModal() {
+		// const modal = await this.modalController.create({
+		// 	component: FormulaModalPage,
+		// 	cssClass: 'modal90',
+		// 	componentProps: {
+		// 		dataSource: this.dataSource,
+		// 		value: this.form.get(this.id).value,
+		// 	},
+		// });
+		// await modal.present();
+		// const { data } = await modal.onWillDismiss();
+		
+	}
+	saveContent() {
+		const monaco = (window as any).monaco;
+		const editor = monaco.editor.getModels()[0]; // hoặc lưu editor instance khi khởi tạo
+		const value = editor.getValue();
+
+		this.form.get(this.id)?.setValue(value);
+		this.form.get(this.id)?.markAsDirty();
+		this.change.emit(value);
 	}
 
 	@Output() change = new EventEmitter();
@@ -332,24 +453,20 @@ export class InputControlComponent implements OnInit {
 					let listTypeNE = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
 					this.dataSource.forEach((d) => {
 						if (listTypeNE.includes(d.Type)) d.disabled = true;
-						else d.disabled = false;
 					});
 				} else
 					this.dataSource.forEach((d) => {
 						if (d.Type == showingTypeDraft) d.disabled = true;
-						else d.disabled = false;
 					});
 			} else {
 				if (showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')) {
 					let listType = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
 					this.dataSource.forEach((d) => {
 						if (!listType.includes(d.Type)) d.disabled = true;
-						else d.disabled = false;
 					});
 				} else
 					this.dataSource.forEach((d) => {
 						if (d.Type != showingTypeDraft) d.disabled = true;
-						else d.disabled = false;
 					});
 			}
 		}

@@ -25,4 +25,12 @@ export var thirdPartyLibs = {
 	ggMap: {
 		source: [{ url: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAtyM-Th784YwQUTquYa0WlFIj8C6RB2uM', type: 'js' }],
 	},
+	monacoCdnResources : {
+		source:[{
+			type: 'js',
+			url: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js',
+		  }
+		]
+	}
+		
 };
