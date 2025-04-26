@@ -68,11 +68,11 @@ export class SchemaDetailPage extends PageBase {
 			{ Name: 'date' },
 			{ Name: 'nvarchar' },
 			{ Name: 'number' },
-			{ Name: 'bit' }
+			{ Name: 'bit' },
 		];
-		Promise.all([this.env.getType('SchemaType'),this.env.getType('ControlType')]).then((values: any) => {
+		Promise.all([this.env.getType('SchemaType'), this.env.getType('ControlType')]).then((values: any) => {
 			this.schemaTypeList = values[0];
-			this.controlTypes = values[1]
+			this.controlTypes = values[1];
 			super.preLoadData(event);
 		});
 	}
@@ -125,8 +125,8 @@ export class SchemaDetailPage extends PageBase {
 			PropertyType: [field.PropertyType || 'text'],
 			Aggregate: [field.Aggregate],
 			Sort: [field.Sort],
-			Icon: [field.Icon || 'star'],
-			Color: [field.Color || 'dark'],
+			Icon: [field.Icon || 'layers'],
+			Color: [field.Color || 'primary'],
 			IsDisabled: new FormControl({
 				value: field.IsDisabled,
 				disabled: true,
@@ -151,10 +151,8 @@ export class SchemaDetailPage extends PageBase {
 				value: field.ModifiedDate,
 				disabled: true,
 			}),
-			IsColorModalOpened: [{ value: false, disabled: true }],
-			IsIconModalOpened: [{ value: false, disabled: true }],
 		});
-		if(field.IsDisabled)group.disable();
+		if (field.IsDisabled) group.disable();
 		else if (markAsDirty) {
 			group.get('IDSchema').markAsDirty();
 			group.get('Icon').markAsDirty();
@@ -215,29 +213,6 @@ export class SchemaDetailPage extends PageBase {
 			}
 		}
 	}
-	// savedChange(savedItem?: any, form?: FormGroup<any>): void {
-	//   //đọc lại trong this.item => lấy ra field đang mở( tạo 1 varible this.openedFields => mảng nhét vô) xong chạy lại
-	//   let groups = <FormArray>this.formGroup.controls.Fields;
-
-	//   this.openedFields = groups.controls.filter((field: FormGroup) => field.get('IsExpanded').value);
-
-	//   super.savedChange(savedItem, form);
-	//   this.item = savedItem;
-	//   //this.loadedData();
-	// }
-	onSelectColor(e, fg) {
-		fg.get('Color').setValue(e.Code);
-		fg.get('IsColorModalOpened').setValue(false);
-		fg.get('Color').markAsDirty();
-		this.saveChange();
-	}
-
-	onSelectIcon(e, fg) {
-		fg.get('Icon').setValue(e.Name);
-		fg.get('IsIconModalOpened').setValue(false);
-		fg.get('Icon').markAsDirty();
-		this.saveChange();
-	}
 
 	doReorder(ev, groups) {
 		groups = ev.detail.complete(groups);
@@ -256,7 +231,6 @@ export class SchemaDetailPage extends PageBase {
 	//#region  According
 	accordionGroupChange(e) {
 		this.openedFields = e.detail.value;
-		console.log(this.openedFields);
 	}
 
 	isAccordionExpanded(id: string): boolean {
