@@ -2314,6 +2314,30 @@ export interface FINANCE_TaxDefinition
     
 }
 
+export interface HRM_ContractTemplate
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    IDPolTax?: number;
+    IDPolInsurance?: number;
+    IDPolEmployee?: number;
+    IDPolPaidTimeOff?: number;
+    ReminderBefore?: number;
+    Config?: string;
+    Template?: string;
+    
+}
+
 export interface HRM_DataDictionary
 {
     IDSchema?: number;
@@ -2385,30 +2409,6 @@ export interface HRM_OpenSchedule
     NumberOfEnrolled?: number;
     IsPublished?: boolean;
     IDOffice?: number;
-    
-}
-
-export interface HRM_OvertimePolicy
-{
-    IDBranch?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Type?: string;
-    Start?: Date;
-    End?: Date;
-    IsOvernightShift?: boolean;
-    MaxMinuteOfOTInCycle?: number;
-    Factor?: number;
-    ConvertToPTO?: boolean;
     
 }
 
@@ -2535,8 +2535,9 @@ export interface HRM_PersonalIncomePaymentProcess
     
 }
 
-export interface HRM_PolAllowance
+export interface HRM_PolBenefit
 {
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2548,24 +2549,14 @@ export interface HRM_PolAllowance
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDAllowanceType?: number;
-    DecisionNumber?: string;
-    DecisionSignDate?: Date;
-    IDDecisionSignedBy?: number;
-    DecisionEffectiveDate?: Date;
-    TimeOfEvent?: Date;
-    AOMAccordingPol?: number;
-    AOMAccordingAct?: number;
-    IsApproved?: boolean;
-    IDFrequency?: number;
-    IsPaidInKind?: boolean;
-    IsIncomePerMonth?: boolean;
-    IsIncomePerYear?: boolean;
+    Status?: string;
     
 }
 
-export interface HRM_PolAllowanceApplyFor
+export interface HRM_PolBenefitDetail
 {
+    IDUDF?: number;
+    IDPolBenefit?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2577,19 +2568,17 @@ export interface HRM_PolAllowanceApplyFor
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    IDJobTitleCategory?: number;
-    IDJobTitle?: number;
-    IDLevelOfManagement?: number;
-    IDStaffType?: number;
-    IsBOM?: boolean;
-    IsManager?: boolean;
-    IsShareholder?: boolean;
-    IDPolAllowance?: number;
+    Frequency?: string;
+    IsIncome?: boolean;
+    IsCurrency?: boolean;
+    IsManagerCanCreateBenefit?: boolean;
+    Value?: string;
     
 }
 
-export interface HRM_PolCompulsoryInsurance
+export interface HRM_PolEmployee
 {
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2601,47 +2590,15 @@ export interface HRM_PolCompulsoryInsurance
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    EffectiveDate?: Date;
-    DateOfExpiry?: Date;
-    RateOfSocialInsuranceCo?: number;
-    RateOfSocialInsuranceEm?: number;
-    IsCompanyPaySI?: boolean;
-    RateOfHealthInsuranceCo?: number;
-    RateOfHealthInsuranceEm?: number;
-    IsCompanyPayHI?: boolean;
-    RateOfUnemploymentInsuranceCo?: number;
-    RateOfUnemploymentInsuranceEm?: number;
-    IsCompanyPayUI?: boolean;
-    RateOfTradeUnionFeesCo?: number;
-    RateOfTradeUnionFeesEm?: number;
-    IsCompanyPayTUF?: boolean;
-    IsApproved?: boolean;
-    TotalOfRateOfCo?: number;
-    TotalOfRateOfEm?: number;
-    
-}
-
-export interface HRM_PolCompulsoryInsuranceApplyFor
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IDJobTitleCategory?: number;
-    IDJobTitle?: number;
-    IDLevelOfManagement?: number;
-    IDStaffType?: number;
-    IsBOM?: boolean;
-    IsManager?: boolean;
-    IsShareholder?: boolean;
-    IDPolCompulsoryInsurance?: number;
+    Status?: string;
+    Type?: string;
+    Icon?: string;
+    Color?: string;
+    ApplyTo?: string;
+    IsAllowEmployeeCreateRequest?: boolean;
+    IsAllowManagerCreateRequest?: boolean;
+    UDFList?: string;
+    IDPolBenefit?: number;
     
 }
 
@@ -2704,8 +2661,108 @@ export interface HRM_PolicyPaidTimeOffGrantsByLengthOfServices
     
 }
 
+export interface HRM_PolInsurance
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    EffectiveDate?: Date;
+    DateOfExpiry?: Date;
+    Status?: string;
+    
+}
+
+export interface HRM_PolInsuranceDetail
+{
+    IDPolInsurance?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    CalculationMethodType?: string;
+    RateCo?: number;
+    RateEm?: number;
+    IsManagerCanCreateInsurance?: boolean;
+    
+}
+
+export interface HRM_PolOvertime
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    EffectiveDate?: Date;
+    Start?: Date;
+    End?: Date;
+    IsOvernightShift?: boolean;
+    MaxMinuteOfOTInCycle?: number;
+    Factor?: number;
+    ConvertToPTO?: boolean;
+    
+}
+
+export interface HRM_PolOvertimeRate
+{
+    IDPolOvertime?: number;
+    Id?: number;
+    Rate?: number;
+    IsAddBonusBenefit?: boolean;
+    BonusPercentage?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface HRM_PolOverTimeRateApplyForBranch
+{
+    IDBranch?: number;
+    IDPolPoverTimeRate?: number;
+    Id?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface HRM_PolSalary
 {
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2724,6 +2781,7 @@ export interface HRM_PolSalary
 
 export interface HRM_PolTax
 {
+    IDBranch?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2737,70 +2795,6 @@ export interface HRM_PolTax
     Type?: string;
     ContributionRate?: number;
     Status?: string;
-    
-}
-
-export interface HRM_PolWelfare
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Status?: string;
-    
-}
-
-export interface HRM_PolWelfareApplyFor
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IDJobTitleCategory?: number;
-    IDJobTitle?: number;
-    IDLevelOfManagement?: number;
-    IDStaffType?: number;
-    IsBOM?: boolean;
-    IsManager?: boolean;
-    IsShareholder?: boolean;
-    IDPOLWelfare?: number;
-    
-}
-
-export interface HRM_PolWelfareDetail
-{
-    IDUDF?: number;
-    IDPolWelfare?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Frequency?: string;
-    IsIncome?: boolean;
-    IsCurrency?: boolean;
-    IsManagerCanCreateBenefit?: boolean;
-    Value?: number;
     
 }
 
@@ -2866,6 +2860,7 @@ export interface HRM_Staff
     IDBranch?: number;
     IDDepartment?: number;
     IDJobTitle?: number;
+    IDPolSalary?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2904,6 +2899,7 @@ export interface HRM_Staff
     PayrollPolicy?: string;
     WorkType?: string;
     BasicSalary?: number;
+    Salary?: number;
     SocialInsuranceSalary?: number;
     StartDate?: Date;
     OfficialStartDate?: Date;
@@ -2911,6 +2907,13 @@ export interface HRM_Staff
     LeaveDaysAllocated?: number;
     LeaveDaysUsed?: number;
     LeaveDaysRemaining?: number;
+    PolTaxCode?: string;
+    PolTaxName?: string;
+    PolTaxType?: string;
+    PolTaxValue?: number;
+    BankAccountNumber?: number;
+    BankName?: string;
+    SocialInsuranceRate?: number;
     
 }
 
@@ -3048,31 +3051,6 @@ export interface HRM_StaffAnotherSkill
     CreatedDate?: Date;
     ModifiedDate?: Date;
     Type?: string;
-    
-}
-
-export interface HRM_StaffAppointDecision
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    IDStaff?: number;
-    DecisionNumber?: string;
-    DecisionSignDate?: Date;
-    IDDecisionSignedBy?: number;
-    DecisionEffectiveDate?: Date;
-    IDDepartment?: number;
-    IDJobTitle?: number;
-    IDSalaryDecision?: number;
-    JobTitleType?: string;
     
 }
 
@@ -3225,6 +3203,34 @@ export interface HRM_StaffConcurrentProbationryPosition
     
 }
 
+export interface HRM_StaffContract
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDStaff?: number;
+    IDContractTemplate?: number;
+    EffectiveDate?: Date;
+    ContractDate?: Date;
+    EndDate?: Date;
+    ApplyType?: string;
+    Status?: string;
+    ContractType?: string;
+    IDContractor?: number;
+    ContractValue?: string;
+    IsCustomTemplate?: boolean;
+    Template?: string;
+    
+}
+
 export interface HRM_StaffCurrentWorking
 {
     Id?: number;
@@ -3312,6 +3318,7 @@ export interface HRM_StaffFamily
     TaxIdentificationNumber?: string;
     IsEmergencyContact?: boolean;
     Job?: string;
+    DependentConfirmationDate?: Date;
     
 }
 
@@ -3469,6 +3476,186 @@ export interface HRM_StaffLearningProcess
     
 }
 
+export interface HRM_StaffOvertimeRequest
+{
+    IDBranch?: number;
+    IDTimesheet?: number;
+    IDRequester?: number;
+    Id?: number;
+    StartDate?: Date;
+    EndDate?: Date;
+    Status?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Config?: string;
+    
+}
+
+export interface HRM_StaffPayroll
+{
+    IDTimeSheetCycle?: number;
+    IDTimesheet?: number;
+    IDBranch?: number;
+    IDPayrollTemplate?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface HRM_StaffPolBenefitEnrollment
+{
+    IDBranch?: number;
+    IDPolBenefit?: number;
+    IDSignedBy?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    EnrollmentSignDate?: Date;
+    EnrollmentEffectiveDate?: Date;
+    EnrollmentDate?: Date;
+    ApplyType?: string;
+    Status?: string;
+    IDStaffList?: string;
+    
+}
+
+export interface HRM_StaffPolBenefitEnrollmentDetail
+{
+    IDStaffPolBenefitEnrollment?: number;
+    IDUDF?: number;
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    BenefitEnrollmentValue?: string;
+    Value?: string;
+    Frequency?: string;
+    IsIncome?: boolean;
+    IsCurrency?: boolean;
+    IsManagerCanCreateBenefit?: boolean;
+    
+}
+
+export interface HRM_StaffPolEmployeeDecision
+{
+    IDBranch?: number;
+    IDPolEmployee?: number;
+    IDSignedBy?: number;
+    IDRequester?: number;
+    IDPolSalary?: number;
+    Id?: number;
+    Status?: string;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    ConsultedPerson?: string;
+    DecisionSignDate?: Date;
+    DecisionEffectiveDate?: Date;
+    ProbationPeriod?: number;
+    ApplyType?: string;
+    
+}
+
+export interface HRM_StaffPolEmployeeDecisionDetail
+{
+    IDStaffPolEmployeeDecision?: number;
+    IDStaff?: number;
+    IDDepartment?: number;
+    IDJobTitle?: number;
+    Id?: number;
+    IsConcurrentPosition?: boolean;
+    DecisionValue?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface HRM_StaffPolInsuranceEnrollment
+{
+    IDBranch?: number;
+    IDPolInsurance?: number;
+    IDSignedBy?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    EnrollmentSignDate?: Date;
+    EnrollmentEffectiveDate?: Date;
+    EnrollmentDate?: Date;
+    ApplyType?: string;
+    Status?: string;
+    
+}
+
+export interface HRM_StaffPolInsuranceEnrollmentDetail
+{
+    IDStaffPolInsuranceEnrollment?: number;
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    InsuranceSalary?: number;
+    
+}
+
 export interface HRM_StaffPTOEnrollment
 {
     IDPolicyPTO?: number;
@@ -3511,6 +3698,163 @@ export interface HRM_StaffPhone
     Classification?: string;
     PhoneNumber?: string;
     IsBelongToCompany?: boolean;
+    
+}
+
+export interface HRM_StaffRecordOvertime
+{
+    IDPolOvertimeRate?: number;
+    IDStaff?: number;
+    IDStaffOvertimeRequest?: number;
+    Id?: number;
+    StartDate?: Date;
+    EndDate?: Date;
+    IsTransferToDayOff?: boolean;
+    CanTransferToDayOff?: boolean;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface HRM_StaffRecordPayroll
+{
+    IDTimeSheetCycle?: number;
+    IDTimesheet?: number;
+    IDShift?: number;
+    IDStaff?: number;
+    IDBranch?: number;
+    IDStaffPayroll?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Income?: number;
+    Benefit?: number;
+    SocialInsuranceCompany?: number;
+    SocialInsuranceEmployee?: number;
+    UnionFeeCompany?: number;
+    UnionFeeEmployee?: number;
+    EmployeeTax?: number;
+    OtherIncome?: number;
+    Addition?: number;
+    Deduction?: number;
+    TotalSalary?: number;
+    TakeHomePay?: number;
+    CompanyCost?: number;
+    GrossTaxableIncome?: number;
+    Tax?: number;
+    UDF0?: string;
+    UDF1?: string;
+    UDF2?: string;
+    UDF3?: string;
+    UDF4?: string;
+    UDF5?: string;
+    UDF6?: string;
+    UDF7?: string;
+    UDF8?: string;
+    UDF9?: string;
+    UDF10?: string;
+    UDF11?: string;
+    UDF12?: string;
+    UDF13?: string;
+    UDF14?: string;
+    UDF15?: string;
+    UDF16?: string;
+    UDF17?: string;
+    UDF18?: string;
+    UDF19?: string;
+    UDF20?: string;
+    UDF21?: string;
+    UDF22?: string;
+    UDF23?: string;
+    UDF24?: string;
+    UDF25?: string;
+    UDF26?: string;
+    UDF27?: string;
+    UDF28?: string;
+    UDF29?: string;
+    UDF30?: string;
+    UDF31?: string;
+    UDF32?: string;
+    UDF33?: string;
+    UDF34?: string;
+    UDF35?: string;
+    UDF36?: string;
+    UDF37?: string;
+    UDF38?: string;
+    UDF39?: string;
+    UDF40?: string;
+    UDF41?: string;
+    UDF42?: string;
+    UDF43?: string;
+    UDF44?: string;
+    UDF45?: string;
+    UDF46?: string;
+    UDF47?: string;
+    UDF48?: string;
+    UDF49?: string;
+    UDF50?: string;
+    UDF51?: string;
+    UDF52?: string;
+    UDF53?: string;
+    UDF54?: string;
+    UDF55?: string;
+    UDF56?: string;
+    UDF57?: string;
+    UDF58?: string;
+    UDF59?: string;
+    UDF60?: string;
+    UDF61?: string;
+    UDF62?: string;
+    UDF63?: string;
+    UDF64?: string;
+    UDF65?: string;
+    UDF66?: string;
+    UDF67?: string;
+    UDF68?: string;
+    UDF69?: string;
+    UDF70?: string;
+    UDF71?: string;
+    UDF72?: string;
+    UDF73?: string;
+    UDF74?: string;
+    UDF75?: string;
+    UDF76?: string;
+    UDF77?: string;
+    UDF78?: string;
+    UDF79?: string;
+    UDF80?: string;
+    UDF81?: string;
+    UDF82?: string;
+    UDF83?: string;
+    UDF84?: string;
+    UDF85?: string;
+    UDF86?: string;
+    UDF87?: string;
+    UDF88?: string;
+    UDF89?: string;
+    UDF90?: string;
+    UDF91?: string;
+    UDF92?: string;
+    UDF93?: string;
+    UDF94?: string;
+    UDF95?: string;
+    UDF96?: string;
+    UDF97?: string;
+    UDF98?: string;
+    UDF99?: string;
     
 }
 
@@ -3683,6 +4027,23 @@ export interface HRM_StaffStaffAndFamilyJob
     IDStaff?: number;
     IDFamily?: number;
     IDJob?: number;
+    
+}
+
+export interface HRM_StaffTimeOff
+{
+    IDStaff?: number;
+    Id?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Date?: Date;
+    Start?: Date;
+    End?: Date;
     
 }
 
@@ -4130,6 +4491,106 @@ export interface HRM_TimesheetRecord
     Deduction?: number;
     Addition?: number;
     Point?: number;
+    UDF0?: string;
+    UDF1?: string;
+    UDF2?: string;
+    UDF3?: string;
+    UDF4?: string;
+    UDF5?: string;
+    UDF6?: string;
+    UDF7?: string;
+    UDF8?: string;
+    UDF9?: string;
+    UDF10?: string;
+    UDF11?: string;
+    UDF12?: string;
+    UDF13?: string;
+    UDF14?: string;
+    UDF15?: string;
+    UDF16?: string;
+    UDF17?: string;
+    UDF18?: string;
+    UDF19?: string;
+    UDF20?: string;
+    UDF21?: string;
+    UDF22?: string;
+    UDF23?: string;
+    UDF24?: string;
+    UDF25?: string;
+    UDF26?: string;
+    UDF27?: string;
+    UDF28?: string;
+    UDF29?: string;
+    UDF30?: string;
+    UDF31?: string;
+    UDF32?: string;
+    UDF33?: string;
+    UDF34?: string;
+    UDF35?: string;
+    UDF36?: string;
+    UDF37?: string;
+    UDF38?: string;
+    UDF39?: string;
+    UDF40?: string;
+    UDF41?: string;
+    UDF42?: string;
+    UDF43?: string;
+    UDF44?: string;
+    UDF45?: string;
+    UDF46?: string;
+    UDF47?: string;
+    UDF48?: string;
+    UDF49?: string;
+    UDF50?: string;
+    UDF51?: string;
+    UDF52?: string;
+    UDF53?: string;
+    UDF54?: string;
+    UDF55?: string;
+    UDF56?: string;
+    UDF57?: string;
+    UDF58?: string;
+    UDF59?: string;
+    UDF60?: string;
+    UDF61?: string;
+    UDF62?: string;
+    UDF63?: string;
+    UDF64?: string;
+    UDF65?: string;
+    UDF66?: string;
+    UDF67?: string;
+    UDF68?: string;
+    UDF69?: string;
+    UDF70?: string;
+    UDF71?: string;
+    UDF72?: string;
+    UDF73?: string;
+    UDF74?: string;
+    UDF75?: string;
+    UDF76?: string;
+    UDF77?: string;
+    UDF78?: string;
+    UDF79?: string;
+    UDF80?: string;
+    UDF81?: string;
+    UDF82?: string;
+    UDF83?: string;
+    UDF84?: string;
+    UDF85?: string;
+    UDF86?: string;
+    UDF87?: string;
+    UDF88?: string;
+    UDF89?: string;
+    UDF90?: string;
+    UDF91?: string;
+    UDF92?: string;
+    UDF93?: string;
+    UDF94?: string;
+    UDF95?: string;
+    UDF96?: string;
+    UDF97?: string;
+    UDF98?: string;
+    UDF99?: string;
     
 }
 
@@ -4151,6 +4612,7 @@ export interface HRM_UDF
     DataType?: string;
     ControlType?: string;
     UDF?: string;
+    DefaultValue?: string;
     
 }
 
@@ -5582,7 +6044,7 @@ export interface SALE_Forecast
     Remark?: string;
     StartDate?: Date;
     EndDate?: Date;
-    Period?: string;
+    Type?: string;
     LastExecuteDate?: Date;
     Sort?: number;
     IsDisabled?: boolean;
@@ -5594,6 +6056,8 @@ export interface SALE_Forecast
     Multiply?: number;
     Filter?: string;
     Config?: string;
+    NumberOfNextPeriod?: number;
+    NumberOfPrePeriod?: number;
     
 }
 

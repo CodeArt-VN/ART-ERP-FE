@@ -110,8 +110,9 @@ export class InputControlComponent implements OnInit {
 
 	imgPath = environment.staffAvatarsServer;
 
-	constructor(public monacoProvider: MonacoEditorLoaderService,
-		public modalController: ModalController,
+	constructor(
+		public monacoProvider: MonacoEditorLoaderService,
+		public modalController: ModalController
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -149,7 +150,7 @@ export class InputControlComponent implements OnInit {
 			this.disposableCompletionItemProvider.dispose();
 		}
 
-		this.disposableCompletionItemProvider = monaco.languages.registerCompletionItemProvider('markdown', {
+		this.disposableCompletionItemProvider = monaco.languages.registerCompletionItemProvider('sql', {
 			triggerCharacters: ['/'],
 			provideCompletionItems: (model, position) => {
 				const textUntilPosition = model.getValueInRange({
@@ -174,9 +175,9 @@ export class InputControlComponent implements OnInit {
 						return {
 							label: `/${item.Name}`,
 							kind: monaco.languages.CompletionItemKind.Snippet,
-							insertText: `[${item.Code}]`,
+							insertText: `${item.Code}`,
 							detail: item.Name,
-							documentation: `Chèn mã: ${item.Code}`,
+						//	documentation: `Chèn mã: ${item.Code}`,
 							range: {
 								startLineNumber: startPosition.lineNumber,
 								startColumn: startPosition.column,
@@ -194,7 +195,7 @@ export class InputControlComponent implements OnInit {
 		if (container) {
 			const editor = monaco.editor.create(container, {
 				value: this.form.get(this.id).value,
-				language: 'markdown',
+				language: 'sql',
 				theme: 'vs', // theme sáng (vs-dark là tối)
 				lineNumbersMinChars: 1,
 				fontFamily: 'JetBrains Mono, monospace',
@@ -204,13 +205,46 @@ export class InputControlComponent implements OnInit {
 			});
 			let latestContent = '';
 
-			editor.onDidChangeModelContent(() => {
-				// chỉ lưu tạm nội dung
-				latestContent = editor.getValue();
-				this.form.get(this.id)?.setValue(latestContent);
+			editor.onDidChangeModelContent((e) => {
+				const content = editor.getValue();
+			  
+				if (e.changes.length === 1) {
+				  const change = e.changes[0];
+				  
+				  // Nếu là xóa 1 ký tự (và ký tự đó là ])
+				  if (change.text === '' && change.rangeLength === 1) {
+					const deletedChar = latestContent.substring(
+					  editor.getModel().getOffsetAt(change.range.getStartPosition()) - 1,
+					  editor.getModel().getOffsetAt(change.range.getStartPosition())
+					);
+			  
+					if (deletedChar === ']') {
+					  const startOffset = editor.getModel().getOffsetAt(change.range.getStartPosition());
+					  const contentBefore = latestContent.substring(0, startOffset - 1);
+			  
+					  const openBracketPos = contentBefore.lastIndexOf('[');
+					  if (openBracketPos !== -1) {
+						// Xóa từ [ đến vị trí sau dấu ]
+						const contentAfter = latestContent.substring(editor.getModel().getOffsetAt(change.range.getEndPosition()));
+			  
+						const newContent = contentBefore.substring(0, openBracketPos) + contentAfter;
+			  
+						editor.setValue(newContent);
+			  
+						this.form.get(this.id)?.setValue(newContent);
+						this.form.get(this.id)?.markAsDirty();
+						latestContent = newContent;
+			  
+						return;
+					  }
+					}
+				  }
+				}
+			  
+				latestContent = content;
+				this.form.get(this.id)?.setValue(content);
 				this.form.get(this.id)?.markAsDirty();
-			});
-
+			  });
 			// // Khi người dùng rời editor thì mới emit
 			// editor.onDidBlurEditorWidget(() => {
 			//   this.change.emit(latestContent);
@@ -228,7 +262,6 @@ export class InputControlComponent implements OnInit {
 		// });
 		// await modal.present();
 		// const { data } = await modal.onWillDismiss();
-		
 	}
 	saveContent() {
 		const monaco = (window as any).monaco;

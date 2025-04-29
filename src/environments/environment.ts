@@ -8,7 +8,7 @@ export let environment = {
 	//appDomain: 'https://demo.inholdings.vn/',
 	//appDomain: 'https://beta.inholdings.vn/',
 	//appDomain: 'https://artlogistics.vn/',
-	appDomain: "http://10.211.55.3:54009/",
+	appDomain: "http://localhost:54009/",
 	//appDomain: 'http://art.appcenter.vn:54009/',
 	appServers: [
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },

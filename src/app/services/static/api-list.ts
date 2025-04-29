@@ -4261,6 +4261,55 @@ export var APIListBase = {
 		
 	},
 
+	HRM_ContractTemplate:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/ContractTemplate/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/ContractTemplate"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/ContractTemplate/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/ContractTemplate/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/ContractTemplate/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/ContractTemplate/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/ContractTemplate/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/ContractTemplate/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/ContractTemplate"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/ContractTemplate/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/ContractTemplate/" + id} 
+        }
+		
+	},
+
 	HRM_DataDictionary:{
         getSearchList:{
             method: "GET",
@@ -4404,55 +4453,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/OpenSchedule/" + id} 
-        }
-		
-	},
-
-	HRM_OvertimePolicy:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/OvertimePolicy/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/OvertimePolicy"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/OvertimePolicy/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/OvertimePolicy/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/OvertimePolicy/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/OvertimePolicy/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/OvertimePolicy/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/OvertimePolicy/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/OvertimePolicy"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/OvertimePolicy/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/OvertimePolicy/" + id} 
         }
 		
 	},
@@ -4751,198 +4751,149 @@ export var APIListBase = {
 		
 	},
 
-	HRM_PolAllowance:{
+	HRM_PolBenefit:{
         getSearchList:{
             method: "GET",
-            url: function(){return "HRM/PolAllowance/Search"}  
+            url: function(){return "HRM/PolBenefit/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "HRM/PolAllowance"}  
+            url: function(){return "HRM/PolBenefit"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "HRM/PolAllowance/Export"}  
+            url: function(){return "HRM/PolBenefit/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "HRM/PolAllowance/Import"}  
+            url: function(){return "HRM/PolBenefit/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "HRM/PolAllowance/" + id} 
+            url: function(id){return "HRM/PolBenefit/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowance/" + id} 
+            url: function(id){return "HRM/PolBenefit/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowance/Disable/" + id} 
+            url: function(id){return "HRM/PolBenefit/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowance/Enable/" + id} 
+            url: function(id){return "HRM/PolBenefit/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "HRM/PolAllowance"}
+            url: function(){return "HRM/PolBenefit"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "HRM/PolAllowance/ChangeBranch"} 
+            url: function(){return "HRM/PolBenefit/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "HRM/PolAllowance/" + id} 
+            url: function(id){return "HRM/PolBenefit/" + id} 
         }
 		
 	},
 
-	HRM_PolAllowanceApplyFor:{
+	HRM_PolBenefitDetail:{
         getSearchList:{
             method: "GET",
-            url: function(){return "HRM/PolAllowanceApplyFor/Search"}  
+            url: function(){return "HRM/PolBenefitDetail/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "HRM/PolAllowanceApplyFor"}  
+            url: function(){return "HRM/PolBenefitDetail"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "HRM/PolAllowanceApplyFor/Export"}  
+            url: function(){return "HRM/PolBenefitDetail/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "HRM/PolAllowanceApplyFor/Import"}  
+            url: function(){return "HRM/PolBenefitDetail/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
+            url: function(id){return "HRM/PolBenefitDetail/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
+            url: function(id){return "HRM/PolBenefitDetail/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowanceApplyFor/Disable/" + id} 
+            url: function(id){return "HRM/PolBenefitDetail/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolAllowanceApplyFor/Enable/" + id} 
+            url: function(id){return "HRM/PolBenefitDetail/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "HRM/PolAllowanceApplyFor"}
+            url: function(){return "HRM/PolBenefitDetail"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "HRM/PolAllowanceApplyFor/ChangeBranch"} 
+            url: function(){return "HRM/PolBenefitDetail/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "HRM/PolAllowanceApplyFor/" + id} 
+            url: function(id){return "HRM/PolBenefitDetail/" + id} 
         }
 		
 	},
 
-	HRM_PolCompulsoryInsurance:{
+	HRM_PolEmployee:{
         getSearchList:{
             method: "GET",
-            url: function(){return "HRM/PolCompulsoryInsurance/Search"}  
+            url: function(){return "HRM/PolEmployee/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "HRM/PolCompulsoryInsurance"}  
+            url: function(){return "HRM/PolEmployee"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "HRM/PolCompulsoryInsurance/Export"}  
+            url: function(){return "HRM/PolEmployee/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "HRM/PolCompulsoryInsurance/Import"}  
+            url: function(){return "HRM/PolEmployee/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
+            url: function(id){return "HRM/PolEmployee/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
+            url: function(id){return "HRM/PolEmployee/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsurance/Disable/" + id} 
+            url: function(id){return "HRM/PolEmployee/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsurance/Enable/" + id} 
+            url: function(id){return "HRM/PolEmployee/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "HRM/PolCompulsoryInsurance"}
+            url: function(){return "HRM/PolEmployee"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "HRM/PolCompulsoryInsurance/ChangeBranch"} 
+            url: function(){return "HRM/PolEmployee/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "HRM/PolCompulsoryInsurance/" + id} 
-        }
-		
-	},
-
-	HRM_PolCompulsoryInsuranceApplyFor:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/PolCompulsoryInsuranceApplyFor/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/PolCompulsoryInsuranceApplyFor/" + id} 
+            url: function(id){return "HRM/PolEmployee/" + id} 
         }
 		
 	},
@@ -5094,6 +5045,251 @@ export var APIListBase = {
 		
 	},
 
+	HRM_PolInsurance:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolInsurance/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolInsurance"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolInsurance/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolInsurance/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolInsurance/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsurance/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsurance/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsurance/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolInsurance"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolInsurance/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolInsurance/" + id} 
+        }
+		
+	},
+
+	HRM_PolInsuranceDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolInsuranceDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolInsuranceDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolInsuranceDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolInsuranceDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolInsuranceDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsuranceDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsuranceDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolInsuranceDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolInsuranceDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolInsuranceDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolInsuranceDetail/" + id} 
+        }
+		
+	},
+
+	HRM_PolOvertime:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolOvertime/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolOvertime"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolOvertime/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolOvertime/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolOvertime/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertime/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertime/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertime/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolOvertime"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolOvertime/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolOvertime/" + id} 
+        }
+		
+	},
+
+	HRM_PolOvertimeRate:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolOvertimeRate/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolOvertimeRate"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolOvertimeRate/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolOvertimeRate/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolOvertimeRate/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertimeRate/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertimeRate/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOvertimeRate/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolOvertimeRate"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolOvertimeRate/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolOvertimeRate/" + id} 
+        }
+		
+	},
+
+	HRM_PolOverTimeRateApplyForBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/PolOverTimeRateApplyForBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOverTimeRateApplyForBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOverTimeRateApplyForBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/PolOverTimeRateApplyForBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/PolOverTimeRateApplyForBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/PolOverTimeRateApplyForBranch/" + id} 
+        }
+		
+	},
+
 	HRM_PolSalary:{
         getSearchList:{
             method: "GET",
@@ -5188,153 +5384,6 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/PolTax/" + id} 
-        }
-		
-	},
-
-	HRM_PolWelfare:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfare/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfare"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/PolWelfare/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/PolWelfare/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/PolWelfare/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfare/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfare/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfare/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfare"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfare/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/PolWelfare/" + id} 
-        }
-		
-	},
-
-	HRM_PolWelfareApplyFor:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfareApplyFor/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfareApplyFor"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/PolWelfareApplyFor/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/PolWelfareApplyFor/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareApplyFor/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareApplyFor/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfareApplyFor"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfareApplyFor/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/PolWelfareApplyFor/" + id} 
-        }
-		
-	},
-
-	HRM_PolWelfareDetail:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfareDetail/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/PolWelfareDetail"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/PolWelfareDetail/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/PolWelfareDetail/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/PolWelfareDetail/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareDetail/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareDetail/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/PolWelfareDetail/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfareDetail"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/PolWelfareDetail/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/PolWelfareDetail/" + id} 
         }
 		
 	},
@@ -5780,55 +5829,6 @@ export var APIListBase = {
 		
 	},
 
-	HRM_StaffAppointDecision:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "HRM/StaffAppointDecision/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "HRM/StaffAppointDecision"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "HRM/StaffAppointDecision/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "HRM/StaffAppointDecision/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "HRM/StaffAppointDecision/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "HRM/StaffAppointDecision/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/StaffAppointDecision/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "HRM/StaffAppointDecision/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "HRM/StaffAppointDecision"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "HRM/StaffAppointDecision/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "HRM/StaffAppointDecision/" + id} 
-        }
-		
-	},
-
 	HRM_StaffBank:{
         getSearchList:{
             method: "GET",
@@ -6119,6 +6119,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffConcurrentProbationryPosition/" + id} 
+        }
+		
+	},
+
+	HRM_StaffContract:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffContract/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffContract"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffContract/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffContract/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffContract/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffContract/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffContract/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffContract/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffContract"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffContract/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffContract/" + id} 
         }
 		
 	},
@@ -6564,6 +6613,398 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffOvertimeRequest:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffOvertimeRequest/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffOvertimeRequest"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffOvertimeRequest/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffOvertimeRequest/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffOvertimeRequest/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffOvertimeRequest/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffOvertimeRequest/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffOvertimeRequest/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffOvertimeRequest"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffOvertimeRequest/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffOvertimeRequest/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPayroll:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPayroll/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPayroll"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPayroll/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPayroll/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPayroll/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPayroll/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPayroll/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPayroll/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPayroll"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPayroll/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPayroll/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolBenefitEnrollment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolBenefitEnrollment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolBenefitEnrollment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolBenefitEnrollment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolBenefitEnrollment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolBenefitEnrollment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolBenefitEnrollment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolBenefitEnrollment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolBenefitEnrollment/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolBenefitEnrollmentDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolBenefitEnrollmentDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollmentDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollmentDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolBenefitEnrollmentDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolBenefitEnrollmentDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolBenefitEnrollmentDetail/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolEmployeeDecision:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolEmployeeDecision/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolEmployeeDecision"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolEmployeeDecision/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolEmployeeDecision/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolEmployeeDecision/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecision/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecision/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecision/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolEmployeeDecision"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolEmployeeDecision/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolEmployeeDecision/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolEmployeeDecisionDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolEmployeeDecisionDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecisionDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecisionDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolEmployeeDecisionDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolEmployeeDecisionDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolEmployeeDecisionDetail/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolInsuranceEnrollment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolInsuranceEnrollment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollment/" + id} 
+        }
+		
+	},
+
+	HRM_StaffPolInsuranceEnrollmentDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollmentDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollmentDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollmentDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollmentDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffPolInsuranceEnrollmentDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffPolInsuranceEnrollmentDetail/" + id} 
+        }
+		
+	},
+
 	HRM_StaffPTOEnrollment:{
         getSearchList:{
             method: "GET",
@@ -6658,6 +7099,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffPhone/" + id} 
+        }
+		
+	},
+
+	HRM_StaffRecordOvertime:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffRecordOvertime/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffRecordOvertime"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffRecordOvertime/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffRecordOvertime/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffRecordOvertime/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordOvertime/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordOvertime/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordOvertime/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffRecordOvertime"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffRecordOvertime/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffRecordOvertime/" + id} 
+        }
+		
+	},
+
+	HRM_StaffRecordPayroll:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffRecordPayroll/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffRecordPayroll"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffRecordPayroll/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffRecordPayroll/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffRecordPayroll/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordPayroll/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordPayroll/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffRecordPayroll/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffRecordPayroll"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffRecordPayroll/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffRecordPayroll/" + id} 
         }
 		
 	},
@@ -7001,6 +7540,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffStaffAndFamilyJob/" + id} 
+        }
+		
+	},
+
+	HRM_StaffTimeOff:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOff/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOff"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffTimeOff/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffTimeOff/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffTimeOff/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOff/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOff/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOff/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOff"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOff/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffTimeOff/" + id} 
         }
 		
 	},
