@@ -125,6 +125,7 @@ export class FilterComponent implements OnInit {
 			return;
 		}
 		var i = this.form.getRawValue();
+		delete i.UniqueId;
 		if (i.Dimension != 'logical') {
 			i = {
 				Dimension: 'logical',
@@ -145,6 +146,7 @@ export class FilterComponent implements OnInit {
 			return;
 		}
 		var i = this.form.getRawValue();
+		delete i.UniqueId;
 		if (i.Dimension != 'logical') {
 			i = {
 				Dimension: 'logical',

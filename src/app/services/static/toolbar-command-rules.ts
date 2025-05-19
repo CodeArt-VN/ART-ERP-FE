@@ -183,6 +183,14 @@ export var toolbarCommandRules = {
 		['Approved', null, null, null, null, null, null,null],
 	],
 
+	HRM_StaffOvertimRequest: [
+		['Btns', 'ChangeBranch', 'Submit', 'Disapprove', 'Approve', 'Cancel', 'Delete', 'Archive'],
+		['Draft', 'x', 'x', null, 'x', null, 'x', 'x'],
+		['Submitted', null, null, 'x', 'x', null, null,null],
+		['Unapproved', 'x', 'x', null, null,  'x', 'x', 'x' ],
+		['Approved', null, null, null, null, null, null,null],
+	],
+
 	_PURCHASE_Request: [
 		{ Status: 'Draft', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Mới
 		{ Status: 'Unapproved', ShowBtns: ['ShowChangeBranch', 'ShowSubmit', 'ShowApprove', 'ShowCancel', 'ShowDelete', 'ShowArchive'] }, // Không duyệt
