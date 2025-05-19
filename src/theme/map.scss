@@ -1,0 +1,32 @@
+.gm-style-iw-chr {
+    position: absolute;
+	z-index: 1;
+    right: 0px;
+    top: 0px;
+    //background: red;
+    //border-radius: 50%;
+	> button > span {
+		background-color: var(--ion-text-color, #000);
+	}
+}
+
+
+.gm-style-iw.gm-style-iw-c {
+    padding: 0;
+}
+
+.gm-style-iw-d {
+    overflow: hidden !important;
+}
+
+map-info-window {
+    display: block;
+    overflow: hidden;
+}
+.gm-style img {
+    max-width: 100%;
+}
+.gm-style .gm-style-iw-tc::after{
+	background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+}
+
