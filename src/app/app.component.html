@@ -114,6 +114,7 @@
 						<ng-container *ngFor="let f of env.user.Forms">
 							<div class="menu-item menu-module clickable" (click)="toogleMenuGroup(f)" *ngIf="f.Type == 10 && f.Code != 'NoGroup' && countForm >= 7">
 								<span class="menu-title">{{ f.Name | translate }}</span>
+								<!-- module -->
 								<ion-text class="menu-icon badge" [color]="f.BadgeColor" *ngIf="!f.isShowDetail && f.BadgeNum">{{ f.BadgeNum }}</ion-text>
 								<ion-icon *ngIf="countForm >= 7" class="menu-icon pin" [name]="f.isShowDetail ? 'chevron-down-outline' : 'chevron-forward-outline'"></ion-icon>
 							</div>
@@ -191,10 +192,10 @@
 										<p>{{ env.user.UserName }}</p>
 									</ion-label>
 								</ion-item>
-								<ion-item lines="full" button detail="false">
+								<ion-item lines="full" button detail="true" [routerLink]="['/notifications']">
 									<ion-icon color="warning" name="notifications" slot="start"></ion-icon>
 									<ion-label>{{ 'Notifications' | translate }}</ion-label>
-									<!-- <ion-badge color="danger" slot="end">22</ion-badge> -->
+									<ion-badge color="danger" slot="end">{{totalNotifications}}</ion-badge>
 								</ion-item>
 
 								<ion-item button [routerLink]="['/profile']">

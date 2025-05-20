@@ -11,6 +11,7 @@ import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
 import { FormBuilder } from '@angular/forms';
+import { OSM_NotificationService } from './services/notifications.service';
 
 register();
 let ga: any;
@@ -59,7 +60,8 @@ export class AppComponent implements OnInit {
 		public env: EnvService,
 		public accountService: AccountService,
 		public platform: Platform,
-		public formBuilder: FormBuilder
+		public formBuilder: FormBuilder,
+		public notificationService: OSM_NotificationService
 	) {
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
@@ -120,9 +122,14 @@ export class AppComponent implements OnInit {
 						this.branchList = lib.cloneObject(this.env.branchList);
 						this.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
 						this.loadPinnedMenu();
+						this.loadNotifications();
 						this.updateStatusbar();
 					}
 					break;
+				case 'app:notification':
+					this.loadNotifications();
+					break;
+
 				case 'app:loadLang':
 					this.env.getStorage('lang').then((lang) => {
 						if (lang) {
@@ -173,6 +180,7 @@ export class AppComponent implements OnInit {
 	}
 
 	pinnedForms = [];
+	totalNotifications = 0;
 	loadPinnedMenu() {
 		let pinned = this.env.user.UserSetting.PinnedForms.Value;
 		if (pinned) {
@@ -197,6 +205,7 @@ export class AppComponent implements OnInit {
 			}
 			this.env.setStorage('UserProfile', this.env.user);
 			this.loadPinnedMenu();
+			this.loadNotifications();
 		});
 	}
 
@@ -260,7 +269,32 @@ export class AppComponent implements OnInit {
 		// if (path !== undefined) {
 		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
 		// }
-		//this.initNotification();
+	}
+
+	loadNotifications() {
+		let total = 0;
+		this.notificationService.getNotificationCount(null).then((res: any) => {
+			this.env.user.Forms.filter((f) => f.Type === 1).forEach((form1) => {
+				form1.BadgeNum = res.find((s) => s.Form.toLowerCase() == form1.Code)?.Count || 0;
+			});
+			this.env.user.Forms.filter((f) => f.Type === 11).forEach((form11) => {
+				const children1 = this.env.user.Forms.filter((f) => f.Type === 1 && f.IDParent === form11.Id);
+				form11.BadgeNum = children1.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+			});
+
+			this.env.user.Forms.filter((f) => f.Type === 10).forEach((form10) => {
+				const children11 = this.env.user.Forms.filter((f) => f.Type === 11 && f.IDParent === form10.Id);
+				const sumFrom11 = children11.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+
+				// Sum trực tiếp từ Type 1 nếu không có Type 11
+				const directChildren1 = this.env.user.Forms.filter((f) => f.Type === 1 && f.IDParent === form10.Id);
+				const sumFrom1 = directChildren1.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+
+				form10.BadgeNum = sumFrom11 + sumFrom1;
+				total += form10.BadgeNum || 0;
+			});
+			this.totalNotifications = total;
+		});
 	}
 
 	initializeApp() {

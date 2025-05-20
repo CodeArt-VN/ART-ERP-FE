@@ -34,7 +34,8 @@ export class ReportConfigComponent implements OnInit {
 	_timePeriodList: any[] = [];
 	_intervalDataSource: any[] = [];
 	_measureMethodDataSource: any[] = [];
-	_IDSchemaDataSource: any = {
+	_IDSchemaDataSource: any = 
+	{
 		searchProvider: this.schemaService,
 		loading: false,
 		input$: new Subject<string>(),

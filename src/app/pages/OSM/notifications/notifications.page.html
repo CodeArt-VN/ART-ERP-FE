@@ -1,0 +1,9 @@
+<ion-header>
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme forceOverscroll="false">
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+	<div class="safe-max-width">
+		<app-notifications-modal #notificationComponent [autoLoad]="false"></app-notifications-modal>
+	</div>
+</ion-content>
