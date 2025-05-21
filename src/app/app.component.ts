@@ -11,6 +11,8 @@ import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
 import { FormBuilder } from '@angular/forms';
+import { getMessaging, getToken } from 'firebase/messaging';
+import { initializeApp } from 'firebase/app';
 import { OSM_NotificationService } from './services/notifications.service';
 
 register();
@@ -303,22 +305,7 @@ export class AppComponent implements OnInit {
 			this.updateStatusbar();
 		});
 	}
-	async initNotification() {
-		if (Capacitor.getPlatform() != 'web') {
-			let permStatus = await PushNotifications.checkPermissions();
-			if (permStatus.receive === 'prompt') {
-				permStatus = await PushNotifications.requestPermissions();
-			}
-			await PushNotifications.register();
-			await PushNotifications.addListener('registration', (token: Token) => {
-				this.env.setStorage('NotifyToken', token.value);
-			});
-			PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-				let navigateByUrl = notification.notification.data.navigateByUrl;
-				this.router.navigateByUrl(navigateByUrl);
-			});
-		}
-	}
+
 
 	toogleMenu() {
 		this.showAppMenu = !this.showAppMenu;

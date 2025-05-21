@@ -13,6 +13,8 @@ import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { environment } from 'src/environments/environment';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 declare var window: any;
 
 @Injectable({
@@ -371,7 +373,7 @@ export class AccountService {
 		// });
 	}
 
-	login(username, password) {
+	async login(username, password) {
 		// let notifiToken = null;
 		// if(Capacitor.getPlatform() !== 'web'){
 		// 	PushNotifications.register();
@@ -379,6 +381,7 @@ export class AccountService {
 		// 		notifiToken = token.value;
 		// 	});
 		// }
+	
 		var that = this;
 		return new Promise(async function (resolve, reject) {
 			let deviceInfo: any = null;
@@ -393,7 +396,6 @@ export class AccountService {
 					}
 				});
 				deviceInfo = {
-					Id: 0,
 					Code: UID.identifier,
 					Name: info.name,
 					Model: info.model,
@@ -404,6 +406,7 @@ export class AccountService {
 					IsVirtual: info.isVirtual,
 					WebViewVersion: info.webViewVersion,
 					NotifyToken: NotifyToken,
+					IDUser : null
 				};
 			}
 
@@ -422,8 +425,33 @@ export class AccountService {
 				)
 				.subscribe((data) => {
 					if (data) {
-						that.setToken(data).then((_) => {
+
+						that.setToken(data).then(async (_) => {
+							await that.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch((err) => {
+									reject(err);
+								});
+							
 							if (deviceInfo) {
+								deviceInfo.IDUser = that.env.user.Id;
+								let platform = Capacitor.getPlatform();
+								if (['mobile', 'tablet','ios','android'].includes(platform)) {
+									await PushNotifications.register();
+									
+									// Get FCM token (Android/iOS will return the platform token - for Android this is FCM token)
+									PushNotifications.addListener('registration', (token: Token) => {
+										console.log('FCM Token:', token.value);
+										// Save it to server or local storage
+										this.env.setStorage('NotifyToken', token.value);
+										
+									});
+								}
+								else if(platform == 'web'){
+									
+								}
 								that.userDeviceProvider.save(deviceInfo).then((info) => {
 									if (!info) {
 										that.env.deviceInfo = null;
@@ -434,13 +462,7 @@ export class AccountService {
 									}
 								});
 							}
-							that.loadSavedData(true)
-								.then(() => {
-									resolve(true);
-								})
-								.catch((err) => {
-									reject(err);
-								});
+							
 						});
 					} else {
 						reject('Can not login!');
