@@ -347,6 +347,94 @@ APIList.CRM_Contact.disapprove = {
 	},
 };
 
+APIList.HRM_StaffPolEmployeeDecision.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Approve';
+	},
+};
+
+APIList.HRM_StaffPolEmployeeDecision.submit = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Submit';
+	},
+};
+
+APIList.HRM_StaffPolEmployeeDecision.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/Disapprove';
+	},
+};
+APIList.HRM_StaffPolEmployeeDecision.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolEmployeeDecision/cancel';
+	},
+};
+
+APIList.HRM_StaffPolBenefitEnrollment.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolBenefitEnrollment/Approve';
+	},
+};
+
+APIList.HRM_StaffPolBenefitEnrollment.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPolBenefitEnrollment/Disapprove';
+	},
+};
+
+
+APIList.HRM_StaffContract.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffContract/Approve';
+	},
+};
+
+APIList.HRM_StaffContract.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffContract/Disapprove';
+	},
+};
+
+
+
+APIList.HRM_StaffOvertimeRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffOvertimeRequest/Submit';
+	},
+};
+
+APIList.HRM_StaffOvertimeRequest.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffOvertimeRequest/Cancel';
+	},
+};
+
+APIList.HRM_StaffOvertimeRequest.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffOvertimeRequest/Approve';
+	},
+};
+
+APIList.HRM_StaffOvertimeRequest.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffOvertimeRequest/Disapprove';
+	},
+};
+
+
+
 export var GlobalData: any = {
 	Filter: {
 		FromDate: new Date().setDate(1),
