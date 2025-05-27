@@ -489,6 +489,27 @@ export interface APPROVAL_Comment
     
 }
 
+export interface APPROVAL_Notification
+{
+    IDApprovalTemplate?: number;
+    IDTemplate?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Subject?: string;
+    Body?: string;
+    Channel?: string;
+    
+}
+
 export interface APPROVAL_Request
 {
     IDBranch?: number;
@@ -4964,6 +4985,7 @@ export interface OSM_Notification
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    Channel?: string;
     Title?: string;
     SubTitle?: string;
     Body?: string;
@@ -4974,6 +4996,7 @@ export interface OSM_Notification
     Link?: string;
     ClickAction?: string;
     Group?: string;
+    Form?: string;
     
 }
 
@@ -5018,23 +5041,6 @@ export interface OSM_NotificationReceiverDevice
     
 }
 
-export interface OSM_Segment
-{
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Config?: string;
-    
-}
-
 export interface OSM_Template
 {
     IDBranch?: number;
@@ -5053,25 +5059,6 @@ export interface OSM_Template
     ModifiedDate?: Date;
     Subject?: string;
     Body?: string;
-    
-}
-
-export interface OSM_UserDevice
-{
-    IDUserSubcription?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    Token?: string;
-    Platform?: string;
     
 }
 
@@ -7346,6 +7333,25 @@ export interface SYS_SchemaDetail
     
 }
 
+export interface SYS_Segment
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    Type?: string;
+    Config?: string;
+    ValueProperty?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface SYS_Status
 {
     IDParent?: number;
@@ -7541,6 +7547,7 @@ export interface SYS_Type
 export interface SYS_UserDevice
 {
     IDStaff?: number;
+    IDUserSupcription?: number;
     Id?: number;
     Code?: string;
     Name?: string;
