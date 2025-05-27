@@ -3,7 +3,7 @@ import { NavController, LoadingController, AlertController } from '@ionic/angula
 import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
-import { OSM_SegmentProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
+import { SYS_SegmentProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
 import { ReportDataConfig } from 'src/app/models/options-interface';
@@ -25,7 +25,7 @@ export class NotificationSegmentDetailPage extends PageBase {
 	_intervalDataSource: any[] = [];
 	_measureMethodDataSource: any[] = [];
 	constructor(
-		public pageProvider: OSM_SegmentProvider,
+		public pageProvider: SYS_SegmentProvider,
 		public schemaService: SYS_SchemaProvider,
 		public env: EnvService,
 		public navCtrl: NavController,
