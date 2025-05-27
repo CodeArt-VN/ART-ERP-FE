@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
-import { BRA_BranchProvider, OSM_SegmentProvider, SYS_ActionProvider, SYS_IntegrationProviderProvider } from 'src/app/services/static/services.service';
+import { BRA_BranchProvider, SYS_SegmentProvider, SYS_ActionProvider, SYS_IntegrationProviderProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
 import { SortConfig } from 'src/app/models/options-interface';
 
@@ -14,7 +14,7 @@ import { SortConfig } from 'src/app/models/options-interface';
 })
 export class NotificationSegmentPage extends PageBase {
 	constructor(
-		public pageProvider: OSM_SegmentProvider,
+		public pageProvider: SYS_SegmentProvider,
 		public providerService: SYS_IntegrationProviderProvider,
 		public branchProvider: BRA_BranchProvider,
 		public modalController: ModalController,
