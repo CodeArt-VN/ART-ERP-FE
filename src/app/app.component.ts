@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
@@ -11,7 +12,7 @@ import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
 import { FormBuilder } from '@angular/forms';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
 import { OSM_NotificationService } from './services/notifications.service';
 
@@ -63,7 +64,8 @@ export class AppComponent implements OnInit {
 		public accountService: AccountService,
 		public platform: Platform,
 		public formBuilder: FormBuilder,
-		public notificationService: OSM_NotificationService
+		public notificationService: OSM_NotificationService,
+		private toastController: ToastController
 	) {
 		this.appVersion = 'v' + this.env.version;
 		let imgs = [
@@ -266,7 +268,7 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
-
+		this.initNotification();
 		// const path = window.location.pathname.split('folder/')[1];
 		// if (path !== undefined) {
 		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
@@ -299,14 +301,141 @@ export class AppComponent implements OnInit {
 		});
 	}
 
+	async initNotification() {
+		if (Capacitor.getPlatform() != 'web') {
+			console.log('app');
+			PushNotifications.requestPermissions().then((result) => {
+				if (result.receive === 'granted') {
+					PushNotifications.register();
+					console.log('register');
+				} else {
+					console.log('No permission for push notifications');
+				}
+			});
+			PushNotifications.addListener('registrationError', (err) => {
+				console.error('Registration error: ', err.error);
+			});
+			// Get FCM Token
+			PushNotifications.addListener('registration', (token: Token) => {
+				console.log('FCM Token:', token.value);
+				// Gửi token này lên backend ASP.NET Core để lưu trữ
+			});
+
+			// Handle notifications received
+			PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
+				console.log('Notification received:', notification);
+				alert(`Notification: ${notification.title} - ${notification.body}`);
+			});
+
+			// Handle notifications when user taps
+			PushNotifications.addListener('pushNotificationActionPerformed', (action: any) => {
+				console.log('Notification tapped:', action.notification);
+			});
+
+			// console.log('app');
+			// await PushNotifications.addListener('registration', (token: Token) => {
+			// 	this.env.NotifyToken = token;
+			// 	console.log('token:', token);
+			// 	this.env.setStorage('NotifyToken', token.value);
+			// });
+			// let permStatus = await PushNotifications.checkPermissions();
+			// console.log('permStatus.receive:', permStatus.receive);
+
+			// if (permStatus.receive === 'prompt') {
+			// 	permStatus = await PushNotifications.requestPermissions();
+			// 	console.log('permStatus:', permStatus);
+			// }
+			// await PushNotifications.register();
+			// console.log('registerted');
+
+			// console.log('token:', this.env.NotifyToken);
+			// await PushNotifications.addListener('registrationError', (err) => {
+			// 	console.error('Registration error: ', err.error);
+			// });
+
+			// await PushNotifications.addListener('pushNotificationReceived', (notification) => {
+			// 	console.log('Push notification received: ', notification);
+			// });
+
+			// await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+			// 	console.log('Push notification action performed', notification.actionId, notification.inputValue);
+			// });
+			// PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+			// 	let navigateByUrl = notification.notification.data.navigateByUrl;
+			// 	this.router.navigateByUrl(navigateByUrl);
+			// });
+		} else if ('serviceWorker' in navigator) {
+			try {
+				const permission = await Notification.requestPermission();
+				if (permission === 'granted') {
+					console.log('Quyền thông báo đã được cấp.');
+					// Tiếp tục các bước lấy token hoặc xử lý khác
+				} else if (permission === 'denied') {
+					console.log('Người dùng đã từ chối quyền thông báo.');
+				} else {
+					console.log('Quyền thông báo chưa được cấp hoặc đã bị hỏi lại.');
+				}
+				const registration = await navigator.serviceWorker.register('/assets/firebase-messaging-sw.js');
+				console.log('Service Worker registered:', registration);
+
+				// Initialize Firebase
+				const firebaseConfig = {
+					apiKey: 'AIzaSyC18VtlyrZksjEamwh9b5ZBGsx1k-Ytoto',
+					authDomain: 'testerp-d3775.firebaseapp.com',
+					projectId: 'testerp-d3775',
+					storageBucket: 'testerp-d3775.firebasestorage.app',
+					messagingSenderId: '38562934353',
+					appId: '1:38562934353:web:7dd0ecdddb0470d5459270',
+					measurementId: 'G-BDF6HSEE2S',
+				};
+
+				const app = initializeApp(firebaseConfig);
+				const messaging = getMessaging(app);
+
+				// Get FCM token
+				const token = await getToken(messaging, {
+					vapidKey: 'BDdKkbNishStsvj25tr1gdnB7vACtwr-gqwAriXhknvStnlCQGfHhVPvG0r0s7Kj5p1a_naHVbzrwNZRseZqZYE',
+					serviceWorkerRegistration: registration,
+				});
+				this.env.setStorage('NotifyToken', token);
+				this.env.NotifyToken = token;
+				onMessage(messaging, (payload) => {
+					console.log('Foreground notification:', payload);
+					const title = payload.data?.title ?? 'Thông báo';
+					const body = payload.data?.body ?? '';
+
+					this.showInAppNotification(title, body); // tuỳ bạn định nghĩa
+				});
+				console.log('FCM Token:', token);
+			} catch (err) {
+				console.error('Service Worker registration or FCM failed', err);
+			}
+		}
+	}
+
 	initializeApp() {
 		this.platform.ready().then(() => {
 			this.showScrollbar = environment.showScrollbar;
 			this.updateStatusbar();
 		});
 	}
+	async showInAppNotification(title: string, body: string) {
+		const toast = await this.toastController.create({
+			header: title,
+			message: body, // Bạn có thể truyền HTML nếu cần
+			duration: 3000,
+			position: 'top',
+			color: 'primary',
+			buttons: [
+				{
+					text: 'X',
+					role: 'cancel',
+				},
+			],
+		});
 
-
+		await toast.present();
+	}
 	toogleMenu() {
 		this.showAppMenu = !this.showAppMenu;
 	}
