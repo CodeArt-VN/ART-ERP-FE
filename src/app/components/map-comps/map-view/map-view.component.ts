@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
-import { Observable, interval, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
@@ -23,6 +23,8 @@ export class MapViewComponent extends PageBase {
 	@Input() set CoordinateList(value) {
 		this.addressList = value;
 	}
+
+	@Input() IsDragable: boolean = false;
 
 	@Output() savePosition = new EventEmitter();
 
@@ -98,17 +100,24 @@ export class MapViewComponent extends PageBase {
 			if (this.map && google) {
 				let j = 1;
 				this.items.forEach((i: any) => {
-					i.Lat = i.Coordinate[0].Lat;
-					i.Long = i.Coordinate[0].Long;
+					i.Lat = i.Address?.Lat;
+					i.Long = i.Address?.Long;
 					let lat: number = +i.Lat;
 					let long: number = +i.Long;
 
 					if (lat && long) {
-						let markerOption: google.maps.MarkerOptions = {
-							draggable: true,
-							// label: { text: '' + (j++), color: 'white' },
+						let markerOption = {
+							draggable: this.IsDragable,
 							position: { lat: lat, lng: long },
 							animation: google.maps.Animation.DROP,
+							icon: {
+								path: 'M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z',
+								scale: 1.5, // Size of the marker
+								fillColor: i.Color || '#FF5733', // Marker color (default to orange if no color is provided)
+								fillOpacity: 0.8, // Opacity of the color
+								strokeWeight: 0.5, // Border thickness
+								//strokeColor: i.Color, // Border color
+							},
 						};
 
 						this.bounds.extend({ lat: lat, lng: long });
@@ -131,17 +140,6 @@ export class MapViewComponent extends PageBase {
 
 	openInfo(marker: MapMarker, content) {
 		this.item = content;
-
-		this.item.Contact = content._Contact._Addresses[0].Contact;
-		this.item.Phone1 = content._Contact._Addresses[0].Phone1;
-		this.item.Phone2 = content._Contact._Addresses[0].Phone2;
-		this.item.AddressLine1 = content._Contact._Addresses[0].AddressLine1;
-		this.item.Ward = content._Contact._Addresses[0].Ward;
-		this.item.District = content._Contact._Addresses[0].District;
-		this.item.Province = content._Contact._Addresses[0].Province;
-		this.item.Country = content._Contact._Addresses[0].Country;
-		this.item.AddressLine2 = content._Contact._Addresses[0].AddressLine2;
-
 		this.infoWindow.open(marker);
 	}
 

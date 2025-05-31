@@ -742,6 +742,17 @@ ion-app {
 		padding: 20px;
 	}
 
+	.sticky-top {
+		top: 0;
+		border-bottom: solid 1px var(--menu-right-border-color);
+		box-shadow: 5px -2px 0 0 rgb(0 0 0 / 10%);
+		z-index: 999999;
+		position: sticky;
+		bottom: auto;
+		//background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
+		background: linear-gradient(180deg, var(--feature-background-top), var(--feature-background-bottom));
+	}
+
 	.sticky-bottom {
 		top: auto;
 		border-top: solid 1px var(--menu-right-border-color);
