@@ -371,6 +371,31 @@ export var lib = {
 
 		return str.toLowerCase();
 	},
+	rempveSpecialCharacter(str) {
+		if (!str) {
+			return '';
+		}
+		str = str.trim();
+		str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+		str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+		str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+		str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+		str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+		str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+		str = str.replace(/đ/g, 'd');
+		str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, 'A');
+		str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, 'E');
+		str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, 'I');
+		str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, 'O');
+		str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, 'U');
+		str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, 'Y');
+		str = str.replace(/Đ/g, 'D');
+		// str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`| |{|}|\||\\/g, '-');
+		// str = str.replace(/ + /g, '-');
+		// str = str.replace(/--/g, '-');
+
+		return str;
+	},
 	getWeekDates(date) {
 		if (!date) {
 			return [];
@@ -974,4 +999,17 @@ export var lib = {
 		}
 		return KetQua;
 	},
+
+	Colors : [
+		'#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#900C3F', '#581845', '#1ABC9C', '#2ECC71', '#3498DB',
+		'#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085', '#27AE60', '#2980B9',
+		'#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D', '#117A65', '#B03A2E',
+		'#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226', '#ABB2B9', '#48C9B0',
+		'#45B39D', '#52BE80', '#5DADE2', '#A569BD', '#5D6D7E', '#F8C471', '#EB984E', '#CD6155', '#D5DBDB', '#76D7C4',
+		'#73C6B6', '#82E0AA', '#85C1E9', '#BB8FCE', '#85929E', '#FAD7A0', '#EDBB99', '#E6B0AA', '#E5E8E8', '#1ABC9C',
+		'#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085',
+		'#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D',
+		'#117A65', '#B03A2E', '#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226',
+		'#ABB2B9', '#48C9B0'
+	]
 };

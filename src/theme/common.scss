@@ -42,6 +42,16 @@ ion-content {
 	--background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
 }
 
+ion-accordion {
+	ion-item {
+		--border-width: 0.55px 0px 0  0px;
+		--border-color: var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-250, var(--ion-background-color-step-250, #c8c7cc))));
+	}
+
+	background-color: unset;
+	
+}
+
 ion-virtual-scroll,
 ion-item {
 	user-select: text;
@@ -730,6 +740,17 @@ ion-app {
 
 	.ion-padding {
 		padding: 20px;
+	}
+
+	.sticky-top {
+		top: 0;
+		border-bottom: solid 1px var(--menu-right-border-color);
+		box-shadow: 5px -2px 0 0 rgb(0 0 0 / 10%);
+		z-index: 999999;
+		position: sticky;
+		bottom: auto;
+		//background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
+		background: linear-gradient(180deg, var(--feature-background-top), var(--feature-background-bottom));
 	}
 
 	.sticky-bottom {

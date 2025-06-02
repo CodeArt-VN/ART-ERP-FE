@@ -7,26 +7,24 @@
 				[label]="i.option?.label"
 				[title]="i.option?.title"
 				[options]="i.option"
+				[draggable]="IsDragable"
 				(mapDragend)="changePosition(somemarker, i)"
 				(mapClick)="openInfo(somemarker, i)"
 			></map-marker>
 		</ng-container>
 	</ng-container>
 	<map-info-window>
-		<div *ngIf="item">
-			<b *ngIf="item.Contact">{{ item.Contact }}</b>
-			<span *ngIf="item.Phone1">
-				({{ item.Phone1 }}<span *ngIf="item.Phone2"> / {{ item.Phone2 }}</span
-				>) <br
-			/></span>
-			{{
-				(item.AddressLine1 ? item.AddressLine1 + ', ' : '') +
-					(item.Ward ? item.Ward + ', ' : '') +
-					(item.District ? item.District + ', ' : '') +
-					(item.Province ? item.Province : '')
-			}}<br />
-			<span *ngIf="item.AddressLine2">{{ item.AddressLine2 }} <br /></span>
-		</div>
+		<ion-card *ngIf="item" class="ion-no-margin">
+			<img *ngIf="item.Image" src="{{item.Image}}" />
+			<ion-card-header>
+			  <ion-card-title>{{item.Title}}</ion-card-title>
+			  <ion-card-subtitle>{{item.Subtitle}}</ion-card-subtitle>
+			</ion-card-header>
+		  
+			<ion-card-content [innerHTML]="item.Content"></ion-card-content>
+			<!-- <ion-button fill="clear">Action 1</ion-button>
+			<ion-button fill="clear">Action 2</ion-button> -->
+		  </ion-card>
 	</map-info-window>
 </google-map>
-<app-page-message [itemsLength]="this.items?.length" [showSpinner]="!env.isMapLoaded"></app-page-message>
+<app-page-message [itemsLength]="1" [showSpinner]="!env.isMapLoaded"></app-page-message>

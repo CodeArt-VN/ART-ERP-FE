@@ -9,6 +9,7 @@ import { EnvService } from './core/env.service';
 import { ApiSetting } from './static/api-setting';
 import { environment } from 'src/environments/environment';
 import { LIST_AddressSubdivisionProvider } from './static/services.service';
+import { thirdPartyLibs } from './static/thirdPartyLibs';
 
 @Injectable({
 	providedIn: 'root',
@@ -343,7 +344,28 @@ export class POS_ForCustomerProvider extends exService {
 		super(APIList.POS_ForCustomer, SearchConfig.getSearchFields('POS_ForCustomer'), commonService);
 	}
 }
+@Injectable({ providedIn: 'root' })
+export class MonacoEditorLoaderService {
+	private isLoaded = false;
 
+	constructor(private dynamicLoader: DynamicScriptLoaderService) {}
+
+	load(): Promise<void> {
+		if (this.isLoaded) return Promise.resolve();
+
+		return this.dynamicLoader.loadResources(thirdPartyLibs.monacoCdnResources.source).then(() => {
+			return new Promise<void>((resolve, reject) => {
+				(window as any).require.config({
+					paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' }
+				});
+				(window as any).require(['vs/editor/editor.main'], () => {
+					this.isLoaded = true;
+					resolve();
+				});
+			});
+		});
+	}
+}
 @Injectable({ providedIn: 'root' })
 export class DynamicScriptLoaderService {
 	loadScript(src: string): Promise<void> {
