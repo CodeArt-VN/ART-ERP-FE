@@ -1,0 +1,417 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>{{ 'Advanced filter' | translate }}</ion-title>
+		<ion-buttons slot="primary">
+			<ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
+				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+			</ion-button>
+			<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme>
+	<form [formGroup]="form" *ngIf="selectedSchema">
+		<ion-accordion-group [value]="['first', 'second', 'third']" multiple="true">
+			<ion-accordion value="first" style="background: transparent">
+				<ion-item slot="header" color="light">
+					<ion-label class="bold">{{ 'Filter' | translate }}</ion-label>
+				</ion-item>
+				<div class="ion-padding" slot="content" style="background: transparent">
+					<app-form-control
+						[field]="{
+							id: 'Dimension',
+							type: 'ng-select',
+							label: 'Time field',
+							placeholder: 'Please enter data..',
+							dataSource: _timeDimension,
+							bindValue: 'Code',
+							bindLabel: 'Name',
+							form: form.controls.TimeFrame,
+							clearable: true,
+						}"
+					></app-form-control>
+
+					<app-form-control
+						*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+						[field]="{
+							id: 'From',
+							secondaryId: 'To',
+							type: 'time-frame',
+							label: 'Time range',
+							form: form.controls.TimeFrame,
+							condition: form.controls.TimeFrame.controls.Dimension.value,
+							clearable: true,
+						}"
+					></app-form-control>
+
+					<app-form-control
+						*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+						[field]="{
+							id: 'CompareTo',
+							type: 'date-compare-to',
+							label: 'Compare to',
+							form: form,
+							clearable: true,
+						}"
+					></app-form-control>
+
+					<ng-container formGroupName="Transform">
+						<div class="c-control">
+							<label class="c-label">{{ 'Query builder' | translate }}</label>
+							<!-- <span class="c-input" style="flex-wrap: wrap;height: auto;"></span> -->
+							<app-filter
+								[smallWidth]="true"
+								[item]="form.get('Transform.Filter').value"
+								#appFilter
+								[schema]="selectedSchema"
+								(change)="appFilter.onFormSubmit($event)"
+								(submit)="setTransform($event)"
+							></app-filter>
+						</div>
+					</ng-container>
+				</div>
+			</ion-accordion>
+			<ion-accordion value="second" style="background: transparent">
+				<ion-item slot="header" color="light">
+					<ion-label class="bold">{{ 'Select' | translate }}</ion-label>
+				</ion-item>
+				<div class="ion-padding" slot="content" style="background: transparent">
+					<ng-container formGroupName="Interval">
+						<div class="c-control">
+							<label class="c-label">{{ 'Time interval for the chart' | translate }}</label>
+							<span class="c-input btns">
+								<ion-button fill="clear" size="small" (click)="presentPopover($event, form.controls.Interval, 'Interval')">
+									<ion-icon color="dark" slot="start" name="bar-chart-outline"></ion-icon>
+
+									{{ form.controls.Interval?.get('Title')?.value || form.controls.Interval?.get('Property')?.value }}
+									<ion-text color="dark">&nbsp; {{ 'by' | translate }} &nbsp;</ion-text>
+									{{ form.controls.Interval?.get('Type')?.value }}
+								</ion-button>
+							</span>
+						</div>
+					</ng-container>
+
+					<ng-container formGroupName="CompareBy">
+						<div class="c-control">
+							<label class="c-label">{{ 'Compare By' | translate }}</label>
+							<span class="c-input" style="flex-wrap: wrap; height: auto">
+								<ion-chip color="blue" *ngFor="let c of form.controls.CompareBy['controls']" style="height: auto; margin: 0; margin-right: 2px">
+									<ion-label (click)="presentPopover($event, c, 'CompareBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
+									<ion-icon name="close" (click)="removeForm($event, c, form.controls.CompareBy)"></ion-icon>
+								</ion-chip>
+								<ion-button fill="clear" size="small" (click)="addNewForm($event, 'CompareBy')"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+							</span>
+						</div>
+					</ng-container>
+
+					<ng-container formGroupName="MeasureBy">
+						<div class="c-control">
+							<label class="c-label">{{ 'Measure By' | translate }}</label>
+							<span class="c-input" style="flex-wrap: wrap; height: auto">
+								<ion-chip color="warning" *ngFor="let c of form.controls.MeasureBy['controls']" style="height: auto; margin: 0; margin-right: 2px">
+									<ion-label (click)="presentPopover($event, c, 'MeasureBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
+									<ion-icon name="close" (click)="removeForm($event, c, form.controls.MeasureBy)"></ion-icon>
+								</ion-chip>
+								<ion-button fill="clear" size="small" (click)="addNewForm($event, 'MeasureBy')"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+							</span>
+						</div>
+					</ng-container>
+				</div>
+			</ion-accordion>
+			<ion-accordion value="third" style="background: transparent">
+				<ion-item slot="header" color="light">
+					<ion-label class="bold">{{ 'Sort' | translate }}</ion-label>
+				</ion-item>
+				<div class="ion-padding" slot="content" style="background: transparent">
+					<div class="c-control">
+						<label class="c-label">{{ 'Sort by' | translate }}</label>
+						<span class="c-input" style="flex-wrap: wrap; height: auto">
+							<ion-chip color="blue" *ngFor="let c of form.controls.SortBy['controls']" style="height: auto; margin: 0; margin-right: 2px">
+								<ion-label (click)="presentPopover($event, c, 'SortBy')">
+									<span class="bold">{{ c.get('Property')?.value }}</span>
+									<span class="direction-text">
+										<ion-icon color="success" *ngIf="c.get('Direction')?.value === 'ASC'" name="arrow-up-outline"></ion-icon>
+										<ion-icon color="danger" *ngIf="c.get('Direction')?.value === 'DESC'" name="arrow-down-outline"></ion-icon>
+									</span>
+								</ion-label>
+								<ion-icon name="close" (click)="removeForm($event, c, form.controls.SortBy)"></ion-icon>
+							</ion-chip>
+
+							<ion-button fill="clear" size="small" (click)="addNewForm($event, 'SortBy')"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+						</span>
+					</div>
+				</div>
+			</ion-accordion>
+		</ion-accordion-group>
+
+		<div class="action-buttons sticky-bottom">
+			<ion-grid>
+				<ion-row>
+					<ion-col size="6">
+						<ion-button (click)="closeModal(true)" color="success" expand="block">
+							<ion-icon slot="start" name="caret-forward-outline"></ion-icon>
+							{{ 'Confirm' | translate }}
+						</ion-button>
+					</ion-col>
+					<ion-col size="6">
+						<ion-button (click)="closeModal()" color="warning" expand="block">
+							<!-- <ion-icon slot="start" name="cloud-download-outline"></ion-icon> -->
+							{{ 'Cancel' | translate }}
+						</ion-button>
+					</ion-col>
+				</ion-row>
+				<!-- <ion-row *ngIf="!canEdit">
+        <ion-col size="12">
+          <ion-button (click)="onRunReport()" color="success" expand="block">
+            <ion-icon slot="start" name="caret-forward-outline"></ion-icon>
+            {{ 'Run' | translate }}
+          </ion-button>
+        </ion-col>
+      </ion-row> -->
+			</ion-grid>
+		</div>
+
+		<ion-popover class="w300" #popoverPub [isOpen]="isOpenPopover" (didDismiss)="dismissPopover(pickerGroupName)">
+			<ng-template>
+				<ion-content class="ion-padding">
+					<ng-container *ngIf="pickerGroupName == 'Interval'">
+						<app-form-control
+							[field]="{
+								id: 'Title',
+								label: 'Title',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Property',
+								label: 'Property',
+								type: 'ng-select',
+								dataSource: _timeDimension,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Type',
+								label: 'Type',
+								type: 'ng-select',
+								dataSource: _intervalDataSource,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+					</ng-container>
+					<ng-container *ngIf="pickerGroupName == 'CompareBy'">
+						<app-form-control
+							[field]="{
+								id: 'Title',
+								label: 'Title',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Property',
+								label: 'Property',
+								type: 'ng-select',
+								dataSource: _schemaDetailsList,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+					</ng-container>
+					<ng-container *ngIf="pickerGroupName == 'SortBy'">
+						<app-form-control
+							[field]="{
+								id: 'Property',
+								label: 'Property',
+								type: 'ng-select',
+								dataSource: _schemaDetailsList,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Direction',
+								label: 'Direction',
+								type: 'ng-select',
+								dataSource: directionList,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+					</ng-container>
+					<ng-container *ngIf="pickerGroupName == 'MeasureBy'">
+						<app-form-control
+							[field]="{
+								id: 'Title',
+								label: 'Title',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Property',
+								label: 'Property',
+								type: 'ng-select',
+								dataSource: _schemaDetailsList,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Method',
+								label: 'Method',
+								type: 'ng-select',
+								dataSource: _measureMethodDataSource,
+								bindValue: 'Code',
+								bindLabel: 'Code',
+								form: formGroup,
+							}"
+						></app-form-control>
+					</ng-container>
+					<ng-container *ngIf="pickerGroupName == 'CompareTo'">
+						<app-form-control
+							[field]="{
+								id: 'Type',
+								label: 'Type',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'IsPastDate',
+								label: 'IsPastDate',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Period',
+								label: 'Period',
+								type: 'text',
+								form: formGroup,
+							}"
+						></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'Amount',
+								label: 'Amount',
+								type: 'number',
+								form: formGroup,
+							}"
+						></app-form-control>
+					</ng-container>
+				</ion-content>
+			</ng-template>
+		</ion-popover>
+
+		<!-- datepicker -->
+		<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
+			<ng-template>
+				<ion-content appScrollbarTheme>
+					<ion-segment scrollable="false" (ionChange)="segmentTimeframeChanged($event)" [value]="pickerControl.controls.Type.value" mode="md">
+						<ion-segment-button value="Relative">
+							<ion-label>{{ 'Relative' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="Absolute">
+							<ion-label>{{ 'Absolute' | translate }}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+
+					<ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
+						<div>
+							<ng-container *ngIf="pickerGroupName == 'CompareTo'">
+								<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.compareTo" (click)="pickDate(i.timeConfig)">
+									<ion-icon name="timer-outline" slot="start"></ion-icon>
+									<ion-label>{{ i.name }}</ion-label>
+								</ion-item>
+							</ng-container>
+							<ng-container *ngIf="pickerGroupName != 'CompareTo'">
+								<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.timeframe" (click)="pickDate(i.timeConfig)">
+									<ion-icon name="timer-outline" slot="start"></ion-icon>
+									<ion-label>{{ i.name }}</ion-label>
+								</ion-item>
+							</ng-container>
+						</div>
+						<ion-item>
+							<app-input-control
+								style="position: absolute; right: 1rem; margin: 1rem; z-index: 1; bottom: 10px"
+								[field]="{ id: 'Period', type: 'select', dataSource: _timePeriodList, bindValue: 'code', bindLabel: 'name', form: pickerControl }"
+								(change)="onChange($event)"
+							></app-input-control>
+							<app-form-control
+								style="width: 100%"
+								[field]="{ id: 'Amount', type: 'number', label: '', form: pickerControl }"
+								(change)="onChange($event)"
+							></app-form-control>
+						</ion-item>
+					</ion-list>
+
+					<div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
+						<ion-datetime
+							[locale]="env.language.current"
+							[value]="pickerControl.controls.Value.value"
+							[firstDayOfWeek]="1"
+							(ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
+							mode="ios"
+							format="YYYY-MM-DDTHH:mm:ssZ"
+						></ion-datetime>
+					</div>
+				</ion-content>
+			</ng-template>
+		</ion-popover>
+
+		<!-- Sort by -->
+		<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
+			<ng-template>
+				<ion-content appScrollbarTheme>
+					<ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
+						<div>
+							<ng-container *ngIf="pickerGroupName == 'CompareTo'">
+								<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.compareTo" (click)="pickDate(i.timeConfig)">
+									<ion-icon name="timer-outline" slot="start"></ion-icon>
+									<ion-label>{{ i.name }}</ion-label>
+								</ion-item>
+							</ng-container>
+							<ng-container *ngIf="pickerGroupName != 'CompareTo'">
+								<ion-item button detail="false" *ngFor="let i of rpt.commonOptions.timeframe" (click)="pickDate(i.timeConfig)">
+									<ion-icon name="timer-outline" slot="start"></ion-icon>
+									<ion-label>{{ i.name }}</ion-label>
+								</ion-item>
+							</ng-container>
+						</div>
+					</ion-list>
+
+					<div *ngIf="pickerControl.controls.Type.value == 'Absolute'">
+						<ion-datetime
+							[locale]="env.language.current"
+							[value]="pickerControl.controls.Value.value"
+							[firstDayOfWeek]="1"
+							(ionChange)="pickDate({ Type: 'Absolute', Value: $event })"
+							mode="ios"
+							format="YYYY-MM-DDTHH:mm:ssZ"
+						></ion-datetime>
+					</div>
+				</ion-content>
+			</ng-template>
+		</ion-popover>
+	</form>
+</ion-content>

@@ -7,6 +7,8 @@ import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap
 import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
+import { advanceFilterRules } from 'src/app/services/static/advance-filter-rules';
+import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 
 @Component({
 	template: '',
@@ -40,7 +42,7 @@ export abstract class PageBase implements OnInit {
 		Take: 100,
 		Skip: 0,
 	};
-
+	schemaPage: any;
 	pageConfig: any = {
 		pageCode: '',
 		pageName: '',
@@ -1131,5 +1133,45 @@ export abstract class PageBase implements OnInit {
 		};
 		recursiveFunc(form);
 		return invalidControls;
+	}
+
+	getAdvaneFilterConfig() {
+		if (!this.query._AdvanceConfig) {
+			if (advanceFilterRules[this.pageProvider.serviceName]) {
+				this.query._AdvanceConfig = lib.cloneObject(advanceFilterRules[this.pageProvider.serviceName]);
+			}
+		}
+	}
+
+	// khi muốn thay đổi config mặc định thì chỉ cần overload getAdvaneFilterConfig() trong component con
+	// vd trong page: scheduler.page.ts
+	async openAdvanceFilter(callback?: (data: any) => void) {
+		this.getAdvaneFilterConfig();
+		const modal = await this.modalController.create({
+			component: AdvanceFilterModalComponent,
+			cssClass: 'modal90',
+			componentProps: {
+				_AdvanceConfig: this.query._AdvanceConfig,
+				schemaType: 'Form',
+				selectedSchema: this.schemaPage,
+			},
+		});
+		await modal.present();
+		const { data } = await modal.onWillDismiss();
+		if (data) {
+			if (data.isApplyFilter) this.query._AdvanceConfig = data?.data;
+			if (data.schema) this.schemaPage = data?.schema;
+			if (data.data) {
+				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.query)).then((resp) => {
+					if (resp && resp.data) {
+						if (callback) callback(resp['data']);
+						else {
+							this.items = resp['data'];
+							this.loadedData();
+						}
+					} else this.env.showMessage('No data found!', 'warning');
+				});
+			}
+		}
 	}
 }

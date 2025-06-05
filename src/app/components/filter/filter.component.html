@@ -1,5 +1,5 @@
 <div cdkDropListGroup class="table responsive form-container" [ngClass]="{ 'small-width': smallWidth === true }" *ngIf="_schema">
-	<div id="ng-select-filterComponent" style="position: absolute; z-index: 30005"></div>
+	<div id="ng-select-filterComponent" style="z-index: 30005; overflow: visible !important; position: relative"></div>
 
 	<ng-template #recursiveList let-parent="parent" let-list="list" let-depth="depth">
 		<div
