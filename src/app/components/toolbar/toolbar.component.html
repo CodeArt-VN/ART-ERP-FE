@@ -49,12 +49,58 @@
 
 		<!-- Search -->
 		<ion-button
+			[ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }"
+			title="{{ 'Show search...' | translate }}"
+			(click)="presentToolBarPopover($event)"
+		>
+			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
+			<!-- 
+		<ion-button
 			class="ion-hide-md-down"
 			title="{{ 'Search' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
-			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
+			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch;isToolBarPopoverOpen = !isToolBarPopoverOpen"
 		>
-			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
+			<ion-icon slot="icon-only" name="search-outline"></ion-icon> -->
+			<ion-popover
+				[ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }"
+				size="auto"
+				#toolBarPopover
+				[isOpen]="isToolBarPopoverOpen"
+				(didDismiss)="isToolBarPopoverOpen = false"
+				[dismissOnSelect]="true"
+				[backdropDismiss]="true"
+			>
+				<ng-template>
+					<ion-content scroll-y="false">
+						<ion-list lines="none">
+							<ng-content select="[rightScreenPop]"></ng-content>
+							<!-- Search -->
+							<ion-item
+								title="{{ 'Search' | translate }}"
+								*ngIf="!page.selectedItems?.length && ShowSearch && !page.pageConfig.isDetailPage"
+								[button]="true"
+								[detail]="false"
+								(click)="isToolBarPopoverOpen = false; page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
+							>
+								<ion-icon slot="start" name="search-outline"></ion-icon>
+								<ion-label> {{ 'Search' | translate }}</ion-label>
+							</ion-item>
+							<!-- Search -->
+							<ion-item
+								title="{{ 'Advance filter' | translate }}"
+								*ngIf="!page.selectedItems?.length && ShowSearch && !page.pageConfig.isDetailPage"
+								[button]="true"
+								[detail]="false"
+								(click)="isToolBarPopoverOpen = false; page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch;openAdvanceFilter()"
+							>
+								<ion-icon slot="start" name="search-outline"></ion-icon>
+								<ion-label> {{ 'Advance filter' | translate }}</ion-label>
+							</ion-item>
+						</ion-list>
+					</ion-content>
+				</ng-template>
+			</ion-popover>
 		</ion-button>
 
 		<!-- Refresh -->

@@ -65,6 +65,9 @@ export class InputControlComponent implements OnInit {
 			//show|unShow root level
 			if (this.rootCollapsed == false) this.expandRoot();
 		}
+		if(this.type == 'formula') {
+			this.monacoProvider.load().then(() => this.initMonaco());
+		}
 	}
 
 	@Input() form: FormGroup;
@@ -119,6 +122,7 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
+	
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
@@ -127,9 +131,7 @@ export class InputControlComponent implements OnInit {
 		// The DOM is fully loaded here
 		// You can access DOM elements and run your code
 		if (this.type == 'formula') {
-			if (this.type === 'formula') {
-				this.monacoProvider.load().then(() => this.initMonaco());
-			}
+			this.monacoProvider.load().then(() => this.initMonaco());
 		}
 	}
 	disposableCompletionItemProvider: any = null;

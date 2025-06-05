@@ -117,7 +117,7 @@ export class SchemaDetailPage extends PageBase {
 		let group = this.formBuilder.group({
 			IDSchema: [this.item.Id],
 			Id: [field?.Id],
-			// Id: new FormControl({ value: field?.Id, disabled: true }),
+			IDParent: [field?.IDParent],
 			Code: [field.Code, Validators.required],
 			Name: [field.Name, Validators.required],
 			Remark: [field.Remark],
