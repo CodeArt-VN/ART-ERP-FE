@@ -14,7 +14,7 @@
 <ion-content appScrollbarTheme>
 	<form [formGroup]="form" *ngIf="selectedSchema">
 		<ion-accordion-group [value]="['first', 'second', 'third']" multiple="true">
-			<ion-accordion value="first" style="background: transparent">
+			<ion-accordion value="first" style="background: transparent" *ngIf="renderGroup.Filter || !renderGroup">
 				<ion-item slot="header" color="light">
 					<ion-label class="bold">{{ 'Filter' | translate }}</ion-label>
 				</ion-item>
@@ -73,12 +73,12 @@
 					</ng-container>
 				</div>
 			</ion-accordion>
-			<ion-accordion value="second" style="background: transparent">
+			<ion-accordion value="second" style="background: transparent" *ngIf="renderGroup.Select || !renderGroup">
 				<ion-item slot="header" color="light">
 					<ion-label class="bold">{{ 'Select' | translate }}</ion-label>
 				</ion-item>
 				<div class="ion-padding" slot="content" style="background: transparent">
-					<ng-container formGroupName="Interval">
+					<ng-container formGroupName="Interval" *ngIf="renderGroup.Select['Interval'] || !renderGroup">
 						<div class="c-control">
 							<label class="c-label">{{ 'Time interval for the chart' | translate }}</label>
 							<span class="c-input btns">
@@ -93,7 +93,7 @@
 						</div>
 					</ng-container>
 
-					<ng-container formGroupName="CompareBy">
+					<ng-container formGroupName="CompareBy"  *ngIf="renderGroup.Select['CompareBy'] || !renderGroup">
 						<div class="c-control">
 							<label class="c-label">{{ 'Compare By' | translate }}</label>
 							<span class="c-input" style="flex-wrap: wrap; height: auto">
@@ -106,7 +106,7 @@
 						</div>
 					</ng-container>
 
-					<ng-container formGroupName="MeasureBy">
+					<ng-container formGroupName="MeasureBy"  *ngIf="renderGroup.Select['MeasureBy'] || !renderGroup">
 						<div class="c-control">
 							<label class="c-label">{{ 'Measure By' | translate }}</label>
 							<span class="c-input" style="flex-wrap: wrap; height: auto">
@@ -120,7 +120,7 @@
 					</ng-container>
 				</div>
 			</ion-accordion>
-			<ion-accordion value="third" style="background: transparent">
+			<ion-accordion value="third" style="background: transparent" *ngIf="renderGroup.Sort || !renderGroup">
 				<ion-item slot="header" color="light">
 					<ion-label class="bold">{{ 'Sort' | translate }}</ion-label>
 				</ion-item>
@@ -151,14 +151,13 @@
 				<ion-row>
 					<ion-col size="6">
 						<ion-button (click)="closeModal(true)" color="success" expand="block">
-							<ion-icon slot="start" name="caret-forward-outline"></ion-icon>
-							{{ 'Confirm' | translate }}
+							{{ confirmButtonText | translate }}
 						</ion-button>
 					</ion-col>
 					<ion-col size="6">
 						<ion-button (click)="closeModal()" color="warning" expand="block">
 							<!-- <ion-icon slot="start" name="cloud-download-outline"></ion-icon> -->
-							{{ 'Cancel' | translate }}
+							{{ cancelButtonText | translate }}
 						</ion-button>
 					</ion-col>
 				</ion-row>

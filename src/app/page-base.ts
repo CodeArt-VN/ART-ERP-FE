@@ -7,7 +7,6 @@ import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap
 import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
-import { advanceFilterRules } from 'src/app/services/static/advance-filter-rules';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 
 @Component({
@@ -1137,9 +1136,46 @@ export abstract class PageBase implements OnInit {
 
 	getAdvaneFilterConfig() {
 		if (!this.query._AdvanceConfig) {
-			if (advanceFilterRules[this.pageProvider.serviceName]) {
-				this.query._AdvanceConfig = lib.cloneObject(advanceFilterRules[this.pageProvider.serviceName]);
-			}
+			this.query._AdvanceConfig = {
+				Schema: {
+					Code: this.pageProvider.serviceName,
+					Type: 'Form',
+				},
+				TimeFrame: {
+					From: {
+						Type: 'Relative',
+						IsPastDate: true,
+						Period: 'Day',
+						Amount: 1,
+					},
+					To: {
+						Type: 'Relative',
+						IsPastDate: true,
+						Period: 'Day',
+						Amount: 0,
+					},
+				},
+				CompareTo: {
+					Type: 'Relative',
+					IsPastDate: true,
+					Period: 'Day',
+					Amount: 0,
+				},
+				Interval: {},
+				CompareBy: [],
+				MeasureBy: [],
+				Transform: {
+					Filter: {
+						Dimension: 'logical',
+						Operator: 'AND',
+						Value: null,
+						Logicals: [],
+					},
+				},
+			};
+			// if (advanceFilterRules[this.pageProvider.serviceName]) {
+			// 	this.query._AdvanceConfig = lib.cloneObject(advanceFilterRules[this.pageProvider.serviceName]);
+			// }
 		}
 	}
 

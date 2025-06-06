@@ -49,13 +49,18 @@
 
 		<!-- Search -->
 		<ion-button
-			[ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }"
+			class="ion-hide-md-down"
+			title="{{ 'Search' | translate }}"
+			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
+			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
+		>
+			<!-- [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }"
 			title="{{ 'Show search...' | translate }}"
 			(click)="presentToolBarPopover($event)"
-		>
+		> -->
 			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
-			<!-- 
-		<ion-button
+
+			<!-- <ion-button
 			class="ion-hide-md-down"
 			title="{{ 'Search' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
@@ -92,7 +97,7 @@
 								*ngIf="!page.selectedItems?.length && ShowSearch && !page.pageConfig.isDetailPage"
 								[button]="true"
 								[detail]="false"
-								(click)="isToolBarPopoverOpen = false; page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch;openAdvanceFilter()"
+								(click)="isToolBarPopoverOpen = false; page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch; openAdvanceFilter()"
 							>
 								<ion-icon slot="start" name="search-outline"></ion-icon>
 								<ion-label> {{ 'Advance filter' | translate }}</ion-label>

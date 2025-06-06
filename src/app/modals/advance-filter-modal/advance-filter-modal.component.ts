@@ -18,11 +18,13 @@ export class AdvanceFilterModalComponent implements OnInit {
 	_AdvanceConfig: any;
 	selectedSchema: any;
 	isOpenDatePicker = false;
-	connectionList = [];
 	_schemaDetailsList: any[] = [];
 	_timeDimension: any[] = [];
 	_intervalDataSource: any[] = [];
 	_measureMethodDataSource: any[] = [];
+	confirmButtonText = 'Confirm';
+	cancelButtonText = 'Cancel';
+	renderGroup;
 	outputData: any;
 	directionList = [
 		{ Code: 'ASC', Name: 'Ascending ↑ ' },
@@ -170,6 +172,19 @@ export class AdvanceFilterModalComponent implements OnInit {
 		});
 		let filter = c.Transform?.Filter;
 		if (filter) this.form.get('Transform.Filter').setValue(filter);
+		if(this.renderGroup){
+			if(this.renderGroup.Filter ){
+				this.renderGroup.Filter.forEach(i=>{
+					this.renderGroup.Filter[i] = true;
+				})
+			}
+			
+			if(this.renderGroup.Select){
+					this.renderGroup.Select.forEach(i=>{
+					this.renderGroup.Select[i] = true;
+				})
+			}
+		} 
 	}
 
 	setTransform(filter) {
