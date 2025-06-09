@@ -147,7 +147,8 @@ export class InputControlComponent implements OnInit {
 		document.head.appendChild(fontLink);
 
 		// 🧠 Gợi ý /Code
-		let dataSource = this.dataSource?.length > 0 ? [...this.dataSource] : [];
+		let dataSourceBeforeSet = this.dataSource?.length > 0 ? [...this.dataSource] : [];
+		let dataSource = new Set(dataSourceBeforeSet);
 		if (this.disposableCompletionItemProvider) {
 			this.disposableCompletionItemProvider.dispose();
 		}
@@ -165,7 +166,7 @@ export class InputControlComponent implements OnInit {
 				if (!match) return { suggestions: [] };
 
 				const keyword = match[1].toLowerCase();
-				const suggestions = dataSource
+				const suggestions = Array.from(dataSource)
 					.filter((item) => item.Code.toLowerCase().includes(keyword) || item.Name.toLowerCase().includes(keyword))
 					.map((item) => {
 						const startPosition = {
