@@ -124,7 +124,7 @@ export class NotificationsComponent extends PageBase {
 			Id: parseInt(i.IDReceiver),
 			ReadDate: new Date(),
 		};
-		this.pageProvider.save(data).then((_) => {
+		this.notificationReceiverProvider.save(data).then((_) => {
 			this.env.publishEvent({
 				Code: 'app:notification',
 			});

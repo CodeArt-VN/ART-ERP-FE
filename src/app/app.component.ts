@@ -283,12 +283,22 @@ export class AppComponent implements OnInit {
 			});
 
 			this.env.user.Forms.filter((f) => f.Type === 10).forEach((form10) => {
-				const children11 = this.env.user.Forms.filter((f) => f.Type === 11 && f.IDParent === form10.Id);
-				const sumFrom11 = children11.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+				let children11 = this.env.user.Forms.filter((f) => f.Type === 11 && f.IDParent === form10.Id);
+				let sumFrom11 = children11.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
 
 				// Sum trực tiếp từ Type 1 nếu không có Type 11
-				const directChildren1 = this.env.user.Forms.filter((f) => f.Type === 1 && f.IDParent === form10.Id);
-				const sumFrom1 = directChildren1.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+				let directChildren1 = this.env.user.Forms.filter((f) => f.Type === 1 && f.IDParent === form10.Id);
+				let sumFrom1 = directChildren1.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+
+				if (form10.Id == 10) {
+					let frm = this.env.user.Forms.find((f) => f.IDParent == 10);
+					//Đối với trường hợp Form là Apporal thì có 1 type = 2.
+					children11 = this.env.user.Forms.filter((f) => f.Type === 2 && f.IDParent === frm.Id);
+					sumFrom11 = children11.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+					// Sum trực tiếp từ Type 1 nếu không có Type 11
+					directChildren1 = this.env.user.Forms.filter((f) => f.Type === 1 && f.IDParent === frm.Id);
+					sumFrom1 = directChildren1.reduce((sum, f) => sum + (f.BadgeNum || 0), 0);
+				}
 
 				form10.BadgeNum = sumFrom11 + sumFrom1;
 				total += form10.BadgeNum || 0;
