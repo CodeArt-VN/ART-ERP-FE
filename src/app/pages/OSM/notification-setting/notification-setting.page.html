@@ -1,0 +1,23 @@
+<ion-header>
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme forceOverscroll="false">
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<ion-accordion-group [multiple]="true">
+			<ion-accordion *ngFor="let i of items"  [value]="i.Id">
+				<ion-item slot="header" color="light">
+					<ion-label>{{i.Name}}</ion-label>
+				</ion-item>
+				<div class="ion-padding" slot="content">
+					<ion-list>
+						<ion-item *ngFor="let j of i.UserSubcriptionDetail">
+							<ion-toggle [checked]="j.IsEnabled" (ionChange)="changeEnabled(j,$event)">{{j.Channel}}</ion-toggle>
+						</ion-item>
+					</ion-list>
+				</div>
+			</ion-accordion>
+		</ion-accordion-group>
+	</div>
+</ion-content>

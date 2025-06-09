@@ -19,6 +19,7 @@ import { SALERoutes } from './pages/SALE/routing.module';
 import { SHIPRoutes } from './pages/SHIP/routing.module';
 import { SYSRoutes } from './pages/SYS/routing.module';
 import { WMSRoutes } from './pages/WMS/routing.module';
+import { OSMRoutes } from './pages/OSM/routing.module';
 
 const routes: Routes = [
   // {
@@ -70,6 +71,7 @@ let allRoutes = [
   ...SHIPRoutes,
   ...SYSRoutes,
   ...WMSRoutes,
+  ...OSMRoutes,
   ...routes
 ];
 

@@ -1,0 +1,332 @@
+<ion-header>
+	<app-detail-toolbar [page]="this"></app-detail-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="ion-padding">
+	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+		<ion-grid fixed>
+			<form [formGroup]="formGroup">
+				<ion-row class="hr-group">
+					<ion-col size-xs="12" size-sm="12" size-md="12" size-lg="12" size-xl="3">
+						<ion-list-header class="ion-no-padding">
+							<ion-label color="primary">{{'Segment' | translate}}</ion-label>
+						</ion-list-header>
+					</ion-col>
+					<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="4">
+						<app-form-control [field]="{id: 'Name', label: 'Name', type: 'text', form: formGroup }" (change)="saveChange()"> </app-form-control>
+						<app-form-control [field]="{id: 'Code', label: 'Code', type: 'text', form: formGroup }" (change)="saveChange()"> </app-form-control>
+					</ion-col>
+					<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="4"> </ion-col>
+				</ion-row>
+			</form>
+		</ion-grid>
+
+		<div class="row-full shadow full-screen">
+			<ion-toolbar color="primary">
+				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+					<ion-segment-button value="s1">
+						<ion-label>{{'General information' | translate}}</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s2">
+						<ion-label>{{'Other information' | translate}}</ion-label>
+					</ion-segment-button>
+				</ion-segment>
+			</ion-toolbar>
+
+			<div class="ion-padding" *ngIf="segmentView == 's1'">
+				<ion-grid fixed>
+					<form [formGroup]="formGroup">
+						<!-- Other information -->
+						<ion-row class="hr-group">
+							<ion-col size-xs="12" size-sm="12" size-md="12" size-lg="12" size-xl="3">
+								<ion-list-header class="ion-no-padding">
+									<ion-label color="primary">{{'Config' | translate}}</ion-label>
+								</ion-list-header>
+							</ion-col>
+							<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="8">
+								<ng-container>
+									<app-form-control
+										appendTo="#ng-select-holder"
+										[field]="{
+										id: 'Id',
+										label: 'Data from',
+										type: 'ng-select-schema',
+										dataSource: _IDSchemaDataSource,
+										clearable: 'true',
+										bindLabel: 'Name',
+										bindValue: 'Id',
+										form: formGroup.controls._Config.get('Schema'),
+									}"
+										(change)="changeSchema($event)"
+									></app-form-control>
+								</ng-container>
+
+								<app-form-control
+									[field]="{
+								id: 'Dimension',
+								type: 'ng-select',
+								label: 'Time field',
+								placeholder: 'Please enter data..',
+								dataSource: _schemaDetailsList,
+								bindValue: 'Code',
+								bindLabel: 'Name',
+								form: formGroup.controls._Config.get('TimeFrame'),
+							}"
+								></app-form-control>
+
+								<app-form-control
+									*ngIf="formGroup.controls._Config.get('TimeFrame')?.get('Dimension')?.value"
+									[field]="{
+								id: 'From',
+								secondaryId: 'To',
+								type: 'time-frame',
+								label: 'Time range',
+								form: formGroup.controls._Config.get('TimeFrame'),
+								condition: formGroup.controls._Config.controls.TimeFrame?.get('Dimension')?.value,
+							}"
+								></app-form-control>
+
+								<app-form-control
+									*ngIf="formGroup.controls._Config.get('TimeFrame')?.get('Dimension')?.value"
+									[field]="{
+								id: 'CompareTo',
+								type: 'date-compare-to',
+								label: 'Compare to',
+								form: formGroup.controls._Config,
+							}"
+								></app-form-control>
+
+								<ng-container>
+									<div class="c-control">
+										<label class="c-label">{{ 'Time interval for the chart' | translate }}</label>
+										<span class="c-input btns">
+											<ion-button fill="clear" size="small" (click)="presentPopover($event, formGroup.controls._Config.get('Interval'), 'Interval')">
+												<ion-icon color="dark" slot="start" name="bar-chart-outline"></ion-icon>
+
+												{{ formGroup.controls._Config.get('Interval')?.get('Title')?.value ||
+												formGroup.controls._Config.get('Interval')?.get('Property')?.value }}
+												<ion-text color="dark">&nbsp; {{ 'by' | translate }} &nbsp;</ion-text>
+												{{ formGroup.controls._Config.get('Interval')?.get('Type')?.value }}
+											</ion-button>
+										</span>
+									</div>
+								</ng-container>
+
+								<ng-container>
+									<div class="c-control">
+										<label class="c-label">{{ 'Compare By' | translate }}</label>
+										<span class="c-input" style="flex-wrap: wrap; height: auto">
+											<ion-chip
+												color="blue"
+												*ngFor="let c of formGroup.controls._Config.get('CompareBy')?.controls"
+												style="height: auto; margin: 0; margin-right: 2px"
+											>
+												<ion-label (click)="presentPopover($event, c, 'CompareBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
+												<ion-icon name="close" (click)="removeForm($event, c, formGroup.controls._Config.controls.CompareBy)"></ion-icon>
+											</ion-chip>
+											<ion-button fill="clear" size="small" (click)="addNewForm($event, 'CompareBy')"
+												><ion-icon name="add-circle-outline"></ion-icon
+											></ion-button>
+										</span>
+									</div>
+								</ng-container>
+
+								<ng-container >
+									<div class="c-control">
+										<label class="c-label">{{ 'Measure By' | translate }}</label>
+										<span class="c-input" style="flex-wrap: wrap; height: auto">
+											<ion-chip
+												color="warning"
+												*ngFor="let c of formGroup.controls._Config.get('MeasureBy')?.controls"
+												style="height: auto; margin: 0; margin-right: 2px"
+											>
+												<ion-label (click)="presentPopover($event, c, 'MeasureBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
+												<ion-icon name="close" (click)="removeForm($event, c, formGroup.controls._Config.get('MeasureBy'))"></ion-icon>
+											</ion-chip>
+											<ion-button fill="clear" size="small" (click)="addNewForm($event, 'MeasureBy')"
+												><ion-icon name="add-circle-outline"></ion-icon
+											></ion-button>
+										</span>
+									</div>
+								</ng-container>
+								<ng-container *ngIf="selectedSchema">
+									<div class="c-control">
+										<label class="c-label">{{ 'Query builder' | translate }}</label>
+										<!-- <span class="c-input" style="flex-wrap: wrap;height: auto;"></span> -->
+										<app-filter
+											[smallWidth]="true"
+											[item]="formGroup.controls._Config.get('Transform.Filter')?.value"
+											#appFilter
+											[schema]="selectedSchema"
+											(change)="appFilter.onFormSubmit($event)"
+											(submit)="setTransform($event)"
+										></app-filter>
+									</div>
+								</ng-container>
+
+
+								<ion-popover class="w300" #popoverPub [isOpen]="isOpenPopover" (didDismiss)="dismissPopover()">
+									<ng-template>
+										<ion-content class="ion-padding">
+											<ng-container *ngIf="pickerGroupName == 'Interval'">
+												<app-form-control
+													[field]="{
+														id: 'Title',
+														label: 'Title',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Property',
+														label: 'Property',
+														type: 'ng-select',
+														dataSource: _schemaDetailsList,
+														bindValue: 'Code',
+														bindLabel: 'Name',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Type',
+														label: 'Type',
+														type: 'ng-select',
+														dataSource: _intervalDataSource,
+														bindValue: 'Code',
+														bindLabel: 'Name',
+														form: formPopover,
+													}"
+												></app-form-control>
+											</ng-container>
+											<ng-container *ngIf="pickerGroupName == 'CompareBy'">
+												<app-form-control
+													[field]="{
+														id: 'Title',
+														label: 'Title',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Property',
+														label: 'Property',
+														type: 'ng-select',
+														dataSource: _schemaDetailsList,
+														bindValue: 'Code',
+														bindLabel: 'Name',
+														form: formPopover,
+													}"
+												></app-form-control>
+											</ng-container>
+											<ng-container *ngIf="pickerGroupName == 'MeasureBy'">
+												<app-form-control
+													[field]="{
+														id: 'Title',
+														label: 'Title',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Property',
+														label: 'Property',
+														type: 'ng-select',
+														dataSource: _schemaDetailsList,
+														bindValue: 'Code',
+														bindLabel: 'Name',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Method',
+														label: 'Method',
+														type: 'ng-select',
+														dataSource: _measureMethodDataSource,
+														bindValue: 'Code',
+														bindLabel: 'Code',
+														form: formPopover,
+													}"
+												></app-form-control>
+											</ng-container>
+											<ng-container *ngIf="pickerGroupName == 'CompareTo'">
+												<app-form-control
+													[field]="{
+														id: 'Type',
+														label: 'Type',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'IsPastDate',
+														label: 'IsPastDate',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Period',
+														label: 'Period',
+														type: 'text',
+														form: formPopover,
+													}"
+												></app-form-control>
+												<app-form-control
+													[field]="{
+														id: 'Amount',
+														label: 'Amount',
+														type: 'number',
+														form: formPopover,
+													}"
+												></app-form-control>
+											</ng-container>
+							
+											<ion-button size="small" expand="block" (click)="dismissPopover(true)">Apply</ion-button>
+										</ion-content>
+									</ng-template>
+								</ion-popover>
+							</ion-col>
+						</ion-row></form
+				></ion-grid>
+
+				<!-- <div class="ion-padding" slot="content" style="background: transparent"></div> -->
+			</div>
+
+			<!-- Order information -->
+			<div *ngIf="segmentView == 's2'">
+				<ion-grid fixed>
+					<form [formGroup]="formGroup">
+						<!-- Other information -->
+						<ion-row class="hr-group" *ngIf="item.Id">
+							<ion-col size-xs="12" size-sm="12" size-md="12" size-lg="12" size-xl="3">
+								<ion-list-header class="ion-no-padding">
+									<ion-label color="primary">{{'Other information' | translate}}</ion-label>
+								</ion-list-header>
+							</ion-col>
+							<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="4">
+								<app-form-control [field]="{id: 'CreatedBy', type: 'text', label: 'Created by', form: formGroup }"></app-form-control>
+								<app-form-control [field]="{id: 'CreatedDate', type: 'span-datetime', label: 'Created date', form: formGroup }"></app-form-control>
+								<app-form-control [field]="{id: 'ModifiedBy', type: 'text', label: 'Last modified by', form: formGroup }"></app-form-control>
+								<app-form-control [field]="{id: 'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"></app-form-control>
+							</ion-col>
+							<ion-col size-xs="12" size-sm="6" size-md="12" size-lg="6" size-xl="4">
+								<app-form-control
+									[field]="{id: 'IDBranch', type: 'branch-breadcrumbs', label: 'Branch', form: formGroup, dataSource:env.branchList }"
+								></app-form-control>
+								<app-form-control [field]="{id: 'Remark', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
+							</ion-col>
+						</ion-row>
+					</form>
+				</ion-grid>
+			</div>
+		</div>
+	</div>
+	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+</ion-content>

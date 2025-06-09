@@ -91,9 +91,16 @@ export class CommonService {
 					//if (data[key]) {
 					if (data[key] && data[key] instanceof Array) {
 						params = params.append(key.toString(), JSON.stringify(data[key]));
+					} else	if (key == '_AdvanceConfig') {
+						const jsonString = JSON.stringify(data[key]);
+						const base64String = btoa(unescape(encodeURIComponent(jsonString)));
+						params = params.append(key.toString(), base64String);
 					} else {
 						params = params.append(key.toString(), data[key]);
 					}
+				
+					// nếu có data._AdvanceConfig thì =>/"?Config=BASE64"
+
 					//}
 				}
 				options.params = params;
@@ -115,7 +122,27 @@ export class CommonService {
 
 			return this.http.post(URL, data, options);
 		} else if (pmethod == 'DOWNLOAD') {
-			options.params = data;
+			if (data) {
+				let params: HttpParams = new HttpParams();
+				for (const key of Object.keys(data)) {
+					//if (data[key]) {
+					if (data[key] && data[key] instanceof Array) {
+						params = params.append(key.toString(), JSON.stringify(data[key]));
+					} else	if (key == '_AdvanceConfig') {
+						const jsonString = JSON.stringify(data[key]);
+						const base64String = btoa(unescape(encodeURIComponent(jsonString)));
+						params = params.append(key.toString(), base64String);
+					} else {
+						params = params.append(key.toString(), data[key]);
+					}
+				
+					// nếu có data._AdvanceConfig thì =>/"?Config=BASE64"
+
+					//}
+				}
+				options.params = params;
+
+			}
 			return this.http.get(URL, options);
 		} else {
 			options.params = data;
@@ -592,7 +619,7 @@ export class CommonService {
 
 	checkError(err) {
 		console.log(err);
-		
+
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);

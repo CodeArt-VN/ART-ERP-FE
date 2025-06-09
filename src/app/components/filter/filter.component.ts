@@ -101,7 +101,7 @@ export class FilterComponent implements OnInit {
 			UniqueId: [{ value: lib.generateUID(), disabled: true }],
 		});
 
-		this._item.Logicals.forEach((x) => this.addForm(this.form, x));
+		this._item.Logicals?.forEach((x) => this.addForm(this.form, x));
 		this.connectionList = [];
 		this.updateConnectionList(this.form.controls.UniqueId.value);
 	}

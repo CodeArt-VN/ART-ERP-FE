@@ -65,6 +65,9 @@ export class InputControlComponent implements OnInit {
 			//show|unShow root level
 			if (this.rootCollapsed == false) this.expandRoot();
 		}
+		if(this.type == 'formula') {
+			this.monacoProvider.load().then(() => this.initMonaco());
+		}
 	}
 
 	@Input() form: FormGroup;
@@ -119,6 +122,7 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
+	
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
@@ -127,15 +131,14 @@ export class InputControlComponent implements OnInit {
 		// The DOM is fully loaded here
 		// You can access DOM elements and run your code
 		if (this.type == 'formula') {
-			if (this.type === 'formula') {
-				this.monacoProvider.load().then(() => this.initMonaco());
-			}
+			this.monacoProvider.load().then(() => this.initMonaco());
 		}
 	}
 	disposableCompletionItemProvider: any = null;
-
+	monaco
 	initMonaco() {
-		const monaco = (window as any).monaco;
+		if(this.monaco) return;
+		this.monaco = (window as any).monaco;
 
 		// Load Google Font: JetBrains Mono
 		const fontLink = document.createElement('link');
@@ -149,7 +152,7 @@ export class InputControlComponent implements OnInit {
 			this.disposableCompletionItemProvider.dispose();
 		}
 
-		this.disposableCompletionItemProvider = monaco.languages.registerCompletionItemProvider('markdown', {
+		this.disposableCompletionItemProvider = this.monaco.languages.registerCompletionItemProvider('sql', {
 			triggerCharacters: ['/'],
 			provideCompletionItems: (model, position) => {
 				const textUntilPosition = model.getValueInRange({
@@ -173,7 +176,7 @@ export class InputControlComponent implements OnInit {
 
 						return {
 							label: `/${item.Name}`,
-							kind: monaco.languages.CompletionItemKind.Snippet,
+							kind: this.monaco.languages.CompletionItemKind.Snippet,
 							insertText: `[${item.Code}]`,
 							detail: item.Name,
 							documentation: `Chèn mã: ${item.Code}`,
@@ -188,13 +191,12 @@ export class InputControlComponent implements OnInit {
 				return { suggestions };
 			},
 		});
-
 		// 🎨 Tạo editor với theme sáng và font "JetBrains Mono"
 		const container = document.getElementById('monaco-editor');
 		if (container) {
-			const editor = monaco.editor.create(container, {
+			const editor = this.monaco.editor.create(container, {
 				value: this.form.get(this.id).value,
-				language: 'markdown',
+				language: 'sql',
 				theme: 'vs', // theme sáng (vs-dark là tối)
 				lineNumbersMinChars: 1,
 				fontFamily: 'JetBrains Mono, monospace',
