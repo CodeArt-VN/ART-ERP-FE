@@ -2,6 +2,32 @@
 	::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:has(.hide-all) {
 		padding: 0 !important;
 	}
+	.editor-container {
+		position: relative;
+	}
+
+	#monaco-editor {
+		height: 300px; /* hoặc auto theo nhu cầu */
+	}
+
+	.formula-button {
+		position: absolute;
+		z-index: 10;
+		--padding-start: -8px;
+		--padding-end: -8px;
+		--padding-top: 4px;
+		--padding-bottom: 4px;
+		font-size: 10px;
+	
+	}
+	.save-button {
+			left: 8px;
+			top: 0;
+		}
+		.zoom-button {
+			left: 8px;
+			top: 24px;
+		}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
 	<!-- default -->
@@ -155,8 +181,9 @@
 		(change)="onInputChange($event)"
 		[appendTo]="appendTo"
 	>
-		<ng-template ng-label-tmp let-i="item">
+		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+			<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
 		</ng-template>
 		<ng-template ng-option-tmp let-item="item" *ngIf="isTree">
 			<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
@@ -383,20 +410,26 @@
 	>
 		<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
 			<ion-chip *ngFor="let i of items">
-				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar
+					><ion-img #img [src]="i.Code ? imgPath + i.Code + '.jpg' : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+				></ion-avatar>
 				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
 				<ion-icon (click)="clear(i)" name="close-circle"></ion-icon>
 			</ion-chip>
 		</ng-template>
 		<ng-template ng-label-tmp let-i="item">
 			<ion-chip *ngIf="i">
-				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar
+					><ion-img #img [src]="i.Code ? imgPath + i.Code + '.jpg' : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+				></ion-avatar>
 				<ion-label *ngIf="i.FullName">{{ i.FullName }}</ion-label>
 			</ion-chip>
 		</ng-template>
 		<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
 			<div *ngIf="i">
-				<ion-avatar><ion-img #img [src]="i.Code? (imgPath + i.Code + '.jpg') : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img></ion-avatar>
+				<ion-avatar
+					><ion-img #img [src]="i.Code ? imgPath + i.Code + '.jpg' : 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img
+				></ion-avatar>
 				<span [ngOptionHighlight]="search">{{ i.FullName }}</span
 				><br />
 				<small
@@ -425,6 +458,42 @@
 		rows="3"
 	></textarea>
 
+	<div *ngSwitchCase="'formula'" class="editor-container">
+		<div style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);" id="monaco-editor"></div>
+		<ion-button fill="outline" size="small" (click)="saveContent()" class="formula-button save-button">
+			<ion-icon slot="icon-only" name="save-outline"></ion-icon>
+		</ion-button>
+		<ion-button fill="outline" size="small" (click)="openFormulaModal()" class="formula-button zoom-button">
+			<ion-icon slot="icon-only" name="expand-outline"></ion-icon>
+		</ion-button>
+	</div>
+	<!-- fomular -->
+	<!-- <div id="monaco-editor" *ngSwitchCase="'formula'" style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);"></div> -->
+	<!-- <ion-accordion-group *ngSwitchCase="'fomular'"[id]="id" [value]="'afterScirpt'" multiple="true">
+		<ion-accordion value="afterScirpt" fixed style="background: transparent">
+			<ion-item slot="header" color="light">
+				<ion-label>{{ 'Script' | translate }}</ion-label>
+				<ion-button fill="clear" title="Save" (click)="$event.stopPropagation();onInputChange($event)">
+					<ion-icon name="save-outline"></ion-icon>
+				</ion-button>
+			</ion-item>
+			<div slot="content" style="background: transparent">
+				<div [id]="chartScriptId" style="min-height: calc(100vh - 300px); width: 100%">
+				</div>
+			</div>
+		</ion-accordion>
+	</ion-accordion-group> -->
+	<!-- <textarea
+		type="textarea"
+		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		class="c-input remark"
+		[id]="id"
+		placeholder="{{ placeholder | translate }}"
+		[formControlName]="id"
+		(change)="onInputChange($event)"
+		(keydown)="onKeydown($event)"
+		rows="3"
+	></textarea> -->
 	<!-- branch-breadcrumbs -->
 	<app-branch-breadcrumbs
 		*ngSwitchCase="'branch-breadcrumbs'"

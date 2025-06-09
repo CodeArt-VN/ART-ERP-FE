@@ -44,6 +44,7 @@ import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-comp
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
+import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,6 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
 		POSAddContactModalPage,
 		POSCancelModalPage,
 		POSNotifyModalPage,
+		AdvanceFilterModalComponent
 	],
 	exports: [],
 	bootstrap: [AppComponent],
