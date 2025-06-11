@@ -1,4 +1,4 @@
-<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc">
+<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc" [minHeight]="emptyMessage?.minHeight" [showImg]="emptyMessage?.showImg">
 	<ng-container *ngIf="emptyMessage">
 		<ng-template [ngTemplateOutlet]="emptyMessage.emptyMessageTemplate" [ngTemplateOutletContext]="{}"></ng-template>
 	</ng-container>

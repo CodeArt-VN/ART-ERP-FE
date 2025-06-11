@@ -228,7 +228,7 @@ app-data-table,
 			width: 100%;
 		}
 
-		small {
+		>small {
 			// border-left: solid 3px rgba(var(--ion-color-primary-rgb, 0, 0, 0), .2);;
 			margin: 1px 2px;
 			padding: 2px 4px;
@@ -292,6 +292,7 @@ app-data-table,
 
 		&.money {
 			justify-content: flex-end;
+			text-align: right;
 		}
 
 		.min-btn {
@@ -502,6 +503,9 @@ app-data-table,
 
 		> a {
 			padding: 1px 7px;
+		}
+		.c-input {
+			text-align: center;
 		}
 	}
 
