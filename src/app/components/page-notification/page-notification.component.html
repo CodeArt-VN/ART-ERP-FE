@@ -1,0 +1,12 @@
+<ul>
+	<li *ngFor="let i of items">
+		<a [href]="'#/' + i.Link" (click)="readNoti(i)" [ngStyle]="{ color: i.IsRead ? 'gray' : 'black' }">
+			<strong>{{ i.Title }}</strong
+			><br />
+			<span>{{ i.Body }}</span>
+		</a>
+		<button (click)="deleteNoti(i,$event)" style="float: right; background: none; border: none; color: red; cursor: pointer">
+			<ion-icon name="trash-outline" size="medium" color="primary" slot="icon-only"></ion-icon>
+		</button>
+	</li>
+</ul>

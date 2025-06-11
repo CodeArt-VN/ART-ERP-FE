@@ -102,6 +102,9 @@ export class EnvService {
 	/** Last message was shown */
 	lastMessage = '';
 
+	/** FCM token */
+	NotifyToken
+
 	/** app event tracking */
 	public EventTracking = new Subject<any>();
 

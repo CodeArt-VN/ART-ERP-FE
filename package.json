@@ -65,6 +65,7 @@
 		"@ngx-translate/core": "^16.0.0",
 		"@ngx-translate/http-loader": "^16.0.0",
 		"angular-gridster2": "^19.0.0",
+		"firebase": "^11.7.3",
 		"intro.js": "^7.0.0",
 		"ionicons": "^7.0.0",
 		"jsrsasign": "^11.0.0",
