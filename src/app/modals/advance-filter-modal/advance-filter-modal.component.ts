@@ -73,10 +73,12 @@ export class AdvanceFilterModalComponent implements OnInit {
 
 						console.log('Schema:', this.selectedSchema);
 					} else {
+						this.closeModal();
 						this.env.showMessage('Cannot get schema !', 'danger');
 					}
 				})
 				.catch((error) => {
+					this.closeModal();
 					this.env.showMessage('Cannot get schema !', 'danger');
 				});
 		} else {
