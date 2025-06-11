@@ -62,8 +62,3 @@
 	path = src/app/pages/PR
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-PR.git
 	branch = main
-
-[submodule "src/app/pages/OSM"]
-	path = src/app/pages/OSM
-	url = https://github.com/CodeArt-VN/ART-ERP-FE-OSM.git
-	branch = main
