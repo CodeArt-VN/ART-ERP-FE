@@ -711,6 +711,12 @@ app-data-table,
 				}
 			}
 
+			.row.divider, .row.divider:hover{
+				padding: 0;
+			    background-color: transparent;
+			    border: none;
+			}
+
 			.row {
 				flex-wrap: wrap;
 				padding: 16px 100px 16px 35px;

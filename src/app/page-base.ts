@@ -65,6 +65,7 @@ export abstract class PageBase implements OnInit {
 		isSubActive: false,
 		isFeatureAsMain: false,
 		sort: [],
+		dividers: [],
 
 		ShowAdd: true,
 		ShowSearch: true,
@@ -180,6 +181,26 @@ export abstract class PageBase implements OnInit {
 
 			if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
 				this.formGroup?.disable();
+			}
+		}
+		//set dividers for items
+		
+		
+		else if (this.pageConfig.dividers?.length && this.pageConfig.sort?.length > 0) {
+
+			console.log('loadedData', this.pageConfig.dividers, this.pageConfig.sort);
+			//Find the divider field by the first sort field
+			const divider = this.pageConfig.dividers.find((d) =>  d.field === this.pageConfig.sort[0].Dimension );
+			//If divider is found, then apply the divider function to each item
+			if (divider) {
+				console.log('Applying divider:', divider.field);
+				
+				this.items.forEach((item, index) => {
+					const dividerValue = divider.dividerFn(item, index, this.items);
+					if (dividerValue) {
+						item['_divider'] = dividerValue;
+					}
+				});
 			}
 		}
 	}

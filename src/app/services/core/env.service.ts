@@ -736,9 +736,9 @@ export class EnvService {
 		});
 	}
 
-	getWarehouses(getParents = true): Promise<any[]> {
+	getWarehouses(getParents = true, IgnoredSelectedBranch = false): Promise<any[]> {
 		return new Promise((resolve) => {
-			this.searchBranch((branch) => branch.Type === 'Warehouse' && this.selectedBranchAndChildren.includes(branch.Id)).then((warehouses) => {
+			this.searchBranch((branch) => branch.Type === 'Warehouse' && (this.selectedBranchAndChildren.includes(branch.Id) || IgnoredSelectedBranch)).then((warehouses) => {
 				if (getParents) {
 					resolve(warehouses);
 					

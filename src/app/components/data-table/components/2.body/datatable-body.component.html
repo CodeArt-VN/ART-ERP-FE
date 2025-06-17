@@ -7,6 +7,9 @@
 <!-- [style.height]="calculateContainerHeight()" autosize -->
 <div *ngIf="rows.length && !showSpinner">
 	<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
+		<div class="row divider" *ngIf="row._divider">
+			<div class="cell">{{row._divider}}</div>
+		</div>
 		<datatable-body-row
 			class="row"
 			[ngClass]="{ selected: row.checked, bold: row.HasChild }"
