@@ -98,6 +98,10 @@ export class ToolbarComponent implements OnInit {
 		this.page.import(event);
 	}
 
+	openAdvanceFilter(){
+		this.page.openAdvanceFilter();	
+	}
+
 	@ViewChild('toolBarPopover') toolBarPopover;
 	isToolBarPopoverOpen = false;
 	presentToolBarPopover(e: Event) {

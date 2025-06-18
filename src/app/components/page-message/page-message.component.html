@@ -1,17 +1,22 @@
-<div class="message-container" *ngIf="showSpinner || !itemsLength">
+
+<div
+	class="message-container"
+	*ngIf="showSpinner || !itemsLength"
+	[ngStyle]="{'min-height': minHeight}"
+>
 	<div *ngIf="showSpinner" class="page-loading">
 		<ion-spinner name="dots"></ion-spinner>
 	</div>
 	<div class="empty-message" *ngIf="!itemsLength && showSpinner == false">
-		<div class="icon">
+		<div class="icon" *ngIf="showImg">
 			<img appSvgImage style="width: 51vw; max-width: 300px" [src]="_imgSrc" />
 		</div>
 		<div class="message">
-			<div class="title">
+			<div class="title" *ngIf="message">
 				{{ message | translate }}
 			</div>
 			<div class="detail">
-				<ion-text>
+				<ion-text *ngIf="subMessage">
 					{{ subMessage | translate }}
 				</ion-text>
 				<ng-content></ng-content>

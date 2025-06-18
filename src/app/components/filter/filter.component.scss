@@ -43,8 +43,8 @@
 			}
 			.col-code {
 				order: 2 !important;
-				min-width: 75px !important;
-				max-width: 75px !important;
+				min-width: 100px !important;
+				max-width: 100px !important;
 				span {
 					border-left: unset !important;
 					background-color: unset !important;
@@ -55,7 +55,7 @@
 			.col-name {
 				order: 1 !important;
 				min-width: 0 !important;
-				max-width: calc(100% - 75px) !important;
+				max-width: calc(100% - 100px) !important;
 			}
 
 			.col-value {
@@ -99,6 +99,7 @@
 		@include smallWidth;
 	}
 }
+// override container cha
 
 .drag-list {
 	// background: white;

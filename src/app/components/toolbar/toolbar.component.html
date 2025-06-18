@@ -35,8 +35,7 @@
 
 	<!-- slot-end -->
 	<ion-buttons slot="end" [collapse]="true">
-		<ng-content></ng-content>
-		<ng-content select="[rightScreen]"></ng-content>
+		<ng-content *ngIf="!page.selectedItems?.length"></ng-content>
 
 		<!-- Add -->
 		<ion-button

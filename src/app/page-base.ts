@@ -7,6 +7,7 @@ import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap
 import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
+import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 
 @Component({
 	template: '',
@@ -40,7 +41,7 @@ export abstract class PageBase implements OnInit {
 		Take: 100,
 		Skip: 0,
 	};
-
+	schemaPage: any;
 	pageConfig: any = {
 		pageCode: '',
 		pageName: '',
@@ -64,6 +65,7 @@ export abstract class PageBase implements OnInit {
 		isSubActive: false,
 		isFeatureAsMain: false,
 		sort: [],
+		dividers: [],
 
 		ShowAdd: true,
 		ShowSearch: true,
@@ -179,6 +181,26 @@ export abstract class PageBase implements OnInit {
 
 			if (!(this.pageConfig.canEdit || (this.pageConfig.canAdd && this.item.Id == 0) || ignoredFromGroup)) {
 				this.formGroup?.disable();
+			}
+		}
+		//set dividers for items
+		
+		
+		else if (this.pageConfig.dividers?.length && this.pageConfig.sort?.length > 0) {
+
+			console.log('loadedData', this.pageConfig.dividers, this.pageConfig.sort);
+			//Find the divider field by the first sort field
+			const divider = this.pageConfig.dividers.find((d) =>  d.field === this.pageConfig.sort[0].Dimension );
+			//If divider is found, then apply the divider function to each item
+			if (divider) {
+				console.log('Applying divider:', divider.field);
+				
+				this.items.forEach((item, index) => {
+					const dividerValue = divider.dividerFn(item, index, this.items);
+					if (dividerValue) {
+						item['_divider'] = dividerValue;
+					}
+				});
 			}
 		}
 	}
@@ -1131,5 +1153,82 @@ export abstract class PageBase implements OnInit {
 		};
 		recursiveFunc(form);
 		return invalidControls;
+	}
+
+	getAdvaneFilterConfig() {
+		if (!this.query._AdvanceConfig) {
+			this.query._AdvanceConfig = {
+				Schema: {
+					Code: this.pageProvider.serviceName,
+					Type: 'Form',
+				},
+				TimeFrame: {
+					From: {
+						Type: 'Relative',
+						IsPastDate: true,
+						Period: 'Day',
+						Amount: 1,
+					},
+					To: {
+						Type: 'Relative',
+						IsPastDate: true,
+						Period: 'Day',
+						Amount: 0,
+					},
+				},
+				CompareTo: {
+					Type: 'Relative',
+					IsPastDate: true,
+					Period: 'Day',
+					Amount: 0,
+				},
+				Interval: {},
+				CompareBy: [],
+				MeasureBy: [],
+				Transform: {
+					Filter: {
+						Dimension: 'logical',
+						Operator: 'AND',
+						Value: null,
+						Logicals: [],
+					},
+				},
+			};
+			// if (advanceFilterRules[this.pageProvider.serviceName]) {
+			// 	this.query._AdvanceConfig = lib.cloneObject(advanceFilterRules[this.pageProvider.serviceName]);
+			// }
+		}
+	}
+
+	// khi muốn thay đổi config mặc định thì chỉ cần overload getAdvaneFilterConfig() trong component con
+	// vd trong page: scheduler.page.ts
+	async openAdvanceFilter(callback?: (data: any) => void) {
+		this.getAdvaneFilterConfig();
+		const modal = await this.modalController.create({
+			component: AdvanceFilterModalComponent,
+			cssClass: 'modal90',
+			componentProps: {
+				_AdvanceConfig: this.query._AdvanceConfig,
+				schemaType: 'Form',
+				selectedSchema: this.schemaPage,
+			},
+		});
+		await modal.present();
+		const { data } = await modal.onWillDismiss();
+		if (data) {
+			if (data.isApplyFilter) this.query._AdvanceConfig = data?.data;
+			if (data.schema) this.schemaPage = data?.schema;
+			if (data.data) {
+				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.query)).then((resp) => {
+					if (resp && resp.data) {
+						if (callback) callback(resp['data']);
+						else {
+							this.items = resp['data'];
+							this.loadedData();
+						}
+					} else this.env.showMessage('No data found!', 'warning');
+				});
+			}
+		}
 	}
 }

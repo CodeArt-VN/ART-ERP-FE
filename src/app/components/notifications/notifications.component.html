@@ -1,0 +1,60 @@
+<ion-header>
+	<ion-toolbar color="clear">
+		<ion-buttons slot="end" (click)="presentCopyPopover($event)">
+			<ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+		</ion-buttons>
+		<ion-popover #morePopover [isOpen]="isOpenPopover" (didDismiss)="isOpenPopover = false">
+			<ng-template>
+				<ion-content scroll-y="false">
+					<ion-list lines="none"></ion-list>
+					<ion-item *ngIf="selectedNotification.length > 0" [button]="true" [detail]="false" (click)="morePopover.dismiss(); markAsRead();" title="{{ 'Mark as read' | translate }}">
+						<ion-icon name="checkmark-done-outline" color="success" slot="start"></ion-icon>
+						<ion-label> {{ 'Mark as read' | translate }}</ion-label>
+					</ion-item>
+					<ion-item *ngIf="selectedNotification.length == 0" [button]="true" [detail]="false" (click)="morePopover.dismiss(); markAsRead();" title="{{ 'Mark all as read' | translate }}">
+						<ion-icon name="checkmark-done-outline" color="success" slot="start"></ion-icon>
+						<ion-label> {{ 'Mark all as read' | translate }}</ion-label>
+					</ion-item>
+					<ion-item *ngIf="selectedNotification.length > 0" [button]="true" [detail]="false" (click)="morePopover.dismiss(); markAsUnRead();" title="{{ 'Mark as unread' | translate }}">
+						<ion-icon name="checkmark-outline" color="warning" slot="start"></ion-icon>
+						<ion-label> {{ 'Mark as unread' | translate }}</ion-label>
+					</ion-item>
+					<ion-item *ngIf="selectedNotification.length == 0" [button]="true" [detail]="false" (click)="morePopover.dismiss(); markAsUnRead();" title="{{ 'Mark all as unread' | translate }}">
+						<ion-icon name="checkmark-outline" color="warning" slot="start"></ion-icon>
+						<ion-label> {{ 'Mark all as unread' | translate }}</ion-label>
+					</ion-item>
+					<ion-item [button]="true" [detail]="false" (click)="morePopover.dismiss(); nav('notification-setting')" title="{{ 'Notification settings' | translate }}">
+						<ion-icon name="settings-outline" color="primary" slot="start"></ion-icon>
+						<ion-label> {{ 'Notification settings' | translate }}</ion-label>
+					</ion-item>
+					<ion-item [button]="true" *ngIf="selectedNotification.length > 0"  [detail]="false" (click)="morePopover.dismiss(); deleteNoti();" title="{{ 'Delete' | translate }}">
+						<ion-icon name="trash-outline" color="primary" slot="start"></ion-icon>
+						<ion-label> {{ 'Delete' | translate }}</ion-label>
+					</ion-item>
+					<ion-item [button]="true" *ngIf="selectedNotification.length == 0"   [detail]="false" (click)="morePopover.dismiss(); deleteNoti();" title="{{ 'Delete all' | translate }}">
+						<ion-icon name="trash-bin-outline" color="danger" slot="start"></ion-icon>
+						<ion-label> {{ 'Delete all' | translate }}</ion-label>
+					</ion-item>
+
+				</ion-content></ng-template
+			>
+		</ion-popover>
+	</ion-toolbar>
+</ion-header>
+
+<ion-list lines="full">
+	<ion-item *ngFor="let i of items" (click)="readNoti(i)" detail="false" button class="ion-no-padding">
+		<input type="checkbox" class="c-checkbox" slot="start" [(ngModel)]="i.isChecked" (click)="selectNotification(i, $event)" />
+		<ion-avatar slot="start">
+			<img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+		</ion-avatar>
+		<ion-label>
+			<h2 [ngClass]="{ bold: !i.IsRead }" [innerHTML]="i.Title | translate | safeHtml"></h2>
+			<small [innerHTML]="i.Body | translate | safeHtml"></small>
+		</ion-label>
+		<ion-icon *ngIf="!i.IsRead" slot="end" color="primary" size="small" name="ellipse-sharp"></ion-icon>
+	</ion-item>
+</ion-list>
+<ion-infinite-scroll color="primary" threshold="30%" (ionInfinite)="loadData()" [disabled]="isEndOfData">
+	<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+</ion-infinite-scroll>

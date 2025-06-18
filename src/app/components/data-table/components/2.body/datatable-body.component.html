@@ -1,4 +1,4 @@
-<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc">
+<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc" [minHeight]="emptyMessage?.minHeight" [showImg]="emptyMessage?.showImg">
 	<ng-container *ngIf="emptyMessage">
 		<ng-template [ngTemplateOutlet]="emptyMessage.emptyMessageTemplate" [ngTemplateOutletContext]="{}"></ng-template>
 	</ng-container>
@@ -7,6 +7,9 @@
 <!-- [style.height]="calculateContainerHeight()" autosize -->
 <div *ngIf="rows.length && !showSpinner">
 	<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
+		<div class="row divider" *ngIf="row._divider">
+			<div class="cell">{{row._divider}}</div>
+		</div>
 		<datatable-body-row
 			class="row"
 			[ngClass]="{ selected: row.checked, bold: row.HasChild }"

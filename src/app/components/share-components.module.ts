@@ -28,6 +28,8 @@ import { PipesModule } from '../pipes/pipes.module';
 import { ReorderComponent } from './reorder/reorder.component';
 import { JsonViewerComponent } from './json-viewer/json-viewer.component';
 import { FormatQuantityComponent } from './format-quantity/format-quantity.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { PageNotificationComponent } from './page-notification/page-notification.component';
 
 @NgModule({
 	imports: [
@@ -60,6 +62,8 @@ import { FormatQuantityComponent } from './format-quantity/format-quantity.compo
 		ReorderComponent,
 		JsonViewerComponent,
 		FormatQuantityComponent,
+		NotificationsComponent,
+		PageNotificationComponent,
 	],
 	exports: [
 		HelpDetailComponent,
@@ -80,6 +84,8 @@ import { FormatQuantityComponent } from './format-quantity/format-quantity.compo
 		ReactiveFormsModule,
 		JsonViewerComponent,
 		FormatQuantityComponent,
+		NotificationsComponent,
+		PageNotificationComponent,
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,

@@ -102,6 +102,9 @@ export class EnvService {
 	/** Last message was shown */
 	lastMessage = '';
 
+	/** FCM token */
+	NotifyToken
+
 	/** app event tracking */
 	public EventTracking = new Subject<any>();
 
@@ -248,6 +251,11 @@ export class EnvService {
 			this.translateResource(value ? { ...value, code: header } : header),
 		]).then((values: any) => {
 			let translatedMessage = values[0];
+			// Check if translatedMessage is an array, if so, join it with a line break
+			if (Array.isArray(translatedMessage)) {
+				translatedMessage = translatedMessage.join('<br>');
+			}
+
 			if (this.lastMessage == translatedMessage) return;
 			this.lastMessage = translatedMessage;
 
@@ -430,7 +438,14 @@ export class EnvService {
 		return new Promise((resolve) => {
 			if (resource == null) {
 				resolve(null);
-			} else {
+			} 
+			// Check if resource ís an array then translate each item and return an array of translated items
+			else if (Array.isArray(resource)) {
+				Promise.all(resource.map(item => this.translateResource(item))).then(translatedItems => {
+					resolve(translatedItems);
+				});
+			}
+			else {
 				let key = typeof resource === 'object' ? resource.code : resource;
 				let value = typeof resource === 'object' ? resource : { value: null };
 
@@ -718,6 +733,19 @@ export class EnvService {
 			const result = this.rawBranchList.filter((branch) => parentIds.has(branch.Id) || matchedBranches.includes(branch));
 
 			resolve(lib.cloneObject(result));
+		});
+	}
+
+	getWarehouses(getParents = true, IgnoredSelectedBranch = false): Promise<any[]> {
+		return new Promise((resolve) => {
+			this.searchBranch((branch) => branch.Type === 'Warehouse' && (this.selectedBranchAndChildren.includes(branch.Id) || IgnoredSelectedBranch)).then((warehouses) => {
+				if (getParents) {
+					resolve(warehouses);
+					
+				} else {
+					resolve(warehouses.filter(d=>d.Type === 'Warehouse'));
+				}
+			});
 		});
 	}
 

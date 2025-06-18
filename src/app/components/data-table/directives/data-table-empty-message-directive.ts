@@ -10,6 +10,8 @@ export class DataTableEmptyMessageDirective {
 	@Input() message: string;
 	@Input() subMessage: string;
 	@Input() imgSrc: string;
+	@Input() showImg: boolean = true;
+	@Input() minHeight: string = '50vh';
 	@Input('emptyMessageTemplate') _emptyMessageTemplateInput: TemplateRef<any>;
 
 	@ContentChild(DataTableEmptyMessageTemplateDirective, {
