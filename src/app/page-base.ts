@@ -184,17 +184,14 @@ export abstract class PageBase implements OnInit {
 			}
 		}
 		//set dividers for items
-		
-		
 		else if (this.pageConfig.dividers?.length && this.pageConfig.sort?.length > 0) {
-
 			console.log('loadedData', this.pageConfig.dividers, this.pageConfig.sort);
 			//Find the divider field by the first sort field
-			const divider = this.pageConfig.dividers.find((d) =>  d.field === this.pageConfig.sort[0].Dimension );
+			const divider = this.pageConfig.dividers.find((d) => d.field === this.pageConfig.sort[0].Dimension);
 			//If divider is found, then apply the divider function to each item
 			if (divider) {
 				console.log('Applying divider:', divider.field);
-				
+
 				this.items.forEach((item, index) => {
 					const dividerValue = divider.dividerFn(item, index, this.items);
 					if (dividerValue) {
@@ -920,6 +917,8 @@ export abstract class PageBase implements OnInit {
 				this.pageConfig.pageColor = currentForm.BadgeColor;
 				this.pageConfig.pageRemark = currentForm.Remark;
 				this.pageConfig.canEditHelpContent = true;
+
+				this.env.publishEvent({ Code: 'app:ViewDidEnter', Value: currentForm });
 
 				let permissionList = this.env.user.Forms.filter((d) => d.IDParent == currentForm.Id);
 				if (permissionList.length) {

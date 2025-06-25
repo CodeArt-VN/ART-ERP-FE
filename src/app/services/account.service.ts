@@ -264,6 +264,8 @@ export class AccountService {
 								})
 								.catch((err) => reject(err));
 						});
+					}else{
+						this.logout();
 					}
 				})
 				.catch((err) => reject(err));
