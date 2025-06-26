@@ -160,4 +160,18 @@ export var toolbarCommandRules = {
 		['Approved',		0,					0,				0,					0,				0,				0,				0],
 	],
 
+	HRM_StaffPayroll: [
+		['Btns',			'ChangeBranch',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive', 		'Calculate',		'Export',			'Import',		'ConfigPayroll',	'ExportAllData',	'ExportInputData',	'ImportAllData',	'ImportInputData',		'SendPayslip'],
+		['Draft',			1,					1,				0,					1,				0,				1,				1,				1,					1,					1,				1,					1,					1,					1,					1,						0],
+		['Unapproved',		1,					1,				0,					0,				1,				1,				1,				1,					1,					1,				1,					1,					1,					1,					1,						0],
+		['Submitted',		0,					0,				1,					1,				0,				0,				0,				0,					1,					0,				0,					1,					1,					0,					0,						0],
+		['Approved',		0,					0,				0,					0,				0,				0,				0,				0,					1,					0,				0,					1,					1,					0,					0,						1],
+	],
+	HRM_TimesheetCycle: [
+		['Btns',			'ChangeBranch',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive'],
+		['Draft',			1,					1,				0,					1,				0,				1,				1],
+		['Submitted',		0,					0,				1,					1,				0,				0,				0],
+		['Unapproved',		1,					1,				0,					0,				1,				1,				1],
+		['Approved',		0,					0,				0,					0,				0,				0,				0],
+	],
 };
