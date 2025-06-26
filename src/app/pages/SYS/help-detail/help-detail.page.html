@@ -29,7 +29,7 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="ion-padding" style="height: 100vh">
-	<div class="main-view" *ngIf="showEditorContent">
+	<!-- <div class="main-view" *ngIf="showEditorContent">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">
 				<ion-row class="hr-group">
@@ -41,9 +41,15 @@
 				</ion-row>
 			</form>
 		</ion-grid>
-	</div>
+	</div> -->
 
 	<ion-grid fixed *ngIf="!showEditorContent && item?.Content">
+		<ion-row>
+			<ion-col>
+				<h1>{{item.Name}}</h1>
+				<blockquote>{{item.Summary}}</blockquote>
+			</ion-col>
+		</ion-row>
 		<ion-row>
 			<ion-col>
 				<div [innerHtml]=" item?.Content | safeHtml" class="ql-editor"></div>
@@ -51,62 +57,70 @@
 		</ion-row>
 	</ion-grid>
 
-	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false && showEditorContent">
-		<div class="row-full shadow full-screen">
-			<ion-toolbar color="primary">
-				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
-					<ion-segment-button value="s1">
-						<ion-label>{{'Content' | translate}}</ion-label>
-					</ion-segment-button>
-					<ion-segment-button value="s2">
-						<ion-label>{{'Other information' | translate}}</ion-label>
-					</ion-segment-button>
-				</ion-segment>
-			</ion-toolbar>
-			<form [formGroup]="formGroup" id="screenEditor">
-				<div class="ion-padding" *ngIf="segmentView == 's1'">
-					<!-- Create the editor container -->
-					<div #quillEditor style="min-height: calc(100vh - 400px)" id="editor" [innerHTML]="contentBefore | safeHtml"></div>
-					<div class="c-control ion-text-right">
-						<label class="c-label" for=""></label>
-						<ion-button (click)="saveChange()">{{'Save' | translate}}</ion-button>
+	<ion-grid fixed *ngIf="item && pageConfig.showSpinner==false && showEditorContent">
+		<ion-row>
+			<ion-col>
+				<ion-toolbar color="primary">
+					<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+						<ion-segment-button value="s1">
+							<ion-label>{{'Content' | translate}}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="s2">
+							<ion-label>{{'Other information' | translate}}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+				</ion-toolbar>
+
+				<form [formGroup]="formGroup" id="screenEditor">
+					<div *ngIf="segmentView == 's1'">
+						<!-- Create the editor container -->
+						<div #quillEditor style="min-height: calc(100vh - 400px)" id="editor" [innerHTML]="contentBefore | safeHtml"></div>
+						<div class="c-control ion-text-right">
+							<label class="c-label" for=""></label>
+							<ion-button (click)="saveChange()">{{'Save' | translate}}</ion-button>
+						</div>
 					</div>
+				</form>
+
+				<!-- Order information -->
+				<div *ngIf="segmentView == 's2'" class="ion-padding">
+					<ion-grid fixed>
+						<form [formGroup]="formGroup">
+							<!-- Other information -->
+							<ion-row class="hr-group">
+								<ion-col size="12">
+									<app-form-control *ngIf="item.Id" [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }" (change)="saveChange()">
+									</app-form-control>
+
+									<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
+
+									<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
+
+									<app-form-control [field]="{id:'Summary', type : 'textarea', label: 'Summary', form : formGroup }" (change)="saveChange()"></app-form-control>
+
+									<app-form-control *ngIf="item.Id" [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
+									<app-form-control
+										*ngIf="item.Id"
+										[field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"
+									></app-form-control>
+									<app-form-control *ngIf="item.Id" [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
+									<app-form-control
+										*ngIf="item.Id"
+										[field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
+									></app-form-control>
+									<app-form-control
+										*ngIf="item.Id"
+										[field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"
+									></app-form-control>
+									<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
+								</ion-col>
+							</ion-row>
+						</form>
+					</ion-grid>
 				</div>
-			</form>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 
-			<!-- Order information -->
-			<div *ngIf="segmentView == 's2'" class="ion-padding">
-				<ion-grid fixed>
-					<form [formGroup]="formGroup">
-						<!-- Other information -->
-						<ion-row class="hr-group">
-							<ion-col size="12">
-								<app-form-control *ngIf="item.Id" [field]="{id:'Id', label: 'Id', type : 'number', form : formGroup }" (change)="saveChange()"> </app-form-control>
-
-								<app-form-control [field]="{id:'Code', label: 'Code', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
-
-								<app-form-control [field]="{id:'Name', label: 'Name', type : 'text', form : formGroup }" (change)="saveChange()"></app-form-control>
-
-								<app-form-control [field]="{id:'Summary', type : 'textarea', label: 'Summary', form : formGroup }" (change)="saveChange()"></app-form-control>
-
-								<app-form-control *ngIf="item.Id" [field]="{id:'CreatedBy', type : 'text', label: 'Created by', form : formGroup }"></app-form-control>
-								<app-form-control *ngIf="item.Id" [field]="{id:'CreatedDate', type : 'span-datetime', label: 'Created date', form : formGroup }"></app-form-control>
-								<app-form-control *ngIf="item.Id" [field]="{id:'ModifiedBy', type : 'text', label: 'Last modified by', form : formGroup }"></app-form-control>
-								<app-form-control
-									*ngIf="item.Id"
-									[field]="{id:'ModifiedDate', type : 'span-datetime', label: 'Last modified date', form : formGroup }"
-								></app-form-control>
-								<app-form-control
-									*ngIf="item.Id"
-									[field]="{id:'IDBranch', type : 'branch-breadcrumbs', label: 'Branch', form : formGroup, dataSource:env.branchList }"
-								></app-form-control>
-								<app-form-control [field]="{id:'Remark', type : 'textarea', label: 'Remark', form : formGroup }" (change)="saveChange()"></app-form-control>
-							</ion-col>
-						</ion-row>
-					</form>
-				</ion-grid>
-			</div>
-		</div>
-	</div>
 	<app-page-message [itemsLength]="(item && item?.Id != 0)  || showEditorContent ? 1 : 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>
