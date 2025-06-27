@@ -77,7 +77,7 @@ export class HelpDetailComponent extends PageBase {
 			IDBranch: new FormControl({ value: null, disabled: false }),
 			IDCategory: [''],
 			IDParent: [''],
-			Id: new FormControl({ value: '', disabled: true }),
+			Id: new FormControl({ value: 0, disabled: true }),
 			Code: new FormControl({ value: '', disabled: true }),
 			Name: ['', Validators.required],
 			Remark: [''],
