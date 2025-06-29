@@ -454,6 +454,7 @@ export class AppComponent implements OnInit {
 
 	lastForm = null;
 	focusMenuOnPageEnter(currentForm, force = false) {
+		if(!currentForm) return;
 		if (force == false && (!currentForm || currentForm.Id === this.lastForm?.Id)) return;
 		this.lastForm = currentForm;
 
