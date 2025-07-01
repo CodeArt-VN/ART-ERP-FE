@@ -1,6 +1,6 @@
 {
 	"name": "vn.codeart.erp",
-	"version": "0.20.45",
+	"version": "0.20.46",
 	"description": "ERP",
 	"author": "Hùng Vũ",
 	"homepage": "https://codeart.vn/",
@@ -13,6 +13,7 @@
 		"lint": "ng lint",
 		"run-ios": "ionic capacitor run ios -l --external",
 		"updateBuild": "node ./replace.build.js",
+		"build-web": "npm version patch --no-git-tag-version && node ./replace.build.js && ionic build --prod",
 		"build-prod": "npm version patch --no-git-tag-version && node ./replace.build.js && ionic cap sync --prod",
 		"live-android": "ionic cap run android -l --external --target R58RC47AGEW",
 		"dev": "ionic serve --external --no-open --ssl",
@@ -56,6 +57,7 @@
 		"@fullcalendar/interaction": "^6.0.0",
 		"@fullcalendar/resource-daygrid": "^6.0.0",
 		"@fullcalendar/resource-timeline": "^6.0.0",
+		"@fullcalendar/timegrid": "^6.1.17",
 		"@ionic/angular": "^8.0.0",
 		"@ionic/storage-angular": "^4.0.0",
 		"@messageformat/core": "^3.4.0",

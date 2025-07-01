@@ -128,12 +128,15 @@ export class AppComponent implements OnInit {
 						this.loadPinnedMenu();
 						this.loadNotifications();
 						this.updateStatusbar();
+						this.focusMenuOnPageEnter(this.lastForm, true);
 					}
 					break;
 				case 'app:notification':
 					this.loadNotifications();
 					break;
-
+				case 'app:ViewDidEnter':
+					this.focusMenuOnPageEnter(data.Value);
+					break;
 				case 'app:loadLang':
 					this.env.getStorage('lang').then((lang) => {
 						if (lang) {
@@ -168,15 +171,14 @@ export class AppComponent implements OnInit {
 			if (ga && event instanceof NavigationEnd) {
 				ga('set', 'page', 'test/' + event.urlAfterRedirects);
 				ga('send', 'pageview');
-				//console.log(event.urlAfterRedirects);
+				console.log(event.urlAfterRedirects);
 			}
 
-			// if (event) {
-			//   //console.log(event);
-
-			//   // (<any>window).ga('set', 'page', event.urlAfterRedirects);
-			//   // (<any>window).ga('send', 'pageview');
-			// }
+			if (event) {
+				//console.log(event);
+				// (<any>window).ga('set', 'page', event.urlAfterRedirects);
+				// (<any>window).ga('send', 'pageview');
+			}
 		});
 		this.branchFormGroup = this.formBuilder.group({
 			IDBranch: [''],
@@ -455,6 +457,32 @@ export class AppComponent implements OnInit {
 	}
 	toogleMenu() {
 		this.showAppMenu = !this.showAppMenu;
+	}
+
+	lastForm = null;
+	focusMenuOnPageEnter(currentForm, force = false) {
+		if(!currentForm) return;
+		if (force == false && (!currentForm || currentForm.Id === this.lastForm?.Id)) return;
+		this.lastForm = currentForm;
+
+		//Find the menu item by page.PageName
+		//Loop to Find parent menu item if exists then set isShowForm = true
+		let menuItem = this.env.user.Forms.find((f) => f.Id === currentForm.Id);
+		const parentForms = this.getAllParentForms(menuItem);
+		if (!(parentForms[0]?.isShowDetail == true)) this.toogleMenuGroup(parentForms[0]);
+		if (!(parentForms[1]?.isShowForm == true)) this.toogleMenuForm(parentForms[1]);
+	}
+
+	getAllParentForms(form) {
+		let parentForms = [];
+		let currentForm = form;
+
+		while (currentForm) {
+			parentForms.push(currentForm);
+			currentForm = this.env.user.Forms.find((f) => f.Id == currentForm.IDParent);
+		}
+
+		return parentForms.reverse();
 	}
 
 	toogleMenuGroup(f) {
