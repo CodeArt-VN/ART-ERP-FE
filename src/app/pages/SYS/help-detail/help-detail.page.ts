@@ -77,7 +77,7 @@ export class HelpDetailComponent extends PageBase {
 			IDBranch: new FormControl({ value: null, disabled: false }),
 			IDCategory: [''],
 			IDParent: [''],
-			Id: new FormControl({ value: '', disabled: true }),
+			Id: new FormControl({ value: 0, disabled: true }),
 			Code: new FormControl({ value: '', disabled: true }),
 			Name: ['', Validators.required],
 			Remark: [''],
@@ -186,6 +186,19 @@ export class HelpDetailComponent extends PageBase {
 					this.formGroup.controls.Content.setValue(null);
 				}
 			});
+
+			const editorContainer = document.querySelector('#editor .ql-editor') as HTMLElement;
+			if (editorContainer) {
+				editorContainer.style.backgroundColor = '#ffffff';
+				editorContainer.style.height = '100%';
+				editorContainer.style.width = '100%';
+				editorContainer.style.minHeight = 'calc(-400px + 100vh)';
+			}
+			const editorParent = document.querySelector('#editor') as HTMLElement;
+			if (editorParent) {
+				editorParent.style.height = '100%';
+				editorParent.style.width = '100%';
+			}
 
 			// icon fullscreen
 			const toolbarCustom = this.editor.getModule('toolbar');
@@ -368,7 +381,7 @@ export class HelpDetailComponent extends PageBase {
 
 	preView() {
 		this.showEditorContent = false;
-		this.item.Content = this.item.Content ?? this.editor?.root?.innerHTML ?? '';
+		this.item.Content = this.editor?.root?.innerHTML;
 		this.contentBefore = this.item.Content;
 	}
 
@@ -379,6 +392,9 @@ export class HelpDetailComponent extends PageBase {
 	segmentView = 's1';
 	segmentChanged(ev: any) {
 		this.segmentView = ev.detail.value;
+		if (this.editor.root.innerHTML != this.contentBefore) {
+			this.contentBefore = this.editor.root.innerHTML;
+		}
 	}
 
 	add() {
@@ -423,7 +439,7 @@ export class HelpDetailComponent extends PageBase {
 		} else {
 			this.item.Id = savedItem.Id;
 		}
-		this.showEditorContent = false;
+		// this.showEditorContent = false;
 		this.loadedData();
 	}
 

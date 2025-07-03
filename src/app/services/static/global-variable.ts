@@ -433,6 +433,70 @@ APIList.HRM_StaffOvertimeRequest.disapprove = {
 	},
 };
 
+//
+
+APIList.HRM_StaffPayroll.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPayroll/Submit';
+	},
+};
+
+APIList.HRM_StaffPayroll.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPayroll/Cancel';
+	},
+};
+
+APIList.HRM_StaffPayroll.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPayroll/Approve';
+	},
+};
+
+APIList.HRM_StaffPayroll.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffPayroll/Disapprove';
+	},
+};
+
+//
+
+
+
+APIList.HRM_TimesheetCycle.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetCycle/Submit';
+	},
+};
+
+APIList.HRM_TimesheetCycle.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetCycle/Cancel';
+	},
+};
+
+APIList.HRM_TimesheetCycle.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetCycle/Approve';
+	},
+};
+
+APIList.HRM_TimesheetCycle.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetCycle/Disapprove';
+	},
+};
+
+
+
 
 
 export var GlobalData: any = {

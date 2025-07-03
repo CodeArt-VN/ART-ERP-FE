@@ -25,7 +25,6 @@ export class AccountService {
 		private statusProvider: SYS_StatusProvider,
 		private typeProvider: SYS_TypeProvider,
 		private userDeviceProvider: SYS_UserDeviceProvider,
-
 		public env: EnvService,
 		public plt: Platform
 	) {
@@ -265,6 +264,8 @@ export class AccountService {
 								})
 								.catch((err) => reject(err));
 						});
+					}else{
+						this.logout();
 					}
 				})
 				.catch((err) => reject(err));
@@ -371,7 +372,7 @@ export class AccountService {
 		// });
 	}
 
-	login(username, password) {
+	async login(username, password) {
 		// let notifiToken = null;
 		// if(Capacitor.getPlatform() !== 'web'){
 		// 	PushNotifications.register();
@@ -379,21 +380,22 @@ export class AccountService {
 		// 		notifiToken = token.value;
 		// 	});
 		// }
+
 		var that = this;
 		return new Promise(async function (resolve, reject) {
 			let deviceInfo: any = null;
 			if (Capacitor.isPluginAvailable('Device')) {
 				let info = await Device.getInfo();
 				let UID = await Device.getId();
-				let NotifyToken = await that.env.getStorage('NotifyToken').then((result) => {
-					if (result) {
-						return result;
-					} else {
-						return null;
-					}
-				});
+				let NotifyToken = that.env.NotifyToken;
+				// let NotifyToken = await that.env.getStorage('NotifyToken').then((result) => {
+				// 	if (result) {
+				// 		return result;
+				// 	} else {
+				// 		return null;
+				// 	}
+				// });
 				deviceInfo = {
-					Id: 0,
 					Code: UID.identifier,
 					Name: info.name,
 					Model: info.model,
@@ -404,6 +406,7 @@ export class AccountService {
 					IsVirtual: info.isVirtual,
 					WebViewVersion: info.webViewVersion,
 					NotifyToken: NotifyToken,
+					IDUser: null,
 				};
 			}
 
@@ -422,8 +425,30 @@ export class AccountService {
 				)
 				.subscribe((data) => {
 					if (data) {
-						that.setToken(data).then((_) => {
+						that.setToken(data).then(async (_) => {
+							await that
+								.loadSavedData(true)
+								.then(() => {
+									resolve(true);
+								})
+								.catch((err) => {
+									reject(err);
+								});
+
 							if (deviceInfo) {
+								deviceInfo.IDUser = that.env.user.Id;
+								let platform = Capacitor.getPlatform();
+								if (['mobile', 'tablet', 'ios', 'android'].includes(platform)) {
+									await PushNotifications.register();
+
+									// Get FCM token (Android/iOS will return the platform token - for Android this is FCM token)
+									PushNotifications.addListener('registration', (token: Token) => {
+										// Save it to server or local storage
+										this.env.setStorage('NotifyToken', token.value);
+									});
+								} else if (platform == 'web') {
+
+								}
 								that.userDeviceProvider.save(deviceInfo).then((info) => {
 									if (!info) {
 										that.env.deviceInfo = null;
@@ -434,13 +459,6 @@ export class AccountService {
 									}
 								});
 							}
-							that.loadSavedData(true)
-								.then(() => {
-									resolve(true);
-								})
-								.catch((err) => {
-									reject(err);
-								});
 						});
 					} else {
 						reject('Can not login!');
@@ -448,7 +466,7 @@ export class AccountService {
 				});
 		});
 	}
-
+	
 	ObtainLocalAccessToken(provider, externalAccessToken) {
 		var that = this;
 		return new Promise(function (resolve, reject) {

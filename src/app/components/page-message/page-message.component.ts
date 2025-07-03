@@ -11,7 +11,11 @@ export class PageMessageComponent implements OnInit {
 	@Input() showSpinner;
 	@Input() message;
 	@Input() subMessage;
+	@Input() minHeight: string = '50vh';
+
 	_imgSrc: string = 'assets/undraw_no_data_qbuo.svg';
+	@Input() showImg: boolean = true;
+
 	@Input() set imgSrc(value: string) {
 		if (value) {
 			if (value.indexOf('http') === 0) {

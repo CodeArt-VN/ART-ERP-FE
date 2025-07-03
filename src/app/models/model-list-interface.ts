@@ -115,6 +115,7 @@ export interface AC_ARInvoice
     Type?: string;
     InvoiceDate?: Date;
     BuyerName?: string;
+    BuyerIdentityNumber?: string;
     BuyerTaxCode?: string;
     BuyerUnitName?: string;
     BuyerAddress?: string;
@@ -5156,6 +5157,25 @@ export interface OST_OfficeGate
     
 }
 
+export interface OST_ValueChain
+{
+    IDBranch?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface PM_ProjectPeople
 {
     IDProject?: number;
@@ -6136,6 +6156,7 @@ export interface PROD_OrderDetail
 export interface PURCHASE_Order
 {
     IDBranch?: number;
+    IDWarehouse?: number;
     IDStorer?: number;
     IDVendor?: number;
     Id?: number;

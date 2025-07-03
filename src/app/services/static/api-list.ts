@@ -9553,6 +9553,55 @@ export var APIListBase = {
 		
 	},
 
+	OST_ValueChain:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "OST/ValueChain/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "OST/ValueChain"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "OST/ValueChain/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "OST/ValueChain/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "OST/ValueChain/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "OST/ValueChain/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "OST/ValueChain/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "OST/ValueChain/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "OST/ValueChain"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "OST/ValueChain/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "OST/ValueChain/" + id} 
+        }
+		
+	},
+
 	PM_ProjectPeople:{
         getSearchList:{
             method: "GET",
