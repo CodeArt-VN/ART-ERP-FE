@@ -1,4 +1,5 @@
 <ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }">
+	
 	<!-- left-tool-bar -->
 	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }">
 		<ion-back-button *ngIf="!page.pageConfig.isDetailPage"></ion-back-button>
@@ -26,6 +27,8 @@
 			<ion-label color="dark" class="label-back">{{ 'Back' | translate }}</ion-label>
 		</ion-button>
 	</ion-buttons>
+
+	<ng-content select="[segment]"></ng-content>
 
 	<!-- center-tool-bar -->
 	<ion-title [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }" *ngIf="page.pageConfig.isDetailPage && CenterTitle">
@@ -538,4 +541,5 @@
 			</ion-popover>
 		</ion-button>
 	</ion-buttons>
+	<!-- <ion-progress-bar type="indeterminate" *ngIf="page.pageConfig.showSpinner"></ion-progress-bar> -->
 </ion-toolbar>
