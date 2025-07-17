@@ -6,9 +6,6 @@
   <title>ERP</title>
 
   <base href="/" />
-  <!-- <script type="text/javascript">
-    document.write("<base href='" + window.location.origin + '/v0.19.59/' + "' />");
-  </script> -->
 
   <meta name="color-scheme" content="light dark" />
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -24,12 +21,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
   <script type="text/javascript">
-    if (window.location.protocol != 'https:' && window.location.host.indexOf('localhost') == -1 && window.location.host.indexOf('192.168') == -1){
-      location.href = location.href.replace("http://", "https://");
-    }
-  </script>
+	if (window.location.protocol != 'https:' && window.location.host.indexOf('localhost') == -1 && window.location.host.indexOf('192.168') == -1){
+		if (window.location.protocol != 'https:'){
+			location.href = location.href.replace("http://", "https://");
+		}
 
-  <script>
+		document.write("<base href='" + window.location.origin + '/REPLACE_VERSION/' + "' />");  // REPLACE_VERSION
+	}
+
     var browser = (function () {
       var test = function (regexpOrCss) {
         return regexpOrCss instanceof RegExp ?

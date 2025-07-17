@@ -1,6 +1,7 @@
 export const environment = {
 	production: true,
-	appVersion: '0.20.49',
+	appVersion: '0.20.50',
+	baseHref: '/{{REPLACE_VERSION}}/',
 	appServers: [
 		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demoERP.codeart.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },

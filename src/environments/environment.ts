@@ -5,6 +5,8 @@
 export let environment = {
 	production: false,
 	appVersion: '9dev',
+	// default base href when running locally
+	baseHref: '/',
 	//appDomain: 'https://demo.inholdings.vn/',
 	//appDomain: 'https://beta.inholdings.vn/',
 	//appDomain: 'https://artlogistics.vn/',
