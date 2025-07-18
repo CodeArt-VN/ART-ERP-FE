@@ -8475,6 +8475,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_TimesheetTemplate:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/TimesheetTemplate/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/TimesheetTemplate"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/TimesheetTemplate/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/TimesheetTemplate/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/TimesheetTemplate/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplate/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplate/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplate/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/TimesheetTemplate"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/TimesheetTemplate/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/TimesheetTemplate/" + id} 
+        }
+		
+	},
+
+	HRM_TimesheetTemplateDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/TimesheetTemplateDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/TimesheetTemplateDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/TimesheetTemplateDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/TimesheetTemplateDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/TimesheetTemplateDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplateDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplateDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/TimesheetTemplateDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/TimesheetTemplateDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/TimesheetTemplateDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/TimesheetTemplateDetail/" + id} 
+        }
+		
+	},
+
 	HRM_UDF:{
         getSearchList:{
             method: "GET",
