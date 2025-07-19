@@ -3,7 +3,6 @@ import * as qz from 'qz-tray';
 import { KJUR, KEYUTIL, stob64, hextorstr } from 'jsrsasign';
 import { EnvService } from './core/env.service';
 import { SYS_ConfigProvider, SYS_PrinterProvider } from './static/services.service';
-import { async, Subscription } from 'rxjs';
 
 export interface printData {
 	content: string;
@@ -38,7 +37,6 @@ Nếu muốn chọn máy in thì truyền mảng máy in vô (Object bao gồm h
 Nếu mảng máy in rỗng thì lấy cấu hình mặc định
 */
 export class PrintingService {
-	subscriptions: Subscription[] = [];
 	qzConnectionPromise: Promise<boolean> | null = null;
 	signingCertificate = false;
 	printingServerConfig; //{ PrintingHost: '', PrintingPort: 0, PrintingIsSecure: true, DefaultPrinter:code };
@@ -144,6 +142,7 @@ export class PrintingService {
 	}
 
 	getPrintersFromPrintingServer(IDBranch = null) {
+		//aa
 		return new Promise((resolve, reject) => {
 			this.getConfig(IDBranch)
 				.then((rs: any) => {
