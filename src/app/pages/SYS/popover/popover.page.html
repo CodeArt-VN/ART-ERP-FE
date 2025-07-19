@@ -7,6 +7,10 @@
 					<input class="c-input" name="singleDate" type="date" ngDefaultControl type="date" [(ngModel)]="popData.singleDate" />
 				</div>
 
+				<div class="c-control" *ngIf="popConfig.isShowIonDateTime">
+					<ion-datetime [firstDayOfWeek]="1" [(ngModel)]="popData.singleDate"></ion-datetime>
+				</div>
+
 				<div class="c-control" *ngIf="popConfig.isShowDateRange">
 					<label class="c-label"
 						>{{popConfig.dateRangeLabel}}
