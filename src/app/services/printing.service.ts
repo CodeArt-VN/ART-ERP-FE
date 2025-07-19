@@ -142,26 +142,27 @@ export class PrintingService {
 	}
 
 	getPrintersFromPrintingServer(IDBranch = null) {
-		//aa
 		return new Promise((resolve, reject) => {
 			this.getConfig(IDBranch)
 				.then((rs: any) => {
-					this.qzConnect(rs.PrintingHost, rs.PrintingPort, rs.PrintingIsSecure).then(async () => {
-						qz.printers
-							.find()
-							.then((result) => {
-								//this.printers = result;
-								resolve({ printers: result, config: rs });
-							})
-							.catch((err) => {
-								this.env.showErrorMessage(err);
-								reject(err);
-							});
-					});
+					if (rs) {
+						this.qzConnect(rs.PrintingHost, rs.PrintingPort, rs.PrintingIsSecure).then(async () => {
+							qz.printers
+								.find()
+								.then((result) => {
+									//this.printers = result;
+									resolve({ printers: result, config: rs });
+								})
+								.catch((err) => {
+									this.env.showMessage('Cannot connect to printing server!', 'danger');
+									reject(err);
+								});
+						});
+					}
 				})
 				.catch((err) => {
-					this.env.showErrorMessage(err);
 					reject(err);
+					this.env.showErrorMessage(err);
 				});
 		}).finally(() => this.qzCloseConnection());
 	}
@@ -185,10 +186,10 @@ export class PrintingService {
 							configResult[e.Code] = JSON.parse(e.Value);
 						});
 						resolve(configResult);
-					} else reject(null);
+					}else resolve(null);
 				})
 				.catch((err) => {
-					console.log(err);
+					reject(err);
 				});
 		});
 	}
@@ -343,7 +344,7 @@ export class PrintingService {
 					'X90yaCDVSSQLJXCEQITvTY/hJFr8R0Z0oCXuRt0UD+hQwQ+KV4HzjG83DPSmODGo\n' +
 					'NoDwugnwAGhJIuCM/jQap5KN5TThmhd1m2G7hUnenLHNfUpG92Y7TW96WAPaq/Oj\n' +
 					'BANOivO9jHQnPDuLCXNRzzT6i0MBC3iRP7PRLXpW1YlBW7Nl2N+I\n' +
-					'-----END CERTIFICATE-----'	
+					'-----END CERTIFICATE-----'
 			);
 		});
 	}
