@@ -9,7 +9,7 @@
 	#monaco-editor {
 		height: 300px; /* hoặc auto theo nhu cầu */
 	}
-
+	
 	.formula-button {
 		position: absolute;
 		z-index: 10;
@@ -18,16 +18,15 @@
 		--padding-top: 4px;
 		--padding-bottom: 4px;
 		font-size: 10px;
-	
 	}
 	.save-button {
-			left: 8px;
-			top: 0;
-		}
-		.zoom-button {
-			left: 8px;
-			top: 24px;
-		}
+		left: 8px;
+		top: 0;
+	}
+	.zoom-button {
+		left: 8px;
+		top: 24px;
+	}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
 	<!-- default -->
@@ -459,7 +458,7 @@
 	></textarea>
 
 	<div *ngSwitchCase="'formula'" class="editor-container">
-		<div style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);" [id]="chartScriptId"></div>
+		<div style="height: 7.5rem; border: 1px solid var(--menu-right-border-color)" [id]="chartScriptId"></div>
 		<ion-button fill="outline" size="small" (click)="saveContent()" class="formula-button save-button">
 			<ion-icon slot="icon-only" name="save-outline"></ion-icon>
 		</ion-button>
