@@ -5,8 +5,8 @@
 export let environment = {
 	production: false,
 	appVersion: '9dev',
-	// default base href when running locally
-	baseHref: '/',
+	appLocation: '/',
+	versionLocation: '',
 	//appDomain: 'https://demo.inholdings.vn/',
 	//appDomain: 'https://beta.inholdings.vn/',
 	//appDomain: 'https://artlogistics.vn/',
@@ -16,6 +16,7 @@ export let environment = {
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
 		{ Code: 'https://demo.artlogistics.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
 
 		{ Code: 'https://app.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://beta.inholdings.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
@@ -27,7 +28,6 @@ export let environment = {
 	],
 	staffAvatarsServer: 'https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
 	posImagesServer: 'https://api.inholdings.vn/',
-
 	apiVersion: 'api/v1/',
 	showScrollbar: navigator.appVersion.indexOf('Win') > -1 || true,
 	// signalRServiceDomain: 'https://localhost:5001/'
