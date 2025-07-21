@@ -96,6 +96,11 @@ export class EnvService {
 		isOnline: false,
 	};
 
+	/** Get current app domain */
+	get appPath() {
+		return window.location.origin + environment.appLocation + environment.versionLocation.replace('{{REPLACE_VERSION}}', environment.appVersion);
+	}
+
 	/** Check app is ready */
 	ready: Promise<any> | null;
 
