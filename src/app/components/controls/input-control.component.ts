@@ -15,6 +15,7 @@ import { ModalController } from '@ionic/angular';
 export class InputControlComponent implements OnInit {
 	lib;
 	searchTerm = '';
+	chartScriptId: string;
 	@Input() set field(f: InputControlField) {
 		if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
@@ -66,6 +67,7 @@ export class InputControlComponent implements OnInit {
 			if (this.rootCollapsed == false) this.expandRoot();
 		}
 		if(this.type == 'formula') {
+			this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
 			this.monacoProvider.load().then(() => this.initMonaco());
 		}
 	}
@@ -130,14 +132,14 @@ export class InputControlComponent implements OnInit {
 	ngAfterViewInit() {
 		// The DOM is fully loaded here
 		// You can access DOM elements and run your code
-		if (this.type == 'formula') {
-			this.monacoProvider.load().then(() => this.initMonaco());
-		}
+		// if (this.type == 'formula') {
+		// 	this.monacoProvider.load().then(() => this.initMonaco());
+		// }
 	}
 	disposableCompletionItemProvider: any = null;
 	monaco
 	initMonaco() {
-		if(this.monaco) return;
+		// if(this.monaco) return;
 		this.monaco = (window as any).monaco;
 
 		// Load Google Font: JetBrains Mono
@@ -193,7 +195,7 @@ export class InputControlComponent implements OnInit {
 			},
 		});
 		// 🎨 Tạo editor với theme sáng và font "JetBrains Mono"
-		const container = document.getElementById('monaco-editor');
+		const container = document.getElementById(this.chartScriptId);
 		if (container) {
 			const editor = this.monaco.editor.create(container, {
 				value: this.form.get(this.id).value,

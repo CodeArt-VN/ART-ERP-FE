@@ -459,7 +459,7 @@
 	></textarea>
 
 	<div *ngSwitchCase="'formula'" class="editor-container">
-		<div style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);" id="monaco-editor"></div>
+		<div style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);" [id]="chartScriptId"></div>
 		<ion-button fill="outline" size="small" (click)="saveContent()" class="formula-button save-button">
 			<ion-icon slot="icon-only" name="save-outline"></ion-icon>
 		</ion-button>
