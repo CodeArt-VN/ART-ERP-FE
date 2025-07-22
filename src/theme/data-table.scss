@@ -11,6 +11,7 @@
 				padding: calc(10 / 16 * 0.2rem);
 			}
 		}
+		
 	}
 }
 
@@ -180,6 +181,9 @@ app-data-table,
 				background-color: var(--table-cell-sticky-background);
 				backdrop-filter: blur(10px);
 			}
+		}
+		&.divider{
+			font-weight: bold;
 		}
 
 		// &.odd {
@@ -726,7 +730,7 @@ app-data-table,
 				line-height: calc(10 / 16 * 1.8rem);
 				min-width: auto;
 
-				@media screen and (max-width: calc(320px)) {
+				@media screen and (max-width: calc(425px)) {
 					margin: 0px;
 					border-radius: 0px;
 				}

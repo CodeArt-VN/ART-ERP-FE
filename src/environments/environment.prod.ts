@@ -1,12 +1,13 @@
 export const environment = {
 	production: true,
-	appVersion: '0.20.50',
-	baseHref: '/{{REPLACE_VERSION}}/',
+	appVersion: '0.20.57',
+	appLocation: '/', // VirtualDirectory
+	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
 		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demoERP.codeart.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
 
-		{ Code: 'https://art.appcenter.vn/', Name: 'ART server', Color: 'success', Icon: 'rocket' },
+		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
 
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
