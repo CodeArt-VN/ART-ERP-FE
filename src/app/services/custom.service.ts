@@ -347,7 +347,7 @@ export class POS_ForCustomerProvider extends exService {
 @Injectable({ providedIn: 'root' })
 export class MonacoEditorLoaderService {
 	private isLoaded = false;
-
+	disposableCompletionItemProvider:any;
 	constructor(private dynamicLoader: DynamicScriptLoaderService) {}
 
 	load(): Promise<void> {

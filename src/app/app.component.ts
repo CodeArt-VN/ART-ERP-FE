@@ -394,7 +394,9 @@ export class AppComponent implements OnInit {
 				} else {
 					console.log('Quyền thông báo chưa được cấp hoặc đã bị hỏi lại.');
 				}
-				const registration = await navigator.serviceWorker.register('/assets/firebase-messaging-sw.js');
+				
+				const path = this.env.appPath;
+				const registration = await navigator.serviceWorker.register(path + 'assets/firebase-messaging-sw.js');
 				console.log('Service Worker registered:', registration);
 
 				// Initialize Firebase

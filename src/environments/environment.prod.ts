@@ -1,13 +1,15 @@
 export const environment = {
 	production: true,
-	appVersion: '0.20.50',
-	appDomain: 'https://artlogistics.vn/',
+	appVersion: '0.20.59',
+	appLocation: '/', // VirtualDirectory
+	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://art.appcenter.vn/', Name: 'Backup server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
 		{ Code: 'https://demo.artlogistics.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
 	],
+	appDomain: 'https://artlogistics.vn/',
 	staffAvatarsServer: 'https://artlogistics.vn/Uploads/HRM/Staffs/Avatars/',
 	posImagesServer: 'https://artlogistics.vn/',
 	apiVersion: 'api/v1/',
