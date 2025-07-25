@@ -180,7 +180,7 @@
 }
 
 .default-theme {
-	$wide-logo-url: '/assets/logos/logo-codeart.png';
+	$wide-logo-url: '/assets/logos/logo.svg';
 	$small-logo-url: 'https://cdn.appcenter.vn/images/logo.png';
 
 	.login {
@@ -196,8 +196,8 @@
 			height: 20vh;
 			max-width: 380px;
 			background-repeat: no-repeat;
-			background-size: contain;
-			background-position: center center;
+			background-size: 83%;
+			background-position: center 80%;
 			background-image: url($wide-logo-url);
 		}
 
