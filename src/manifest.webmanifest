@@ -1,62 +1,56 @@
 {
-	"$schema": "https://json.schemastore.org/web-manifest-combined.json",
-	"name": "ERP",
-	"short_name": "ERP",
-	"description": "Enterprise Resource Planning App.",
-	"theme_color": "#b7322a",
-	"background_color": "#ffffff",
-	"display": "standalone",
-	"scope": ".",
-	"start_url": ".",
-	"id": ".",
-	"icons": [
-		{
-			"src": "assets/icons/icon-48.webp",
-			"type": "image/png",
-			"sizes": "48x48",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-72.webp",
-			"type": "image/png",
-			"sizes": "72x72",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-96.webp",
-			"type": "image/png",
-			"sizes": "96x96",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-128.webp",
-			"type": "image/png",
-			"sizes": "128x128",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-192.webp",
-			"type": "image/png",
-			"sizes": "192x192",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-256.webp",
-			"type": "image/png",
-			"sizes": "256x256",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "assets/icons/icon-512.webp",
-			"type": "image/png",
-			"sizes": "512x512",
-			"purpose": "any maskable"
-		}
-	],
-	"related_applications": [
-		{
-			"platform": "play",
-			"url": "https://play.google.com/store/apps/details?id=vn.codeart.erp"
-		}
-	]
+  "name": "ART ERP",
+  "short_name": "ART",
+  "description": "ART ERP Progressive Web App",
+  "theme_color": "#1976d2",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "assets/icons/icon-48.webp",
+      "type": "image/png",
+      "sizes": "48x48",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-72.webp",
+      "type": "image/png",
+      "sizes": "72x72",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-96.webp",
+      "type": "image/png",
+      "sizes": "96x96",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-128.webp",
+      "type": "image/png",
+      "sizes": "128x128",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-192.webp",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-256.webp",
+      "type": "image/png",
+      "sizes": "256x256",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.webp",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
 }

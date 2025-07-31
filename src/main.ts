@@ -1,14 +1,14 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { Capacitor } from '@capacitor/core';
 
 const isDev = !environment.production;
-let versionUrl = window.location.origin + environment.appLocation + 'version.json';
+let versionUrl = window.location.origin + environment.appLocation + 'version.json?t=' + new Date().getTime();
+const isHybrid = Capacitor.getPlatform() !== 'web';
 
-if (isDev) {
-	platformBrowserDynamic()
-		.bootstrapModule(AppModule)
-		.catch((err) => console.log(err));
+if (isDev || isHybrid) {
+	loadPlatform();
 } else {
 	fetch(versionUrl)
 		.then((response) => response.json())
@@ -19,15 +19,17 @@ if (isDev) {
 				const basePath = window.location.origin + environment.appLocation + environment.versionLocation.replace('{{REPLACE_VERSION}}', latestVersion);
 				window.location.href = `${basePath}`;
 			} else {
-				platformBrowserDynamic()
-					.bootstrapModule(AppModule)
-					.catch((err) => console.log(err));
+				loadPlatform();
 			}
 		})
 		.catch((err) => {
-			console.error('Failed to fetch version.json:', err);
-			platformBrowserDynamic()
-				.bootstrapModule(AppModule)
-				.catch((err) => console.log(err));
+			loadPlatform();
 		});
+}
+
+// Tạo function load platform
+export function loadPlatform() {
+	platformBrowserDynamic()
+		.bootstrapModule(AppModule)
+		.catch((err) => console.log(err));
 }
