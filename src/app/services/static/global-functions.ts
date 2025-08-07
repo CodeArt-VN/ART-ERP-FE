@@ -129,16 +129,50 @@ export var lib = {
 			return prev ? prev[curr] : undefined;
 		}, obj || self);
 	},
-	generateUID() {
-		var d = new Date().getTime();
-		var uuid =
-			d +
-			'xxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-				var r = (d + Math.random() * 16) % 16 | 0;
-				d = Math.floor(d / 16);
-				return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
-			});
-		return uuid;
+
+	//console.log(generateUID('AAA', 'ZZZ', 16, 32));
+	generateUID(prefix = '', suffix = '', length = null, isUpperCase = true, isBreak = false, breakPartLength = 4, breakChar = '-', radix = 36) {
+		// Tính số breakChar cần thêm nếu dùng isBreak
+		let breakCharsCount = 0;
+		if (isBreak && breakPartLength > 0 && length) breakCharsCount = Math.floor(length / (breakPartLength + 1)) - 1;
+
+		// Kiểm tra chiều dài hợp lệ
+		if (length && prefix.length + suffix.length + breakCharsCount >= length)
+			throw new Error('Chiều dài của prefix và suffix cộng số breakChar không được lớn hơn hoặc bằng length');
+
+		let uid = '';
+		const part1 = new Date().getTime().toString(radix);
+
+		if (length) {
+			const isUsePart1 = part1.length < length - (prefix.length + suffix.length + breakCharsCount);
+			const remainingLength = length - (prefix.length + suffix.length + breakCharsCount) - (isUsePart1 ? part1.length : 0);
+
+			let part2 = '';
+			if (remainingLength > 0) for (let i = 0; i < remainingLength; i++) part2 += Math.random().toString(radix).charAt(2);
+
+			uid = prefix + (isUsePart1 ? part1 : '') + part2 + suffix;
+		} else {
+			// Nếu không có length thì chỉ cần prefix, suffix và phần random
+			uid = prefix + part1 + suffix;
+		}
+
+		// Nếu cần break thì chia đều chuỗi thành các phần breakPartLength, nối bằng breakChar
+		if (isBreak && breakPartLength > 0) {
+			let parts = [];
+			for (let i = 0; i < uid.length; i += breakPartLength) {
+				var thisPart = uid.substr(i, breakPartLength);
+				var nextPart = uid.substr(i + breakPartLength, breakPartLength);
+				if (nextPart && nextPart.length < breakPartLength) {
+					thisPart += nextPart; // Nối phần cuối nếu không đủ độ dài
+					i += nextPart.length; // Cập nhật chỉ số i để bỏ qua phần đã nối
+				}
+				parts.push(thisPart);
+			}
+			uid = parts.join(breakChar);
+		}
+
+		if (isUpperCase) return uid.toUpperCase();
+		return uid;
 	},
 	generateCode(radix = 36) {
 		var d = new Date();
@@ -1000,16 +1034,98 @@ export var lib = {
 		return KetQua;
 	},
 
-	Colors : [
-		'#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#900C3F', '#581845', '#1ABC9C', '#2ECC71', '#3498DB',
-		'#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085', '#27AE60', '#2980B9',
-		'#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D', '#117A65', '#B03A2E',
-		'#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226', '#ABB2B9', '#48C9B0',
-		'#45B39D', '#52BE80', '#5DADE2', '#A569BD', '#5D6D7E', '#F8C471', '#EB984E', '#CD6155', '#D5DBDB', '#76D7C4',
-		'#73C6B6', '#82E0AA', '#85C1E9', '#BB8FCE', '#85929E', '#FAD7A0', '#EDBB99', '#E6B0AA', '#E5E8E8', '#1ABC9C',
-		'#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085',
-		'#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D',
-		'#117A65', '#B03A2E', '#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226',
-		'#ABB2B9', '#48C9B0'
-	]
+	Colors: [
+		'#FF5733',
+		'#33FF57',
+		'#3357FF',
+		'#FF33A1',
+		'#FFC300',
+		'#900C3F',
+		'#581845',
+		'#1ABC9C',
+		'#2ECC71',
+		'#3498DB',
+		'#9B59B6',
+		'#34495E',
+		'#F1C40F',
+		'#E67E22',
+		'#E74C3C',
+		'#95A5A6',
+		'#7F8C8D',
+		'#16A085',
+		'#27AE60',
+		'#2980B9',
+		'#8E44AD',
+		'#2C3E50',
+		'#F39C12',
+		'#D35400',
+		'#C0392B',
+		'#BDC3C7',
+		'#7D3C98',
+		'#1F618D',
+		'#117A65',
+		'#B03A2E',
+		'#F4D03F',
+		'#58D68D',
+		'#5DADE2',
+		'#AF7AC5',
+		'#566573',
+		'#F5B041',
+		'#DC7633',
+		'#A93226',
+		'#ABB2B9',
+		'#48C9B0',
+		'#45B39D',
+		'#52BE80',
+		'#5DADE2',
+		'#A569BD',
+		'#5D6D7E',
+		'#F8C471',
+		'#EB984E',
+		'#CD6155',
+		'#D5DBDB',
+		'#76D7C4',
+		'#73C6B6',
+		'#82E0AA',
+		'#85C1E9',
+		'#BB8FCE',
+		'#85929E',
+		'#FAD7A0',
+		'#EDBB99',
+		'#E6B0AA',
+		'#E5E8E8',
+		'#1ABC9C',
+		'#2ECC71',
+		'#3498DB',
+		'#9B59B6',
+		'#34495E',
+		'#F1C40F',
+		'#E67E22',
+		'#E74C3C',
+		'#95A5A6',
+		'#7F8C8D',
+		'#16A085',
+		'#27AE60',
+		'#2980B9',
+		'#8E44AD',
+		'#2C3E50',
+		'#F39C12',
+		'#D35400',
+		'#C0392B',
+		'#BDC3C7',
+		'#7D3C98',
+		'#1F618D',
+		'#117A65',
+		'#B03A2E',
+		'#F4D03F',
+		'#58D68D',
+		'#5DADE2',
+		'#AF7AC5',
+		'#566573',
+		'#F5B041',
+		'#DC7633',
+		'#A93226',
+		'#ABB2B9',
+		'#48C9B0',
+	],
 };

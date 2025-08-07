@@ -496,6 +496,13 @@ APIList.HRM_TimesheetCycle.disapprove = {
 };
 
 
+APIList.HRM_TimesheetLog.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetLog/Approve';
+	},
+};
+
 
 
 

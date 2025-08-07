@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import * as qz from 'qz-tray';
 import { KJUR, KEYUTIL, stob64, hextorstr } from 'jsrsasign';
 import { EnvService } from './core/env.service';
-import { SYS_PrinterProvider } from './static/services.service';
-import { async, Subscription } from 'rxjs';
+import { SYS_ConfigProvider, SYS_PrinterProvider } from './static/services.service';
 
 export interface printData {
 	content: string;
 	type: 'html' | 'pdf' | 'image';
-	options?: printOptions;
+	options?: printOptions[];
 }
 
 export interface printOptions {
 	printer?: string;
+	host?: string;
+	port?: string;
+	isSecure?: boolean;
 	jobName?: string;
 	tray?: string;
 	pages?: string;
@@ -28,10 +30,17 @@ export interface printOptions {
 @Injectable({
 	providedIn: 'root',
 })
+
+/*
+BT các form sẽ lấy máy in từ cấu hình chung thì hàm in chỉ cần truyền vào nội dung cần in, tức là máy in null ko cần truyền
+Nếu muốn chọn máy in thì truyền mảng máy in vô (Object bao gồm host,port,code,isSecure) 
+Nếu mảng máy in rỗng thì lấy cấu hình mặc định
+*/
 export class PrintingService {
-	subscriptions: Subscription[] = [];
 	qzConnectionPromise: Promise<boolean> | null = null;
 	signingCertificate = false;
+	printingServerConfig; //{ PrintingHost: '', PrintingPort: 0, PrintingIsSecure: true, DefaultPrinter:code };
+
 	defaultPrinter;
 	hostList;
 	printers;
@@ -40,68 +49,152 @@ export class PrintingService {
   `;
 	constructor(
 		public env: EnvService,
-		public printerService: SYS_PrinterProvider
+		public printerService: SYS_PrinterProvider,
+		public sysConfigProvider: SYS_ConfigProvider
 	) {
 		this.env.getEvents().subscribe((data) => {
 			if (data.Code == 'changeBranch') {
+				this.qzCloseConnection();
 				this.printers = null;
+				this.printingServerConfig = this.getConfig(this.env.selectedBranch);
 			}
 		});
+		this.printingServerConfig = this.getConfig(this.env.selectedBranch);
 	}
-	async print(data: printData) {
-		// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
-		// Signing certificate
-		// Convert data/options to QZ Option
-		// Tạo QZ config
-		// Connect
-		// Gửi in
-		//Viết hàm connect(Khi in nếu chưa connect thì call),  disconnect(khi user rời khỏi page)
-		if (!this.printers) {
-			await this.getPrinterInBranch();
-		}
-		if (!this.printers) {
-			this.env.showMessage('Printer not found', 'danger');
-			return;
-		}
-		let printer = null;
-		if (data?.options?.printer) {
-			printer = this.printers.find((d) => d.Code == data.options.printer);
-		} else printer = this.printers.find((d) => d.Name == 'Test'); // todo : default printer
-		if (!printer) {
-			this.env.showMessage('Printer not found', 'danger');
-			return;
-		}
-		this.ensureCertificate().then(async () => {
-			let printingData = this.getPrintingData(data);
-			var config = qz.configs.create(printer.Code, printingData.options);
-			this.qzConnect(printer.Host, printer.Port, printer.IsSecure).then(() => {
-				qz.print(config, printingData.data)
-					.then((success) => {})
-					.catch((e) => {
-						console.error(e);
+	print(data: printData) {
+		return new Promise(async (resolve, reject) => {
+			// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
+			// Signing certificate
+			// Convert data/options to QZ Option
+			// Tạo QZ config
+			// Connect
+			// Gửi in
+			//Viết hàm connect(Khi in nếu chưa connect thì call),  disconnect(khi user rời khỏi page)
+			if (data?.options?.length > 0) {
+				if (!this.printers) {
+					await this.getPrinterInBranch();
+				}
+				if (!this.printers) {
+					reject('Printer not found!');
+					this.env.showMessage('Printer not found!', 'danger');
+					return;
+				}
+			} else {
+				if (!this.printingServerConfig) {
+					await this.getConfig();
+				}
+				if (!this.printingServerConfig || !this.printingServerConfig.Host || !this.printingServerConfig.DefaultPrinter) {
+					reject('Printer not found!');
+					this.env.showMessage('Printer not found', 'danger');
+					return;
+				}
+				data?.options?.push({
+					printer: this.printingServerConfig.DefaultPrinter,
+					host: this.printingServerConfig.PrintingHost,
+					port: this.printingServerConfig.PrintingPort,
+					isSecure: this.printingServerConfig.IsSecure || true,
+				});
+			}
+			const serverList = data?.options?.reduce((acc: any[], rs) => {
+				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
+
+				if (existing) {
+					existing.printerOptions.push(rs);
+				} else {
+					acc.push({
+						host: rs.host,
+						port: rs.port,
+						isSecure: rs.isSecure,
+						printerOptions: [rs],
 					});
+				}
+
+				return acc;
+			}, []);
+
+			serverList.forEach((s) => {
+				// let printers = this.printers.filter((d) => s.printers.inculdes(d.Code));
+				// if (printers.length == 0) {
+				// 	this.env.showMessage('Printer not found', 'danger');
+				// 	return;
+				// }
+				this.ensureCertificate().then(async () => {
+					this.qzConnect(s.host, s.port, s.isSecure).then(() => {
+						let promises = [];
+						s.printerOptions.forEach((p) => {
+							let printingData = this.getPrintingData(p, data);
+							let config = qz.configs.create(p.printer, p);
+							promises.push(qz.print(config, printingData.data));
+						});
+						Promise.all(promises)
+							.then((success) => {
+								console.log('All prints done:', success);
+								resolve(true);
+							})
+							.catch((e) => {
+								reject(e);
+								console.error('Print error:', e);
+							});
+					});
+				});
 			});
 		});
 	}
 
-	async getPrinters(host) {
+	getPrintersFromPrintingServer(IDBranch = null) {
 		return new Promise((resolve, reject) => {
-			qz.websocket.connect(host).then(async () => {
-				qz.printers
-					.find()
-					.then((result) => {
-						//this.printers = result;
-						resolve(result);
-					})
-					.catch((err) => {
-						reject(err);
-					});
-			});
-		});
+			this.getConfig(IDBranch)
+				.then((rs: any) => {
+					if (rs) {
+						this.qzConnect(rs.PrintingHost, rs.PrintingPort, rs.PrintingIsSecure).then(async () => {
+							qz.printers
+								.find()
+								.then((result) => {
+									//this.printers = result;
+									resolve({ printers: result, config: rs });
+								})
+								.catch((err) => {
+									this.env.showMessage('Cannot connect to printing server!', 'danger');
+									reject(err);
+								});
+						});
+					}
+				})
+				.catch((err) => {
+					reject(err);
+					this.env.showErrorMessage(err);
+				});
+		}).finally(() => this.qzCloseConnection());
 	}
 
+	getConfig(IDBranch = null) {
+		let sysConfigQuery = ['PrintingHost', 'PrintingPort', 'PrintingIsSecure', 'DefaultPrinter'];
+		this.printingServerConfig = null;
+		return new Promise((resolve, reject) => {
+			this.sysConfigProvider
+				.read({
+					Code_in: sysConfigQuery,
+					IDBranch: IDBranch ?? this.env.selectedBranch,
+				})
+				.then((values: any) => {
+					if (values?.data?.length > 0) {
+						let configResult = {};
+						values['data'].forEach((e) => {
+							if ((e.Value == null || e.Value == 'null') && e._InheritedConfig) {
+								e.Value = e._InheritedConfig.Value;
+							}
+							configResult[e.Code] = JSON.parse(e.Value);
+						});
+						resolve(configResult);
+					}else resolve(null);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
 	async getPrinterInBranch() {
-		await this.printerService.read().then((data: any) => {
+		await this.printerService.read({ IDBranch: this.env.selectedBranch }).then((data: any) => {
 			this.printers = data.data;
 		});
 	}
@@ -124,36 +217,40 @@ export class PrintingService {
 		});
 	}
 
-	qzConnect(host, port, isSecure) {
-		if (this.qzConnectionPromise) {
-			return this.qzConnectionPromise;
-		}
+	qzConnect(host, port, isSecure, timeoutMs = 5000) {
+		// if (this.qzConnectionPromise) {
+		// 	return this.qzConnectionPromise;
+		// }
 
-		// Create a new connection promise
+		// Tạo promise kết nối có timeout
 		this.qzConnectionPromise = new Promise((resolve, reject) => {
 			if (!qz.websocket.isActive()) {
 				let options: any = {};
 				if (host) options.host = host;
 				if (port) options.port = port;
-				if (isSecure) options.isSecure = isSecure;
+				if (isSecure != null) options.isSecure = isSecure;
 
-				qz.websocket
-					.connect(options)
+				const connectPromise = qz.websocket.connect(options);
+				const timeoutPromise = new Promise((_, rejectTimeout) => setTimeout(() => rejectTimeout(new Error('QZ connect timeout')), timeoutMs));
+
+				Promise.race([connectPromise, timeoutPromise])
 					.then(() => {
 						console.log('QZ new connected!');
 						resolve(true);
 					})
 					.catch((err) => {
-						console.log('QZ connect error: ' + err);
+						const errorMsg = err && err.message ? err.message : String(err);
+						this.env?.showMessage?.('QZ connect error: ' + errorMsg, 'danger');
+						console.error('❌ QZ connect error:', err);
 						reject(false);
 					})
 					.finally(() => {
-						this.qzConnectionPromise = null; // Reset promise after connection attempt completes
+						this.qzConnectionPromise = null;
 					});
 			} else {
 				console.log('QZ already connected!');
 				resolve(true);
-				this.qzConnectionPromise = null; // Reset immediately if already connected
+				this.qzConnectionPromise = null;
 			}
 		});
 
@@ -162,40 +259,41 @@ export class PrintingService {
 
 	qzCloseConnection() {
 		qz.websocket.disconnect();
+		this.qzConnectionPromise = null;
 	}
 
-	getPrintingData(data: printData) {
+	getPrintingData(option: printOptions, printData: printData) {
 		let printingData: any = {};
 		let style = '';
 		printingData.options = {};
 		printingData.data = [
 			{
 				type: 'pixel',
-				format: data.type || 'html',
-				flavor: data.type == 'pdf' || data.type == 'image' ? 'file' : 'plain', //'file', // or 'plain' if the data is raw HTML
-				data: data.content,
+				format: printData.type || 'html',
+				flavor: printData.type == 'pdf' || printData.type == 'image' ? 'file' : 'plain', //'file', // or 'plain' if the data is raw HTML
+				data: printData.content,
 			},
 		];
 
-		if (data.options) {
-			if (data.options.duplex) printingData.options.duplex = data.options.duplex;
-			printingData.options.orientation = data.options.orientation || 'null';
-			if (data.options.jobName) printingData.options.jobName = data.options.jobName;
-			if (data.options.tray) printingData.options.printerTray = data.options.tray;
-			if (data.options.rotation) printingData.options.orientation = data.options.rotation;
-			if (data.options.copies) printingData.options.copies = data.options.copies;
-			if (data.options.pages) printingData.options.orientation = data.options.pages;
-			if (data.options.paperSize) {
-				let paperSize = JSON.parse(data.options.paperSize);
+		if (option) {
+			if (option.duplex) printingData.options.duplex = option.duplex;
+			printingData.options.orientation = option.orientation || 'null';
+			if (option.jobName) printingData.options.jobName = option.jobName;
+			if (option.tray) printingData.options.printerTray = option.tray;
+			if (option.rotation) printingData.options.orientation = option.rotation;
+			if (option.copies) printingData.options.copies = option.copies;
+			if (option.pages) printingData.options.orientation = option.pages;
+			if (option.paperSize) {
+				let paperSize = JSON.parse(option.paperSize);
 				printingData.options.size = paperSize.size;
 				printingData.options.units = paperSize.units;
 
 				// size: {width: 2.25, height: 1.25}, units: 'in'
 			}
-			if (data.options.cssStyle) {
-				style = data.options.cssStyle;
-			} else if (data.options.autoStyle) {
-				printingData.data[0].data = this.applyAllStyles(data.options.autoStyle)?.outerHTML;
+			if (option.cssStyle) {
+				style = option.cssStyle;
+			} else if (option.autoStyle) {
+				printingData.data[0].data = this.applyAllStyles(option.autoStyle)?.outerHTML;
 			} else {
 				style = this.cssStyling;
 			}
@@ -230,28 +328,22 @@ export class PrintingService {
 		qz.security.setCertificatePromise(function (resolve, reject) {
 			resolve(
 				'-----BEGIN CERTIFICATE-----\n' +
-					'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
+					'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\n' +
 					'-----END CERTIFICATE-----'
 			);
 		});
@@ -260,32 +352,32 @@ export class PrintingService {
 	async QZsignMessage() {
 		var privateKey =
 			'-----BEGIN PRIVATE KEY-----\n' +
-			'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCfo93WoqcVVErY\n' +
-			'13ZthbLIqFWhVc1Ol90lax0ldC7IONqNt0i7r4smjhtOgrBWTQt2j/3t8jAZ0RLE\n' +
-			'I69cljn6ml/ImaZvRWkNocLSw225g8L0vIj6EEH5h+U973iPNbrVX697d3JVRIMA\n' +
-			'4Q7nUbeDMr2QhWcqMK1rq1CWGFw9SZmbL+L5Dupq9KVSA6YjAwtbmoodQockZzJt\n' +
-			'vaermiKUXjRfO0LRBffNdWyKzB8mhq8afs20oExgXrpH5w9HEw4cECo7f6HzaljL\n' +
-			'+I/5dXiLPPMdwBSHy9+Jpm1vDxRqG9Nq/UBtr3VQ5x/ku1kyzyvxryxYdU3eZi7Z\n' +
-			'KHiOoNXPAgMBAAECggEAAmLNGH2i2KdDXR1PSFDEvMoDSZ+CK4gKhpoku+ASKOzs\n' +
-			'm0yfeiqj/kYGc3RxlUCeiL2bMni5rlEZIjRUVSJrqGqxPsrJGYWkjc8andLM64Zk\n' +
-			'HgtJUs92ZPfafcP7/cv0SGcfNM2yuEKHYLZ8ZgmrH/tcqPHNemxy0xai5DNmAYZ3\n' +
-			'hJhRhQBl2yYA8YL0j9sIj/CmfcFnC8Wgy4BHpocVzxCYg/YfX+oYZOa47jeQoL0N\n' +
-			'DtYsjKBkrM3HXF7R4ViPRERjby1ro4KwUBfAYZMQcyrZSClo1suf6TIAoxGx1dkC\n' +
-			'9wKmp9002sHAvOsGNo8czt+Exi3tP55+txog/9YXGQKBgQDbZBBVSRZXmo920gmo\n' +
-			'DAkexc1TAjuFYD+Emj/+umawbOKwyzIHBM30oL0Sg2zegwObl1Mw7ISZw+ZYu5a4\n' +
-			'4ayhsf3OFk3JMKJHmqDyKM2z251DXPzYNhhtsovPwcJ8GMJpxdARdppCX2YaDoO/\n' +
-			'EcOCbxVv9tTu6bCVERc88IgcuQKBgQC6R17Fqj4hw8GMMVWUSgv6tJYWMvgpUPs7\n' +
-			'DmhR1GPW/8fwriLCQbT90VhYvOLi/kmAAVh3EU2rPd7rxHVigYMDQ1mocc9+WV5k\n' +
-			'4mU2wT/fSLOQID0oqeswzye6RuQTqueCd+5qBzE84nKmRAy0gSPfWocCooV4S62K\n' +
-			'umMC6XmSxwKBgQCgIAuPw9VrwSJ+zdRAc/BgJmyy7kk1EsepZ8/XgoMat45JDTWJ\n' +
-			'S+dqabs1/PiD+0mx0SPl7Grns8S29MuQSx5tsfSV60+AzV9UNbbMqB1i7aJ9nSvq\n' +
-			'Pqlbv1ouG7RwUL3s53TymgcC9JAX6oob9cIlvCAAZT6K1cONOTklwEUH+QKBgQCs\n' +
-			'8UgGwijPFjxiWQc4FosKppBVadrGGR42VQj7N/G9kVlilXlF2tUbdTnNoQgQcL9y\n' +
-			'bU1hthni6x1EzO+ildU5uVTLM2bNylD93sbTUBVpysiS/atqTl9BwIIEyn5D2D75\n' +
-			'/TjHDYhkG2UQAku9ZcwVOKnyA0thRPmIu8Ti1jp9zwKBgDLUpPGvhOYnqpQ5VqJh\n' +
-			'6CWSNSoJ4p2TNMR9ETtGZ7J5fJBVb6OMFKRvqboVNqt0h7OjG6MPkbGUlNgb6g07\n' +
-			'HFoHMqfYQyft/Erqv1lkMZALAxj8a3oDI0vqUoz9chdQkSZuNeYnLBbnJW0FYADa\n' +
-			'EN2TjSni2ClcvmKHWJDQOc79\n' +
+			'MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQD0vDRb3M6EMzGu\n' +
+			'9RTnNvkCGp3m0CYuqlmYV/EETdIr4enuFHWDsT2BYj1AmgPfeu+Mp56MJSgkAxmK\n' +
+			'QX9DrlaQaXXV5qQ5yzvzMv7b4sDYxbO/ETyn+nhFGhDOhbG8ZVrxUu7n9LzNsLLY\n' +
+			'oAEdOrBsDSHXtvP/KQnBOQ1Dr9vB2aFCB3qpKa+CnWYG9fJRMbP9Da5aFGkeYS4h\n' +
+			'Zh1zo3By8zIqIsFYqktfYGgjjCyvieIgxpbtIQ9S+h4WulqtsJMWaTiEpC++7lZg\n' +
+			'zXEsXIv/AbNq70ArVNu0CagLBCV4ouZwYR2vpomlFEah0Rbud6VJnmFg2E+TEymn\n' +
+			'1EafHrOfAgMBAAECggEAZeRzsilgy/aagVqlbMxc6OzW//F6bCRdcAlxHZce4UlK\n' +
+			'AWcANCeXUWZq1RoqcaF32aox3uxbZX7q4754M2ACx1Y5Cqjfh/ZfC9aX+ElUfAv3\n' +
+			'1Z1iERe9ehurkqhkAul57w5VzDn/X23pUDpxrE8yg5IGHI8d0AaweoN7y8oMZwyZ\n' +
+			'3b4er8trfhgy4y11RRk3GEncO7KrO1+TCV0A1H/8F8zFkId9MW/knbAfMZEX7xOf\n' +
+			'o6BkLUsQHvq9zwqeXwXlIWRnmFbg8sFfSfI3Vc+6B67O/16QpS9+SUwjAPle/udp\n' +
+			'7ScksxKiFFF51KvhRvqFWSYE3R/ymJ3F8tZ065K4PQKBgQD+B8t2LAzDTRLfpT1f\n' +
+			'pDw8v+KX9ud/ZCT8m35AiAbFZZUgGJEIq1gGlR8fMcz0aWbOLUUyqmJyrFLe5MqH\n' +
+			'hvJ0GozjpYFEq0ZFgn3ouAlTcDGk6mBDOwCvRsC1COc4lFhkwV5E43itxx13tGSq\n' +
+			'ZpRCZPyp+RCR4CQecYJQHBWogwKBgQD2ofXViAAG/GuH3+n8NPbj24NqqcJawClv\n' +
+			'N39oh07O+p0S5Wk66IqdCyxle8HqzsGmf/xlJBOM6W2gq2aAgs3AHfI2Czu7T3TD\n' +
+			'YcU1IVMAfrRylzFUUXeETtN9YIEoDcVa3llF5ukqRT0rVQGsRUanAb3PwEQnDny5\n' +
+			'kkDVSywFtQKBgDsrU5/d2Mcwz6GaGnaJiaJYy4276+YHTHouObUMOg+GfrqwHjAX\n' +
+			'wPQfjdU1Q1j2qASEFOcdOrsdGlxijC4PJ7AVcxWfOkHlZwPPxkYLf9iYfGe+U9e1\n' +
+			'CY7J+x7vyPOr0f7971g6Z6SKiXmVYhEyvXvNi/CHW+2ueJtCsyi3se/DAoGAKBYS\n' +
+			'+u3r8za7043VXiTNrCNVrNSCvnVVRrpifv7fFE0vko6vF+AMB5J1WNlQn3WTjBhp\n' +
+			'UZcXhmO6ac7yDhk0j/FOGPKidsNnWwpdH1GXSBFQCwAACJBlOKAHR+2TkIsMdMSH\n' +
+			'BhGN/EzcsFpUt0dbQHHMBCRf72kvZIoc944MTbECgYBs9LyoN+VHXGviw+SlE2v3\n' +
+			'NSikirIAP+NBxFV4QZEsM4iywerBTHNG0UIkmWp7ppmUGBRh/uS4gFrQawi/yfsh\n' +
+			'0P1c2SetPmdHEk6jWSE0kEcXYM1Ec5bBJLsQPndHIJ2yeBx99pstuXB4qxyDYvv+\n' +
+			'AcItCtueRAb6jUeK+qLnJA==\n' +
 			'-----END PRIVATE KEY-----';
 
 		qz.security.setSignatureAlgorithm('SHA512'); // Since 2.1

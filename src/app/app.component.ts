@@ -329,7 +329,58 @@ export class AppComponent implements OnInit {
 		});
 	}
 
+	serviceWorkerRegister() {
+		// No need to register service worker if not in web platform
+		if (Capacitor.getPlatform() != 'web') 
+			return;
+
+		return;
+		if ('serviceWorker' in navigator) {
+			const swScope = window.location.pathname.replace(/\/$/, '') + '/';
+			
+			navigator.serviceWorker.getRegistrations().then((registrations) => {
+				registrations.forEach((registration) => {
+					if (registration.scope !== window.location.origin + swScope) {
+						registration.unregister().then(() => {
+							if (window.caches) {
+								window.caches.keys().then((cacheNames) => {
+									cacheNames.forEach((cacheName) => {
+										window.caches.delete(cacheName);
+									});
+								});
+							}
+						});
+					}
+				});
+			}).finally(() => {
+				return;
+				navigator.serviceWorker.getRegistration(swScope).then((registration) => {
+					if (!registration) {
+						navigator.serviceWorker.register('ngsw-worker.js', { scope: swScope }).then((reg) => {
+							reg.onupdatefound = () => {
+								const installingWorker = reg.installing;
+								installingWorker.onstatechange = () => {
+									if (installingWorker.state === 'installed') {
+										if (navigator.serviceWorker.controller) {
+											// Có bản cập nhật mới, thông báo cho người dùng
+											if (confirm('Đã có phiên bản mới, tải lại để cập nhật?')) {
+												window.location.reload();
+											}
+										}
+									}
+								};
+							};
+						});
+					} else {
+						// Đã có Service Worker đúng scope, không cần đăng ký lại
+					}
+				});
+			});
+		}
+	}
+
 	async initNotification() {
+		return;
 		if (Capacitor.getPlatform() != 'web') {
 			console.log('app');
 			PushNotifications.requestPermissions().then((result) => {
@@ -403,7 +454,9 @@ export class AppComponent implements OnInit {
 				} else {
 					console.log('Quyền thông báo chưa được cấp hoặc đã bị hỏi lại.');
 				}
-				const registration = await navigator.serviceWorker.register('/assets/firebase-messaging-sw.js');
+
+				const path = this.env.appPath;
+				const registration = await navigator.serviceWorker.register(path + 'assets/firebase-messaging-sw.js');
 				console.log('Service Worker registered:', registration);
 
 				// Initialize Firebase
@@ -444,6 +497,7 @@ export class AppComponent implements OnInit {
 	initializeApp() {
 		this.platform.ready().then(() => {
 			this.showScrollbar = environment.showScrollbar;
+			this.serviceWorkerRegister();
 			this.updateStatusbar();
 		});
 	}
@@ -470,7 +524,7 @@ export class AppComponent implements OnInit {
 
 	lastForm = null;
 	focusMenuOnPageEnter(currentForm, force = false) {
-		if(!currentForm) return;
+		if (!currentForm) return;
 		if (force == false && (!currentForm || currentForm.Id === this.lastForm?.Id)) return;
 		this.lastForm = currentForm;
 

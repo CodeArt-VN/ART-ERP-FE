@@ -1465,6 +1465,7 @@ export interface CRM_Activity
 
 export interface CRM_Attendance
 {
+    IDBranch?: number;
     Id?: number;
     PartyDate?: Date;
     CustomerName?: string;
@@ -3758,8 +3759,14 @@ export interface HRM_StaffRecordOvertime
     Id?: number;
     StartDate?: Date;
     EndDate?: Date;
+    Checkin?: Date;
+    Checkout?: Date;
+    Rate?: number;
+    PolOvertimeType?: string;
     IsTransferToDayOff?: boolean;
     CanTransferToDayOff?: boolean;
+    MinutesOfOvertime?: number;
+    Point?: number;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -4111,6 +4118,8 @@ export interface HRM_StaffTimesheetEnrollment
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    StartDate?: Date;
+    EndDate?: Date;
     
 }
 
@@ -4374,6 +4383,7 @@ export interface HRM_Timesheet
 {
     IDBranch?: number;
     IDPayrollTemplate?: number;
+    IDTimesheetTemplate?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -4459,6 +4469,7 @@ export interface HRM_TimesheetCycleDetail
     Id?: number;
     Code?: string;
     Name?: string;
+    Status?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -4512,6 +4523,7 @@ export interface HRM_TimesheetLog
     IsValidLog?: boolean;
     IsOpenLog?: boolean;
     IsMockLocation?: boolean;
+    SeftClaim?: boolean;
     
 }
 
@@ -4530,7 +4542,9 @@ export interface HRM_TimesheetRecord
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
-    FullName?: string;
+    ShiftName?: string;
+    ShiftCode?: string;
+    ShiftType?: string;
     WorkingDate?: Date;
     TimeOffType?: string;
     WorkingStart?: Date;
@@ -4668,6 +4682,54 @@ export interface HRM_TimesheetRecord
     
 }
 
+export interface HRM_TimesheetTemplate
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    CheckInPolicy?: string;
+    NumberOfShiftPerDay?: number;
+    IsCheckOutRequired?: boolean;
+    WorkingHoursPerDay?: number;
+    Manager?: number;
+    IsRequiredApproveToEnroll?: boolean;
+    IsRequiredApproveToTransfer?: boolean;
+    IsRequiredApproveToSwitch?: boolean;
+    
+}
+
+export interface HRM_TimesheetTemplateDetail
+{
+    IDTimesheetTemplate?: number;
+    IDUDF?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    UDFValue?: string;
+    Remark?: string;
+    Sort?: number;
+    IsLocked?: boolean;
+    IsHidden?: boolean;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
 export interface HRM_UDF
 {
     Id?: number;
@@ -4687,6 +4749,7 @@ export interface HRM_UDF
     ControlType?: string;
     UDF?: string;
     DefaultValue?: string;
+    IsSystem?: boolean;
     
 }
 
