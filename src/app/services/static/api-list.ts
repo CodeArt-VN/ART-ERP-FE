@@ -11611,6 +11611,55 @@ export var APIListBase = {
 		
 	},
 
+	PURCHASE_ItemPlanningData:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/ItemPlanningData/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/ItemPlanningData"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/ItemPlanningData/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/ItemPlanningData/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/ItemPlanningData"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/ItemPlanningData/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        }
+		
+	},
+
 	PURCHASE_Order:{
         getSearchList:{
             method: "GET",

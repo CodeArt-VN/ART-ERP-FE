@@ -5978,6 +5978,7 @@ export interface PROD_MRPPreventDocument
     Code?: string;
     Type?: string;
     SubType?: string;
+    IsPrevent?: boolean;
     Name?: string;
     Remark?: string;
     Sort?: number;
@@ -6216,6 +6217,29 @@ export interface PROD_OrderDetail
     
 }
 
+export interface PURCHASE_ItemPlanningData
+{
+    IDBranch?: number;
+    IDVendor?: number;
+    IDItem?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    OrderInterval?: string;
+    OrderMultiple?: number;
+    MinimumOrderQty?: number;
+    LeadTime?: number;
+    ToleranceDays?: number;
+    
+}
+
 export interface PURCHASE_Order
 {
     IDBranch?: number;
@@ -6320,6 +6344,7 @@ export interface PURCHASE_QuotationDetail
     Quantity?: number;
     QuantityRemainingOpen?: number;
     QuantityRequired?: number;
+    MinimumOrderQty?: number;
     Price?: number;
     InfoPrice?: number;
     RequiredDate?: Date;
@@ -6684,6 +6709,7 @@ export interface SALE_OrderDetail
     IDDeal?: number;
     IDPriceList?: number;
     CancellationReason?: string;
+    Code?: string;
     
 }
 
