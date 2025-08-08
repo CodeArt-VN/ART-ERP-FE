@@ -142,19 +142,17 @@ export var lib = {
 
 		let uid = '';
 		const part1 = new Date().getTime().toString(radix);
+		let part2 = '';
+		let isUsePart1 = true;
+		let part2Length = 6;
 
 		if (length) {
-			const isUsePart1 = part1.length < length - (prefix.length + suffix.length + breakCharsCount);
-			const remainingLength = length - (prefix.length + suffix.length + breakCharsCount) - (isUsePart1 ? part1.length : 0);
-
-			let part2 = '';
-			if (remainingLength > 0) for (let i = 0; i < remainingLength; i++) part2 += Math.random().toString(radix).charAt(2);
-
-			uid = prefix + (isUsePart1 ? part1 : '') + part2 + suffix;
-		} else {
-			// Nếu không có length thì chỉ cần prefix, suffix và phần random
-			uid = prefix + part1 + suffix;
+			isUsePart1 = part1.length < length - (prefix.length + suffix.length + breakCharsCount);
+			part2Length = length - (prefix.length + suffix.length + breakCharsCount) - (isUsePart1 ? part1.length : 0);
 		}
+
+		if (part2Length > 0) for (let i = 0; i < part2Length; i++) part2 += Math.random().toString(radix).charAt(2);
+		uid = prefix + (isUsePart1 ? part1 : '') + part2 + suffix;
 
 		// Nếu cần break thì chia đều chuỗi thành các phần breakPartLength, nối bằng breakChar
 		if (isBreak && breakPartLength > 0) {
