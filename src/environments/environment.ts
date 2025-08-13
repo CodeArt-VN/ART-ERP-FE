@@ -4,22 +4,19 @@ export let environment = {
 	appLocation: '/',
 	versionLocation: '',
 	appServers: [
+		{ Code: 'https://api.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
-		{ Code: 'https://demo.artlogistics.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
 		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
-
-		{ Code: 'https://app.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://beta.inholdings.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
-		{ Code: 'https://demo.inholdings.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
 
 		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 		{ Code: 'http://10.211.55.3:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
-	appDomain: "http://10.211.55.3:54009/",
-	staffAvatarsServer: 'https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
-	posImagesServer: 'https://api.inholdings.vn/',
+	appDomain: 'http://10.211.55.3:54009/',
+	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
+	posImagesServer: 'https://app.inholdings.vn/',
 	apiVersion: 'api/v1/',
 	showScrollbar: navigator.appVersion.indexOf('Win') > -1 || true,
 	// signalRServiceDomain: 'https://localhost:5001/'
