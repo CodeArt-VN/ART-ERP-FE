@@ -108,7 +108,7 @@ export class EnvService {
 	lastMessage = '';
 
 	/** FCM token */
-	NotifyToken
+	NotifyToken;
 
 	/** app event tracking */
 	public EventTracking = new Subject<any>();
@@ -240,6 +240,16 @@ export class EnvService {
 		);
 	}
 
+	showBarMessage(id = '', icon = '',color = '',isShow = true,isBlink = false) {
+		this.publishEvent({
+			Code: 'app:ShowAppMessage',
+			IsShow: isShow,
+			Id: id,
+			Icon: icon,
+			IsBlink: isBlink,
+			Color: color,
+		});
+	}
 	/**
 	 * Translate message and pass to showMessage method
 	 *
@@ -250,6 +260,7 @@ export class EnvService {
 	 * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
 	 */
 	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
+		if (typeof value === 'string') value = { value: value };
 		Promise.all([
 			this.translateResource(value ? { ...value, code: message } : message),
 			this.translateResource(value ? { ...value, code: subHeader } : subHeader),
@@ -443,14 +454,13 @@ export class EnvService {
 		return new Promise((resolve) => {
 			if (resource == null) {
 				resolve(null);
-			} 
+			}
 			// Check if resource ís an array then translate each item and return an array of translated items
 			else if (Array.isArray(resource)) {
-				Promise.all(resource.map(item => this.translateResource(item))).then(translatedItems => {
+				Promise.all(resource.map((item) => this.translateResource(item))).then((translatedItems) => {
 					resolve(translatedItems);
 				});
-			}
-			else {
+			} else {
 				let key = typeof resource === 'object' ? resource.code : resource;
 				let value = typeof resource === 'object' ? resource : { value: null };
 
@@ -746,9 +756,8 @@ export class EnvService {
 			this.searchBranch((branch) => branch.Type === 'Warehouse' && (this.selectedBranchAndChildren.includes(branch.Id) || IgnoredSelectedBranch)).then((warehouses) => {
 				if (getParents) {
 					resolve(warehouses);
-					
 				} else {
-					resolve(warehouses.filter(d=>d.Type === 'Warehouse'));
+					resolve(warehouses.filter((d) => d.Type === 'Warehouse'));
 				}
 			});
 		});

@@ -43,7 +43,6 @@ export class PrintingService {
 
 	defaultPrinter;
 	hostList;
-	printers;
 	cssStyling = `
   .bill .items .name,.bill .items tr:last-child td{border:none!important}.bill,.bill .title,.sheet{color:#000;font-sized:13px;}.sheet .no-break-page,.sheet .no-break-page *,.sheet table break-guard,.sheet table break-guard *,.sheet table tr{page-break-inside:avoid}.bill{display:block;overflow:hidden!important}.bill .sheet{box-shadow:none!important}.bill .header,.bill .message,.sheet.rpt .cen,.text-center{text-align:center}.bill .header span{display:inline-block;width:100%}.bill .header .logo img{max-width:150px;max-height:75px}.bill .header .bill-no,.bill .header .brand,.bill .items .quantity,.bold,.sheet.rpt .bol{font-weight:700}.bill .header .address{font-size:80%;font-style:italic}.bill .table-info{border:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info-top{border-top:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info-bottom{border-bottom:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .items{margin:5px 0}.bill .items tr td{border-bottom:1px dashed #ccc;padding-bottom:5px}.bill .items .name{width:100%;padding-top:5px;padding-bottom:2px!important}.bill .items .code{font-weight:700;text-transform:uppercase}.bill .items .total,.sheet.rpt .num,.text-right{text-align:right}.bill .header,.bill .items,.bill .message,.bill .table-info,.bill .table-info-bottom,.bill .table-info-top{padding-left:8px;padding-right:8px}.page-footer-space{margin-top:10px}.table-name-bill{font-size:16px}.table-info-top td{padding-top:5px}.table-info-top .small{font-size:smaller!important}.sheet{margin:0;overflow:hidden;position:relative;box-sizing:border-box;page-break-after:always;font-family:'Times New Roman',Times,serif;font-size:13px;background:#fff}.sheet.rpt .top-zone{min-height:940px}.sheet.rpt table,.sheet.rpt tbody table{width:100%;border-collapse:collapse}.sheet.rpt tbody table td{padding:0}.sheet.rpt .rpt-header .ngay-hd{width:100px}.sheet.rpt .rpt-header .title{font-size:18px;font-weight:700;color:#000}.sheet.rpt .rpt-header .head-c1{width:75px}.sheet.rpt .chu-ky,.sheet.rpt .rpt-nvgh-header{margin-top:20px}.sheet.rpt .ds-san-pham{margin:10px 0}.sheet.rpt .ds-san-pham td{padding:2px 5px;border:1px solid #000;white-space:nowrap}.sheet.rpt .ds-san-pham .head{background-color:#f1f1f1;font-weight:700}.sheet.rpt .ds-san-pham .oven{background-color:#f1f1f1}.sheet.rpt .ds-san-pham .ghi-chu{min-width:170px}.sheet.rpt .ds-san-pham .tien{width:200px}.sheet.rpt .thanh-tien .c1{width:95px}.sheet.rpt .chu-ky td{font-weight:700;text-align:center}.sheet.rpt .chu-ky .line2{font-weight:400;height:100px;page-break-inside:avoid}.sheet.rpt .noti{margin-top:-105px}.sheet.rpt .noti td{vertical-align:bottom}.sheet.rpt .noti td .qrc{width:100px;height:100px;border:1px solid;display:block}.sheet.rpt .big{font-size:16px;font-weight:700;color:#b7332b}.sheet .page-footer,.sheet .page-footer-space,.sheet .page-header,.sheet .page-header-space{height:10mm}.sheet table{page-break-inside:auto}.sheet table tr{page-break-after:auto}.float-right{float:right}
   `;
@@ -52,280 +51,28 @@ export class PrintingService {
 		public printerService: SYS_PrinterProvider,
 		public sysConfigProvider: SYS_ConfigProvider
 	) {
-		this.env.getEvents().subscribe((data) => {
+		this.env.getEvents().subscribe(async (data) => {
 			if (data.Code == 'changeBranch') {
-				this.qzCloseConnection();
-				this.printers = null;
-				this.printingServerConfig = this.getConfig(this.env.selectedBranch);
-			}
-		});
-		this.printingServerConfig = this.getConfig(this.env.selectedBranch);
-	}
-	print(data: printData) {
-		return new Promise(async (resolve, reject) => {
-			// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
-			// Signing certificate
-			// Convert data/options to QZ Option
-			// Tạo QZ config
-			// Connect
-			// Gửi in
-			//Viết hàm connect(Khi in nếu chưa connect thì call),  disconnect(khi user rời khỏi page)
-			if (data?.options?.length > 0) {
-				if (!this.printers) {
-					await this.getPrinterInBranch();
-				}
-				if (!this.printers) {
-					reject('Printer not found!');
-					this.env.showMessage('Printer not found!', 'danger');
-					return;
-				}
-			} else {
-				if (!this.printingServerConfig) {
-					await this.getConfig();
-				}
-				if (!this.printingServerConfig || !this.printingServerConfig.Host || !this.printingServerConfig.DefaultPrinter) {
-					reject('Printer not found!');
-					this.env.showMessage('Printer not found', 'danger');
-					return;
-				}
-				data?.options?.push({
-					printer: this.printingServerConfig.DefaultPrinter,
-					host: this.printingServerConfig.PrintingHost,
-					port: this.printingServerConfig.PrintingPort,
-					isSecure: this.printingServerConfig.IsSecure || true,
-				});
-			}
-			const serverList = data?.options?.reduce((acc: any[], rs) => {
-				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
-
-				if (existing) {
-					existing.printerOptions.push(rs);
-				} else {
-					acc.push({
-						host: rs.host,
-						port: rs.port,
-						isSecure: rs.isSecure,
-						printerOptions: [rs],
-					});
-				}
-
-				return acc;
-			}, []);
-
-			serverList.forEach((s) => {
-				// let printers = this.printers.filter((d) => s.printers.inculdes(d.Code));
-				// if (printers.length == 0) {
-				// 	this.env.showMessage('Printer not found', 'danger');
-				// 	return;
-				// }
-				this.ensureCertificate().then(async () => {
-					this.qzConnect(s.host, s.port, s.isSecure).then(() => {
-						let promises = [];
-						s.printerOptions.forEach((p) => {
-							let printingData = this.getPrintingData(p, data);
-							let config = qz.configs.create(p.printer, p);
-							promises.push(qz.print(config, printingData.data));
-						});
-						Promise.all(promises)
-							.then((success) => {
-								console.log('All prints done:', success);
-								resolve(true);
-							})
-							.catch((e) => {
-								reject(e);
-								console.error('Print error:', e);
-							});
-					});
-				});
-			});
-		});
-	}
-
-	getPrintersFromPrintingServer(IDBranch = null) {
-		return new Promise((resolve, reject) => {
-			this.getConfig(IDBranch)
-				.then((rs: any) => {
-					if (rs) {
-						this.qzConnect(rs.PrintingHost, rs.PrintingPort, rs.PrintingIsSecure).then(async () => {
-							qz.printers
-								.find()
-								.then((result) => {
-									//this.printers = result;
-									resolve({ printers: result, config: rs });
-								})
-								.catch((err) => {
-									this.env.showMessage('Cannot connect to printing server!', 'danger');
-									reject(err);
-								});
-						});
+				await this.endConnection();
+				this.getConfig(this.env.selectedBranch).then((rs: any) => {
+					this.printingServerConfig = rs;
+					if (this.printingServerConfig) {
+						this.startConnection(this.printingServerConfig.PrintingHost, this.printingServerConfig.PrintingPort, this.printingServerConfig.PrintingIsSecure);
 					}
-				})
-				.catch((err) => {
-					reject(err);
-					this.env.showErrorMessage(err);
 				});
-		}).finally(() => this.qzCloseConnection());
-	}
-
-	getConfig(IDBranch = null) {
-		let sysConfigQuery = ['PrintingHost', 'PrintingPort', 'PrintingIsSecure', 'DefaultPrinter'];
-		this.printingServerConfig = null;
-		return new Promise((resolve, reject) => {
-			this.sysConfigProvider
-				.read({
-					Code_in: sysConfigQuery,
-					IDBranch: IDBranch ?? this.env.selectedBranch,
-				})
-				.then((values: any) => {
-					if (values?.data?.length > 0) {
-						let configResult = {};
-						values['data'].forEach((e) => {
-							if ((e.Value == null || e.Value == 'null') && e._InheritedConfig) {
-								e.Value = e._InheritedConfig.Value;
-							}
-							configResult[e.Code] = JSON.parse(e.Value);
-						});
-						resolve(configResult);
-					}else resolve(null);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
-	}
-	async getPrinterInBranch() {
-		await this.printerService.read({ IDBranch: this.env.selectedBranch }).then((data: any) => {
-			this.printers = data.data;
-		});
-	}
-
-	ensureCertificate() {
-		return new Promise((resolve, reject) => {
-			if (!this.signingCertificate) {
-				this.QZsetCertificate().then(async () => {
-					await this.QZsignMessage()
-						.then(async () => {
-							this.signingCertificate = true;
-							resolve(true);
-						})
-						.catch((err) => {
-							console.log(err);
-							reject(false);
-						});
-				});
-			} else resolve(true);
-		});
-	}
-
-	qzConnect(host, port, isSecure, timeoutMs = 5000) {
-		// if (this.qzConnectionPromise) {
-		// 	return this.qzConnectionPromise;
-		// }
-
-		// Tạo promise kết nối có timeout
-		this.qzConnectionPromise = new Promise((resolve, reject) => {
-			if (!qz.websocket.isActive()) {
-				let options: any = {};
-				if (host) options.host = host;
-				if (port) options.port = port;
-				if (isSecure != null) options.isSecure = isSecure;
-
-				const connectPromise = qz.websocket.connect(options);
-				const timeoutPromise = new Promise((_, rejectTimeout) => setTimeout(() => rejectTimeout(new Error('QZ connect timeout')), timeoutMs));
-
-				Promise.race([connectPromise, timeoutPromise])
-					.then(() => {
-						console.log('QZ new connected!');
-						resolve(true);
-					})
-					.catch((err) => {
-						const errorMsg = err && err.message ? err.message : String(err);
-						this.env?.showMessage?.('QZ connect error: ' + errorMsg, 'danger');
-						console.error('❌ QZ connect error:', err);
-						reject(false);
-					})
-					.finally(() => {
-						this.qzConnectionPromise = null;
-					});
-			} else {
-				console.log('QZ already connected!');
-				resolve(true);
-				this.qzConnectionPromise = null;
 			}
 		});
 
-		return this.qzConnectionPromise;
-	}
-
-	qzCloseConnection() {
-		qz.websocket.disconnect();
-		this.qzConnectionPromise = null;
-	}
-
-	getPrintingData(option: printOptions, printData: printData) {
-		let printingData: any = {};
-		let style = '';
-		printingData.options = {};
-		printingData.data = [
-			{
-				type: 'pixel',
-				format: printData.type || 'html',
-				flavor: printData.type == 'pdf' || printData.type == 'image' ? 'file' : 'plain', //'file', // or 'plain' if the data is raw HTML
-				data: printData.content,
-			},
-		];
-
-		if (option) {
-			if (option.duplex) printingData.options.duplex = option.duplex;
-			printingData.options.orientation = option.orientation || 'null';
-			if (option.jobName) printingData.options.jobName = option.jobName;
-			if (option.tray) printingData.options.printerTray = option.tray;
-			if (option.rotation) printingData.options.orientation = option.rotation;
-			if (option.copies) printingData.options.copies = option.copies;
-			if (option.pages) printingData.options.orientation = option.pages;
-			if (option.paperSize) {
-				let paperSize = JSON.parse(option.paperSize);
-				printingData.options.size = paperSize.size;
-				printingData.options.units = paperSize.units;
-
-				// size: {width: 2.25, height: 1.25}, units: 'in'
+		this.initQZ();
+		this.getConfig(this.env.selectedBranch).then((rs: any) => {
+			this.printingServerConfig = rs;
+			if (this.printingServerConfig) {
+				this.startConnection(this.printingServerConfig.PrintingHost, this.printingServerConfig.PrintingPort, this.printingServerConfig.PrintingIsSecure);
 			}
-			if (option.cssStyle) {
-				style = option.cssStyle;
-			} else if (option.autoStyle) {
-				printingData.data[0].data = this.applyAllStyles(option.autoStyle)?.outerHTML;
-			} else {
-				style = this.cssStyling;
-			}
-			// if(data.options.scale)  convertOptions.orientation = data.options.scale; not found => todo
-		}
-
-		if (printingData.data[0].format == 'html') {
-			printingData.data[0].data =
-				`
-        <html>
-            <head>
-                <style>
-             
-                ` +
-				style +
-				`
-                </style>
-            </head>
-            <body>
-            ` +
-				printingData.data[0].data +
-				`
-            </body>
-        </html>
-        `;
-		}
-		return printingData;
+		});
 	}
-
-	async QZsetCertificate() {
-		/// Authentication setup ///
-		qz.security.setCertificatePromise(function (resolve, reject) {
+	initQZ() {
+		qz.security.setCertificatePromise((resolve, reject) => {
 			resolve(
 				'-----BEGIN CERTIFICATE-----\n' +
 					'MIIC8zCCAdugAwIBAgIUP/OJvGgwxvsSeXNXVqyWbbPLi6owDQYJKoZIhvcNAQEL\n' +
@@ -347,9 +94,9 @@ export class PrintingService {
 					'-----END CERTIFICATE-----'
 			);
 		});
-	}
 
-	async QZsignMessage() {
+		qz.security.setSignatureAlgorithm('SHA512'); // Since 2.1
+
 		var privateKey =
 			'-----BEGIN PRIVATE KEY-----\n' +
 			'MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQD0vDRb3M6EMzGu\n' +
@@ -385,13 +132,11 @@ export class PrintingService {
 			return function (resolve, reject) {
 				try {
 					var pk = KEYUTIL.getKey(privateKey);
-					var sig = new KJUR.crypto.Signature({
-						alg: 'SHA512withRSA',
-					}); // Use "SHA1withRSA" for QZ Tray 2.0 and older
+					var sig = new KJUR.crypto.Signature({ alg: 'SHA512withRSA' }); // Use "SHA1withRSA" for QZ Tray 2.0 and older
 					sig.init(pk);
 					sig.updateString(toSign);
 					var hex = sig.sign();
-					// console.log("DEBUG: \n\n" + stob64(hextorstr(hex)));
+					console.log('DEBUG: \n\n' + stob64(hextorstr(hex)));
 					resolve(stob64(hextorstr(hex)));
 				} catch (err) {
 					console.error(err);
@@ -400,32 +145,241 @@ export class PrintingService {
 			};
 		});
 	}
-
-	// apply all style of element and nested to themseleve
-	applyAllStyles(element) {
-		// Clone the original element deeply
-		let clonedElement = element.cloneNode(true);
-
-		// Apply styles to the cloned element based on the original
-		this.applyStyles(clonedElement, element);
-
-		return clonedElement;
+	getConfig(IDBranch = null) {
+		let sysConfigQuery = ['PrintingHost', 'PrintingPort', 'PrintingIsSecure', 'DefaultPrinter'];
+		this.printingServerConfig = null;
+		return new Promise((resolve, reject) => {
+			this.sysConfigProvider
+				.read({
+					Code_in: sysConfigQuery,
+					IDBranch: IDBranch ?? this.env.selectedBranch,
+				})
+				.then((values: any) => {
+					if (values?.data?.length > 0) {
+						let configResult: any = {};
+						values['data'].forEach((e) => {
+							if ((e.Value == null || e.Value == 'null') && e._InheritedConfig) {
+								e.Value = e._InheritedConfig.Value;
+							}
+							configResult[e.Code] = JSON.parse(e.Value);
+						});
+						resolve(configResult);
+					} else resolve(null);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
+	getPrintersFromPrintingServer(IDBranch = null) {
+		return new Promise((resolve, reject) => {
+			this.getConfig(IDBranch)
+				.then((rs: any) => {
+					if (rs) {
+						this.startConnection(rs.PrintingHost, rs.PrintingPort, rs.PrintingIsSecure).then(async () => {
+							qz.printers
+								.find()
+								.then((result) => {
+									//this.printers = result;
+									resolve({ printers: result, config: rs });
+								})
+								.catch((err) => {
+									reject(err);
+								});
+						});
+					}
+				})
+				.catch((err) => {
+					reject(err);
+					this.env.showMessage('Cannot connect to printing server!', 'danger');
+				});
+		});
 	}
 
-	applyStyles(clonedEl, originalElement) {
-		// Get computed styles for the current original element
-		let computedStyles = getComputedStyle(originalElement);
+	/// Connection ///
+	updateState(isShow) {
+		this.env.showBarMessage('printingServcerConnected', 'print-sharp', 'dark', isShow);
+	}
+	handleConnectionError(err) {
+		this.updateState(false);
 
-		// Apply each computed style as inline to the cloned element
-		for (let property of Array.from(computedStyles)) {
-			clonedEl.style.setProperty(property, computedStyles.getPropertyValue(property));
-		}
-
-		// Recursively apply styles for all children
-		for (let i = 0; i < originalElement.children.length; i++) {
-			let child = originalElement.children[i];
-			let childClone = clonedEl.children[i];
-			this.applyStyles(childClone, child);
+		if (err.target != undefined) {
+			if (err.target.readyState >= 2) {
+				//if CLOSING or CLOSED
+				this.env.showMessage('Connection to QZ Tray was closed', 'danger');
+			} else {
+				this.env.showMessage('A connection error occurred, check log for details', 'danger');
+				console.error(err);
+			}
+		} else {
+			this.env.showMessage('QZ connection error! ', 'danger');
+			console.error(err);
 		}
 	}
+	async startConnection(host, port, isSecure) {
+		return new Promise(async (resolve, reject) => {
+			let options: any = {};
+			if (host) options.host = host;
+			if (port) options.port = port;
+			if (isSecure != null) options.isSecure = isSecure;
+			// Connect to a print-server instance, if specified
+			if (qz.websocket.isActive() && host != qz?.websocket?.getConnectionInfo()?.host) await this.endConnection();
+			if (!qz.websocket.isActive()) {
+				let that = this;
+				qz.websocket
+					.connect(options)
+					.then(() => {
+						resolve(true);
+						that.updateState(true);
+					})
+					.catch((err) => {
+						reject(err);
+						this.handleConnectionError(err);
+					});
+			} else {
+				console.log('An active connection with QZ already exists.');
+			}
+		});
+	}
+
+	async endConnection() {
+		if (qz.websocket.isActive()) {
+			let that = this;
+			await qz.websocket
+				.disconnect()
+				.then(() => {
+					that.updateState(false);
+				})
+				.catch((err) => this.handleConnectionError(err));
+		}
+	}
+	print(data: printData) {
+		return new Promise(async (resolve, reject) => {
+			// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
+			// Signing certificate
+			// Convert data/options to QZ Option
+			// Tạo QZ config
+			// Connect
+			// Gửi in
+			//Viết hàm connect(Khi in nếu chưa connect thì call),  disconnect(khi user rời khỏi page)
+			if (data?.options?.length > 0) {
+			} else {
+				if (!this.printingServerConfig) {
+					await this.getConfig();
+				}
+				if (!this.printingServerConfig || !this.printingServerConfig.PrintingHost || !this.printingServerConfig.DefaultPrinter) {
+					reject('Printer not found!');
+					this.env.showMessage('Printer not found', 'danger');
+					return;
+				}
+				data?.options?.push({
+					printer: this.printingServerConfig.DefaultPrinter,
+					host: this.printingServerConfig.PrintingHost,
+					port: this.printingServerConfig.PrintingPort,
+					isSecure: this.printingServerConfig.IsSecure || true,
+				});
+			}
+			const serverList = data?.options?.reduce((acc: any[], rs) => {
+				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
+
+				if (existing) {
+					existing.printerOptions.push(rs);
+				} else {
+					acc.push({
+						host: rs.host,
+						port: rs.port,
+						isSecure: rs.isSecure,
+						printerOptions: [rs],
+					});
+				}
+
+				return acc;
+			}, []);
+
+			serverList.forEach((s) => {
+				// let printers = this.printers.filter((d) => s.printers.inculdes(d.Code));
+				// if (printers.length == 0) {
+				// 	this.env.showMessage('Printer not found', 'danger');
+				// 	return;
+				// }
+				this.startConnection(s.host, s.port, s.isSecure).then(() => {
+					let promises = [];
+					s.printerOptions.forEach((p) => {
+						let printingData = this.getPrintingData(p, data);
+						let config = qz.configs.create(p.printer, p);
+						promises.push(qz.print(config, printingData.data));
+					});
+					Promise.all(promises)
+						.then((success) => {
+							console.log('All prints done:', success);
+							resolve(true);
+						})
+						.catch((e) => {
+							reject(e);
+							console.error('Print error:', e);
+						});
+				});
+			});
+		});
+	}
+
+	getPrintingData(option: printOptions, printData: printData) {
+		let printingData: any = {};
+		let style = '';
+		printingData.options = {};
+		printingData.data = [
+			{
+				type: 'pixel',
+				format: printData.type || 'html',
+				flavor: printData.type == 'pdf' || printData.type == 'image' ? 'file' : 'plain', //'file', // or 'plain' if the data is raw HTML
+				data: printData.content,
+			},
+		];
+
+		if (option) {
+			if (option.duplex) printingData.options.duplex = option.duplex;
+			printingData.options.orientation = option.orientation || 'null';
+			if (option.jobName) printingData.options.jobName = option.jobName;
+			if (option.tray) printingData.options.printerTray = option.tray;
+			if (option.rotation) printingData.options.orientation = option.rotation;
+			if (option.copies) printingData.options.copies = option.copies;
+			if (option.pages) printingData.options.orientation = option.pages;
+			if (option.paperSize) {
+				let paperSize = JSON.parse(option.paperSize);
+				printingData.options.size = paperSize.size;
+				printingData.options.units = paperSize.units;
+
+				// size: {width: 2.25, height: 1.25}, units: 'in'
+			}
+			if (option.cssStyle) {
+				style = option.cssStyle;
+			}  else {
+				style = this.cssStyling;
+			}
+			// if(data.options.scale)  convertOptions.orientation = data.options.scale; not found => todo
+		}
+
+		if (printingData.data[0].format == 'html') {
+			printingData.data[0].data =
+				`
+        <html>
+            <head>
+                <style>
+             
+                ` +
+				style +
+				`
+                </style>
+            </head>
+            <body>
+            ` +
+				printingData.data[0].data +
+				`
+            </body>
+        </html>
+        `;
+		}
+		return printingData;
+	}
+	
 }
