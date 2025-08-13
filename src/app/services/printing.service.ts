@@ -196,26 +196,6 @@ export class PrintingService {
 		});
 	}
 
-	/// Connection ///
-	updateState(isShow) {
-		this.env.showBarMessage('printingServcerConnected', 'print-sharp', 'dark', isShow);
-	}
-	handleConnectionError(err) {
-		this.updateState(false);
-
-		if (err.target != undefined) {
-			if (err.target.readyState >= 2) {
-				//if CLOSING or CLOSED
-				this.env.showMessage('Connection to QZ Tray was closed', 'danger');
-			} else {
-				this.env.showMessage('A connection error occurred, check log for details', 'danger');
-				console.error(err);
-			}
-		} else {
-			this.env.showMessage('QZ connection error! ', 'danger');
-			console.error(err);
-		}
-	}
 	async startConnection(host, port, isSecure) {
 		return new Promise(async (resolve, reject) => {
 			let options: any = {};
@@ -237,7 +217,7 @@ export class PrintingService {
 						this.handleConnectionError(err);
 					});
 			} else {
-				console.log('An active connection with QZ already exists.');
+				resolve(true);
 			}
 		});
 	}
@@ -295,31 +275,51 @@ export class PrintingService {
 
 				return acc;
 			}, []);
+			this.printAllServers(serverList, data).then(()=>{
+				resolve(true);
+			}).catch(err=> reject(err));
+			// for (const s of serverList) {
+			// 	await this.startConnection(s.host, s.port, s.isSecure);
 
-			serverList.forEach((s) => {
-				// let printers = this.printers.filter((d) => s.printers.inculdes(d.Code));
-				// if (printers.length == 0) {
-				// 	this.env.showMessage('Printer not found', 'danger');
-				// 	return;
-				// }
+			// 	let promises = [];
+			// 	for (const p of s.printerOptions) {
+			// 		let printingData = this.getPrintingData(p, data);
+			// 		let config = qz.configs.create(p.printer, p);
+			// 		promises.push(qz.print(config, printingData.data));
+			// 	}
+
+			// 	await Promise.all(promises)
+			// 		.then((success) => {
+			// 			console.log('All prints done:', success);
+			// 		})
+			// 		.catch((e) => {
+			// 			console.error('Print error:', e);
+			// 			throw e; // để stop vòng lặp nếu cần
+			// 		});
+			// }
+		});
+	}
+
+	printAllServers(serverList, data) {
+		return new Promise((resolve, reject) => {
+			for (const s of serverList) {
 				this.startConnection(s.host, s.port, s.isSecure).then(() => {
-					let promises = [];
-					s.printerOptions.forEach((p) => {
+					let promises = s.printerOptions.map((p) => {
 						let printingData = this.getPrintingData(p, data);
 						let config = qz.configs.create(p.printer, p);
-						promises.push(qz.print(config, printingData.data));
+						return qz.print(config, printingData.data);
 					});
-					Promise.all(promises)
-						.then((success) => {
-							console.log('All prints done:', success);
+						Promise.all(promises).then(()=>{
+							console.log(`All prints done for server ${s.host}`);
 							resolve(true);
+						}).catch(err=>{
+							reject(err);
+							console.log(err);
+	
 						})
-						.catch((e) => {
-							reject(e);
-							console.error('Print error:', e);
-						});
+					
 				});
-			});
+			}
 		});
 	}
 
@@ -353,7 +353,7 @@ export class PrintingService {
 			}
 			if (option.cssStyle) {
 				style = option.cssStyle;
-			}  else {
+			} else {
 				style = this.cssStyling;
 			}
 			// if(data.options.scale)  convertOptions.orientation = data.options.scale; not found => todo
@@ -381,5 +381,25 @@ export class PrintingService {
 		}
 		return printingData;
 	}
-	
+
+	/// Connection ///
+	updateState(isShow) {
+		this.env.showBarMessage('printingServcerConnected', 'print-sharp', 'dark', isShow);
+	}
+	handleConnectionError(err) {
+		this.updateState(false);
+
+		if (err.target != undefined) {
+			if (err.target.readyState >= 2) {
+				//if CLOSING or CLOSED
+				this.env.showMessage('Connection to QZ Tray was closed', 'danger');
+			} else {
+				this.env.showMessage('A connection error occurred, check log for details', 'danger');
+				console.error(err);
+			}
+		} else {
+			this.env.showMessage('QZ connection error! ', 'danger');
+			console.error(err);
+		}
+	}
 }
