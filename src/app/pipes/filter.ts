@@ -54,7 +54,9 @@ export class filterProperties implements PipeTransform {
 	transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
 		return items.filter((item) => {
 			for (let field in conditions) {
-				if (conditions[field] === 'all' || conditions[field] === '') return true;
+				if (conditions[field] === 'all' || conditions[field] === '') {
+					continue; // bỏ qua điều kiện này, kiểm tra tiếp
+				}
 				if (item[field] != conditions[field]) {
 					return false;
 				}
