@@ -3,11 +3,13 @@ import * as qz from 'qz-tray';
 import { KJUR, KEYUTIL, stob64, hextorstr } from 'jsrsasign';
 import { EnvService } from './core/env.service';
 import { SYS_ConfigProvider, SYS_PrinterProvider } from './static/services.service';
+import { Observable, from, of, concatMap } from 'rxjs';
 
 export interface printData {
 	content: string;
 	type: 'html' | 'pdf' | 'image';
 	options?: printOptions[];
+	IDJob? : string;
 }
 
 export interface printOptions {
@@ -233,7 +235,49 @@ export class PrintingService {
 				.catch((err) => this.handleConnectionError(err));
 		}
 	}
-	print(data: printData) {
+
+	printJobsWithProgress(jobs: printData[]): Observable<{ job: printData; result: any }> {
+		return from(jobs).pipe(
+			concatMap((job) => this.runJob(job)) // Chạy từng job nối tiếp nhau
+		);
+	}
+
+	private runJob(data: printData): Observable<{ job: printData; result: any }> {
+		return new Observable((observer) => {
+			if (!data?.options?.length) {
+				if (!this.printingServerConfig) {
+					observer.error('Printer not found!');
+					return;
+				}
+				data.options = [
+					{
+						printer: this.printingServerConfig.DefaultPrinter,
+						host: this.printingServerConfig.PrintingHost,
+						port: this.printingServerConfig.PrintingPort,
+						isSecure: this.printingServerConfig.IsSecure ?? true,
+					},
+				];
+			}
+
+			const serverList = data.options.reduce((acc: any[], rs) => {
+				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
+				if (existing) {
+					existing.printerOptions.push(rs);
+				} else {
+					acc.push({ host: rs.host, port: rs.port, isSecure: rs.isSecure, printerOptions: [rs] });
+				}
+				return acc;
+			}, []);
+
+			this.printJobs(serverList, data).subscribe({
+				next: (result) => observer.next({ job: data, result }),
+				complete: () => observer.complete(),
+				error: (err) => observer.error(err),
+			});
+		});
+	}
+
+	print(jobs: printData[]) {
 		return new Promise(async (resolve, reject) => {
 			// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
 			// Signing certificate
@@ -242,85 +286,108 @@ export class PrintingService {
 			// Connect
 			// Gửi in
 			//Viết hàm connect(Khi in nếu chưa connect thì call),  disconnect(khi user rời khỏi page)
-			if (data?.options?.length > 0) {
-			} else {
-				if (!this.printingServerConfig) {
-					await this.getConfig();
-				}
-				if (!this.printingServerConfig || !this.printingServerConfig.PrintingHost || !this.printingServerConfig.DefaultPrinter) {
-					reject('Printer not found!');
-					this.env.showMessage('Printer not found', 'danger');
-					return;
-				}
-				data?.options?.push({
-					printer: this.printingServerConfig.DefaultPrinter,
-					host: this.printingServerConfig.PrintingHost,
-					port: this.printingServerConfig.PrintingPort,
-					isSecure: this.printingServerConfig.IsSecure || true,
-				});
-			}
-			const serverList = data?.options?.reduce((acc: any[], rs) => {
-				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
-
-				if (existing) {
-					existing.printerOptions.push(rs);
+			console.log(jobs);
+			let allResults = [];
+			jobs.forEach(async (data) => {
+				if (data?.options?.length > 0) {
 				} else {
-					acc.push({
-						host: rs.host,
-						port: rs.port,
-						isSecure: rs.isSecure,
-						printerOptions: [rs],
+					if (!this.printingServerConfig) {
+						await this.getConfig();
+					}
+					if (!this.printingServerConfig || !this.printingServerConfig.PrintingHost || !this.printingServerConfig.DefaultPrinter) {
+						reject('Printer not found!');
+						this.env.showMessage('Printer not found', 'danger');
+						return;
+					}
+					data?.options?.push({
+						printer: this.printingServerConfig.DefaultPrinter,
+						host: this.printingServerConfig.PrintingHost,
+						port: this.printingServerConfig.PrintingPort,
+						isSecure: this.printingServerConfig.IsSecure || true,
 					});
 				}
+				const serverList = data?.options?.reduce((acc: any[], rs) => {
+					const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
 
-				return acc;
-			}, []);
-			this.printAllServers(serverList, data).then(()=>{
-				resolve(true);
-			}).catch(err=> reject(err));
-			// for (const s of serverList) {
-			// 	await this.startConnection(s.host, s.port, s.isSecure);
+					if (existing) {
+						existing.printerOptions.push(rs);
+					} else {
+						acc.push({
+							host: rs.host,
+							port: rs.port,
+							isSecure: rs.isSecure,
+							printerOptions: [rs],
+						});
+					}
 
-			// 	let promises = [];
-			// 	for (const p of s.printerOptions) {
-			// 		let printingData = this.getPrintingData(p, data);
-			// 		let config = qz.configs.create(p.printer, p);
-			// 		promises.push(qz.print(config, printingData.data));
-			// 	}
-
-			// 	await Promise.all(promises)
-			// 		.then((success) => {
-			// 			console.log('All prints done:', success);
-			// 		})
-			// 		.catch((e) => {
-			// 			console.error('Print error:', e);
-			// 			throw e; // để stop vòng lặp nếu cần
-			// 		});
-			// }
+					return acc;
+				}, []);
+				this.printJobs(serverList, data).subscribe({
+					next: (result) => {
+						console.log('Job done:', result);
+						// Có thể show thông báo từng máy in xong
+					},
+					complete: () => {
+						console.log('Tất cả job đã xong');
+					},
+				});
+				await this.printAllServers(serverList, data, allResults);
+			});
+			resolve(allResults);
 		});
 	}
 
-	printAllServers(serverList, data) {
-		return new Promise((resolve, reject) => {
-			for (const s of serverList) {
-				this.startConnection(s.host, s.port, s.isSecure).then(() => {
-					let promises = s.printerOptions.map((p) => {
+	printJobs(serverList, data) {
+		return new Observable((observer) => {
+			(async () => {
+				for (const s of serverList) {
+					await this.startConnection(s.host, s.port, s.isSecure);
+
+					for (const p of s.printerOptions) {
 						let printingData = this.getPrintingData(p, data);
 						let config = qz.configs.create(p.printer, p);
-						return qz.print(config, printingData.data);
-					});
-						Promise.all(promises).then(()=>{
-							console.log(`All prints done for server ${s.host}`);
-							resolve(true);
-						}).catch(err=>{
-							reject(err);
-							console.log(err);
-	
-						})
-					
-				});
-			}
+
+						try {
+							await qz.print(config, printingData.data);
+							observer.next({
+								host: s.host,
+								printer: p.printer,
+								status: 'success',
+							});
+						} catch (err) {
+							observer.next({
+								host: s.host,
+								printer: p.printer,
+								status: 'error',
+								error: err,
+							});
+						}
+					}
+				}
+
+				observer.complete(); // báo là đã in hết
+			})();
 		});
+	}
+
+	async printAllServers(serverList, data, allResults) {
+		for (const s of serverList) {
+			await this.startConnection(s.host, s.port, s.isSecure);
+
+			for (const p of s.printerOptions) {
+				let printingData = this.getPrintingData(p, data);
+				let config = qz.configs.create(p.printer, p);
+
+				try {
+					await qz.print(config, printingData.data);
+					allResults.push({ host: s.host, printer: p.printer, status: 'success' });
+				} catch (err) {
+					allResults.push({ host: s.host, printer: p.printer, status: 'error', error: err });
+				}
+			}
+		}
+
+		return allResults;
 	}
 
 	getPrintingData(option: printOptions, printData: printData) {
