@@ -3,13 +3,13 @@ import * as qz from 'qz-tray';
 import { KJUR, KEYUTIL, stob64, hextorstr } from 'jsrsasign';
 import { EnvService } from './core/env.service';
 import { SYS_ConfigProvider, SYS_PrinterProvider } from './static/services.service';
-import { Observable, from, of, concatMap } from 'rxjs';
+import { Observable, from, of, concatMap, forkJoin } from 'rxjs';
 
 export interface printData {
 	content: string;
 	type: 'html' | 'pdf' | 'image';
 	options?: printOptions[];
-	IDJob? : string;
+	IDJob?: string;
 }
 
 export interface printOptions {
@@ -236,14 +236,16 @@ export class PrintingService {
 		}
 	}
 
+	// In nhiều job với tiến trình
 	printJobsWithProgress(jobs: printData[]): Observable<{ job: printData; result: any }> {
 		return from(jobs).pipe(
-			concatMap((job) => this.runJob(job)) // Chạy từng job nối tiếp nhau
+			concatMap((job) => this.runJob(job)) // chạy tuần tự
 		);
 	}
 
-	private runJob(data: printData): Observable<{ job: printData; result: any }> {
+	private runJob(data: printData): Observable<{ job: printData; result: any[] }> {
 		return new Observable((observer) => {
+			// Nếu chưa có option thì dùng máy in mặc định
 			if (!data?.options?.length) {
 				if (!this.printingServerConfig) {
 					observer.error('Printer not found!');
@@ -259,6 +261,7 @@ export class PrintingService {
 				];
 			}
 
+			// Gom theo host/port
 			const serverList = data.options.reduce((acc: any[], rs) => {
 				const existing = acc.find((x) => x.host === rs.host && x.port === rs.port);
 				if (existing) {
@@ -269,14 +272,53 @@ export class PrintingService {
 				return acc;
 			}, []);
 
-			this.printJobs(serverList, data).subscribe({
-				next: (result) => observer.next({ job: data, result }),
-				complete: () => observer.complete(),
-				error: (err) => observer.error(err),
-			});
+			// Giả sử printJobs trả Observable cho từng server
+			from(serverList)
+				.pipe(
+					concatMap((s) => this.printJobs([s], data)) // tuần tự
+					// hoặc mergeMap để song song
+				)
+				.subscribe({
+					next: (result:any) => observer.next({ job: data, result }),
+					complete: () => observer.complete(),
+					error: (err) => observer.error(err),
+				});
 		});
 	}
 
+	// Hàm giả lập: In cho list server (bạn thay bằng qz.print thực tế)
+	printJobs(serverList, data) {
+		return new Observable((observer) => {
+			(async () => {
+				for (const s of serverList) {
+					await this.startConnection(s.host, s.port, s.isSecure);
+
+					for (const p of s.printerOptions) {
+						let printingData = this.getPrintingData(p, data);
+						let config = qz.configs.create(p.printer, p);
+
+						try {
+							await qz.print(config, printingData.data);
+							observer.next({
+								host: s.host,
+								printer: p.printer,
+								status: 'success',
+							});
+						} catch (err) {
+							observer.next({
+								host: s.host,
+								printer: p.printer,
+								status: 'error',
+								error: err,
+							});
+						}
+					}
+				}
+
+				observer.complete(); // báo là đã in hết
+			})();
+		});
+	}
 	print(jobs: printData[]) {
 		return new Promise(async (resolve, reject) => {
 			// Lấy máy in theo data/options/printer hoặc máy in mặc định theo chi nhánh hiện tại
@@ -334,39 +376,6 @@ export class PrintingService {
 				await this.printAllServers(serverList, data, allResults);
 			});
 			resolve(allResults);
-		});
-	}
-
-	printJobs(serverList, data) {
-		return new Observable((observer) => {
-			(async () => {
-				for (const s of serverList) {
-					await this.startConnection(s.host, s.port, s.isSecure);
-
-					for (const p of s.printerOptions) {
-						let printingData = this.getPrintingData(p, data);
-						let config = qz.configs.create(p.printer, p);
-
-						try {
-							await qz.print(config, printingData.data);
-							observer.next({
-								host: s.host,
-								printer: p.printer,
-								status: 'success',
-							});
-						} catch (err) {
-							observer.next({
-								host: s.host,
-								printer: p.printer,
-								status: 'error',
-								error: err,
-							});
-						}
-					}
-				}
-
-				observer.complete(); // báo là đã in hết
-			})();
 		});
 	}
 
