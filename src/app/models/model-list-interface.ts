@@ -5471,6 +5471,8 @@ export interface POS_Kitchen
     Id?: number;
     Code?: string;
     Name?: string;
+    IsPrintList?: boolean;
+    IsPrintOneByOne?: boolean;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -6071,6 +6073,7 @@ export interface PROD_MRPScenario
     Period?: string;
     StartDate?: Date;
     EndDate?: Date;
+    NumberOfNextPeriod?: number;
     MaximumCumulativeLeadTime?: number;
     IsHolidaysForProduction?: boolean;
     IsHolidaysForPurchase?: boolean;
