@@ -44,9 +44,16 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // must go before pl
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { Capacitor } from '@capacitor/core';
+import { environment } from 'src/environments/environment';
 
 export function createTranslateLoader(http: HttpClient) {
-	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+	console.log('Creating Translate Loader');
+	const isHybrid = Capacitor.getPlatform() !== 'web';
+	console.log('Running in ' + (isHybrid ? 'hybrid' : 'web') + ' mode');
+
+	if (isHybrid) return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+	else return new TranslateHttpLoader(http, environment.appDomain + 'uploads/i18n/', '.json');
 }
 
 @NgModule({
