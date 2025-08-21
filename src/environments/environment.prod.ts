@@ -1,6 +1,6 @@
 export let environment = {
 	production: true,
-	appVersion: '0.20.93',
+	appVersion: '0.20.96',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [

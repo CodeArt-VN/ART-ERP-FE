@@ -1,10 +1,11 @@
 {
 	"name": "vn.inholdings.app.erp",
-	"version": "0.20.93",
+	"version": "0.20.96",
 	"description": "ERP",
 	"author": "Hùng Vũ",
 	"homepage": "https://codeart.vn/",
 	"scripts": {
+		"build-web": "node ./replace.build.js build web",
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build",
@@ -13,7 +14,6 @@
 		"lint": "ng lint",
 		"run-ios": "ionic capacitor run ios -l --external",
 		"updateBuild": "node ./replace.build.js",
-		"build-web": "npm version patch --no-git-tag-version && node ./replace.build.js && ionic build --prod && node ./replace.www-index.js",
 		"build-prod": "npm version patch --no-git-tag-version && node ./replace.build.js && ionic cap sync --prod",
 		"live-android": "ionic cap run android -l --external --target R58RC47AGEW",
 		"dev": "ionic serve --external --no-open --ssl",

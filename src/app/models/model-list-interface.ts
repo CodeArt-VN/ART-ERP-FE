@@ -733,6 +733,7 @@ export interface BANK_IncomingPayment
     IDCustomer?: number;
     IDType?: number;
     IDTransaction?: number;
+    IDAccount?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -1501,6 +1502,26 @@ export interface CRM_Attendance
     
 }
 
+export interface CRM_Brand
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsPartner?: boolean;
+    PinCode?: string;
+    Avatar?: string;
+    Logo?: string;
+    
+}
+
 export interface CRM_BusinessPartnerGroup
 {
     IDBranch?: number;
@@ -1776,9 +1797,10 @@ export interface CRM_Lead
     
 }
 
-export interface CRM_MemberCard
+export interface CRM_MembershipLoyalty
 {
-    IDBranch?: number;
+    IDPolLevel?: number;
+    IDContact?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -1790,8 +1812,29 @@ export interface CRM_MemberCard
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
-    Level?: number;
-    Amount?: number;
+    Point?: number;
+    
+}
+
+export interface CRM_MembershipLoyaltyHistory
+{
+    IDPolLoyalty?: number;
+    IDMembershipLoyalty?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    EventType?: string;
+    RefID?: number;
+    Point?: number;
+    PointDate?: Date;
     
 }
 
@@ -1961,6 +2004,87 @@ export interface CRM_PersonInfo
     
 }
 
+export interface CRM_PolBenefit
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface CRM_PolLevel
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Level?: number;
+    Amount?: number;
+    Image?: string;
+    Icon?: string;
+    Color?: string;
+    
+}
+
+export interface CRM_PolLevelBenefit
+{
+    IDPolLevel?: number;
+    IDPolBenefit?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface CRM_PolLoyalty
+{
+    IDPolLevel?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Status?: string;
+    StartDate?: Date;
+    EndDate?: Date;
+    EventType?: string;
+    CalculationMethod?: string;
+    CalculationBy?: string;
+    ConversionRate?: number;
+    Value?: number;
+    
+}
+
 export interface CRM_Quotation
 {
     IDContact?: number;
@@ -1977,6 +2101,52 @@ export interface CRM_Quotation
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    
+}
+
+export interface CRM_Reward
+{
+    IDBrand?: number;
+    IDProgram?: number;
+    IDRewardCategory?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsShow?: boolean;
+    IsHotReward?: boolean;
+    PublishDate?: Date;
+    Type?: string;
+    Status?: string;
+    Banner?: string;
+    Logo?: string;
+    Content?: string;
+    
+}
+
+export interface CRM_RewardCategory
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Logo?: string;
+    Icon?: string;
+    Color?: string;
     
 }
 
@@ -5471,6 +5641,8 @@ export interface POS_Kitchen
     Id?: number;
     Code?: string;
     Name?: string;
+    IsPrintList?: boolean;
+    IsPrintOneByOne?: boolean;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -6071,6 +6243,7 @@ export interface PROD_MRPScenario
     Period?: string;
     StartDate?: Date;
     EndDate?: Date;
+    NumberOfNextPeriod?: number;
     MaximumCumulativeLeadTime?: number;
     IsHolidaysForProduction?: boolean;
     IsHolidaysForPurchase?: boolean;
