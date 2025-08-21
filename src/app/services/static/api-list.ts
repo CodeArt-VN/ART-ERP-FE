@@ -2693,6 +2693,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_Brand:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Brand/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Brand"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Brand/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Brand/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Brand/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Brand"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Brand/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Brand/" + id} 
+        }
+		
+	},
+
 	CRM_BusinessPartnerGroup:{
         getSearchList:{
             method: "GET",
@@ -3134,51 +3183,100 @@ export var APIListBase = {
 		
 	},
 
-	CRM_MemberCard:{
+	CRM_MembershipLoyalty:{
         getSearchList:{
             method: "GET",
-            url: function(){return "CRM/MemberCard/Search"}  
+            url: function(){return "CRM/MembershipLoyalty/Search"}  
         },
         getList:{
             method: "GET",
-            url: function(){return "CRM/MemberCard"}  
+            url: function(){return "CRM/MembershipLoyalty"}  
         },
         getExport:{
             method: "DOWNLOAD",
-            url: function(){return "CRM/MemberCard/Export"}  
+            url: function(){return "CRM/MembershipLoyalty/Export"}  
         },
         postImport:{
             method: "UPLOAD",
-            url: function(){return "CRM/MemberCard/Import"}  
+            url: function(){return "CRM/MembershipLoyalty/Import"}  
         },
         getItem:{
             method: "GET",
-            url: function(id){return "CRM/MemberCard/" + id} 
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
         },
         putItem:{
             method: "PUT",
-            url: function(id){return "CRM/MemberCard/" + id} 
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
         },
         disableItem:{
             method: "PUT",
-            url: function(id){return "CRM/MemberCard/Disable/" + id} 
+            url: function(id){return "CRM/MembershipLoyalty/Disable/" + id} 
         },
         enableItem:{
             method: "PUT",
-            url: function(id){return "CRM/MemberCard/Enable/" + id} 
+            url: function(id){return "CRM/MembershipLoyalty/Enable/" + id} 
         },
         
         postItem:{
             method: "POST",
-            url: function(){return "CRM/MemberCard"}
+            url: function(){return "CRM/MembershipLoyalty"}
         },
         changeBranch:{
             method: "POST",
-            url: function(){return "CRM/MemberCard/ChangeBranch"} 
+            url: function(){return "CRM/MembershipLoyalty/ChangeBranch"} 
         },
         delItem:{
             method: "DELETE",
-            url: function(id){return "CRM/MemberCard/" + id} 
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
+        }
+		
+	},
+
+	CRM_MembershipLoyaltyHistory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyaltyHistory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyaltyHistory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyaltyHistory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
         }
 		
 	},
@@ -3477,6 +3575,202 @@ export var APIListBase = {
 		
 	},
 
+	CRM_PolBenefit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolBenefit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolBenefit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolBenefit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolBenefit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolBenefit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolBenefit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        }
+		
+	},
+
+	CRM_PolLevel:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevel/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevel"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevel/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevel/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevel"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevel/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        }
+		
+	},
+
+	CRM_PolLevelBenefit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelBenefit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelBenefit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevelBenefit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevelBenefit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelBenefit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelBenefit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        }
+		
+	},
+
+	CRM_PolLoyalty:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLoyalty/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLoyalty"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLoyalty/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLoyalty/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLoyalty"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLoyalty/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        }
+		
+	},
+
 	CRM_Quotation:{
         getSearchList:{
             method: "GET",
@@ -3522,6 +3816,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "CRM/Quotation/" + id} 
+        }
+		
+	},
+
+	CRM_Reward:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Reward/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Reward"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Reward/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Reward/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Reward/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Reward"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Reward/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Reward/" + id} 
+        }
+		
+	},
+
+	CRM_RewardCategory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/RewardCategory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/RewardCategory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/RewardCategory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/RewardCategory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/RewardCategory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/RewardCategory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/RewardCategory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/RewardCategory/" + id} 
         }
 		
 	},
