@@ -48,12 +48,36 @@ import { Capacitor } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
 
 export function createTranslateLoader(http: HttpClient) {
-	console.log('Creating Translate Loader');
+	console.log('Creating Dynamic Translate Loader');
 	const isHybrid = Capacitor.getPlatform() !== 'web';
 	console.log('Running in ' + (isHybrid ? 'hybrid' : 'web') + ' mode');
 
-	if (isHybrid) return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-	else return new TranslateHttpLoader(http, environment.appDomain + 'uploads/i18n/', '.json');
+	// Dynamic language loading based on environment configuration
+	if (environment.languageStrategy?.networkFirst && !isHybrid) {
+		// For web platform, try to load from current server
+		const currentServer = localStorage.getItem('selectedServer');
+		
+		if (currentServer) {
+			try {
+				const serverUrl = new URL(currentServer);
+				const languageEndpoint = `${serverUrl.origin}/uploads/i18n/`;
+				console.log('Loading language from server:', languageEndpoint);
+				return new TranslateHttpLoader(http, languageEndpoint, '.json');
+			} catch (error) {
+				console.warn('Invalid server URL, falling back to assets:', error);
+			}
+		}
+		
+		// Fallback to appDomain if no currentServer
+		if (environment.appDomain) {
+			console.log('Loading language from appDomain:', environment.appDomain + 'uploads/i18n/');
+			return new TranslateHttpLoader(http, environment.appDomain + 'uploads/i18n/', '.json');
+		}
+	}
+	
+	// Default fallback to local assets (hybrid apps or when network strategy disabled)
+	console.log('Loading language from local assets');
+	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({

@@ -37,15 +37,18 @@ export class EnvService {
 	 */
 	async setLang(value: string) {
 		if (!value) value = this.language.default;
-		this.translate.use(value);
-		this.setStorage('lang', value);
-		this.language.current = value;
-		this.language.isDefault = this.language.current == this.language.default;
-		this.languageTracking.next(this.language);
+		
+		// Use new server-aware language loading
+		await this.loadLanguageForServer(value);
 	}
 
 	/** Get current app version */
 	version = environment.appVersion;
+
+	/** Server management properties */
+	selectedServer: string = environment.appDomain;
+	serverList: any[] = environment.appServers;
+	isServerLoaded = false;
 
 	/** Get current logged in user */
 	user: any = {};
@@ -137,80 +140,16 @@ export class EnvService {
 	 */
 	async init() {
 		await this.storage.init();
+		
+		// Load core system data (keep existing)
 		this.typeList = await this.storage.get('SYS/Type');
 		this.statusList = await this.storage.get('SYS/Status');
-		this.publishEvent({ Code: 'app:loadLang' });
-		Network.addListener('networkStatusChange', (status) => {
-			this.publishEvent({ Code: 'app:networkStatusChange', status });
-			console.log('Network status changed', status);
-		});
-
-		this.trackOnline().subscribe((isOnline) => {
-			this.networkInfo.isOnline = isOnline;
-		});
-
-		const signalRConnection = new signalR.HubConnectionBuilder()
-			.configureLogging(signalR.LogLevel.Information)
-			.withUrl(environment.signalRServiceDomain + 'notify')
-			.withAutomaticReconnect()
-			.build();
-
-		signalRConnection
-			.start()
-			.then(function () {
-				console.log('SignalR Connected!');
-			})
-			.catch(function (err) {
-				return console.error(err.toString());
-			});
-
-		signalRConnection.on('BroadcastMessage', (e) => {
-			//console.log('BroadcastMessage', e);
-			//this.publishEvent({})
-			switch (e.code) {
-				case 'POSOrderPaymentUpdate':
-				case 'POSOrderFromCustomer':
-				case 'POSOrderFromStaff':
-				case 'POSSupport':
-				case 'POSCallToPay':
-				case 'POSLockOrderFromStaff':
-				case 'POSLockOrderFromCustomer':
-				case 'POSUnlockOrderFromStaff':
-				case 'POSUnlockOrderFromCustomer':
-				case 'POSLockOrder':
-				case 'POSUnlockOrder':
-				case 'POSOrderSplittedFromStaff':
-				case 'POSOrderMergedFromStaff':
-				case 'SOPaymentUpdate':
-					e.code = 'app:' + e.code;
-					this.publishEvent(e);
-					break;
-				case 'AppReload':
-					location.reload();
-					break;
-				case 'SystemMessage':
-					this.showMessage(e.value, e.name);
-					break;
-				case 'AppReloadOldVersion':
-					if (e.value.localeCompare(this.version) > 0) {
-						location.reload();
-					}
-					break;
-				case 'SystemAlert':
-					this.showAlert(e.value, null, e.name);
-					break;
-				default:
-					break;
-			}
-		});
-		signalRConnection.on('SendMessage', (user, message) => {
-			console.log('SendMessage', user, message);
-			//this.publishEvent({})
-		});
-		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
-			console.log('SaleOrdersUpdated', IDBranch, Ids);
-			this.publishEvent({ Code: 'sale-order-mobile' });
-		});
+		
+		// Setup background services (non-blocking)
+		this.setupBackgroundServices();
+		
+		// Don't trigger language loading here anymore
+		// It will be handled by the new orchestrated flow
 	}
 
 	/**
@@ -801,5 +740,222 @@ export class EnvService {
 			const i = children[ix];
 			this.getChildrenDepartmentID(ids, i.Id);
 		}
+	}
+
+	// =================== NEW SERVER MANAGEMENT METHODS ===================
+
+	/**
+	 * Load selected server from storage
+	 */
+	async loadSelectedServer(): Promise<string> {
+		const stored = await this.getStorage('selectedServer');
+		if (stored && this.isValidServer(stored)) {
+			this.selectedServer = stored;
+			environment.appDomain = stored;
+		} else {
+			// Use default from environment
+			this.selectedServer = environment.appDomain;
+		}
+		
+		this.isServerLoaded = true;
+		console.log('Selected server loaded:', this.selectedServer);
+		return this.selectedServer;
+	}
+
+	/**
+	 * Change server and reload language
+	 */
+	async changeServer(serverCode: string): Promise<void> {
+		if (!this.isValidServer(serverCode)) {
+			throw new Error(`Invalid server: ${serverCode}`);
+		}
+
+		const oldServer = this.selectedServer;
+		this.selectedServer = serverCode;
+		environment.appDomain = serverCode;
+		
+		// Save to storage
+		await this.setStorage('selectedServer', serverCode);
+		
+		console.log('Server changed from', oldServer, 'to', serverCode);
+		
+		// Trigger migration if server changed
+		if (oldServer !== serverCode) {
+			const { MigrationService } = await import('./migration.service');
+			const migration = new MigrationService(this);
+			await migration.executeMigration();
+			
+			// Reload language for new server
+			await this.loadLanguageForServer();
+		}
+		
+		// Publish server change event
+		this.publishEvent({ Code: 'app:serverChanged', Value: serverCode });
+	}
+
+	/**
+	 * Load language with server context and fallbacks
+	 */
+	async loadLanguageForServer(lang?: string): Promise<void> {
+		if (!lang) {
+			lang = await this.getStorage('lang') || this.language.default;
+		}
+
+		const { Capacitor } = await import('@capacitor/core');
+		const platform = Capacitor.getPlatform();
+		const isWeb = platform === 'web';
+		
+		console.log('Loading language for server:', this.selectedServer, 'language:', lang, 'platform:', platform);
+		
+		try {
+			// Determine primary URL based on platform and server
+			const primaryUrl = isWeb && this.selectedServer
+				? `${this.selectedServer}uploads/i18n/${lang}.json`
+				: `./assets/i18n/${lang}.json`;
+			
+			console.log('Trying primary language URL:', primaryUrl);
+			
+			// Try primary URL with fetch (PWA cache will handle)
+			const response = await fetch(primaryUrl, {
+				cache: environment.languageStrategy.networkFirst ? 'default' : 'force-cache'
+			});
+			
+			if (response.ok) {
+				const translations = await response.json();
+				this.translate.setTranslation(lang, translations);
+				this.translate.use(lang);
+				
+				// Update language state
+				this.language.current = lang;
+				this.language.isDefault = lang === this.language.default;
+				this.setStorage('lang', lang);
+				this.languageTracking.next(this.language);
+				
+				console.log('Language loaded successfully from primary URL');
+				return;
+			}
+		} catch (error) {
+			console.warn('Primary language load failed:', error);
+		}
+		
+		// Fallback to assets
+		try {
+			const fallbackUrl = `./assets/i18n/${lang}.json`;
+			console.log('Trying fallback language URL:', fallbackUrl);
+			
+			const response = await fetch(fallbackUrl);
+			const translations = await response.json();
+			
+			this.translate.setTranslation(lang, translations);
+			this.translate.use(lang);
+			
+			// Update language state
+			this.language.current = lang;
+			this.language.isDefault = lang === this.language.default;
+			this.setStorage('lang', lang);
+			this.languageTracking.next(this.language);
+			
+			console.log('Language loaded successfully from fallback URL');
+			
+		} catch (error) {
+			console.error('Language fallback failed:', error);
+			throw new Error(`Failed to load language: ${lang}`);
+		}
+	}
+
+	/**
+	 * Setup background services (non-blocking)
+	 */
+	private setupBackgroundServices(): void {
+		// SignalR connection
+		setTimeout(() => this.setupSignalR(), 100);
+		
+		// Network monitoring  
+		setTimeout(() => this.setupNetworkMonitoring(), 200);
+	}
+
+	/**
+	 * Validate server code
+	 */
+	private isValidServer(serverCode: string): boolean {
+		return this.serverList.some(server => server.Code === serverCode);
+	}
+
+	/**
+	 * Setup SignalR (moved from init)
+	 */
+	private setupSignalR(): void {
+		const signalRConnection = new signalR.HubConnectionBuilder()
+			.configureLogging(signalR.LogLevel.Information)
+			.withUrl(environment.signalRServiceDomain + 'notify')
+			.withAutomaticReconnect()
+			.build();
+
+		signalRConnection
+			.start()
+			.then(() => console.log('SignalR Connected!'))
+			.catch(err => console.error('SignalR connection failed:', err));
+
+		// Add existing event handlers
+		signalRConnection.on('BroadcastMessage', (e) => {
+			switch (e.code) {
+				case 'POSOrderPaymentUpdate':
+				case 'POSOrderFromCustomer':
+				case 'POSOrderFromStaff':
+				case 'POSSupport':
+				case 'POSCallToPay':
+				case 'POSLockOrderFromStaff':
+				case 'POSLockOrderFromCustomer':
+				case 'POSUnlockOrderFromStaff':
+				case 'POSUnlockOrderFromCustomer':
+				case 'POSLockOrder':
+				case 'POSUnlockOrder':
+				case 'POSOrderSplittedFromStaff':
+				case 'POSOrderMergedFromStaff':
+				case 'SOPaymentUpdate':
+					e.code = 'app:' + e.code;
+					this.publishEvent(e);
+					break;
+				case 'AppReload':
+					location.reload();
+					break;
+				case 'SystemMessage':
+					this.showMessage(e.value, e.name);
+					break;
+				case 'AppReloadOldVersion':
+					if (e.value.localeCompare(this.version) > 0) {
+						location.reload();
+					}
+					break;
+				case 'SystemAlert':
+					this.showAlert(e.value, null, e.name);
+					break;
+				default:
+					break;
+			}
+		});
+		
+		signalRConnection.on('SendMessage', (user, message) => {
+			console.log('SendMessage', user, message);
+		});
+		
+		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
+			console.log('SaleOrdersUpdated', IDBranch, Ids);
+			this.publishEvent({ Code: 'sale-order-mobile' });
+		});
+	}
+
+	/**
+	 * Setup network monitoring (moved from init)  
+	 */
+	private setupNetworkMonitoring(): void {
+		Network.addListener('networkStatusChange', (status) => {
+			this.publishEvent({ Code: 'app:networkStatusChange', status });
+			console.log('Network status changed', status);
+		});
+
+		this.trackOnline().subscribe((isOnline) => {
+			this.networkInfo.isOnline = isOnline;
+		});
 	}
 }

@@ -41,4 +41,21 @@ export class StorageService {
 	clear() {
 		return this._storage?.clear()!;
 	}
+
+	/**
+	 * Remove a storage key
+	 * @param key The key to remove
+	 * @returns Return promise
+	 */
+	remove(key: string) {
+		return this._storage?.remove(key)!;
+	}
+
+	/**
+	 * Get all storage keys
+	 * @returns Return array of keys
+	 */
+	keys() {
+		return this._storage?.keys()!;
+	}
 }

@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 		return new Promise<boolean>((resolve) => {
 			if (!this.env.isloaded) {
 				this.accountService
-					.loadSavedData()
+					.validateStoredAuth()
 					.then((_) => {
 						return this.checkCanUse(next, state).then((result) => {
 							resolve(result);
@@ -26,6 +26,11 @@ export class AuthGuard implements CanActivate {
 					})
 					.catch((err) => {
 						this.accountService.commonService.checkError(err);
+						// If validation fails, redirect to login
+						this.router.navigate(['/login'], {
+							queryParams: { returnUrl: state.url },
+						});
+						resolve(false);
 					});
 			} else {
 				return this.checkCanUse(next, state).then((result) => {

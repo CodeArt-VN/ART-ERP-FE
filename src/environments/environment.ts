@@ -24,6 +24,53 @@ export let environment = {
 	appStoreURL: 'http://itunes.apple.com/lb/app/ART-ERP/id1540404648?mt=8',
 	playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.erp&hl=vn',
 	loginEmail: '@inholdings.vn',
+
+	// NEW: Cache keys to clear on version updates
+	cacheKeysToClearOnNewVersion: [
+		'SYS/Type',           // System data might change
+		'SYS/Status',         // System data might change  
+		'UserToken',          // Force re-login on major updates
+		'BranchList',         // Branch structure might change
+		'tempCache/*',        // Clear temp caches
+		'language/*'          // Clear old language cache
+	],
+
+	// NEW: Cache keys to clear on server changes  
+	cacheKeysToClearOnServerChange: [
+		'UserToken',          // Token invalid for different server
+		'UserProfile',        // Profile from different server
+		'SYS/Type',           // Server-specific data
+		'SYS/Status',         // Server-specific data
+		'BranchList',         // Server-specific data
+		'selectedBranch',     // Branch selection invalid
+		'language/*',         // Language cache from old server
+		'tempCache/*'         // Clear temp server-specific cache
+	],
+
+	// NEW: Language loading strategy
+	languageStrategy: {
+		networkFirst: true,     // Try server URL first for web platform
+		fallbackToAssets: true, // Ultimate fallback to assets folder
+		cacheTimeout: 86400000, // 24 hours cache timeout (1 day)
+		retryAttempts: 3,       // Number of retry attempts
+		retryDelay: 1000       // Delay between retries (ms)
+	},
+
+	// NEW: Migration system settings
+	migrationSettings: {
+		enableLogging: true,    // Log migration activities for debugging
+		forceVersion: null,     // Force specific version behavior (for testing)
+		skipMigration: false,   // Skip migration completely (for testing)
+		enableDetailedLogs: false // Enable verbose migration logs
+	},
+
+	// NEW: Server selection settings
+	serverSettings: {
+		allowGuestSwitching: true,  // Allow server switching before login
+		defaultServer: null,        // null = use first server in appServers
+		validateServerOnStartup: true, // Validate selected server exists
+		fallbackToDefault: true    // Fallback to default if selected server invalid
+	}
 };
 
 export let dog = !environment.production; // dog = dev log;

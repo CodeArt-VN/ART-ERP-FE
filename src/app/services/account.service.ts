@@ -23,6 +23,14 @@ import { UserContextService } from './auth/user-context.service';
 
 declare var window: any;
 
+interface AuthData {
+	userToken: any;
+	userProfile: any; 
+	appVersion: string;
+	lastServer: string;
+	currentServer: string;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
@@ -77,10 +85,10 @@ export class AccountService {
 			dog && console.log('📋 [AccountService] AuthService result:', result);
 			
 			if (result.success && result.token) {
-				dog && console.log('✅ [AccountService] Login successful, loading user data...');
+				dog && console.log('✅ [AccountService] Login successful, validating auth...');
 				// Load user data after successful authentication
-				await this.loadSavedData(true);
-				dog && console.log('✅ [AccountService] User data loaded, returning result');
+				await this.validateStoredAuth();
+				dog && console.log('✅ [AccountService] Auth validated, returning result');
 				return result;
 			} else {
 				dog && console.error('❌ [AccountService] Login failed:', result.error);
@@ -141,7 +149,7 @@ export class AccountService {
 		
 		if (result.success && result.token) {
 			await this.setToken(result.token);
-			await this.loadSavedData(true);
+			await this.validateStoredAuth();
 			return result;
 		} else {
 			throw new Error(result.error || 'External authentication failed');
@@ -157,141 +165,181 @@ export class AccountService {
 
 	// ===== EXISTING METHODS REMAIN FOR COMPATIBILITY =====
 
-	loadSavedData(forceReload = false) {
-		dog && console.log('📂 [AccountService] Loading saved data...', {
-			forceReload,
-			accountLoaded: this.accountLoaded,
-			hasUser: !!this.env.user
-		});
-
-		return new Promise((resolve, reject) => {
-			if (this.accountLoaded && !forceReload) {
-				dog && console.log('✅ [AccountService] Account already loaded, resolving');
-				resolve(true);
-			} else {
-				dog && console.log('🔄 [AccountService] Starting data load sequence...');
-				this.checkVersion().then((v) => {
-					GlobalData.Version = v;
-					dog && console.log('📋 [AccountService] Version checked:', v);
-					
-					this.getToken().then(() => {
-						dog && console.log('🎫 [AccountService] Token retrieved');
-						
-						this.getProfile(forceReload)
-							.then(() => {
-								dog && console.log('👤 [AccountService] Profile loaded, updating context...');
-								
-								// Update UserContextService after profile is loaded
-								if (this.env.user) {
-									dog && console.log('🔄 [AccountService] Updating UserContextService with user:', this.env.user.Id);
-									this.contextService.setCurrentUser(this.env.user);
-								}
-								
-								this.accountLoaded = true;
-								dog && console.log('✅ [AccountService] Account loaded successfully');
-								
-								setTimeout(() => {
-									if (this.env.user) {
-										dog && console.log('📊 [AccountService] Setting up analytics for user:', this.env.user.Id);
-										let woopraId = {
-											id: this.env.user.Id,
-											email: this.env.user.Email,
-											name: this.env.user.FullName,
-											avatar: this.env.user.Avatar,
-										};
-										let woopraInterval: any = setInterval(() => {
-											if (window?.woopra) {
-												window.woopra.identify(woopraId);
-												window.woopra.push();
-												if (woopraInterval) {
-													clearInterval(woopraInterval);
-													woopraInterval = null;
-												}
-											}
-										}, 3000);
-									}
-								}, 2000);
-
-								this.env.isloaded = true;
-								dog && console.log('📢 [AccountService] Publishing loadedLocalData event');
-								this.env.publishEvent({
-									Code: 'app:loadedLocalData',
-								});
-								resolve(true);
-							})
-							.catch((err) => {
-								dog && console.error('❌ [AccountService] Error loading profile:', err);
-								reject(err);
-							});
-
-						//TODO: lazy check profile;
-						if (!forceReload)
-							this.commonService
-								.connect('GET', 'Account/UserName', null)
-								.toPromise()
-								.then((userName) => {
-									if (this.env?.user?.Id && this.env.user.UserName != userName) {
-										this.env.setStorage('appVersion', '0.0');
-										this.checkVersion();
-									} else {
-										setTimeout(() => {
-											this.getProfile(true)
-												.then(() => {
-													this.env.publishEvent({ Code: 'app:loadedLocalData' });
-												})
-												.catch((err) => {
-													reject(err);
-												});
-										}, 5000);
-									}
-								})
-								.catch((err) => {
-									this.commonService.checkError(err);
-								});
-					});
-				});
+	/**
+	 * Validate stored authentication data
+	 * Replaces the old loadSavedData method
+	 */
+	async validateStoredAuth(): Promise<boolean> {
+		dog && console.log('📂 [AccountService] Validating stored authentication data...');
+		
+		try {
+			// Batch load all authentication data
+			const authData = await this.batchLoadAuthData();
+			
+			// Cross-validate data consistency
+			if (!this.crossValidateAuthData(authData)) {
+				dog && console.log('❌ [AccountService] Cross validation failed, clearing auth data');
+				// Clear invalid data and return false
+				await this.clearAuthData();
+				return false;
 			}
-		});
+
+			// Setup user context with validated data
+			await this.setupUserContext(authData);
+			this.accountLoaded = true;
+			this.env.isloaded = true;
+			
+			// Trigger success events
+			this.env.publishEvent({ Code: 'app:loadedLocalData' });
+			
+			dog && console.log('✅ [AccountService] Authentication validation successful');
+			return true;
+		} catch (error) {
+			console.error('❌ [AccountService] Auth validation failed:', error);
+			return false;
+		}
 	}
 
-	checkVersion() {
+	/**
+	 * Batch load all authentication related data
+	 */
+	private async batchLoadAuthData(): Promise<AuthData> {
+		dog && console.log('� [AccountService] Batch loading auth data...');
+		
+		const [userToken, userProfile, appVersion, lastServer] = await Promise.all([
+			this.env.getStorage('UserToken'),
+			this.env.getStorage('UserProfile'), 
+			this.env.getStorage('appVersion'),
+			this.env.getStorage('selectedServer')
+		]);
+
+		return {
+			userToken,
+			userProfile,
+			appVersion,
+			lastServer,
+			currentServer: this.env.selectedServer
+		};
+	}
+
+	/**
+	 * Cross-validate authentication data consistency
+	 */
+	private crossValidateAuthData(data: AuthData): boolean {
+		dog && console.log('� [AccountService] Cross-validating auth data...', {
+			hasToken: !!data.userToken,
+			hasProfile: !!data.userProfile,
+			serverMatch: data.lastServer === data.currentServer
+		});
+		
+		// Token validation
+		if (!data.userToken || !this.authService.validateToken(data.userToken.access_token)) {
+			dog && console.log('❌ [AccountService] Token validation failed');
+			return false;
+		}
+		
+		// Profile validation  
+		if (!data.userProfile || !data.userProfile.Id) {
+			dog && console.log('❌ [AccountService] Profile validation failed');
+			return false;
+		}
+		
+		// Server consistency check
+		if (data.lastServer && data.lastServer !== data.currentServer) {
+			dog && console.log('❌ [AccountService] Server mismatch detected');
+			// Server changed - auth data invalid
+			return false;
+		}
+		
+		// Token-Profile consistency
+		// Add additional checks as needed
+		
+		dog && console.log('✅ [AccountService] Cross validation passed');
+		return true;
+	}
+
+	/**
+	 * Setup user context after validation
+	 */
+	private async setupUserContext(data: AuthData): Promise<void> {
+		dog && console.log('� [AccountService] Setting up user context...');
+		
+		// Update global token
+		GlobalData.Token = data.userToken;
+		
+		// Setup user profile
+		this.env.user = data.userProfile;
+		this.env.rawBranchList = data.userProfile.BranchList || [];
+		
+		// Load branch tree
+		await this.env.loadBranch();
+		
+		// Update context service
+		this.contextService.setCurrentUser(data.userProfile);
+		
+		// Load user settings if available
+		if (data.userProfile.UserSetting) {
+			// Process user settings
+		}
+		
+		// Setup analytics (existing logic)
+		this.setupAnalytics();
+		
+		dog && console.log('✅ [AccountService] User context setup completed');
+	}
+
+	/**
+	 * Clear authentication data
+	 */
+	async clearAuthData(): Promise<void> {
+		dog && console.log('🧹 [AccountService] Clearing authentication data...');
+		
+		this.env.user = null;
+		this.env.rawBranchList = [];
+		this.contextService.setCurrentUser(null);
+		this.accountLoaded = false;
+		this.env.isloaded = false;
+		
+		// Clear sensitive storage
+		await Promise.all([
+			this.env.storage.remove('UserToken'),
+			this.env.storage.remove('UserProfile')
+		]);
+	}
+
+	/**
+	 * Setup analytics for the user
+	 */
+	private setupAnalytics(): void {
+		if (this.env.user) {
+			dog && console.log('📊 [AccountService] Setting up analytics for user:', this.env.user.Id);
+			let woopraId = {
+				id: this.env.user.Id,
+				email: this.env.user.Email,
+				name: this.env.user.FullName,
+				avatar: this.env.user.Avatar,
+			};
+			let woopraInterval: any = setInterval(() => {
+				if (window?.woopra) {
+					window.woopra.identify(woopraId);
+					window.woopra.push();
+					if (woopraInterval) {
+						clearInterval(woopraInterval);
+						woopraInterval = null;
+					}
+				}
+			}, 3000);
+		}
+	}
+
+	/**
+	 * Simplified version check - migration handled separately
+	 */
+	checkVersion(): Promise<string> {
 		return new Promise((resolve) => {
-			this.env?.ready?.then((_) => {
-				Promise.all([this.env.getStorage('appDomain'), this.env.getStorage('appVersion')])
-					.then((values) => {
-						let appDomain = values[0];
-						let version = values[1];
-
-						if (appDomain && appDomain != environment.appDomain) {
-							environment.appDomain = appDomain;
-						}
-
-						if (this.env.version != version) {
-							GlobalData.Token = {
-								access_token: 'no token',
-								expires_in: 0,
-								token_type: '',
-								refresh_token: 'no token',
-							};
-							this.env.clearStorage().then((_) => {
-								this.env.setStorage('UserToken', GlobalData.Token).then(() => {
-									this.env.user = null;
-									this.env.setStorage('UserProfile', null).then(() => {
-										this.env.setStorage('appVersion', this.env.version).then(() => {
-											location.reload();
-											//resolve(this.env.version);
-										});
-									});
-								});
-							});
-						} else {
-							resolve(this.env.version);
-						}
-					})
-					.catch((err) => {
-						console.log(err);
-					});
-			});
+			// Just return the current version
+			// Migration is now handled by MigrationService
+			resolve(this.env.version);
 		});
 	}
 	

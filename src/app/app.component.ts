@@ -68,6 +68,21 @@ export class AppComponent implements OnInit {
 		private toastController: ToastController
 	) {
 		this.appVersion = 'v' + this.env.version;
+		this.randomImg = this.selectRandomImage();
+		
+		// Use new orchestrated initialization
+		this.orchestrateAppInit();
+		
+		this.setupEventHandlers();
+		this.branchFormGroup = this.formBuilder.group({
+			IDBranch: [''],
+		});
+	}
+
+	/**
+	 * Select random image for UI
+	 */
+	private selectRandomImage(): string {
 		let imgs = [
 			'./assets/undraw_art_museum_8or4.svg',
 			'./assets/undraw_best_place_r685.svg',
@@ -77,12 +92,123 @@ export class AppComponent implements OnInit {
 			'./assets/undraw_Container_ship_urt4.svg',
 		];
 		let r = Math.floor(Math.random() * imgs.length);
-		this.randomImg = imgs[r];
+		return imgs[r];
+	}
 
-		this.initializeApp();
+	/**
+	 * Orchestrate the complete app initialization
+	 */
+	private async orchestrateAppInit(): Promise<void> {
+		try {
+			console.log('🚀 [AppComponent] Starting orchestrated app initialization...');
+			
+			// Wait for platform ready
+			await this.platform.ready();
+			console.log('📱 [AppComponent] Platform ready');
+			
+			// Phase 1: Foundation
+			await this.initFoundation();
+			console.log('🏗️ [AppComponent] Foundation initialized');
+			
+			// Phase 2: Migration  
+			await this.executeMigration();
+			console.log('🔄 [AppComponent] Migration executed');
+			
+			// Phase 3: Language Loading
+			await this.loadLanguage();
+			console.log('🌐 [AppComponent] Language loaded');
+			
+			// Phase 4: Auth Validation (handled by AuthGuard)
+			// This will be triggered by router
+			console.log('🔐 [AppComponent] Auth validation will be handled by router/AuthGuard');
+			
+			// Phase 5: Final Setup
+			this.finalizeInitialization();
+			console.log('✅ [AppComponent] App initialization completed successfully');
+			
+		} catch (error) {
+			console.error('❌ [AppComponent] App initialization failed:', error);
+			this.handleInitializationError(error);
+		}
+	}
 
+	/**
+	 * Phase 1: Foundation setup
+	 */
+	private async initFoundation(): Promise<void> {
+		// Basic platform setup
+		this.showScrollbar = environment.showScrollbar;
+		this.updateStatusbar();
+		
+		// Wait for env to be ready
+		await this.env.ready;
+		
+		// Load selected server
+		await this.env.loadSelectedServer();
+	}
+
+	/**
+	 * Phase 2: Execute migration
+	 */
+	private async executeMigration(): Promise<void> {
+		const { MigrationService } = await import('./services/core/migration.service');
+		const migrationService = new MigrationService(this.env);
+		const result = await migrationService.executeMigration();
+		
+		if (result.serverChanged) {
+			console.log('🔄 [AppComponent] Server changed, cleared keys:', result.clearedKeys);
+		}
+		
+		if (result.versionChanged) {
+			console.log('📦 [AppComponent] Version changed, cleared keys:', result.clearedKeys);
+		}
+	}
+
+	/**
+	 * Phase 3: Load language for current server
+	 */
+	private async loadLanguage(): Promise<void> {
+		await this.env.loadLanguageForServer();
+	}
+
+	/**
+	 * Phase 5: Finalize initialization
+	 */
+	private finalizeInitialization(): void {
+		// Service worker registration
+		this.serviceWorkerRegister();
+		
+		// Notification setup
+		this.initNotification();
+	}
+
+	/**
+	 * Handle initialization errors
+	 */
+	private handleInitializationError(error: any): void {
+		console.error('🚨 [AppComponent] Critical initialization error:', error);
+		
+		// Show user-friendly error message
+		this.env.showMessage('App initialization failed. Please restart the app.', 'danger');
+		
+		// You could implement fallback initialization here
+		// For now, we'll try to continue with basic setup
+		this.showScrollbar = environment.showScrollbar;
+		this.updateStatusbar();
+	}
+
+	/**
+	 * Setup event handlers
+	 */
+	private setupEventHandlers(): void {
 		this.env.getEvents().subscribe((data) => {
 			switch (data.Code) {
+				case 'app:serverChanged':
+					this.handleServerChanged(data.Value);
+					break;
+					
+				// Remove 'app:loadLang' case - language loading is now handled differently
+				
 				case 'app:ForceUpdate':
 					this.isConnectFail = true;
 					this.openAppStore();
@@ -105,13 +231,13 @@ export class AppComponent implements OnInit {
 					this.updateStatusbar();
 					break;
 				case 'app:logout':
-					accountService.logout().then((_) => {
+					this.accountService.logout().then((_) => {
 						this.router.navigateByUrl('/login');
 						this.env.showMessage('You have log out of the system', 'danger');
 					});
 					break;
 				case 'app:silentlogout':
-					accountService.logout().then((_) => {
+					this.accountService.logout().then((_) => {
 						this.router.navigateByUrl('/login');
 					});
 					break;
@@ -137,15 +263,7 @@ export class AppComponent implements OnInit {
 				case 'app:ViewDidEnter':
 					this.focusMenuOnPageEnter(data.Value);
 					break;
-				case 'app:loadLang':
-					this.env.getStorage('lang').then((lang) => {
-						if (lang) {
-							this.changeLanguage(lang);
-						} else {
-							this.changeLanguage();
-						}
-					});
-					break;
+				// Remove 'app:loadLang' case - language loading is now handled differently
 				default:
 					if (this.env.version == 'dev') {
 						this.appMessageManage({
@@ -478,13 +596,6 @@ export class AppComponent implements OnInit {
 		}
 	}
 
-	initializeApp() {
-		this.platform.ready().then(() => {
-			this.showScrollbar = environment.showScrollbar;
-			this.serviceWorkerRegister();
-			this.updateStatusbar();
-		});
-	}
 	async showInAppNotification(title: string, body: string) {
 		const toast = await this.toastController.create({
 			header: title,
@@ -577,10 +688,28 @@ export class AppComponent implements OnInit {
 		this.env.publishEvent({ Code: 'app:logout' });
 	}
 
-	changeServer(server) {
-		environment.appDomain = server.Code;
-		this.env.setStorage('appDomain', server.Code);
-		this._environment = environment;
+	/**
+	 * Enhanced server change with immediate language reload
+	 */
+	async changeServer(server: any): Promise<void> {
+		try {
+			console.log('🔄 [AppComponent] Changing server to:', server.Code);
+			
+			// Show loading indicator
+			this.env.showLoading('Switching server...', 
+				this.env.changeServer(server.Code)
+			);
+			
+			// Update environment reference
+			this._environment = environment;
+			
+			// Language reload is handled by env.changeServer()
+			// No additional action needed
+			
+		} catch (error) {
+			console.error('❌ [AppComponent] Server change failed:', error);
+			this.env.showMessage('Failed to switch server', 'danger');
+		}
 	}
 
 	logo = '';
@@ -672,5 +801,16 @@ export class AppComponent implements OnInit {
 		this.env.user.UserSetting.Theme.Value = event.detail.value;
 		this.userSettingProvider.save(this.env.user.UserSetting.Theme);
 		this.updateStatusbar();
+	}
+
+	/**
+	 * Handle server change event
+	 */
+	private handleServerChanged(serverCode: string): void {
+		console.log('🔄 [AppComponent] Server changed to:', serverCode);
+		this._environment = environment;
+		
+		// Update UI if needed
+		this.env.showMessage(`Switched to server: ${serverCode}`, 'success');
 	}
 }
