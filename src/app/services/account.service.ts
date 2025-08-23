@@ -12,7 +12,7 @@ import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserDeviceProvider } from './
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
-import { environment } from 'src/environments/environment';
+import { environment, dog } from 'src/environments/environment';
 
 // Import new enterprise services - Facade Pattern
 import { AuthenticationService } from './auth/authentication.service';
@@ -44,10 +44,12 @@ export class AccountService {
 		private securityService: SecurityGatewayService,
 		private contextService: UserContextService
 	) {
-		// Initialize context service with environment
-		if (this.env.user) {
-			this.contextService.setCurrentUser(this.env.user);
-		}
+		// Initialize context service with environment - safely
+		setTimeout(() => {
+			if (this.env.user && this.env.user.Id) {
+				this.contextService.setCurrentUser(this.env.user);
+			}
+		}, 0);
 		
 		// Done: flow
 		// 1. check app version
@@ -64,22 +66,71 @@ export class AccountService {
 	 * Login user - Delegates to AuthenticationService
 	 */
 	async login(username: string, password: string): Promise<any> {
-		const result = await this.authService.login({ username, password });
-		
-		if (result.success && result.token) {
-			// Load user data after successful authentication
-			await this.loadSavedData(true);
-			return result;
-		} else {
-			throw new Error(result.error || 'Login failed');
+		dog && console.log('🏛️ [AccountService] Login facade called', {
+			username,
+			hasPassword: !!password
+		});
+
+		try {
+			dog && console.log('🔄 [AccountService] Delegating to AuthenticationService...');
+			const result = await this.authService.login({ username, password });
+			dog && console.log('📋 [AccountService] AuthService result:', result);
+			
+			if (result.success && result.token) {
+				dog && console.log('✅ [AccountService] Login successful, loading user data...');
+				// Load user data after successful authentication
+				await this.loadSavedData(true);
+				dog && console.log('✅ [AccountService] User data loaded, returning result');
+				return result;
+			} else {
+				dog && console.error('❌ [AccountService] Login failed:', result.error);
+				throw new Error(result.error || 'Login failed');
+			}
+		} catch (error) {
+			dog && console.error('🚨 [AccountService] Login exception:', error);
+			throw error;
 		}
 	}
 
 	/**
-	 * Get user profile - Delegates to UserProfileService
+	 * Get user profile - Uses original logic but with debugging
 	 */
 	async getProfile(forceReload = false): Promise<any> {
-		return await this.profileService.getProfile(forceReload);
+		dog && console.log('🔍 [AccountService] getProfile called:', { forceReload });
+		
+		return new Promise((resolve, reject) => {
+			if (forceReload) {
+				dog && console.log('🔄 [AccountService] Force reload - calling syncGetUserData');
+				this.syncGetUserData()
+					.then(() => {
+						dog && console.log('✅ [AccountService] syncGetUserData completed, loading saved profile');
+						this.loadSavedProfile()
+							.then(() => {
+								dog && console.log('✅ [AccountService] Profile loaded successfully');
+								resolve(true);
+							})
+							.catch((err) => {
+								dog && console.error('❌ [AccountService] Error loading saved profile:', err);
+								reject(err);
+							});
+					})
+					.catch((err) => {
+						dog && console.error('❌ [AccountService] Error in syncGetUserData:', err);
+						reject(err);
+					});
+			} else {
+				dog && console.log('📂 [AccountService] No force reload - loading from storage only');
+				this.loadSavedProfile()
+					.then(() => {
+						dog && console.log('✅ [AccountService] Profile loaded from storage');
+						resolve(true);
+					})
+					.catch((err) => {
+						dog && console.error('❌ [AccountService] Error loading profile from storage:', err);
+						reject(err);
+					});
+			}
+		});
 	}
 
 	/**
@@ -107,18 +158,41 @@ export class AccountService {
 	// ===== EXISTING METHODS REMAIN FOR COMPATIBILITY =====
 
 	loadSavedData(forceReload = false) {
+		dog && console.log('📂 [AccountService] Loading saved data...', {
+			forceReload,
+			accountLoaded: this.accountLoaded,
+			hasUser: !!this.env.user
+		});
+
 		return new Promise((resolve, reject) => {
 			if (this.accountLoaded && !forceReload) {
+				dog && console.log('✅ [AccountService] Account already loaded, resolving');
 				resolve(true);
 			} else {
+				dog && console.log('🔄 [AccountService] Starting data load sequence...');
 				this.checkVersion().then((v) => {
 					GlobalData.Version = v;
+					dog && console.log('📋 [AccountService] Version checked:', v);
+					
 					this.getToken().then(() => {
+						dog && console.log('🎫 [AccountService] Token retrieved');
+						
 						this.getProfile(forceReload)
 							.then(() => {
+								dog && console.log('👤 [AccountService] Profile loaded, updating context...');
+								
+								// Update UserContextService after profile is loaded
+								if (this.env.user) {
+									dog && console.log('🔄 [AccountService] Updating UserContextService with user:', this.env.user.Id);
+									this.contextService.setCurrentUser(this.env.user);
+								}
+								
 								this.accountLoaded = true;
+								dog && console.log('✅ [AccountService] Account loaded successfully');
+								
 								setTimeout(() => {
 									if (this.env.user) {
+										dog && console.log('📊 [AccountService] Setting up analytics for user:', this.env.user.Id);
 										let woopraId = {
 											id: this.env.user.Id,
 											email: this.env.user.Email,
@@ -139,12 +213,14 @@ export class AccountService {
 								}, 2000);
 
 								this.env.isloaded = true;
+								dog && console.log('📢 [AccountService] Publishing loadedLocalData event');
 								this.env.publishEvent({
 									Code: 'app:loadedLocalData',
 								});
 								resolve(true);
 							})
 							.catch((err) => {
+								dog && console.error('❌ [AccountService] Error loading profile:', err);
 								reject(err);
 							});
 
@@ -281,30 +357,52 @@ export class AccountService {
 	}
 
 	syncGetUserData() {
+		dog && console.log('📋 [AccountService] Starting syncGetUserData...');
 		let that = this;
 		return new Promise(function (resolve, reject) {
+			dog && console.log('🔗 [AccountService] Making API calls for user data...');
 			Promise.all([
 				that.statusProvider.read({ Take: 10000 }, true),
 				that.typeProvider.read({ Take: 10000 }, true),
 				that.commonService.connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null).toPromise(),
 			])
 				.then((values: any[]) => {
+					dog && console.log('📊 [AccountService] API responses received:', {
+						statusCount: values[0]['data']?.length,
+						typeCount: values[1]['data']?.length,
+						userData: !!values[2]
+					});
+					
 					that.env.statusList = values[0]['data'];
 					that.env.typeList = values[1]['data'];
 
 					let data = values[2];
 					if (data) {
+						dog && console.log('👤 [AccountService] Processing user data:', {
+							hasAvatar: !!data.Avatar,
+							formsCount: data.Forms?.length,
+							branchesCount: data.Branchs?.length
+						});
+						
 						data.Avatar = data.Avatar ? (data.Avatar.indexOf('http') != -1 ? data.Avatar : environment.appDomain + data.Avatar) : null;
 
 						lib.buildFlatTree(data.Forms, data.Forms, true).then((resp: any) => {
+							dog && console.log('🌲 [AccountService] Forms tree built:', resp?.length);
 							data.Forms = resp.filter((d: any) => !d.isMobile);
+							dog && console.log('📱 [AccountService] Desktop forms filtered:', data.Forms?.length);
+							
 							that.setProfile(data)
 								.then((_) => {
+									dog && console.log('✅ [AccountService] Profile set successfully');
 									resolve(true);
 								})
-								.catch((err) => reject(err));
+								.catch((err) => {
+									dog && console.error('❌ [AccountService] Error setting profile:', err);
+									reject(err);
+								});
 						});
 					}else{
+						dog && console.error('❌ [AccountService] No user data received, logging out');
 						that.logout();
 					}
 				})
@@ -313,33 +411,92 @@ export class AccountService {
 	}
 
 	setProfile(profile: any) {
+		dog && console.log('💾 [AccountService] Setting profile:', {
+			hasProfile: !!profile,
+			userId: profile?.Id,
+			branchCount: profile?.BranchList?.length,
+			formsCount: profile?.Forms?.length
+		});
+		
 		return new Promise((resolve, reject) => {
 			this.env.setStorage('UserProfile', profile).then((_) => {
-				resolve(true);
+				// Immediately update env.user for real-time UI updates
+				if (profile && profile.Id) {
+					dog && console.log('👤 [AccountService] Updating env.user immediately');
+					let settings = null;
+					if (Array.isArray(profile.UserSetting)) {
+						settings = lib.cloneObject(profile.UserSetting);
+						profile.UserSetting = this.loadUserSettings(settings, profile);
+					}
+					this.env.user = profile;
+					this.env.rawBranchList = profile.BranchList || [];
+					
+					dog && console.log('🏢 [AccountService] Loading branches:', this.env.rawBranchList?.length);
+					this.env.loadBranch().then((_) => {
+						dog && console.log('📢 [AccountService] Publishing updatedUser event');
+						this.env.publishEvent({
+							Code: 'app:updatedUser',
+						});
+						resolve(true);
+					}).catch(err => {
+						dog && console.error('❌ [AccountService] Error loading branches:', err);
+						resolve(true); // Still resolve to not break the flow
+					});
+				} else {
+					dog && console.log('🚫 [AccountService] No profile to set');
+					this.env.user = null;
+					this.env.rawBranchList = [];
+					resolve(true);
+				}
+			}).catch(err => {
+				dog && console.error('❌ [AccountService] Error saving profile to storage:', err);
+				reject(err);
 			});
 		});
 	}
 
 	loadSavedProfile() {
+		dog && console.log('📖 [AccountService] Loading saved profile from storage...');
+		
 		return new Promise((resolve, reject) => {
 			this.env
 				.getStorage('UserProfile')
 				.then((profile) => {
+					dog && console.log('📋 [AccountService] Profile from storage:', {
+						hasProfile: !!profile,
+						userId: profile?.Id,
+						formsCount: profile?.Forms?.length,
+						branchCount: profile?.BranchList?.length
+					});
+					
 					if (profile && profile.Id) {
 						let settings = null;
 						if (Array.isArray(profile.UserSetting)) {
 							settings = lib.cloneObject(profile.UserSetting);
 							profile.UserSetting = this.loadUserSettings(settings, profile);
 						}
+						
+						dog && console.log('👤 [AccountService] Setting env.user and branches...');
 						this.env.user = profile;
-						this.env.rawBranchList = profile.BranchList;
+						this.env.rawBranchList = profile.BranchList || [];
+						
+						dog && console.log('🏢 [AccountService] Loading branches...', this.env.rawBranchList?.length);
 						this.env.loadBranch().then((_) => {
+							dog && console.log('📢 [AccountService] Publishing updatedUser event');
 							this.env.publishEvent({
 								Code: 'app:updatedUser',
 							});
+							
+							// Update context service
+							this.contextService.setCurrentUser(profile);
+							dog && console.log('✅ [AccountService] Profile loaded and context updated');
 							resolve(true);
+						}).catch(err => {
+							dog && console.error('❌ [AccountService] Error loading branches:', err);
+							resolve(true); // Still resolve to not break flow
 						});
 					} else {
+						dog && console.log('🚫 [AccountService] No profile found, clearing data');
 						this.env.user = null;
 						this.env.rawBranchList = [];
 						this.env.loadBranch().then((_) => {
@@ -348,7 +505,10 @@ export class AccountService {
 						});
 					}
 				})
-				.catch((err) => reject(err));
+				.catch((err) => {
+					dog && console.error('❌ [AccountService] Error getting profile from storage:', err);
+					reject(err);
+				});
 		});
 	}
 

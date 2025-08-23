@@ -10,7 +10,7 @@ import { CommonService } from '../core/common.service';
 import { EnvService } from '../core/env.service';
 import { APIList } from '../static/global-variable';
 import { lib } from '../static/global-functions';
-import { environment } from '../../../environments/environment';
+import { environment, dog } from '../../../environments/environment';
 
 import {
   IUserProfileService,
@@ -39,15 +39,49 @@ export class UserProfileService implements IUserProfileService {
   /**
    * Get user profile with optional force reload
    */
-  async getProfile(forceReload = false): Promise<UserProfile> {
+  async getProfile(forceReload = false): Promise<UserProfile | null> {
+    dog && console.log('👤 [UserProfileService] Getting profile...', { forceReload });
+    
     try {
-      if (forceReload) {
+      // Check if we have a cached profile
+      const cachedProfile = await this.loadSavedProfile();
+      dog && console.log('📂 [UserProfileService] Cached profile check:', {
+        hasProfile: !!cachedProfile,
+        userId: cachedProfile?.Id,
+        hasForms: !!cachedProfile?.Forms?.length,
+        branchCount: cachedProfile?.BranchList?.length
+      });
+      
+      // Always fetch fresh data if:
+      // 1. Force reload requested
+      // 2. No cached profile exists  
+      // 3. Cached profile doesn't have forms (incomplete data)
+      const shouldFetchFresh = forceReload || !cachedProfile || !cachedProfile?.Forms?.length;
+      
+      if (shouldFetchFresh) {
+        dog && console.log('🔄 [UserProfileService] Fetching fresh user data...', {
+          reason: forceReload ? 'force_reload' : !cachedProfile ? 'no_cache' : 'incomplete_data'
+        });
         await this.syncGetUserData();
+      } else {
+        dog && console.log('✅ [UserProfileService] Using cached profile');
       }
       
-      return await this.loadSavedProfile();
+      const profile = await this.loadSavedProfile();
+      dog && console.log('👤 [UserProfileService] Final profile loaded:', {
+        hasProfile: !!profile,
+        userId: profile?.Id,
+        formsCount: profile?.Forms?.length,
+        branchCount: profile?.BranchList?.length
+      });
+      
+      return profile;
     } catch (error) {
-      console.error('Error getting profile:', error);
+      dog && console.error('❌ [UserProfileService] Error getting profile:', error);
+      // Return null instead of throwing error when no profile found
+      if (error.message?.includes('No user profile found')) {
+        return null;
+      }
       throw error;
     }
   }
@@ -72,7 +106,7 @@ export class UserProfileService implements IUserProfileService {
       
       return updatedProfile;
     } catch (error) {
-      console.error('Error updating profile:', error);
+      dog && console.error('Error updating profile:', error);
       throw error;
     }
   }
@@ -91,7 +125,7 @@ export class UserProfileService implements IUserProfileService {
       // Return default settings if none exist
       return this.loadUserSettings([], profile);
     } catch (error) {
-      console.error('Error getting user settings:', error);
+      dog && console.error('Error getting user settings:', error);
       throw error;
     }
   }
@@ -122,7 +156,7 @@ export class UserProfileService implements IUserProfileService {
         this.env.publishEvent({ Code: 'app:updatedUser' });
       }
     } catch (error) {
-      console.error('Error updating user settings:', error);
+      dog && console.error('Error updating user settings:', error);
       throw error;
     }
   }
@@ -146,7 +180,7 @@ export class UserProfileService implements IUserProfileService {
       
       return permissions;
     } catch (error) {
-      console.error('Error getting user permissions:', error);
+      dog && console.error('Error getting user permissions:', error);
       return [];
     }
   }
@@ -163,7 +197,7 @@ export class UserProfileService implements IUserProfileService {
         `${p.resource}:${p.action}` === permission
       );
     } catch (error) {
-      console.error('Error checking permission:', error);
+      dog && console.error('Error checking permission:', error);
       return false;
     }
   }
@@ -181,7 +215,7 @@ export class UserProfileService implements IUserProfileService {
       
       return [];
     } catch (error) {
-      console.error('Error getting user roles:', error);
+      dog && console.error('Error getting user roles:', error);
       return [];
     }
   }
@@ -207,7 +241,14 @@ export class UserProfileService implements IUserProfileService {
    * Migrated from AccountService.syncGetUserData()
    */
   private async syncGetUserData(): Promise<void> {
+    dog && console.log('🔄 [UserProfileService] Starting syncGetUserData...');
+    
     try {
+      dog && console.log('🌐 [UserProfileService] Calling getUserData API...', {
+        method: APIList.ACCOUNT.getUserData.method,
+        url: APIList.ACCOUNT.getUserData.url + '?GetMenu=true'
+      });
+      
       // This would require access to status and type providers
       // For now, we'll use the common service directly
       const response = await this.commonService
@@ -216,11 +257,20 @@ export class UserProfileService implements IUserProfileService {
                 null)
         .toPromise();
 
+      dog && console.log('📊 [UserProfileService] API response received:', {
+        hasResponse: !!response,
+        hasAvatar: !!(response as any)?.Avatar,
+        formsCount: (response as any)?.Forms?.length,
+        branchesCount: (response as any)?.Branchs?.length || (response as any)?.BranchList?.length
+      });
+
       if (response) {
         const userData = response as unknown as UserProfile;
+        const responseData = response as any;
         
         // Process avatar URL
         if (userData.Avatar) {
+          dog && console.log('🖼️ [UserProfileService] Processing avatar URL');
           userData.Avatar = userData.Avatar.indexOf('http') !== -1 
             ? userData.Avatar 
             : environment.appDomain + userData.Avatar;
@@ -228,18 +278,34 @@ export class UserProfileService implements IUserProfileService {
 
         // Build flat tree for forms
         if (userData.Forms) {
+          dog && console.log('🌲 [UserProfileService] Building forms tree...', userData.Forms.length);
           const flatForms = await lib.buildFlatTree(userData.Forms, userData.Forms, true);
           userData.Forms = (flatForms as any[]).filter((d: any) => !d.isMobile);
+          dog && console.log('📱 [UserProfileService] Desktop forms filtered:', userData.Forms.length);
         }
+
+        // Ensure BranchList is set
+        if (responseData.Branchs && !userData.BranchList) {
+          dog && console.log('🏢 [UserProfileService] Setting BranchList from Branchs');
+          userData.BranchList = responseData.Branchs;
+        }
+
+        dog && console.log('💾 [UserProfileService] Saving profile...', {
+          userId: userData.Id,
+          formsCount: userData.Forms?.length,
+          branchCount: userData.BranchList?.length
+        });
 
         // Save profile
         await this.setProfile(userData);
+        dog && console.log('✅ [UserProfileService] Profile saved successfully');
       } else {
+        dog && console.error('❌ [UserProfileService] No user data received');
         throw new Error('No user data received');
       }
 
     } catch (error) {
-      console.error('Error syncing user data:', error);
+      dog && console.error('❌ [UserProfileService] Error syncing user data:', error);
       throw error;
     }
   }
@@ -248,7 +314,7 @@ export class UserProfileService implements IUserProfileService {
    * Load saved profile from storage
    * Migrated from AccountService.loadSavedProfile()
    */
-  private async loadSavedProfile(): Promise<UserProfile> {
+  private async loadSavedProfile(): Promise<UserProfile | null> {
     try {
       const profile = await this.env.getStorage('UserProfile');
       
@@ -274,7 +340,9 @@ export class UserProfileService implements IUserProfileService {
         
         return profile;
       } else {
-        // No profile found
+        // No profile found - return null instead of throwing error
+        dog && console.log('📭 [UserProfileService] No user profile found in storage');
+        
         this.env.user = null;
         this.env.rawBranchList = [];
         await this.env.loadBranch();
@@ -283,11 +351,11 @@ export class UserProfileService implements IUserProfileService {
         this.userProfile$.next(null);
         this.userSettings$.next({});
         
-        throw new Error('No user profile found');
+        return null;
       }
 
     } catch (error) {
-      console.error('Error loading saved profile:', error);
+      dog && console.error('🚨 [UserProfileService] Error loading saved profile:', error);
       throw error;
     }
   }
@@ -299,7 +367,7 @@ export class UserProfileService implements IUserProfileService {
     try {
       await this.env.setStorage('UserProfile', profile);
     } catch (error) {
-      console.error('Error setting profile:', error);
+      dog && console.error('Error setting profile:', error);
       throw error;
     }
   }

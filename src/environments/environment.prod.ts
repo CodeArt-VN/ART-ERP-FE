@@ -25,3 +25,5 @@ export const environment = {
 	playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.erp&hl=vn',
 	loginEmail: '@codeart.vn',
 };
+
+export let dog = !environment.production; //Dev log

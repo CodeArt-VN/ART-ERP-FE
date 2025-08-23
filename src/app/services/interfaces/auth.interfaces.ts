@@ -287,7 +287,7 @@ export interface ISecurityGatewayService {
 }
 
 export interface IUserProfileService {
-  getProfile(forceReload?: boolean): Promise<UserProfile>;
+  getProfile(forceReload?: boolean): Promise<UserProfile | null>;
   updateProfile(profile: Partial<UserProfile>): Promise<UserProfile>;
   getUserSettings(): Promise<UserSettings>;
   updateUserSettings(settings: Partial<UserSettings>): Promise<void>;

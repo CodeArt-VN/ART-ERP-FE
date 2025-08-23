@@ -14,6 +14,7 @@ import {
   SecurityEventType,
   ThreatType
 } from '../interfaces/auth.interfaces';
+import { dog } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -239,9 +240,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       }
 
       // Log to console in development
-      if (!environment.production) {
-        console.warn('Security Event:', event);
-      }
+      dog && console.warn('Security Event:', event);
 
       // TODO: Send to security monitoring service in production
       // this.sendToSecurityService(event);
@@ -477,6 +476,3 @@ export class SecurityGatewayService implements ISecurityGatewayService {
            'Unknown';
   }
 }
-
-// Import environment for production check
-import { environment } from '../../../environments/environment';

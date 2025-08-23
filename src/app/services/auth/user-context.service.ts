@@ -17,6 +17,7 @@ import {
   Permission,
   UserSession
 } from '../interfaces/auth.interfaces';
+import { dog } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -37,27 +38,46 @@ export class UserContextService implements IUserContextService {
    * Set current user
    */
   setCurrentUser(user: UserProfile): void {
+    dog && console.log('👤 [UserContextService] Setting current user:', {
+      userId: user?.Id,
+      hasUser: !!user,
+      hasRoles: !!(user?.Roles?.length)
+    });
+
     try {
+      // Validate user object
+      if (!user) {
+        console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
+        return;
+      }
+
       this.currentUser$.next(user);
+      dog && console.log('✅ [UserContextService] User set in BehaviorSubject');
       
       // Update roles if available
       if (user.Roles) {
+        dog && console.log('🎭 [UserContextService] Setting user roles:', user.Roles.length);
         this.userRoles$.next(user.Roles);
       }
 
       // Update tenant context if user has tenant info
       if (user && this.env.selectedBranch) {
+        dog && console.log('🏢 [UserContextService] Updating tenant context...');
         this.updateTenantContext();
       }
 
       // Create user session
+      dog && console.log('🔐 [UserContextService] Creating user session...');
       this.createUserSession(user);
 
       // Update last activity
+      dog && console.log('⏰ [UserContextService] Updating session activity...');
       this.updateSessionActivity();
 
+      dog && console.log('✅ [UserContextService] Current user set successfully');
+
     } catch (error) {
-      console.error('Error setting current user:', error);
+      dog && console.error('🚨 [UserContextService] Error setting current user:', error);
     }
   }
 
@@ -126,7 +146,7 @@ export class UserContextService implements IUserContextService {
       });
 
     } catch (error) {
-      console.error('Error switching tenant:', error);
+      dog && console.error('Error switching tenant:', error);
       throw error;
     }
   }
@@ -201,7 +221,7 @@ export class UserContextService implements IUserContextService {
       }
 
     } catch (error) {
-      console.error('Error updating session activity:', error);
+      dog && console.error('Error updating session activity:', error);
     }
   }
 
@@ -216,7 +236,7 @@ export class UserContextService implements IUserContextService {
       this.userRoles$.next([]);
 
     } catch (error) {
-      console.error('Error clearing context:', error);
+      dog && console.error('Error clearing context:', error);
     }
   }
 
@@ -244,8 +264,8 @@ export class UserContextService implements IUserContextService {
    */
   private initializeContext(): void {
     try {
-      // Initialize with current env user if available
-      if (this.env.user) {
+      // Initialize with current env user if available and valid
+      if (this.env.user && this.env.user.Id) {
         this.setCurrentUser(this.env.user);
       }
 
@@ -255,7 +275,7 @@ export class UserContextService implements IUserContextService {
       }
 
     } catch (error) {
-      console.error('Error initializing context:', error);
+      dog && console.error('Error initializing context:', error);
     }
   }
 
@@ -280,7 +300,7 @@ export class UserContextService implements IUserContextService {
       });
 
     } catch (error) {
-      console.error('Error setting up event listeners:', error);
+      dog && console.error('Error setting up event listeners:', error);
     }
   }
 
@@ -314,7 +334,7 @@ export class UserContextService implements IUserContextService {
       }
 
     } catch (error) {
-      console.error('Error updating tenant context:', error);
+      dog && console.error('Error updating tenant context:', error);
     }
   }
 
@@ -322,10 +342,26 @@ export class UserContextService implements IUserContextService {
    * Create user session
    */
   private createUserSession(user: UserProfile): void {
+    dog && console.log('📝 [UserContextService] Creating user session for:', {
+      userId: user?.Id,
+      hasId: !!user?.Id,
+      userType: typeof user?.Id
+    });
+
     try {
+      // Validate user has required properties
+      if (!user) {
+        console.warn('⚠️ [UserContextService] Cannot create session: user is null or undefined');
+        return;
+      }
+
+      // Safely get user ID
+      const userId = user.Id?.toString() || 'unknown';
+      dog && console.log('🆔 [UserContextService] User ID resolved:', userId);
+      
       const session: UserSession = {
         id: this.generateSessionId(),
-        userId: user.Id.toString(),
+        userId: userId,
         deviceId: this.env.deviceInfo?.Code || 'unknown',
         ipAddress: 'unknown', // Would be set by security service
         userAgent: navigator.userAgent || 'unknown',
@@ -335,10 +371,18 @@ export class UserContextService implements IUserContextService {
         isActive: true
       };
 
+      dog && console.log('🔐 [UserContextService] Session created:', {
+        sessionId: session.id,
+        userId: session.userId,
+        deviceId: session.deviceId,
+        expiresAt: session.expiresAt
+      });
+
       this.currentSession$.next(session);
+      dog && console.log('✅ [UserContextService] Session set in BehaviorSubject');
 
     } catch (error) {
-      console.error('Error creating user session:', error);
+      dog && console.error('🚨 [UserContextService] Error creating user session:', error);
     }
   }
 

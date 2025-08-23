@@ -1,4 +1,22 @@
 /**
+ import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Platform } from '@ionic/angular';
+import { Device } from '@capacitor/device';
+import { Capacitor } from '@capacitor/core';
+import { PushNotifications, Token } from '@capacitor/push-notifications';
+
+import { CommonService } from '../core/common.service';
+import { EnvService } from '../core/env.service';
+import { lib } from '../static/global-functions';
+import { GlobalData } from '../static/global-variable';
+import { environment } from '../../../environments/environment';
+
+const devlog = !environment.production;
+
+/**
  * AuthenticationService - Enterprise Authentication Service
  * Handles JWT tokens, login/logout, session management with security-first approach
  */
@@ -15,7 +33,7 @@ import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { CommonService } from '../core/common.service';
 import { EnvService } from '../core/env.service';
 import { GlobalData, APIList } from '../static/global-variable';
-import { environment } from '../../../environments/environment';
+import { environment, dog } from '../../../environments/environment';
 
 import {
   IAuthenticationService,
@@ -69,22 +87,38 @@ export class AuthenticationService implements IAuthenticationService {
    * Authenticate user with username and password
    */
   async login(credentials: LoginCredentials): Promise<AuthResult> {
+    dog && console.log('🔑 [AuthService] Starting login process...', {
+      username: credentials.username,
+      hasPassword: !!credentials.password
+    });
+
     try {
       this.updateAuthState({ isLoading: true, error: undefined });
+      dog && console.log('📍 [AuthService] Auth state updated to loading');
 
       // Get device information for mobile platforms
+      dog && console.log('📱 [AuthService] Getting device info...');
       const deviceInfo = await this.getDeviceInfo();
+      dog && console.log('📱 [AuthService] Device info:', deviceInfo);
       
       const loginData = {
         username: credentials.username,
         password: credentials.password
       };
 
+      dog && console.log('🌐 [AuthService] Calling login API...', {
+        url: APIList.ACCOUNT.token.url,
+        method: 'Login'
+      });
+
       const response = await this.commonService
         .connect('Login', APIList.ACCOUNT.token.url, loginData)
         .pipe(
+          tap(response => {
+            dog && console.log('✅ [AuthService] Login API response received:', response);
+          }),
           catchError(error => {
-            console.error('Login error:', error);
+            dog && console.error('❌ [AuthService] Login API error:', error);
             this.updateAuthState({ 
               isLoading: false, 
               error: error.message || 'Login failed',
@@ -96,21 +130,35 @@ export class AuthenticationService implements IAuthenticationService {
         .toPromise();
 
       if (!response) {
+        dog && console.error('❌ [AuthService] No response from login API');
         throw new Error('Invalid login response');
       }
 
+      dog && console.log('🔄 [AuthService] Processing token response...');
+
       // Convert response to TokenResponse
       const tokenResponse = response as unknown as TokenResponse;
+      dog && console.log('📝 [AuthService] Token response:', {
+        hasAccessToken: !!tokenResponse?.access_token,
+        hasRefreshToken: !!tokenResponse?.refresh_token,
+        expiresIn: tokenResponse?.expires_in
+      });
 
       // Store token securely
+      dog && console.log('💾 [AuthService] Storing token...');
       await this.setToken(tokenResponse);
+      dog && console.log('✅ [AuthService] Token stored securely');
       
       // Setup token refresh
+      dog && console.log('⏰ [AuthService] Setting up token refresh...');
       this.setupTokenRefresh(tokenResponse);
+      dog && console.log('✅ [AuthService] Token refresh setup complete');
 
       // Register device if mobile
       if (deviceInfo) {
+        dog && console.log('📱 [AuthService] Registering device...', deviceInfo);
         await this.registerDevice(deviceInfo);
+        dog && console.log('✅ [AuthService] Device registered');
       }
 
       const authResult: AuthResult = {
@@ -118,6 +166,12 @@ export class AuthenticationService implements IAuthenticationService {
         token: tokenResponse,
         user: this.env.user // Will be populated by facade
       };
+
+      dog && console.log('🏁 [AuthService] Creating auth result...', {
+        hasUser: !!authResult.user,
+        userId: authResult.user?.Id,
+        success: authResult.success
+      });
 
       this.updateAuthState({
         isAuthenticated: true,
@@ -127,20 +181,34 @@ export class AuthenticationService implements IAuthenticationService {
         lastActivity: new Date()
       });
 
+      dog && console.log('✅ [AuthService] Login process completed successfully!');
       return authResult;
 
     } catch (error) {
+      dog && console.error('🚨 [AuthService] Login failed with error:', error);
+      dog && console.error('🚨 [AuthService] Error details:', {
+        message: error?.message,
+        status: error?.status,
+        statusText: error?.statusText,
+        error: error?.error
+      });
+
       const errorMessage = error?.message || 'Authentication failed';
+      dog && console.log('📝 [AuthService] Setting error state:', errorMessage);
+      
       this.updateAuthState({ 
         isLoading: false, 
         error: errorMessage,
         isAuthenticated: false 
       });
       
-      return {
+      const failResult = {
         success: false,
         error: errorMessage
       };
+      
+      dog && console.log('❌ [AuthService] Returning failed result:', failResult);
+      return failResult;
     }
   }
 
