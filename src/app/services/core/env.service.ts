@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
 import { CommonService } from './common.service';
+import { DynamicTranslateLoaderService } from './dynamic-translate-loader.service';
 import { LIST_AddressSubdivisionProvider } from '../static/services.service';
 
 @Injectable({
@@ -123,7 +124,8 @@ export class EnvService {
 		public toastController: ToastController,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
-		public translate: TranslateService
+		public translate: TranslateService,
+		private dynamicTranslateLoader: DynamicTranslateLoaderService
 	) {
 		this.isMobile = this.plt.is('ios') || this.plt.is('android');
 		this.ready = new Promise((resolve, reject) => {
@@ -801,27 +803,18 @@ export class EnvService {
 			lang = await this.getStorage('lang') || this.language.default;
 		}
 
-		const { Capacitor } = await import('@capacitor/core');
-		const platform = Capacitor.getPlatform();
-		const isWeb = platform === 'web';
-		
-		console.log('Loading language for server:', this.selectedServer, 'language:', lang, 'platform:', platform);
+		console.log('Loading language for server:', this.selectedServer, 'language:', lang);
 		
 		try {
-			// Determine primary URL based on platform and server
-			const primaryUrl = isWeb && this.selectedServer
-				? `${this.selectedServer}uploads/i18n/${lang}.json`
-				: `./assets/i18n/${lang}.json`;
-			
-			console.log('Trying primary language URL:', primaryUrl);
-			
-			// Try primary URL with fetch (PWA cache will handle)
-			const response = await fetch(primaryUrl, {
-				cache: environment.languageStrategy.networkFirst ? 'default' : 'force-cache'
+			// Use dynamic loader to get translations
+			const translations = await new Promise((resolve, reject) => {
+				this.dynamicTranslateLoader.getTranslation(lang).subscribe({
+					next: (data) => resolve(data),
+					error: (error) => reject(error)
+				});
 			});
 			
-			if (response.ok) {
-				const translations = await response.json();
+			if (translations && Object.keys(translations).length > 0) {
 				this.translate.setTranslation(lang, translations);
 				this.translate.use(lang);
 				
@@ -831,36 +824,23 @@ export class EnvService {
 				this.setStorage('lang', lang);
 				this.languageTracking.next(this.language);
 				
-				console.log('Language loaded successfully from primary URL');
+				console.log('Language loaded successfully via dynamic loader');
 				return;
 			}
 		} catch (error) {
-			console.warn('Primary language load failed:', error);
+			console.error('Failed to load language via dynamic loader:', error);
 		}
 		
-		// Fallback to assets
-		try {
-			const fallbackUrl = `./assets/i18n/${lang}.json`;
-			console.log('Trying fallback language URL:', fallbackUrl);
-			
-			const response = await fetch(fallbackUrl);
-			const translations = await response.json();
-			
-			this.translate.setTranslation(lang, translations);
-			this.translate.use(lang);
-			
-			// Update language state
-			this.language.current = lang;
-			this.language.isDefault = lang === this.language.default;
-			this.setStorage('lang', lang);
-			this.languageTracking.next(this.language);
-			
-			console.log('Language loaded successfully from fallback URL');
-			
-		} catch (error) {
-			console.error('Language fallback failed:', error);
-			throw new Error(`Failed to load language: ${lang}`);
-		}
+		// Fallback: set language without translations (app will work with keys)
+		console.warn('Loading empty translations for language:', lang);
+		this.translate.setTranslation(lang, {});
+		this.translate.use(lang);
+		
+		// Update language state
+		this.language.current = lang;
+		this.language.isDefault = lang === this.language.default;
+		this.setStorage('lang', lang);
+		this.languageTracking.next(this.language);
 	}
 
 	/**

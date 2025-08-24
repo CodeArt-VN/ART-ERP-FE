@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
 			await this.platform.ready();
 			console.log('📱 [AppComponent] Platform ready');
 			
-			// Phase 1: Foundation
+			// Phase 1: Foundation (includes server selection loading)
 			await this.initFoundation();
 			console.log('🏗️ [AppComponent] Foundation initialized');
 			
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
 			await this.executeMigration();
 			console.log('🔄 [AppComponent] Migration executed');
 			
-			// Phase 3: Language Loading
+			// Phase 3: Language Loading (now server-aware)
 			await this.loadLanguage();
 			console.log('🌐 [AppComponent] Language loaded');
 			
