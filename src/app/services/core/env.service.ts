@@ -50,6 +50,14 @@ export class EnvService {
 	selectedServer: string = environment.appDomain;
 	serverList: any[] = environment.appServers;
 	isServerLoaded = false;
+	
+	/** Observable to notify when server is loaded */
+	private serverReadySubject = new Subject<string>();
+	public serverReady$ = this.serverReadySubject.asObservable();
+	
+	/** Static reference to server ready observable for external services */
+	public static serverReadySubject = new Subject<string>();
+	public static serverReady$ = EnvService.serverReadySubject.asObservable();
 
 	/** Get current logged in user */
 	user: any = {};
@@ -142,6 +150,9 @@ export class EnvService {
 	 */
 	async init() {
 		await this.storage.init();
+		
+		// Load selected server first (critical for language loading)
+		await this.loadSelectedServer();
 		
 		// Load core system data (keep existing)
 		this.typeList = await this.storage.get('SYS/Type');
@@ -761,6 +772,11 @@ export class EnvService {
 		
 		this.isServerLoaded = true;
 		console.log('Selected server loaded:', this.selectedServer);
+		
+		// Notify that server is ready (both instance and static)
+		this.serverReadySubject.next(this.selectedServer);
+		EnvService.serverReadySubject.next(this.selectedServer);
+		
 		return this.selectedServer;
 	}
 

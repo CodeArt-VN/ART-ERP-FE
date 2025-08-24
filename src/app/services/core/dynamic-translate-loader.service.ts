@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, retry, timeout } from 'rxjs/operators';
+import { Observable, of, throwError, from } from 'rxjs';
+import { catchError, retry, timeout, switchMap, take, mergeMap } from 'rxjs/operators';
 import { Capacitor } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
 
@@ -23,18 +23,41 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
       return this.loadFromAssets(lang);
     }
 
-    // For web, use dynamic server-aware loading
+    // For web, use server-aware loading with wait
     if (environment.languageStrategy?.networkFirst) {
-      return this.loadWithFallbackChain(lang);
+      return this.loadWithServerWait(lang);
     }
 
     // Fallback to assets
     return this.loadFromAssets(lang);
   }
 
-  private loadWithFallbackChain(lang: string): Observable<any> {
-    // Try to get current server from storage
-    const currentServer = localStorage.getItem('selectedServer');
+  private loadWithServerWait(lang: string): Observable<any> {
+    // Import EnvService dynamically to avoid circular dependency
+    return from(import('./env.service')).pipe(
+      mergeMap(({ EnvService }) => {
+        // Wait for server to be loaded, then proceed with translation loading
+        return EnvService.serverReady$.pipe(
+          take(1),
+          switchMap((selectedServer: string) => {
+            console.log(`Server is ready: ${selectedServer}, loading translation for ${lang}`);
+            return this.loadWithFallbackChain(lang, selectedServer);
+          })
+        );
+      }),
+      catchError(error => {
+        console.warn('Error waiting for server, falling back to assets:', error);
+        return this.loadFromAssets(lang);
+      })
+    );
+  }
+
+  private loadWithFallbackChain(lang: string, serverUrl?: string): Observable<any> {
+    // Use provided server or try to get from storage
+    let currentServer = serverUrl;
+    if (!currentServer) {
+      currentServer = localStorage.getItem('selectedServer');
+    }
     
     if (currentServer) {
       console.log(`Loading language from selected server: ${currentServer}`);
