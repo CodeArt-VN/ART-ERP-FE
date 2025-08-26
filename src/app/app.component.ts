@@ -7,7 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { EnvService } from './services/core/env.service';
 import { AccountService } from './services/account.service';
 import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
-import { environment } from 'src/environments/environment';
+import { dog, environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
@@ -15,6 +15,7 @@ import { FormBuilder } from '@angular/forms';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
 import { OSM_NotificationService } from './services/notifications.service';
+import { EVENT_TYPE } from './services/static/event-type';
 
 register();
 let ga: any;
@@ -100,34 +101,34 @@ export class AppComponent implements OnInit {
 	 */
 	private async orchestrateAppInit(): Promise<void> {
 		try {
-			console.log('🚀 [AppComponent] Starting orchestrated app initialization...');
+			dog && console.log('🚀 [AppComponent] Starting orchestrated app initialization...');
 			
 			// Wait for platform ready
 			await this.platform.ready();
-			console.log('📱 [AppComponent] Platform ready');
+			dog && console.log('📱 [AppComponent] Platform ready');
 			
 			// Phase 1: Foundation (includes server selection loading)
 			await this.initFoundation();
-			console.log('🏗️ [AppComponent] Foundation initialized');
+			dog && console.log('🏗️ [AppComponent] Foundation initialized');
 			
 			// Phase 2: Migration  
 			await this.executeMigration();
-			console.log('🔄 [AppComponent] Migration executed');
+			dog && console.log('🔄 [AppComponent] Migration executed');
 			
 			// Phase 3: Language Loading (now server-aware)
 			await this.loadLanguage();
-			console.log('🌐 [AppComponent] Language loaded');
+			dog && console.log('🌐 [AppComponent] Language loaded');
 			
 			// Phase 4: Auth Validation (handled by AuthGuard)
 			// This will be triggered by router
-			console.log('🔐 [AppComponent] Auth validation will be handled by router/AuthGuard');
+			dog && console.log('🔐 [AppComponent] Auth validation will be handled by router/AuthGuard');
 			
 			// Phase 5: Final Setup
 			this.finalizeInitialization();
-			console.log('✅ [AppComponent] App initialization completed successfully');
+			dog && console.log('✅ [AppComponent] App initialization completed successfully');
 			
 		} catch (error) {
-			console.error('❌ [AppComponent] App initialization failed:', error);
+			dog && console.error('❌ [AppComponent] App initialization failed:', error);
 			this.handleInitializationError(error);
 		}
 	}
@@ -156,11 +157,11 @@ export class AppComponent implements OnInit {
 		const result = await migrationService.executeMigration();
 		
 		if (result.serverChanged) {
-			console.log('🔄 [AppComponent] Server changed, cleared keys:', result.clearedKeys);
+			dog && console.log('🔄 [AppComponent] Server changed, cleared keys:', result.clearedKeys);
 		}
 		
 		if (result.versionChanged) {
-			console.log('📦 [AppComponent] Version changed, cleared keys:', result.clearedKeys);
+			dog && console.log('📦 [AppComponent] Version changed, cleared keys:', result.clearedKeys);
 		}
 	}
 
@@ -186,7 +187,7 @@ export class AppComponent implements OnInit {
 	 * Handle initialization errors
 	 */
 	private handleInitializationError(error: any): void {
-		console.error('🚨 [AppComponent] Critical initialization error:', error);
+		dog && console.error('🚨 [AppComponent] Critical initialization error:', error);
 		
 		// Show user-friendly error message
 		this.env.showMessage('App initialization failed. Please restart the app.', 'danger');
@@ -203,45 +204,45 @@ export class AppComponent implements OnInit {
 	private setupEventHandlers(): void {
 		this.env.getEvents().subscribe((data) => {
 			switch (data.Code) {
-				case 'app:serverChanged':
+				case EVENT_TYPE.APP.SERVER_CHANGED:
 					this.handleServerChanged(data.Value);
 					break;
 					
 				// Remove 'app:loadLang' case - language loading is now handled differently
 				
-				case 'app:ForceUpdate':
+				case EVENT_TYPE.APP.FORCE_UPDATE:
 					this.isConnectFail = true;
 					this.openAppStore();
 					break;
-				case 'app:ConnectFail':
+				case EVENT_TYPE.APP.CONNECT_FAIL:
 					this.isConnectFail = true;
 					break;
-				case 'app:ShowAppMessage':
+				case EVENT_TYPE.APP.SHOW_APP_MESSAGE:
 					this.appMessageManage(data);
 					break;
-				case 'app:ShowMenu':
+				case EVENT_TYPE.APP.SHOW_MENU:
 					this.showAppMenu = data.Value;
 					break;
-				case 'app:ShowHelp':
+				case EVENT_TYPE.APP.SHOW_HELP:
 					this.showHelp = true;
 					this.pageConfigPageName = data.Value;
 					this.openHelp();
 					break;
-				case 'app:ChangeTheme':
+				case EVENT_TYPE.APP.CHANGE_THEME:
 					this.updateStatusbar();
 					break;
-				case 'app:logout':
+				case EVENT_TYPE.APP.LOGOUT:
 					this.accountService.logout().then((_) => {
 						this.router.navigateByUrl('/login');
 						this.env.showMessage('You have log out of the system', 'danger');
 					});
 					break;
-				case 'app:silentlogout':
+				case EVENT_TYPE.APP.SILENT_LOGOUT:
 					this.accountService.logout().then((_) => {
 						this.router.navigateByUrl('/login');
 					});
 					break;
-				case 'app:updatedUser':
+				case EVENT_TYPE.APP.UPDATED_USER:
 					this.countForm = 0;
 
 					if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
@@ -257,11 +258,39 @@ export class AppComponent implements OnInit {
 						this.focusMenuOnPageEnter(this.lastForm, true);
 					}
 					break;
-				case 'app:notification':
+				case EVENT_TYPE.APP.NOTIFICATION:
 					this.loadNotifications();
 					break;
-				case 'app:ViewDidEnter':
+				case EVENT_TYPE.APP.VIEW_DID_ENTER:
 					this.focusMenuOnPageEnter(data.Value);
+					break;
+				case EVENT_TYPE.USER.CONTEXT_UPDATED:
+					// Kiểm tra this.env.user để biết đây là login hay logout
+					if (this.env.user && Object.keys(this.env.user).length > 0) {
+						// Login/update case - user có data
+						this.loadPinnedMenu();
+						this.loadNotifications();
+						this.updateStatusbar();
+					} else {
+						// Logout case - user = null/empty
+						this.pinnedForms = [];
+						this.totalNotifications = 0;
+						this.branchList = [];
+						this.router.navigateByUrl('/login');
+					}
+					break;
+				case EVENT_TYPE.USER.LOGOUT_REQUESTED:
+					// Event này được handle bởi các service, AppComponent không cần làm gì
+					break;
+				case EVENT_TYPE.USER.LOGGED_OUT_REMOTE:
+					// Đăng xuất từ xa/đa tab
+					this.env.showMessage('Bạn đã bị đăng xuất từ thiết bị khác', 'danger');
+					this.router.navigateByUrl('/login');
+					break;
+				case EVENT_TYPE.USER.SESSION_EXPIRED:
+					// Session hết hạn
+					this.env.showMessage('Phiên đăng nhập đã hết hạn', 'danger');
+					this.router.navigateByUrl('/login');
 					break;
 				// Remove 'app:loadLang' case - language loading is now handled differently
 				default:
@@ -289,11 +318,11 @@ export class AppComponent implements OnInit {
 			if (ga && event instanceof NavigationEnd) {
 				ga('set', 'page', 'test/' + event.urlAfterRedirects);
 				ga('send', 'pageview');
-				console.log(event.urlAfterRedirects);
+				dog && console.log(event.urlAfterRedirects);
 			}
 
 			if (event) {
-				//console.log(event);
+				//dog && console.log(event);
 				// (<any>window).ga('set', 'page', event.urlAfterRedirects);
 				// (<any>window).ga('send', 'pageview');
 			}
@@ -484,62 +513,62 @@ export class AppComponent implements OnInit {
 	async initNotification() {
 		return;
 		if (Capacitor.getPlatform() != 'web') {
-			console.log('app');
+			dog && console.log('app');
 			PushNotifications.requestPermissions().then((result) => {
 				if (result.receive === 'granted') {
 					PushNotifications.register();
-					console.log('register');
+					dog && console.log('register');
 				} else {
-					console.log('No permission for push notifications');
+					dog && console.log('No permission for push notifications');
 				}
 			});
 			PushNotifications.addListener('registrationError', (err) => {
-				console.error('Registration error: ', err.error);
+				dog && console.error('Registration error: ', err.error);
 			});
 			// Get FCM Token
 			PushNotifications.addListener('registration', (token: Token) => {
-				console.log('FCM Token:', token.value);
+				dog && console.log('FCM Token:', token.value);
 				// Gửi token này lên backend ASP.NET Core để lưu trữ
 			});
 
 			// Handle notifications received
 			PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
-				console.log('Notification received:', notification);
+				dog && console.log('Notification received:', notification);
 				alert(`Notification: ${notification.title} - ${notification.body}`);
 			});
 
 			// Handle notifications when user taps
 			PushNotifications.addListener('pushNotificationActionPerformed', (action: any) => {
-				console.log('Notification tapped:', action.notification);
+				dog && console.log('Notification tapped:', action.notification);
 			});
 
-			// console.log('app');
+			// dog && console.log('app');
 			// await PushNotifications.addListener('registration', (token: Token) => {
 			// 	this.env.NotifyToken = token;
-			// 	console.log('token:', token);
+			// 	dog && console.log('token:', token);
 			// 	this.env.setStorage('NotifyToken', token.value);
 			// });
 			// let permStatus = await PushNotifications.checkPermissions();
-			// console.log('permStatus.receive:', permStatus.receive);
+			// dog && console.log('permStatus.receive:', permStatus.receive);
 
 			// if (permStatus.receive === 'prompt') {
 			// 	permStatus = await PushNotifications.requestPermissions();
-			// 	console.log('permStatus:', permStatus);
+			// 	dog && console.log('permStatus:', permStatus);
 			// }
 			// await PushNotifications.register();
-			// console.log('registerted');
+			// dog && console.log('registerted');
 
-			// console.log('token:', this.env.NotifyToken);
+			// dog && console.log('token:', this.env.NotifyToken);
 			// await PushNotifications.addListener('registrationError', (err) => {
-			// 	console.error('Registration error: ', err.error);
+			// 	dog && console.error('Registration error: ', err.error);
 			// });
 
 			// await PushNotifications.addListener('pushNotificationReceived', (notification) => {
-			// 	console.log('Push notification received: ', notification);
+			// 	dog && console.log('Push notification received: ', notification);
 			// });
 
 			// await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-			// 	console.log('Push notification action performed', notification.actionId, notification.inputValue);
+			// 	dog && console.log('Push notification action performed', notification.actionId, notification.inputValue);
 			// });
 			// PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
 			// 	let navigateByUrl = notification.notification.data.navigateByUrl;
@@ -549,17 +578,17 @@ export class AppComponent implements OnInit {
 			try {
 				const permission = await Notification.requestPermission();
 				if (permission === 'granted') {
-					console.log('Quyền thông báo đã được cấp.');
+					dog && console.log('Quyền thông báo đã được cấp.');
 					// Tiếp tục các bước lấy token hoặc xử lý khác
 				} else if (permission === 'denied') {
-					console.log('Người dùng đã từ chối quyền thông báo.');
+					dog && console.log('Người dùng đã từ chối quyền thông báo.');
 				} else {
-					console.log('Quyền thông báo chưa được cấp hoặc đã bị hỏi lại.');
+					dog && console.log('Quyền thông báo chưa được cấp hoặc đã bị hỏi lại.');
 				}
 
 				const path = this.env.appPath;
 				const registration = await navigator.serviceWorker.register(path + 'assets/firebase-messaging-sw.js');
-				console.log('Service Worker registered:', registration);
+				dog && console.log('Service Worker registered:', registration);
 
 				// Initialize Firebase
 				const firebaseConfig = {
@@ -583,15 +612,15 @@ export class AppComponent implements OnInit {
 				this.env.setStorage('NotifyToken', token);
 				this.env.NotifyToken = token;
 				onMessage(messaging, (payload) => {
-					console.log('Foreground notification:', payload);
+					dog && console.log('Foreground notification:', payload);
 					const title = payload.data?.title ?? 'Thông báo';
 					const body = payload.data?.body ?? '';
 
 					this.showInAppNotification(title, body); // tuỳ bạn định nghĩa
 				});
-				console.log('FCM Token:', token);
+				dog && console.log('FCM Token:', token);
 			} catch (err) {
-				console.error('Service Worker registration or FCM failed', err);
+				dog && console.error('Service Worker registration or FCM failed', err);
 			}
 		}
 	}
@@ -685,7 +714,7 @@ export class AppComponent implements OnInit {
 		event.stopPropagation();
 		this.menu.close();
 		this.isUserCPOpen = false;
-		this.env.publishEvent({ Code: 'app:logout' });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.LOGOUT });
 	}
 
 	/**
@@ -693,7 +722,7 @@ export class AppComponent implements OnInit {
 	 */
 	async changeServer(server: any): Promise<void> {
 		try {
-			console.log('🔄 [AppComponent] Changing server to:', server.Code);
+			dog && console.log('🔄 [AppComponent] Changing server to:', server.Code);
 			
 			// Show loading indicator
 			this.env.showLoading('Switching server...', 
@@ -707,7 +736,7 @@ export class AppComponent implements OnInit {
 			// No additional action needed
 			
 		} catch (error) {
-			console.error('❌ [AppComponent] Server change failed:', error);
+			dog && console.error('❌ [AppComponent] Server change failed:', error);
 			this.env.showMessage('Failed to switch server', 'danger');
 		}
 	}
@@ -723,7 +752,7 @@ export class AppComponent implements OnInit {
 		} else {
 			this.logo = 'assets/logos/logo-in-holdings.png';
 		}
-		console.log(this.logo);
+		dog && console.log(this.logo);
 	}
 
 	appMessageManage(message) {
@@ -741,7 +770,7 @@ export class AppComponent implements OnInit {
 	}
 
 	openAppStore() {
-		console.log('openAppStore');
+		dog && console.log('openAppStore');
 		if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
 			window.location.href = environment.playStoreURL;
 		}
@@ -778,7 +807,7 @@ export class AppComponent implements OnInit {
 
 	async changeLanguage(lang = null) {
 		await this.env.setLang(lang);
-		this.env.publishEvent({ Code: 'app:changeLanguage', Value: lang });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_LANGUAGE, Value: lang });
 	}
 
 	closeHelp() {
@@ -807,7 +836,7 @@ export class AppComponent implements OnInit {
 	 * Handle server change event
 	 */
 	private handleServerChanged(serverCode: string): void {
-		console.log('🔄 [AppComponent] Server changed to:', serverCode);
+		dog && console.log('🔄 [AppComponent] Server changed to:', serverCode);
 		this._environment = environment;
 		
 		// Update UI if needed

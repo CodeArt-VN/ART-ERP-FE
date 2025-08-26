@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
+import { EVENT_TYPE } from './services/static/event-type';
 
 @Component({
 	template: '',
@@ -918,7 +919,7 @@ export abstract class PageBase implements OnInit {
 				this.pageConfig.pageRemark = currentForm.Remark;
 				this.pageConfig.canEditHelpContent = true;
 
-				this.env.publishEvent({ Code: 'app:ViewDidEnter', Value: currentForm });
+				this.env.publishEvent({ Code: EVENT_TYPE.APP.VIEW_DID_ENTER, Value: currentForm });
 
 				let permissionList = this.env.user.Forms.filter((d) => d.IDParent == currentForm.Id);
 				if (permissionList.length) {
@@ -929,23 +930,39 @@ export abstract class PageBase implements OnInit {
 			}
 		}
 
-		this.subscriptions.push(
-			this.env.getEvents().subscribe((data) => {
-				if (data.Code == 'changeBranch') {
-					this.preLoadData(null);
-				} else if (data.Code == 'app:loadedLocalData') {
-					this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => {
-						if (!result) this.nav('/default');
-					});
-				} else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
-					this.refresh(null);
-				} else {
-					this.events(data);
-				}
-			})
-		);
+			this.subscriptions.push(
+				this.env.getEvents().subscribe((data) => {
+					if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
+						this.preLoadData(null);
+					} else if (data.Code == EVENT_TYPE.APP.LOADED_LOCAL_DATA) {
+						this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => {
+							if (!result) this.nav('/default');
+						});
+					} else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
+						this.refresh(null);
+					} else if ([
+						EVENT_TYPE.USER.CONTEXT_UPDATED,
+						EVENT_TYPE.USER.PERMISSIONS_UPDATED,
+						EVENT_TYPE.USER.PROFILE_UPDATED,
+						EVENT_TYPE.USER.ROLES_UPDATED,
+						EVENT_TYPE.TENANT.SWITCHED,
+						EVENT_TYPE.TENANT.BRANCH_SWITCHED,
+						EVENT_TYPE.USER.SESSION_EXPIRED,
+						EVENT_TYPE.USER.LOGGED_OUT_REMOTE,
+						EVENT_TYPE.USER.STATE_CHANGED_REMOTE,
+						EVENT_TYPE.USER.AUTH_ERROR,
+						EVENT_TYPE.USER.ACCESS_DENIED,
+						EVENT_TYPE.USER.RATE_LIMITED
+					].includes(data.Code)) {
+						// Tự động reload lại dữ liệu khi có event user/tenant/permission/profile
+						this.preLoadData(null);
+					} else {
+						this.events(data);
+					}
+				})
+			);
 
-		if (this.env.user?.UserSetting?.IsCacheQuery.Value) {
+		if (this.env.user?.UserSetting?.IsCacheQuery?.Value) {
 			this.env
 				.getStorage('saved-query-' + this.pageConfig.pageName)
 				.then((result) => {
@@ -1014,7 +1031,7 @@ export abstract class PageBase implements OnInit {
 
 	help() {
 		let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
-		this.env.publishEvent({ Code: 'app:ShowHelp', Value: code });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_HELP, Value: code });
 	}
 
 	async changeBranch(ev: any) {
@@ -1139,7 +1156,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	closePopListToolBar() {
-		this.env.publishEvent({ Code: 'app:closePopListToolBar' });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.CLOSE_POP_LIST_TOOLBAR });
 	}
 
 	@ViewChildren(FormControlComponent) formControls: QueryList<FormControlComponent>;

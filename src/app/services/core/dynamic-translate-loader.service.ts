@@ -23,30 +23,27 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
       return this.loadFromAssets(lang);
     }
 
-    // For web, use server-aware loading with wait
+    // For web, always load from current server
     if (environment.languageStrategy?.networkFirst) {
-      return this.loadWithServerWait(lang);
+      console.log(`Loading language from current server: ${environment.appDomain}`);
+      return this.loadFromServer(environment.appDomain, lang).pipe(
+        catchError(error => {
+          console.warn(`Failed to load from current server, falling back to assets:`, error);
+          return this.loadFromAssets(lang);
+        })
+      );
     }
 
     // Fallback to assets
     return this.loadFromAssets(lang);
   }
 
-  private loadWithServerWait(lang: string): Observable<any> {
-    // Import EnvService dynamically to avoid circular dependency
-    return from(import('./env.service')).pipe(
-      mergeMap(({ EnvService }) => {
-        // Wait for server to be loaded, then proceed with translation loading
-        return EnvService.serverReady$.pipe(
-          take(1),
-          switchMap((selectedServer: string) => {
-            console.log(`Server is ready: ${selectedServer}, loading translation for ${lang}`);
-            return this.loadWithFallbackChain(lang, selectedServer);
-          })
-        );
-      }),
+  private loadFromCurrentServer(lang: string): Observable<any> {
+    // Use current environment.appDomain directly (no server waiting)
+    console.log(`Loading language from current server: ${environment.appDomain}`);
+    return this.loadFromServer(environment.appDomain, lang).pipe(
       catchError(error => {
-        console.warn('Error waiting for server, falling back to assets:', error);
+        console.warn(`Failed to load from current server, falling back to assets:`, error);
         return this.loadFromAssets(lang);
       })
     );
@@ -80,13 +77,12 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
       const endpoint = `${url.origin}/uploads/i18n/${lang}.json`;
       
       return this.http.get(endpoint).pipe(
-        timeout(environment.languageStrategy?.cacheTimeout || 10000),
-        retry(environment.languageStrategy?.retryAttempts || 2),
-        catchError(error => {
-          console.warn(`Failed to load language from server ${serverUrl}:`, error);
-          return throwError(() => error);
-        })
-      );
+          timeout(3000),
+          catchError(error => {
+            console.warn(`Failed to load language from server ${serverUrl}:`, error);
+            return throwError(() => error);
+          })
+        );
     } catch (error) {
       console.warn(`Invalid server URL: ${serverUrl}`, error);
       return throwError(() => error);

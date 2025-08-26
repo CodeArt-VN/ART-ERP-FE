@@ -4,14 +4,16 @@ import { AlertController, LoadingController, Platform, ToastController } from '@
 
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Observer, Subject, fromEvent, merge } from 'rxjs';
+import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
 import { CommonService } from './common.service';
 import { DynamicTranslateLoaderService } from './dynamic-translate-loader.service';
+import { MigrationService } from './migration.service';
 import { LIST_AddressSubdivisionProvider } from '../static/services.service';
+import { EVENT_TYPE } from '../static/event-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,9 +40,27 @@ export class EnvService {
 	 */
 	async setLang(value: string) {
 		if (!value) value = this.language.default;
-		
-		// Use new server-aware language loading
-		await this.loadLanguageForServer(value);
+
+		// Nếu đã có resource cho ngôn ngữ này thì chỉ cần dùng lại
+		const hasResource = !!this.translate.translations[value] && Object.keys(this.translate.translations[value]).length > 0;
+		if (hasResource) {
+			this.translate.use(value);
+			this.language.current = value;
+			this.language.isDefault = value === this.language.default;
+			this.setStorage('lang', value);
+			this.languageTracking.next(this.language);
+			return;
+		}
+
+		// Nếu chưa có resource thì mới load
+		try {
+			await this.loadLanguageForServer(value);
+		} catch (error) {
+			console.error('Failed to set language:', error);
+			// Fallback to basic language setting
+			this.translate.use(value);
+			this.language.current = value;
+		}
 	}
 
 	/** Get current app version */
@@ -194,7 +214,7 @@ export class EnvService {
 
 	showBarMessage(id = '', icon = '',color = '',isShow = true,isBlink = false) {
 		this.publishEvent({
-			Code: 'app:ShowAppMessage',
+			Code: EVENT_TYPE.APP.SHOW_APP_MESSAGE,
 			IsShow: isShow,
 			Id: id,
 			Icon: icon,
@@ -583,7 +603,7 @@ export class EnvService {
 		this.setStorage('selectedBranch', this.selectedBranch);
 		let selectedBranch = this.branchList.find((d) => d.Id == this.selectedBranch);
 		this.selectedBranchAndChildren = selectedBranch.Query;
-		this.publishEvent({ Code: 'changeBranch' });
+		this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
 
 		this.configTracking.next(this.configs.filter((d) => d.IDBranch == this.selectedBranch));
 	}
@@ -799,16 +819,25 @@ export class EnvService {
 		
 		// Trigger migration if server changed
 		if (oldServer !== serverCode) {
-			const { MigrationService } = await import('./migration.service');
-			const migration = new MigrationService(this);
-			await migration.executeMigration();
+			try {
+				const migration = new MigrationService(this);
+				await migration.executeMigration();
+			} catch (error) {
+				console.error('Migration failed:', error);
+			}
 			
-			// Reload language for new server
-			await this.loadLanguageForServer();
+			// Emit server ready signal for dynamic language loader
+			this.serverReadySubject.next(this.selectedServer);
+			EnvService.serverReadySubject.next(this.selectedServer);
+			
+			// Reload language for new server (non-blocking)
+			this.loadLanguageForServer().catch(error => {
+				console.error('Language reload failed:', error);
+			});
 		}
 		
 		// Publish server change event
-		this.publishEvent({ Code: 'app:serverChanged', Value: serverCode });
+		this.publishEvent({ Code: EVENT_TYPE.APP.SERVER_CHANGED, Value: serverCode });
 	}
 
 	/**
@@ -822,13 +851,8 @@ export class EnvService {
 		console.log('Loading language for server:', this.selectedServer, 'language:', lang);
 		
 		try {
-			// Use dynamic loader to get translations
-			const translations = await new Promise((resolve, reject) => {
-				this.dynamicTranslateLoader.getTranslation(lang).subscribe({
-					next: (data) => resolve(data),
-					error: (error) => reject(error)
-				});
-			});
+			// Use dynamic loader to get translations (convert Observable to Promise)
+			const translations = await firstValueFrom(this.dynamicTranslateLoader.getTranslation(lang));
 			
 			if (translations && Object.keys(translations).length > 0) {
 				this.translate.setTranslation(lang, translations);
@@ -912,18 +936,18 @@ export class EnvService {
 					e.code = 'app:' + e.code;
 					this.publishEvent(e);
 					break;
-				case 'AppReload':
+				case EVENT_TYPE.SYSTEM.RELOAD:
 					location.reload();
 					break;
-				case 'SystemMessage':
+				case EVENT_TYPE.SYSTEM.MESSAGE:
 					this.showMessage(e.value, e.name);
 					break;
-				case 'AppReloadOldVersion':
+				case EVENT_TYPE.SYSTEM.RELOAD_OLD_VERSION:
 					if (e.value.localeCompare(this.version) > 0) {
 						location.reload();
 					}
 					break;
-				case 'SystemAlert':
+				case EVENT_TYPE.SYSTEM.ALERT:
 					this.showAlert(e.value, null, e.name);
 					break;
 				default:
@@ -937,7 +961,7 @@ export class EnvService {
 		
 		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
 			console.log('SaleOrdersUpdated', IDBranch, Ids);
-			this.publishEvent({ Code: 'sale-order-mobile' });
+			this.publishEvent({ Code: EVENT_TYPE.SALE.ORDERS_UPDATED });
 		});
 	}
 
@@ -946,7 +970,7 @@ export class EnvService {
 	 */
 	private setupNetworkMonitoring(): void {
 		Network.addListener('networkStatusChange', (status) => {
-			this.publishEvent({ Code: 'app:networkStatusChange', status });
+			this.publishEvent({ Code: EVENT_TYPE.APP.NETWORK_STATUS_CHANGE, status });
 			console.log('Network status changed', status);
 		});
 

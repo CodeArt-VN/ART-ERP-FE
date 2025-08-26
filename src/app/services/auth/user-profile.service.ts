@@ -11,6 +11,7 @@ import { EnvService } from '../core/env.service';
 import { APIList } from '../static/global-variable';
 import { lib } from '../static/global-functions';
 import { environment, dog } from '../../../environments/environment';
+import { EVENT_TYPE } from '../static/event-type';
 
 import {
   IUserProfileService,
@@ -90,25 +91,25 @@ export class UserProfileService implements IUserProfileService {
    * Update user profile
    */
   async updateProfile(profile: Partial<UserProfile>): Promise<UserProfile> {
-    try {
-      // Merge with current profile
-      const currentProfile = await this.loadSavedProfile();
-      const updatedProfile = { ...currentProfile, ...profile };
+      try {
+        // Merge with current profile
+        const currentProfile = await this.loadSavedProfile();
+        const updatedProfile = { ...currentProfile, ...profile };
       
-      // Save to storage
-      await this.setProfile(updatedProfile);
+        // Save to storage
+        await this.setProfile(updatedProfile);
       
-      // Update observable
-      this.userProfile$.next(updatedProfile);
+        // Update observable
+        this.userProfile$.next(updatedProfile);
       
-      // Publish event
-      this.env.publishEvent({ Code: 'app:updatedUser' });
+        // Publish event: cập nhật thông tin user
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.PROFILE_UPDATED, data: updatedProfile });
       
-      return updatedProfile;
-    } catch (error) {
-      dog && console.error('Error updating profile:', error);
-      throw error;
-    }
+        return updatedProfile;
+      } catch (error) {
+        dog && console.error('Error updating profile:', error);
+        throw error;
+      }
   }
 
   /**
@@ -153,7 +154,7 @@ export class UserProfileService implements IUserProfileService {
         this.userProfile$.next(profile);
         
         // Publish event
-        this.env.publishEvent({ Code: 'app:updatedUser' });
+        this.env.publishEvent({ Code: EVENT_TYPE.APP.UPDATED_USER });
       }
     } catch (error) {
       dog && console.error('Error updating user settings:', error);
@@ -165,24 +166,22 @@ export class UserProfileService implements IUserProfileService {
    * Get user permissions
    */
   async getUserPermissions(): Promise<Permission[]> {
-    try {
-      const profile = await this.loadSavedProfile();
+      try {
+        const profile = await this.loadSavedProfile();
+        let permissions: Permission[] = [];
       
-      if (profile && profile.Permissions) {
-        return profile.Permissions;
+        if (profile && profile.Permissions) {
+          permissions = profile.Permissions;
+        } else if (profile && profile.Forms) {
+          this.extractPermissionsFromForms(profile.Forms, permissions);
+        }
+        // Publish event: cập nhật quyền/role động
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.PERMISSIONS_UPDATED, data: permissions });
+        return permissions;
+      } catch (error) {
+        dog && console.error('Error getting user permissions:', error);
+        return [];
       }
-      
-      // Extract permissions from forms if no explicit permissions
-      const permissions: Permission[] = [];
-      if (profile && profile.Forms) {
-        this.extractPermissionsFromForms(profile.Forms, permissions);
-      }
-      
-      return permissions;
-    } catch (error) {
-      dog && console.error('Error getting user permissions:', error);
-      return [];
-    }
   }
 
   /**
@@ -217,6 +216,88 @@ export class UserProfileService implements IUserProfileService {
     } catch (error) {
       dog && console.error('Error getting user roles:', error);
       return [];
+    }
+  }
+
+  /**
+   * Update user permissions
+   */
+  async updateUserPermissions(permissions: Permission[]): Promise<void> {
+    try {
+      dog && console.log('🔐 [UserProfileService] Updating user permissions:', permissions.length);
+      
+      // Get current profile
+      const currentProfile = await this.loadSavedProfile();
+      if (currentProfile) {
+        // Update permissions
+        currentProfile.Permissions = permissions;
+        
+        // Save updated profile
+        await this.setProfile(currentProfile);
+        
+        // Publish event: cập nhật quyền/role động
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.PERMISSIONS_UPDATED, data: permissions });
+        dog && console.log('📢 [UserProfileService] Permissions updated event published');
+      }
+    } catch (error) {
+      dog && console.error('Error updating user permissions:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update user roles
+   */
+  async updateUserRoles(roles: Role[]): Promise<void> {
+    try {
+      dog && console.log('🎭 [UserProfileService] Updating user roles:', roles.length);
+      
+      // Get current profile
+      const currentProfile = await this.loadSavedProfile();
+      if (currentProfile) {
+        // Update roles
+        currentProfile.Roles = roles;
+        
+        // Save updated profile
+        await this.setProfile(currentProfile);
+        
+        // Publish event: cập nhật quyền/role động
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.ROLES_UPDATED, data: roles });
+        dog && console.log('📢 [UserProfileService] Roles updated event published');
+      }
+    } catch (error) {
+      dog && console.error('Error updating user roles:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update user profile with specific fields
+   */
+  async updateProfileFields(fields: Partial<UserProfile>): Promise<UserProfile> {
+    try {
+      dog && console.log('📝 [UserProfileService] Updating profile fields:', Object.keys(fields));
+      
+      // Get current profile
+      const currentProfile = await this.loadSavedProfile();
+      if (!currentProfile) {
+        throw new Error('No profile found to update');
+      }
+      
+      // Merge fields
+      const updatedProfile = { ...currentProfile, ...fields };
+      
+      // Save updated profile
+      await this.setProfile(updatedProfile);
+      
+              // Publish event: cập nhật thông tin user động
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.PROFILE_UPDATED, data: updatedProfile });
+      dog && console.log('📢 [UserProfileService] Profile fields updated event published');
+      
+      return updatedProfile;
+    } catch (error) {
+      dog && console.error('Error updating profile fields:', error);
+      throw error;
     }
   }
 

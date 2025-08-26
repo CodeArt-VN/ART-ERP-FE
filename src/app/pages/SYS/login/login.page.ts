@@ -10,6 +10,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 import { ApiSetting } from 'src/app/services/static/api-setting';
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 var URLSearchParams: any;
 
@@ -59,7 +60,7 @@ export class LoginPage extends PageBase {
 	}
 
 	events(e) {
-		if (e.Code == 'app:loadedLocalData') {
+		if (e.Code == EVENT_TYPE.APP.LOADED_LOCAL_DATA) {
 			this.preLoadData();
 		}
 	}
@@ -226,7 +227,7 @@ export class LoginPage extends PageBase {
 
 	ionViewWillEnter() {
 		super.ionViewWillEnter();
-		this.env.publishEvent({ Code: 'app:ShowMenu', Value: false });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: false });
 	}
 
 	ionViewDidEnter() {
@@ -234,6 +235,6 @@ export class LoginPage extends PageBase {
 	}
 
 	ionViewWillLeave() {
-		this.env.publishEvent({ Code: 'app:ShowMenu', Value: true });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: true });
 	}
 }

@@ -13,6 +13,7 @@ import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { environment, dog } from 'src/environments/environment';
+import { EVENT_TYPE } from './static/event-type';
 
 // Import new enterprise services - Facade Pattern
 import { AuthenticationService } from './auth/authentication.service';
@@ -52,24 +53,10 @@ export class AccountService {
 		private securityService: SecurityGatewayService,
 		private contextService: UserContextService
 	) {
-		// Initialize context service with environment - safely
-		setTimeout(() => {
-			if (this.env.user && this.env.user.Id) {
-				this.contextService.setCurrentUser(this.env.user);
-			}
-		}, 0);
-		
-		// Done: flow
-		// 1. check app version
-		//   => old: clear all
-		// 2. check token
-		//   => null || expire: clear all
-		// 3. get user info
-		//   => fail: clear all
 	}
 
-	// ===== FACADE METHODS - DELEGATE TO SPECIALIZED SERVICES =====
 
+	
 	/**
 	 * Login user - Delegates to AuthenticationService
 	 */
@@ -85,8 +72,11 @@ export class AccountService {
 			dog && console.log('📋 [AccountService] AuthService result:', result);
 			
 			if (result.success && result.token) {
-				dog && console.log('✅ [AccountService] Login successful, validating auth...');
-				// Load user data after successful authentication
+				dog && console.log('✅ [AccountService] Login successful, fetching user info...');
+				// Step 2: Fetch user info from server
+				await this.syncGetUserData();
+				dog && console.log('✅ [AccountService] User info fetched, validating auth...');
+				// Now validate stored auth (token + profile)
 				await this.validateStoredAuth();
 				dog && console.log('✅ [AccountService] Auth validated, returning result');
 				return result;
@@ -105,65 +95,40 @@ export class AccountService {
 	 */
 	async getProfile(forceReload = false): Promise<any> {
 		dog && console.log('🔍 [AccountService] getProfile called:', { forceReload });
-		
-		return new Promise((resolve, reject) => {
-			if (forceReload) {
-				dog && console.log('🔄 [AccountService] Force reload - calling syncGetUserData');
-				this.syncGetUserData()
-					.then(() => {
-						dog && console.log('✅ [AccountService] syncGetUserData completed, loading saved profile');
-						this.loadSavedProfile()
-							.then(() => {
-								dog && console.log('✅ [AccountService] Profile loaded successfully');
-								resolve(true);
-							})
-							.catch((err) => {
-								dog && console.error('❌ [AccountService] Error loading saved profile:', err);
-								reject(err);
-							});
-					})
-					.catch((err) => {
-						dog && console.error('❌ [AccountService] Error in syncGetUserData:', err);
-						reject(err);
-					});
-			} else {
-				dog && console.log('📂 [AccountService] No force reload - loading from storage only');
-				this.loadSavedProfile()
-					.then(() => {
-						dog && console.log('✅ [AccountService] Profile loaded from storage');
-						resolve(true);
-					})
-					.catch((err) => {
-						dog && console.error('❌ [AccountService] Error loading profile from storage:', err);
-						reject(err);
-					});
-			}
-		});
+		// Delegate to UserProfileService
+		return await this.profileService.getProfile(forceReload);
 	}
 
-	/**
-	 * External OAuth login - Delegates to ExternalAuthService
-	 */
-	async ObtainLocalAccessToken(provider: string, externalAccessToken: string): Promise<any> {
-		const result = await this.externalAuthService.handleOAuthCallback(provider, externalAccessToken);
-		
-		if (result.success && result.token) {
-			await this.setToken(result.token);
-			await this.validateStoredAuth();
-			return result;
-		} else {
-			throw new Error(result.error || 'External authentication failed');
-		}
+	async updateProfile(profile: Partial<any>): Promise<any> {
+		dog && console.log('📝 [AccountService] updateProfile called');
+		return await this.profileService.updateProfile(profile);
 	}
 
-	/**
-	 * Get external logins - Delegates to ExternalAuthService
-	 */
-	async getExternalLogins(): Promise<any> {
-		return await this.externalAuthService.getLinkedProviders();
+	async getUserSettings(): Promise<any> {
+		dog && console.log('🔍 [AccountService] getUserSettings called');
+		return await this.profileService.getUserSettings();
 	}
 
-	// ===== EXISTING METHODS REMAIN FOR COMPATIBILITY =====
+	async updateUserSettings(settings: Partial<any>): Promise<void> {
+		dog && console.log('📝 [AccountService] updateUserSettings called');
+		return await this.profileService.updateUserSettings(settings);
+	}
+
+	async getUserPermissions(): Promise<any[]> {
+		dog && console.log('🔍 [AccountService] getUserPermissions called');
+		return await this.profileService.getUserPermissions();
+	}
+
+	async hasPermission(permission: string): Promise<boolean> {
+		dog && console.log('🔍 [AccountService] hasPermission called');
+		return await this.profileService.hasPermission(permission);
+	}
+
+	async getUserRoles(): Promise<any[]> {
+		dog && console.log('🔍 [AccountService] getUserRoles called');
+		return await this.profileService.getUserRoles();
+	}
+
 
 	/**
 	 * Validate stored authentication data
@@ -190,7 +155,7 @@ export class AccountService {
 			this.env.isloaded = true;
 			
 			// Trigger success events
-			this.env.publishEvent({ Code: 'app:loadedLocalData' });
+			this.env.publishEvent({ Code: EVENT_TYPE.APP.LOADED_LOCAL_DATA });
 			
 			dog && console.log('✅ [AccountService] Authentication validation successful');
 			return true;
@@ -274,8 +239,8 @@ export class AccountService {
 		// Load branch tree
 		await this.env.loadBranch();
 		
-		// Update context service
-		this.contextService.setCurrentUser(data.userProfile);
+	// Không gọi trực tiếp setCurrentUser, chỉ publish event
+	// UserContextService sẽ tự động xử lý event này
 		
 		// Load user settings if available
 		if (data.userProfile.UserSetting) {
@@ -312,7 +277,7 @@ export class AccountService {
 	 */
 	private setupAnalytics(): void {
 		if (this.env.user) {
-			dog && console.log('📊 [AccountService] Setting up analytics for user:', this.env.user.Id);
+		
 			let woopraId = {
 				id: this.env.user.Id,
 				email: this.env.user.Email,
@@ -476,14 +441,20 @@ export class AccountService {
 						settings = lib.cloneObject(profile.UserSetting);
 						profile.UserSetting = this.loadUserSettings(settings, profile);
 					}
+					// Ensure BranchList and Forms are always present and correct
+					if (profile.Branchs && !profile.BranchList) {
+						profile.BranchList = profile.Branchs;
+					}
+					if (!profile.Forms && profile.Menu) {
+						profile.Forms = profile.Menu;
+					}
 					this.env.user = profile;
 					this.env.rawBranchList = profile.BranchList || [];
-					
 					dog && console.log('🏢 [AccountService] Loading branches:', this.env.rawBranchList?.length);
 					this.env.loadBranch().then((_) => {
 						dog && console.log('📢 [AccountService] Publishing updatedUser event');
 						this.env.publishEvent({
-							Code: 'app:updatedUser',
+							Code: EVENT_TYPE.APP.UPDATED_USER,
 						});
 						resolve(true);
 					}).catch(err => {
@@ -503,9 +474,29 @@ export class AccountService {
 		});
 	}
 
+	// Move normalizeProfile above loadSavedProfile to ensure visibility
+	private normalizeProfile(profile: any) {
+		// Đảm bảo BranchList luôn là mảng
+		if (Array.isArray(profile.BranchList)) {
+			// OK
+		} else if (Array.isArray(profile.Branchs)) {
+			profile.BranchList = profile.Branchs;
+		} else {
+			profile.BranchList = [];
+		}
+		// Đảm bảo Forms luôn là mảng
+		if (Array.isArray(profile.Forms)) {
+			// OK
+		} else if (Array.isArray(profile.Menu)) {
+			profile.Forms = profile.Menu;
+		} else {
+			profile.Forms = [];
+		}
+		return profile;
+	}
+
 	loadSavedProfile() {
 		dog && console.log('📖 [AccountService] Loading saved profile from storage...');
-		
 		return new Promise((resolve, reject) => {
 			this.env
 				.getStorage('UserProfile')
@@ -516,27 +507,24 @@ export class AccountService {
 						formsCount: profile?.Forms?.length,
 						branchCount: profile?.BranchList?.length
 					});
-					
 					if (profile && profile.Id) {
 						let settings = null;
 						if (Array.isArray(profile.UserSetting)) {
 							settings = lib.cloneObject(profile.UserSetting);
 							profile.UserSetting = this.loadUserSettings(settings, profile);
 						}
-						
-						dog && console.log('👤 [AccountService] Setting env.user and branches...');
+						profile = this.normalizeProfile(profile);
+						dog && console.log('✅ [AccountService] Normalized profile:', profile);
 						this.env.user = profile;
 						this.env.rawBranchList = profile.BranchList || [];
-						
-						dog && console.log('🏢 [AccountService] Loading branches...', this.env.rawBranchList?.length);
+						dog && console.log('🏢 [AccountService] Loading branches:', this.env.rawBranchList?.length);
 						this.env.loadBranch().then((_) => {
 							dog && console.log('📢 [AccountService] Publishing updatedUser event');
 							this.env.publishEvent({
-								Code: 'app:updatedUser',
+								Code: EVENT_TYPE.APP.UPDATED_USER,
 							});
-							
-							// Update context service
-							this.contextService.setCurrentUser(profile);
+							// Không gọi trực tiếp setCurrentUser, chỉ publish event
+							// UserContextService sẽ tự động xử lý event này
 							dog && console.log('✅ [AccountService] Profile loaded and context updated');
 							resolve(true);
 						}).catch(err => {
@@ -548,7 +536,7 @@ export class AccountService {
 						this.env.user = null;
 						this.env.rawBranchList = [];
 						this.env.loadBranch().then((_) => {
-							this.env.publishEvent({ Code: 'app:updatedUser' });
+							this.env.publishEvent({ Code: EVENT_TYPE.APP.UPDATED_USER });
 							resolve(true);
 						});
 					}
@@ -606,7 +594,7 @@ export class AccountService {
 					that.setProfile(null)
 						.then((_) => {
 							Promise.all([that.loadSavedProfile(), that.env.setStorage('Username', curentUsername)]).then(() => {
-								that.env.publishEvent({ Code: 'app:updatedUser' });
+								that.env.publishEvent({ Code: EVENT_TYPE.APP.UPDATED_USER });
 								resolve(true);
 							});
 						})
@@ -621,7 +609,7 @@ export class AccountService {
 					that.setProfile(null)
 						.then((_) => {
 							Promise.all([that.loadSavedProfile(), that.env.setStorage('Username', curentUsername)]).then(() => {
-								that.env.publishEvent({ Code: 'app:updatedUser' });
+								that.env.publishEvent({ Code: EVENT_TYPE.APP.UPDATED_USER });
 								resolve(true);
 							});
 						})
@@ -634,5 +622,19 @@ export class AccountService {
 	forgotPassword(email: string) {
 		let data = { Email: email };
 		return this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data).toPromise();
+	}
+
+	/**
+	 * External OAuth login - Delegates to ExternalAuthService
+	 */
+	async ObtainLocalAccessToken(provider: string, externalAccessToken: string): Promise<any> {
+		return await this.externalAuthService.handleOAuthCallback(provider, externalAccessToken);
+	}
+
+	/**
+	 * Get external logins - Delegates to ExternalAuthService
+	 */
+	async getExternalLogins(): Promise<any> {
+		return await this.externalAuthService.getLinkedProviders();
 	}
 }

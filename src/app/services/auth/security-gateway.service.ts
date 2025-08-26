@@ -81,7 +81,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       return true;
 
     } catch (error) {
-      console.error('Request validation error:', error);
+      dog && console.error('Request validation error:', error);
       return false;
     }
   }
@@ -197,7 +197,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       return threatLevel;
 
     } catch (error) {
-      console.error('Threat detection error:', error);
+      dog && console.error('Threat detection error:', error);
       return {
         level: 'CRITICAL',
         score: 100,
@@ -246,7 +246,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       // this.sendToSecurityService(event);
 
     } catch (error) {
-      console.error('Failed to log security event:', error);
+      dog && console.error('Failed to log security event:', error);
     }
   }
 
@@ -260,7 +260,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       const jsonString = JSON.stringify(data);
       return btoa(unescape(encodeURIComponent(jsonString)));
     } catch (error) {
-      console.error('Data encryption error:', error);
+      dog && console.error('Data encryption error:', error);
       return '';
     }
   }
@@ -274,7 +274,7 @@ export class SecurityGatewayService implements ISecurityGatewayService {
       const jsonString = decodeURIComponent(escape(atob(encryptedData)));
       return JSON.parse(jsonString);
     } catch (error) {
-      console.error('Data decryption error:', error);
+      dog && console.error('Data decryption error:', error);
       return null;
     }
   }

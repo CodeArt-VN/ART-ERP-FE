@@ -17,6 +17,20 @@ export interface AuthResult {
   mfaToken?: string;
 }
 
+export interface MFAChallenge {
+  id: string;
+  type: 'totp' | 'sms' | 'email';
+  expiresAt: Date;
+  attempts: number;
+  maxAttempts: number;
+}
+
+export interface MFAResponse {
+  challengeId: string;
+  code: string;
+  remember?: boolean;
+}
+
 export interface TokenResponse {
   access_token: string;
   token_type: string;

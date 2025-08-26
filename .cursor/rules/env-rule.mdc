@@ -1,0 +1,193 @@
+---
+description: env service use
+globs: ["**/*.ts"]
+alwaysApply: true
+---
+
+
+# EnvService Usage Rules
+
+## 🎯 **Mục đích**
+Sử dụng các hàm có sẵn trong `EnvService` thay vì tự viết hàm mới. Điều này đảm bảo tính nhất quán và tái sử dụng code trong toàn bộ ứng dụng.
+
+## 📍 **File áp dụng**
+- **Áp dụng**: Tất cả file `*.ts` (code files)
+
+## ✅ **Các hàm nên sử dụng từ EnvService**
+
+### **Message & Notification**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+this.env.showMessage('SUCCESS_MESSAGE', 'success');
+this.env.showErrorMessage(error);
+this.env.showAlert('ALERT_MESSAGE', 'SubHeader', 'Header');
+this.env.showPrompt('PROMPT_MESSAGE', 'SubHeader', 'Header');
+this.env.showLoading('LOADING_MESSAGE', promiseFunction);
+this.env.actionConfirm('delete', items.length, 'items', 'Title', promiseFunction);
+```
+
+### **Translation**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+const translatedText = await this.env.translateResource('MESSAGE_KEY');
+const translatedText = await this.env.translateResource({ code: 'MESSAGE_KEY', value: 'dynamic_value' });
+```
+
+### **Storage & Cookie**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+const value = await this.env.getStorage('key');
+await this.env.setStorage('key', value);
+await this.env.clearStorage();
+this.env.setCookie('name', 'value', 7);
+const cookieValue = this.env.getCookie('name');
+this.env.clearCookie('name');
+```
+
+### **System Data**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+const statusList = await this.env.getStatus('STATUS_CODE');
+const typeList = await this.env.getType('TYPE_CODE', true); // true = get all children
+const branchList = await this.env.getBranch(branchId, true);
+const jobTitleList = await this.env.getJobTitle(jobTitleId, true);
+const warehouses = await this.env.getWarehouses(true, false);
+```
+
+### **Permission & Branch**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+const hasPermission = await this.env.checkFormPermission('/function/code');
+await this.env.loadBranch();
+this.env.changeBranch();
+```
+
+### **Event Publishing**
+```typescript
+// ✅ Đúng - Sử dụng EnvService methods
+this.env.publishEvent({ Code: 'event:name', Value: data });
+const events = this.env.getEvents();
+```
+
+## ❌ **Không nên làm**
+
+### **Tự viết hàm mới**
+```typescript
+// ❌ Sai - Tự viết hàm show message
+private showCustomMessage(message: string) {
+    // Don't do this - use env.showMessage instead
+    this.toastController.create({ message, duration: 3000 }).then(toast => toast.present());
+}
+
+// ❌ Sai - Tự viết hàm get status
+private getCustomStatus(code: string) {
+    // Don't do this - use env.getStatus instead
+    return this.statusList.filter(s => s.Code === code);
+}
+```
+
+### **Import trực tiếp các service khác**
+```typescript
+// ❌ Sai - Import trực tiếp ToastController
+constructor(private toastController: ToastController) {}
+
+// ❌ Sai - Import trực tiếp TranslateService  
+constructor(private translate: TranslateService) {}
+```
+
+## 🔧 **Cách sử dụng đúng**
+
+### **1. Inject EnvService**
+```typescript
+constructor(private env: EnvService) {}
+```
+
+### **2. Sử dụng các method có sẵn**
+```typescript
+// Thay vì tự viết
+async saveData() {
+    try {
+        const result = await this.apiService.save(data);
+        // Sử dụng env.showMessage thay vì tự viết
+        this.env.showMessage('DATA_SAVED_SUCCESS', 'success');
+        return result;
+    } catch (error) {
+        // Sử dụng env.showErrorMessage thay vì tự viết
+        this.env.showErrorMessage(error);
+        throw error;
+    }
+}
+```
+
+### **3. Sử dụng translation có sẵn**
+```typescript
+// Thay vì tự viết
+async getTranslatedText() {
+    // Sử dụng env.translateResource thay vì tự viết
+    const message = await this.env.translateResource('WELCOME_MESSAGE');
+    return message;
+}
+```
+
+## 📋 **Danh sách đầy đủ các method có sẵn**
+
+### **Core Methods**
+- `showMessage(message, color, value, duration, showCloseButton, subHeader, header)`
+- `showErrorMessage(err)`
+- `showAlert(message, subHeader, header, okText)`
+- `showPrompt(message, subHeader, header, okText, cancelText, inputs)`
+- `showLoading(message, promise)`
+- `actionConfirm(action, length, itemName, title, promise)`
+
+### **Translation Methods**
+- `translateResource(resource)`
+- `setLang(value)`
+
+### **Storage Methods**
+- `getStorage(key)`
+- `setStorage(key, value)`
+- `clearStorage()`
+- `setCookie(name, value, days)`
+- `getCookie(name)`
+- `clearCookie(name)`
+
+### **System Data Methods**
+- `getStatus(Code)`
+- `getType(Code, AllChild)`
+- `getBranch(Id, AllChild)`
+- `getJobTitle(Id, AllChild)`
+- `getWarehouses(getParents, IgnoredSelectedBranch)`
+- `searchBranch(predicate)`
+
+### **Permission & Branch Methods**
+- `checkFormPermission(functionCode)`
+- `loadBranch()`
+- `changeBranch()`
+
+### **Event Methods**
+- `publishEvent(data)`
+- `getEvents()`
+
+### **Server Management Methods**
+- `loadSelectedServer()`
+- `changeServer(serverCode)`
+- `loadLanguageForServer(lang?)`
+
+## 💡 **Lợi ích của việc tuân thủ quy tắc**
+
+1. **Tính nhất quán**: Tất cả message, notification, translation đều có cùng style và behavior
+2. **Tái sử dụng**: Không duplicate code logic
+3. **Dễ maintain**: Chỉ cần sửa ở một nơi khi có thay đổi
+4. **Performance**: Các method đã được optimize và cache
+5. **Testing**: Dễ dàng mock và test các method có sẵn
+
+## 🚨 **Lưu ý quan trọng**
+
+- **KHÔNG BAO GIỜ** tự viết hàm mới cho các chức năng đã có trong EnvService
+- Luôn kiểm tra EnvService trước khi implement chức năng mới
+- Nếu cần chức năng mới, hãy thêm vào EnvService thay vì tạo service riêng
+- Tuân thủ quy tắc console logging: sử dụng `dog && console.log()` cho dev logs
+description:
+globs:
+alwaysApply: false
+---

@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { EnvService } from '../core/env.service';
+import { EVENT_TYPE } from '../static/event-type';
 
 import {
   IUserContextService,
@@ -38,47 +39,50 @@ export class UserContextService implements IUserContextService {
    * Set current user
    */
   setCurrentUser(user: UserProfile): void {
-    dog && console.log('👤 [UserContextService] Setting current user:', {
-      userId: user?.Id,
-      hasUser: !!user,
-      hasRoles: !!(user?.Roles?.length)
-    });
+      dog && console.log('👤 [UserContextService] Setting current user:', {
+        userId: user?.Id,
+        hasUser: !!user,
+        hasRoles: !!(user?.Roles?.length)
+      });
 
-    try {
-      // Validate user object
-      if (!user) {
-        console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
-        return;
-      }
+      try {
+        // Validate user object
+        if (!user) {
+          dog && console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
+          return;
+        }
 
-      this.currentUser$.next(user);
-      dog && console.log('✅ [UserContextService] User set in BehaviorSubject');
+        this.currentUser$.next(user);
+        dog && console.log('✅ [UserContextService] User set in BehaviorSubject');
       
-      // Update roles if available
-      if (user.Roles) {
-        dog && console.log('🎭 [UserContextService] Setting user roles:', user.Roles.length);
-        this.userRoles$.next(user.Roles);
+        // Update roles if available
+        if (user.Roles) {
+          dog && console.log('🎭 [UserContextService] Setting user roles:', user.Roles.length);
+          this.userRoles$.next(user.Roles);
+        }
+
+        // Update tenant context if user has tenant info
+        if (user && this.env.selectedBranch) {
+          dog && console.log('🏢 [UserContextService] Updating tenant context...');
+          this.updateTenantContext();
+        }
+
+        // Create user session
+        dog && console.log('🔐 [UserContextService] Creating user session...');
+        this.createUserSession(user);
+
+        // Update last activity
+        dog && console.log('⏰ [UserContextService] Updating session activity...');
+        this.updateSessionActivity();
+
+        // Publish event: cập nhật user context
+        this.env.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED, data: user });
+
+        dog && console.log('✅ [UserContextService] Current user set successfully');
+
+      } catch (error) {
+        dog && console.error('🚨 [UserContextService] Error setting current user:', error);
       }
-
-      // Update tenant context if user has tenant info
-      if (user && this.env.selectedBranch) {
-        dog && console.log('🏢 [UserContextService] Updating tenant context...');
-        this.updateTenantContext();
-      }
-
-      // Create user session
-      dog && console.log('🔐 [UserContextService] Creating user session...');
-      this.createUserSession(user);
-
-      // Update last activity
-      dog && console.log('⏰ [UserContextService] Updating session activity...');
-      this.updateSessionActivity();
-
-      dog && console.log('✅ [UserContextService] Current user set successfully');
-
-    } catch (error) {
-      dog && console.error('🚨 [UserContextService] Error setting current user:', error);
-    }
   }
 
   /**
@@ -96,58 +100,108 @@ export class UserContextService implements IUserContextService {
   }
 
   /**
-   * Switch tenant context
+   * Switch to different tenant
    */
   async switchTenant(tenantId: string): Promise<void> {
     try {
-      const currentUser = this.currentUser$.value;
+      dog && console.log('🏢 [UserContextService] Switching to tenant:', tenantId);
       
-      if (!currentUser || !currentUser.BranchList) {
-        throw new Error('No user or branch list available for tenant switching');
+      // Load tenant data
+      const newTenant = await this.loadTenantData(tenantId);
+      if (!newTenant) {
+        throw new Error(`Tenant ${tenantId} not found`);
       }
-
-      // Find the tenant/branch
-      const targetBranch = this.findBranchById(currentUser.BranchList, tenantId);
       
-      if (!targetBranch) {
-        throw new Error(`Tenant/Branch with ID ${tenantId} not found`);
-      }
-
-      // Update environment selected branch
-      this.env.selectedBranch = tenantId;
-      await this.env.loadBranch();
-
-      // Create tenant object
-      const tenant: Tenant = {
-        id: targetBranch.Id.toString(),
-        name: targetBranch.Name,
-        code: targetBranch.Code,
-        isActive: !targetBranch.IsDisabled,
-        settings: {
-          // Add tenant-specific settings here
-        },
-        features: []
-      };
-
       // Update tenant context
-      this.currentTenant$.next(tenant);
-
-      // Update session with new tenant
-      const currentSession = this.currentSession$.value;
-      if (currentSession) {
-        currentSession.lastActivity = new Date();
-        this.currentSession$.next(currentSession);
-      }
-
-      // Publish tenant switch event
-      this.env.publishEvent({
-        Code: 'user:tenantSwitched',
-        data: { tenantId, tenantName: targetBranch.Name }
-      });
-
+      this.currentTenant$.next(newTenant);
+      dog && console.log('✅ [UserContextService] Tenant context updated');
+      
+      // Update environment - use selectedBranch for now since tenant property doesn't exist
+      // this.env.tenant = newTenant; // TODO: Add tenant property to EnvService if needed
+      
+      // Publish event
+      this.env.publishEvent({ Code: EVENT_TYPE.TENANT.SWITCHED, data: newTenant });
+      dog && console.log('📢 [UserContextService] Tenant switched event published');
+      
     } catch (error) {
-      dog && console.error('Error switching tenant:', error);
+      dog && console.error('🚨 [UserContextService] Error switching tenant:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Switch to different branch
+   */
+  async switchBranch(branchId: string): Promise<void> {
+    try {
+      dog && console.log('🏢 [UserContextService] Switching to branch:', branchId);
+      
+      // Load branch data
+      const newBranch = await this.loadBranchData(branchId);
+      if (!newBranch) {
+        throw new Error(`Branch ${branchId} not found`);
+      }
+      
+      // Update branch context
+      this.env.selectedBranch = newBranch;
+      dog && console.log('✅ [UserContextService] Branch context updated');
+      
+      // Publish event
+      this.env.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED, data: newBranch });
+      dog && console.log('📢 [UserContextService] Branch switched event published');
+      
+    } catch (error) {
+      dog && console.error('🚨 [UserContextService] Error switching branch:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update user permissions
+   */
+  updateUserPermissions(permissions: Permission[]): void {
+    try {
+      dog && console.log('🔐 [UserContextService] Updating user permissions:', permissions.length);
+      
+      // Update permissions in current user
+      const currentUser = this.currentUser$.value;
+      if (currentUser) {
+        currentUser.Permissions = permissions;
+        this.currentUser$.next(currentUser);
+      }
+      
+      // Publish event
+      this.env.publishEvent({ Code: EVENT_TYPE.USER.PERMISSIONS_UPDATED, data: permissions });
+      dog && console.log('📢 [UserContextService] Permissions updated event published');
+      
+    } catch (error) {
+      dog && console.error('🚨 [UserContextService] Error updating permissions:', error);
+    }
+  }
+
+  /**
+   * Update user roles
+   */
+  updateUserRoles(roles: Role[]): void {
+    try {
+      dog && console.log('🎭 [UserContextService] Updating user roles:', roles.length);
+      
+      // Update roles in current user
+      const currentUser = this.currentUser$.value;
+      if (currentUser) {
+        currentUser.Roles = roles;
+        this.currentUser$.next(currentUser);
+      }
+      
+      // Update roles observable
+      this.userRoles$.next(roles);
+      
+      // Publish event
+      this.env.publishEvent({ Code: EVENT_TYPE.USER.ROLES_UPDATED, data: roles });
+      dog && console.log('📢 [UserContextService] Roles updated event published');
+      
+    } catch (error) {
+      dog && console.error('🚨 [UserContextService] Error updating roles:', error);
     }
   }
 
@@ -286,15 +340,15 @@ export class UserContextService implements IUserContextService {
     try {
       // Listen for user updates
       this.env.EventTracking.subscribe((event) => {
-        if (event.Code === 'app:updatedUser' && this.env.user) {
+        if (event.Code === EVENT_TYPE.APP.UPDATED_USER && this.env.user) {
           this.setCurrentUser(this.env.user);
         }
         
-        if (event.Code === 'app:loadedLocalData' && this.env.user) {
+        if (event.Code === EVENT_TYPE.APP.LOADED_LOCAL_DATA && this.env.user) {
           this.setCurrentUser(this.env.user);
         }
         
-        if (event.Code === 'auth:logout') {
+        if (event.Code === EVENT_TYPE.AUTH.LOGOUT) {
           this.clearContext();
         }
       });
@@ -351,7 +405,7 @@ export class UserContextService implements IUserContextService {
     try {
       // Validate user has required properties
       if (!user) {
-        console.warn('⚠️ [UserContextService] Cannot create session: user is null or undefined');
+        dog && console.warn('⚠️ [UserContextService] Cannot create session: user is null or undefined');
         return;
       }
 
@@ -425,5 +479,45 @@ export class UserContextService implements IUserContextService {
    */
   private generateSessionId(): string {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  /**
+   * Load tenant data
+   */
+  private async loadTenantData(tenantId: string): Promise<Tenant | null> {
+    try {
+      // This would typically call an API to get tenant data
+      // For now, return a mock tenant
+      return {
+        id: tenantId,
+        name: `Tenant ${tenantId}`,
+        code: `T${tenantId}`,
+        isActive: true,
+        settings: {}
+      };
+    } catch (error) {
+      dog && console.error('Error loading tenant data:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Load branch data
+   */
+  private async loadBranchData(branchId: string): Promise<any> {
+    try {
+      // Find branch in existing branch list
+      const branch = this.findBranchById(this.env.branchList || [], branchId);
+      if (branch) {
+        return branch;
+      }
+      
+      // If not found, try to load from server
+      // This would typically call an API
+      return null;
+    } catch (error) {
+      dog && console.error('Error loading branch data:', error);
+      return null;
+    }
   }
 }

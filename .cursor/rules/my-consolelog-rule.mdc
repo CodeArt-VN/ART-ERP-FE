@@ -1,0 +1,48 @@
+---
+description: dev console log
+globs: ["**/*.ts"]
+alwaysApply: true
+---
+
+
+# Console Logging Rules
+
+## Development Logging
+- Sử dụng `dog && console.log()` cho dev logs
+- `dog` được import từ `environment.ts`
+- Chỉ log khi ở development mode
+
+## Code Examples
+```typescript
+// ✅ Đúng - Sử dụng dog check
+dog && console.log('User data:', userData);
+dog && console.warn('API response:', response);
+dog && console.error('Error occurred:', error);
+
+// ❌ Sai - Log trực tiếp
+console.log('User data:', userData);
+console.warn('API response:', response);
+```
+
+## File Patterns
+- **Áp dụng**: `*.ts` (code files)
+- **Không áp dụng**: `*.spec.ts`, `*.test.ts`, `*.e2e-spec.ts` (test files)
+
+## Environment Check
+```typescript
+// Trong environment.ts
+export const environment = {
+  production: false,
+};
+export let dog = !environment.production; // dog = dev log;
+
+// Trong environment.prod.ts  
+export const environment = {
+  production: true,
+};
+export let dog = !environment.production; // dog = dev log;
+```
+
+## Best Practices
+- Sử dụng `dog && console.log()` thay vì `if (dog) console.log()`
+- Log có ý nghĩa và hữu ích cho debugging
