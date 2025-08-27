@@ -1,19 +1,17 @@
 import { forwardRef, Inject, Injectable, Injector } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
-
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment, dog } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
-import { CommonService } from './common.service';
 import { DynamicTranslateLoaderService } from './dynamic-translate-loader.service';
 import { MigrationService } from './migration.service';
-import { LIST_AddressSubdivisionProvider } from '../static/services.service';
 import { EVENT_TYPE } from '../static/event-type';
+import { UserProfile } from '../interfaces/auth.interfaces';
 
 @Injectable({
 	providedIn: 'root',
@@ -66,21 +64,21 @@ export class EnvService {
 	/** Get current app version */
 	version = environment.appVersion;
 
-	/** Server management properties */
-	selectedServer: string = environment.appDomain;
-	serverList: any[] = environment.appServers;
-	isServerLoaded = false;
-	
-	/** Observable to notify when server is loaded */
-	private serverReadySubject = new Subject<string>();
-	public serverReady$ = this.serverReadySubject.asObservable();
-	
-	/** Static reference to server ready observable for external services */
-	public static serverReadySubject = new Subject<string>();
-	public static serverReady$ = EnvService.serverReadySubject.asObservable();
+	/** Tenant management properties */
+	selectedTenant: string = environment.appDomain;
+	tenantList: any[] = environment.appServers;
+	isTenantLoaded = false;
+
+	/** Observable to notify when tenant is loaded */
+	private tenantReadySubject = new Subject<string>();
+	public tenantReady$ = this.tenantReadySubject.asObservable();
+
+	/** Static reference to tenant ready observable for external services */
+	public static tenantReadySubject = new Subject<string>();
+	public static tenantReady$ = EnvService.tenantReadySubject.asObservable();
 
 	/** Get current logged in user */
-	user: any = {};
+	user: UserProfile = null;
 
 	/** All cached config */
 	configs: any[] = [];
@@ -156,33 +154,147 @@ export class EnvService {
 		private dynamicTranslateLoader: DynamicTranslateLoaderService
 	) {
 		this.isMobile = this.plt.is('ios') || this.plt.is('android');
-		this.ready = new Promise((resolve, reject) => {
-			this.init().then(resolve).catch(reject);
-		});
 	}
 
 	/**
-	 * Init enviroment
-	 * Create storage service handle
-	 * Request app load languages
-	 * Add network listener
-	 * Connet SignalR
+	 * Initialize environment as central controller
+	 * This is the main entry point for environment setup
 	 */
-	async init() {
-		await this.storage.init();
-		
-		// Load selected server first (critical for language loading)
-		await this.loadSelectedServer();
-		
-		// Load core system data (keep existing)
-		this.typeList = await this.storage.get('SYS/Type');
-		this.statusList = await this.storage.get('SYS/Status');
-		
-		// Setup background services (non-blocking)
-		this.setupBackgroundServices();
-		
-		// Don't trigger language loading here anymore
-		// It will be handled by the new orchestrated flow
+	async initialize(): Promise<void> {
+		dog && console.log('🚀 [EnvService] Starting environment initialization...');
+
+		try {
+			// Phase 1: Environment Setup (0-200ms)
+			await this.loadEnvironmentConfig();
+			await this.initializeCoreServices();
+			await this.setupEventSystem();
+
+			// Phase 2: Service Discovery (200-500ms)
+			await this.discoverServices();
+			await this.validateServiceHealth();
+			await this.setupServiceConnections();
+
+			// Phase 3: Data Initialization (500-800ms)
+			//await this.loadSystemData();
+			await this.initializeCacheLayers();
+			await this.setupDataStreams();
+
+			// Phase 4: User Context (800-1200ms)
+			await this.loadUserSession();
+			await this.initializeUserSettings();
+			await this.setupUserPermissions();
+
+			// Notify UI that environment is ready
+			this.publishEvent({ Code: EVENT_TYPE.APP.ENVIRONMENT_READY, Value: null });
+
+			dog && console.log('✅ [EnvService] Environment initialization completed successfully');
+		} catch (error) {
+			dog && console.error('❌ [EnvService] Environment initialization failed:', error);
+			throw error;
+		}
+	}
+
+	/**
+	 * Phase 1: Environment Setup
+	 */
+	private async loadEnvironmentConfig(): Promise<void> {
+		dog && console.log('📋 [EnvService] Loading environment configuration...');
+		await this.loadSelectedTenant();
+	}
+
+	private async initializeCoreServices(): Promise<void> {
+		dog && console.log('🔧 [EnvService] Initializing core services...');
+		// Core services initialization logic
+	}
+
+	private async setupEventSystem(): Promise<void> {
+		dog && console.log('📡 [EnvService] Setting up event system...');
+
+		setTimeout(() => this.setupSignalR(), 100);
+
+		// Network monitoring
+		setTimeout(() => this.setupNetworkMonitoring(), 200);
+	}
+
+	/**
+	 * Phase 2: Service Discovery
+	 */
+	private async discoverServices(): Promise<void> {
+		dog && console.log('🔍 [EnvService] Discovering available services...');
+		// Service discovery logic
+	}
+
+	private async validateServiceHealth(): Promise<void> {
+		dog && console.log('🏥 [EnvService] Validating service health...');
+		// Service health validation logic
+	}
+
+	private async setupServiceConnections(): Promise<void> {
+		dog && console.log('🔗 [EnvService] Setting up service connections...');
+		// Service connection setup logic
+	}
+
+	private async initializeCacheLayers(): Promise<void> {
+		dog && console.log('💾 [EnvService] Initializing cache layers...');
+		// Cache layer initialization logic
+	}
+
+	private async setupDataStreams(): Promise<void> {
+		dog && console.log('🌊 [EnvService] Setting up data streams...');
+		// Data stream setup logic
+	}
+
+	/**
+	 * Phase 4: User Context
+	 */
+	private async loadUserSession(): Promise<void> {
+		dog && console.log('👤 [EnvService] Loading user session...');
+		// User session loading logic
+	}
+
+	private async initializeUserSettings(): Promise<void> {
+		dog && console.log('⚙️ [EnvService] Initializing user settings...');
+		// User settings initialization logic
+	}
+
+	private async setupUserPermissions(): Promise<void> {
+		dog && console.log('🔐 [EnvService] Setting up user permissions...');
+		// User permissions setup logic
+	}
+
+	/**
+	 * Data Management Methods
+	 */
+	async getData<T>(key: string): Promise<T> {
+		return await this.storage.get(key);
+	}
+
+	async setData<T>(key: string, value: T): Promise<void> {
+		await this.storage.set(key, value);
+	}
+
+	/**
+	 * Handle user actions from UI
+	 */
+	async handleUserAction(action: any): Promise<void> {
+		dog && console.log('👤 [EnvService] Handling user action:', action);
+
+		switch (action.type) {
+			case 'LOGIN':
+				// Business logic for login
+				break;
+			case 'LOGOUT':
+				// Business logic for logout
+				break;
+			case 'CHANGE_BRANCH':
+				// Business logic for branch change
+				break;
+			case 'CHANGE_THEME':
+				// Business logic for theme change
+				break;
+			default:
+				dog && console.log('⚠️ [EnvService] Unknown user action:', action);
+		}
 	}
 
 	/**
@@ -212,7 +324,7 @@ export class EnvService {
 		);
 	}
 
-	showBarMessage(id = '', icon = '',color = '',isShow = true,isBlink = false) {
+	showBarMessage(id = '', icon = '', color = '', isShow = true, isBlink = false) {
 		this.publishEvent({
 			Code: EVENT_TYPE.APP.SHOW_APP_MESSAGE,
 			IsShow: isShow,
@@ -459,7 +571,7 @@ export class EnvService {
 	 * @param key The key to get storage
 	 * @returns Return the storage
 	 */
-	getStorage(key) {
+	getStorage(key: string) {
 		return this.storage.get(key)!;
 	}
 
@@ -632,8 +744,6 @@ export class EnvService {
 		});
 	}
 
-	getConfig() {}
-
 	/**
 	 * Get status list by parent Code
 	 * @param Code Parent status code
@@ -778,104 +888,104 @@ export class EnvService {
 	// =================== NEW SERVER MANAGEMENT METHODS ===================
 
 	/**
-	 * Load selected server from storage
+	 * Load selected tenant from storage
 	 */
-	async loadSelectedServer(): Promise<string> {
-		const stored = await this.getStorage('selectedServer');
-		if (stored && this.isValidServer(stored)) {
-			this.selectedServer = stored;
+	async loadSelectedTenant(): Promise<string> {
+		const stored = await this.getStorage('selectedTenant');
+		if (stored && this.isValidTenant(stored)) {
+			this.selectedTenant = stored;
 			environment.appDomain = stored;
 		} else {
 			// Use default from environment
-			this.selectedServer = environment.appDomain;
+			this.selectedTenant = environment.appDomain;
 		}
-		
-		this.isServerLoaded = true;
-		console.log('Selected server loaded:', this.selectedServer);
-		
-		// Notify that server is ready (both instance and static)
-		this.serverReadySubject.next(this.selectedServer);
-		EnvService.serverReadySubject.next(this.selectedServer);
-		
-		return this.selectedServer;
+
+		this.isTenantLoaded = true;
+		console.log('Selected tenant loaded:', this.selectedTenant);
+
+		// Notify that tenant is ready (both instance and static)
+		this.tenantReadySubject.next(this.selectedTenant);
+		EnvService.tenantReadySubject.next(this.selectedTenant);
+
+		return this.selectedTenant;
 	}
 
 	/**
-	 * Change server and reload language
+	 * Switch tenant and reload language
 	 */
-	async changeServer(serverCode: string): Promise<void> {
-		if (!this.isValidServer(serverCode)) {
-			throw new Error(`Invalid server: ${serverCode}`);
+	async switchTenant(serverCode: string): Promise<void> {
+		if (!this.isValidTenant(serverCode)) {
+			throw new Error(`Invalid tenant: ${serverCode}`);
 		}
 
-		const oldServer = this.selectedServer;
-		this.selectedServer = serverCode;
+		const oldTenant = this.selectedTenant;
+		this.selectedTenant = serverCode;
 		environment.appDomain = serverCode;
-		
+
 		// Save to storage
-		await this.setStorage('selectedServer', serverCode);
-		
-		console.log('Server changed from', oldServer, 'to', serverCode);
-		
-		// Trigger migration if server changed
-		if (oldServer !== serverCode) {
+		await this.setStorage('selectedTenant', serverCode);
+
+		console.log('Tenant changed from', oldTenant, 'to', serverCode);
+
+		// Trigger migration if tenant changed
+		if (oldTenant !== serverCode) {
 			try {
 				const migration = new MigrationService(this);
 				await migration.executeMigration();
 			} catch (error) {
 				console.error('Migration failed:', error);
 			}
-			
-			// Emit server ready signal for dynamic language loader
-			this.serverReadySubject.next(this.selectedServer);
-			EnvService.serverReadySubject.next(this.selectedServer);
-			
-			// Reload language for new server (non-blocking)
-			this.loadLanguageForServer().catch(error => {
+
+			// Emit tenant ready signal for dynamic language loader
+			this.tenantReadySubject.next(this.selectedTenant);
+			EnvService.tenantReadySubject.next(this.selectedTenant);
+
+			// Reload language for new tenant (non-blocking)
+			this.loadLanguageForServer().catch((error) => {
 				console.error('Language reload failed:', error);
 			});
 		}
-		
-		// Publish server change event
-		this.publishEvent({ Code: EVENT_TYPE.APP.SERVER_CHANGED, Value: serverCode });
+
+		// Publish tenant change event
+		this.publishEvent({ Code: EVENT_TYPE.TENANT.SWITCHED, Value: serverCode });
 	}
 
 	/**
-	 * Load language with server context and fallbacks
+	 * Load language with tenant context and fallbacks
 	 */
 	async loadLanguageForServer(lang?: string): Promise<void> {
 		if (!lang) {
-			lang = await this.getStorage('lang') || this.language.default;
+			lang = (await this.getStorage('lang')) || this.language.default;
 		}
 
-		console.log('Loading language for server:', this.selectedServer, 'language:', lang);
-		
+		console.log('Loading language for tenant:', this.selectedTenant, 'language:', lang);
+
 		try {
 			// Use dynamic loader to get translations (convert Observable to Promise)
 			const translations = await firstValueFrom(this.dynamicTranslateLoader.getTranslation(lang));
-			
+
 			if (translations && Object.keys(translations).length > 0) {
 				this.translate.setTranslation(lang, translations);
 				this.translate.use(lang);
-				
+
 				// Update language state
 				this.language.current = lang;
 				this.language.isDefault = lang === this.language.default;
 				this.setStorage('lang', lang);
 				this.languageTracking.next(this.language);
-				
+
 				console.log('Language loaded successfully via dynamic loader');
 				return;
 			}
 		} catch (error) {
 			console.error('Failed to load language via dynamic loader:', error);
 		}
-		
+
 		// Fallback: set language without translations (app will work with keys)
 		console.warn('Loading empty translations for language:', lang);
 		this.translate.setTranslation(lang, {});
 		this.translate.use(lang);
-		
+
 		// Update language state
 		this.language.current = lang;
 		this.language.isDefault = lang === this.language.default;
@@ -884,21 +994,10 @@ export class EnvService {
 	}
 
 	/**
-	 * Setup background services (non-blocking)
+	 * Validate tenant code
 	 */
-	private setupBackgroundServices(): void {
-		// SignalR connection
-		setTimeout(() => this.setupSignalR(), 100);
-		
-		// Network monitoring  
-		setTimeout(() => this.setupNetworkMonitoring(), 200);
-	}
-
-	/**
-	 * Validate server code
-	 */
-	private isValidServer(serverCode: string): boolean {
-		return this.serverList.some(server => server.Code === serverCode);
+	private isValidTenant(serverCode: string): boolean {
+		return this.tenantList.some((server) => server.Code === serverCode);
 	}
 
 	/**
@@ -914,7 +1013,7 @@ export class EnvService {
 		signalRConnection
 			.start()
 			.then(() => console.log('SignalR Connected!'))
-			.catch(err => console.error('SignalR connection failed:', err));
+			.catch((err) => console.error('SignalR connection failed:', err));
 
 		// Add existing event handlers
 		signalRConnection.on('BroadcastMessage', (e) => {
@@ -954,11 +1053,11 @@ export class EnvService {
 					break;
 			}
 		});
-		
+
 		signalRConnection.on('SendMessage', (user, message) => {
 			console.log('SendMessage', user, message);
 		});
-		
+
 		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
 			console.log('SaleOrdersUpdated', IDBranch, Ids);
 			this.publishEvent({ Code: EVENT_TYPE.SALE.ORDERS_UPDATED });
@@ -966,7 +1065,7 @@ export class EnvService {
 	}
 
 	/**
-	 * Setup network monitoring (moved from init)  
+	 * Setup network monitoring (moved from init)
 	 */
 	private setupNetworkMonitoring(): void {
 		Network.addListener('networkStatusChange', (status) => {

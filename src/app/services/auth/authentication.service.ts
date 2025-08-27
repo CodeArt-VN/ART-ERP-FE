@@ -607,7 +607,7 @@ export class AuthenticationService implements IAuthenticationService {
 
 			return response && (response as any).valid === true;
 		} catch (error) {
-			dog && console.error('Token validation with server failed:', error);
+			dog && console.error('Token validation with tenant failed:', error);
 			return false;
 		}
 	}

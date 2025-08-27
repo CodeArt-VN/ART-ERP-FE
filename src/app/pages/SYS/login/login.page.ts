@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageBase } from 'src/app/page-base';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { AccountService } from '../../../services/account.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ActivatedRoute } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
-import { ApiSetting } from 'src/app/services/static/api-setting';
 import { CustomService } from 'src/app/services/custom.service';
 import { environment } from 'src/environments/environment';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
@@ -101,7 +100,7 @@ export class LoginPage extends PageBase {
 						loading.dismiss();
 
 						if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-							this.env.showMessage('Cannot connect to server, please recheck');
+							this.env.showMessage('Cannot connect to tenant, please recheck');
 						} else if (err.status == 404) {
 							this.env.showMessage('Cannot find email, please recheck');
 						} else {
@@ -129,7 +128,7 @@ export class LoginPage extends PageBase {
 			})
 			.catch((err) => {
 				if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-					this.env.showMessage('Cannot connect to server, please recheck', 'danger');
+					this.env.showMessage('Cannot connect to tenant, please recheck', 'danger');
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('locked out') > -1) {
 					this.env.showMessage('Account is not activated or being locked', 'danger');
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('user name or password is incorrect') > -1) {
@@ -228,10 +227,6 @@ export class LoginPage extends PageBase {
 	ionViewWillEnter() {
 		super.ionViewWillEnter();
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: false });
-	}
-
-	ionViewDidEnter() {
-		super.ionViewDidEnter();
 	}
 
 	ionViewWillLeave() {

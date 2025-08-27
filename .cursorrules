@@ -1,0 +1,195 @@
+# Cursor Rules for ART-ERP-FE Project
+
+## Project Context
+This is an Angular/Ionic ERP frontend project with the following key characteristics:
+- Uses Angular with Ionic framework
+- Implements EnvService for common functionality
+- Uses TypeScript with strict typing
+- Follows Vietnamese development practices
+- Uses dog && console.log() for development logging
+
+## Code Style & Standards
+
+### TypeScript/Angular
+- Use strict TypeScript configuration
+- Follow Angular style guide
+- Use dependency injection properly
+- Implement proper error handling
+- Use async/await over promises when possible
+
+### File Organization
+- Services in `src/app/services/`
+- Components in `src/app/components/`
+- Pages in `src/app/pages/`
+- Use barrel exports (index.ts) for clean imports
+
+### Naming Conventions
+- Use PascalCase for classes, interfaces, enums
+- Use camelCase for variables, functions, methods
+- Use kebab-case for file names
+- Use UPPER_SNAKE_CASE for constants
+
+## Development Practices
+
+### EnvService Usage
+- ALWAYS use EnvService methods instead of creating custom implementations
+- Use `this.env.showMessage()` for notifications
+- Use `this.env.showErrorMessage()` for error handling
+- Use `this.env.translateResource()` for translations
+- Use `this.env.getStorage()` and `this.env.setStorage()` for data persistence
+
+### Console Logging
+- Use `dog && console.log()` for development logs
+- Import `dog` from environment.ts
+- Never use direct console.log() in production code
+- Use meaningful log messages for debugging
+
+### Error Handling
+- Always wrap async operations in try-catch blocks
+- Use EnvService for error notifications
+- Log errors with proper context
+- Provide user-friendly error messages
+
+### Performance
+- Use OnPush change detection strategy when possible
+- Implement proper unsubscribe patterns
+- Use trackBy functions in *ngFor loops
+- Lazy load modules and components
+
+## Code Quality
+
+### Functions & Methods
+- Keep functions small and focused
+- Use descriptive names
+- Add JSDoc comments for complex functions
+- Return early to reduce nesting
+
+### Classes & Services
+- Use dependency injection
+- Implement proper lifecycle hooks
+- Use interfaces for type safety
+- Follow single responsibility principle
+
+### Testing
+- Write unit tests for services
+- Write component tests for complex components
+- Use proper mocking strategies
+- Maintain good test coverage
+
+## Security
+- Validate all user inputs
+- Sanitize data before displaying
+- Use proper authentication checks
+- Follow OWASP guidelines
+
+## Accessibility
+- Use semantic HTML elements
+- Provide proper ARIA labels
+- Ensure keyboard navigation
+- Test with screen readers
+
+## Performance Optimization
+- Use OnPush change detection
+- Implement virtual scrolling for large lists
+- Optimize images and assets
+- Use lazy loading strategies
+
+## Common Patterns
+
+### Service Pattern
+```typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class ExampleService {
+  constructor(private env: EnvService) {}
+  
+  async getData(): Promise<any> {
+    try {
+      const result = await this.apiService.getData();
+      this.env.showMessage('SUCCESS_MESSAGE', 'success');
+      return result;
+    } catch (error) {
+      this.env.showErrorMessage(error);
+      throw error;
+    }
+  }
+}
+```
+
+### Component Pattern
+```typescript
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ExampleComponent implements OnInit, OnDestroy {
+  constructor(private env: EnvService) {}
+  
+  ngOnInit(): void {
+    // Initialization logic
+  }
+  
+  ngOnDestroy(): void {
+    // Cleanup logic
+  }
+}
+```
+
+## File Structure Rules
+- Keep components under 300 lines
+- Keep services under 500 lines
+- Use feature modules for large features
+- Group related files in folders
+
+## Import Rules
+- Use absolute imports for services
+- Use relative imports for local files
+- Group imports: Angular, third-party, local
+- Use barrel exports for clean imports
+
+## Documentation
+- Add JSDoc comments for public methods
+- Document complex business logic
+- Keep README files updated
+- Document API interfaces
+
+## Git Practices
+- Use conventional commit messages
+- Keep commits small and focused
+- Use meaningful branch names
+- Review code before merging
+
+## Environment Configuration
+- Use environment files for configuration
+- Never commit sensitive data
+- Use proper environment variables
+- Test in multiple environments
+
+## Common Mistakes to Avoid
+- Don't use direct console.log() - use dog && console.log()
+- Don't create custom notification methods - use EnvService
+- Don't forget to unsubscribe from observables
+- Don't use any type - use proper TypeScript types
+- Don't ignore error handling
+- Don't commit debug code
+
+## Performance Monitoring
+- Monitor bundle size
+- Check for memory leaks
+- Profile performance regularly
+- Use Angular DevTools
+
+## Code Review Checklist
+- [ ] Follows TypeScript best practices
+- [ ] Uses EnvService methods correctly
+- [ ] Implements proper error handling
+- [ ] Has appropriate logging
+- [ ] Follows naming conventions
+- [ ] Has proper documentation
+- [ ] Includes tests
+- [ ] Performs well
+- [ ] Is accessible
+- [ ] Is secure

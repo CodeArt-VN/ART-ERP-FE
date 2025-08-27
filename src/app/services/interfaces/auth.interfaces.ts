@@ -71,18 +71,81 @@ export interface UserProfile {
   PhoneNumber?: string;
   Avatar?: string;
   IsDisabled: boolean;
+  
+  // Staff Information
+  StaffID?: number;
+  IDBranch?: number;
+  IDBusinessPartner?: number;
+  
+  // System Roles & Permissions
+  SysRoles?: string[];
   Forms?: FormPermission[];
+  Menu?: FormPermission[]; // Alternative name for Forms
+  
+  // Branch Management
   BranchList?: Branch[];
+  Branchs?: Branch[]; // Alternative name for BranchList
+  
+  // User Settings & Preferences
   UserSetting?: UserSettings;
+  
+  // Role & Permission Management
   Roles?: Role[];
   Permissions?: Permission[];
+  
+  // Additional Properties from Usage Analysis
+  CreatedBy?: string;
+  CreatedDate?: Date;
+  ModifiedBy?: string;
+  ModifiedDate?: Date;
+  
+  // Business Context
+  IDOwner?: number;
+  IDShipper?: number;
+  
+  // UI State Properties
+  isPinned?: boolean;
+  isShowDetail?: boolean;
+  isShowForm?: boolean;
+  
+  // Legacy Support
+  [key: string]: any; // For backward compatibility
 }
 
 export interface UserSettings {
+  // Theme & UI Settings
   Theme?: SettingValue;
   IsCompactMenu?: SettingValue;
   IsCacheQuery?: SettingValue;
   PinnedForms?: SettingValue;
+  
+  // Menu & Navigation Settings
+  MenuLayout?: SettingValue;
+  MenuCollapsed?: SettingValue;
+  ShowMenuIcons?: SettingValue;
+  
+  // Display Settings
+  Language?: SettingValue;
+  TimeZone?: SettingValue;
+  DateFormat?: SettingValue;
+  NumberFormat?: SettingValue;
+  
+  // Notification Settings
+  EmailNotifications?: SettingValue;
+  PushNotifications?: SettingValue;
+  NotificationSound?: SettingValue;
+  
+  // Performance Settings
+  AutoRefresh?: SettingValue;
+  CacheEnabled?: SettingValue;
+  DataPageSize?: SettingValue;
+  
+  // Business Settings
+  DefaultBranch?: SettingValue;
+  DefaultWarehouse?: SettingValue;
+  DefaultCurrency?: SettingValue;
+  
+  // Additional Properties from Usage Analysis
   [key: string]: SettingValue | undefined;
 }
 
@@ -100,8 +163,20 @@ export interface Branch {
   Code: string;
   Type?: string;
   ParentId?: number;
+  IDParent?: number; // Alternative name for ParentId
   IsDisabled: boolean;
+  
+  // Branch Hierarchy
   children?: Branch[];
+  IDs?: number[]; // Array of all child branch IDs
+  Query?: string; // JSON string of IDs array
+  
+  // Branch Properties
+  ShortName?: string;
+  disabled?: boolean; // UI state for permission control
+  
+  // Additional Properties from Usage Analysis
+  [key: string]: any; // For backward compatibility
 }
 
 export interface FormPermission {
@@ -114,7 +189,23 @@ export interface FormPermission {
   IsHidden: boolean;
   IsDisabled: boolean;
   IsMobile: boolean;
+  
+  // Form Type & Hierarchy
+  Type?: number; // 0: Page, 1: Form, 2: SubForm, 10: Module Group, 11: SubGroup
+  IDParent?: number;
   children?: FormPermission[];
+  
+  // UI State Properties
+  isPinned?: boolean;
+  isShowDetail?: boolean;
+  isShowForm?: boolean;
+  
+  // Menu Control Properties
+  IsCompactMenu?: boolean;
+  IsCacheQuery?: boolean;
+  
+  // Additional Properties from Usage Analysis
+  [key: string]: any; // For backward compatibility
 }
 
 // ===== PERMISSION & ROLE INTERFACES =====
@@ -319,4 +410,35 @@ export interface IUserContextService {
   hasPermission(permission: string): Observable<boolean>;
   getCurrentSession(): Observable<UserSession | null>;
   updateSessionActivity(): void;
+}
+
+// ===== USER CONTEXT INTERFACES =====
+
+export interface UserContext {
+  user: UserProfile | null;
+  tenant: Tenant | null;
+  session: UserSession | null;
+  permissions: Permission[];
+  roles: Role[];
+  branches: Branch[];
+  selectedBranch: number | null;
+  selectedBranchAndChildren: number[] | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  lastActivity: Date;
+}
+
+export interface UserContextState {
+  user: UserProfile | null;
+  tenant: Tenant | null;
+  session: UserSession | null;
+  permissions: Permission[];
+  roles: Role[];
+  branches: Branch[];
+  selectedBranch: number | null;
+  selectedBranchAndChildren: number[] | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  lastActivity: Date;
+  error?: string;
 }

@@ -175,7 +175,7 @@ export class AccountService {
 			this.env.getStorage('UserToken'),
 			this.env.getStorage('UserProfile'), 
 			this.env.getStorage('appVersion'),
-			this.env.getStorage('selectedServer')
+			this.env.getStorage('selectedTenant')
 		]);
 
 		return {
@@ -183,7 +183,7 @@ export class AccountService {
 			userProfile,
 			appVersion,
 			lastServer,
-			currentServer: this.env.selectedServer
+								currentServer: this.env.selectedTenant
 		};
 	}
 
@@ -209,10 +209,10 @@ export class AccountService {
 			return false;
 		}
 		
-		// Server consistency check
+		// Tenant consistency check
 		if (data.lastServer && data.lastServer !== data.currentServer) {
-			dog && console.log('❌ [AccountService] Server mismatch detected');
-			// Server changed - auth data invalid
+			dog && console.log('❌ [AccountService] Tenant mismatch detected');
+			// Tenant changed - auth data invalid
 			return false;
 		}
 		

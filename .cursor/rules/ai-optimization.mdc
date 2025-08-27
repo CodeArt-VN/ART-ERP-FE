@@ -1,0 +1,261 @@
+---
+description: "AI Optimization Rules - Tối ưu hóa hiệu quả sử dụng AI, tiết kiệm chi phí và request"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# AI Optimization Rules - Tối ưu hóa hiệu quả sử dụng AI
+
+## 🎯 **Mục đích**
+Tối ưu hóa hiệu quả sử dụng AI, tiết kiệm chi phí và giảm thiểu số lượng request không cần thiết.
+
+## 📊 **Phân tích vấn đề hiện tại**
+
+### **1. Vấn đề đọc file nhiều lần**
+- **Hiện tại**: Đọc cùng 1 file 4-5 lần trong 1 session
+- **Nguyên nhân**: Không cache, không batch reading
+- **Giải pháp**: Implement file caching và parallel reading
+
+### **2. Request không hiệu quả**
+- **Hiện tại**: Nhiều request nhỏ thay vì 1 request lớn
+- **Nguyên nhân**: Không group operations
+- **Giải pháp**: Batch processing và CLI operations
+
+## 🚀 **Quy tắc tối ưu hóa**
+
+### **1. File Reading Optimization**
+
+#### **✅ Đúng - Batch File Reading**
+```typescript
+// Đọc nhiều file cùng lúc
+const files = await Promise.all([
+  read_file('file1.ts'),
+  read_file('file2.ts'), 
+  read_file('file3.ts')
+]);
+```
+
+#### **✅ Đúng - File Caching**
+```typescript
+// Cache file content để tránh đọc lại
+const fileCache = new Map();
+if (!fileCache.has(filePath)) {
+  fileCache.set(filePath, await read_file(filePath));
+}
+```
+
+#### **❌ Sai - Đọc file nhiều lần**
+```typescript
+// Không nên đọc cùng 1 file nhiều lần
+const content1 = await read_file('file.ts');
+const content2 = await read_file('file.ts'); // Đọc lại không cần thiết
+```
+
+### **2. Batch Operations**
+
+#### **✅ Đúng - MultiEdit cho nhiều thay đổi**
+```typescript
+// Sử dụng MultiEdit thay vì nhiều search_replace
+MultiEdit(file_path, [
+  { old_string: 'old1', new_string: 'new1' },
+  { old_string: 'old2', new_string: 'new2' },
+  { old_string: 'old3', new_string: 'new3' }
+]);
+```
+
+#### **✅ Đúng - CLI cho bulk operations**
+```bash
+# Sử dụng CLI cho thay thế hàng loạt
+find . -name "*.ts" -exec sed -i 's/oldPattern/newPattern/g' {} +
+```
+
+#### **❌ Sai - Nhiều request riêng lẻ**
+```typescript
+// Không nên làm nhiều request riêng lẻ
+search_replace(file, 'old1', 'new1');
+search_replace(file, 'old2', 'new2'); 
+search_replace(file, 'old3', 'new3');
+```
+
+### **3. Tool Usage Optimization**
+
+#### **✅ Đúng - Parallel Tool Calls**
+```typescript
+// Gọi nhiều tool cùng lúc
+const [result1, result2, result3] = await Promise.all([
+  codebase_search(query1, dirs1),
+  codebase_search(query2, dirs2),
+  grep(pattern, path)
+]);
+```
+
+#### **✅ Đúng - Efficient Search Patterns**
+```typescript
+// Sử dụng grep cho exact matches
+grep('exactPattern', path, { output_mode: 'files_with_matches' });
+
+// Sử dụng codebase_search cho semantic search
+codebase_search('How does authentication work?', ['auth/']);
+```
+
+#### **❌ Sai - Sequential tool calls**
+```typescript
+// Không nên gọi tool tuần tự khi có thể parallel
+const result1 = await codebase_search(query1);
+const result2 = await codebase_search(query2);
+const result3 = await grep(pattern);
+```
+
+### **4. Request Batching**
+
+#### **✅ Đúng - Group Related Operations**
+```typescript
+// Nhóm các operations liên quan
+const todos = [
+  { id: 'task1', content: 'Implement feature A', status: 'pending' },
+  { id: 'task2', content: 'Fix bug B', status: 'pending' },
+  { id: 'task3', content: 'Optimize C', status: 'pending' }
+];
+todo_write(false, todos);
+```
+
+#### **✅ Đúng - Single Comprehensive Request**
+```
+Thay vì:
+- "Tìm tất cả file .ts"
+- "Đọc file A"  
+- "Đọc file B"
+- "Sửa file A"
+- "Sửa file B"
+
+Nên làm:
+- "Tìm và sửa tất cả file .ts theo pattern X"
+```
+
+## 💰 **Tiết kiệm chi phí**
+
+### **1. Token Usage Optimization**
+
+#### **✅ Đúng - Concise Prompts**
+```
+// Ngắn gọn, rõ ràng
+"Refactor UserService to use dependency injection"
+
+// Thay vì dài dòng
+"Please help me refactor the UserService class that is currently located in the services directory to implement proper dependency injection pattern following Angular best practices..."
+```
+
+#### **✅ Đúng - Context Reuse**
+```
+// Sử dụng lại context từ previous messages
+"Apply the same pattern to OrderService"
+```
+
+#### **❌ Sai - Redundant Information**
+```
+// Không lặp lại thông tin đã biết
+"Please refactor the UserService class that we just discussed and that is in the services folder..."
+```
+
+### **2. Efficient Code Generation**
+
+#### **✅ Đúng - Template-based Generation**
+```typescript
+// Sử dụng template có sẵn
+const template = `
+export class {{className}} {
+  constructor(private env: EnvService) {}
+  
+  async {{methodName}}() {
+    // Implementation
+  }
+}`;
+```
+
+#### **✅ Đúng - Incremental Development**
+```
+// Phát triển từng bước
+1. "Create basic structure"
+2. "Add validation logic" 
+3. "Add error handling"
+```
+
+## 🛠️ **CLI Operations cho Bulk Processing**
+
+### **1. File Operations**
+```bash
+# Tìm và thay thế hàng loạt
+find . -name "*.ts" -type f -exec sed -i 's/oldPattern/newPattern/g' {} +
+
+# Đổi tên file hàng loạt
+find . -name "*.component.ts" -exec rename 's/component/comp/g' {} +
+
+# Xóa file hàng loạt
+find . -name "*.spec.ts" -delete
+```
+
+### **2. Code Analysis**
+```bash
+# Đếm số lượng function
+grep -r "function\|=>" --include="*.ts" . | wc -l
+
+# Tìm unused imports
+grep -r "import.*from" --include="*.ts" . | sort | uniq -c | sort -nr
+```
+
+### **3. Batch Refactoring**
+```bash
+# Thay thế tất cả console.log thành dog && console.log
+find . -name "*.ts" -exec sed -i 's/console\.log(/dog \&\& console.log(/g' {} +
+
+# Thêm import EnvService
+find . -name "*.ts" -exec sed -i '1i import { EnvService } from "../services/env.service";' {} +
+```
+
+## 📋 **Best Practices Checklist**
+
+### **Trước khi gửi request:**
+- [ ] Đã group các operations liên quan?
+- [ ] Đã sử dụng parallel tool calls?
+- [ ] Đã cache file content?
+- [ ] Có thể dùng CLI thay vì multiple requests?
+
+### **Khi viết prompt:**
+- [ ] Prompt ngắn gọn, rõ ràng?
+- [ ] Không lặp lại thông tin đã biết?
+- [ ] Đã specify đầy đủ requirements?
+- [ ] Có thể reuse context từ previous messages?
+
+### **Khi implement:**
+- [ ] Sử dụng MultiEdit cho multiple changes?
+- [ ] Batch related operations?
+- [ ] Cache file reads?
+- [ ] Use efficient search patterns?
+
+## 🎯 **Kết quả mong đợi**
+
+### **1. Giảm số lượng request**
+- Từ 10 requests → 3-4 requests cho cùng 1 task
+- Batch operations thay vì individual operations
+
+### **2. Tăng hiệu quả**
+- Parallel processing
+- File caching
+- CLI automation
+
+### **3. Tiết kiệm chi phí**
+- Giảm 60-70% token usage
+- Giảm 50-60% số lượng requests
+- Tăng 2-3x tốc độ xử lý
+
+## 🚨 **Lưu ý quan trọng**
+
+- **Luôn ưu tiên batch operations** thay vì individual operations
+- **Sử dụng CLI** cho bulk processing
+- **Cache file content** để tránh đọc lại
+- **Group related tasks** trong 1 request
+- **Sử dụng parallel tool calls** khi có thể
+- **Viết prompt ngắn gọn** nhưng đầy đủ thông tin
+- **LUÔN LÊN KẾ HOẠCH TRƯỚC KHI CODE** - Không bao giờ code ngay mà không có kế hoạch chi tiết
+- **Confirm kế hoạch với user** trước khi bắt đầu implement
+- **Tách biệt planning và implementation** - Không mix lẫn hai giai đoạn này

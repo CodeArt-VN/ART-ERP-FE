@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
 import { AccountService } from '../services/account.service';
+import { dog } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,6 +16,7 @@ export class AuthGuard implements CanActivate {
 	) {}
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+		dog && console.log('🔒 [AuthGuard] canActivate');
 		return new Promise<boolean>((resolve) => {
 			if (!this.env.isloaded) {
 				this.accountService

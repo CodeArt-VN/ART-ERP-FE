@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
@@ -41,6 +41,8 @@ import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-comp
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DynamicTranslateLoaderService } from './services/core/dynamic-translate-loader.service';
+import { StorageService } from './services/core/storage.service';
+import { EnvService } from './services/core/env.service';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
@@ -51,6 +53,22 @@ import { environment } from 'src/environments/environment';
 export function createTranslateLoader(http: HttpClient): DynamicTranslateLoaderService {
 	console.log('Creating Dynamic Translate Loader');
 	return new DynamicTranslateLoaderService(http);
+}
+
+// Factory function for APP_INITIALIZER - Storage initialization
+export function initializeStorage(storageService: StorageService) {
+	return () => {
+		console.log('🚀 [APP_INITIALIZER] Initializing storage...');
+		return storageService.init();
+	};
+}
+
+// Factory function for APP_INITIALIZER - Environment initialization
+export function initializeEnvironment(envService: EnvService) {
+	return () => {
+		console.log('🚀 [APP_INITIALIZER] Initializing environment...');
+		return envService.initialize();
+	};
 }
 
 @NgModule({
@@ -124,6 +142,22 @@ export function createTranslateLoader(http: HttpClient): DynamicTranslateLoaderS
 		//{ provide: LocationStrategy, useClass: HashLocationStrategy },
 		{ provide: APP_BASE_HREF, useValue: `/` },
 		provideHttpClient(withInterceptorsFromDi(), withJsonpSupport()),
+		
+		// // APP_INITIALIZER - Initialize storage first
+		// {
+		// 	provide: APP_INITIALIZER,
+		// 	useFactory: initializeStorage,
+		// 	deps: [StorageService],
+		// 	multi: true
+		// },
+		
+		// APP_INITIALIZER - Then initialize environment
+		{
+			provide: APP_INITIALIZER,
+			useFactory: initializeEnvironment,
+			deps: [EnvService],
+			multi: true
+		},
 	],
 })
 export class AppModule {}

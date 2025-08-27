@@ -23,12 +23,12 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
       return this.loadFromAssets(lang);
     }
 
-    // For web, always load from current server
+    // For web, always load from current tenant
     if (environment.languageStrategy?.networkFirst) {
-      console.log(`Loading language from current server: ${environment.appDomain}`);
-      return this.loadFromServer(environment.appDomain, lang).pipe(
+      console.log(`Loading language from current tenant: ${environment.appDomain}`);
+      return this.loadFromTenant(environment.appDomain, lang).pipe(
         catchError(error => {
-          console.warn(`Failed to load from current server, falling back to assets:`, error);
+          console.warn(`Failed to load from current tenant, falling back to assets:`, error);
           return this.loadFromAssets(lang);
         })
       );
@@ -38,40 +38,7 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
     return this.loadFromAssets(lang);
   }
 
-  private loadFromCurrentServer(lang: string): Observable<any> {
-    // Use current environment.appDomain directly (no server waiting)
-    console.log(`Loading language from current server: ${environment.appDomain}`);
-    return this.loadFromServer(environment.appDomain, lang).pipe(
-      catchError(error => {
-        console.warn(`Failed to load from current server, falling back to assets:`, error);
-        return this.loadFromAssets(lang);
-      })
-    );
-  }
-
-  private loadWithFallbackChain(lang: string, serverUrl?: string): Observable<any> {
-    // Use provided server or try to get from storage
-    let currentServer = serverUrl;
-    if (!currentServer) {
-      currentServer = localStorage.getItem('selectedServer');
-    }
-    
-    if (currentServer) {
-      console.log(`Loading language from selected server: ${currentServer}`);
-      return this.loadFromServer(currentServer, lang).pipe(
-        catchError(error => {
-          console.warn('Failed to load from selected server, trying appDomain:', error);
-          return this.loadFromAppDomain(lang);
-        })
-      );
-    }
-
-    // No server selected, try appDomain
-    console.log('No server selected, trying appDomain');
-    return this.loadFromAppDomain(lang);
-  }
-
-  private loadFromServer(serverUrl: string, lang: string): Observable<any> {
+  private loadFromTenant(serverUrl: string, lang: string): Observable<any> {
     try {
       const url = new URL(serverUrl);
       const endpoint = `${url.origin}/uploads/i18n/${lang}.json`;
@@ -79,33 +46,14 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
       return this.http.get(endpoint).pipe(
           timeout(3000),
           catchError(error => {
-            console.warn(`Failed to load language from server ${serverUrl}:`, error);
+            console.warn(`Failed to load language from tenant ${serverUrl}:`, error);
             return throwError(() => error);
           })
         );
     } catch (error) {
-      console.warn(`Invalid server URL: ${serverUrl}`, error);
+      console.warn(`Invalid tenant URL: ${serverUrl}`, error);
       return throwError(() => error);
     }
-  }
-
-  private loadFromAppDomain(lang: string): Observable<any> {
-    if (!environment.appDomain) {
-      console.warn('No appDomain configured, falling back to assets');
-      return this.loadFromAssets(lang);
-    }
-
-    const endpoint = `${environment.appDomain}uploads/i18n/${lang}.json`;
-    console.log(`Loading language from appDomain: ${endpoint}`);
-    
-    return this.http.get(endpoint).pipe(
-      timeout(environment.languageStrategy?.cacheTimeout || 10000),
-      retry(environment.languageStrategy?.retryAttempts || 2),
-      catchError(error => {
-        console.warn('Failed to load from appDomain, falling back to assets:', error);
-        return this.loadFromAssets(lang);
-      })
-    );
   }
 
   private loadFromAssets(lang: string): Observable<any> {
@@ -121,9 +69,4 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
     );
   }
 
-  // Method to reload translations when server changes
-  reloadTranslation(lang: string): Observable<any> {
-    console.log(`Reloading translation for ${lang} after server change`);
-    return this.getTranslation(lang);
-  }
 }

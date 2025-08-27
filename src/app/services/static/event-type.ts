@@ -4,8 +4,14 @@
  */
 
 export const EVENT_TYPE = {
-  // ===== USER AUTHENTICATION EVENTS =====
-  	USER: {
+	// ===== TENANT & BRANCH EVENTS =====
+	TENANT: {
+		SWITCHED: 'tenant:switched',
+		BRANCH_SWITCHED: 'branch:switched',
+	},
+
+	// ===== USER AUTHENTICATION EVENTS =====
+	USER: {
 		CONTEXT_UPDATED: 'user:contextUpdated',
 		LOGIN_FAILED: 'user:loginFailed',
 		LOGGED_OUT_REMOTE: 'user:loggedOutRemote',
@@ -18,70 +24,62 @@ export const EVENT_TYPE = {
 		PROFILE_UPDATED: 'user:profileUpdated',
 		PERMISSIONS_UPDATED: 'user:permissionsUpdated',
 		ROLES_UPDATED: 'user:rolesUpdated',
-		LOGOUT_REQUESTED: 'user:logoutRequested'
+		LOGOUT_REQUESTED: 'user:logoutRequested',
 	},
 
-  // ===== TENANT & BRANCH EVENTS =====
-  TENANT: {
-    SWITCHED: 'tenant:switched',
-    BRANCH_SWITCHED: 'branch:switched'
-  },
+	// ===== APPLICATION EVENTS =====
+	APP: {
+		ENVIRONMENT_READY: 'app:environmentReady',
+		UPDATED_USER: 'app:updatedUser',
+		LOADED_LOCAL_DATA: 'app:loadedLocalData',
+		LOGOUT: 'app:logout',
+		CHANGE_LANGUAGE: 'app:changeLanguage',
+		FORCE_UPDATE: 'app:ForceUpdate',
+		CONNECT_FAIL: 'app:ConnectFail',
+		SHOW_APP_MESSAGE: 'app:ShowAppMessage',
+		SHOW_MENU: 'app:ShowMenu',
+		SHOW_HELP: 'app:ShowHelp',
+		NOTIFICATION: 'app:notification',
+		VIEW_DID_ENTER: 'app:ViewDidEnter',
+		AUTO_CALCULATE_LINK: 'app:autoCalculateLink',
+		CLOSE_POP_LIST_TOOLBAR: 'app:closePopListToolBar',
+		NETWORK_STATUS_CHANGE: 'app:networkStatusChange',
+	},
 
-  // ===== APPLICATION EVENTS =====
-  APP: {
-    UPDATED_USER: 'app:updatedUser',
-    LOADED_LOCAL_DATA: 'app:loadedLocalData',
-    LOGOUT: 'app:logout',
-    CHANGE_LANGUAGE: 'app:changeLanguage',
-    SERVER_CHANGED: 'app:serverChanged',
-    FORCE_UPDATE: 'app:ForceUpdate',
-    CONNECT_FAIL: 'app:ConnectFail',
-    SHOW_APP_MESSAGE: 'app:ShowAppMessage',
-    SHOW_MENU: 'app:ShowMenu',
-    SHOW_HELP: 'app:ShowHelp',
-    CHANGE_THEME: 'app:ChangeTheme',
-    SILENT_LOGOUT: 'app:silentlogout',
-    NOTIFICATION: 'app:notification',
-    VIEW_DID_ENTER: 'app:ViewDidEnter',
-    AUTO_CALCULATE_LINK: 'app:autoCalculateLink',
-    CLOSE_POP_LIST_TOOLBAR: 'app:closePopListToolBar',
-    NETWORK_STATUS_CHANGE: 'app:networkStatusChange'
-  },
+	// ===== AUTHENTICATION EVENTS =====
+	AUTH: {
+		LOGOUT: 'auth:logout',
+	},
 
-  // ===== AUTHENTICATION EVENTS =====
-  AUTH: {
-    LOGOUT: 'auth:logout'
-  },
+	// ===== POS EVENTS =====
+	POS: {
+		ORDER_PAYMENT_UPDATE: 'app:POSOrderPaymentUpdate',
+		ORDER_FROM_CUSTOMER: 'app:POSOrderFromCustomer',
+		ORDER_FROM_STAFF: 'app:POSOrderFromStaff',
+		SUPPORT: 'app:POSSupport',
+		CALL_TO_PAY: 'app:POSCallToPay',
+		LOCK_ORDER_FROM_STAFF: 'app:POSLockOrderFromStaff',
+		LOCK_ORDER_FROM_CUSTOMER: 'app:POSLockOrderFromCustomer',
+		UNLOCK_ORDER_FROM_STAFF: 'app:POSUnlockOrderFromStaff',
+		UNLOCK_ORDER_FROM_CUSTOMER: 'app:POSUnlockOrderFromCustomer',
+		LOCK_ORDER: 'app:POSLockOrder',
+		UNLOCK_ORDER: 'app:POSUnlockOrder',
+		ORDER_SPLITTED: 'app:POSOrderSplittedFromStaff',
+		ORDER_MERGED: 'app:POSOrderMergedFromStaff',
+		NOTIFY_SPLITTED_ORDER_FROM_STAFF: 'app:notifySplittedOrderFromStaff',
+	},
 
-  // ===== POS EVENTS =====
-  POS: {
-    ORDER_PAYMENT_UPDATE: 'app:POSOrderPaymentUpdate',
-    ORDER_FROM_CUSTOMER: 'app:POSOrderFromCustomer',
-    ORDER_FROM_STAFF: 'app:POSOrderFromStaff',
-    SUPPORT: 'app:POSSupport',
-    CALL_TO_PAY: 'app:POSCallToPay',
-    LOCK_ORDER_FROM_STAFF: 'app:POSLockOrderFromStaff',
-    LOCK_ORDER_FROM_CUSTOMER: 'app:POSLockOrderFromCustomer',
-    UNLOCK_ORDER_FROM_STAFF: 'app:POSUnlockOrderFromStaff',
-    UNLOCK_ORDER_FROM_CUSTOMER: 'app:POSUnlockOrderFromCustomer',
-    LOCK_ORDER: 'app:POSLockOrder',
-    UNLOCK_ORDER: 'app:POSUnlockOrder',
-    ORDER_SPLITTED: 'app:POSOrderSplittedFromStaff',
-    ORDER_MERGED: 'app:POSOrderMergedFromStaff',
-    NOTIFY_SPLITTED_ORDER_FROM_STAFF: 'app:notifySplittedOrderFromStaff'
-  },
+	// ===== SALE ORDER EVENTS =====
+	SALE: {
+		PAYMENT_UPDATE: 'app:SOPaymentUpdate',
+		ORDERS_UPDATED: 'app:update-sale-order-mobile',
+	},
 
-  // ===== SALE ORDER EVENTS =====
-  SALE: {
-    PAYMENT_UPDATE: 'app:SOPaymentUpdate',
-    ORDERS_UPDATED: 'app:update-sale-order-mobile'
-  },
-
-  // ===== SYSTEM EVENTS =====
-  SYSTEM: {
-    MESSAGE: 'SystemMessage',
-    ALERT: 'SystemAlert',
-    RELOAD: 'AppReload',
-    RELOAD_OLD_VERSION: 'AppReloadOldVersion'
-  }
+	// ===== SYSTEM EVENTS =====
+	SYSTEM: {
+		MESSAGE: 'SystemMessage',
+		ALERT: 'SystemAlert',
+		RELOAD: 'AppReload',
+		RELOAD_OLD_VERSION: 'AppReloadOldVersion',
+	},
 };

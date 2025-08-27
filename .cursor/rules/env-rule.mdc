@@ -187,7 +187,3 @@ async getTranslatedText() {
 - Luôn kiểm tra EnvService trước khi implement chức năng mới
 - Nếu cần chức năng mới, hãy thêm vào EnvService thay vì tạo service riêng
 - Tuân thủ quy tắc console logging: sử dụng `dog && console.log()` cho dev logs
-description:
-globs:
-alwaysApply: false
----

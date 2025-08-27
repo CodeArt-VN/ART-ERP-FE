@@ -86,7 +86,7 @@ export class PrintingService {
 				})
 				.catch((err) => {
 					reject(err);
-					this.env.showMessage('Cannot connect to printing server!', 'danger');
+					this.env.showMessage('Cannot connect to printing service!', 'danger');
 				});
 		});
 	}
@@ -161,7 +161,7 @@ export class PrintingService {
 			const serverPromises = [];
 			
 			for (const [serverKey, printerGroups] of serverGroups) {
-				console.log(`Processing server: ${serverKey} with ${printerGroups.size} printers`);
+				console.log(`Processing printing service: ${serverKey} with ${printerGroups.size} printers`);
 				
 				// Process all printers in this server sequentially to avoid conflicts
 				const serverPromise = (async () => {

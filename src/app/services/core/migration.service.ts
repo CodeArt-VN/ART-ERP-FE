@@ -25,7 +25,7 @@ export class MigrationService {
     }
 
     const storedVersion = await this.env.getStorage('appVersion');
-    const storedServer = await this.env.getStorage('selectedServer');
+    const storedServer = await this.env.getStorage('selectedTenant');
     const currentServer = await this.getCurrentServer();
     
     const result: MigrationResult = {
@@ -63,17 +63,17 @@ export class MigrationService {
         }
       }
 
-      // Server change detection  
+      // Tenant change detection  
       if (storedServer && storedServer !== currentServer) {
         result.serverChanged = true;
         await this.clearCacheKeys(environment.cacheKeysToClearOnServerChange);
         result.clearedKeys.push(...environment.cacheKeysToClearOnServerChange);
         
         // Update stored server
-        await this.env.setStorage('selectedServer', currentServer);
+        await this.env.setStorage('selectedTenant', currentServer);
         
         if (environment.migrationSettings.enableLogging) {
-          console.log('Server migration completed:', {
+          console.log('Tenant migration completed:', {
             from: storedServer,
             to: currentServer,
             clearedKeys: environment.cacheKeysToClearOnServerChange
@@ -82,7 +82,7 @@ export class MigrationService {
       }
 
       if (environment.migrationSettings.enableLogging && !result.versionChanged && !result.serverChanged) {
-        console.log('No migration needed - versions and servers match');
+        		console.log('No migration needed - versions and tenants match');
       }
 
     } catch (error) {
@@ -204,7 +204,7 @@ export class MigrationService {
    */
   async getMigrationStatus(): Promise<MigrationStatus> {
     const storedVersion = await this.env.getStorage('appVersion');
-    const storedServer = await this.env.getStorage('selectedServer');
+    const storedServer = await this.env.getStorage('selectedTenant');
     const currentServer = environment.appDomain;
     
     return {
