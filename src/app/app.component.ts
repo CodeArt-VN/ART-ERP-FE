@@ -310,6 +310,7 @@ export class AppComponent implements OnInit {
 					this.appMessageManage(data);
 					break;
 				case EVENT_TYPE.APP.SHOW_MENU:
+					dog && console.log('🔄 [AppComponent] SHOW_MENU:', data.Value);
 					this.ui.showAppMenu = data.Value;
 					break;
 				case EVENT_TYPE.APP.SHOW_HELP:

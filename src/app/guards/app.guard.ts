@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
-import { AccountService } from '../services/account.service';
+import { UserContextService } from '../services/auth/user-context.service';
 import { dog } from 'src/environments/environment';
 
 @Injectable({
@@ -12,33 +12,15 @@ export class AuthGuard implements CanActivate {
 	constructor(
 		public router: Router,
 		public env: EnvService,
-		public accountService: AccountService
+		public userContextService: UserContextService
 	) {}
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 		dog && console.log('🔒 [AuthGuard] canActivate');
 		return new Promise<boolean>((resolve) => {
-			if (!this.env.isloaded) {
-				this.accountService
-					.validateStoredAuth()
-					.then((_) => {
-						return this.checkCanUse(next, state).then((result) => {
-							resolve(result);
-						});
-					})
-					.catch((err) => {
-						this.accountService.commonService.checkError(err);
-						// If validation fails, redirect to login
-						this.router.navigate(['/login'], {
-							queryParams: { returnUrl: state.url },
-						});
-						resolve(false);
-					});
-			} else {
-				return this.checkCanUse(next, state).then((result) => {
-					resolve(result);
-				});
-			}
+			this.checkCanUse(next, state).then((result) => {
+				resolve(result);
+			});
 		});
 	}
 
@@ -59,7 +41,8 @@ export class AuthGuard implements CanActivate {
 						} else {
 							// not logged in so redirect to login page with the return url
 							this.env.showMessage('You are not authorized to access here, please contact Admin to get authorisation', 'warning');
-							this.accountService.logout().then((_) => {
+							// Handle logout without accountService
+							this.env.clearStorage().then((_) => {
 								this.router.navigate(['/login'], {
 									queryParams: { returnUrl: state.url },
 								});

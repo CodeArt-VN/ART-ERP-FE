@@ -357,61 +357,6 @@ export interface AuthState {
   lastActivity?: Date;
 }
 
-// ===== METHOD SIGNATURES =====
-
-export interface IAuthenticationService {
-  login(credentials: LoginCredentials): Promise<AuthResult>;
-  logout(): Promise<void>;
-  refreshToken(): Promise<TokenResponse>;
-  validateToken(token: string): boolean;
-  getAuthHeaders(): HttpHeaders;
-  isAuthenticated(): boolean;
-  getCurrentToken(): string | null;
-  setToken(token: TokenResponse): Promise<void>;
-  getAuthState(): Observable<AuthState>;
-}
-
-export interface IExternalAuthService {
-  loginWithGoogle(): Promise<AuthResult>;
-  loginWithFacebook(): Promise<AuthResult>;
-  loginWithMicrosoft(): Promise<AuthResult>;
-  loginWithApple(): Promise<AuthResult>;
-  handleOAuthCallback(provider: string, code: string): Promise<AuthResult>;
-  unlinkProvider(provider: string): Promise<void>;
-  getLinkedProviders(): Promise<string[]>;
-}
-
-export interface ISecurityGatewayService {
-  validateRequest(request: HttpRequest<any>): Promise<boolean>;
-  enforceSecurityPolicies(context: SecurityContext): Promise<void>;
-  detectThreats(request: HttpRequest<any>): Promise<ThreatLevel>;
-  blockMaliciousRequest(request: HttpRequest<any>): void;
-  logSecurityEvent(event: SecurityEvent): void;
-  encryptSensitiveData(data: any): string;
-  decryptSensitiveData(encryptedData: string): any;
-}
-
-export interface IUserProfileService {
-  getProfile(forceReload?: boolean): Promise<UserProfile | null>;
-  updateProfile(profile: Partial<UserProfile>): Promise<UserProfile>;
-  getUserSettings(): Promise<UserSettings>;
-  updateUserSettings(settings: Partial<UserSettings>): Promise<void>;
-  getUserPermissions(): Promise<Permission[]>;
-  hasPermission(permission: string): Promise<boolean>;
-  getUserRoles(): Promise<Role[]>;
-}
-
-export interface IUserContextService {
-  setCurrentUser(user: UserProfile): void;
-  getCurrentUser(): Observable<UserProfile | null>;
-  getUserTenant(): Observable<Tenant | null>;
-  switchTenant(tenantId: string): Promise<void>;
-  getUserRoles(): Observable<Role[]>;
-  hasPermission(permission: string): Observable<boolean>;
-  getCurrentSession(): Observable<UserSession | null>;
-  updateSessionActivity(): void;
-}
-
 // ===== USER CONTEXT INTERFACES =====
 
 export interface UserContext {

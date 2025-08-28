@@ -7,7 +7,6 @@ import { Injectable } from '@angular/core';
 import { HttpRequest } from '@angular/common/http';
 
 import {
-  ISecurityGatewayService,
   SecurityContext,
   ThreatLevel,
   SecurityEvent,
@@ -19,7 +18,7 @@ import { dog } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SecurityGatewayService implements ISecurityGatewayService {
+export class SecurityGatewayService  {
 
   private securityEvents: SecurityEvent[] = [];
   private blockedRequests: Set<string> = new Set();

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
-import { AccountService } from 'src/app/services/account.service';
+import { UserProfileService } from 'src/app/services/auth/user-profile.service';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { CompareValidator } from 'src/app/services/core/validators';
@@ -32,7 +32,7 @@ export class ProfilePage extends PageBase {
 
 	constructor(
 		public pageProvider: HRM_StaffProvider,
-		public accountProvider: AccountService,
+		public profileService: UserProfileService,
 		public userProvider: ACCOUNT_ApplicationUserProvider,
 		public userSettingProvider: SYS_UserSettingProvider,
 		public userDeviceProvider: SYS_UserDeviceProvider,
@@ -184,8 +184,8 @@ export class ProfilePage extends PageBase {
 
 			this.submitAttempt = false;
 			this.env.user.UserSetting = this.userSetting;
-			this.accountProvider.setProfile(this.env.user).then(() => {
-				this.accountProvider.loadSavedProfile();
+			this.profileService.setProfile(this.env.user).then(() => {
+				// Profile already updated in setProfile method
 			});
 		});
 	}

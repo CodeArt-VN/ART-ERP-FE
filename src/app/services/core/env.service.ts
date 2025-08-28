@@ -187,6 +187,9 @@ export class EnvService {
 			// Notify UI that environment is ready
 			this.publishEvent({ Code: EVENT_TYPE.APP.ENVIRONMENT_READY, Value: null });
 
+			// Setup analytics after environment is ready
+			this.setupAnalytics();
+
 			dog && console.log('✅ [EnvService] Environment initialization completed successfully');
 		} catch (error) {
 			dog && console.error('❌ [EnvService] Environment initialization failed:', error);
@@ -200,6 +203,7 @@ export class EnvService {
 	private async loadEnvironmentConfig(): Promise<void> {
 		dog && console.log('📋 [EnvService] Loading environment configuration...');
 		await this.loadSelectedTenant();
+		await this.checkVersion();
 	}
 
 	private async initializeCoreServices(): Promise<void> {
@@ -1076,5 +1080,65 @@ export class EnvService {
 		this.trackOnline().subscribe((isOnline) => {
 			this.networkInfo.isOnline = isOnline;
 		});
+	}
+
+	/**
+	 * Check application version
+	 * Migrated from AccountService.checkVersion()
+	 */
+	private async checkVersion(): Promise<string> {
+		dog && console.log('📋 [EnvService] Checking application version...');
+		
+		try {
+			// Just return the current version
+			// Migration is now handled by MigrationService
+			const currentVersion = this.version;
+			dog && console.log('✅ [EnvService] Version check completed:', currentVersion);
+			return currentVersion;
+		} catch (error) {
+			dog && console.error('❌ [EnvService] Version check failed:', error);
+			return this.version;
+		}
+	}
+
+	/**
+	 * Setup analytics for the user
+	 * Migrated from AccountService.setupAnalytics()
+	 */
+	private setupAnalytics(): void {
+		dog && console.log('📊 [EnvService] Setting up analytics...');
+		
+		if (this.user) {
+			try {
+				const woopraId = {
+					id: this.user.Id,
+					email: this.user.Email,
+					name: this.user.FullName,
+					avatar: this.user.Avatar,
+				};
+
+				dog && console.log('🆔 [EnvService] Woopra ID configured:', woopraId);
+
+				// Setup Woopra tracking with retry mechanism
+				let woopraInterval: any = setInterval(() => {
+					if ((window as any)?.woopra) {
+						dog && console.log('📈 [EnvService] Woopra identified');
+						(window as any).woopra.identify(woopraId);
+						(window as any).woopra.push();
+						
+						if (woopraInterval) {
+							clearInterval(woopraInterval);
+							woopraInterval = null;
+						}
+						
+						dog && console.log('✅ [EnvService] Analytics setup completed');
+					}
+				}, 3000);
+			} catch (error) {
+				dog && console.error('❌ [EnvService] Analytics setup failed:', error);
+			}
+		} else {
+			dog && console.log('🚫 [EnvService] No user available for analytics setup');
+		}
 	}
 }

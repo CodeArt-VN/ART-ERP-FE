@@ -13,12 +13,12 @@ import { GlobalData, APIList } from '../static/global-variable';
 import { environment, dog } from '../../../environments/environment';
 import { EVENT_TYPE } from '../static/event-type';
 
-import { IAuthenticationService, AuthResult, TokenResponse, LoginCredentials, DeviceInfo, UserProfile, AuthState } from '../interfaces/auth.interfaces';
+import { AuthResult, TokenResponse, LoginCredentials, DeviceInfo, UserProfile, AuthState } from '../interfaces/auth.interfaces';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class AuthenticationService implements IAuthenticationService {
+export class AuthenticationService  {
 	private authState$ = new BehaviorSubject<AuthState>({
 		isAuthenticated: false,
 		isLoading: false,
@@ -327,30 +327,6 @@ export class AuthenticationService implements IAuthenticationService {
 		} catch (error) {
 			dog && console.error('Error getting current token:', error);
 			return null;
-		}
-	}
-
-	/**
-	 * Set JWT token securely
-	 */
-	async setToken(token: TokenResponse): Promise<void> {
-		try {
-			if (token) {
-				GlobalData.Token = token;
-			} else {
-				GlobalData.Token = {
-					access_token: 'no token',
-					expires_in: 0,
-					token_type: '',
-					refresh_token: 'no token',
-				};
-			}
-
-			// Store in secure storage
-			await this.env.setStorage('UserToken', GlobalData.Token);
-		} catch (error) {
-			dog && console.error('Error setting token:', error);
-			throw error;
 		}
 	}
 
@@ -753,5 +729,94 @@ export class AuthenticationService implements IAuthenticationService {
 		this.env.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED, data: authResult });
 
 		return authResult;
+	}
+
+	/**
+	 * Set token in storage and global data
+	 * Migrated from AccountService.setToken()
+	 */
+	async setToken(token: any): Promise<void> {
+		dog &&
+			console.log('🔐 [AuthenticationService] Setting token:', {
+				hasToken: !!token,
+				tokenType: token?.token_type,
+			});
+
+		try {
+			if (token != null) {
+				GlobalData.Token = token;
+			} else {
+				GlobalData.Token = {
+					access_token: 'no token',
+					expires_in: 0,
+					token_type: '',
+					refresh_token: 'no token',
+				};
+			}
+
+			await this.env.setStorage('UserToken', GlobalData.Token);
+			dog && console.log('✅ [AuthenticationService] Token saved to storage');
+		} catch (error) {
+			dog && console.error('❌ [AuthenticationService] Error setting token:', error);
+			throw error;
+		}
+	}
+
+	/**
+	 * Get token from storage with validation
+	 * Migrated from AccountService.getToken()
+	 */
+	async getToken(): Promise<any> {
+		dog && console.log('🔍 [AuthenticationService] Getting token from storage...');
+
+		try {
+			const token = await this.env.getStorage('UserToken');
+
+			if (token) {
+				const expires = new Date(token['.expires']);
+				const currentDate = new Date();
+				currentDate.setDate(currentDate.getDate() + 2); // 2 days buffer
+
+				if (expires > currentDate) {
+					GlobalData.Token = token;
+					dog && console.log('✅ [AuthenticationService] Valid token found');
+					return token;
+				} else {
+					dog && console.log('⚠️ [AuthenticationService] Token expired, clearing');
+					GlobalData.Token = null;
+				}
+			} else {
+				dog && console.log('🚫 [AuthenticationService] No token found');
+				GlobalData.Token = null;
+			}
+
+			return GlobalData.Token;
+		} catch (error) {
+			dog && console.error('❌ [AuthenticationService] Error getting token:', error);
+			return null;
+		}
+	}
+
+	/**
+	 * Clear authentication data
+	 * Migrated from AccountService.clearAuthData()
+	 */
+	async clearAuthData(): Promise<void> {
+		dog && console.log('🧹 [AuthenticationService] Clearing authentication data...');
+
+		// Clear sensitive storage
+		await Promise.all([this.env.storage.remove('UserToken'), this.env.storage.remove('UserProfile')]);
+
+		// Update auth state
+		this.updateAuthState({
+			isAuthenticated: false,
+			isLoading: false,
+			token: undefined,
+			user: undefined,
+			error: undefined,
+			lastActivity: new Date(),
+		});
+
+		dog && console.log('✅ [AuthenticationService] Auth data cleared');
 	}
 }

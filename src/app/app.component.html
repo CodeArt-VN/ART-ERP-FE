@@ -112,7 +112,11 @@
 							<div class="menu-item menu-module clickable" (click)="toogleMenuGroup(f)" *ngIf="f.Type == 10 && f.Code != 'NoGroup' && shouldShowMenuControls">
 								<span class="menu-title">{{ f.Name | translate }}</span>
 								<ion-text class="menu-icon badge" [color]="f.BadgeColor" *ngIf="!f.isShowDetail && f.BadgeNum">{{ f.BadgeNum }}</ion-text>
-								<ion-icon *ngIf="shouldShowMenuControls" class="menu-icon pin" [name]="f.isShowDetail ? 'chevron-down-outline' : 'chevron-forward-outline'"></ion-icon>
+								<ion-icon
+									*ngIf="shouldShowMenuControls"
+									class="menu-icon pin"
+									[name]="f.isShowDetail ? 'chevron-down-outline' : 'chevron-forward-outline'"
+								></ion-icon>
 							</div>
 
 							<div
@@ -122,7 +126,11 @@
 							>
 								<span class="menu-title">{{ f.Name | translate }}</span>
 								<ion-text class="menu-icon badge" [color]="f.BadgeColor" *ngIf="!f.isShowForm && f.BadgeNum">{{ f.BadgeNum }}</ion-text>
-								<ion-icon *ngIf="shouldShowMenuControls" class="menu-icon pin" [name]="f.isShowForm ? 'chevron-down-outline' : 'chevron-forward-outline'"></ion-icon>
+								<ion-icon
+									*ngIf="shouldShowMenuControls"
+									class="menu-icon pin"
+									[name]="f.isShowForm ? 'chevron-down-outline' : 'chevron-forward-outline'"
+								></ion-icon>
 							</div>
 
 							<a
@@ -190,7 +198,7 @@
 								<ion-item lines="full" button detail="true" [routerLink]="['/notifications']">
 									<ion-icon color="warning" name="notifications" slot="start"></ion-icon>
 									<ion-label>{{ 'Notifications' | translate }}</ion-label>
-									<ion-badge color="danger" slot="end">{{ui.totalNotifications}}</ion-badge>
+									<ion-badge color="danger" slot="end">{{ ui.totalNotifications }}</ion-badge>
 								</ion-item>
 
 								<ion-item button [routerLink]="['/profile']">
@@ -278,10 +286,7 @@
 						<ion-back-button *ngIf="ui.canGoBack"></ion-back-button>
 						<ion-menu-button *ngIf="!ui.canGoBack"></ion-menu-button>
 
-						<ion-button
-							class="hide-small"
-							(click)="toggleCompactMenu()"
-						>
+						<ion-button class="hide-small" (click)="toggleCompactMenu()">
 							<ion-icon slot="icon-only" name="menu-outline"></ion-icon>
 						</ion-button>
 					</ion-buttons>
@@ -293,8 +298,7 @@
 						<img appSvgImage [src]="ui.randomImg" />
 					</div>
 					<div class="message">
-						<div class="title">
-						</div>
+						<div class="title"></div>
 						<div class="detail">
 							<br />
 							<ion-text color="danger" *ngIf="ui.isConnectFail">

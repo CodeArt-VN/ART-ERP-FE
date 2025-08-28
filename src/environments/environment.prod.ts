@@ -39,9 +39,9 @@ export const environment = {
 	cacheKeysToClearOnServerChange: [
 		'UserToken',          // Token invalid for different server
 		'UserProfile',        // Profile from different server
-		'SYS/Type',           // Server-specific data
-		'SYS/Status',         // Server-specific data
-		'BranchList',         // Server-specific data
+		'SYS/Type',           // Tenant-specific data
+		'SYS/Status',         // Tenant-specific data
+		'BranchList',         // Tenant-specific data
 		'selectedBranch',     // Branch selection invalid
 		'language/*',         // Language cache from old server
 		'tempCache/*'         // Clear temp server-specific cache
@@ -64,7 +64,7 @@ export const environment = {
 		enableDetailedLogs: false // Disable verbose logs in production
 	},
 
-	// NEW: Server selection settings
+	// NEW: Tenant selection settings
 	serverSettings: {
 		allowGuestSwitching: true,  // Allow server switching before login
 		defaultServer: null,        // null = use first server in appServers

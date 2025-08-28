@@ -14,7 +14,6 @@ import { APIList } from '../static/global-variable';
 import { environment, dog } from '../../../environments/environment';
 
 import {
-  IExternalAuthService,
   AuthResult,
   TokenResponse,
   ExternalAuthResult,
@@ -24,7 +23,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class ExternalAuthService implements IExternalAuthService {
+export class ExternalAuthService  {
 
   private readonly oauthProviders: { [key: string]: OAuthProvider } = {
     google: {
