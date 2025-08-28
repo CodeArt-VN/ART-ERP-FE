@@ -3036,6 +3036,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_ContactUDF:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/ContactUDF/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/ContactUDF/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        }
+		
+	},
+
 	CRM_Contract:{
         getSearchList:{
             method: "GET",
