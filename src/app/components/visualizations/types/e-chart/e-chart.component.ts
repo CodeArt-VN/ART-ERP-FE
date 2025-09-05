@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ReportService } from 'src/app/services/report.service';
+import { ReportService } from 'src/app/services/custom/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 
 declare var echarts: any;

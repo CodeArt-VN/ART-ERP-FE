@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FilterConfig, Schema } from 'src/app/models/options-interface';
+import { FilterConfig, Schema } from 'src/app/interfaces/options-interface';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({

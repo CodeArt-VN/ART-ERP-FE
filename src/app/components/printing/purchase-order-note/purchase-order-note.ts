@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 	standalone: false,
 })
 export class PurchaseOrderNoteComponent extends PageBase {
+	statusList = [];
 	@Input() ID;
 	@Input() item;
 	@Input() PONShowPackingUoM;
@@ -38,11 +39,16 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	}
 	preLoadData(event?: any): void {
 		this.id = this.ID;
-		if (this.item != null) {
-			this.loadedData(event);
-		} else {
-			super.preLoadData(event);
-		}
+		this.env.getStatus('PurchaseOrder').then((data: any) => {
+			this.statusList = data;
+		}).finally(() => {
+			if (this.item != null) {
+				this.loadedData(event);
+			} else {
+				super.preLoadData(event);
+			}
+		})
+		
 	}
 	loadedData(event) {
 		super.loadedData(event);
@@ -61,7 +67,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 				//const o = this.PO;
 				this.item.OrderDateText = lib.dateFormat(this.item.OrderDate, 'dd/mm/yy hh:MM');
 				this.item.ExpectedReceiptDateText = lib.dateFormat(this.item.ExpectedReceiptDate, 'dd/mm/yy hh:MM');
-				this.item.StatusText = lib.getAttrib(this.item.Status, this.env.statusList, 'Name', 'NA', 'Code');
+				this.item.StatusText = lib.getAttrib(this.item.Status, this.statusList, 'Name', 'NA', 'Code');
 				var self = this;
 				QRCode.toDataURL(
 					'PO:' + this.item.Id,

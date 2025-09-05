@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { EChartDefaultOption } from '../components/visualizations/types/e-chart-option';
-import { BIReport, ReportDataConfig, ReportGlobalOptions, TimeConfig } from '../models/options-interface';
-import { CommonService } from './core/common.service';
-import { EnvService } from './core/env.service';
-import { lib } from './static/global-functions';
-import { BI_ReportProvider } from './static/services.service';
-import { GlobalData } from './static/global-variable';
+import { EChartDefaultOption } from '../../components/visualizations/types/e-chart-option';
+import { BIReport, ReportDataConfig, ReportGlobalOptions, TimeConfig } from '../../interfaces/options-interface';
+import { CommonService } from '../core/common.service';
+import { EnvService } from '../core/env.service';
+import { lib } from '../static/global-functions';
+import { BI_ReportProvider } from '../static/services.service';
+import { GlobalData } from '../static/global-variable';
 
 @Injectable({
 	providedIn: 'root',

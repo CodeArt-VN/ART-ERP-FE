@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as qz from 'qz-tray';
 import { KJUR, KEYUTIL, stob64, hextorstr } from 'jsrsasign';
-import { EnvService } from './core/env.service';
-import { SYS_ConfigProvider, SYS_PrinterProvider } from './static/services.service';
+import { EnvService } from '../core/env.service';
+import { SYS_ConfigProvider, SYS_PrinterProvider } from '../static/services.service';
 import { Observable, from, of, concatMap, forkJoin, Subject } from 'rxjs';
-import { SYS_ConfigService } from './system-config.service';
+import { SYS_ConfigService } from '../custom/system-config.service';
+import { EVENT_TYPE } from '../static/event-type';
 
 export interface printData {
 	content: string;
@@ -50,7 +51,7 @@ export class PrintingService {
 		public sysConfigService: SYS_ConfigService
 	) {
 		this.env.getEvents().subscribe(async (data) => {
-			if (data.Code == 'changeBranch') {
+			if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 				this.getConfig().then(() => {
 					this.startConnection();
 				});

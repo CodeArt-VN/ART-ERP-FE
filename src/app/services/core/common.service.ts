@@ -1,12 +1,15 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { GlobalData } from '../static/global-variable';
-import { lib } from '../static/global-functions';
-import { EnvService } from './env.service';
-import { environment } from 'src/environments/environment';
+import { dog, environment } from 'src/environments/environment';
 import { ApiSetting } from '../static/api-setting';
+import { lib } from '../static/global-functions';
+import { GlobalData } from '../static/global-variable';
+import { SearchConfig } from '../static/search-config';
 import { toolbarCommandRules } from '../static/toolbar-command-rules';
+import { EnvService } from './env.service';
+import { providerService } from './extend-service';
+import { EVENT_TYPE } from '../static/event-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -91,14 +94,14 @@ export class CommonService {
 					//if (data[key]) {
 					if (data[key] && data[key] instanceof Array) {
 						params = params.append(key.toString(), JSON.stringify(data[key]));
-					} else	if (key == '_AdvanceConfig') {
+					} else if (key == '_AdvanceConfig') {
 						const jsonString = JSON.stringify(data[key]);
 						const base64String = btoa(unescape(encodeURIComponent(jsonString)));
 						params = params.append(key.toString(), base64String);
 					} else {
 						params = params.append(key.toString(), data[key]);
 					}
-				
+
 					// nếu có data._AdvanceConfig thì =>/"?Config=BASE64"
 
 					//}
@@ -128,20 +131,19 @@ export class CommonService {
 					//if (data[key]) {
 					if (data[key] && data[key] instanceof Array) {
 						params = params.append(key.toString(), JSON.stringify(data[key]));
-					} else	if (key == '_AdvanceConfig') {
+					} else if (key == '_AdvanceConfig') {
 						const jsonString = JSON.stringify(data[key]);
 						const base64String = btoa(unescape(encodeURIComponent(jsonString)));
 						params = params.append(key.toString(), base64String);
 					} else {
 						params = params.append(key.toString(), data[key]);
 					}
-				
+
 					// nếu có data._AdvanceConfig thì =>/"?Config=BASE64"
 
 					//}
 				}
 				options.params = params;
-
 			}
 			return this.http.get(URL, options);
 		} else {
@@ -165,25 +167,14 @@ export class CommonService {
 		}
 
 		return new Promise(function (resolve, reject) {
+			dog && console.log('🚀 [CommonService] connectLocal', apiPath.url());
 			that.env
-				.getStorage(apiPath.url())
+				.getStorage(apiPath.url(), query)
 				.then((items) => {
 					if (items == null) {
-						that.connect(apiPath.method, apiPath.url(), {
-							Take: pageSize,
-						})
-							.toPromise()
-							.then((data: any) => {
-								that.env.setStorage(apiPath.url(), data);
-								that.searchInItems(keyword, fields, page, pageSize, data).then((result) => {
-									resolve(result);
-								});
-							})
-							.catch((err) => {
-								that.checkError(err);
-								reject(err);
-							});
+						reject('No data found');
 					} else {
+						// Cache hit
 						that.searchInItems(keyword, fields, page, pageSize, items).then((result) => {
 							resolve(result);
 						});
@@ -196,17 +187,15 @@ export class CommonService {
 	}
 
 	getToken() {
-		return 'Bearer ' + GlobalData?.Token?.access_token;
+		return 'Bearer ' + this.env.storage.app.token?.access_token;
 	}
 
 	getAnItemLocal(Id: number, UID: string = '', apiPath) {
 		let that = this;
 		return new Promise((resolve, reject) => {
-			let query = {
-				Keyword: Id == 0 ? UID : Id,
-			};
-
-			that.connectLocal(apiPath, query, ['Id', '_uid'])
+			let query = null;
+			let url = apiPath.url(Id);
+			that.connectLocal(url, query, null)
 				.then((results: any) => {
 					if (results.count === 1) {
 						resolve(results.data[0]);
@@ -214,8 +203,14 @@ export class CommonService {
 						reject(results);
 					}
 				})
-				.catch((err) => {
-					reject(err);
+				.catch(() => {
+					this.getAnItemOnServer(Id, UID, apiPath)
+						.then((data) => {
+							resolve(data);
+						})
+						.catch((err) => {
+							reject(err);
+						});
 				});
 		});
 	}
@@ -223,7 +218,8 @@ export class CommonService {
 	getAnItemOnServer(Id: number, UID: string = '', apiPath) {
 		let that = this;
 		return new Promise(function (resolve, reject) {
-			that.connect(apiPath.method, apiPath.url(Id), null)
+			let url = apiPath.url(Id);
+			that.connect(apiPath.method, url, null)
 				.toPromise()
 				.then((data) => {
 					resolve(data);
@@ -618,19 +614,18 @@ export class CommonService {
 	}
 
 	checkError(err) {
-		console.log(err);
+		dog && console.log(err);
 
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
-			this.env.publishEvent({ Code: 'app:ForceUpdate' });
+			this.env.publishEvent({ Code: EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP });
 		} else if (err.status == 401) {
-			this.env.publishEvent({ Code: 'app:silentlogout' });
-
+			this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
 			this.env.showMessage('Your session has expired, please log in again.');
 		} else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
 			this.env.showMessage('Cannot connect to server, please try again.', 'danger');
-			this.env.publishEvent({ Code: 'app:ConnectFail' });
+			this.env.publishEvent({ Code: EVENT_TYPE.APP.CONNECT_FAIL });
 		} else {
 			this.env.showErrorMessage(err);
 			if (!environment.production) {
@@ -638,124 +633,19 @@ export class CommonService {
 			}
 		}
 	}
-
-	public handleError<T>(operation = 'operation', result?: T) {
-		return (error: any): Observable<T> => {
-			// TODO: send the error to remote logging infrastructure
-			//console.log(error); // log to console instead
-
-			// Let the app keep running by returning an empty result.
-			return of(result as T);
-		};
-	}
 }
 
-export class exService {
-	apiPath: any;
-	searchField = [];
-	allowCache = true;
-	serviceName = '';
-	commonService: CommonService;
-	showCommandRules = [];
-
-	constructor(apiPath: any, searchField, commonService: CommonService) {
+export class exService extends providerService {
+	constructor(apiPath: any, searchField: SearchConfig, commonService: CommonService) {
+		super();
 		this.apiPath = apiPath;
 		this.serviceName = searchField.name;
-		this.searchField = searchField.value.filelds;
-		this.allowCache = searchField.value.cache;
+		this.searchField = searchField.value.fields;
+		this.cacheConfig = searchField.value.cache;
+		this.allowCache = this.cacheConfig?.enable || false;
 		this.commonService = commonService;
 
-		console.log(this.serviceName + ' service is ready');
+		dog && console.log(this.serviceName + ' service is ready');
 		this.showCommandRules = toolbarCommandRules.getRules(this.serviceName);
-	}
-
-	getAnItem(Id, UID: string = '') {
-		if (this.allowCache) {
-			return this.commonService.getAnItemLocal(Id, UID, this.apiPath.getList);
-		} else {
-			return this.commonService.getAnItemOnServer(Id, UID, this.apiPath.getItem);
-		}
-	}
-
-	read(query: any = null, forceReload = false) {
-		if (this.allowCache && forceReload == false) {
-			return this.commonService.connectLocal(this.apiPath.getList, query, this.searchField);
-		} else {
-			//connect server
-			var that = this;
-			return new Promise(function (resolve, reject) {
-				let apiPath = that.apiPath.getList;
-				that.commonService
-					.connect(apiPath.method, apiPath.url(), query)
-					.toPromise()
-					.then((data: any) => {
-						var result = { count: data.length, data: data };
-						if (that.allowCache) {
-							that.commonService.env.setStorage(apiPath.url(), data).then(() => {
-								resolve(result);
-							});
-						} else {
-							resolve(result);
-						}
-					})
-					.catch((err) => {
-						that.commonService.checkError(err);
-						reject(err);
-					});
-			});
-		}
-	}
-
-	search(query: any = null) {
-		let apiPath = this.apiPath.getSearchList;
-		return this.commonService.connect(apiPath.method, apiPath.url(), query);
-	}
-
-	save(item, isForceCreate = false) {
-		return this.commonService.save(item, this.apiPath, isForceCreate);
-	}
-	submitForApproval(items: any, apiPath) {
-		return this.commonService.submitForApproval(items, this.apiPath);
-	}
-	approve(items: any, apiPath) {
-		return this.commonService.approve(items, this.apiPath);
-	}
-	disapprove(items: any, apiPath) {
-		return this.commonService.disapprove(items, this.apiPath);
-	}
-	delete(items) {
-		return this.commonService.delete(items, this.apiPath);
-	}
-
-	cancel(items) {
-		return this.commonService.cancel(items, this.apiPath);
-	}
-
-	disable(items, IsDisabled = true) {
-		if (!IsDisabled) {
-			return this.commonService.enable(items, this.apiPath);
-		} else {
-			return this.commonService.disable(items, this.apiPath);
-		}
-	}
-
-	changeBranch(item) {
-		return this.commonService.changeBranch(item, this.apiPath);
-	}
-
-	import(fileToUpload: File) {
-		return this.commonService.import(this.apiPath, fileToUpload);
-	}
-
-	export(query) {
-		return this.commonService.export(this.apiPath, query);
-	}
-
-	upload(fileToUpload: File) {
-		return this.commonService.upload(this.apiPath, fileToUpload);
-	}
-
-	download(query) {
-		return this.commonService.download(this.apiPath, query);
 	}
 }

@@ -1,0 +1,389 @@
+/**
+ * Authentication & Security Interface Definitions
+ * Enterprise-grade type definitions for authentication services
+ */
+
+import { HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+// ===== AUTHENTICATION INTERFACES =====
+
+export interface AuthResult {
+  success: boolean;
+  token?: TokenResponse;
+  user?: UserProfile;
+  error?: string;
+  requiresMfa?: boolean;
+  mfaToken?: string;
+}
+
+export interface MFAChallenge {
+  id: string;
+  type: 'totp' | 'sms' | 'email';
+  expiresAt: Date;
+  attempts: number;
+  maxAttempts: number;
+}
+
+export interface MFAResponse {
+  challengeId: string;
+  code: string;
+  remember?: boolean;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+  '.expires'?: string;
+  scope?: string;
+}
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+  remember?: boolean;
+  deviceInfo?: DeviceInfo;
+}
+
+export interface DeviceInfo {
+  Code: string;
+  Name: string;
+  Model: string;
+  Platform: string;
+  OperatingSystem: string;
+  OsVersion: string;
+  Manufacturer: string;
+  IsVirtual: boolean;
+  WebViewVersion?: string;
+  NotifyToken?: string;
+  IDUser?: number;
+}
+
+// ===== USER PROFILE INTERFACES =====
+
+export interface UserProfile {
+  Id: number;
+  UserName: string;
+  Email: string;
+  FullName: string;
+  PhoneNumber?: string;
+  Avatar?: string;
+  IsDisabled: boolean;
+  
+  // Staff Information
+  StaffID?: number;
+  IDBranch?: number;
+  IDBusinessPartner?: number;
+  
+  // System Roles & Permissions
+  SysRoles?: string[];
+  Forms?: FormPermission[];
+  Menu?: FormPermission[]; // Alternative name for Forms
+  
+  // Branch Management
+  BranchList?: Branch[];
+  Branchs?: Branch[]; // Alternative name for BranchList
+  
+  // User Settings & Preferences
+  UserSetting?: UserSettings;
+  
+  // Role & Permission Management
+  Roles?: Role[];
+  Permissions?: Permission[];
+  
+  // Additional Properties from Usage Analysis
+  CreatedBy?: string;
+  CreatedDate?: Date;
+  ModifiedBy?: string;
+  ModifiedDate?: Date;
+  
+  // Business Context
+  IDOwner?: number;
+  IDShipper?: number;
+  
+  // UI State Properties
+  isPinned?: boolean;
+  isShowDetail?: boolean;
+  isShowForm?: boolean;
+  
+  // Legacy Support
+  [key: string]: any; // For backward compatibility
+}
+
+export interface UserSettings {
+  // Theme & UI Settings
+  Theme?: SettingValue;
+  IsCompactMenu?: SettingValue;
+  IsCacheQuery?: SettingValue;
+  PinnedForms?: SettingValue;
+  
+  // Menu & Navigation Settings
+  MenuLayout?: SettingValue;
+  MenuCollapsed?: SettingValue;
+  ShowMenuIcons?: SettingValue;
+  
+  // Display Settings
+  Language?: SettingValue;
+  TimeZone?: SettingValue;
+  DateFormat?: SettingValue;
+  NumberFormat?: SettingValue;
+  
+  // Notification Settings
+  EmailNotifications?: SettingValue;
+  PushNotifications?: SettingValue;
+  NotificationSound?: SettingValue;
+  
+  // Performance Settings
+  AutoRefresh?: SettingValue;
+  CacheEnabled?: SettingValue;
+  DataPageSize?: SettingValue;
+  
+  // Business Settings
+  DefaultBranch?: SettingValue;
+  DefaultWarehouse?: SettingValue;
+  DefaultCurrency?: SettingValue;
+  
+  // Additional Properties from Usage Analysis
+  [key: string]: SettingValue | undefined;
+}
+
+export interface SettingValue {
+  Id: number;
+  Code: string;
+  Value: any;
+  IDUser: number;
+  Email: string;
+}
+
+export interface Branch {
+  Id: number;
+  Name: string;
+  Code: string;
+  Type?: string;
+  ParentId?: number;
+  IDParent?: number; // Alternative name for ParentId
+  IsDisabled: boolean;
+  
+  // Branch Hierarchy
+  children?: Branch[];
+  IDs?: number[]; // Array of all child branch IDs
+  Query?: string; // JSON string of IDs array
+  
+  // Branch Properties
+  ShortName?: string;
+  disabled?: boolean; // UI state for permission control
+  
+  // Additional Properties from Usage Analysis
+  [key: string]: any; // For backward compatibility
+}
+
+export interface FormPermission {
+  Id: number;
+  Code: string;
+  Name: string;
+  Icon?: string;
+  Color?: string;
+  Sort?: number;
+  IsHidden: boolean;
+  IsDisabled: boolean;
+  IsMobile: boolean;
+  
+  // Form Type & Hierarchy
+  Type?: number; // 0: Page, 1: Form, 2: SubForm, 10: Module Group, 11: SubGroup
+  IDParent?: number;
+  children?: FormPermission[];
+  
+  // UI State Properties
+  isPinned?: boolean;
+  isShowDetail?: boolean;
+  isShowForm?: boolean;
+  
+  // Menu Control Properties
+  IsCompactMenu?: boolean;
+  IsCacheQuery?: boolean;
+  
+  // Additional Properties from Usage Analysis
+  [key: string]: any; // For backward compatibility
+}
+
+// ===== PERMISSION & ROLE INTERFACES =====
+
+export interface Permission {
+  id: string;
+  name: string;
+  description?: string;
+  resource: string;
+  action: string;
+  conditions?: any;
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  description?: string;
+  permissions: Permission[];
+  isSystemRole: boolean;
+}
+
+// ===== EXTERNAL AUTH INTERFACES =====
+
+export interface OAuthProvider {
+  name: string;
+  clientId: string;
+  redirectUri: string;
+  scope: string[];
+  authUrl: string;
+  tokenUrl: string;
+}
+
+export interface ExternalAuthResult {
+  provider: string;
+  providerId: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}
+
+// ===== SECURITY INTERFACES =====
+
+export interface SecurityContext {
+  user: UserProfile;
+  tenant?: Tenant;
+  ipAddress?: string;
+  userAgent?: string;
+  sessionId?: string;
+  timestamp: Date;
+}
+
+export interface ThreatLevel {
+  level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  score: number;
+  threats: ThreatType[];
+  blocked: boolean;
+}
+
+export interface ThreatType {
+  type: 'SQL_INJECTION' | 'XSS' | 'CSRF' | 'BRUTE_FORCE' | 'SUSPICIOUS_ACTIVITY';
+  description: string;
+  severity: number;
+}
+
+export interface SecurityEvent {
+  id: string;
+  userId?: string;
+  eventType: SecurityEventType;
+  description: string;
+  ipAddress: string;
+  userAgent: string;
+  timestamp: Date;
+  metadata?: any;
+}
+
+export type SecurityEventType = 
+  | 'LOGIN_SUCCESS' 
+  | 'LOGIN_FAILED' 
+  | 'LOGOUT' 
+  | 'TOKEN_REFRESH' 
+  | 'PERMISSION_DENIED' 
+  | 'THREAT_DETECTED' 
+  | 'SECURITY_POLICY_VIOLATION';
+
+// ===== USER CONTEXT INTERFACES =====
+
+export interface UserSession {
+  id: string;
+  userId: string;
+  deviceId: string;
+  ipAddress: string;
+  userAgent: string;
+  createdAt: Date;
+  lastActivity: Date;
+  expiresAt: Date;
+  isActive: boolean;
+}
+
+export interface Tenant {
+  id: string;
+  name: string;
+  code: string;
+  domain?: string;
+  isActive: boolean;
+  settings?: TenantSettings;
+  features?: TenantFeature[];
+}
+
+export interface TenantSettings {
+  branding?: {
+    logo?: string;
+    primaryColor?: string;
+    secondaryColor?: string;
+  };
+  security?: {
+    mfaRequired: boolean;
+    sessionTimeout: number;
+    passwordPolicy: PasswordPolicy;
+  };
+  [key: string]: any;
+}
+
+export interface TenantFeature {
+  name: string;
+  enabled: boolean;
+  config?: any;
+}
+
+export interface PasswordPolicy {
+  minLength: number;
+  requireUppercase: boolean;
+  requireLowercase: boolean;
+  requireNumbers: boolean;
+  requireSpecialChars: boolean;
+  maxAge: number; // days
+}
+
+// ===== AUTHENTICATION STATE INTERFACES =====
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user?: UserProfile;
+  token?: TokenResponse;
+  error?: string;
+  lastActivity?: Date;
+}
+
+// ===== USER CONTEXT INTERFACES =====
+
+export interface UserContext {
+  user: UserProfile | null;
+  tenant: Tenant | null;
+  session: UserSession | null;
+  permissions: Permission[];
+  roles: Role[];
+  branches: Branch[];
+  selectedBranch: number | null;
+  selectedBranchAndChildren: number[] | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  lastActivity: Date;
+}
+
+export interface UserContextState {
+  user: UserProfile | null;
+  tenant: Tenant | null;
+  session: UserSession | null;
+  permissions: Permission[];
+  roles: Role[];
+  branches: Branch[];
+  selectedBranch: number | null;
+  selectedBranchAndChildren: number[] | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  lastActivity: Date;
+  error?: string;
+}

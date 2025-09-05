@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActionSheetController, NavController } from '@ionic/angular';
 import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
+import { dog } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-default',
@@ -16,5 +17,6 @@ export class DefaultPage extends PageBase {
 		public navCtrl: NavController
 	) {
 		super();
+		dog && console.log('🌲 [DefaultPage] Constructor');
 	}
 }

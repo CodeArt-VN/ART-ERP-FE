@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SortConfig, Transform } from 'src/app/models/options-interface';
+import { SortConfig, Transform } from 'src/app/interfaces/options-interface';
 
 @Component({
 	selector: 'datatable-header',

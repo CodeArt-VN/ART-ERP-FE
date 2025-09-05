@@ -4,7 +4,7 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { PageBase } from 'src/app/page-base';
 import { BRA_BranchProvider, SYS_SchemaProvider, WMS_ZoneProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
-import { Schema } from 'src/app/models/options-interface';
+import { Schema } from 'src/app/interfaces/options-interface';
 
 @Component({
 	selector: 'app-schema',
