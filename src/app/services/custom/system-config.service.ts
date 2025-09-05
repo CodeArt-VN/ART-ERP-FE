@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SYS_ConfigProvider } from './static/services.service';
-import { CommonService } from './core/common.service';
-import { EnvService } from './core/env.service';
+import { SYS_ConfigProvider } from '../static/services.service';
+import { CommonService } from '../core/common.service';
+import { EnvService } from '../core/env.service';
 
 @Injectable({ providedIn: 'root' })
 export class SYS_ConfigService extends SYS_ConfigProvider {

@@ -4,8 +4,9 @@ import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
-import { MonacoEditorLoaderService } from 'src/app/services/custom.service';
+
 import { ModalController } from '@ionic/angular';
+import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
 
 @Component({
 	selector: 'app-input-control',

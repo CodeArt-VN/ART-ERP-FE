@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
+import { EVENT_TYPE } from './services/static/event-type';
+import { PageConfig } from './interfaces/base-page-interface';
 
 @Component({
 	template: '',
@@ -42,7 +44,7 @@ export abstract class PageBase implements OnInit {
 		Skip: 0,
 	};
 	schemaPage: any;
-	pageConfig: any = {
+	pageConfig: PageConfig = {
 		pageCode: '',
 		pageName: '',
 		pageTitle: '',
@@ -56,7 +58,7 @@ export abstract class PageBase implements OnInit {
 		isShowCheck: false,
 		isShowFeature: false,
 		infiniteScroll: true,
-		forceLoadData: true,
+		forceLoadData: false,
 		refresher: true,
 		showSpinner: true,
 		isEndOfData: false,
@@ -103,7 +105,7 @@ export abstract class PageBase implements OnInit {
 		this.items = [];
 	}
 
-	loadData(event = null) {
+	loadData(event = null, forceReload = false) {
 		if (this.pageConfig.isDetailPage) {
 			this.loadAnItem(event);
 		} else {
@@ -111,7 +113,7 @@ export abstract class PageBase implements OnInit {
 
 			if (this.pageProvider && !this.pageConfig.isEndOfData) {
 				if (event == 'search') {
-					this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
+					this.pageProvider.read(this.query, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
 						if (result.data.length == 0) {
 							this.pageConfig.isEndOfData = true;
 						}
@@ -292,8 +294,7 @@ export abstract class PageBase implements OnInit {
 		this.selectedItems = [];
 		if (!this.pageConfig.showSpinner) {
 			this.clearData();
-			this.env.setStorage('saved-query-' + this.pageConfig.pageName, this.query);
-			this.loadData(event);
+			this.loadData(event, true);
 		}
 	}
 
@@ -538,7 +539,8 @@ export abstract class PageBase implements OnInit {
 				.catch((err) => {
 					console.log(err);
 
-					if ((err.status = 404)) {
+					// Kiểm tra err có phải là object và có thuộc tính status không
+					if (err && typeof err === 'object' && 'status' in err && err.status == 404) {
 						//this.nav('not-found', 'back');
 					} else {
 						this.item = null;
@@ -918,7 +920,7 @@ export abstract class PageBase implements OnInit {
 				this.pageConfig.pageRemark = currentForm.Remark;
 				this.pageConfig.canEditHelpContent = true;
 
-				this.env.publishEvent({ Code: 'app:ViewDidEnter', Value: currentForm });
+				this.env.publishEvent({ Code: EVENT_TYPE.APP.VIEW_DID_ENTER, Value: currentForm });
 
 				let permissionList = this.env.user.Forms.filter((d) => d.IDParent == currentForm.Id);
 				if (permissionList.length) {
@@ -931,7 +933,7 @@ export abstract class PageBase implements OnInit {
 
 		this.subscriptions.push(
 			this.env.getEvents().subscribe((data) => {
-				if (data.Code == 'changeBranch') {
+				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.preLoadData(null);
 				} else if (data.Code == 'app:loadedLocalData') {
 					this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => {
@@ -1014,7 +1016,7 @@ export abstract class PageBase implements OnInit {
 
 	help() {
 		let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
-		this.env.publishEvent({ Code: 'app:ShowHelp', Value: code });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_HELP, Value: code });
 	}
 
 	async changeBranch(ev: any) {

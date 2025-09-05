@@ -1,4 +1,4 @@
-import { TimeConfig } from 'src/app/models/options-interface';
+import { TimeConfig } from 'src/app/interfaces/options-interface';
 
 export var lib = {
 	formatTimeConfig(time: TimeConfig, isPrevious = false) {

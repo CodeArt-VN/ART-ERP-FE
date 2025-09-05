@@ -12,7 +12,7 @@ import {
 } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 declare var ace: any;
 

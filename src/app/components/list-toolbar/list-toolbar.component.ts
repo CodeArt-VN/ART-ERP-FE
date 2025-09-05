@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { em } from '@fullcalendar/core/internal-common';
 import { TranslateService } from '@ngx-translate/core';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 @Component({
 	selector: 'app-list-toolbar',
@@ -521,5 +522,9 @@ export class ListToolbarComponent implements OnInit {
 		} else {
 			this.pageConfig.isShowFeature = !this.pageConfig.isShowFeature;
 		}
+	}
+
+	onChangeBranch() {
+		this.emit(EVENT_TYPE.TENANT.BRANCH_SWITCHED);
 	}
 }

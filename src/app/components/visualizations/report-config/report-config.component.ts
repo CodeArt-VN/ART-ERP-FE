@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, Subscription, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
-import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
+import { BIReport, ReportDataConfig } from 'src/app/interfaces/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
-import { ReportService } from 'src/app/services/report.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
+import { ReportService } from 'src/app/services/custom/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';

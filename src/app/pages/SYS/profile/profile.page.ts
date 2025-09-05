@@ -2,13 +2,28 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
-import { AccountService } from 'src/app/services/account.service';
+
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { CompareValidator } from 'src/app/services/core/validators';
-import { ACCOUNT_ApplicationUserProvider } from 'src/app/services/custom.service';
+import { CompareValidator } from 'src/app/services/util/validators';
+import { ACCOUNT_ApplicationUserProvider } from 'src/app/services/custom/custom.service';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { lib } from 'src/app/services/static/global-functions';
 import { HRM_StaffProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider } from 'src/app/services/static/services.service';
+
+interface ProfileUI {
+	avatarURL: string;
+	segmentView: string;
+	passwordViewType: string;
+	minDOB: string;
+	maxDOB: string;
+	changePasswordForm: FormGroup;
+	userSetting: any;
+	item: any;
+	formGroup: FormGroup;
+	submitAttempt: boolean;
+	user: any;
+}
 
 @Component({
 	selector: 'app-profile',
@@ -17,22 +32,26 @@ import { HRM_StaffProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider } fr
 	standalone: false,
 })
 export class ProfilePage extends PageBase {
-	avatarURL = 'assets/imgs/avartar-empty.jpg';
-	segmentView = 's1';
-	passwordViewType = 'password';
-	minDOB = '';
-	maxDOB = '';
-
-	changePasswordForm: FormGroup;
+	ui: ProfileUI = {
+		avatarURL: 'assets/imgs/avartar-empty.jpg',
+		segmentView: 's1',
+		passwordViewType: 'password',
+		minDOB: '',
+		maxDOB: '',
+		changePasswordForm: null,
+		userSetting: null,
+		item: null,
+		formGroup: null,
+		submitAttempt: false,
+		user: null,
+	};
 
 	@ViewChild('importfile') importfile: any;
 
 	hasBaseDropZoneOver = false;
-	userSetting = null;
 
 	constructor(
 		public pageProvider: HRM_StaffProvider,
-		public accountProvider: AccountService,
 		public userProvider: ACCOUNT_ApplicationUserProvider,
 		public userSettingProvider: SYS_UserSettingProvider,
 		public userDeviceProvider: SYS_UserDeviceProvider,
@@ -49,7 +68,10 @@ export class ProfilePage extends PageBase {
 
 		this.pageConfig.isDetailPage = true;
 
-		this.formGroup = formBuilder.group({
+		// Initialize ui.user
+		this.ui.user = this.env.user;
+
+		this.ui.formGroup = formBuilder.group({
 			Id: new FormControl({ value: '', disabled: true }),
 			IDBranch: new FormControl(),
 			Code: [{ value: '' }],
@@ -76,38 +98,17 @@ export class ProfilePage extends PageBase {
 			BackgroundColor: new FormControl(),
 		});
 
-		this.changePasswordForm = formBuilder.group({
+		this.ui.changePasswordForm = formBuilder.group({
 			// Email: ['', Validators.required],
 			oldPassword: ['', Validators.required],
 			newPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
 			confirmPassword: ['', Validators.compose([Validators.required, CompareValidator.confirmPassword])],
 		});
-		this.changePasswordForm.controls['confirmPassword'].setParent(this.changePasswordForm);
-
-		// this.uploader.onBeforeUploadItem = (item) => {
-		// 	let UploadAPI = ApiSetting.apiDomain('CUS/FILE/UploadAvatar/' + this.item.Code);
-		// 	item.url = UploadAPI;
-		// }
-
-		// this.uploader.onSuccessItem = (item, response, status: number, headers) => {
-
-		// 	this.uploader.clearQueue();
-		// 	//console.log(response);
-		// 	this.avatarURL = environment.staffAvatarsServer + this.item.Code + '.jpg?t=' + new Date().getTime();
-
-		// 	if (this.env.user.Email == this.item.Email) {
-		// 		//reload avatar in user cp
-		// 		this.env.user.Avatar = this.avatarURL;
-
-		// 		//this.accountService.setProfile(GlobalData.Profile);
-		// 		//this.events.publish('app:UpdateAvatar', this.avatarURL);
-		// 		//console.log('app:UpdateAvatar');
-		// 	}
-		// }
+		this.ui.changePasswordForm.controls['confirmPassword'].setParent(this.ui.changePasswordForm);
 
 		let cYear = new Date().getFullYear();
-		this.minDOB = cYear - 70 + '-01-01';
-		this.maxDOB = cYear - 16 + '-12-31';
+		this.ui.minDOB = cYear - 70 + '-01-01';
+		this.ui.maxDOB = cYear - 16 + '-12-31';
 	}
 
 	preLoadData() {
@@ -117,15 +118,18 @@ export class ProfilePage extends PageBase {
 
 	loadedData(event) {
 		if (this.id && this.item) {
-			this.item.DateOfIssueID = lib.dateFormat(this.item.DateOfIssueID, 'yyyy-mm-dd');
-			this.userSetting = this.env.user.UserSetting;
-			this.userSetting.isLoaded = true;
+			this.ui.item = this.item;
+			this.ui.item.DateOfIssueID = lib.dateFormat(this.ui.item.DateOfIssueID, 'yyyy-mm-dd');
+			this.ui.userSetting = this.env.user.UserSetting;
+			this.ui.userSetting.isLoaded = true;
+			// Update ui.user to ensure it's current
+			this.ui.user = this.env.user;
 		}
 		super.loadedData(event);
 	}
 
 	async changePassword() {
-		if (!this.changePasswordForm.valid) {
+		if (!this.ui.changePasswordForm.valid) {
 			this.env.showMessage('Please recheck password', 'warning');
 		} else {
 			const loading = await this.loadingController.create({
@@ -136,15 +140,15 @@ export class ProfilePage extends PageBase {
 			await loading.present().then(() => {
 				this.userProvider
 					.changePassword(
-						this.changePasswordForm.controls.oldPassword.value,
-						this.changePasswordForm.controls.newPassword.value,
-						this.changePasswordForm.controls.confirmPassword.value
+						this.ui.changePasswordForm.controls.oldPassword.value,
+						this.ui.changePasswordForm.controls.newPassword.value,
+						this.ui.changePasswordForm.controls.confirmPassword.value
 					)
 					.then((savedItem: any) => {
 						this.env.showMessage('Password changed', 'warning');
-						this.changePasswordForm.reset();
+						this.ui.changePasswordForm.reset();
 						this.cdr.detectChanges();
-						this.changePasswordForm.markAsPristine();
+						this.ui.changePasswordForm.markAsPristine();
 						if (loading) loading.dismiss();
 					})
 					.catch((err) => {
@@ -166,13 +170,13 @@ export class ProfilePage extends PageBase {
 	}
 
 	updateTheme(event) {
-		this.userSetting.Theme.Value = event.detail.value;
-		this.updateUserSetting(this.userSetting.Theme, true);
+		this.ui.userSetting.Theme.Value = event.detail.value;
+		this.updateUserSetting(this.ui.userSetting.Theme, true);
 	}
 
 	updateUserSetting(setting, isStringValue = false) {
-		if (this.submitAttempt) return;
-		this.submitAttempt = true;
+		if (this.ui.submitAttempt) return;
+		this.ui.submitAttempt = true;
 		if (!isStringValue) setting.Value = JSON.stringify(!setting.Value);
 
 		this.userSettingProvider.save(setting).then((response: any) => {
@@ -182,25 +186,23 @@ export class ProfilePage extends PageBase {
 
 			if (!isStringValue) setting.Value = JSON.parse(setting.Value);
 
-			this.submitAttempt = false;
-			this.env.user.UserSetting = this.userSetting;
-			this.accountProvider.setProfile(this.env.user).then(() => {
-				this.accountProvider.loadSavedProfile();
-			});
+			this.ui.submitAttempt = false;
+			this.env.user.UserSetting = this.ui.userSetting;
+		
 		});
 	}
 
 	changeTheme() {
-		this.env.publishEvent({ Code: 'app:ChangeTheme' });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_THEME });
 	}
 
 	segmentChanged(ev: any) {
-		this.segmentView = ev.detail.value;
+		this.ui.segmentView = ev.detail.value;
 	}
 
 	logout() {
 		event.preventDefault();
 		event.stopPropagation();
-		this.env.publishEvent({ Code: 'app:logout' });
+		this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
 	}
 }

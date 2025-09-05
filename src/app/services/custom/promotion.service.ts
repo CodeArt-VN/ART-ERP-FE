@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CommonService } from '../services/core/common.service';
-import { PR_ProgramProvider } from './static/services.service';
+import { CommonService } from '../core/common.service';
+import { PR_ProgramProvider } from '../static/services.service';
 
 @Injectable({
 	providedIn: 'root',
