@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { environment, dog } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
-import { DynamicTranslateLoaderService } from './translate-loader.service';
+import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
 import { MigrationService } from './migration.service';
 import { CacheManagementService } from './cache-management.service';
 import { EVENT_TYPE } from '../static/event-type';

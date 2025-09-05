@@ -39,7 +39,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 
-import { DynamicTranslateLoaderService } from './services/core/translate-loader.service';
+import { DynamicTranslateLoaderService } from './services/util/translate-loader.service';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';

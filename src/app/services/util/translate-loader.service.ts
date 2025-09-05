@@ -5,7 +5,7 @@ import { Observable, of, throwError, from } from 'rxjs';
 import { catchError, retry, timeout, switchMap, take, mergeMap } from 'rxjs/operators';
 import { Capacitor } from '@capacitor/core';
 import { dog, environment } from 'src/environments/environment';
-import { StorageService } from './storage.service';
+import { StorageService } from '../core/storage.service';
 
 @Injectable({
 	providedIn: 'root',
