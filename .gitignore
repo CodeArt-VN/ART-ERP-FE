@@ -104,3 +104,6 @@ _ios.*/
 
 resources/ios/**/*
 resources/android/**/*
+.cursorrules
+.cursorignore
+.cursor
