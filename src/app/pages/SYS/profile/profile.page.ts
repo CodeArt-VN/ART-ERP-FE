@@ -5,7 +5,7 @@ import { PageBase } from 'src/app/page-base';
 
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { CompareValidator } from 'src/app/services/core/validators';
+import { CompareValidator } from 'src/app/services/util/validators';
 import { ACCOUNT_ApplicationUserProvider } from 'src/app/services/custom/custom.service';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { lib } from 'src/app/services/static/global-functions';
