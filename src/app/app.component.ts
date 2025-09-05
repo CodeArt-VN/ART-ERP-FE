@@ -5,19 +5,58 @@ import { Platform, MenuController, NavController, PopoverController, IonRouterOu
 import { StatusBar } from '@capacitor/status-bar';
 import { Router, NavigationEnd } from '@angular/router';
 import { EnvService } from './services/core/env.service';
-import { AccountService } from './services/account.service';
 import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
-import { environment } from 'src/environments/environment';
+import { dog, environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
 import { register } from 'swiper/element/bundle';
 import { FormBuilder } from '@angular/forms';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
-import { OSM_NotificationService } from './services/notifications.service';
+import { OSM_NotificationService } from './services/custom/notifications.service';
+import { EVENT_TYPE } from './services/static/event-type';
+import { UserProfileService } from './services/auth/user-profile.service';
 
 register();
-let ga: any;
+
+export interface ComponentUI {
+	// App state
+	appTheme: string;
+	isConnectFail: boolean;
+	appMessages: any[];
+	canGoBack: boolean;
+	showAppMenu: boolean;
+
+	// Menu state
+	branchFormGroup: any;
+	branchList: any[];
+	countForm: number;
+	showMenu: boolean;
+	randomImg: string;
+
+	// Search state
+	isShowSearch: boolean;
+	queryMenu: string;
+	foundMenu: any[];
+
+	// Help state
+	pageConfigPageName: string;
+	showHelp: boolean;
+	showAppMenuHelp: boolean;
+
+	// User state
+	pinnedForms: any[];
+	totalNotifications: number;
+
+	// Popover state
+	isUserCPOpen: boolean;
+
+	// Logo
+	logo: string;
+
+	// Last form for menu focus
+	lastForm: any;
+}
 
 @Component({
 	selector: 'app-root',
@@ -26,48 +65,210 @@ let ga: any;
 	standalone: false,
 })
 export class AppComponent implements OnInit {
+	ui: ComponentUI = {
+		// App state
+		appTheme: 'default-theme',
+		isConnectFail: false,
+		appMessages: [],
+		canGoBack: false,
+		showAppMenu: true,
+
+		// Menu state
+		branchFormGroup: null,
+		branchList: [],
+		countForm: 0,
+		showMenu: true,
+		randomImg: './assets/undraw_art_museum_8or4.svg',
+
+		// Search state
+		isShowSearch: false,
+		queryMenu: '',
+		foundMenu: [],
+
+		// Help state
+		pageConfigPageName: '',
+		showHelp: false,
+		showAppMenuHelp: true,
+
+		// User state
+		pinnedForms: [],
+		totalNotifications: 0,
+
+		// Popover state
+		isUserCPOpen: false,
+
+		// Logo
+		logo: '',
+
+		// Last form for menu focus
+		lastForm: null,
+	};
+
+	uiEvents: any = {
+		// Menu events
+		menuPin: (form, event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			form.isPinned = !form.isPinned;
+
+			let pinned = this.env.user.Forms.filter((d) => d.isPinned).map((i) => i.Id);
+			this.userProfileService.setPinnedForms(pinned).then(() => {
+				this.loadPinnedMenu();
+				this.loadNotifications();
+			});
+		},
+
+		toogleMenuGroup: (f) => {
+			f.isShowDetail = !f.isShowDetail;
+			this.env.user.Forms.filter((g) => f.Id == g.IDParent).forEach((i) => {
+				i.isShowDetail = f.isShowDetail;
+
+				this.env.user.Forms.filter((m) => m.IDParent == i.Id).forEach((l) => {
+					l.isShowDetail = f.isShowDetail;
+					if (i.isShowForm == undefined) {
+						l.isShowForm = true;
+					}
+				});
+
+				if (i.isShowForm == undefined) {
+					i.isShowForm = true;
+				}
+			});
+		},
+
+		toogleMenuForm: (f) => {
+			f.isShowForm = !f.isShowForm;
+			this.env.user.Forms.filter((m) => m.IDParent == f.Id).forEach((l) => {
+				l.isShowForm = f.isShowForm;
+			});
+		},
+
+		goToPage: (path, event, direction = 'root') => {
+			event.preventDefault();
+			event.stopPropagation();
+
+			this.menu.close();
+			if (direction == 'root') {
+				this.navCtrl.navigateRoot(path);
+			} else if (direction == 'forward') {
+				this.navCtrl.navigateForward(path);
+			}
+		},
+
+		// Search events
+		searchMenu: (ev) => {
+			var val = ev.target.value;
+			if (val == undefined) {
+				val = '';
+			}
+			if (val.length > 1) {
+				this.ui.queryMenu = val;
+				this.ui.foundMenu = lib.searchTree(this.env.user.Forms, this.ui.queryMenu);
+			}
+		},
+
+		focusSearch: () => {
+			setTimeout(() => {
+				this.search.setFocus();
+			}, 300);
+		},
+
+		toggleSearch: () => {
+			this.ui.isShowSearch = !this.ui.isShowSearch;
+			if (this.ui.isShowSearch) {
+				this.uiEvents.focusSearch();
+			}
+		},
+
+		closeSearch: () => {
+			this.ui.isShowSearch = false;
+		},
+
+		// User control panel events
+		presentUserCPPopover: (e: any) => {
+			this.userCPPopover.event = e;
+			this.ui.isUserCPOpen = true;
+		},
+
+		logout: (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			this.menu.close();
+			this.ui.isUserCPOpen = false;
+			setTimeout(() => {
+				this.env.publishEvent({ Code: 'user:logoutRequested' });
+			}, 0);
+		},
+
+		// Theme and language events
+		changeThemeMode: (event) => {
+			this.userProfileService.changeTheme(event.detail.value).then(() => {
+				this.updateStatusbar();
+			});
+		},
+
+		changeLanguage: async (lang = null) => {
+			await this.env.setLang(lang);
+		},
+
+		// Server events
+		changeServer: (server) => {
+			this.env.userContext.switchTenant(server.Code);
+		},
+
+		// Branch events
+		changeBranch: async () => {
+			await this.env.changeBranch(this.ui.branchFormGroup.get('IDBranch').value);
+			let sb = this.env.branchList.find((d) => d.Id == this.env.selectedBranch);
+
+			if (sb.LogoURL) {
+				this.ui.logo = sb.LogoURL;
+			} else {
+				this.ui.logo = 'assets/logos/logo-in-holdings.png';
+			}
+			dog && console.log('🌲 [AppComponent] Changing branch logo:', this.ui.logo);
+		},
+
+		// Help events
+		closeHelp: () => {
+			this.menu.close('appHelpDetail');
+			this.ui.showHelp = false;
+		},
+
+		openHelp: () => {
+			this.menu.open('appHelpDetail');
+		},
+
+		// Menu toggle events
+		toogleMenu: () => {
+			this.ui.showAppMenu = !this.ui.showAppMenu;
+		},
+
+		toggleCompactMenu: () => {
+			this.userProfileService.toogleCompactMenu();
+		},
+
+		// Footer events
+		showServerMessage: (server) => {
+			this.env.showMessage(server.Name, server.Color);
+		},
+	};
+
 	@ViewChild('search') search: any;
-	appTheme = 'default-theme';
-	isConnectFail = false;
-	appMessages = [];
-	appVersion = '';
-	canGoBack = false;
-	showScrollbar = false;
-	showAppMenu = true;
-
-	branchFormGroup;
-	branchList = [];
-	countForm = 0;
-	showMenu = true;
-	randomImg = './assets/undraw_art_museum_8or4.svg';
-
-	isShowSearch = false;
-	queryMenu = '';
-	foundMenu = [];
-
-	pageConfigPageName = '';
-	showHelp = false;
-	showAppMenuHelp = true;
-
+	@ViewChild('userCPPopover') userCPPopover;
 	@ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
-	_environment = environment;
-
 	constructor(
-		public router: Router,
-		public navCtrl: NavController,
-		public menu: MenuController,
-		public userSettingProvider: SYS_UserSettingProvider,
-		public branchProvider: BRA_BranchProvider,
-		public popoverCtrl: PopoverController,
+		private userProfileService: UserProfileService,
+		private router: Router,
+		private navCtrl: NavController,
+		private menu: MenuController,
 		public env: EnvService,
-		public accountService: AccountService,
-		public platform: Platform,
-		public formBuilder: FormBuilder,
-		public notificationService: OSM_NotificationService,
-		private toastController: ToastController
+		private formBuilder: FormBuilder,
+		private notificationService: OSM_NotificationService
 	) {
-		this.appVersion = 'v' + this.env.version;
+		dog && console.log('🌲 [AppComponent] Constructor');
+
 		let imgs = [
 			'./assets/undraw_art_museum_8or4.svg',
 			'./assets/undraw_best_place_r685.svg',
@@ -77,116 +278,124 @@ export class AppComponent implements OnInit {
 			'./assets/undraw_Container_ship_urt4.svg',
 		];
 		let r = Math.floor(Math.random() * imgs.length);
-		this.randomImg = imgs[r];
+		this.ui.randomImg = imgs[r];
 
-		this.initializeApp();
-
-		this.env.getEvents().subscribe((data) => {
-			switch (data.Code) {
-				case 'app:ForceUpdate':
-					this.isConnectFail = true;
-					this.openAppStore();
-					break;
-				case 'app:ConnectFail':
-					this.isConnectFail = true;
-					break;
-				case 'app:ShowAppMessage':
-					this.appMessageManage(data);
-					break;
-				case 'app:ShowMenu':
-					this.showAppMenu = data.Value;
-					break;
-				case 'app:ShowHelp':
-					this.showHelp = true;
-					this.pageConfigPageName = data.Value;
-					this.openHelp();
-					break;
-				case 'app:ChangeTheme':
-					this.updateStatusbar();
-					break;
-				case 'app:logout':
-					accountService.logout().then((_) => {
-						this.router.navigateByUrl('/login');
-						this.env.showMessage('You have log out of the system', 'danger');
-					});
-					break;
-				case 'app:silentlogout':
-					accountService.logout().then((_) => {
-						this.router.navigateByUrl('/login');
-					});
-					break;
-				case 'app:updatedUser':
-					this.countForm = 0;
-
-					if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
-						this.countForm = this.env.user.Forms.filter((d) => d.Type == 1).length;
-						if (this.countForm == 1 && this.env.branchList.filter((d) => !d.disabled).length == 1) {
-							this.showMenu = false;
-						}
-						this.branchList = lib.cloneObject(this.env.branchList);
-						this.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
-						this.loadPinnedMenu();
-						this.loadNotifications();
-						this.updateStatusbar();
-						this.focusMenuOnPageEnter(this.lastForm, true);
-					}
-					break;
-				case 'app:notification':
-					this.loadNotifications();
-					break;
-				case 'app:ViewDidEnter':
-					this.focusMenuOnPageEnter(data.Value);
-					break;
-				case 'app:loadLang':
-					this.env.getStorage('lang').then((lang) => {
-						if (lang) {
-							this.changeLanguage(lang);
-						} else {
-							this.changeLanguage();
-						}
-					});
-					break;
-				default:
-					if (this.env.version == 'dev') {
-						this.appMessageManage({
-							IsShow: true,
-							Id: 'event',
-							Icon: 'checkmark-outline',
-							IsBlink: false,
-							Color: 'success',
-							Message: data.Code,
-						});
-						setTimeout(() => {
-							this.appMessageManage({
-								IsShow: false,
-								Id: 'event',
-							});
-						}, 2000);
-					}
-					break;
-			}
-		});
-
-		this.router.events.subscribe((event: any) => {
-			if (ga && event instanceof NavigationEnd) {
-				ga('set', 'page', 'test/' + event.urlAfterRedirects);
-				ga('send', 'pageview');
-				console.log(event.urlAfterRedirects);
-			}
-
-			if (event) {
-				//console.log(event);
-				// (<any>window).ga('set', 'page', event.urlAfterRedirects);
-				// (<any>window).ga('send', 'pageview');
-			}
-		});
-		this.branchFormGroup = this.formBuilder.group({
+		this.ui.branchFormGroup = this.formBuilder.group({
 			IDBranch: [''],
 		});
 	}
 
-	pinnedForms = [];
-	totalNotifications = 0;
+	ngOnInit() {
+		dog && console.log('🌲 [AppComponent] OnInit');
+		this.initializeApp();
+	}
+
+	async initializeApp() {
+		dog && console.log('🌲 [AppComponent] Initialize App');
+		await this.env.ready;
+		dog && console.log('🌲 [AppComponent] Environment ready');
+
+		this.updateStatusbar();
+		this.eventHandler();
+		this.renderUI();
+
+		this.initNotification();
+		this.serviceWorkerRegister();
+	}
+
+	eventHandler() {
+		this.env.getEvents().subscribe((data) => {
+			dog && console.log('🌲 [AppComponent] Event:', data);
+			switch (data.Code) {
+				case EVENT_TYPE.USER.LOGGED_OUT_REMOTE:
+					this.router.navigateByUrl('/login');
+					this.env.showMessage('You have log out of the system', 'danger');
+					break;
+
+				case EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP:
+					this.ui.isConnectFail = true;
+					this.openAppStore();
+					break;
+				case EVENT_TYPE.APP.CONNECT_FAIL:
+					this.ui.isConnectFail = true;
+					break;
+				case EVENT_TYPE.APP.SHOW_APP_MESSAGE:
+					this.appMessageManage(data);
+					break;
+				case EVENT_TYPE.APP.SHOW_MENU:
+					this.ui.showAppMenu = data.Value;
+					break;
+				case EVENT_TYPE.APP.SHOW_HELP:
+					this.ui.showHelp = true;
+					this.ui.pageConfigPageName = data.Value;
+					this.uiEvents.openHelp();
+					break;
+
+				case EVENT_TYPE.APP.CHANGE_THEME:
+					this.updateStatusbar();
+					break;
+				case EVENT_TYPE.APP.NOTIFICATION:
+					this.loadNotifications();
+					break;
+
+				case EVENT_TYPE.APP.VIEW_DID_ENTER:
+					this.focusMenuOnPageEnter(data.Value);
+					break;
+
+				case EVENT_TYPE.USER.CONTEXT_UPDATED:
+					this.renderUI();
+					break;
+
+				default:
+					dog && console.log('🌲 [AppComponent] Not processed event:', data);
+
+					break;
+			}
+
+			if (this.env.app.version == 'dev') {
+				this.appMessageManage({
+					IsShow: true,
+					Id: 'event',
+					Icon: 'checkmark-outline',
+					IsBlink: false,
+					Color: 'success',
+					Message: data.Code,
+				});
+				setTimeout(() => {
+					this.appMessageManage({
+						IsShow: false,
+						Id: 'event',
+					});
+				}, 2000);
+			}
+		});
+
+		this.router.events.subscribe((event: any) => {
+			if (event instanceof NavigationEnd) {
+				dog && console.log('🌲 [AppComponent] Navigation event:', event);
+				this.ui.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
+			}
+		});
+	}
+
+	renderUI() {
+		dog && console.log('🌲 [AppComponent] Render UI');
+		this.ui.countForm = 0;
+
+		if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
+			this.ui.countForm = this.env.user.Forms.filter((d) => d.Type == 1).length;
+			if (this.ui.countForm == 1 && this.env.branchList.filter((d) => !d.disabled).length == 1) {
+				this.ui.showMenu = false;
+			}
+			this.ui.branchList = lib.cloneObject(this.env.branchList);
+			this.ui.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
+			this.loadPinnedMenu();
+			this.loadNotifications();
+			this.updateStatusbar();
+			this.focusMenuOnPageEnter(this.ui.lastForm, true);
+		}
+	}
+
 	loadPinnedMenu() {
 		let pinned = this.env.user.UserSetting.PinnedForms.Value;
 		if (pinned) {
@@ -195,24 +404,7 @@ export class AppComponent implements OnInit {
 			});
 		}
 
-		this.pinnedForms = this.env.user.Forms.filter((d) => d.isPinned);
-	}
-
-	menuPin(form, event) {
-		event.preventDefault();
-		event.stopPropagation();
-		form.isPinned = !form.isPinned;
-
-		let pinned = this.env.user.Forms.filter((d) => d.isPinned).map((i) => i.Id);
-		this.env.user.UserSetting.PinnedForms.Value = JSON.stringify(pinned);
-		this.userSettingProvider.save(this.env.user.UserSetting.PinnedForms).then((response: any) => {
-			if (!this.env.user.UserSetting.PinnedForms.Id) {
-				this.env.user.UserSetting.PinnedForms.Id = response.Id;
-			}
-			this.env.setStorage('UserProfile', this.env.user);
-			this.loadPinnedMenu();
-			this.loadNotifications();
-		});
+		this.ui.pinnedForms = this.env.user.Forms.filter((d) => d.isPinned);
 	}
 
 	updateStatusbar() {
@@ -241,7 +433,7 @@ export class AppComponent implements OnInit {
 		themeClasses.forEach((themeClass) => classList.remove(themeClass));
 
 		//Reset app theme (thí.appTheme) to html
-		document.documentElement.classList.add(this.appTheme);
+		document.documentElement.classList.add(this.ui.appTheme);
 
 		//Reset theme color to html
 		document.documentElement.classList.remove('dark', 'light');
@@ -284,16 +476,8 @@ export class AppComponent implements OnInit {
 		}
 	}
 
-	ngOnInit() {
-		this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
-		this.initNotification();
-		// const path = window.location.pathname.split('folder/')[1];
-		// if (path !== undefined) {
-		//     this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-		// }
-	}
-
 	loadNotifications() {
+		dog && console.log('🌲 [AppComponent] Load notifications');
 		let total = 0;
 		this.notificationService.getNotificationCount(null).then((res: any) => {
 			this.env.user.Forms.filter((f) => f.Type === 1).forEach((form1) => {
@@ -325,57 +509,58 @@ export class AppComponent implements OnInit {
 				form10.BadgeNum = sumFrom11 + sumFrom1;
 				total += form10.BadgeNum || 0;
 			});
-			this.totalNotifications = total;
+			this.ui.totalNotifications = total;
 		});
 	}
 
 	serviceWorkerRegister() {
-		// No need to register service worker if not in web platform
-		if (Capacitor.getPlatform() != 'web') 
-			return;
+		if (Capacitor.getPlatform() != 'web') return;
 
 		return;
 		if ('serviceWorker' in navigator) {
 			const swScope = window.location.pathname.replace(/\/$/, '') + '/';
-			
-			navigator.serviceWorker.getRegistrations().then((registrations) => {
-				registrations.forEach((registration) => {
-					if (registration.scope !== window.location.origin + swScope) {
-						registration.unregister().then(() => {
-							if (window.caches) {
-								window.caches.keys().then((cacheNames) => {
-									cacheNames.forEach((cacheName) => {
-										window.caches.delete(cacheName);
+
+			navigator.serviceWorker
+				.getRegistrations()
+				.then((registrations) => {
+					registrations.forEach((registration) => {
+						if (registration.scope !== window.location.origin + swScope) {
+							registration.unregister().then(() => {
+								if (window.caches) {
+									window.caches.keys().then((cacheNames) => {
+										cacheNames.forEach((cacheName) => {
+											window.caches.delete(cacheName);
+										});
 									});
-								});
-							}
-						});
-					}
-				});
-			}).finally(() => {
-				return;
-				navigator.serviceWorker.getRegistration(swScope).then((registration) => {
-					if (!registration) {
-						navigator.serviceWorker.register('ngsw-worker.js', { scope: swScope }).then((reg) => {
-							reg.onupdatefound = () => {
-								const installingWorker = reg.installing;
-								installingWorker.onstatechange = () => {
-									if (installingWorker.state === 'installed') {
-										if (navigator.serviceWorker.controller) {
-											// Có bản cập nhật mới, thông báo cho người dùng
-											if (confirm('Đã có phiên bản mới, tải lại để cập nhật?')) {
-												window.location.reload();
+								}
+							});
+						}
+					});
+				})
+				.finally(() => {
+					return;
+					navigator.serviceWorker.getRegistration(swScope).then((registration) => {
+						if (!registration) {
+							navigator.serviceWorker.register('ngsw-worker.js', { scope: swScope }).then((reg) => {
+								reg.onupdatefound = () => {
+									const installingWorker = reg.installing;
+									installingWorker.onstatechange = () => {
+										if (installingWorker.state === 'installed') {
+											if (navigator.serviceWorker.controller) {
+												// Có bản cập nhật mới, thông báo cho người dùng
+												if (confirm('Đã có phiên bản mới, tải lại để cập nhật?')) {
+													window.location.reload();
+												}
 											}
 										}
-									}
+									};
 								};
-							};
-						});
-					} else {
-						// Đã có Service Worker đúng scope, không cần đăng ký lại
-					}
+							});
+						} else {
+							// Đã có Service Worker đúng scope, không cần đăng ký lại
+						}
+					});
 				});
-			});
 		}
 	}
 
@@ -485,7 +670,7 @@ export class AppComponent implements OnInit {
 					const title = payload.data?.title ?? 'Thông báo';
 					const body = payload.data?.body ?? '';
 
-					this.showInAppNotification(title, body); // tuỳ bạn định nghĩa
+					this.env.showMessage(body, null, null, null, false, title);
 				});
 				console.log('FCM Token:', token);
 			} catch (err) {
@@ -494,46 +679,17 @@ export class AppComponent implements OnInit {
 		}
 	}
 
-	initializeApp() {
-		this.platform.ready().then(() => {
-			this.showScrollbar = environment.showScrollbar;
-			this.serviceWorkerRegister();
-			this.updateStatusbar();
-		});
-	}
-	async showInAppNotification(title: string, body: string) {
-		const toast = await this.toastController.create({
-			header: title,
-			message: body, // Bạn có thể truyền HTML nếu cần
-			duration: 3000,
-			position: 'top',
-			color: 'primary',
-			buttons: [
-				{
-					text: 'X',
-					role: 'cancel',
-				},
-			],
-		});
-
-		await toast.present();
-	}
-	toogleMenu() {
-		this.showAppMenu = !this.showAppMenu;
-	}
-
-	lastForm = null;
 	focusMenuOnPageEnter(currentForm, force = false) {
 		if (!currentForm) return;
-		if (force == false && (!currentForm || currentForm.Id === this.lastForm?.Id)) return;
-		this.lastForm = currentForm;
+		if (force == false && (!currentForm || currentForm.Id === this.ui.lastForm?.Id)) return;
+		this.ui.lastForm = currentForm;
 
 		//Find the menu item by page.PageName
 		//Loop to Find parent menu item if exists then set isShowForm = true
 		let menuItem = this.env.user.Forms.find((f) => f.Id === currentForm.Id);
 		const parentForms = this.getAllParentForms(menuItem);
-		if (!(parentForms[0]?.isShowDetail == true)) this.toogleMenuGroup(parentForms[0]);
-		if (!(parentForms[1]?.isShowForm == true)) this.toogleMenuForm(parentForms[1]);
+		if (!(parentForms[0]?.isShowDetail == true)) this.uiEvents.toogleMenuGroup(parentForms[0]);
+		if (!(parentForms[1]?.isShowForm == true)) this.uiEvents.toogleMenuForm(parentForms[1]);
 	}
 
 	getAllParentForms(form) {
@@ -548,79 +704,14 @@ export class AppComponent implements OnInit {
 		return parentForms.reverse();
 	}
 
-	toogleMenuGroup(f) {
-		f.isShowDetail = !f.isShowDetail;
-		this.env.user.Forms.filter((g) => f.Id == g.IDParent).forEach((i) => {
-			i.isShowDetail = f.isShowDetail;
-
-			this.env.user.Forms.filter((m) => m.IDParent == i.Id).forEach((l) => {
-				l.isShowDetail = f.isShowDetail;
-				if (i.isShowForm == undefined) {
-					l.isShowForm = true;
-				}
-			});
-
-			if (i.isShowForm == undefined) {
-				i.isShowForm = true;
-			}
-		});
-	}
-	toogleMenuForm(f) {
-		f.isShowForm = !f.isShowForm;
-		this.env.user.Forms.filter((m) => m.IDParent == f.Id).forEach((l) => {
-			l.isShowForm = f.isShowForm;
-		});
-	}
-
-	goToPage(path, event, direction = 'root') {
-		event.preventDefault();
-		event.stopPropagation();
-
-		this.menu.close();
-		//this.router.navigateByUrl(path);
-		if (direction == 'root') {
-			this.navCtrl.navigateRoot(path);
-		} else if (direction == 'forward') {
-			this.navCtrl.navigateForward(path);
-		}
-	}
-
-	logout() {
-		event.preventDefault();
-		event.stopPropagation();
-		this.menu.close();
-		this.isUserCPOpen = false;
-		this.env.publishEvent({ Code: 'app:logout' });
-	}
-
-	changeServer(server) {
-		environment.appDomain = server.Code;
-		this.env.setStorage('appDomain', server.Code);
-		this._environment = environment;
-	}
-
-	logo = '';
-	async changeBranch() {
-		this.env.selectedBranch = this.branchFormGroup.get('IDBranch').value;
-		await this.env.changeBranch();
-		let sb = this.env.branchList.find((d) => d.Id == this.env.selectedBranch);
-
-		if (sb.LogoURL) {
-			this.logo = sb.LogoURL;
-		} else {
-			this.logo = 'assets/logos/logo-in-holdings.png';
-		}
-		console.log(this.logo);
-	}
-
 	appMessageManage(message) {
 		if (message.IsShow) {
-			this.appMessages.push(message);
+			this.ui.appMessages.push(message);
 		} else {
-			let ms = this.appMessages.filter((e) => e.Id == message.Id);
+			let ms = this.ui.appMessages.filter((e) => e.Id == message.Id);
 			ms.forEach((f) =>
-				this.appMessages.splice(
-					this.appMessages.findIndex((e) => e.Id == f.Id),
+				this.ui.appMessages.splice(
+					this.ui.appMessages.findIndex((e) => e.Id == f.Id),
 					1
 				)
 			);
@@ -635,58 +726,5 @@ export class AppComponent implements OnInit {
 		if (navigator.userAgent.toLowerCase().indexOf('iphone') > -1) {
 			window.location.href = environment.appStoreURL;
 		}
-	}
-
-	searchMenu(ev) {
-		var val = ev.target.value;
-		if (val == undefined) {
-			val = '';
-		}
-		if (val.length > 1) {
-			this.queryMenu = val;
-			this.foundMenu = lib.searchTree(this.env.user.Forms, this.queryMenu);
-		}
-	}
-
-	focusSearch(): void {
-		setTimeout(() => {
-			this.search.setFocus();
-		}, 300);
-	}
-
-	searchResultIdList = { term: '', ids: [] };
-	searchShowAllChildren = (term: string, item: any) => {
-		if (this.searchResultIdList.term != term) {
-			this.searchResultIdList.term = term;
-			this.searchResultIdList.ids = lib.searchTreeReturnId(this.env.branchList, term);
-		}
-		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
-	};
-
-	async changeLanguage(lang = null) {
-		await this.env.setLang(lang);
-		this.env.publishEvent({ Code: 'app:changeLanguage', Value: lang });
-	}
-
-	closeHelp() {
-		this.menu.close('appHelpDetail');
-		this.showHelp = false;
-	}
-
-	openHelp() {
-		this.menu.open('appHelpDetail');
-	}
-
-	@ViewChild('userCPPopover') userCPPopover;
-	isUserCPOpen = false;
-	presentUserCPPopover(e: any) {
-		this.userCPPopover.event = e;
-		this.isUserCPOpen = true;
-	}
-
-	changeThemeMode(event) {
-		this.env.user.UserSetting.Theme.Value = event.detail.value;
-		this.userSettingProvider.save(this.env.user.UserSetting.Theme);
-		this.updateStatusbar();
 	}
 }

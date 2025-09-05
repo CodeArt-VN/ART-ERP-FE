@@ -6,7 +6,7 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { SYS_SegmentProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
-import { ReportDataConfig } from 'src/app/models/options-interface';
+import { ReportDataConfig } from 'src/app/interfaces/options-interface';
 
 @Component({
 	selector: 'app-notification-segment-detail',

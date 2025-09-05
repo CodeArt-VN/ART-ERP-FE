@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
@@ -39,22 +39,21 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DynamicTranslateLoaderService } from './services/core/translate-loader.service';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { Capacitor } from '@capacitor/core';
-import { environment } from 'src/environments/environment';
+import { dog } from 'src/environments/environment';
+import { AuthenticationService } from './services/auth/authentication.service';
+import { GlobalData } from './services/static/global-variable';
+import { StorageService } from './services/core/storage.service';
 
-export function createTranslateLoader(http: HttpClient) {
-	console.log('Creating Translate Loader');
-	const isHybrid = Capacitor.getPlatform() !== 'web';
-	console.log('Running in ' + (isHybrid ? 'hybrid' : 'web') + ' mode');
-
-	if (isHybrid) return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-	else return new TranslateHttpLoader(http, environment.appDomain + 'uploads/i18n/', '.json');
+export function createTranslateLoader(http: HttpClient, storage: StorageService): DynamicTranslateLoaderService {
+	return new DynamicTranslateLoaderService(http, storage);
 }
+
+
 
 @NgModule({
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -90,7 +89,7 @@ export function createTranslateLoader(http: HttpClient) {
 			loader: {
 				provide: TranslateLoader,
 				useFactory: createTranslateLoader,
-				deps: [HttpClient],
+				deps: [HttpClient, StorageService],
 			},
 			compiler: {
 				provide: TranslateCompiler,
@@ -127,6 +126,22 @@ export function createTranslateLoader(http: HttpClient) {
 		//{ provide: LocationStrategy, useClass: HashLocationStrategy },
 		{ provide: APP_BASE_HREF, useValue: `/` },
 		provideHttpClient(withInterceptorsFromDi(), withJsonpSupport()),
+		
+		// // APP_INITIALIZER - Initialize storage first
+		// {
+		// 	provide: APP_INITIALIZER,
+		// 	useFactory: initializeStorage,
+		// 	deps: [StorageService],
+		// 	multi: true
+		// },
+		
+		// APP_INITIALIZER - Then initialize environment
+		// {
+		// 	provide: APP_INITIALIZER,
+		// 	useFactory: initializeAuthentication,
+		// 	deps: [AuthenticationService],
+		// 	multi: true
+		// },
 	],
 })
 export class AppModule {}

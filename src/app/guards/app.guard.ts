@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
-import { AccountService } from '../services/account.service';
+import { UserContextService } from '../services/auth/user-context.service';
+import { dog } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -11,26 +12,38 @@ export class AuthGuard implements CanActivate {
 	constructor(
 		public router: Router,
 		public env: EnvService,
-		public accountService: AccountService
+		public userContextService: UserContextService
 	) {}
 
+	// canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+	// 	dog && console.log('🔒 [AuthGuard] canActivate');
+	// 	return new Promise<boolean>((resolve) => {
+	// 		this.checkCanUse(next, state).then((result) => {
+	// 			resolve(result);
+	// 		});
+	// 	});
+	// }
+
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-		return new Promise<boolean>((resolve) => {
-			if (!this.env.isloaded) {
-				this.accountService
-					.loadSavedData()
-					.then((_) => {
-						return this.checkCanUse(next, state).then((result) => {
-							resolve(result);
-						});
-					})
-					.catch((err) => {
-						this.accountService.commonService.checkError(err);
-					});
-			} else {
-				return this.checkCanUse(next, state).then((result) => {
+		dog && console.log('�� [AuthGuard] canActivate for route:', state.url);
+
+		return new Promise<boolean>(async (resolve) => {
+			try {
+				this.env.ready.then(async (_) => {
+					dog && console.log('✅ [AuthGuard] Environment ready, checking permissions...');
+					const result = await this.checkCanUse(next, state);
 					resolve(result);
+					dog && console.log('✅ [AuthGuard] Permissions checked:', result);
 				});
+			} catch (error) {
+				dog && console.error('❌ [AuthGuard] Error waiting for environment:', error);
+
+				// Fallback: redirect to login
+				this.env.showMessage('System is initializing, please try again', 'warning');
+				this.router.navigate(['/login'], {
+					queryParams: { returnUrl: state.url },
+				});
+				resolve(false);
 			}
 		});
 	}
@@ -52,7 +65,8 @@ export class AuthGuard implements CanActivate {
 						} else {
 							// not logged in so redirect to login page with the return url
 							this.env.showMessage('You are not authorized to access here, please contact Admin to get authorisation', 'warning');
-							this.accountService.logout().then((_) => {
+							// Handle logout without accountService
+							this.env.clearStorage().then((_) => {
 								this.router.navigate(['/login'], {
 									queryParams: { returnUrl: state.url },
 								});

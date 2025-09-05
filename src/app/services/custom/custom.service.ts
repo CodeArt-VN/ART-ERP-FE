@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { APIList } from '../services/static/global-variable';
-import { CommonService, exService } from '../services/core/common.service';
-import { SearchConfig } from '../services/static/search-config';
+import { APIList } from '../static/global-variable';
+import { CommonService, exService } from '../core/common.service';
+import { SearchConfig } from '../static/search-config';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { EnvService } from './core/env.service';
-import { ApiSetting } from './static/api-setting';
+import { EnvService } from '../core/env.service';
+import { ApiSetting } from '../static/api-setting';
 import { environment } from 'src/environments/environment';
-import { LIST_AddressSubdivisionProvider } from './static/services.service';
-import { thirdPartyLibs } from './static/thirdPartyLibs';
+import { LIST_AddressSubdivisionProvider } from '../static/services.service';
+import { thirdPartyLibs } from '../static/thirdPartyLibs';
 
 @Injectable({
 	providedIn: 'root',

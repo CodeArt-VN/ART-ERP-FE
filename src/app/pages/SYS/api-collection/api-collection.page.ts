@@ -5,7 +5,7 @@ import { PageBase } from 'src/app/page-base';
 import { BRA_BranchProvider, SYS_APICollectionProvider, SYS_IntegrationProviderProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
 import { CommonService } from 'src/app/services/core/common.service';
-import { SortConfig } from 'src/app/models/options-interface';
+import { SortConfig } from 'src/app/interfaces/options-interface';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -73,7 +73,6 @@ export class APICollectionPage extends PageBase {
 			// this.form.patchValue(this._reportConfig?.DataConfig);
 		} else {
 			this.submitAttempt = true;
-			this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: true, Id: 'FileImport', Icon: 'flash', IsBlink: true, Color: 'danger', Message: 'đang import' });
 			const reader = new FileReader();
 
 			if (this.fileImport.type === 'application/json') {
@@ -100,12 +99,10 @@ export class APICollectionPage extends PageBase {
 											.showLoading('Please wait for a few moments', this.commonService.connect('POST', 'SYS/APICollection/ImportJson/', obj).toPromise())
 											.then((resp: any) => {
 												this.submitAttempt = false;
-												this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 												this.refresh();
 											})
 											.catch((err) => {
 												this.submitAttempt = false;
-												this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 												this.refresh();
 												this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
 											});
@@ -116,12 +113,10 @@ export class APICollectionPage extends PageBase {
 											.showLoading('Please wait for a few moments', this.commonService.connect('POST', 'SYS/APICollection/ImportJson/', obj).toPromise())
 											.then((resp: any) => {
 												this.submitAttempt = false;
-												this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 												this.refresh();
 											})
 											.catch((err) => {
 												this.submitAttempt = false;
-												this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 												this.refresh();
 												this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
 											});
@@ -131,12 +126,10 @@ export class APICollectionPage extends PageBase {
 									.showLoading('Please wait for a few moments', this.commonService.connect('POST', 'SYS/APICollection/ImportJson/', obj).toPromise())
 									.then((resp: any) => {
 										this.submitAttempt = false;
-										this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 										this.refresh();
 									})
 									.catch((err) => {
 										this.submitAttempt = false;
-										this.env.publishEvent({ Code: 'app:ShowAppMessage', IsShow: false, Id: 'FileImport' });
 										this.refresh();
 										this.env.showMessage('erp.app.pages.sale.sale-order.message.import-error', 'danger');
 									});

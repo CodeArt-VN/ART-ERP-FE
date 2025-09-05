@@ -6,8 +6,9 @@ import { EnvService } from 'src/app/services/core/env.service';
 import { BRA_BranchProvider, WEB_ContentProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 declare var Quill: any;
 
@@ -56,7 +57,7 @@ export class HelpDetailComponent extends PageBase {
 		this.pageConfig.showSpinner = false;
 		this.pageConfig.pageCode = 'help';
 		this.subscription = this.env.getEvents().subscribe((data) => {
-			if (data.Code == 'app:changeLanguage') {
+			if (data.Code == EVENT_TYPE.APP.CHANGE_LANGUAGE) {
 				this.isChangeLanguage = true;
 				this.loadData();
 			}

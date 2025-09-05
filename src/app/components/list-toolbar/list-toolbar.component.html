@@ -142,7 +142,7 @@
 		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
 
 		<ng-content select="[selected]"></ng-content>
-		<ion-button *ngIf="pageConfig.canChangeBranch" (click)="emit('changeBranch')" title="{{ 'Change branch' | translate }}">
+		<ion-button *ngIf="pageConfig.canChangeBranch" (click)="onChangeBranch()" title="{{ 'Change branch' | translate }}">
 			<ion-icon color="warning" slot="icon-only" name="sitemap"></ion-icon>
 		</ion-button>
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerOptions, CapacitorBarcodeScannerScanResult } from '@capacitor/barcode-scanner';
 import { Capacitor } from '@capacitor/core';
-import { EnvService } from './core/env.service';
-import { lib } from './static/global-functions';
+import { EnvService } from '../core/env.service';
+import { lib } from '../static/global-functions';
 
 @Injectable({
 	providedIn: 'root',

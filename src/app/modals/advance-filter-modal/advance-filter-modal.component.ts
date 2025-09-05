@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { ReportDataConfig } from 'src/app/models/options-interface';
+import { ReportDataConfig } from 'src/app/interfaces/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
 

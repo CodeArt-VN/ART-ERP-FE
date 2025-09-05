@@ -25,7 +25,7 @@
 	<div class="main-view">
 		<div class="row-full shadow full-screen">
 			<ion-toolbar color="primary">
-				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="ui.segmentView">
 					<ion-segment-button value="s1">
 						<ion-label>{{'Personal information' | translate}}</ion-label>
 					</ion-segment-button>
@@ -47,10 +47,10 @@
 				</ion-segment>
 			</ion-toolbar>
 
-			<div *ngIf="segmentView == 's1'">
-				<div class="ion-padding" *ngIf="item && env.user">
+			<div *ngIf="ui.segmentView == 's1'">
+				<div class="ion-padding" *ngIf="ui.item && env.user">
 					<ion-grid fixed>
-						<form [formGroup]="formGroup">
+						<form [formGroup]="ui.formGroup">
 							<ion-row class="hr-group">
 								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
 									<ion-list lines="none">
@@ -63,7 +63,7 @@
 									</ion-list>
 								</ion-col>
 								<ion-col size="12" size-sm size-md="8" size-xl="6">
-									<div class="c-control" *ngIf="item.Id">
+									<div class="c-control" *ngIf="ui.item.Id">
 										<label class="c-label" for="Id">{{'Id' | translate}}</label>
 										<input class="c-input" id="Id" formControlName="Id" type="number" />
 									</div>
@@ -75,7 +75,7 @@
 										<label class="c-label" for="FullName"
 											>{{'Full name' | translate}}
 											<span
-												*ngIf="!formGroup.controls.FullName.valid && !formGroup.controls.FullName.pending && (formGroup.controls.FullName.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.FullName.valid && !ui.formGroup.controls.FullName.pending && (ui.formGroup.controls.FullName.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
@@ -87,19 +87,19 @@
 										<label class="c-label" for="DOB"
 											>{{'Date of birth' | translate}}
 											<span
-												*ngIf="!formGroup.controls.DOB.valid && !formGroup.controls.DOB.pending && (formGroup.controls.DOB.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.DOB.valid && !ui.formGroup.controls.DOB.pending && (ui.formGroup.controls.DOB.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
 											>
 										</label>
-										<input class="c-input" id="DOB" formControlName="DOB" type="date" [min]="minDOB" [max]="maxDOB" />
+										<input class="c-input" id="DOB" formControlName="DOB" type="date" [min]="ui.minDOB" [max]="ui.maxDOB" />
 									</div>
 									<div class="c-control">
 										<label class="c-label" for="PhoneNumber"
 											>{{'Phone number' | translate}}
 											<span
-												*ngIf="!formGroup.controls.PhoneNumber.valid && !formGroup.controls.PhoneNumber.pending && (formGroup.controls.PhoneNumber.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.PhoneNumber.valid && !ui.formGroup.controls.PhoneNumber.pending && (ui.formGroup.controls.PhoneNumber.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
@@ -120,7 +120,7 @@
 										<label class="c-label" for="Domicile"
 											>{{'Place of origin' | translate}}
 											<span
-												*ngIf="!formGroup.controls.Domicile.valid && !formGroup.controls.Domicile.pending && (formGroup.controls.Domicile.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.Domicile.valid && !ui.formGroup.controls.Domicile.pending && (ui.formGroup.controls.Domicile.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
@@ -132,7 +132,7 @@
 										<label class="c-label" for="IdentityCardNumber"
 											>{{'National ID' | translate}}
 											<span
-												*ngIf="!formGroup.controls.IdentityCardNumber.valid && !formGroup.controls.IdentityCardNumber.pending && (formGroup.controls.IdentityCardNumber.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.IdentityCardNumber.valid && !ui.formGroup.controls.IdentityCardNumber.pending && (ui.formGroup.controls.IdentityCardNumber.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
@@ -145,20 +145,20 @@
 										<label class="c-label" for="DateOfIssueID"
 											>{{'Date of issue' | translate}}
 											<span
-												*ngIf="!formGroup.controls.DateOfIssueID.valid && !formGroup.controls.DateOfIssueID.pending && (formGroup.controls.DateOfIssueID.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.DateOfIssueID.valid && !ui.formGroup.controls.DateOfIssueID.pending && (ui.formGroup.controls.DateOfIssueID.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
 											>
 										</label>
-										<input (change)="saveChange()" class="c-input" id="DateOfIssueID" formControlName="DateOfIssueID" type="date" [min]="minDOB" />
+										<input (change)="saveChange()" class="c-input" id="DateOfIssueID" formControlName="DateOfIssueID" type="date" [min]="ui.minDOB" />
 									</div>
 
 									<div class="c-control">
 										<label class="c-label" for="IssuedBy"
 											>{{'Place of issue' | translate}}
 											<span
-												*ngIf="!formGroup.controls.IssuedBy.valid && !formGroup.controls.IssuedBy.pending && (formGroup.controls.IssuedBy.dirty || submitAttempt)"
+												*ngIf="!ui.formGroup.controls.IssuedBy.valid && !ui.formGroup.controls.IssuedBy.pending && (ui.formGroup.controls.IssuedBy.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
@@ -169,7 +169,7 @@
 								</ion-col>
 							</ion-row>
 						</form>
-						<form [formGroup]="changePasswordForm">
+						<form [formGroup]="ui.changePasswordForm">
 							<ion-row class="hr-group">
 								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
 									<ion-list lines="none">
@@ -200,44 +200,44 @@
 										<label class="c-label" for="oldPassword"
 											>{{'Input old password' | translate}}
 											<span
-												*ngIf="!changePasswordForm.controls.oldPassword.valid && !changePasswordForm.controls.oldPassword.pending && (changePasswordForm.controls.oldPassword.dirty || submitAttempt)"
+												*ngIf="!ui.changePasswordForm.controls.oldPassword.valid && !ui.changePasswordForm.controls.oldPassword.pending && (ui.changePasswordForm.controls.oldPassword.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
 											>
 										</label>
-										<input class="c-input" id="oldPassword" formControlName="oldPassword" [type]="passwordViewType" />
+										<input class="c-input" id="oldPassword" formControlName="oldPassword" [type]="ui.passwordViewType" />
 									</div>
 									<div class="c-control">
 										<label class="c-label" for="newPassword"
 											>{{'Enter password' | translate}}
 											<span
-												*ngIf="!changePasswordForm.controls.newPassword.valid && !changePasswordForm.controls.newPassword.pending && (changePasswordForm.controls.newPassword.dirty || submitAttempt)"
+												*ngIf="!ui.changePasswordForm.controls.newPassword.valid && !ui.changePasswordForm.controls.newPassword.pending && (ui.changePasswordForm.controls.newPassword.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
 											>
 										</label>
-										<input class="c-input" id="newPassword" formControlName="newPassword" [type]="passwordViewType" />
+										<input class="c-input" id="newPassword" formControlName="newPassword" [type]="ui.passwordViewType" />
 									</div>
 									<div class="c-control">
 										<label class="c-label" for="confirmPassword"
 											>{{'Confirm password' | translate}}
 											<span
-												*ngIf="!changePasswordForm.controls.confirmPassword.valid && !changePasswordForm.controls.confirmPassword.pending && (changePasswordForm.controls.confirmPassword.dirty || submitAttempt)"
+												*ngIf="!ui.changePasswordForm.controls.confirmPassword.valid && !ui.changePasswordForm.controls.confirmPassword.pending && (ui.changePasswordForm.controls.confirmPassword.dirty || ui.submitAttempt)"
 												ion-text
 												color="danger"
 												>(*)</span
 											>
 										</label>
-										<input class="c-input" id="confirmPassword" formControlName="confirmPassword" [type]="passwordViewType" />
+										<input class="c-input" id="confirmPassword" formControlName="confirmPassword" [type]="ui.passwordViewType" />
 									</div>
 
 									<div class="c-control">
 										<ion-button size="small" (click)="changePassword()"> {{'Change password' | translate}} </ion-button>
 
-										<ion-button size="small" (click)="passwordViewType = passwordViewType=='password'?'text':'password'" color="warning">
-											<ion-icon slot="icon-only" [name]="passwordViewType=='password'?'eye':'eye-off'"></ion-icon>
+										<ion-button size="small" (click)="ui.passwordViewType = ui.passwordViewType=='password'?'text':'password'" color="warning">
+											<ion-icon slot="icon-only" [name]="ui.passwordViewType=='password'?'eye':'eye-off'"></ion-icon>
 										</ion-button>
 									</div>
 								</ion-col>
@@ -255,7 +255,7 @@
 								</ion-list>
 							</ion-col>
 							<ion-col size="12" size-sm size-md="8" size-xl="6">
-								<ion-list lines="full" *ngIf="userSetting && userSetting.isLoaded">
+								<ion-list lines="full" *ngIf="ui.userSetting && ui.userSetting.isLoaded">
 									<ion-item class="ion-no-padding">
 										<ion-label class="ion-text-wrap">
 											<ion-text color="dark">
@@ -265,10 +265,10 @@
 												<p>{{'Collapsed menu' | translate}}</p>
 											</ion-text>
 										</ion-label>
-										<ion-toggle (click)="updateUserSetting(userSetting.IsCompactMenu)" slot="end" [checked]="userSetting.IsCompactMenu.Value"> </ion-toggle>
+										<ion-toggle (click)="updateUserSetting(ui.userSetting.IsCompactMenu)" slot="end" [checked]="ui.userSetting.IsCompactMenu.Value"> </ion-toggle>
 									</ion-item>
 
-									<ion-radio-group [value]="userSetting.Theme.Value" (ionChange)="updateTheme($event); changeTheme()">
+									<ion-radio-group [value]="ui.userSetting.Theme.Value" (ionChange)="updateTheme($event); changeTheme()">
 										<ion-item>
 											<ion-icon color="primary" name="contrast" slot="start"></ion-icon>
 											<ion-radio value="OS">{{ 'OS default' | translate }}</ion-radio>
@@ -301,10 +301,10 @@
 					</ion-grid>
 				</div>
 			</div>
-			<div *ngIf="segmentView == 's2'">
+			<div *ngIf="ui.segmentView == 's2'">
 				<div class="ion-padding"></div>
 			</div>
-			<div *ngIf="segmentView == 's3'">
+			<div *ngIf="ui.segmentView == 's3'">
 				<div class="ion-padding"></div>
 			</div>
 		</div>

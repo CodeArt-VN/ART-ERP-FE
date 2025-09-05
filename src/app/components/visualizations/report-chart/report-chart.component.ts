@@ -1,9 +1,10 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
+import { BIReport, ReportDataConfig } from 'src/app/interfaces/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
-import { ReportService } from 'src/app/services/report.service';
+import { ReportService } from 'src/app/services/custom/report.service';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 @Component({
 	selector: 'app-report-chart',
@@ -127,7 +128,7 @@ export class ReportChartComponent implements OnInit {
 
 		this.subscriptions.push(
 			this.env.getEvents().subscribe((data) => {
-				if (data.Code == 'changeBranch') {
+				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.onReloadData();
 				}
 			})

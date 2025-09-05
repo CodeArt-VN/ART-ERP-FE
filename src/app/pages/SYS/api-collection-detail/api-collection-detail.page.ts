@@ -4,7 +4,7 @@ import { PageBase } from 'src/app/page-base';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { SYS_APICollectionProvider, SYS_IntegrationProviderProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, FormControl, FormArray, Validators, FormGroup } from '@angular/forms';
 import { CommonService } from 'src/app/services/core/common.service';
