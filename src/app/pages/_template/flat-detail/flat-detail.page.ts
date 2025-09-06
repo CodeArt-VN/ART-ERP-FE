@@ -1,11 +1,12 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { NavController, LoadingController, AlertController } from '@ionic/angular';
-import { PageBase } from 'src/app/page-base';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
+
+import { PageBase } from 'src/app/page-base';
+import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { BRA_BranchProvider, WMS_ZoneProvider } from 'src/app/services/static/services.service';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { CommonService } from 'src/app/services/core/common.service';
 
 @Component({
 	selector: 'app-flat-detail',

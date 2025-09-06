@@ -1,27 +1,30 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
 import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { PipesModule } from './pipes/pipes.module';
 import { ShareModule } from './share.module';
-
 import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
 import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
 import { SaleOrderMergeModalPage } from './pages/SALE/sale-order-merge-modal/sale-order-merge-modal.page';
 import { SaleOrderARInvoiceModalPage } from './pages/SALE/sale-order-create-arinvoice-modal/sale-order-create-arinvoice-modal.page';
 import { SaleOrderMergeARInvoiceModalPage } from './pages/SALE/sale-order-merge-arinvoice-modal/sale-order-merge-arinvoice-modal.page';
 import { SaleOrderMobileAddContactModalPage } from './pages/SALE/sale-order-mobile-add-contact-modal/sale-order-mobile-add-contact-modal.page';
-
 import { ARInvoiceSplitModalPage } from './pages/ACCOUNTANT/arinvoice-split-modal/arinvoice-split-modal.page';
 import { ARInvoiceMergeModalPage } from './pages/ACCOUNTANT/arinvoice-merge-modal/arinvoice-merge-modal.page';
-
 import { POSSplitModalPage } from './pages/POS/pos-split-modal/pos-split-modal.page';
 import { POSMergeModalPage } from './pages/POS/pos-merge-modal/pos-merge-modal.page';
 import { POSChangeTableModalPage } from './pages/POS/pos-change-table-modal/pos-change-table-modal.page';
@@ -32,18 +35,9 @@ import { POSAddContactModalPage } from './pages/POS/pos-add-contact-modal/pos-ad
 import { POSCancelModalPage } from './pages/POS/pos-cancel-modal/pos-cancel-modal.page';
 import { POSNotifyModalPage } from './modals/pos-notify-modal/pos-notify-modal.page';
 import { MCPCustomerPickerModalPage } from './pages/CRM/mcp-customer-picker-modal/mcp-customer-picker-modal.page';
-
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
-import { NgSelectModule } from '@ng-select/ng-select';
-
-import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
-
 import { DynamicTranslateLoaderService } from './services/util/translate-loader.service';
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { dog } from 'src/environments/environment';
 import { AuthenticationService } from './services/auth/authentication.service';
 import { GlobalData } from './services/static/global-variable';

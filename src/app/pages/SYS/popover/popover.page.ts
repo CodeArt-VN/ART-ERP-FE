@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { concat, of, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+
 import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { HRM_StaffProvider } from 'src/app/services/static/services.service';
-import { concat, of, Subject } from 'rxjs';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-popover',

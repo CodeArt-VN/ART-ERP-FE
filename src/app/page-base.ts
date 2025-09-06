@@ -1,15 +1,16 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { lib } from './services/static/global-functions';
-import { APIList } from './services/static/global-variable';
-import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
+
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
-import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
-import { EVENT_TYPE } from './services/static/event-type';
 import { PageConfig } from './interfaces/base-page-interface';
+import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
+import { PopoverPage } from './pages/SYS/popover/popover.page';
+import { EVENT_TYPE } from './services/static/event-type';
+import { lib } from './services/static/global-functions';
+import { APIList } from './services/static/global-variable';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	template: '',

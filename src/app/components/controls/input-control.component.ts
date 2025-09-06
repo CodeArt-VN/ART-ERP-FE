@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+
 import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
-
-import { ModalController } from '@ionic/angular';
 import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
 
 @Component({

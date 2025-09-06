@@ -1,18 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ToastController } from '@ionic/angular';
-import { Capacitor } from '@capacitor/core';
-import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
-import { StatusBar } from '@capacitor/status-bar';
+import { FormBuilder } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { StatusBar } from '@capacitor/status-bar';
+import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
+import { register } from 'swiper/element/bundle';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { initializeApp } from 'firebase/app';
+
 import { EnvService } from './services/core/env.service';
 import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
 import { dog, environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
-import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
-import { register } from 'swiper/element/bundle';
-import { FormBuilder } from '@angular/forms';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { initializeApp } from 'firebase/app';
 import { OSM_NotificationService } from './services/custom/notifications.service';
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';

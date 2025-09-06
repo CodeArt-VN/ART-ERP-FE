@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { BRA_BranchProvider, CRM_ContactProvider, SALE_OrderDetailProvider, SALE_OrderProvider, SYS_ConfigProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
 import QRCode from 'qrcode';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { BRA_BranchProvider, CRM_ContactProvider, SALE_OrderDetailProvider, SALE_OrderProvider, SYS_ConfigProvider } from 'src/app/services/static/services.service';
 import { lib } from 'src/app/services/static/global-functions';
 
 @Component({

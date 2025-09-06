@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { BRA_BranchProvider, OSM_NotificationProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
+import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+
 import { SortConfig } from 'src/app/interfaces/options-interface';
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { BRA_BranchProvider, OSM_NotificationProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-notification',

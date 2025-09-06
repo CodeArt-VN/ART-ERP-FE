@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ShareModule } from 'src/app/share.module';
 import { DataCorrectionRequestModalPage } from './data-correction-request-modal.page';
 import { ShareInputControlsModule } from 'src/app/components/controls/share-input-controls.modules';
 import { PipesModule } from 'src/app/pipes/pipes.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 import { BusinessPartnerComponentsModule } from 'src/app/pages/CRM/business-partner-detail/components/business-partner-components.module';
 
