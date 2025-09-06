@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+
 import { PageBase } from 'src/app/page-base';
-import { EnvService } from 'src/app/services/core/env.service';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { CommonService } from 'src/app/services/core/common.service';
-import { APIList } from 'src/app/services/static/global-variable';
-import { environment, dog } from 'src/environments/environment';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { EnvService } from 'src/app/services/core/env.service';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
+import { APIList } from 'src/app/services/static/global-variable';
+import { dog, environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-register',

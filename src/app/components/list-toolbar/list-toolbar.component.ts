@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
-import { em } from '@fullcalendar/core/internal-common';
 import { TranslateService } from '@ngx-translate/core';
+
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 @Component({

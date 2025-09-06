@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
-import { lib } from 'src/app/services/static/global-functions';
-import QRCode from 'qrcode';
 import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
+import QRCode from 'qrcode';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
 	selector: 'app-po-note',

@@ -1,12 +1,13 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { NavController, LoadingController, AlertController } from '@ionic/angular';
-import { PageBase } from 'src/app/page-base';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { EnvService } from 'src/app/services/core/env.service';
-import { SYS_SegmentProvider, SYS_SchemaProvider } from 'src/app/services/static/services.service';
-import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
-import { CommonService } from 'src/app/services/core/common.service';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
+
 import { ReportDataConfig } from 'src/app/interfaces/options-interface';
+import { PageBase } from 'src/app/page-base';
+import { CommonService } from 'src/app/services/core/common.service';
+import { EnvService } from 'src/app/services/core/env.service';
+import { SYS_SchemaProvider, SYS_SegmentProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-notification-segment-detail',

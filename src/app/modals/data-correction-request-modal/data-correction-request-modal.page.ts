@@ -2,10 +2,9 @@ import { Component, Input, NgModule } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
+import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-// import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
-import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
 
 @Component({
