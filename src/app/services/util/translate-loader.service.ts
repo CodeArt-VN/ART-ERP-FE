@@ -6,6 +6,7 @@ import { catchError, retry, timeout, switchMap, take, mergeMap } from 'rxjs/oper
 import { Capacitor } from '@capacitor/core';
 import { dog, environment } from 'src/environments/environment';
 import { StorageService } from '../core/storage.service';
+import { CacheManagementService } from '../core/cache-management.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,7 +16,7 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 
 	constructor(
 		private http: HttpClient,
-		private storage: StorageService
+		private storage: CacheManagementService
 	) {}
 
 	getTranslation(lang: string): Observable<any> {
@@ -28,16 +29,28 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 
 		// For web, load from current tenant
 		if (environment.languageStrategy?.networkFirst) {
-			
-			// Bắt buộc phải chờ storage để load tenant
-			// Chỉ fallback khi tenant null hoặc lỗi
-			return from(this.storage.get('Tenant')).pipe(
-				switchMap((tenant) => {
+			return this.storage.tracking().pipe(
+				// Wait until tracking is true, then take the first true value
+				switchMap((tracking) => {
+					if (tracking) return of(tracking);
+
+					// Wait for tracking to become true
+					return this.storage.tracking().pipe(
+						// filter for true values only
+						switchMap((t) => (t ? of(t) : [])),
+						take(1)
+					);
+				}),
+				switchMap(() => {
+					const tenant = this.storage.app.tenant;
+					if (lang == 'cache') {
+						lang = this.storage.app.lang;
+					}
 					if (tenant) {
 						// Update environment.appDomain with tenant URL
 						environment.appDomain = tenant;
 						dog && console.log(`Updated environment.appDomain to tenant: ${tenant}`);
-						
+
 						// Load language from updated tenant
 						return this.loadFromTenant(tenant, lang).pipe(
 							catchError((error) => {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
 import { dog } from 'src/environments/environment';
+import { EVENT_TYPE } from '../services/static/event-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -63,15 +64,10 @@ export class AuthGuard implements CanActivate {
 							this.router.navigateByUrl(firstView[0].Code);
 							resolve(false);
 						} else {
-							// not logged in so redirect to login page with the return url
+							// not have any form so redirect to login page with the return url
 							this.env.showMessage('You are not authorized to access here, please contact Admin to get authorisation', 'warning');
-							// Handle logout without accountService
-							this.env.clearStorage().then((_) => {
-								this.router.navigate(['/login'], {
-									queryParams: { returnUrl: state.url },
-								});
-								resolve(false);
-							});
+							this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
+							resolve(false);
 						}
 					} else {
 						// not logged in so redirect to login page with the return url

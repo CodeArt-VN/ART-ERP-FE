@@ -81,7 +81,7 @@ export class UserContextService {
 			normalizedProfile.UserSetting = this.loadUserSettings(normalizedProfile.UserSetting, normalizedProfile);
 		}
 
-		this.setCurrentUser(normalizedProfile);
+		await this.setCurrentUser(normalizedProfile);
 
 		dog && console.log('✅ [UserContextService] User context setup completed');
 	}
@@ -96,7 +96,7 @@ export class UserContextService {
 	/**
 	 * Set current user
 	 */
-	public setCurrentUser(user: UserProfile, isSave = true): void {
+	public async setCurrentUser(user: UserProfile, isSave = true): Promise<void> {
 		dog &&
 			console.log('👤 [UserContextService] Setting current user:', {
 				userId: user?.Id,
@@ -111,13 +111,17 @@ export class UserContextService {
 				return;
 			}
 
-			this.currentUser$.next(user);
 			this.cache.app.userProfile = user;
 			this.cache.app.userId = user.Id;
+			if (!this.cache.app.selectedBranch && user.IDBranch) {
+				this.cache.app.selectedBranch = user.IDBranch;
+			}
 			if (isSave) {
 				this.cache.set(`UserProfile(${user.Id})`, user, { timeToLive: 365 * 24 * 60, enable: true }, 'auto', null);
 				this.cache.setRoot('UserId', user.Id);
 			}
+
+			this.currentUser$.next(user);
 			dog && console.log('✅ [UserContextService] User set in BehaviorSubject');
 
 			// Update roles if available

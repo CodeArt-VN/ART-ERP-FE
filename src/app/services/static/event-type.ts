@@ -45,10 +45,14 @@ export const EVENT_TYPE = {
 		CHANGE_THEME: 'app:ChangeTheme',
 	},
 
-	// ===== AUTHENTICATION EVENTS =====
-	AUTH: {
-		LOGOUT: 'auth:logout',
+	// ===== SYSTEM EVENTS =====
+	SYSTEM: {
+		MESSAGE: 'SystemMessage',
+		ALERT: 'SystemAlert',
+		RELOAD: 'AppReload',
+		RELOAD_OLD_VERSION: 'AppReloadOldVersion',
 	},
+
 
 	// ===== POS EVENTS =====
 	POS: {
@@ -72,13 +76,5 @@ export const EVENT_TYPE = {
 	SALE: {
 		PAYMENT_UPDATE: 'app:SOPaymentUpdate',
 		ORDERS_UPDATED: 'app:update-sale-order-mobile',
-	},
-
-	// ===== SYSTEM EVENTS =====
-	SYSTEM: {
-		MESSAGE: 'SystemMessage',
-		ALERT: 'SystemAlert',
-		RELOAD: 'AppReload',
-		RELOAD_OLD_VERSION: 'AppReloadOldVersion',
 	},
 };

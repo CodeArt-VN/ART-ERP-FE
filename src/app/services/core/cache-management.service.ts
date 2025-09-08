@@ -69,6 +69,8 @@ export class CacheManagementService {
 
 			this.app.userId = await this.getRoot('UserId');
 			this.app.lang = await this.get('Lang', 'auto', null);
+			if (!this.app.lang) this.app.lang = 'vi-VN';
+
 			this.app.theme = await this.get('Theme', 'auto', null);
 			this.app.token = await this.get('Token', 'auto', null);
 
@@ -77,6 +79,9 @@ export class CacheManagementService {
 				this.app.userProfile = userProfile;
 			}
 			this.app.selectedBranch = await this.get('SelectedBranch', 'auto', null);
+			if (!this.app.selectedBranch && this.app.userProfile) {
+				this.app.selectedBranch = this.app.userProfile.IDBranch;
+			}
 
 			dog && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);
 			await this.migration.executeMigration(this);
@@ -179,8 +184,8 @@ export class CacheManagementService {
 	 * Set cache item with metadata
 	 */
 	async set(key: string, value: any, config: CacheConfig = this.defaultConfig, tenant: string = this.app.tenant, branch?: string, serviceName?: string): Promise<void> {
-		if (!config) config = this.defaultConfig;
 		if (tenant === 'auto') tenant = this.app.tenant;
+		if (!config) config = this.defaultConfig;
 		this.updateCacheApp(key, value);
 		
 		const cacheKey = this.generateCacheKey(key, tenant, branch, config.query);
@@ -233,6 +238,7 @@ export class CacheManagementService {
 	 * Remove specific cache item
 	 */
 	async remove(key: string, tenant: string, branch?: string): Promise<void> {
+		if (tenant === 'auto') tenant = this.app.tenant;
 		const cacheKey = this.generateCacheKey(key, tenant, branch);
 		const removed = this.cacheRegistry.delete(cacheKey);
 

@@ -17,6 +17,7 @@ import { UserContextService } from '../auth/user-context.service';
 import { CacheConfig } from '../static/search-config';
 import { NavigationEnd, Router } from '@angular/router';
 import { SYS_StatusProvider, SYS_TypeProvider } from '../static/services.service';
+import { AuthenticationService } from '../auth/authentication.service';
 
 let ga: any;
 if ((window as any).ga) {
@@ -382,7 +383,7 @@ export class EnvService {
 		this.language.isDefault = value === this.language.default;
 		this.languageTracking.next(this.language);
 
-		this.setStorage('Lang', value, { enable: true, timeToLive: 365 * 24 * 60 });
+		this.setStorage('Lang', value, { enable: true, timeToLive: 365 * 24 * 60 }, null);
 		this.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_LANGUAGE, Value: value });
 	}
 
@@ -438,14 +439,6 @@ export class EnvService {
 	}
 
 	/**
-	 * Clear all storage value
-	 * @returns Return promise
-	 */
-	clearStorage() {
-		return this.storage.clear()!;
-	}
-
-	/**
 	 * Set cookie value
 	 * @param name Name of cookie
 	 * @param value The value to save
@@ -491,9 +484,8 @@ export class EnvService {
 	 */
 	loadBranch() {
 		return new Promise((resolve) => {
-
 			// Check if rawBranchList is different from user.BranchList
-			if(JSON.stringify(this.pv.rawBranchList) == JSON.stringify(this.user.BranchList)) {
+			if (JSON.stringify(this.pv.rawBranchList) == JSON.stringify(this.user.BranchList)) {
 				dog && console.log('🌲 [EnvService] Branch list is the same as user.BranchList');
 				resolve(true);
 				return;
@@ -602,11 +594,16 @@ export class EnvService {
 	 * @param Code Parent status code
 	 * @returns Return promise and resolve all children status list
 	 */
-	getStatus(Code: string): Promise<any[]> {
-		return new Promise((resolve) => {
+	async getStatus(Code: string): Promise<any[]> {
+		return new Promise(async (resolve) => {
+			if (this.pv.statusList.length == 0) {
+				this.pv.statusList = await this.storage.get('SYS_Status', 'auto', null) || [];
+			}
+			dog && console.log('🌲 [EnvService] Status list:', this.pv.statusList);
 			let it = this.pv.statusList.find((d) => d.Code == Code);
 			if (it) resolve(this.pv.statusList.filter((d) => d.IDParent == it.Id));
 			else resolve([]);
+			dog && console.log('🌲 [EnvService] Status list:', this.pv.statusList.filter((d) => d.IDParent == it.Id));
 		});
 	}
 
@@ -616,8 +613,12 @@ export class EnvService {
 	 * @param AllChild True will return flat tree type
 	 * @returns Return promise and Resolve type list
 	 */
-	getType(Code: string, AllChild = false): Promise<any[]> {
-		return new Promise((resolve) => {
+	async getType(Code: string, AllChild = false): Promise<any[]> {
+		return new Promise(async (resolve) => {
+			if (this.pv.typeList.length == 0) {
+				this.pv.typeList = await this.storage.get('SYS_Type', 'auto', null) || [];
+			}
+
 			let it = this.pv.typeList.find((d) => d.Code == Code);
 			if (it) {
 				if (AllChild) {
@@ -740,7 +741,6 @@ export class EnvService {
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
 		}
-		this.setLang(this.storage.app.lang);
 	}
 
 	private async initializeUserContext() {
@@ -773,9 +773,6 @@ export class EnvService {
 					that.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED });
 				}
 			});
-
-			this.storage.get('SYS_Type').then((data) => (this.pv.typeList = data || []));
-			this.storage.get('SYS_Status').then((data) => (this.pv.statusList = data || []));
 		} catch (error) {
 			dog && console.error('Error initializing context:', error);
 			throw error;
