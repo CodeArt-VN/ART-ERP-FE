@@ -10,7 +10,9 @@ import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { EVENT_TYPE } from './services/static/event-type';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
-import { environment } from 'src/environments/environment';
+import { dog, environment } from 'src/environments/environment';
+import { PageDataManagementService } from './services/page/data-management.service';
+import { FormManagementService } from './services/page/form-management.service';
 
 @Component({
 	template: '',
@@ -18,6 +20,8 @@ import { environment } from 'src/environments/environment';
 	standalone: false,
 })
 export abstract class PageBase implements OnInit {
+	dataManagementService: PageDataManagementService;
+	formManagementService = new FormManagementService();
 	env;
 	route;
 	navCtrl;
@@ -102,7 +106,6 @@ export abstract class PageBase implements OnInit {
 	clearData() {
 		this.pageConfig.showSpinner = true;
 		this.pageConfig.isEndOfData = false;
-		// this.query.Keyword = '';
 		this.items = [];
 	}
 
@@ -130,12 +133,7 @@ export abstract class PageBase implements OnInit {
 								this.pageConfig.isEndOfData = true;
 							}
 							if (result.data.length > 0) {
-								let firstRow = result.data[0];
-
-								//Fix dupplicate rows
-								if (this.items.findIndex((d) => d.Id == firstRow.Id) == -1) {
-									this.items = [...this.items, ...result.data];
-								}
+								this.items = this.dataManagementService.mergeItems(this.items, result.data);
 							}
 
 							this.loadedData(event);
@@ -258,37 +256,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	buildSelectDataSource(searchFunction, buildFlatTree = false) {
-		return {
-			searchFunction: searchFunction,
-			loading: false,
-			input$: new Subject<string>(),
-			selected: [],
-			items$: null,
-			initSearch() {
-				this.loading = false;
-				this.items$ = concat(
-					of(this.selected),
-					this.input$.pipe(
-						distinctUntilChanged(),
-						tap(() => (this.loading = true)),
-						switchMap((term) => {
-							return this.searchFunction(term).pipe(
-								catchError(() => of([])), // empty list on error
-								tap(() => (this.loading = false)),
-								mergeMap((e: any) => {
-									if (buildFlatTree) {
-										return lib.buildFlatTree(e, e);
-									}
-									return new Promise((resolve) => {
-										resolve(e);
-									});
-								})
-							);
-						})
-					)
-				);
-			},
-		};
+		return this.formManagementService.createSelectDataSource(searchFunction, buildFlatTree);
 	}
 
 	refresh(event = null) {
@@ -494,25 +462,7 @@ export abstract class PageBase implements OnInit {
 	download(url) {
 		this.downloadURLContent(url);
 	}
-	private getAPIPathByPageName(pageName) {
-		let apiPath = null;
-		if (this.pageConfig.pageName == 'page-staff') {
-			apiPath = APIList.FILE_Import.NhanSu;
-		} else if (this.pageConfig.pageName == 'page-booking') {
-			apiPath = APIList.ReportAPI.Booking;
-		}
 
-		return apiPath;
-	}
-	private downloadContent(name, data) {
-		var pom = document.createElement('a');
-		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
-		pom.setAttribute('download', name);
-		pom.style.display = 'none';
-		document.body.appendChild(pom);
-		pom.click();
-		document.body.removeChild(pom);
-	}
 	downloadURLContent(url) {
 		if (url.indexOf('http') == -1) {
 			url = environment.appDomain + url;
@@ -896,6 +846,8 @@ export abstract class PageBase implements OnInit {
 	events(e) {}
 
 	ngOnInit() {
+		this.dataManagementService = new PageDataManagementService(this.env, this.pageProvider, this.pageConfig, this.items);
+
 		// this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
 		let pageUrl = '';
 
@@ -1066,17 +1018,6 @@ export abstract class PageBase implements OnInit {
 			this.toggleRow(ls, i, true);
 		});
 	}
-
-	// toggleRowAll() {
-	// 	return new Promise((resolve) => {
-	// 		this.isAllRowOpened = !this.isAllRowOpened;
-	// 		for (let i of this.items) {
-	// 			i.showdetail = !this.isAllRowOpened;
-	// 			this.toggleRow(this.items, i, true);
-	// 		}
-	// 		resolve(true);
-	// 	});
-	// }
 
 	toggleRow(ls, ite, toogle = false) {
 		if (ite && ite.showdetail && toogle) {

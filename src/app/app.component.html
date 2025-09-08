@@ -423,8 +423,8 @@
 				<span>10</span>
 			</span> -->
 
-			<span *ngIf="!env.language.isDefault" (click)="uiEvents.changeLanguage('vi-VN')" class="text" style="font-size: x-large"> <ion-icon name="flag-vn"></ion-icon></span>
-			<span *ngIf="env.language.isDefault" (click)="uiEvents.changeLanguage('en-US')" class="text" style="font-size: x-large"> <ion-icon name="flag-us"></ion-icon></span>
+			<span *ngIf="env.language.current != 'vi-VN'" (click)="uiEvents.changeLanguage('vi-VN')" class="text" style="font-size: x-large"> <ion-icon name="flag-vn"></ion-icon></span>
+			<span *ngIf="env.language.current != 'en-US'" (click)="uiEvents.changeLanguage('en-US')" class="text" style="font-size: x-large"> <ion-icon name="flag-us"></ion-icon></span>
 
 			<span class="text" *ngIf="!env.app.isOnline">
 				<ion-icon [color]="env.app.isOnline ? 'success' : 'danger'" name="wifi"></ion-icon>

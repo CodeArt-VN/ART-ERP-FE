@@ -103,6 +103,7 @@ export class LoginPage extends PageBase {
 			.then(async (data) => {
 				// After login success, get profile data and process through UserContextService
 				dog && console.log('🔑 [LoginPage] Login successful, getting profile data...');
+				await this.profileService.checkAppStatusAndTypeList(true);
 				await this.profileService.getProfile(); // Force reload fresh data
 				dog && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				this.goBack();

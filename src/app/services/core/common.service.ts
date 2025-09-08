@@ -289,6 +289,7 @@ export class CommonService {
 			return this.add(item, apiPath.postItem);
 		}
 	}
+
 	add(item, apiPath) {
 		item._state = 'add';
 		item._uid = lib.generateUID();
@@ -304,6 +305,7 @@ export class CommonService {
 				});
 		});
 	}
+
 	update(item, apiPath, isForceCreate = false) {
 		item._state = 'update';
 		return new Promise((resolve, reject) => {
@@ -318,6 +320,7 @@ export class CommonService {
 				});
 		});
 	}
+
 	delete(items, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -349,6 +352,7 @@ export class CommonService {
 			}
 		});
 	}
+
 	submitForApproval(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -372,6 +376,7 @@ export class CommonService {
 			}
 		});
 	}
+
 	approve(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -395,6 +400,7 @@ export class CommonService {
 			}
 		});
 	}
+
 	disapprove(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -418,6 +424,7 @@ export class CommonService {
 			}
 		});
 	}
+
 	cancel(items: any, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {
@@ -494,6 +501,7 @@ export class CommonService {
 			}
 		});
 	}
+	
 	enable(items, apiPath) {
 		return new Promise((resolve, reject) => {
 			if (items) {

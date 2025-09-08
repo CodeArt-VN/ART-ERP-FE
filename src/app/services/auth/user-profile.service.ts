@@ -27,7 +27,15 @@ export class UserProfileService {
 		private userContextService: UserContextService,
 		private env: EnvService,
 		private cache: CacheManagementService
-	) {}
+	) {
+		this.cache.tracking().subscribe((tracking) => {
+			if (tracking) {
+				if (this.cache.app.userProfile) {
+					this.checkAppStatusAndTypeList();
+				}
+			}
+		});
+	}
 
 	async getProfile(): Promise<void> {
 		dog && console.log('👤 [UserProfileService] Getting profile...');
@@ -38,7 +46,7 @@ export class UserProfileService {
 
 			dog && console.log('👤 [UserProfileService] Profile loaded from server', userData);
 			await this.userContextService.setupUserContext(userData);
-			await this.preLoadData();
+			await this.checkAppStatusAndTypeList();
 		} catch (error) {
 			dog && console.error('❌ [UserProfileService] Error getting profile:', error);
 			throw error;
@@ -68,10 +76,15 @@ export class UserProfileService {
 		this.userContextService.setCurrentUser(this.env.user);
 	}
 
-	async preLoadData(): Promise<void> {
-		let typeList = await this.typeProvider.read({ Take: 10000 }, true);
-		let statusList = await this.statusProvider.read({ Take: 10000 }, true);
-		this.cache.set('SYS_Type', typeList);
-		this.cache.set('SYS_Status', statusList);
+	async checkAppStatusAndTypeList(forceLoad = false): Promise<void> {
+		let statusList = (await this.cache.get('SYS_Status', 'auto', null)) || [];
+		let typeList = (await this.cache.get('SYS_Type', 'auto', null)) || [];
+
+		if (forceLoad || typeList.length == 0 || statusList.length == 0) {
+			typeList = await this.typeProvider.read({ Take: 10000 }, true);
+			statusList = await this.statusProvider.read({ Take: 10000 }, true);
+			this.cache.set('SYS_Type', typeList['data'], { enable: true, timeToLive: 365 * 24 * 60 }, 'auto', null);
+			this.cache.set('SYS_Status', statusList['data'], { enable: true, timeToLive: 365 * 24 * 60 }, 'auto', null);
+		}
 	}
 }

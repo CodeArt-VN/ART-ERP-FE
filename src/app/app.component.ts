@@ -17,6 +17,7 @@ import { lib } from './services/static/global-functions';
 import { OSM_NotificationService } from './services/custom/notifications.service';
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';
+import { AuthenticationService } from './services/auth/authentication.service';
 
 register();
 
@@ -197,7 +198,7 @@ export class AppComponent implements OnInit {
 			this.menu.close();
 			this.ui.isUserCPOpen = false;
 			setTimeout(() => {
-				this.env.publishEvent({ Code: 'user:logoutRequested' });
+				this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
 			}, 0);
 		},
 
@@ -261,6 +262,7 @@ export class AppComponent implements OnInit {
 
 	constructor(
 		private userProfileService: UserProfileService,
+		private authenticationService: AuthenticationService,
 		private router: Router,
 		private navCtrl: NavController,
 		private menu: MenuController,
@@ -389,6 +391,7 @@ export class AppComponent implements OnInit {
 				this.ui.showMenu = false;
 			}
 			this.ui.branchList = lib.cloneObject(this.env.branchList);
+			dog && console.log('🌲 [AppComponent] Selected branch:', this.env.selectedBranch);
 			this.ui.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
 			this.loadPinnedMenu();
 			this.loadNotifications();

@@ -369,9 +369,15 @@ export class AuthenticationService {
 	 */
 	private async clearToken(): Promise<void> {
 		try {
+			debugger;
 			this.cache.app.token = null;
+			await this.cache.remove('Token', 'auto', null);
+			await this.cache.remove(`UserProfile(${this.cache.app.userId})`, 'auto', null);
+			this.cache.app.userProfile = null;
+			await this.cache.removeRoot('UserId');
+			this.cache.app.userId = null;
 
-			await this.cache.clear('Token');
+			await this.userContextService.clearUserContext();
 		} catch (error) {
 			dog && console.error('Error clearing token:', error);
 		}

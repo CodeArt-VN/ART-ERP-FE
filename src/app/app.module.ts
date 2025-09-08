@@ -39,11 +39,9 @@ import { DynamicTranslateLoaderService } from './services/util/translate-loader.
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { dog } from 'src/environments/environment';
-import { AuthenticationService } from './services/auth/authentication.service';
-import { GlobalData } from './services/static/global-variable';
-import { StorageService } from './services/core/storage.service';
+import { CacheManagementService } from './services/core/cache-management.service';
 
-export function createTranslateLoader(http: HttpClient, storage: StorageService): DynamicTranslateLoaderService {
+export function createTranslateLoader(http: HttpClient, storage: CacheManagementService): DynamicTranslateLoaderService {
 	return new DynamicTranslateLoaderService(http, storage);
 }
 
@@ -79,11 +77,11 @@ export function createTranslateLoader(http: HttpClient, storage: StorageService)
 	imports: [
 		BrowserModule,
 		TranslateModule.forRoot({
-			defaultLanguage: 'vi-VN',
+			defaultLanguage: 'cache',
 			loader: {
 				provide: TranslateLoader,
 				useFactory: createTranslateLoader,
-				deps: [HttpClient, StorageService],
+				deps: [HttpClient, CacheManagementService],
 			},
 			compiler: {
 				provide: TranslateCompiler,
