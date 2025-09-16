@@ -504,6 +504,31 @@ APIList.HRM_TimesheetLog.approve = {
 };
 
 
+APIList.HRM_StaffTimeOffRequest.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Approve';
+	},
+};
+APIList.HRM_StaffTimeOffRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Submit';
+	},
+};
+APIList.HRM_StaffTimeOffRequest.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Disapprove';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.cancel = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Cancel';
+	},
+};
 
 
 export var GlobalData: any = {

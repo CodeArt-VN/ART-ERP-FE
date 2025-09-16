@@ -174,4 +174,13 @@ export var toolbarCommandRules = {
 		['Unapproved',		1,					1,				0,					0,				1,				1,				1],
 		['Approved',		0,					0,				0,					0,				0,				0,				0],
 	],
+	HRM_StaffTimeOffRequest: [
+		['Btns',			'ChangeBranch',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive', 		'Cancel'],
+		['Draft',			1,					1,				0,					1,				0,				1,				1,				1],
+		['Submitted',		0,					0,				1,					1,				0,				0,				0,				1],
+		['Unapproved',		1,					1,				0,					0,				1,				1,				1,				1],
+		['Approved',		0,					0,				0,					0,				0,				0,				0,				0],
+		['Canceled',		0,					0,				0,					0,				0,				0,				1,				0],
+
+	],
 };
