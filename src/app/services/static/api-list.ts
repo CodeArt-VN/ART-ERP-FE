@@ -3036,6 +3036,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_ContactUDF:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/ContactUDF/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/ContactUDF/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        }
+		
+	},
+
 	CRM_Contract:{
         getSearchList:{
             method: "GET",
@@ -4845,6 +4894,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/DeductionOnSalary/" + id} 
+        }
+		
+	},
+
+	HRM_LeaveType:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/LeaveType/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/LeaveType"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/LeaveType/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/LeaveType/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/LeaveType/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/LeaveType"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/LeaveType/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/LeaveType/" + id} 
         }
 		
 	},
@@ -8083,6 +8181,55 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffTimeOffRequest:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOffRequest/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOffRequest"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffTimeOffRequest/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffTimeOffRequest/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOffRequest"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOffRequest/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
+        }
+		
+	},
+
 	HRM_StaffTimesheetEnrollment:{
         getSearchList:{
             method: "GET",
@@ -9945,6 +10092,55 @@ export var APIListBase = {
 		
 	},
 
+	OST_FunctionalMatrix:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "OST/FunctionalMatrix/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "OST/FunctionalMatrix"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "OST/FunctionalMatrix/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "OST/FunctionalMatrix/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "OST/FunctionalMatrix"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "OST/FunctionalMatrix/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        }
+		
+	},
+
 	OST_Office:{
         getSearchList:{
             method: "GET",
@@ -11362,6 +11558,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PR/ProgramReward/" + id} 
+        }
+		
+	},
+
+	PR_ProgramVoucher:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PR/ProgramVoucher/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PR/ProgramVoucher"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PR/ProgramVoucher/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PR/ProgramVoucher/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PR/ProgramVoucher"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PR/ProgramVoucher/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
         }
 		
 	},

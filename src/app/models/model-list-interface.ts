@@ -1453,6 +1453,7 @@ export interface CRM_Activity
     Type?: number;
     Name?: string;
     Remark?: string;
+    EventDate?: Date;
     DueDate?: Date;
     Sort?: number;
     IsDisabled?: boolean;
@@ -1686,6 +1687,26 @@ export interface CRM_Contact
     Status?: string;
     IsProvideReferenceCode?: boolean;
     BillingPhone?: string;
+    LotableText00?: string;
+    LotableText01?: string;
+    LotableText02?: string;
+    LotableText03?: string;
+    LotableText04?: string;
+    LotableNum00?: number;
+    LotableNum01?: number;
+    LotableNum02?: number;
+    LotableNum03?: number;
+    LotableNum04?: number;
+    LotableNum05?: number;
+    LotableNum06?: number;
+    LotableNum07?: number;
+    LotableNum08?: number;
+    LotableNum09?: number;
+    LotableDate10?: Date;
+    LotableDate11?: Date;
+    LotableDate12?: Date;
+    LotableDate13?: Date;
+    LotableDate14?: Date;
     
 }
 
@@ -1704,6 +1725,122 @@ export interface CRM_ContactReference
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    
+}
+
+export interface CRM_ContactUDF
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    UDF0?: string;
+    UDF1?: string;
+    UDF2?: string;
+    UDF3?: string;
+    UDF4?: string;
+    UDF5?: string;
+    UDF6?: string;
+    UDF7?: string;
+    UDF8?: string;
+    UDF9?: string;
+    UDF10?: string;
+    UDF11?: string;
+    UDF12?: string;
+    UDF13?: string;
+    UDF14?: string;
+    UDF15?: string;
+    UDF16?: string;
+    UDF17?: string;
+    UDF18?: string;
+    UDF19?: string;
+    UDF20?: string;
+    UDF21?: string;
+    UDF22?: string;
+    UDF23?: string;
+    UDF24?: string;
+    UDF25?: string;
+    UDF26?: string;
+    UDF27?: string;
+    UDF28?: string;
+    UDF29?: string;
+    UDF30?: string;
+    UDF31?: string;
+    UDF32?: string;
+    UDF33?: string;
+    UDF34?: string;
+    UDF35?: string;
+    UDF36?: string;
+    UDF37?: string;
+    UDF38?: string;
+    UDF39?: string;
+    UDF40?: string;
+    UDF41?: string;
+    UDF42?: string;
+    UDF43?: string;
+    UDF44?: string;
+    UDF45?: string;
+    UDF46?: string;
+    UDF47?: string;
+    UDF48?: string;
+    UDF49?: string;
+    UDF50?: string;
+    UDF51?: string;
+    UDF52?: string;
+    UDF53?: string;
+    UDF54?: string;
+    UDF55?: string;
+    UDF56?: string;
+    UDF57?: string;
+    UDF58?: string;
+    UDF59?: string;
+    UDF60?: string;
+    UDF61?: string;
+    UDF62?: string;
+    UDF63?: string;
+    UDF64?: string;
+    UDF65?: string;
+    UDF66?: string;
+    UDF67?: string;
+    UDF68?: string;
+    UDF69?: string;
+    UDF70?: string;
+    UDF71?: string;
+    UDF72?: string;
+    UDF73?: string;
+    UDF74?: string;
+    UDF75?: string;
+    UDF76?: string;
+    UDF77?: string;
+    UDF78?: string;
+    UDF79?: string;
+    UDF80?: string;
+    UDF81?: string;
+    UDF82?: string;
+    UDF83?: string;
+    UDF84?: string;
+    UDF85?: string;
+    UDF86?: string;
+    UDF87?: string;
+    UDF88?: string;
+    UDF89?: string;
+    UDF90?: string;
+    UDF91?: string;
+    UDF92?: string;
+    UDF93?: string;
+    UDF94?: string;
+    UDF95?: string;
+    UDF96?: string;
+    UDF97?: string;
+    UDF98?: string;
+    UDF99?: string;
     
 }
 
@@ -2584,6 +2721,33 @@ export interface HRM_DeductionOnSalary
     
 }
 
+export interface HRM_LeaveType
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsPaid?: boolean;
+    RequireApproval?: boolean;
+    RequireDocument?: boolean;
+    MaxDaysPerRequest?: number;
+    MaxDaysPerYear?: number;
+    MinAdvanceDays?: number;
+    ApplicableGender?: Nullable<byte>;
+    MinAge?: number;
+    MaxAge?: number;
+    BeforeHoliday?: number;
+    AfterHoliday?: number;
+    
+}
+
 export interface HRM_OpenSchedule
 {
     IDBranch?: number;
@@ -2836,6 +3000,11 @@ export interface HRM_PolicyPaidTimeOff
     NumberOfDays?: number;
     NumberOfCarryOnDays?: number;
     IsGrantsByLengthOfServices?: boolean;
+    IDLeaveType?: number;
+    ApplicableFromMonth?: number;
+    ProrationMethod?: string;
+    MaxCarryOverDays?: number;
+    CarryOverExpireMonths?: number;
     
 }
 
@@ -3104,6 +3273,7 @@ export interface HRM_Staff
     LeaveDaysAllocated?: number;
     LeaveDaysUsed?: number;
     LeaveDaysRemaining?: number;
+    LeaveDaysScheduled?: number;
     PolTaxCode?: string;
     PolTaxName?: string;
     PolTaxType?: string;
@@ -4173,6 +4343,7 @@ export interface HRM_StaffSchedule
     Id?: number;
     Code?: string;
     Name?: string;
+    Type?: string;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -4182,6 +4353,8 @@ export interface HRM_StaffSchedule
     CreatedDate?: Date;
     ModifiedDate?: Date;
     WorkingDate?: Date;
+    Start?: Date;
+    End?: Date;
     IsPublished?: boolean;
     IDOffice?: number;
     TimeOffType?: string;
@@ -4270,6 +4443,34 @@ export interface HRM_StaffTimeOff
     Date?: Date;
     Start?: Date;
     End?: Date;
+    
+}
+
+export interface HRM_StaffTimeOffRequest
+{
+    IDBranch?: number;
+    IDLeaveType?: number;
+    IDStaff?: number;
+    IDReplacementStaff?: number;
+    Id?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    StartDate?: Date;
+    EndDate?: Date;
+    TotalDays?: number;
+    TotalHours?: number;
+    RequestDate?: Date;
+    Reason?: string;
+    ContactInfo?: string;
+    HandoverNotes?: string;
+    AttachmentPath?: string;
+    AttachmentDescription?: string;
+    Status?: string;
     
 }
 
@@ -4574,6 +4775,7 @@ export interface HRM_Timesheet
     IsRequiredApproveToEnroll?: boolean;
     IsRequiredApproveToTransfer?: boolean;
     IsRequiredApproveToSwitch?: boolean;
+    Option?: string;
     
 }
 
@@ -5338,6 +5540,25 @@ export interface OSM_UserSubcriptionDetail
     
 }
 
+export interface OST_FunctionalMatrix
+{
+    IDBranch?: number;
+    IDValueChain?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface OST_Office
 {
     Id?: number;
@@ -5887,16 +6108,11 @@ export interface PR_Program
     Id?: number;
     Code?: string;
     Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
     Type?: string;
     Status?: string;
+    IsGenerateVoucher?: boolean;
+    VoucherCode?: string;
+    NumberOfGeneratedVoucher?: number;
     FromDate?: Date;
     ToDate?: Date;
     IsPublic?: boolean;
@@ -5907,10 +6123,8 @@ export interface PR_Program
     IsByPercent?: boolean;
     MaxValue?: number;
     Value?: number;
-    NumberOfCoupon?: number;
+    NumberOfCopy?: number;
     MaxUsagePerCustomer?: number;
-    IsDiscount?: boolean;
-    IsItemPromotion?: boolean;
     NumberOfUsed?: number;
     ApplicableFromHour?: Date;
     ApplicableToHour?: Date;
@@ -5921,6 +6135,24 @@ export interface PR_Program
     ConfigBranch?: string;
     IsUseWithOrthersPromotion?: boolean;
     IsApplyAllBranch?: boolean;
+    IsDiscount?: boolean;
+    IsItemPromotion?: boolean;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    VoucherPrefix?: string;
+    VoucherSuffix?: string;
+    VoucherCodeLength?: number;
+    VoucherIsUpperCase?: boolean;
+    VoucherIsBreak?: boolean;
+    VoucherBreakPartLength?: number;
+    VoucherBreakChar?: string;
+    VoucherRadix?: number;
     
 }
 
@@ -6007,6 +6239,25 @@ export interface PR_ProgramReward
     DiscountPercent?: number;
     IsRewardByOrder?: boolean;
     MaxAmount?: number;
+    
+}
+
+export interface PR_ProgramVoucher
+{
+    IDProgram?: number;
+    IDBussinessPartner?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IsUsed?: boolean;
     
 }
 
