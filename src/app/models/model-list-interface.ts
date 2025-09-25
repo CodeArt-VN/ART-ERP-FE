@@ -3001,10 +3001,11 @@ export interface HRM_PolicyPaidTimeOff
     NumberOfCarryOnDays?: number;
     IsGrantsByLengthOfServices?: boolean;
     IDLeaveType?: number;
-    ApplicableFromMonth?: number;
-    ProrationMethod?: string;
-    MaxCarryOverDays?: number;
     CarryOverExpireMonths?: number;
+    ConfigRunOnMonth?: number;
+    ConfigRunOnDay?: number;
+    ConfigRunMonthlyMethod?: string;
+    ConfigRunMonthlySelectedMonth?: number;
     
 }
 
@@ -3274,6 +3275,8 @@ export interface HRM_Staff
     LeaveDaysUsed?: number;
     LeaveDaysRemaining?: number;
     LeaveDaysScheduled?: number;
+    LeaveDaysSeniority?: number;
+    LeaveTotalBalance?: number;
     PolTaxCode?: string;
     PolTaxName?: string;
     PolTaxType?: string;
@@ -3647,6 +3650,51 @@ export interface HRM_StaffDeductionOnSalary
     
 }
 
+export interface HRM_StaffEnrollment
+{
+    IDBranch?: number;
+    PolicyId?: number;
+    PolicyType?: string;
+    IDRequester?: number;
+    IDSignedBy?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ModifiedDate?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    Status?: string;
+    EnrollmentSignDate?: Date;
+    EnrollmentEffectiveDate?: Date;
+    ApplyType?: string;
+    ConsultedPerson?: string;
+    ProbationPeriod?: number;
+    
+}
+
+export interface HRM_StaffEnrollmentDetail
+{
+    IDEnrollment?: number;
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    ModifiedDate?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    
+}
+
 export interface HRM_StaffFamily
 {
     Id?: number;
@@ -3843,6 +3891,26 @@ export interface HRM_StaffLearningProcess
     
 }
 
+export interface HRM_StaffLeaveBalanceHistory
+{
+    IDStaff?: number;
+    RefID?: number;
+    Id?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    ChangeType?: string;
+    ChangeAmount?: number;
+    BalanceBefore?: number;
+    BalanceAfter?: number;
+    Reason?: string;
+    
+}
+
 export interface HRM_StaffOvertimeRequest
 {
     IDBranch?: number;
@@ -3947,7 +4015,6 @@ export interface HRM_StaffPolBenefitEnrollment
     EnrollmentDate?: Date;
     ApplyType?: string;
     Status?: string;
-    IDStaffList?: string;
     
 }
 
