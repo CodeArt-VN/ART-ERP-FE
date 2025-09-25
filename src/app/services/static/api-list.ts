@@ -6809,6 +6809,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffEnrollment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffEnrollment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffEnrollment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        }
+		
+	},
+
+	HRM_StaffEnrollmentDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollmentDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollmentDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffEnrollmentDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffEnrollmentDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollmentDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollmentDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        }
+		
+	},
+
 	HRM_StaffFamily:{
         getSearchList:{
             method: "GET",
@@ -7148,6 +7246,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffLearningProcess/" + id} 
+        }
+		
+	},
+
+	HRM_StaffLeaveBalanceHistory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffLeaveBalanceHistory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffLeaveBalanceHistory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
         }
 		
 	},
