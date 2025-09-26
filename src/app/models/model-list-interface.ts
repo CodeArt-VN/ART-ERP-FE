@@ -2740,7 +2740,7 @@ export interface HRM_LeaveType
     MaxDaysPerRequest?: number;
     MaxDaysPerYear?: number;
     MinAdvanceDays?: number;
-    ApplicableGender?: Nullable<byte>;
+    ApplicableGender?: number;
     MinAge?: number;
     MaxAge?: number;
     BeforeHoliday?: number;

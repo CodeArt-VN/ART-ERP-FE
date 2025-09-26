@@ -2,20 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Platform } from '@ionic/angular';
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
 
 import { CommonService } from '../core/common.service';
 import { EnvService } from '../core/env.service';
-import { GlobalData, APIList } from '../static/global-variable';
+import { APIList } from '../static/global-variable';
 import { environment, dog } from '../../../environments/environment';
 import { EVENT_TYPE } from '../static/event-type';
 
-import { AuthResult, TokenResponse, LoginCredentials, DeviceInfo, UserProfile, AuthState } from '../../interfaces/auth.interfaces';
+import { AuthResult, TokenResponse, LoginCredentials, DeviceInfo, AuthState } from '../../interfaces/auth.interfaces';
 import { UserContextService } from './user-context.service';
-import { StorageService } from '../core/storage.service';
 import { CacheManagementService } from '../core/cache-management.service';
 
 @Injectable({
@@ -108,8 +106,6 @@ export class AuthenticationService {
 							error: error.message || 'Login failed',
 							isAuthenticated: false,
 						});
-						// Publish login failed event
-						this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGIN_FAILED, data: error });
 						return throwError(error);
 					})
 				)
@@ -136,14 +132,7 @@ export class AuthenticationService {
 			return await this.processLoginResponse(response);
 		} catch (error) {
 			dog && console.error('🚨 [AuthService] Login failed with error:', error);
-			dog &&
-				console.error('🚨 [AuthService] Error details:', {
-					message: error?.message,
-					status: error?.status,
-					statusText: error?.statusText,
-					error: error?.error,
-				});
-
+			
 			const errorMessage = error?.message || 'Authentication failed';
 			dog && console.log('📝 [AuthService] Setting error state:', errorMessage);
 
@@ -152,16 +141,8 @@ export class AuthenticationService {
 				error: errorMessage,
 				isAuthenticated: false,
 			});
-			// Publish login failed event
-			this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGIN_FAILED, data: error });
-
-			const failResult = {
-				success: false,
-				error: errorMessage,
-			};
-
-			dog && console.log('❌ [AuthService] Returning failed result:', failResult);
-			return failResult;
+			
+			throw error;
 		}
 	}
 
@@ -369,7 +350,6 @@ export class AuthenticationService {
 	 */
 	private async clearToken(): Promise<void> {
 		try {
-			debugger;
 			this.cache.app.token = null;
 			await this.cache.remove('Token', 'auto', null);
 			await this.cache.remove(`UserProfile(${this.cache.app.userId})`, 'auto', null);
@@ -554,7 +534,7 @@ export class AuthenticationService {
 					}
 				}
 			}
-		}, 30000); // Check every 30 seconds
+		}, 900000); // Check every 15 minutes
 	}
 
 	/**
@@ -587,7 +567,7 @@ export class AuthenticationService {
 			}
 
 			// Call validation endpoint
-			const response = await this.commonService.connect('GET', APIList.ACCOUNT.validateToken?.url || 'Account/UserName', { token }).toPromise();
+			const response = await this.commonService.connect('GET', APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping', { token }).toPromise();
 
 			return response && (response as any).valid === true;
 		} catch (error) {

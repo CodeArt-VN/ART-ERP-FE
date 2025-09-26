@@ -8,7 +8,7 @@ flowchart TD
     AppComponent --> InitializeApp[initializeApp method]
     InitializeApp --> WaitEnv[Wait for env.ready]
     WaitEnv --> EnvService[EnvService constructor]
-    
+
     EnvService --> CacheService[CacheManagementService constructor]
     CacheService --> StorageService[StorageService constructor]
     StorageService --> StorageInit[Storage initialization]
@@ -17,19 +17,19 @@ flowchart TD
     LoadCache --> LoadAppData[Load app data from cache]
     LoadAppData --> Migration[Execute migration]
     Migration --> CacheReady[Cache ready signal]
-    
+
     CacheReady --> EnvPreload[EnvService preloadServices]
     EnvPreload --> LoadEnvConfig[Load environment config]
     LoadEnvConfig --> InitUserContext[Initialize user context]
     InitUserContext --> EnvReady[EnvService ready signal]
-    
+
     EnvReady --> UpdateStatusBar[Update status bar]
     UpdateStatusBar --> EventHandler[Setup event handler]
     EventHandler --> RenderUI[Render UI]
     RenderUI --> InitNotification[Initialize notifications]
     InitNotification --> ServiceWorker[Register service worker]
     ServiceWorker --> AppReady[App ready]
-    
+
     AppReady --> AuthGuard[AuthGuard checks]
     AuthGuard -->|Authenticated| MainApp[Main App]
     AuthGuard -->|Not authenticated| LoginPage[Login Page]
@@ -46,7 +46,7 @@ sequenceDiagram
     participant MS as MigrationService
     participant UCS as UserContextService
     participant AS as AuthenticationService
-    
+
     AC->>AC: ngOnInit
     AC->>ES: Wait for env.ready
     ES->>CMS: Constructor injection
@@ -75,6 +75,7 @@ sequenceDiagram
 ## 📋 **Services Involved**
 
 ### **Core Services**
+
 - **AppComponent** (`src/app/app.component.ts`)
 - **EnvService** (`src/app/services/core/env.service.ts`)
 - **CacheManagementService** (`src/app/services/core/cache-management.service.ts`)
@@ -82,7 +83,7 @@ sequenceDiagram
 - **MigrationService** (`src/app/services/core/migration.service.ts`)
 
 ### **Supporting Services**
+
 - **UserContextService** (`src/app/services/auth/user-context.service.ts`)
 - **AuthenticationService** (`src/app/services/auth/authentication.service.ts`)
 - **AuthGuard** (`src/app/guards/app.guard.ts`)
-
