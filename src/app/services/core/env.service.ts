@@ -596,14 +596,12 @@ export class EnvService {
 	 */
 	async getStatus(Code: string): Promise<any[]> {
 		return new Promise(async (resolve) => {
-			if (this.pv.statusList.length == 0) {
+			if (this.pv.statusList.length == 0) 
 				this.pv.statusList = await this.storage.get('SYS_Status', 'auto', null) || [];
-			}
-			dog && console.log('🌲 [EnvService] Status list:', this.pv.statusList);
+			
 			let it = this.pv.statusList.find((d) => d.Code == Code);
 			if (it) resolve(this.pv.statusList.filter((d) => d.IDParent == it.Id));
 			else resolve([]);
-			dog && console.log('🌲 [EnvService] Status list:', this.pv.statusList.filter((d) => d.IDParent == it.Id));
 		});
 	}
 
@@ -615,10 +613,9 @@ export class EnvService {
 	 */
 	async getType(Code: string, AllChild = false): Promise<any[]> {
 		return new Promise(async (resolve) => {
-			if (this.pv.typeList.length == 0) {
+			if (this.pv.typeList.length == 0) 
 				this.pv.typeList = await this.storage.get('SYS_Type', 'auto', null) || [];
-			}
-
+			
 			let it = this.pv.typeList.find((d) => d.Code == Code);
 			if (it) {
 				if (AllChild) {
