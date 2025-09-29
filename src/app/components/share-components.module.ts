@@ -7,7 +7,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 //
 //Custom component
 import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
@@ -41,7 +41,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		//
 		ShareInputControlsModule,
 		ShareDataTableModule,
@@ -89,7 +89,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		//FileUploadModule
 
 		PipesModule,

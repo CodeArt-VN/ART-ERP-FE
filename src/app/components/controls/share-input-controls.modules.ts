@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
@@ -30,7 +30,7 @@ import { InputControlTempateDirective } from './input-control-template.directive
 		NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		ShareDirectivesModule,
 		PipesModule,
 	],
