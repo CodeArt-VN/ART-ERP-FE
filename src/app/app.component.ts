@@ -417,18 +417,18 @@ export class AppComponent implements OnInit {
 
 		if (environment.appDomain.indexOf('inholdings.vn') > -1) {
 			if (window.location.host.indexOf('thelog.inholdings.vn') > -1) {
-				this.appTheme = 'thelog-theme';
+				this.ui.appTheme = 'thelog-theme';
 			} else if (window.location.host.indexOf('gemcafe.com.vn') > -1) {
-				this.appTheme = 'gem-theme';
+				this.ui.appTheme = 'gem-theme';
 				title = 'GEM Café';
 				relIcon = '/assets/logos/logo-gem-center-small.png';
 			} else if (window.location.host.indexOf('inholdings') > -1) {
-				this.appTheme = 'inholdings-theme';
+				this.ui.appTheme = 'inholdings-theme';
 			} else {
-				this.appTheme = 'inholdings-theme';
+				this.ui.appTheme = 'inholdings-theme';
 			}
 		} else {
-			this.appTheme = 'inholdings-theme';
+			this.ui.appTheme = 'inholdings-theme';
 		}
 
 		// Remove all classes that start with 'theme'

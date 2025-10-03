@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
@@ -102,7 +102,7 @@ export function createTranslateLoader(http: HttpClient, storage: CacheManagement
 		PipesModule,
 		FullCalendarModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: !isDevMode(),
 			// Register the ServiceWorker as soon as the application is stable

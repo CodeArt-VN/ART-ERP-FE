@@ -15,13 +15,13 @@ export class CacheManagementService {
 	private maintenanceInterval: any;
 	private defaultConfig: CacheConfig = {
 		enable: true,
-		timeToLive: 1, // 1 hour
+		timeToLive: 60, // 1 minutes
 		expireAction: 'remove',
-		maintenanceInterval: 1, // 1 hour
+		maintenanceInterval: 15, // 1 minutes
 		autoRefresh: true,
 		retryConfig: {
 			maxRetries: 3,
-			retryInterval: 5, // 5 phút
+			retryInterval: 5, // 5 minutes
 		},
 		valueKey: 'Cache_',
 	};

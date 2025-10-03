@@ -117,7 +117,13 @@ export class EChartComponent implements OnInit {
 	calcChartOption(option, js: string) {
 		let li = lib;
 		let ec = echarts;
-		eval(js);
+		try {
+			// Sử dụng Function constructor thay vì eval để an toàn hơn
+			const func = new Function('option', 'li', 'ec', js);
+			func(option, li, ec);
+		} catch (error) {
+			console.warn('Error executing chart script:', error);
+		}
 		return option;
 	}
 

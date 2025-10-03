@@ -11,7 +11,7 @@
 			[hidden]="!ui.showAppMenu || !(env.user && env.user.Id)"
 			id="app-menu"
 			menuId="appMenu"
-			*ngIf="ui.showMenu"
+			
 		>
 			<ion-header>
 				<div class="close-menu">
@@ -22,7 +22,7 @@
 					</ion-toolbar>
 				</div>
 				<div class="app-logo-wrapper">
-					<a href="." [ngStyle]="{ 'background-image': 'url(' + logo + ')' }" class="app-logo" menu-close=""></a>
+					<a href="." [ngStyle]="{ 'background-image': 'url(' + ui.logo + ')' }" class="app-logo" menu-close=""></a>
 					<div class="c-control branch-select" *ngIf="env.branchList.length > 0 && env.user.StaffID > 0">
 						<app-input-control
 							(change)="uiEvents.changeBranch()"
