@@ -117,7 +117,8 @@ export class ProfilePage extends PageBase {
 	}
 
 	loadedData(event) {
-		if (this.id && this.item) {
+		//if (this.id && this.item) {
+		if (this.item) {
 			this.ui.item = this.item;
 			this.ui.item.DateOfIssueID = lib.dateFormat(this.ui.item.DateOfIssueID, 'yyyy-mm-dd');
 			this.ui.userSetting = this.env.user.UserSetting;
