@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
 import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
+import { FormulaExpandModalComponent } from './formula-expand-modal.component';
 
 @Component({
 	selector: 'app-input-control',
@@ -67,7 +68,7 @@ export class InputControlComponent implements OnInit {
 			//show|unShow root level
 			if (this.rootCollapsed == false) this.expandRoot();
 		}
-		if(this.type == 'formula') {
+		if (this.type == 'formula') {
 			this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
 			this.monacoProvider.load().then(() => this.initMonaco());
 		}
@@ -125,12 +126,12 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
-	
+
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
 	}
-	
+
 	disposableCompletionItemProvider: any = null;
 	monaco
 	editorInstance: any;
@@ -218,17 +219,25 @@ export class InputControlComponent implements OnInit {
 		}
 	}
 	async openFormulaModal() {
-		// const modal = await this.modalController.create({
-		// 	component: FormulaModalPage,
-		// 	cssClass: 'modal90',
-		// 	componentProps: {
-		// 		dataSource: this.dataSource,
-		// 		value: this.form.get(this.id).value,
-		// 	},
-		// });
-		// await modal.present();
-		// const { data } = await modal.onWillDismiss();
-		
+		const modal = await this.modalController.create({
+			component: FormulaExpandModalComponent,
+			cssClass: 'modal90',
+			componentProps: {
+				dataSource: this.dataSource,
+				value: this.form.get(this.id).value,
+			},
+		});
+		await modal.present();
+
+		const { data } = await modal.onWillDismiss();
+		if (data) {
+			this.form.get(this.id)?.setValue(data);
+			this.form.get(this.id)?.markAsDirty();
+			this.change.emit(data);
+			if (this.editorInstance) {
+				this.editorInstance.setValue(data);
+			}
+		}
 	}
 	saveContent() {
 		const value = this.editorInstance.getValue();
