@@ -1,9 +1,9 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
 	appId: 'vn.codeart.erp',
 	appName: 'ART-ERP',
-	webDir: 'www',
+	webDir: 'www/browser',
 	bundledWebRuntime: false,
 	server: {
 		cleartext: true,

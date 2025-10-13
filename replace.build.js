@@ -193,7 +193,7 @@ async function updateWebResouces() {
 	updateAngularBaseHref(null);
 
 	// Read source index.html và thay thế REPLACE_BASE_HREF bằng BASE_HREF
-	const indexPath = path.resolve(__dirname, 'www/index.html');
+	const indexPath = path.resolve(__dirname, 'www/browser/index.html');
 	let indexContent = fs.readFileSync(indexPath, 'utf8');
 	indexContent = indexContent.replace(
 		/\+\s*'REPLACE_BASE_HREF'\s*\+/g,
@@ -205,7 +205,7 @@ async function updateWebResouces() {
 	
 
 	//update manifest.webmanifest start_url
-	const manifestPath = path.resolve(__dirname, 'www/manifest.webmanifest');
+	const manifestPath = path.resolve(__dirname, 'www/browser/manifest.webmanifest');
 	let manifestContent = fs.readFileSync(manifestPath, 'utf8');
 	manifestContent = manifestContent.replace(
 		/"start_url":\s*"([^"]*)"/,
@@ -225,12 +225,12 @@ async function updateWebResouces() {
 	console.log(`Updated version.json: latestVersion = ${MARKETING_VERSION}`);
 
 
-	// Zip only the contents of the www folder into a versioned archive (no outer www dir)
+	// Zip only the contents of the www/browser folder into a versioned archive (no outer browser dir)
 	const { execSync } = require('child_process');
 	const zipFileName = `V${MARKETING_VERSION}.zip`;
 	try {
-		execSync(`zip -r ../${zipFileName} .`, {
-			cwd: path.resolve(__dirname, 'www'),
+		execSync(`zip -r ../../${zipFileName} .`, {
+			cwd: path.resolve(__dirname, 'www/browser'),
 			stdio: 'inherit'
 		});
 		console.log(`Created zip archive: ${zipFileName}`);

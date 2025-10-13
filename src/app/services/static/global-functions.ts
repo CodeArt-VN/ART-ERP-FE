@@ -644,7 +644,9 @@ export var lib = {
 						fomular = fomular.split(g).join('treeItems.find(i=> i.Code && i.Code.indexOf("' + g + '")==0)["' + h + '"]');
 					});
 					try {
-						c[h] = eval(fomular);
+						// Sử dụng Function constructor thay vì eval để an toàn hơn
+						const func = new Function('treeItems', `return ${fomular}`);
+						c[h] = func(treeItems);
 					} catch (error) {
 						//console.log(error);
 					}

@@ -114,7 +114,9 @@ export class ReportService extends BI_ReportProvider {
 
 		let option = {};
 		try {
-			eval(chartConfig);
+			// Sử dụng Function constructor thay vì eval để an toàn hơn
+			const func = new Function('option', chartConfig);
+			func(option);
 			report.ChartConfigScript = chartConfig;
 			report.ChartConfig = option;
 			this.reportConfigTracking.next(report.Id);

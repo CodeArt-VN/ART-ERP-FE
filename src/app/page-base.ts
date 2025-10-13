@@ -340,7 +340,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	showCommandBySelectedRows(selectedRows) {
-		const showCommandRules = this.pageProvider.showCommandRules;
+		const showCommandRules = this.pageProvider?.showCommandRules;
 		if (showCommandRules?.length) {
 			const statuses = selectedRows.map((row) => row.Status);
 			const filteredRules = showCommandRules.filter((rule) => statuses.includes(rule.Status));

@@ -363,7 +363,7 @@ export class EnvService {
 
 	public async setLang(value?: string) {
 		value = value || this.language.default;
-		let hasResource = !!this.translate.translations[value] && Object.keys(this.translate.translations[value]).length > 0;
+		let hasResource = this.translate.getLangs().includes(value);
 
 		if (!hasResource) {
 			try {
