@@ -57,7 +57,10 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	}
 	loadPurchaseOrderNote() {
 		this.submitAttempt = true;
-
+		if (!this.item?.Id) {
+			this.pageConfig.showSpinner = false;
+			return;
+		}
 		this.loadingController
 			.create({
 				cssClass: 'my-custom-class',

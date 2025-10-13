@@ -1,4 +1,4 @@
-<table *ngIf="item">
+<table *ngIf="item && item.Id > 0">
 	<thead>
 		<tr>
 			<td>
@@ -97,8 +97,8 @@
 										<td class="cen" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{idx+1}}</td>
 										<td [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">
 											<div class="ten-sp ck">
-												<b *ngIf="i._Item.Code">{{i._Item.Code}}</b><b *ngIf="!i._Item.Code">{{i.IDItem}}</b>
-												- {{i._Item.Name}}
+												<b *ngIf="i._Item?.Code">{{i._Item?.Code}}</b><b *ngIf="!i._Item?.Code">{{i.IDItem}}</b>
+												- {{i._Item?.Name}}
 											</div>
 											<div class="ten-sp ck" *ngIf="i.Remark">
 												<em>{{i.Remark}}</em>

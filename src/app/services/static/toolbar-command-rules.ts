@@ -174,4 +174,11 @@ export var toolbarCommandRules = {
 		['Unapproved',		1,					1,				0,					0,				1,				1,				1],
 		['Approved',		0,					0,				0,					0,				0,				0,				0],
 	],
+	PR_Program :[
+		['Btns',			'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive'],
+		['New',					1,					1,				1,					1,				1,				1],
+		['Submitted',			0,					1,				1,					1,				0,				0],
+		['Rejected',			1,					0,				1,					0,				1,				1],
+		['Approved',			0,					1,				0,					0,				0,				0],
+	],
 };
