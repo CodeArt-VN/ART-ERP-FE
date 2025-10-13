@@ -2745,6 +2745,8 @@ export interface HRM_LeaveType
     MaxAge?: number;
     BeforeHoliday?: number;
     AfterHoliday?: number;
+    Color?: string;
+    Icon?: string;
     
 }
 
@@ -2929,6 +2931,9 @@ export interface HRM_PolBenefitDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    Type?: string;
+    IsLocked?: boolean;
+    IsHidden?: boolean;
     Frequency?: string;
     IsIncome?: boolean;
     IsCurrency?: boolean;
@@ -4035,6 +4040,9 @@ export interface HRM_StaffPolBenefitEnrollmentDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     BenefitEnrollmentValue?: string;
+    Type?: string;
+    IsLocked?: boolean;
+    IsHidden?: boolean;
     Value?: string;
     Frequency?: string;
     IsIncome?: boolean;
@@ -5626,6 +5634,50 @@ export interface OST_FunctionalMatrix
     
 }
 
+export interface OST_JobDescription
+{
+    IDFunctionalMatrix?: number;
+    IDBranch?: number;
+    IDParent?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Purpose?: string;
+    Responsibilities?: string;
+    Authority?: string;
+    Requirements?: string;
+    KPIs?: string;
+    WorkingConditions?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface OST_JobRelation
+{
+    IDJobDescription?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    RelationType?: string;
+    IDJobRelation?: number;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface OST_Office
 {
     Id?: number;
@@ -6186,6 +6238,7 @@ export interface PR_Program
     IsAutoApply?: boolean;
     IsApplyAllProduct?: boolean;
     IsApplyAllCustomer?: boolean;
+    IsApplyAllBranch?: boolean;
     MinOrderValue?: number;
     IsByPercent?: boolean;
     MaxValue?: number;
@@ -6201,7 +6254,6 @@ export interface PR_Program
     ConfigContact?: string;
     ConfigBranch?: string;
     IsUseWithOrthersPromotion?: boolean;
-    IsApplyAllBranch?: boolean;
     IsDiscount?: boolean;
     IsItemPromotion?: boolean;
     Remark?: string;

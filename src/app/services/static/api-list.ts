@@ -10288,6 +10288,104 @@ export var APIListBase = {
 		
 	},
 
+	OST_JobDescription:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "OST/JobDescription/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "OST/JobDescription"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "OST/JobDescription/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "OST/JobDescription/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "OST/JobDescription/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobDescription/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobDescription/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobDescription/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "OST/JobDescription"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "OST/JobDescription/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "OST/JobDescription/" + id} 
+        }
+		
+	},
+
+	OST_JobRelation:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "OST/JobRelation/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "OST/JobRelation"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "OST/JobRelation/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "OST/JobRelation/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "OST/JobRelation/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobRelation/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobRelation/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "OST/JobRelation/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "OST/JobRelation"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "OST/JobRelation/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "OST/JobRelation/" + id} 
+        }
+		
+	},
+
 	OST_Office:{
         getSearchList:{
             method: "GET",

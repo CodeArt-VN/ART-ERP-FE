@@ -29,19 +29,19 @@
 					<ion-segment-button value="s1">
 						<ion-label>{{'Personal information' | translate}}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s2">
+					<ion-segment-button value="s2" *ngIf="env.user.StaffID">
 						<ion-label>{{'Rewards' | translate}}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s3">
+					<ion-segment-button value="s3" *ngIf="env.user.StaffID">
 						<ion-label>{{'Payroll' | translate}}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s4">
+					<ion-segment-button value="s4" *ngIf="env.user.StaffID">
 						<ion-label>{{'Leaves' | translate}}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s5">
+					<ion-segment-button value="s5" *ngIf="env.user.StaffID">
 						<ion-label>{{'Feedback' | translate}}</ion-label>
 					</ion-segment-button>
-					<ion-segment-button value="s6">
+					<ion-segment-button value="s6" *ngIf="env.user.StaffID">
 						<ion-label>{{'Other' | translate}}</ion-label>
 					</ion-segment-button>
 				</ion-segment>
@@ -50,7 +50,7 @@
 			<div *ngIf="ui.segmentView == 's1'">
 				<div class="ion-padding" *ngIf="ui.item && env.user">
 					<ion-grid fixed>
-						<form [formGroup]="ui.formGroup">
+						<form [formGroup]="ui.formGroup" *ngIf="env.user.StaffID">
 							<ion-row class="hr-group">
 								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
 									<ion-list lines="none">
