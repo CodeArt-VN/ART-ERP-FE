@@ -1,0 +1,39 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>Edit formula</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()"> <ion-icon slot="icon-only" name="close-outline"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="left scrollx withFeature">
+	<ion-fab [ngClass]="{'ion-hide-md-down' : isSubActive}" class="feature no-print" vertical="bottom"
+		horizontal="start" slot="fixed">
+		<ion-item lines="full" class="c-control">
+			<input class="c-input" type="text" (input)="onKeyDown($event)" placeholder="Tìm kiếm..." />
+		</ion-item>
+		<ng-container  *ngFor="let item of dataSourceGrouped; let j = index;">
+			<span class="hide-all" *ngIf="!item.show"></span>
+			<div class="flex-left" *ngIf="item.show" style="width: 100%; position: relative"
+				[ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
+				<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing"
+						*ngIf="k > 0"></span></ng-container>
+				<ion-icon (click)="$event.stopPropagation(); toggleRow(item,true)" class="min-btn clickable"
+					[name]="item.HasChild ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"></ion-icon>
+
+				<ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
+				<ion-text   (click)="insertText(item)"class="text-warp" [ngClass]="item.HasChild ? 'bold ' : ''"
+					[color]="item.Type == 'Company' ? 'primary' : item.Color || 'dark'"
+				>{{item.Name}}</ion-text>
+			</div>
+		</ng-container>
+		
+	</ion-fab>
+	<div id="monaco-expand" style="height: calc(100vh - 60px); border: 1px solid var(--ion-color-medium)"></div>
+</ion-content>
+<ion-footer>
+	<ion-toolbar>
+
+		<ion-button color="warning" size="default" slot="end" (click)="save()"> {{ 'Save' | translate }} </ion-button>
+	</ion-toolbar>
+</ion-footer>

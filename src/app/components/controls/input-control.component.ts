@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
 import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
-import { FormulaExpandModalComponent } from './formula-expand-modal.component';
+import { FormulaExpandModalComponent } from './formula-expand-modal';
 
 @Component({
 	selector: 'app-input-control',
@@ -200,8 +200,11 @@ export class InputControlComponent implements OnInit {
 				lineNumbersMinChars: 1,
 				fontFamily: 'JetBrains Mono, monospace',
 				fontSize: 14,
-				minimap: { enabled: false },
 				automaticLayout: true,
+				minimap: { enabled: false },
+				wordWrap: 'on',           // ✅ tự động xuống dòng
+				// wrappingIndent: 'indent', // ✅ canh lề đẹp khi xuống dòng
+				scrollBeyondLastLine: false, // ✅ tránh dư khoảng trắng dưới
 			});
 			let latestContent = '';
 
@@ -225,6 +228,7 @@ export class InputControlComponent implements OnInit {
 			componentProps: {
 				dataSource: this.dataSource,
 				value: this.form.get(this.id).value,
+				item: this.form
 			},
 		});
 		await modal.present();
