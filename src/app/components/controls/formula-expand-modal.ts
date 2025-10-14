@@ -8,13 +8,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { lib } from 'src/app/services/static/global-functions';
 import { FormsModule } from '@angular/forms';
 import { Subject, debounceTime } from 'rxjs';
-
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 @Component({
   selector: 'app-formula-expand-modal',
   templateUrl: './formula-expand-modal.html',
   styleUrls: ['formula-expand-modal.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, PipesModule, TranslateModule, FormsModule],
+  imports: [IonicModule, CommonModule, PipesModule, TranslateModule, FormsModule,NgOptionHighlightDirective],
 })
 
 export class FormulaExpandModalComponent implements OnInit {
@@ -106,6 +106,7 @@ export class FormulaExpandModalComponent implements OnInit {
   }
 
   onKeyDown(event: KeyboardEvent) {
+    this.isAllRowOpened = false;
     this.keyword$.next((event.target as HTMLInputElement).value);
   }
 
@@ -144,7 +145,7 @@ export class FormulaExpandModalComponent implements OnInit {
     });
     lib.buildFlatTree(dataSourceFlat, [], false).then((resp: any) => {
       this.dataSourceGrouped = resp;
-      this.isAllRowOpened = false;
+      // this.isAllRowOpened = false;
       this.toggleRowAll(this.dataSourceGrouped);
     })
   }
