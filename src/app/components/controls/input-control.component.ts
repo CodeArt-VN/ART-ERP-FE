@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
@@ -6,9 +6,11 @@ import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
-import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
-import { FormulaExpandModalComponent } from './formula-expand-modal';
+import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
+import { FormulaExpandModalComponent } from './formula-expand-modal.component';
+import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 
+declare var Quill: any;
 @Component({
 	selector: 'app-input-control',
 	templateUrl: './input-control.component.html',
@@ -72,6 +74,15 @@ export class InputControlComponent implements OnInit {
 			this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
 			this.monacoProvider.load().then(() => this.initMonaco());
 		}
+		if (this.type == 'editor') {
+			if (!this.quillEditorId) {
+				this.quillEditorId = 'quillEditor' + lib.generateUID();
+			}
+			// Use setTimeout to ensure component is fully initialized
+			setTimeout(() => {
+				this.loadQuillEditor();
+			}, 0);
+		}
 	}
 
 	@Input() form: FormGroup;
@@ -115,10 +126,18 @@ export class InputControlComponent implements OnInit {
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
 
+
+	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
+
 	imgPath = environment.staffAvatarsServer;
+
+	// Quill editor properties
+	quillEditor: any;
+	quillEditorId: string;
 
 	constructor(public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
+		public dynamicScriptLoaderService: DynamicScriptLoaderService,
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -126,7 +145,11 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
-
+		
+		// Initialize Quill editor ID if type is quill
+		if (this.type === 'quill' && !this.quillEditorId) {
+			this.quillEditorId = 'quillEditor' + lib.generateUID();
+		}
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
@@ -249,6 +272,152 @@ export class InputControlComponent implements OnInit {
 		this.form.get(this.id)?.setValue(value);
 		this.form.get(this.id)?.markAsDirty();
 		this.change.emit(value);
+	}
+
+	// Quill editor methods
+	loadQuillEditor() {
+		if (typeof Quill !== 'undefined') {
+			// Use setTimeout to ensure DOM is ready
+			setTimeout(() => {
+				this.initQuill();
+			}, 0);
+		} else {
+			this.dynamicScriptLoaderService
+				.loadResources(thirdPartyLibs.quill.source)
+				.then(() => {
+					// Use setTimeout to ensure DOM is ready
+					setTimeout(() => {
+						this.initQuill();
+					}, 0);
+				})
+				.catch((error) => console.error('Error loading script', error));
+		}
+	}
+
+	imageHandler() {
+		const imageUrl = prompt('Please enter the image URL:');
+		if (imageUrl) {
+			const range = this.quillEditor.getSelection();
+			this.quillEditor.insertEmbed(range.index, 'image', imageUrl);
+		}
+	}
+
+	showHtml() {
+		const editorContent = this.quillEditor.root;
+		const isHtmlMode = /&lt;|&gt;|&amp;|&quot;|&#39;/.test(editorContent.innerHTML);
+		if (isHtmlMode) {
+			const htmlContent = editorContent.textContent || '';
+			this.quillEditor.root.innerHTML = htmlContent;
+		} else {
+			const richTextContent = this.quillEditor.root.innerHTML;
+			this.quillEditor.root.textContent = richTextContent;
+		}
+
+		this.form.get(this.id)?.setValue(this.quillEditor.root.innerHTML);
+		if (this.quillEditor.root.innerHTML == '<p><br></p>') {
+			this.form.get(this.id)?.setValue(null);
+		}
+		this.form.get(this.id)?.markAsDirty();
+		this.change.emit(this.quillEditor.root.innerHTML);
+	}
+
+	initQuill() {
+		if (typeof Quill !== 'undefined') {
+			// Ensure we have a valid editor ID
+			if (!this.quillEditorId) {
+				this.quillEditorId = 'quillEditor' + lib.generateUID();
+			}
+			
+			// Wait for the DOM element to be available
+			const editorElement = document.getElementById(this.quillEditorId);
+			if (!editorElement) {
+				console.error('Quill editor container not found:', this.quillEditorId);
+				return;
+			}
+			
+			const existingToolbar = document.querySelector('.ql-toolbar');
+			if (existingToolbar) {
+				existingToolbar.parentNode.removeChild(existingToolbar);
+			}
+			this.quillEditor = new Quill('#' + this.quillEditorId, {
+				modules: {
+					toolbar: {
+						container: [
+							['bold', 'italic', 'underline', 'strike'], // toggled buttons
+							['blockquote', 'code-block'],
+
+							[{ header: 1 }, { header: 2 }], // custom button values
+							[{ list: 'ordered' }, { list: 'bullet' }],
+							[{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+							[{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+							[{ direction: 'rtl' }], // text direction
+
+							[{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+							[{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+							[{ color: [] }, { background: [] }], // dropdown with defaults from theme
+							[{ font: [] }],
+							[{ align: [] }],
+							['image', 'code-block'],
+
+							['clean'], // remove formatting button
+							['fullscreen'],
+							['showhtml'],
+						],
+						handlers: {
+							image: this.imageHandler.bind(this),
+							// fullscreen: () => this.toggleFullscreen(),
+							showhtml: () => this.showHtml(),
+						},
+					},
+				},
+				theme: 'snow',
+				placeholder: this.placeholder || 'Typing ...',
+			});
+
+			// Set initial value
+			if (this.form.get(this.id)?.value) {
+				this.quillEditor.root.innerHTML = this.form.get(this.id).value;
+			}
+
+			this.quillEditor.on('text-change', (delta, oldDelta, source) => {
+				if (typeof this.quillEditor.root.innerHTML !== 'undefined' && this.form.get(this.id)?.value !== this.quillEditor.root.innerHTML) {
+					this.form.get(this.id)?.setValue(this.quillEditor.root.innerHTML);
+					this.form.get(this.id)?.markAsDirty();
+					this.change.emit(this.quillEditor.root.innerHTML);
+				}
+				if (this.quillEditor.root.innerHTML == '<p><br></p>') {
+					this.form.get(this.id)?.setValue(null);
+				}
+			});
+
+			// icon fullscreen
+			const toolbarCustom = this.quillEditor.getModule('toolbar');
+			const fullscreenButton = toolbarCustom.container.querySelector('button.ql-fullscreen');
+			if (fullscreenButton) {
+				const fullscreenIcon = document.createElement('ion-icon');
+				fullscreenIcon.setAttribute('name', 'resize');
+				fullscreenIcon.setAttribute('color', 'dark');
+				fullscreenButton.innerHTML = '';
+				fullscreenButton.appendChild(fullscreenIcon);
+			}
+
+			// icon show HTML
+			const showHtmlButton = toolbarCustom.container.querySelector('button.ql-showhtml');
+			if (showHtmlButton) {
+				const showHtmlIcon = document.createElement('ion-icon');
+				showHtmlIcon.setAttribute('name', 'logo-html5');
+				showHtmlIcon.setAttribute('color', 'dark');
+				showHtmlButton.innerHTML = '';
+				showHtmlButton.appendChild(showHtmlIcon);
+			}
+			const toolbar = document.querySelector('.ql-toolbar');
+			if (toolbar) {
+				toolbar.addEventListener('mousedown', (event) => {
+					event.preventDefault();
+				});
+			}
+		}
 	}
 
 	@Output() change = new EventEmitter();
