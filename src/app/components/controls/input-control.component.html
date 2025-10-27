@@ -487,9 +487,15 @@
 	</div>
 
 	<!-- Quill Rich Text Editor -->
-	<div *ngSwitchCase="'editor'" class="quill-editor-container">
-		<div [id]="quillEditorId" #quillEditor></div>
-	</div>
+		<app-quill-editor  *ngSwitchCase="'editor'" 
+			[form]="form"
+			[quillEditorId]="quillEditorId"
+			[id]="id"
+			[dataSource]="dataSource"
+			[placeholder]="placeholder"
+			(change)="change.emit($event)">
+		</app-quill-editor>
+
 	<!-- fomular -->
 	<!-- <div id="monaco-editor" *ngSwitchCase="'formula'" style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);"></div> -->
 	<!-- <ion-accordion-group *ngSwitchCase="'fomular'"[id]="id" [value]="'afterScirpt'" multiple="true">

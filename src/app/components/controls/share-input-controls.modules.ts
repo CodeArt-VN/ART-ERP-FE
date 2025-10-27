@@ -18,6 +18,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ShareDirectivesModule } from 'src/app/directives/share-directives.module';
 import { InputControlTempateDirective } from './input-control-template.directive';
+import { QuillEditorComponent } from './quill-editor.component';
 
 @NgModule({
 	imports: [
@@ -39,6 +40,7 @@ import { InputControlTempateDirective } from './input-control-template.directive
 	declarations: [
 		GroupControlComponent,
 		FieldControlComponent,
+		QuillEditorComponent,
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
@@ -49,6 +51,7 @@ import { InputControlTempateDirective } from './input-control-template.directive
 	exports: [
 		GroupControlComponent,
 		FieldControlComponent,
+		QuillEditorComponent,
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
