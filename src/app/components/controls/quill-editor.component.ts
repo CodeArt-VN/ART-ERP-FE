@@ -279,7 +279,7 @@ export class QuillEditorComponent implements OnInit {
 	}
 
 	insertTextHandler(item?: any) {
-		let textToInsert = item?.Name;
+		let textToInsert = '['+item?.Code+']';
 		if (!textToInsert || !this.quillEditor) return;
 
 		const range = this.quillEditor.getSelection(true);
