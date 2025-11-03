@@ -9,7 +9,7 @@
 	#monaco-editor {
 		height: 300px; /* hoặc auto theo nhu cầu */
 	}
-	
+
 	.formula-button {
 		position: absolute;
 		z-index: 10;
@@ -26,6 +26,25 @@
 	.zoom-button {
 		left: 8px;
 		top: 24px;
+	}
+
+	.quill-editor-container {
+		min-height: 300px;
+		max-height: 500px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.quill-editor-container .ql-editor {
+		min-height: 250px;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.quill-editor-container .ql-toolbar {
+		border-bottom: 1px solid #ccc;
 	}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
@@ -466,6 +485,19 @@
 			<ion-icon slot="icon-only" name="expand-outline"></ion-icon>
 		</ion-button>
 	</div>
+
+	<!-- Quill Rich Text Editor -->
+	<app-quill-editor
+		*ngSwitchCase="'editor'"
+		[form]="form"
+		[quillEditorId]="quillEditorId"
+		[id]="id"
+		[dataSource]="dataSource"
+		[placeholder]="placeholder"
+		(change)="change.emit($event)"
+	>
+	</app-quill-editor>
+
 	<!-- fomular -->
 	<!-- <div id="monaco-editor" *ngSwitchCase="'formula'" style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);"></div> -->
 	<!-- <ion-accordion-group *ngSwitchCase="'fomular'"[id]="id" [value]="'afterScirpt'" multiple="true">

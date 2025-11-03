@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
@@ -6,7 +6,7 @@ import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
-import { MonacoEditorLoaderService } from 'src/app/services/custom/custom.service';
+import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { FormulaExpandModalComponent } from './formula-expand-modal';
 
 @Component({
@@ -72,6 +72,11 @@ export class InputControlComponent implements OnInit {
 			this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
 			this.monacoProvider.load().then(() => this.initMonaco());
 		}
+		if (this.type == 'editor') {
+			if (!this.quillEditorId) {
+				this.quillEditorId = 'quillEditor' + lib.generateUID();
+			}
+		}
 	}
 
 	@Input() form: FormGroup;
@@ -115,10 +120,18 @@ export class InputControlComponent implements OnInit {
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
 
+
+	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
+
 	imgPath = environment.staffAvatarsServer;
+
+	// Quill editor properties
+	quillEditor: any;
+	quillEditorId: string;
 
 	constructor(public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
+		public dynamicScriptLoaderService: DynamicScriptLoaderService,
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -126,7 +139,11 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
-
+		
+		// Initialize Quill editor ID if type is quill
+		if (this.type === 'quill' && !this.quillEditorId) {
+			this.quillEditorId = 'quillEditor' + lib.generateUID();
+		}
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
@@ -250,6 +267,7 @@ export class InputControlComponent implements OnInit {
 		this.form.get(this.id)?.markAsDirty();
 		this.change.emit(value);
 	}
+
 
 	@Output() change = new EventEmitter();
 	@Output() inputChange = new EventEmitter();
