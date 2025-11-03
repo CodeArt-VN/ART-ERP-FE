@@ -4,6 +4,8 @@ import { lib } from 'src/app/services/static/global-functions';
 
 import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+import { EnvService } from 'src/app/services/core/env.service';
+import { dog } from 'src/environments/environment';
 
 declare var echarts: any;
 
@@ -33,6 +35,7 @@ export class EChartComponent implements OnInit {
 
 	constructor(
 		public rpt: ReportService,
+		public env: EnvService,
 		public dynamicScriptLoaderService: DynamicScriptLoaderService
 	) {
 		this.elId = lib.generateCode();
@@ -117,14 +120,77 @@ export class EChartComponent implements OnInit {
 	calcChartOption(option, js: string) {
 		let li = lib;
 		let ec = echarts;
-		try {
-			// Sử dụng Function constructor thay vì eval để an toàn hơn
-			const func = new Function('option', 'li', 'ec', js);
-			func(option, li, ec);
-		} catch (error) {
-			console.warn('Error executing chart script:', error);
+		// 1. Validate syntax
+		if (!this.isValidJavaScript(js)) {
+			this.env.showMessage('Invalid chart script syntax', 'danger');
+			return option;
 		}
+		
+		// 2. Check blacklist
+		const dangerousCheck = this.containsDangerousCode(js);
+		if (dangerousCheck.found) {
+			const keywords = dangerousCheck.keywords.join(', ');
+			dog && console.error('Dangerous keywords detected:', dangerousCheck.keywords);
+			this.env.showMessage(
+				`Chart script contains unsafe operations: ${keywords}`,
+				'danger'
+			);
+			return option;
+		}
+		
+		// 3. Execute with error handling
+		try {
+			eval(js);
+		} catch (error) {
+			dog && console.error('Chart script execution error:', error);
+			dog && console.log('Chart script:', js);
+			this.env.showMessage(
+				`Chart script error: ${error.message}`,
+				'danger'
+			);
+		}
+		
 		return option;
+	}
+
+	private isValidJavaScript(code: string): boolean {
+		try {
+			new Function(code);
+			return true;
+		} catch (error) {
+			dog && console.error('JS syntax error:', error);
+			return false;
+		}
+	}
+	
+	private containsDangerousCode(code: string): { found: boolean; keywords: string[] } {
+		const blacklistPatterns = [
+			{ pattern: /\bdocument\s*\.\s*cookie\b/gi, name: 'document.cookie' },
+			{ pattern: /\blocalStorage\b/gi, name: 'localStorage' },
+			{ pattern: /\bsessionStorage\b/gi, name: 'sessionStorage' },
+			{ pattern: /\bwindow\s*\.\s*location/gi, name: 'window.location' },
+			{ pattern: /\bfetch\s*\(/gi, name: 'fetch()' },
+			{ pattern: /\bXMLHttpRequest\b/gi, name: 'XMLHttpRequest' },
+			{ pattern: /\bimport\s*\(/gi, name: 'dynamic import()' },
+			{ pattern: /\brequire\s*\(/gi, name: 'require()' },
+			{ pattern: /\b__proto__\b/gi, name: '__proto__' },
+			{ pattern: /\bconstructor\s*\.\s*constructor\b/gi, name: 'constructor.constructor' },
+			{ pattern: /\beval\b/gi, name: 'eval' },
+
+		];
+		
+		const foundKeywords: string[] = [];
+		
+		for (const item of blacklistPatterns) {
+			if (item.pattern.test(code)) {
+				foundKeywords.push(item.name);
+			}
+		}
+		
+		return {
+			found: foundKeywords.length > 0,
+			keywords: foundKeywords
+		};
 	}
 
 	@Output() chartClick = new EventEmitter();
