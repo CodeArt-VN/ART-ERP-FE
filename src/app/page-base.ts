@@ -10,7 +10,7 @@ import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { EVENT_TYPE } from './services/static/event-type';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { PageDataManagementService } from './services/page/data-management.service';
 import { FormManagementService } from './services/page/form-management.service';
 

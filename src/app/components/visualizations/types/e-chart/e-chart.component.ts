@@ -5,7 +5,7 @@ import { lib } from 'src/app/services/static/global-functions';
 import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 import { EnvService } from 'src/app/services/core/env.service';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 
 declare var echarts: any;
 
@@ -130,7 +130,7 @@ export class EChartComponent implements OnInit {
 		const dangerousCheck = this.containsDangerousCode(js);
 		if (dangerousCheck.found) {
 			const keywords = dangerousCheck.keywords.join(', ');
-			dog && console.error('Dangerous keywords detected:', dangerousCheck.keywords);
+			dogF && console.error('Dangerous keywords detected:', dangerousCheck.keywords);
 			this.env.showMessage(
 				`Chart script contains unsafe operations: ${keywords}`,
 				'danger'
@@ -142,8 +142,8 @@ export class EChartComponent implements OnInit {
 		try {
 			eval(js);
 		} catch (error) {
-			dog && console.error('Chart script execution error:', error);
-			dog && console.log('Chart script:', js);
+			dogF && console.error('Chart script execution error:', error);
+			dogF && console.log('Chart script:', js);
 			this.env.showMessage(
 				`Chart script error: ${error.message}`,
 				'danger'
@@ -158,7 +158,7 @@ export class EChartComponent implements OnInit {
 			new Function(code);
 			return true;
 		} catch (error) {
-			dog && console.error('JS syntax error:', error);
+			dogF && console.error('JS syntax error:', error);
 			return false;
 		}
 	}

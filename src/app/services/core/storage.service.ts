@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -33,14 +33,14 @@ export class StorageService {
 		if (this._initialized) return;
 
 		try {
-			dog && console.log('🚀 [StorageService] Initializing storage...');
+			dogF && console.log('🚀 [StorageService] Initializing storage...');
 			// If using, define drivers here: await this.storage.defineDriver(/*...*/);
 			this._storage = await this.storage.create();
 			this._initialized = true;
 			this._tracking$.next(true);
-			dog && console.log('✅ [StorageService] Storage initialized successfully');
+			dogF && console.log('✅ [StorageService] Storage initialized successfully');
 		} catch (error) {
-			dog && console.error('❌ [StorageService] Storage initialization failed:', error);
+			dogF && console.error('❌ [StorageService] Storage initialization failed:', error);
 			throw error;
 		}
 	}

@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { CacheManagementService } from '../core/cache-management.service';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 import { EnvService } from '../core/env.service';
 
 export class PageDataManagementService {

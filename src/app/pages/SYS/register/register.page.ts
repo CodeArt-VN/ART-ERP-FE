@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { APIList } from 'src/app/services/static/global-variable';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-register',
@@ -75,7 +75,7 @@ export class RegisterPage extends PageBase {
 	 * Migrated from AccountService.register()
 	 */
 	async register(username: string, password: string, confirmpassword: string, PhoneNumber: string, FullName: string): Promise<any> {
-		dog &&
+		dogF &&
 			console.log('📝 [RegisterPage] Starting user registration...', {
 				username,
 				hasPassword: !!password,
@@ -92,7 +92,7 @@ export class RegisterPage extends PageBase {
 				PhoneNumber: PhoneNumber,
 			};
 
-			dog &&
+			dogF &&
 				console.log('🌐 [RegisterPage] Calling registration API...', {
 					url: APIList.ACCOUNT.register.url,
 					method: APIList.ACCOUNT.register.method,
@@ -100,15 +100,15 @@ export class RegisterPage extends PageBase {
 
 			const response = await this.commonService.connect(APIList.ACCOUNT.register.method, APIList.ACCOUNT.register.url, data).toPromise();
 
-			dog && console.log('✅ [RegisterPage] Registration successful:', response);
+			dogF && console.log('✅ [RegisterPage] Registration successful:', response);
 
 			// Auto-login after successful registration
-			dog && console.log('🔑 [RegisterPage] Auto-login after registration...');
+			dogF && console.log('🔑 [RegisterPage] Auto-login after registration...');
 			await this.authService.login({ username, password });
 
 			return response;
 		} catch (error) {
-			dog && console.error('❌ [RegisterPage] Registration failed:', error);
+			dogF && console.error('❌ [RegisterPage] Registration failed:', error);
 			throw error;
 		}
 	}

@@ -4,7 +4,7 @@ import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of, throwError, from } from 'rxjs';
 import { catchError, retry, timeout, switchMap, take, mergeMap } from 'rxjs/operators';
 import { Capacitor } from '@capacitor/core';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { StorageService } from '../core/storage.service';
 import { CacheManagementService } from '../core/cache-management.service';
 
@@ -20,10 +20,10 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 	) {}
 
 	getTranslation(lang: string): Observable<any> {
-		dog && console.log(`Loading translation for language: ${lang}`);
+		dogF && console.log(`Loading translation for language: ${lang}`);
 		// For hybrid apps, always use local assets
 		if (this.isHybrid) {
-			dog && console.log('Loading from assets (hybrid mode)');
+			dogF && console.log('Loading from assets (hybrid mode)');
 			return this.loadFromAssets(lang);
 		}
 
@@ -49,32 +49,32 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 					if (tenant) {
 						// Update environment.appDomain with tenant URL
 						environment.appDomain = tenant;
-						dog && console.log(`Updated environment.appDomain to tenant: ${tenant}`);
+						dogF && console.log(`Updated environment.appDomain to tenant: ${tenant}`);
 
 						// Load language from updated tenant
 						return this.loadFromTenant(tenant, lang).pipe(
 							catchError((error) => {
-								dog && console.warn(`Failed to load from tenant ${tenant}, falling back to assets:`, error);
+								dogF && console.warn(`Failed to load from tenant ${tenant}, falling back to assets:`, error);
 								return this.loadFromAssets(lang);
 							})
 						);
 					} else {
 						// No tenant found, use current environment.appDomain
-						dog && console.log('No tenant found in storage, using current environment.appDomain');
+						dogF && console.log('No tenant found in storage, using current environment.appDomain');
 						return this.loadFromTenant(environment.appDomain, lang).pipe(
 							catchError((error) => {
-								dog && console.warn(`Failed to load from current tenant, falling back to assets:`, error);
+								dogF && console.warn(`Failed to load from current tenant, falling back to assets:`, error);
 								return this.loadFromAssets(lang);
 							})
 						);
 					}
 				}),
 				catchError((error) => {
-					dog && console.error('Error getting tenant from storage:', error);
+					dogF && console.error('Error getting tenant from storage:', error);
 					// Fallback to current environment.appDomain
 					return this.loadFromTenant(environment.appDomain, lang).pipe(
 						catchError((fallbackError) => {
-							dog && console.warn(`Failed to load from current tenant, falling back to assets:`, fallbackError);
+							dogF && console.warn(`Failed to load from current tenant, falling back to assets:`, fallbackError);
 							return this.loadFromAssets(lang);
 						})
 					);
@@ -94,23 +94,23 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 			return this.http.get(endpoint).pipe(
 				timeout(3000),
 				catchError((error) => {
-					dog && console.warn(`Failed to load language from tenant ${serverUrl}:`, error);
+					dogF && console.warn(`Failed to load language from tenant ${serverUrl}:`, error);
 					return throwError(() => error);
 				})
 			);
 		} catch (error) {
-			dog && console.warn(`Invalid tenant URL: ${serverUrl}`, error);
+			dogF && console.warn(`Invalid tenant URL: ${serverUrl}`, error);
 			return throwError(() => error);
 		}
 	}
 
 	private loadFromAssets(lang: string): Observable<any> {
 		const endpoint = `./assets/i18n/${lang}.json`;
-		dog && console.log(`Loading language from assets: ${endpoint}`);
+		dogF && console.log(`Loading language from assets: ${endpoint}`);
 
 		return this.http.get(endpoint).pipe(
 			catchError((error) => {
-				dog && console.error(`Failed to load language from assets: ${endpoint}`, error);
+				dogF && console.error(`Failed to load language from assets: ${endpoint}`, error);
 				// Return empty object to prevent app crash
 				return of({});
 			})

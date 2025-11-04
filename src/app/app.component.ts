@@ -12,7 +12,7 @@ import { initializeApp } from 'firebase/app';
 
 import { EnvService } from './services/core/env.service';
 import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
 import { OSM_NotificationService } from './services/custom/notifications.service';
 import { EVENT_TYPE } from './services/static/event-type';
@@ -228,7 +228,7 @@ export class AppComponent implements OnInit {
 			} else {
 				this.ui.logo = 'assets/logos/logo-in-holdings.png';
 			}
-			dog && console.log('🌲 [AppComponent] Changing branch logo:', this.ui.logo);
+			dogF && console.log('🌲 [AppComponent] Changing branch logo:', this.ui.logo);
 		},
 
 		// Help events
@@ -270,7 +270,7 @@ export class AppComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private notificationService: OSM_NotificationService
 	) {
-		dog && console.log('🌲 [AppComponent] Constructor');
+		dogF && console.log('🌲 [AppComponent] Constructor');
 
 		let imgs = [
 			'./assets/undraw_art_museum_8or4.svg',
@@ -289,14 +289,14 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		dog && console.log('🌲 [AppComponent] OnInit');
+		dogF && console.log('🌲 [AppComponent] OnInit');
 		this.initializeApp();
 	}
 
 	async initializeApp() {
-		dog && console.log('🌲 [AppComponent] Initialize App');
+		dogF && console.log('🌲 [AppComponent] Initialize App');
 		await this.env.ready;
-		dog && console.log('🌲 [AppComponent] Environment ready');
+		dogF && console.log('🌲 [AppComponent] Environment ready');
 
 		this.updateStatusbar();
 		this.eventHandler();
@@ -308,7 +308,7 @@ export class AppComponent implements OnInit {
 
 	eventHandler() {
 		this.env.getEvents().subscribe((data) => {
-			dog && console.log('🌲 [AppComponent] Event:', data);
+			dogF && console.log('🌲 [AppComponent] Event:', data);
 			switch (data.Code) {
 				case EVENT_TYPE.USER.LOGGED_OUT_REMOTE:
 					this.router.navigateByUrl('/login');
@@ -350,7 +350,7 @@ export class AppComponent implements OnInit {
 					break;
 
 				default:
-					dog && console.log('🌲 [AppComponent] Not processed event:', data);
+					dogF && console.log('🌲 [AppComponent] Not processed event:', data);
 
 					break;
 			}
@@ -375,14 +375,14 @@ export class AppComponent implements OnInit {
 
 		this.router.events.subscribe((event: any) => {
 			if (event instanceof NavigationEnd) {
-				dog && console.log('🌲 [AppComponent] Navigation event:', event);
+				dogF && console.log('🌲 [AppComponent] Navigation event:', event);
 				this.ui.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
 			}
 		});
 	}
 
 	renderUI() {
-		dog && console.log('🌲 [AppComponent] Render UI');
+		dogF && console.log('🌲 [AppComponent] Render UI');
 		this.ui.countForm = 0;
 
 		if (this.env.user && this.env.user.Id && this.env.user.Forms.length) {
@@ -391,7 +391,7 @@ export class AppComponent implements OnInit {
 				this.ui.showMenu = false;
 			}
 			this.ui.branchList = lib.cloneObject(this.env.branchList);
-			dog && console.log('🌲 [AppComponent] Selected branch:', this.env.selectedBranch);
+			dogF && console.log('🌲 [AppComponent] Selected branch:', this.env.selectedBranch);
 			this.ui.branchFormGroup.get('IDBranch').setValue(this.env.selectedBranch);
 			this.loadPinnedMenu();
 			this.loadNotifications();
@@ -465,7 +465,7 @@ export class AppComponent implements OnInit {
 	}
 
 	loadNotifications() {
-		dog && console.log('🌲 [AppComponent] Load notifications');
+		dogF && console.log('🌲 [AppComponent] Load notifications');
 		let total = 0;
 		this.notificationService.getNotificationCount(null).then((res: any) => {
 			this.env.user.Forms.filter((f) => f.Type === 1).forEach((form1) => {

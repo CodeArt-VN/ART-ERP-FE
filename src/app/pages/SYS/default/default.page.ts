@@ -3,7 +3,7 @@ import { ActionSheetController, NavController } from '@ionic/angular';
 
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-default',
@@ -18,6 +18,6 @@ export class DefaultPage extends PageBase {
 		public navCtrl: NavController
 	) {
 		super();
-		dog && console.log('🌲 [DefaultPage] Constructor');
+		dogF && console.log('🌲 [DefaultPage] Constructor');
 	}
 }

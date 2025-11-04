@@ -11,7 +11,7 @@ import { catchError } from 'rxjs/operators';
 import { CommonService } from '../core/common.service';
 import { EnvService } from '../core/env.service';
 import { APIList } from '../static/global-variable';
-import { environment, dog } from '../../../environments/environment';
+import { environment, dogF } from '../../../environments/environment';
 
 import {
   AuthResult,
@@ -76,7 +76,7 @@ export class ExternalAuthService  {
     try {
       return await this.initiateOAuthFlow('google');
     } catch (error) {
-      dog && console.error('Google login error:', error);
+      dogF && console.error('Google login error:', error);
       return {
         success: false,
         error: error.message || 'Google login failed'
@@ -91,7 +91,7 @@ export class ExternalAuthService  {
     try {
       return await this.initiateOAuthFlow('facebook');
     } catch (error) {
-      dog && console.error('Facebook login error:', error);
+      dogF && console.error('Facebook login error:', error);
       return {
         success: false,
         error: error.message || 'Facebook login failed'
@@ -106,7 +106,7 @@ export class ExternalAuthService  {
     try {
       return await this.initiateOAuthFlow('microsoft');
     } catch (error) {
-      dog && console.error('Microsoft login error:', error);
+      dogF && console.error('Microsoft login error:', error);
       return {
         success: false,
         error: error.message || 'Microsoft login failed'
@@ -121,7 +121,7 @@ export class ExternalAuthService  {
     try {
       return await this.initiateOAuthFlow('apple');
     } catch (error) {
-      dog && console.error('Apple login error:', error);
+      dogF && console.error('Apple login error:', error);
       return {
         success: false,
         error: error.message || 'Apple login failed'
@@ -164,7 +164,7 @@ export class ExternalAuthService  {
       }
 
     } catch (error) {
-      dog && console.error(`OAuth callback error for ${provider}:`, error);
+      dogF && console.error(`OAuth callback error for ${provider}:`, error);
       return {
         success: false,
         error: error.message || `${provider} authentication failed`
@@ -187,7 +187,7 @@ export class ExternalAuthService  {
       await this.saveLinkedProviders();
 
     } catch (error) {
-      dog && console.error(`Error unlinking provider ${provider}:`, error);
+      dogF && console.error(`Error unlinking provider ${provider}:`, error);
       throw error;
     }
   }
@@ -211,7 +211,7 @@ export class ExternalAuthService  {
       return Array.from(this.linkedProviders);
 
     } catch (error) {
-      dog && console.error('Error getting linked providers:', error);
+      dogF && console.error('Error getting linked providers:', error);
       // Return cached providers if API call fails
       return Array.from(this.linkedProviders);
     }
@@ -329,7 +329,7 @@ export class ExternalAuthService  {
       return code;
 
     } catch (error) {
-      dog && console.error(`Error exchanging code for token (${provider}):`, error);
+      dogF && console.error(`Error exchanging code for token (${provider}):`, error);
       return null;
     }
   }
@@ -351,7 +351,7 @@ export class ExternalAuthService  {
                 data)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            dog && console.error('Local token exchange error:', error);
+            dogF && console.error('Local token exchange error:', error);
             return throwError(error);
           })
         )
@@ -364,7 +364,7 @@ export class ExternalAuthService  {
       return null;
 
     } catch (error) {
-      dog && console.error('Error obtaining local access token:', error);
+      dogF && console.error('Error obtaining local access token:', error);
       throw error;
     }
   }
@@ -388,7 +388,7 @@ export class ExternalAuthService  {
       return [];
 
     } catch (error) {
-      dog && console.error('Error getting external logins:', error);
+      dogF && console.error('Error getting external logins:', error);
       return [];
     }
   }
@@ -412,7 +412,7 @@ export class ExternalAuthService  {
         this.linkedProviders = new Set(saved);
       }
     } catch (error) {
-      dog && console.error('Error loading linked providers:', error);
+      dogF && console.error('Error loading linked providers:', error);
     }
   }
 
@@ -423,7 +423,7 @@ export class ExternalAuthService  {
     try {
       await this.env.setStorage('LinkedProviders', Array.from(this.linkedProviders));
     } catch (error) {
-      dog && console.error('Error saving linked providers:', error);
+      dogF && console.error('Error saving linked providers:', error);
     }
   }
 }

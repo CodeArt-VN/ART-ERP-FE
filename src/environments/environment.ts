@@ -53,4 +53,6 @@ export let environment = {
 	}
 };
 
-export let dog = !environment.production; // dog = dev log;
+// dog = dev log;
+export let dogF = false; // Framework log;
+export let dog = !environment.production; // Current working log;

@@ -5,7 +5,7 @@ import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment, dog } from 'src/environments/environment';
+import { environment, dogF } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { StorageService } from './storage.service';
 import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
@@ -67,7 +67,7 @@ export class EnvService {
 		private translate: TranslateService,
 		private dynamicTranslateLoader: DynamicTranslateLoaderService
 	) {
-		dog && console.log('👤 [EnvService] Constructor');
+		dogF && console.log('👤 [EnvService] Constructor');
 		this.ready = new Promise((resolve, reject) => {
 			this.storage.tracking().subscribe((tracking) => {
 				if (tracking) {
@@ -370,11 +370,11 @@ export class EnvService {
 				const translations = await firstValueFrom(this.dynamicTranslateLoader.getTranslation(value));
 				if (translations && Object.keys(translations).length > 0) {
 					this.translate.setTranslation(value, translations);
-					dog && console.log('Language loaded successfully via dynamic loader');
+					dogF && console.log('Language loaded successfully via dynamic loader');
 					hasResource = true;
 				}
 			} catch (error) {
-				dog && console.error('Failed to set language:', error);
+				dogF && console.error('Failed to set language:', error);
 			}
 		}
 
@@ -486,11 +486,11 @@ export class EnvService {
 		return new Promise((resolve) => {
 			// Check if rawBranchList is different from user.BranchList
 			if (JSON.stringify(this.pv.rawBranchList) == JSON.stringify(this.user.BranchList)) {
-				dog && console.log('🌲 [EnvService] Branch list is the same as user.BranchList');
+				dogF && console.log('🌲 [EnvService] Branch list is the same as user.BranchList');
 				resolve(true);
 				return;
 			}
-			dog && console.log('🌲 [EnvService] Branch list is different from user.BranchList');
+			dogF && console.log('🌲 [EnvService] Branch list is different from user.BranchList');
 			this.pv.rawBranchList = this.user.BranchList;
 			this.branchList = [];
 			this.jobTitleList = [];
@@ -545,7 +545,7 @@ export class EnvService {
 			if (selected) {
 				this.changeBranch(selected.Id);
 			} else {
-				dog && console.error('🌲 [EnvService] Selected branch is not found');
+				dogF && console.error('🌲 [EnvService] Selected branch is not found');
 				debugger;
 				this.changeBranch(null);
 			}
@@ -558,8 +558,8 @@ export class EnvService {
 	 * Change enviroment selected branch and publish changeBranch event to app
 	 */
 	changeBranch(branchId) {
-		dog && console.log('🌲 [EnvService] Changing branch to:', branchId);
-		this.setStorage('SelectedBranch', branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
+		dogF && console.log('🌲 [EnvService] Changing branch to:', branchId);
+		this.setStorage(`SelectedBranch(${this.user.Id})` , branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
 		let selectedBranch = this.branchList.find((d) => d.Id == this.storage.app.selectedBranch);
 		this.selectedBranchAndChildren = selectedBranch?.Query || [];
 		this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
@@ -722,19 +722,19 @@ export class EnvService {
 	 * This is the main entry point for environment setup
 	 */
 	private async preloadServices(): Promise<void> {
-		dog && console.log('🚀 [EnvService] Starting environment initialization...');
+		dogF && console.log('🚀 [EnvService] Starting environment initialization...');
 		try {
-			dog && console.log('📋 [EnvService] Loading environment configuration...');
+			dogF && console.log('📋 [EnvService] Loading environment configuration...');
 			await this.loadEnvironmentConfig();
 
 			await this.initializeUserContext();
 		} catch (error) {
-			dog && console.error('❌ [EnvService] Environment initialization failed:', error);
+			dogF && console.error('❌ [EnvService] Environment initialization failed:', error);
 			throw error;
 		}
 	}
 	private async loadEnvironmentConfig(): Promise<void> {
-		dog && console.log('📋 [EnvService] Loading environment configuration...');
+		dogF && console.log('📋 [EnvService] Loading environment configuration...');
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
 		}
@@ -742,20 +742,20 @@ export class EnvService {
 
 	private async initializeUserContext() {
 		try {
-			dog && console.log('👤 [EnvService] Initializing user context...');
+			dogF && console.log('👤 [EnvService] Initializing user context...');
 			let that = this;
 			//Track tenant context
 			this.userContext.getUserTenant().subscribe(async (tenant) => {
 				if (tenant) {
 					that.app.tenant.current = tenant.id;
-					dog && console.log('🏢 [EnvService] Tenant context subscribe:', tenant);
+					dogF && console.log('🏢 [EnvService] Tenant context subscribe:', tenant);
 				}
 			});
 
 			//Track user context
 			this.userContext.getCurrentUser().subscribe(async (user) => {
 				if (user) {
-					dog && console.log('👤 [EnvService] User context subscribe:', user);
+					dogF && console.log('👤 [EnvService] User context subscribe:', user);
 					if (user.Id) {
 						that.user = user;
 						that.loadBranch();
@@ -771,18 +771,18 @@ export class EnvService {
 				}
 			});
 		} catch (error) {
-			dog && console.error('Error initializing context:', error);
+			dogF && console.error('Error initializing context:', error);
 			throw error;
 		}
 	}
 
 	private async loadServices(): Promise<void> {
-		dog && console.log('🚀 [EnvService] continue environment initialization...');
+		dogF && console.log('🚀 [EnvService] continue environment initialization...');
 
 		try {
 			this.setupNetworkMonitoring();
 			this.storage.getCacheRegistry$().subscribe((cacheRegistry) => {
-				if (dog && Array.isArray(cacheRegistry)) {
+				if (dogF && Array.isArray(cacheRegistry)) {
 					const tableData = cacheRegistry.map((item) => ({
 						key: item.key,
 						tenant: item.tenant,
@@ -797,7 +797,7 @@ export class EnvService {
 				}
 			});
 			await this.setupDataStreams();
-			dog && console.log('✅ [EnvService] Environment initialization completed successfully');
+			dogF && console.log('✅ [EnvService] Environment initialization completed successfully');
 
 			// Notify UI that environment is ready
 			this.publishEvent({ Code: EVENT_TYPE.APP.ENVIRONMENT_READY, Value: null });
@@ -805,13 +805,13 @@ export class EnvService {
 			// Setup analytics after environment is ready
 			this.setupAnalytics();
 		} catch (error) {
-			dog && console.error('❌ [EnvService] Environment initialization failed:', error);
+			dogF && console.error('❌ [EnvService] Environment initialization failed:', error);
 			throw error;
 		}
 	}
 
 	private async setupDataStreams(): Promise<void> {
-		dog && console.log('🌊 [EnvService] Setting up data streams...');
+		dogF && console.log('🌊 [EnvService] Setting up data streams...');
 		try {
 			this.setupSignalR();
 			// // Setup real-time data streams
@@ -823,9 +823,9 @@ export class EnvService {
 			// // Setup offline data handling
 			// await this.setupOfflineDataHandling();
 
-			dog && console.log('Data streams setup completed');
+			dogF && console.log('Data streams setup completed');
 		} catch (error) {
-			dog && console.error('Failed to setup data streams:', error);
+			dogF && console.error('Failed to setup data streams:', error);
 			throw error;
 		}
 	}
@@ -861,8 +861,8 @@ export class EnvService {
 
 		signalRConnection
 			.start()
-			.then(() => dog && console.log('SignalR Connected!'))
-			.catch((err) => dog && console.error('SignalR connection failed:', err));
+			.then(() => dogF && console.log('SignalR Connected!'))
+			.catch((err) => dogF && console.error('SignalR connection failed:', err));
 
 		// Add existing event handlers
 		signalRConnection.on('BroadcastMessage', (e) => {
@@ -904,11 +904,11 @@ export class EnvService {
 		});
 
 		signalRConnection.on('SendMessage', (user, message) => {
-			dog && console.log('SendMessage', user, message);
+			dogF && console.log('SendMessage', user, message);
 		});
 
 		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
-			dog && console.log('SaleOrdersUpdated', IDBranch, Ids);
+			dogF && console.log('SaleOrdersUpdated', IDBranch, Ids);
 			this.publishEvent({ Code: EVENT_TYPE.SALE.ORDERS_UPDATED });
 		});
 	}
@@ -919,7 +919,7 @@ export class EnvService {
 	private setupNetworkMonitoring(): void {
 		Network.addListener('networkStatusChange', (status) => {
 			this.publishEvent({ Code: EVENT_TYPE.APP.NETWORK_STATUS_CHANGE, status });
-			dog && console.log('Network status changed', status);
+			dogF && console.log('Network status changed', status);
 		});
 
 		this.trackOnline().subscribe((isOnline) => {
@@ -932,11 +932,11 @@ export class EnvService {
 	 * Migrated from AccountService.setupAnalytics()
 	 */
 	private setupAnalytics(): void {
-		dog && console.log('📊 [EnvService] Setting up analytics...');
+		dogF && console.log('📊 [EnvService] Setting up analytics...');
 
 		this.router.events.subscribe((event: any) => {
 			if (event instanceof NavigationEnd) {
-				dog && console.log('🌲 [AppComponent] Navigation event:', event);
+				dogF && console.log('🌲 [AppComponent] Navigation event:', event);
 
 				if (ga) {
 					ga('set', 'page', 'test/' + event.urlAfterRedirects);
@@ -959,12 +959,12 @@ export class EnvService {
 					avatar: this.user.Avatar,
 				};
 
-				dog && console.log('🆔 [EnvService] Analytic ID configured:', woopraId);
+				dogF && console.log('🆔 [EnvService] Analytic ID configured:', woopraId);
 
 				// Setup Woopra tracking with retry mechanism
 				let woopraInterval: any = setInterval(() => {
 					if ((window as any)?.woopra) {
-						dog && console.log('📈 [EnvService] Analytic identified');
+						dogF && console.log('📈 [EnvService] Analytic identified');
 						(window as any).woopra.identify(woopraId);
 						(window as any).woopra.push();
 
@@ -973,14 +973,14 @@ export class EnvService {
 							woopraInterval = null;
 						}
 
-						dog && console.log('✅ [EnvService] Analytics setup completed');
+						dogF && console.log('✅ [EnvService] Analytics setup completed');
 					}
 				}, 3000);
 			} catch (error) {
-				dog && console.error('❌ [EnvService] Analytics setup failed:', error);
+				dogF && console.error('❌ [EnvService] Analytics setup failed:', error);
 			}
 		} else {
-			dog && console.log('🚫 [EnvService] No user available for analytics setup');
+			dogF && console.log('🚫 [EnvService] No user available for analytics setup');
 		}
 	}
 }
