@@ -5634,50 +5634,6 @@ export interface OST_FunctionalMatrix
     
 }
 
-export interface OST_JobDescription
-{
-    IDFunctionalMatrix?: number;
-    IDBranch?: number;
-    IDParent?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Purpose?: string;
-    Responsibilities?: string;
-    Authority?: string;
-    Requirements?: string;
-    KPIs?: string;
-    WorkingConditions?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
-export interface OST_JobRelation
-{
-    IDJobDescription?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    RelationType?: string;
-    IDJobRelation?: number;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    
-}
-
 export interface OST_Office
 {
     Id?: number;
@@ -5975,6 +5931,26 @@ export interface POS_Cash
     
 }
 
+export interface POS_CashHandover
+{
+    IDShift?: number;
+    IDFromStaff?: number;
+    IDToStaff?: number;
+    Id?: number;
+    HandoverAmount?: number;
+    HandoverTime?: Date;
+    Status?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface POS_Kitchen
 {
     IDBranch?: number;
@@ -6076,6 +6052,69 @@ export interface POS_MenuDetail
     
 }
 
+export interface POS_Shift
+{
+    IDBranch?: number;
+    IDPreviousShift?: number;
+    IDClosingStaff?: number;
+    IDTerminal?: number;
+    Id?: number;
+    StartDate?: Date;
+    EndDate?: Date;
+    OpeningCash?: number;
+    ClosingCash?: number;
+    ExpectedCash?: number;
+    CashDifference?: number;
+    Status?: string;
+    ClosingReason?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface POS_ShiftOrder
+{
+    IDShift?: number;
+    IDOrder?: number;
+    Id?: number;
+    OrderStatus?: string;
+    CompletedTime?: Date;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface POS_ShiftReport
+{
+    IDShift?: number;
+    Id?: number;
+    ReportType?: string;
+    ReportData?: string;
+    ReportTime?: Date;
+    Status?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
 export interface POS_Table
 {
     IDBranch?: number;
@@ -6157,6 +6196,10 @@ export interface POS_Terminal
     IDBranch?: number;
     IDPrinter?: number;
     Id?: number;
+    DefaultCashAmount?: number;
+    CurrentCashAmount?: number;
+    CashDrawerStatus?: string;
+    CashDrawerType?: string;
     Code?: string;
     Name?: string;
     Remark?: string;

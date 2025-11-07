@@ -10288,104 +10288,6 @@ export var APIListBase = {
 		
 	},
 
-	OST_JobDescription:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "OST/JobDescription/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "OST/JobDescription"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "OST/JobDescription/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "OST/JobDescription/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "OST/JobDescription/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobDescription/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobDescription/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobDescription/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "OST/JobDescription"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "OST/JobDescription/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "OST/JobDescription/" + id} 
-        }
-		
-	},
-
-	OST_JobRelation:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "OST/JobRelation/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "OST/JobRelation"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "OST/JobRelation/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "OST/JobRelation/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "OST/JobRelation/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobRelation/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobRelation/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "OST/JobRelation/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "OST/JobRelation"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "OST/JobRelation/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "OST/JobRelation/" + id} 
-        }
-		
-	},
-
 	OST_Office:{
         getSearchList:{
             method: "GET",
@@ -11023,6 +10925,55 @@ export var APIListBase = {
 		
 	},
 
+	POS_CashHandover:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/CashHandover/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/CashHandover"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/CashHandover/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/CashHandover/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/CashHandover/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/CashHandover"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/CashHandover/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/CashHandover/" + id} 
+        }
+		
+	},
+
 	POS_Kitchen:{
         getSearchList:{
             method: "GET",
@@ -11264,6 +11215,153 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "POS/MenuDetail/" + id} 
+        }
+		
+	},
+
+	POS_Shift:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/Shift/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/Shift"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/Shift/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/Shift/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/Shift/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/Shift"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/Shift/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/Shift/" + id} 
+        }
+		
+	},
+
+	POS_ShiftOrder:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/ShiftOrder/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/ShiftOrder"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/ShiftOrder/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/ShiftOrder/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/ShiftOrder"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/ShiftOrder/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        }
+		
+	},
+
+	POS_ShiftReport:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/ShiftReport/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/ShiftReport"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/ShiftReport/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/ShiftReport/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/ShiftReport/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/ShiftReport"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/ShiftReport/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/ShiftReport/" + id} 
         }
 		
 	},

@@ -9,7 +9,7 @@ import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { CommonService } from '../core/common.service';
 import { EnvService } from '../core/env.service';
 import { APIList } from '../static/global-variable';
-import { environment, dog } from '../../../environments/environment';
+import { environment, dogF } from '../../../environments/environment';
 import { EVENT_TYPE } from '../static/event-type';
 
 import { AuthResult, TokenResponse, LoginCredentials, DeviceInfo, AuthState } from '../../interfaces/auth.interfaces';
@@ -38,7 +38,7 @@ export class AuthenticationService {
 	) {
 		this.cache.tracking().subscribe((tracking) => {
 			if (tracking) {
-				dog && console.log('🔑 [AuthService] AuthenticationService constructor');
+				dogF && console.log('🔑 [AuthService] AuthenticationService constructor');
 				this.initializeAuthState();
 				this.setupSessionMonitoring();
 				this.setupMultiTabSync();
@@ -67,7 +67,7 @@ export class AuthenticationService {
 	 * Authenticate user with username and password
 	 */
 	async login(credentials: LoginCredentials): Promise<AuthResult> {
-		dog &&
+		dogF &&
 			console.log('🔑 [AuthService] Starting login process...', {
 				username: credentials.username,
 				hasPassword: !!credentials.password,
@@ -75,19 +75,19 @@ export class AuthenticationService {
 
 		try {
 			this.updateAuthState({ isLoading: true, error: undefined });
-			dog && console.log('📍 [AuthService] Auth state updated to loading');
+			dogF && console.log('📍 [AuthService] Auth state updated to loading');
 
 			// Get device information for mobile platforms
-			dog && console.log('📱 [AuthService] Getting device info...');
+			dogF && console.log('📱 [AuthService] Getting device info...');
 			const deviceInfo = await this.getDeviceInfo();
-			dog && console.log('📱 [AuthService] Device info:', deviceInfo);
+			dogF && console.log('📱 [AuthService] Device info:', deviceInfo);
 
 			const loginData = {
 				username: credentials.username,
 				password: credentials.password,
 			};
 
-			dog &&
+			dogF &&
 				console.log('🌐 [AuthService] Calling login API...', {
 					url: APIList.ACCOUNT.token.url,
 					method: 'Login',
@@ -97,10 +97,10 @@ export class AuthenticationService {
 				.connect('Login', APIList.ACCOUNT.token.url, loginData)
 				.pipe(
 					tap((response) => {
-						dog && console.log('✅ [AuthService] Login API response received:', response);
+						dogF && console.log('✅ [AuthService] Login API response received:', response);
 					}),
 					catchError((error) => {
-						dog && console.error('❌ [AuthService] Login API error:', error);
+						dogF && console.error('❌ [AuthService] Login API error:', error);
 						this.updateAuthState({
 							isLoading: false,
 							error: error.message || 'Login failed',
@@ -112,15 +112,15 @@ export class AuthenticationService {
 				.toPromise();
 
 			if (!response) {
-				dog && console.error('❌ [AuthService] No response from login API');
+				dogF && console.error('❌ [AuthService] No response from login API');
 				throw new Error('Invalid login response');
 			}
 
-			dog && console.log('🔄 [AuthService] Processing token response...');
+			dogF && console.log('🔄 [AuthService] Processing token response...');
 
 			// Convert response to TokenResponse
 			const tokenResponse = response as unknown as TokenResponse;
-			dog &&
+			dogF &&
 				console.log('📝 [AuthService] Token response:', {
 					hasAccessToken: !!tokenResponse?.access_token,
 					hasRefreshToken: !!tokenResponse?.refresh_token,
@@ -128,13 +128,13 @@ export class AuthenticationService {
 				});
 
 			// Use the extracted processLoginResponse method
-			dog && console.log('✅ [AuthService] Login process completed successfully!');
+			dogF && console.log('✅ [AuthService] Login process completed successfully!');
 			return await this.processLoginResponse(response);
 		} catch (error) {
-			dog && console.error('🚨 [AuthService] Login failed with error:', error);
+			dogF && console.error('🚨 [AuthService] Login failed with error:', error);
 			
 			const errorMessage = error?.message || 'Authentication failed';
-			dog && console.log('📝 [AuthService] Setting error state:', errorMessage);
+			dogF && console.log('📝 [AuthService] Setting error state:', errorMessage);
 
 			this.updateAuthState({
 				isLoading: false,
@@ -171,7 +171,7 @@ export class AuthenticationService {
 
 			await this.userContextService.clearUserContext();
 		} catch (error) {
-			dog && console.error('Logout error:', error);
+			dogF && console.error('Logout error:', error);
 			// Even if logout fails, clear local state
 			this.updateAuthState({
 				isAuthenticated: false,
@@ -209,7 +209,7 @@ export class AuthenticationService {
 				.connect('POST', APIList.ACCOUNT.token.url, refreshData)
 				.pipe(
 					catchError((error) => {
-						dog && console.error('Token refresh error:', error);
+						dogF && console.error('Token refresh error:', error);
 						// If refresh fails, logout user
 						this.logout();
 						// Publish session expired event
@@ -234,7 +234,7 @@ export class AuthenticationService {
 
 			throw new Error('Token refresh failed');
 		} catch (error) {
-			dog && console.error('Token refresh error:', error);
+			dogF && console.error('Token refresh error:', error);
 			await this.logout();
 			// Publish session expired event
 			this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED, data: error });
@@ -313,7 +313,7 @@ export class AuthenticationService {
 			}
 			return null;
 		} catch (error) {
-			dog && console.error('Error getting current token:', error);
+			dogF && console.error('Error getting current token:', error);
 			return null;
 		}
 	}
@@ -333,14 +333,14 @@ export class AuthenticationService {
 	private async getCurrentTokenFromStorage(): Promise<TokenResponse | null> {
 		try {
 			const token = this.cache.app.token;
-			dog && console.log('🔑 [AuthService] Get current token from storage');
+			dogF && console.log('🔑 [AuthService] Get current token from storage');
 			if (token && token.access_token && token.access_token !== 'no token') {
 				return token;
 			}
 
 			return null;
 		} catch (error) {
-			dog && console.error('Error getting token from storage:', error);
+			dogF && console.error('Error getting token from storage:', error);
 			return null;
 		}
 	}
@@ -359,7 +359,7 @@ export class AuthenticationService {
 
 			await this.userContextService.clearUserContext();
 		} catch (error) {
-			dog && console.error('Error clearing token:', error);
+			dogF && console.error('Error clearing token:', error);
 		}
 	}
 
@@ -383,7 +383,7 @@ export class AuthenticationService {
 			// For custom token format, return the token itself
 			return this.cache.app.token;
 		} catch (error) {
-			dog && console.error('Error parsing token:', error);
+			dogF && console.error('Error parsing token:', error);
 			return null;
 		}
 	}
@@ -404,7 +404,7 @@ export class AuthenticationService {
 				try {
 					await this.refreshToken();
 				} catch (error) {
-					dog && console.error('Automatic token refresh failed:', error);
+					dogF && console.error('Automatic token refresh failed:', error);
 					await this.logout();
 				}
 			}, refreshTime);
@@ -428,7 +428,7 @@ export class AuthenticationService {
 	private async getDeviceInfo(): Promise<DeviceInfo | null> {
 		try {
 			if (!Capacitor.isPluginAvailable('Device')) {
-				dog && console.warn('Device plugin not available');
+				dogF && console.warn('Device plugin not available');
 				return null;
 			}
 
@@ -450,7 +450,7 @@ export class AuthenticationService {
 				IDUser: null, // Will be set after login
 			};
 		} catch (error) {
-			dog && console.error('Error getting device info:', error);
+			dogF && console.error('Error getting device info:', error);
 			return null;
 		}
 	}
@@ -479,7 +479,7 @@ export class AuthenticationService {
 			// Register device with server (assuming userDeviceProvider exists)
 			// This would be handled by the facade or another service
 		} catch (error) {
-			dog && console.error('Device registration error:', error);
+			dogF && console.error('Device registration error:', error);
 		}
 	}
 
@@ -545,14 +545,14 @@ export class AuthenticationService {
 			// Subscribe to logout request events
 			this.env.getEvents().subscribe((event) => {
 				if (event.Code === EVENT_TYPE.USER.LOGOUT_REQUESTED) {
-					dog && console.log('🚪 [AuthService] Received logout request event');
+					dogF && console.log('🚪 [AuthService] Received logout request event');
 					this.logout();
 				}
 			});
 
-			dog && console.log('✅ [AuthService] Event listeners setup completed');
+			dogF && console.log('✅ [AuthService] Event listeners setup completed');
 		} catch (error) {
-			dog && console.error('❌ [AuthService] Failed to setup event listeners:', error);
+			dogF && console.error('❌ [AuthService] Failed to setup event listeners:', error);
 		}
 	}
 
@@ -571,7 +571,7 @@ export class AuthenticationService {
 
 			return response && (response as any).valid === true;
 		} catch (error) {
-			dog && console.error('Token validation with tenant failed:', error);
+			dogF && console.error('Token validation with tenant failed:', error);
 			return false;
 		}
 	}
@@ -648,7 +648,7 @@ export class AuthenticationService {
 
 			return response;
 		} catch (error) {
-			dog && console.error('Error getting MFA challenge:', error);
+			dogF && console.error('Error getting MFA challenge:', error);
 			throw error;
 		}
 	}
@@ -672,7 +672,7 @@ export class AuthenticationService {
 			// Process successful MFA verification
 			return this.processLoginResponse(response);
 		} catch (error) {
-			dog && console.error('Error verifying MFA code:', error);
+			dogF && console.error('Error verifying MFA code:', error);
 			throw error;
 		}
 	}
@@ -721,7 +721,7 @@ export class AuthenticationService {
 	 * Migrated from AccountService.setToken()
 	 */
 	async setToken(token: any): Promise<void> {
-		dog &&
+		dogF &&
 			console.log('🔐 [AuthenticationService] Setting token:', {
 				hasToken: !!token,
 				tokenType: token?.token_type,
@@ -731,12 +731,12 @@ export class AuthenticationService {
 			if (token != null) {
 				this.cache.app.token = token;
 				await this.cache.set('Token', this.cache.app.token, { timeToLive: 365 * 24 * 60, enable: true }, 'auto', null);
-				dog && console.log('✅ [AuthenticationService] Token saved to storage');
+				dogF && console.log('✅ [AuthenticationService] Token saved to storage');
 			} else {
 				this.clearToken();
 			}
 		} catch (error) {
-			dog && console.error('❌ [AuthenticationService] Error setting token:', error);
+			dogF && console.error('❌ [AuthenticationService] Error setting token:', error);
 			throw error;
 		}
 	}

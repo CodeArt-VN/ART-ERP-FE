@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.15',
+	appVersion: '0.21.17',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
@@ -45,4 +45,6 @@ export const environment = {
 	}
 };
 
-export let dog = !environment.production; //Dev log
+// dog = dev log;
+export let dogF = false; // Framework log;
+export let dog = !environment.production; // Dev log

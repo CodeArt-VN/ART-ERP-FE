@@ -94,18 +94,16 @@
 						<textarea rows="3" class="c-input" id="Remark" formControlName="Remark" type="textarea"></textarea>
 					</div>
 
-					<div class="c-control ion-text-right" *ngIf="item.Id==0">
-						<label class="c-label" for=""></label>
-						<ion-button (click)="saveChange()">{{'Add' | translate}}</ion-button>
-					</div>
-					<div class="c-control ion-text-right" *ngIf="item.Id!=0">
-						<label class="c-label" for=""></label>
-						<ion-button (click)="saveChange()" [disabled]="!formGroup.dirty">{{'Save' | translate}}</ion-button>
-						<ion-button (click)="refresh()" color="warning">{{'Cancel' | translate}}</ion-button>
-						<ion-button *ngIf="item.Id && pageConfig.canDelete" (click)="delete()" color="danger">{{'Delete' | translate}}</ion-button>
-					</div>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
 	</form>
 </ion-content>
+<ion-footer>
+	<ion-toolbar>
+		<ion-button slot="end" *ngIf="!item.id" (click)="saveChange()">{{'Add' | translate}}</ion-button>
+		<ion-button slot="end" *ngIf="item.Id" (click)="saveChange()" [disabled]="!formGroup.dirty">{{'Save' | translate}}</ion-button>
+		<ion-button slot="end" *ngIf="item.Id" (click)="refresh()" color="warning">{{'Cancel' | translate}}</ion-button>
+		<ion-button slot="end" *ngIf="item.Id && pageConfig.canDelete" (click)="delete()" color="danger">{{'Delete' | translate}}</ion-button>
+	</ion-toolbar>
+</ion-footer>

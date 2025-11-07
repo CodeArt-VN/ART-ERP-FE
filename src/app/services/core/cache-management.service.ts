@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { ICacheItem, CacheConfig, CacheStrategy, ICacheStats, RetryConfig } from '../static/search-config';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MigrationService } from './migration.service';
 
@@ -41,10 +41,10 @@ export class CacheManagementService {
 		private storage: StorageService,
 		private migration: MigrationService
 	) {
-		dog && console.log('🚀 [CacheManagementService] Constructor initialized');
+		dogF && console.log('🚀 [CacheManagementService] Constructor initialized');
 		this.storage.tracking().subscribe((tracking) => {
 			if (tracking) {
-				dog && console.log('🔧 [CacheManagementService] Storage ready');
+				dogF && console.log('🔧 [CacheManagementService] Storage ready');
 				this.init();
 			}
 		});
@@ -62,7 +62,7 @@ export class CacheManagementService {
 
 			const currentTenant = await this.getRoot('Tenant');
 			if (currentTenant && this.app.tenant !== currentTenant) {
-				dog && console.log('🔧 [CacheManagementService] Set tenant', environment.appDomain, currentTenant);
+				dogF && console.log('🔧 [CacheManagementService] Set tenant', environment.appDomain, currentTenant);
 				this.app.tenant = currentTenant;
 				environment.appDomain = currentTenant;
 			}
@@ -78,20 +78,20 @@ export class CacheManagementService {
 			if (userProfile) {
 				this.app.userProfile = userProfile;
 			}
-			this.app.selectedBranch = await this.get('SelectedBranch', 'auto', null);
+			this.app.selectedBranch = await this.get(`SelectedBranch(${this.app.userId})`, 'auto', null);
 			if (!this.app.selectedBranch && this.app.userProfile) {
 				this.app.selectedBranch = this.app.userProfile.IDBranch;
 			}
 
-			dog && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);
+			dogF && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);
 			await this.migration.executeMigration(this);
 			this._tracking$.next(true);
 
 			this.setupMaintenance();
 
-			dog && console.log('✅ [CacheManagementService] Cache management initialized successfully');
+			dogF && console.log('✅ [CacheManagementService] Cache management initialized successfully');
 		} catch (error) {
-			dog && console.error('❌ [CacheManagementService] Failed to initialize:', error);
+			dogF && console.error('❌ [CacheManagementService] Failed to initialize:', error);
 			throw error;
 		}
 	}
@@ -116,7 +116,7 @@ export class CacheManagementService {
 	private updateCacheTracking(): void {
 		const currentRegistry = Array.from(this.cacheRegistry.values());
 		this.cacheRegistry$.next(currentRegistry);
-		dog && console.log(`📊 [CacheManagementService] Cache tracking updated: ${currentRegistry.length} items`);
+		dogF && console.log(`📊 [CacheManagementService] Cache tracking updated: ${currentRegistry.length} items`);
 	}
 
 	/**
@@ -133,13 +133,13 @@ export class CacheManagementService {
 		const item = this.cacheRegistry.get(cacheKey);
 
 		if (!item) {
-			dog && console.log(`🔍 [CacheManagementService] Cache miss: ${cacheKey}`);
+			dogF && console.log(`🔍 [CacheManagementService] Cache miss: ${cacheKey}`);
 			return null;
 		}
 
 		// Check if expired
 		if (Date.now() > item.expiresAt) {
-			dog && console.log(`⏰ [CacheManagementService] Cache expired: ${cacheKey}`);
+			dogF && console.log(`⏰ [CacheManagementService] Cache expired: ${cacheKey}`);
 
 			if (item.expireAction === 'update') {
 				// Auto refresh if enabled
@@ -164,12 +164,12 @@ export class CacheManagementService {
 		const value = await this.getRoot(valueKey);
 
 		if (value === null || value === undefined) {
-			dog && console.log(`⚠️ [CacheManagementService] Cache value not found: ${valueKey}`);
+			dogF && console.log(`⚠️ [CacheManagementService] Cache value not found: ${valueKey}`);
 			await this.remove(key, tenant, branch);
 			return null;
 		}
 
-		dog && console.log(`✅ [CacheManagementService] Cache hit: ${cacheKey}, Value loaded from separate storage`);
+		dogF && console.log(`✅ [CacheManagementService] Cache hit: ${cacheKey}, Value loaded from separate storage`);
 		return value;
 	}
 
@@ -231,7 +231,7 @@ export class CacheManagementService {
 		await this.saveCacheRegistry();
 		this.updateCacheTracking();
 
-		dog && console.log(`💾 [CacheManagementService] Cache set: ${cacheKey}, TTL: ${timeToLive}min, Value stored separately`);
+		dogF && console.log(`💾 [CacheManagementService] Cache set: ${cacheKey}, TTL: ${timeToLive}min, Value stored separately`);
 	}
 
 	/**
@@ -249,7 +249,7 @@ export class CacheManagementService {
 			this.updateCacheApp(key, null);
 			await this.saveCacheRegistry();
 			this.updateCacheTracking();
-			dog && console.log(`🗑️ [CacheManagementService] Cache removed: ${cacheKey}, Value deleted from separate storage`);
+			dogF && console.log(`🗑️ [CacheManagementService] Cache removed: ${cacheKey}, Value deleted from separate storage`);
 		}
 	}
 
@@ -264,7 +264,7 @@ export class CacheManagementService {
 				await this.storage.remove(valueKey);
 			}
 			this.cacheRegistry.clear();
-			dog && console.log('🧹 [CacheManagementService] All cache cleared, values deleted from separate storage');
+			dogF && console.log('🧹 [CacheManagementService] All cache cleared, values deleted from separate storage');
 		} else if (!branch) {
 			// Clear tenant specific - xóa value trước
 			for (const [cacheKey, item] of this.cacheRegistry.entries()) {
@@ -274,7 +274,7 @@ export class CacheManagementService {
 					this.cacheRegistry.delete(cacheKey);
 				}
 			}
-			dog && console.log(`🧹 [CacheManagementService] Cache cleared for tenant: ${tenant}, values deleted from separate storage`);
+			dogF && console.log(`🧹 [CacheManagementService] Cache cleared for tenant: ${tenant}, values deleted from separate storage`);
 		} else {
 			// Clear branch specific - xóa value trước
 			for (const [cacheKey, item] of this.cacheRegistry.entries()) {
@@ -284,7 +284,7 @@ export class CacheManagementService {
 					this.cacheRegistry.delete(cacheKey);
 				}
 			}
-			dog && console.log(`🧹 [CacheManagementService] Cache cleared for ${tenant}-${branch}, values deleted from separate storage`);
+			dogF && console.log(`🧹 [CacheManagementService] Cache cleared for ${tenant}-${branch}, values deleted from separate storage`);
 		}
 
 		await this.saveCacheRegistry();
@@ -367,7 +367,7 @@ export class CacheManagementService {
 		const refreshItems: ICacheItem[] = [];
 		const retryItems: ICacheItem[] = [];
 
-		dog && console.log('🔧 [CacheManagementService] Starting cache maintenance...');
+		dogF && console.log('🔧 [CacheManagementService] Starting cache maintenance...');
 
 		// Phân loại cache items
 		for (const item of this.cacheRegistry.values()) {
@@ -404,7 +404,7 @@ export class CacheManagementService {
 		// Cleanup theo maxCacheSize (lấy từ query string)
 		await this.cleanupBySizeFromQuery();
 
-		dog && console.log(`🔧 [CacheManagementService] Maintenance completed. Expired: ${expiredItems.length}, Refresh: ${refreshItems.length}, Retry: ${retryItems.length}`);
+		dogF && console.log(`🔧 [CacheManagementService] Maintenance completed. Expired: ${expiredItems.length}, Refresh: ${refreshItems.length}, Retry: ${retryItems.length}`);
 	}
 
 	/**
@@ -419,7 +419,7 @@ export class CacheManagementService {
 		delete item.errorMessage;
 
 		try {
-			dog && console.log(`🔄 [CacheManagementService] Refreshing cache: ${item.key}`);
+			dogF && console.log(`🔄 [CacheManagementService] Refreshing cache: ${item.key}`);
 
 			// TODO: Implement actual API call based on query
 			// For now, simulate API call with mock data
@@ -440,9 +440,9 @@ export class CacheManagementService {
 
 			await this.saveCacheRegistry();
 			this.updateCacheTracking();
-			dog && console.log(`✅ [CacheManagementService] Cache refreshed: ${item.key}`);
+			dogF && console.log(`✅ [CacheManagementService] Cache refreshed: ${item.key}`);
 		} catch (error) {
-			dog && console.error(`❌ [CacheManagementService] Failed to refresh cache: ${item.key}`, error);
+			dogF && console.error(`❌ [CacheManagementService] Failed to refresh cache: ${item.key}`, error);
 
 			// Xử lý lỗi
 			item.status = 'error';
@@ -567,7 +567,7 @@ export class CacheManagementService {
 			await this.remove(item.key, item.tenant, item.branch);
 		}
 
-		dog && console.log(`🧹 [CacheManagementService] Cleaned up ${itemsToRemove.length} items for ${tenant}-${branch}, values deleted from separate storage`);
+		dogF && console.log(`🧹 [CacheManagementService] Cleaned up ${itemsToRemove.length} items for ${tenant}-${branch}, values deleted from separate storage`);
 	}
 
 	/**
@@ -642,11 +642,11 @@ export class CacheManagementService {
 					const cacheKey = this.generateCacheKey(item.key, item.tenant, item.branch);
 					this.cacheRegistry.set(cacheKey, item);
 				}
-				dog && console.log(`📖 [CacheManagementService] Loaded ${registry.length} cache metadata items from storage (values stored separately)`);
+				dogF && console.log(`📖 [CacheManagementService] Loaded ${registry.length} cache metadata items from storage (values stored separately)`);
 				this.updateCacheTracking();
 			}
 		} catch (error) {
-			dog && console.error('❌ [CacheManagementService] Failed to load cache registry:', error);
+			dogF && console.error('❌ [CacheManagementService] Failed to load cache registry:', error);
 		}
 	}
 
@@ -658,7 +658,7 @@ export class CacheManagementService {
 			const registry = Array.from(this.cacheRegistry.values());
 			await this.storage.set('CacheRegistry', registry);
 		} catch (error) {
-			dog && console.error('❌ [CacheManagementService] Failed to save cache registry:', error);
+			dogF && console.error('❌ [CacheManagementService] Failed to save cache registry:', error);
 		}
 	}
 
@@ -674,7 +674,7 @@ export class CacheManagementService {
 			interval * 60 * 1000
 		);
 
-		dog && console.log(`⏰ [CacheManagementService] Maintenance interval set to ${interval} minutes`);
+		dogF && console.log(`⏰ [CacheManagementService] Maintenance interval set to ${interval} minutes`);
 	}
 
 	/**

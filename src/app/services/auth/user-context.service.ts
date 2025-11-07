@@ -6,7 +6,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { lib } from '../static/global-functions';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { CacheManagementService } from '../core/cache-management.service';
 import { Role, Tenant, UserProfile, UserSession } from '../../interfaces/auth.interfaces';
 
@@ -33,7 +33,7 @@ export class UserContextService {
 	constructor(public cache: CacheManagementService) {
 		this.cache.tracking().subscribe((tracking) => {
 			if (tracking) {
-				dog && console.log('🔧 [UserContextService] Cache ready', cache.app);
+				dogF && console.log('🔧 [UserContextService] Cache ready', cache.app);
 				this.switchTenant(cache.app.tenant || environment.appDomain);
 				this.setCurrentUser(cache.app.userProfile || this.nullUser, false);
 			}
@@ -41,7 +41,7 @@ export class UserContextService {
 	}
 
 	public async clearUserContext(): Promise<void> {
-		dog && console.log('🧹 [UserContextService] Clearing user context...');
+		dogF && console.log('🧹 [UserContextService] Clearing user context...');
 		this.currentUser$.next(this.nullUser);
 		this.currentTenant$.next(null);
 		this.currentSession$.next(null);
@@ -53,22 +53,22 @@ export class UserContextService {
 	 * Migrated from AccountService.setupUserContext()
 	 */
 	public async setupUserContext(userData: any): Promise<void> {
-		dog && console.log('🔧 [UserContextService] Setting up user context...', userData);
+		dogF && console.log('🔧 [UserContextService] Setting up user context...', userData);
 
 		// Process avatar URL
 		userData.Avatar = userData.Avatar ? (userData.Avatar.indexOf('http') != -1 ? userData.Avatar : environment.appDomain + userData.Avatar) : null;
 
 		// Build forms tree
 		const formsTree = await lib.buildFlatTree(userData.Forms, userData.Forms, true);
-		dog && console.log('🌲 [UserContextService] Forms tree built:', (formsTree as any[])?.length);
+		dogF && console.log('🌲 [UserContextService] Forms tree built:', (formsTree as any[])?.length);
 
 		// Filter desktop forms
 		userData.Forms = (formsTree as any[]).filter((d: any) => !d.isMobile);
-		dog && console.log('📱 [UserContextService] Desktop forms filtered:', userData.Forms?.length);
+		dogF && console.log('📱 [UserContextService] Desktop forms filtered:', userData.Forms?.length);
 
 		// Build branch tree
 		const branchTree = await lib.buildFlatTree(userData.BranchList, userData.BranchList, true);
-		dog && console.log('🌲 [UserContextService] Branch tree built:', (branchTree as any[])?.length);
+		dogF && console.log('🌲 [UserContextService] Branch tree built:', (branchTree as any[])?.length);
 
 		// Update branch list
 		userData.BranchList = branchTree;
@@ -83,7 +83,7 @@ export class UserContextService {
 
 		await this.setCurrentUser(normalizedProfile);
 
-		dog && console.log('✅ [UserContextService] User context setup completed');
+		dogF && console.log('✅ [UserContextService] User context setup completed');
 	}
 
 	/**
@@ -97,7 +97,7 @@ export class UserContextService {
 	 * Set current user
 	 */
 	public async setCurrentUser(user: UserProfile, isSave = true): Promise<void> {
-		dog &&
+		dogF &&
 			console.log('👤 [UserContextService] Setting current user:', {
 				userId: user?.Id,
 				hasUser: !!user,
@@ -107,7 +107,7 @@ export class UserContextService {
 		try {
 			// Validate user object
 			if (!user || !user.Id) {
-				dog && console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
+				dogF && console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
 				return;
 			}
 
@@ -122,25 +122,25 @@ export class UserContextService {
 			}
 
 			this.currentUser$.next(user);
-			dog && console.log('✅ [UserContextService] User set in BehaviorSubject');
+			dogF && console.log('✅ [UserContextService] User set in BehaviorSubject');
 
 			// Update roles if available
 			if (user.Roles) {
-				dog && console.log('🎭 [UserContextService] Setting user roles:', user.Roles.length);
+				dogF && console.log('🎭 [UserContextService] Setting user roles:', user.Roles.length);
 				this.userRoles$.next(user.Roles);
 			}
 
 			// Create user session
-			dog && console.log('🔐 [UserContextService] Creating user session...');
+			dogF && console.log('🔐 [UserContextService] Creating user session...');
 			this.createUserSession(user);
 
 			// Update last activity
-			dog && console.log('⏰ [UserContextService] Updating session activity...');
+			dogF && console.log('⏰ [UserContextService] Updating session activity...');
 			this.updateSessionActivity();
 
-			dog && console.log('✅ [UserContextService] Current user set successfully');
+			dogF && console.log('✅ [UserContextService] Current user set successfully');
 		} catch (error) {
-			dog && console.error('🚨 [UserContextService] Error setting current user:', error);
+			dogF && console.error('🚨 [UserContextService] Error setting current user:', error);
 		}
 	}
 
@@ -212,7 +212,7 @@ export class UserContextService {
 	 */
 	async switchTenant(tenantId: string): Promise<void> {
 		try {
-			dog && console.log('🏢 [UserContextService] Switching to tenant:', tenantId);
+			dogF && console.log('🏢 [UserContextService] Switching to tenant:', tenantId);
 
 			// Load tenant data
 			const newTenant = await this.loadTenantData(tenantId);
@@ -224,9 +224,9 @@ export class UserContextService {
 			environment.appDomain = tenantId;
 			this.currentTenant$.next(newTenant);
 			this.cache.setRoot('Tenant', tenantId);
-			dog && console.log('✅ [UserContextService] Tenant context updated');
+			dogF && console.log('✅ [UserContextService] Tenant context updated');
 		} catch (error) {
-			dog && console.error('🚨 [UserContextService] Error switching tenant:', error);
+			dogF && console.error('🚨 [UserContextService] Error switching tenant:', error);
 			throw error;
 		}
 	}
@@ -236,7 +236,7 @@ export class UserContextService {
 	 */
 	async switchBranch(branchId: string): Promise<void> {
 		try {
-			dog && console.log('🏢 [UserContextService] Switching to branch:', branchId);
+			dogF && console.log('🏢 [UserContextService] Switching to branch:', branchId);
 
 			// Load branch data
 			const newBranch = await this.loadBranchData(branchId);
@@ -244,7 +244,7 @@ export class UserContextService {
 				throw new Error(`Branch ${branchId} not found`);
 			}
 		} catch (error) {
-			dog && console.error('🚨 [UserContextService] Error switching branch:', error);
+			dogF && console.error('🚨 [UserContextService] Error switching branch:', error);
 			throw error;
 		}
 	}
@@ -261,7 +261,7 @@ export class UserContextService {
 				this.currentSession$.next({ ...currentSession });
 			}
 		} catch (error) {
-			dog && console.error('Error updating session activity:', error);
+			dogF && console.error('Error updating session activity:', error);
 		}
 	}
 
@@ -269,7 +269,7 @@ export class UserContextService {
 	 * Create user session
 	 */
 	private createUserSession(user: UserProfile): void {
-		dog &&
+		dogF &&
 			console.log('📝 [UserContextService] Creating user session for:', {
 				userId: user?.Id,
 				hasId: !!user?.Id,
@@ -279,13 +279,13 @@ export class UserContextService {
 		try {
 			// Validate user has required properties
 			if (!user) {
-				dog && console.warn('⚠️ [UserContextService] Cannot create session: user is null or undefined');
+				dogF && console.warn('⚠️ [UserContextService] Cannot create session: user is null or undefined');
 				return;
 			}
 
 			// Safely get user ID
 			const userId = user.Id?.toString() || 'unknown';
-			dog && console.log('🆔 [UserContextService] User ID resolved:', userId);
+			dogF && console.log('🆔 [UserContextService] User ID resolved:', userId);
 
 			const session: UserSession = {
 				id: this.generateSessionId(),
@@ -299,12 +299,12 @@ export class UserContextService {
 				deviceId: 'unknown',
 			};
 
-			dog && console.log('🔐 [UserContextService] Session created:');
+			dogF && console.log('🔐 [UserContextService] Session created:');
 
 			this.currentSession$.next(session);
-			dog && console.log('✅ [UserContextService] Session set in BehaviorSubject');
+			dogF && console.log('✅ [UserContextService] Session set in BehaviorSubject');
 		} catch (error) {
-			dog && console.error('🚨 [UserContextService] Error creating user session:', error);
+			dogF && console.error('🚨 [UserContextService] Error creating user session:', error);
 		}
 	}
 
@@ -364,7 +364,7 @@ export class UserContextService {
 				settings: {},
 			};
 		} catch (error) {
-			dog && console.error('Error loading tenant data:', error);
+			dogF && console.error('Error loading tenant data:', error);
 			return null;
 		}
 	}
@@ -375,7 +375,7 @@ export class UserContextService {
 	private async loadBranchData(branchId: string): Promise<any> {
 		try {
 		} catch (error) {
-			dog && console.error('Error loading branch data:', error);
+			dogF && console.error('Error loading branch data:', error);
 			return null;
 		}
 	}

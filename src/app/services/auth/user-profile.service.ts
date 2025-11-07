@@ -11,7 +11,7 @@ import { APIList } from '../static/global-variable';
 import { UserContextService } from './user-context.service';
 
 import { UserProfile, UserSettings } from '../../interfaces/auth.interfaces';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserSettingProvider } from '../static/services.service';
 import { CacheManagementService } from '../core/cache-management.service';
 
@@ -38,17 +38,17 @@ export class UserProfileService {
 	}
 
 	async getProfile(): Promise<void> {
-		dog && console.log('👤 [UserProfileService] Getting profile...');
+		dogF && console.log('👤 [UserProfileService] Getting profile...');
 
 		try {
 			// Get fresh data from API and process through UserContextService
 			const userData = await this.commonService.connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null).toPromise();
 
-			dog && console.log('👤 [UserProfileService] Profile loaded from server', userData);
+			dogF && console.log('👤 [UserProfileService] Profile loaded from server', userData);
 			await this.userContextService.setupUserContext(userData);
 			await this.checkAppStatusAndTypeList();
 		} catch (error) {
-			dog && console.error('❌ [UserProfileService] Error getting profile:', error);
+			dogF && console.error('❌ [UserProfileService] Error getting profile:', error);
 			throw error;
 		}
 	}
