@@ -867,23 +867,6 @@ export class EnvService {
 		// Add existing event handlers
 		signalRConnection.on('BroadcastMessage', (e) => {
 			switch (e.code) {
-				case 'POSOrderPaymentUpdate':
-				case 'POSOrderFromCustomer':
-				case 'POSOrderFromStaff':
-				case 'POSSupport':
-				case 'POSCallToPay':
-				case 'POSLockOrderFromStaff':
-				case 'POSLockOrderFromCustomer':
-				case 'POSUnlockOrderFromStaff':
-				case 'POSUnlockOrderFromCustomer':
-				case 'POSLockOrder':
-				case 'POSUnlockOrder':
-				case 'POSOrderSplittedFromStaff':
-				case 'POSOrderMergedFromStaff':
-				case 'SOPaymentUpdate':
-					e.code = 'app:' + e.code;
-					this.publishEvent(e);
-					break;
 				case EVENT_TYPE.SYSTEM.RELOAD:
 					location.reload();
 					break;
@@ -891,14 +874,14 @@ export class EnvService {
 					this.showMessage(e.value, e.name);
 					break;
 				case EVENT_TYPE.SYSTEM.RELOAD_OLD_VERSION:
-					if (e.value.localeCompare(this.app.version) > 0) {
-						location.reload();
-					}
+					if (e.value.localeCompare(this.app.version) > 0) location.reload();
 					break;
 				case EVENT_TYPE.SYSTEM.ALERT:
 					this.showAlert(e.value, null, e.name);
 					break;
 				default:
+					e.code = 'signalR:' + e.code;
+					this.publishEvent(e);
 					break;
 			}
 		});
