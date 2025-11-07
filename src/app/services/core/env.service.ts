@@ -738,6 +738,7 @@ export class EnvService {
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
 			this.language.isDefault = this.language.current === this.language.default;
+			this.translate.use(this.language.current);
 			this.languageTracking.next(this.language);
 		}
 	}
