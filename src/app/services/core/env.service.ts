@@ -737,6 +737,8 @@ export class EnvService {
 		dogF && console.log('📋 [EnvService] Loading environment configuration...');
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
+			this.language.isDefault = this.language.current === this.language.default;
+			this.languageTracking.next(this.language);
 		}
 	}
 
