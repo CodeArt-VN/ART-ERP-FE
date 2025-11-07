@@ -72,6 +72,12 @@ export interface PageConfig {
 	// System configuration
 	systemConfig?: {
 		IsAutoSave: boolean;
+		SODefaultBusinessPartner?: number;
+		POSSettleAtCheckout?: boolean;
+		POSHideSendBarKitButton?: boolean;
+		POSEnableTemporaryPayment?: boolean;
+		POSEnablePrintTemporaryBill?: boolean;
+		POSAutoPrintBillAtSettle?: boolean;
 	};
 
 	// Force create flag

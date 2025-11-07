@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
 import { CustomService } from 'src/app/services/custom/custom.service';
-import { environment, dog } from 'src/environments/environment';
+import { environment, dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { APIList } from 'src/app/services/static/global-variable';
 
@@ -102,10 +102,10 @@ export class LoginPage extends PageBase {
 			.showLoading('Please wait for a few moments', this.authService.login({ username: account.UserName, password: account.Password }))
 			.then(async (data) => {
 				// After login success, get profile data and process through UserContextService
-				dog && console.log('🔑 [LoginPage] Login successful, getting profile data...');
+				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
 				await this.profileService.checkAppStatusAndTypeList(true);
 				await this.profileService.getProfile(); // Force reload fresh data
-				dog && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
+				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				this.goBack();
 			})
 			.catch((err) => {
@@ -132,9 +132,9 @@ export class LoginPage extends PageBase {
 				this.externalAuthService.handleOAuthCallback(provider, externalAccessToken)
 					.then(async (data) => {
 						// Load user data after successful external login
-						dog && console.log('🔑 [LoginPage] External login successful, loading user data...');
+						dogF && console.log('🔑 [LoginPage] External login successful, loading user data...');
 						await this.profileService.getProfile(); // Force reload fresh data
-						dog && console.log('✅ [LoginPage] User data loaded, navigating back...');
+						dogF && console.log('✅ [LoginPage] User data loaded, navigating back...');
 						loading.dismiss();
 						this.goBack();
 					})
@@ -219,12 +219,12 @@ export class LoginPage extends PageBase {
 	 * Migrated from AccountService.forgotPassword()
 	 */
 	async forgotPassword(email: string): Promise<any> {
-		dog && console.log('🔐 [LoginPage] Requesting password reset...', { email });
+		dogF && console.log('🔐 [LoginPage] Requesting password reset...', { email });
 
 		try {
 			const data = { Email: email };
 
-			dog && console.log('🌐 [LoginPage] Calling forgot password API...', {
+			dogF && console.log('🌐 [LoginPage] Calling forgot password API...', {
 				url: APIList.ACCOUNT.forgotPassword.url,
 				method: APIList.ACCOUNT.forgotPassword.method
 			});
@@ -233,11 +233,11 @@ export class LoginPage extends PageBase {
 				.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data)
 				.toPromise();
 
-			dog && console.log('✅ [LoginPage] Password reset request successful:', response);
+			dogF && console.log('✅ [LoginPage] Password reset request successful:', response);
 
 			return response;
 		} catch (error) {
-			dog && console.error('❌ [LoginPage] Password reset request failed:', error);
+			dogF && console.error('❌ [LoginPage] Password reset request failed:', error);
 			throw error;
 		}
 	}

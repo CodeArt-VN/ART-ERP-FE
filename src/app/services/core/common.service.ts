@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { dog, environment } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { ApiSetting } from '../static/api-setting';
 import { lib } from '../static/global-functions';
 import { GlobalData } from '../static/global-variable';
@@ -167,7 +167,7 @@ export class CommonService {
 		}
 
 		return new Promise(function (resolve, reject) {
-			dog && console.log('🚀 [CommonService] connectLocal', apiPath.url());
+			dogF && console.log('🚀 [CommonService] connectLocal', apiPath.url());
 			that.env
 				.getStorage(apiPath.url(), query)
 				.then((items) => {
@@ -622,7 +622,7 @@ export class CommonService {
 	}
 
 	checkError(err) {
-		dog && console.log(err);
+		dogF && console.log(err);
 
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
@@ -653,7 +653,7 @@ export class exService extends providerService {
 		this.allowCache = this.cacheConfig?.enable || false;
 		this.commonService = commonService;
 
-		dog && console.log(this.serviceName + ' service is ready');
+		dogF && console.log(this.serviceName + ' service is ready');
 		this.showCommandRules = toolbarCommandRules.getRules(this.serviceName);
 	}
 }

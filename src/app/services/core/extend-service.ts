@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 import { CacheConfig } from '../static/search-config';
 import { CommonService } from './common.service';
 
@@ -95,7 +95,7 @@ export class providerService {
 	 */
 	read(query: any = null, forceReload = false) {
 		var that = this;
-		dog && console.log('🚀 [CommonService] read', this.apiPath.getList.url());
+		dogF && console.log('🚀 [CommonService] read', this.apiPath.getList.url());
 		if (this.allowCache && forceReload == false) {
 			return new Promise(function (resolve, reject) {
 				that.commonService
@@ -143,7 +143,7 @@ export class providerService {
 						// Store in cache with service-specific config
 						if (that.cacheConfig?.enable) {
 							// Use env service to access cache service
-							dog && console.log('🚀 [CommonService] setStorage', apiPath.url());
+							dogF && console.log('🚀 [CommonService] setStorage', apiPath.url());
 							that.cacheConfig.query = query;
 							that.commonService.env.setStorage(apiPath.url(), data, that.cacheConfig, that.serviceName);
 						}

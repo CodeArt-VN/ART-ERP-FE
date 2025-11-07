@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
-import { dog } from 'src/environments/environment';
+import { dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
 
 @Injectable({
@@ -26,18 +26,18 @@ export class AuthGuard implements CanActivate {
 	// }
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-		dog && console.log('�� [AuthGuard] canActivate for route:', state.url);
+		dogF && console.log('�� [AuthGuard] canActivate for route:', state.url);
 
 		return new Promise<boolean>(async (resolve) => {
 			try {
 				this.env.ready.then(async (_) => {
-					dog && console.log('✅ [AuthGuard] Environment ready, checking permissions...');
+					dogF && console.log('✅ [AuthGuard] Environment ready, checking permissions...');
 					const result = await this.checkCanUse(next, state);
 					resolve(result);
-					dog && console.log('✅ [AuthGuard] Permissions checked:', result);
+					dogF && console.log('✅ [AuthGuard] Permissions checked:', result);
 				});
 			} catch (error) {
-				dog && console.error('❌ [AuthGuard] Error waiting for environment:', error);
+				dogF && console.error('❌ [AuthGuard] Error waiting for environment:', error);
 
 				// Fallback: redirect to login
 				this.env.showMessage('System is initializing, please try again', 'warning');
