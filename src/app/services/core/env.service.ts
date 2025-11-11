@@ -560,6 +560,7 @@ export class EnvService {
 	changeBranch(branchId) {
 		dogF && console.log('🌲 [EnvService] Changing branch to:', branchId);
 		this.setStorage(`SelectedBranch(${this.user.Id})` , branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
+		this.storage.app.selectedBranch = branchId;
 		let selectedBranch = this.branchList.find((d) => d.Id == this.storage.app.selectedBranch);
 		this.selectedBranchAndChildren = selectedBranch?.Query || [];
 		this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
