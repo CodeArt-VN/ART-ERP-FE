@@ -33,6 +33,7 @@ export class InputControlComponent implements OnInit {
 		if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
 		if (f.color) this.color = f.color;
 		if (f.appendTo !== undefined) this.appendTo = f.appendTo;
+		if (f.virtualScroll !== undefined) this.virtualScroll = f.virtualScroll;
 		if (f.branchConfig) {
 			if (f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
 			if (f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
@@ -48,7 +49,7 @@ export class InputControlComponent implements OnInit {
 			if (f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
 		}
 		if (this.isTree) {
-			if (this.isCollapsed == undefined) this.isCollapsed = false;
+			if (this.isCollapsed == undefined) this.isCollapsed = false; 
 
 			//showing current value in tree
 			let parents = [];
@@ -84,6 +85,8 @@ export class InputControlComponent implements OnInit {
 	@Input() type: string = 'text';
 	@Input() appendTo: string = '#ng-select-holder';
 
+	@Input() virtualScroll: boolean = false;
+
 	@Input() id: string;
 	@Input() secondaryId: string;
 
@@ -111,8 +114,8 @@ export class InputControlComponent implements OnInit {
 	@Input() searchFn?: any;
 	@Input() searchFnDefault?: boolean = false;
 	@Input() isTree: boolean = false;
-	@Input() isCollapsed?: boolean;
-	@Input() rootCollapsed?: boolean = true; // when isCollapsed,unCollapsed up to showingRootLevel
+	@Input() isCollapsed?: boolean = false;
+	@Input() rootCollapsed?: boolean = false; // when isCollapsed,unCollapsed up to showingRootLevel
 	//branchConfig
 	@Input() branchConfig?;
 	@Input() selectedBranch?: number;

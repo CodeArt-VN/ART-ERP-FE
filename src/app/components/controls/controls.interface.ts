@@ -48,6 +48,8 @@ export interface InputControlField {
 
 	appendTo: string;
 
+	virtualScroll: boolean;
+
 	treeConfig?: {
 		isTree?: boolean;
 		isCollapsed?: boolean;

@@ -14,7 +14,7 @@ export class PromotionService {
 	) {}
 
 	getPromotions() {
-		this.programProvider.read({ BetweenDate: new Date() ,Status: 'Approved'}).then((value: any) => {
+		this.programProvider.read({ BetweenDate: new Date() ,Status: 'Approved',IgnoredBranch : true}).then((value: any) => {
 			this.promotionList = value.data;
 		});
 	}
