@@ -182,7 +182,7 @@
 
 	<!-- ng-select-branch -->
 	<ng-select
-		[virtualScroll]="false"
+		[virtualScroll]="virtualScroll"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-branch'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -190,6 +190,7 @@
 		[formControlName]="id"
 		[labelForId]="id"
 		[items]="dataSource"
+		[typeahead]="input$"
 		[bindValue]="bindValue"
 		[bindLabel]="bindLabel"
 		[multiple]="multiple"
@@ -714,8 +715,12 @@
 		<span class="hide-all" *ngIf="!item.show"></span>
 		<div class="flex-left" *ngIf="item.show" style="width: 100%; position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
 			<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing" *ngIf="k > 0"></span></ng-container>
-			<ion-icon
+			<ion-icon *ngIf="!virtualScroll"
 				(click)="$event.stopPropagation(); toggleRow(item)"
+				class="min-btn clickable"
+				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
+			></ion-icon>
+			<ion-icon *ngIf="virtualScroll"
 				class="min-btn clickable"
 				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
 			></ion-icon>
