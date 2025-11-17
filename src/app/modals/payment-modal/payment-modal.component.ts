@@ -307,7 +307,7 @@ export class PaymentModalComponent implements OnInit {
     const minor = Math.round(num * 100);
     return Math.abs(minor).toString().padStart(12, '0');
   }
-  checkResult() {
-    this.paymentService.checkResultRequest(this.payment.Id);
-  }
+  // checkResult() {
+  //   this.paymentService.checkResultRequest(this.payment.Id);
+  // }
 }
