@@ -6,8 +6,9 @@ import QRCode from 'qrcode';
 
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
+import { PURCHASE_OrderProvider, SYS_ConfigProvider } from 'src/app/services/static/services.service';
 import { lib } from 'src/app/services/static/global-functions';
+import { SYS_Config } from 'src/app/models/model-list-interface';
 
 @Component({
 	selector: 'app-po-note',
@@ -26,6 +27,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	sheets: any[] = [];
 	constructor(
 		public pageProvider: PURCHASE_OrderProvider,
+		public sysConfigProvider: SYS_ConfigProvider,
 		public modalController: ModalController,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
@@ -40,6 +42,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	}
 	preLoadData(event?: any): void {
 		this.id = this.ID;
+
 		this.env.getStatus('PurchaseOrder').then((data: any) => {
 			this.statusList = data;
 		}).finally(() => {
@@ -49,11 +52,25 @@ export class PurchaseOrderNoteComponent extends PageBase {
 				super.preLoadData(event);
 			}
 		})
-		
+
 	}
 	loadedData(event) {
 		super.loadedData(event);
-		this.loadPurchaseOrderNote();
+
+		let sysConfigQuery = ['SmallLogo'];
+		this.sysConfigProvider.read({
+			Code_in: sysConfigQuery,
+			IDBranch: this.item?.IDBranch
+		}).then((rs: any) => {
+			if (rs && rs.data?.length > 0) {
+				if (rs.data[0].Value) {
+					rs.data[0].Value = rs.data[0].Value.trim().replace(/^"(.*)"$/, '$1');
+					this.item._Branch.LogoURL = rs.data[0].Value;
+				}
+			}
+			this.loadPurchaseOrderNote();
+
+		}).catch(err => this.loadPurchaseOrderNote())
 	}
 	loadPurchaseOrderNote() {
 		this.submitAttempt = true;
