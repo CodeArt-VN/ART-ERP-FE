@@ -1,0 +1,286 @@
+ :root {
+ 	--grid-xs: 0;
+ 	--grid-sm: 480px;
+ 	--grid-md: 768px;
+ 	--grid-lg: 1024px;
+ 	--grid-xl: 1200px;
+ 	--grid-ll: 1440px;
+ 	--grid-4k: 2560px
+ }
+
+ :root {
+ 	--ion-color-success: #37d16a;
+ 	--ion-color-success-rgb: 55, 209, 106;
+ 	--ion-color-success-contrast: #ffffff;
+ 	--ion-color-success-contrast-rgb: 0, 0, 0;
+ 	--ion-color-success-shade: #30b85d;
+ 	--ion-color-success-tint: #4bd679;
+ 	--ion-color-warning: #ff9800;
+ 	--ion-color-warning-rgb: 255, 152, 0;
+ 	--ion-color-warning-contrast: #ffffff;
+ 	--ion-color-warning-contrast-rgb: 0, 0, 0;
+ 	--ion-color-warning-shade: #e08600;
+ 	--ion-color-warning-tint: #ffa21a;
+ 	--ion-color-danger: #e92327;
+ 	--ion-color-danger-rgb: 233, 35, 39;
+ 	--ion-color-danger-contrast: #ffffff;
+ 	--ion-color-danger-contrast-rgb: 255, 255, 255;
+ 	--ion-color-danger-shade: #cd1f22;
+ 	--ion-color-danger-tint: #eb393d;
+ 	--ion-color-facebook: #4267b2;
+ 	--ion-color-facebook-rgb: 66, 103, 178;
+ 	--ion-color-facebook-contrast: #ffffff;
+ 	--ion-color-facebook-contrast-rgb: 255, 255, 255;
+ 	--ion-color-facebook-shade: #3a5b9d;
+ 	--ion-color-facebook-tint: #5576ba
+ }
+
+
+ html {
+ 	--ion-font-family: var(--ion-default-font)
+ }
+
+ body {
+ 	background: var(--ion-background-color)
+ }
+
+ @supports (padding-top: 20px) {
+ 	html {
+ 		--ion-safe-area-top: var(--ion-statusbar-padding)
+ 	}
+ }
+
+ @supports (padding-top: constant(safe-area-inset-top)) {
+ 	html {
+ 		--ion-safe-area-top: constant(safe-area-inset-top);
+ 		--ion-safe-area-bottom: constant(safe-area-inset-bottom);
+ 		--ion-safe-area-left: constant(safe-area-inset-left);
+ 		--ion-safe-area-right: constant(safe-area-inset-right)
+ 	}
+ }
+
+ @supports (padding-top: env(safe-area-inset-top)) {
+ 	html {
+ 		--ion-safe-area-top: env(safe-area-inset-top);
+ 		--ion-safe-area-bottom: env(safe-area-inset-bottom);
+ 		--ion-safe-area-left: env(safe-area-inset-left);
+ 		--ion-safe-area-right: env(safe-area-inset-right)
+ 	}
+ }
+
+ * {
+ 	box-sizing: border-box;
+ 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+ 	-webkit-tap-highlight-color: transparent;
+ 	-webkit-touch-callout: none
+ }
+
+ html {
+ 	width: 100%;
+ 	height: 100%;
+ 	-webkit-text-size-adjust: 100%;
+ 	text-size-adjust: 100%
+ }
+
+ html:not(.hydrated) body {
+ 	display: none
+ }
+
+ body {
+ 	-moz-osx-font-smoothing: grayscale;
+ 	-webkit-font-smoothing: antialiased;
+ 	margin: 0;
+ 	padding: 0;
+ 	position: fixed;
+ 	width: 100%;
+ 	max-width: 100%;
+ 	height: 100%;
+ 	max-height: 100%;
+ 	transform: translateZ(0);
+ 	text-rendering: optimizeLegibility;
+ 	overflow: hidden;
+ 	touch-action: manipulation;
+ 	-webkit-user-drag: none;
+ 	-ms-content-zooming: none;
+ 	word-wrap: break-word;
+ 	overscroll-behavior-y: none;
+ 	-webkit-text-size-adjust: none;
+ 	text-size-adjust: none
+ }
+
+ html {
+ 	font-family: var(--ion-font-family)
+ }
+
+ :root {
+ 	--fc-button-bg-color: var(--ion-color-primary) !important;
+ 	--fc-button-border-color: var(--ion-color-primary) !important;
+ 	--fc-button-hover-bg-color: var(--ion-color-primary-share) !important;
+ 	--fc-button-hover-border-color: var(--ion-color-primary) !important;
+ 	--fc-button-active-bg-color: var(--menu-background-item-active) !important;
+ 	--fc-button-active-border-color: var(--ion-color-primary-share) !important
+ }
+
+ @page {
+ 	margin: 0
+ }
+
+ @media print {
+ 	html {
+ 		line-height: 1.15;
+ 		-ms-text-size-adjust: 100%;
+ 		-webkit-text-size-adjust: 100%
+ 	}
+
+ 	body {
+ 		margin: 0
+ 	}
+
+ 	body,
+ 	app-root {
+ 		contain: none !important;
+ 		position: relative !important
+ 	}
+
+ 	body {
+ 		overflow: initial
+ 	}
+
+ 	body {
+ 		font: 9pt sans-serif;
+ 		line-height: 1.3
+ 	}
+ }
+
+ html {
+ 	font-size: 10px !important
+ }
+
+ body {
+ 	font-size: 1.3rem
+ }
+
+ :root {
+ 	--fc-daygrid-event-dot-width: 8px
+ }
+
+ ion-button {
+ 	height: 2.8em;
+ }
+
+ .validation-summary-errors {
+ 	color: red;
+ 	text-align: left;
+ 	margin-left: -16px;
+ }
+
+ .inline-control .c-label {
+ 	white-space: nowrap;
+ 	position: absolute;
+ 	padding: 4px;
+ 	width: auto;
+ 	font-weight: normal;
+ 	border: solid transparent;
+ 	font-size: 1.3rem;
+ }
+
+ .inline-control .c-input {
+ 	text-align: right;
+ }
+
+ .input-money {
+ 	font-weight: bold;
+ }
+
+ .c-checkbox {
+ 	display: inline-block;
+ 	margin: 0px 0.5rem 0.5rem 0;
+ 	width: 2rem;
+ 	height: 2rem;
+ 	margin-top: 0.25em;
+ 	vertical-align: top;
+ 	background-color: var(--ion-color-primary-contrast);
+ 	background-repeat: no-repeat;
+ 	background-position: center;
+ 	background-size: contain;
+ 	border: 1px solid rgba(var(--ion-color-primary-rgb), .25);
+ 	-webkit-appearance: none;
+ 	-moz-appearance: none;
+ 	appearance: none;
+ 	-webkit-print-color-adjust: exact;
+ 	color-adjust: exact;
+ 	print-color-adjust: exact;
+ }
+
+ .c-checkbox[type=radio] , .c-checkbox.radio {
+ 	border-radius: 50%;
+ }
+
+ .c-checkbox:checked[type=checkbox] {
+ 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+ 	background-color: var(--ion-color-primary);
+ 	border-color: var(--ion-color-primary);
+ }
+
+ .c-checkbox:checked[type=radio] {
+ 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+ 	background-color: var(--ion-color-primary);
+ 	border-color: var(--ion-color-primary);
+ }
+
+
+ #listGroupRadioGrid5:checked~#fsListGroupRadioGrid5 {
+ 	display: block !important;
+ }
+
+
+ .row-full {
+ 	margin-bottom: 16px;
+ }
+
+ .logo-contain {
+ 	padding-bottom: 0vh;
+ 	background-color: transparent;
+ }
+
+ .logo {
+ 	margin: auto;
+ 	width: 90vw;
+ 	height: 20vh;
+ 	max-width: 250px;
+ 	background-repeat: no-repeat;
+ 	background-size: contain;
+ 	background-position: center center;
+ 	// background-image: url($wide-logo-url);
+ }
+
+ .tras-label {
+ 	margin: 0px;
+ 	position: absolute;
+ 	z-index: 5;
+ 	width: 100%;
+ 	height: 45px;
+ 	border: 0px;
+ 	background: transparent;
+ 	cursor: pointer;
+ 	appearance: none;
+ 	outline: none;
+ 	display: flex;
+ 	align-items: center;
+ 	opacity: 0;
+ }
+ .bank-select ion-card {
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 4px;
+  transition: 0.2s;
+}
+
+.bank-select ion-card.selected {
+  border: 2px solid var(--ion-color-success);
+  transform: scale(1.05);
+}
+
+.payment-text {
+  font-weight: 500;
+}
