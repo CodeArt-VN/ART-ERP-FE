@@ -255,8 +255,8 @@ export abstract class PageBase implements OnInit {
 		}
 	}
 
-	buildSelectDataSource(searchFunction, buildFlatTree = false) {
-		return this.formManagementService.createSelectDataSource(searchFunction, buildFlatTree);
+	buildSelectDataSource(searchFunction, buildFlatTree = false, form = null, fieldId = null, bindValue = null, onAutoSelect = null, isFromBarcodeScan$ = null) {
+		return this.formManagementService.createSelectDataSource(searchFunction, buildFlatTree, form, fieldId, bindValue, onAutoSelect, isFromBarcodeScan$);
 	}
 
 	refresh(event = null) {

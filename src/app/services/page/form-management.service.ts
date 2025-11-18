@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { EnvService } from '../core/env.service';
 import { PageDataManagementService } from './data-management.service';
 import { catchError, concat, distinctUntilChanged, mergeMap, of, switchMap, tap } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { lib } from '../static/global-functions';
 
 export class FormManagementService {
-	createSelectDataSource(searchFunction, buildFlatTree = false) {
-		return {
+	createSelectDataSource(searchFunction, buildFlatTree = false, form = null, fieldId = null, bindValue = null, onAutoSelect = null, isFromBarcodeScan$ = null) {
+		// Buffer scan state directly (no async subscription delay)
+		let isEnter = false
+		var dataSource = {
 			searchFunction: searchFunction,
 			loading: false,
 			input$: new Subject<string>(),
@@ -29,7 +31,19 @@ export class FormManagementService {
 									if (buildFlatTree) {
 										return lib.buildFlatTree(e, e);
 									}
+
 									return new Promise((resolve) => {
+										if (e && e.length === 1 && isEnter) {
+											if (form && fieldId) {
+												const valueToSet = bindValue ? e[0][bindValue] : e[0];
+												form.get(fieldId).setValue(valueToSet);
+												form.get(fieldId).markAsDirty();
+											}
+											if (onAutoSelect && typeof onAutoSelect === 'function') {
+												onAutoSelect(e[0]);
+											}
+										}
+										isEnter = false;
 										resolve(e);
 									});
 								})
@@ -39,5 +53,12 @@ export class FormManagementService {
 				);
 			},
 		};
+
+		isFromBarcodeScan$.subscribe((obj) => {
+			isEnter = obj.isEnter;
+			dataSource.input$.next(obj.term);
+		});
+
+		return dataSource;
 	}
 }

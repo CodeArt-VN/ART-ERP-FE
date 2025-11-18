@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
@@ -125,6 +126,9 @@ export class InputControlComponent implements OnInit {
 
 
 	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
+
+	// reference to the internal ng-select instance when used
+	@ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
 
 	imgPath = environment.staffAvatarsServer;
 
@@ -287,6 +291,19 @@ export class InputControlComponent implements OnInit {
 		) {
 			this.change.emit(event);
 		}
+	}
+
+	/**
+	 * Close the internal ng-select dropdown (if present) and emit change/touch on the control.
+	 * Used when the value was auto-selected programmatically to finish the UI interaction.
+	 */
+	closeDropdown(emitValue: boolean = true) {
+		try {
+			this.ngSelect?.close();
+		} catch (err) {
+			// ignore if no ng-select instance
+		}
+
 	}
 
 	onKeydown(event) {

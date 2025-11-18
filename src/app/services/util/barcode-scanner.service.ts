@@ -3,6 +3,7 @@ import { CapacitorBarcodeScanner, CapacitorBarcodeScannerOptions, CapacitorBarco
 import { Capacitor } from '@capacitor/core';
 import { EnvService } from '../core/env.service';
 import { lib } from '../static/global-functions';
+import { Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,12 +14,25 @@ export class BarcodeScannerService {
 		hint: 17,
 		scanInstructions: '',
 		//scanButton: false, scanText: 'Scan',
-		//cameraDirection: 1, //BACK	1; FRONT	2
+		//cameraDirection: 1; //BACK	1; FRONT	2
 		scanOrientation: 3, //PORTRAIT	1; LANDSCAPE	2; ADAPTIVE	3
 	};
+	isFromBarcodeScan$ = new Subject<any>(); // New: Track if input is from barcode scanner
+	barcodeBuffer = '';
+	barcodeTimer = null;
 
-	constructor(public env: EnvService) {}
-
+	constructor(public env: EnvService) {
+		window.addEventListener('keydown', (e: KeyboardEvent) => {
+			clearTimeout(this.barcodeTimer);
+			if (e.key.length === 1) this.barcodeBuffer += e.key;
+			this.barcodeTimer = setTimeout(() => {
+				if (e.key === 'Enter') {
+					this.isFromBarcodeScan$.next({term: this.barcodeBuffer, isEnter: true});
+					this.barcodeBuffer = '';
+				}
+			}, 50);
+		});
+	}
 	/**
 	 * Scans a barcode using the provided options or default options.
 	 * @param options - Optional custom options for the barcode scanner.
