@@ -31,8 +31,9 @@
 									</a>
 								</td>
 							</tr>
-							<tr>
-								<td class="head-c1 bol" colspan="2">{{item._Storer.CompanyName}}</td>
+							<tr >
+								<td *ngIf="!item._Storer?.Name" class="head-c1 bol" colspan="2"></td>
+								<td *ngIf="item._Storer?.Name"class="head-c1 bol" colspan="2">{{item._Storer.CompanyName}}</td>
 								<td class="bol num" colspan="2">{{item.OrderDateText}}</td>
 							</tr>
 							<tr>
@@ -46,11 +47,11 @@
 								<td class="bol"></td>
 								<td class="bol num" colspan="2"></td>
 							</tr>
-							<tr>
+							<tr *ngIf="item._Vendor?.Name">
 								<td colspan="4" class="">
 									<span>
 										<b> {{'Dear' | translate}}:</b>
-										{{item._Vendor.CompanyName}},
+										{{item._Vendor.Name}},
 										<br />{{'According to our agreement, we would like to order the following items:' | translate}}:
 									</span>
 								</td>
