@@ -36,9 +36,14 @@ export class SYS_ConfigService extends SYS_ConfigProvider {
 						values['data'].forEach((e) => {
 							// If value is null and inherited config exists, use inherited value
 							if ((e.Value == null || e.Value == 'null') && e._InheritedConfig) {
-								e.Value = e._InheritedConfig.Value;
+								e.Value = e._InheritedConfig?.Value;
 							}
-							configResult[e.Code] = JSON.parse(e.Value);
+							try {
+								configResult[e.Code] = JSON.parse(e.Value);
+							} catch (error) {
+								configResult[e.Code] = e.Value;
+							}
+							
 						});
 
 						// Check and apply default values for unset properties
