@@ -794,29 +794,36 @@ export var lib = {
 			vietinbank: '970415',
 		};
 
-		let messPart = '08' + message.length.toString().padStart(2, '0') + message;
+		// Build sub-fields for ID 38 (Merchant Account Information)
+		const guid = '0010A000000727'; // ID 00: Globally Unique Identifier
+		
+		// ID 01: Beneficiary Organization
+		const bankBin = '0006' + bankIdByCode[bankCode]; // ID 00 inside 01: Acquiring Bank
+		const merchantId = '01' + bankAccount.length.toString().padStart(2, '0') + bankAccount; // ID 01 inside 01: Merchant ID
+		const beneficiaryOrg = '01' + (bankBin.length + merchantId.length).toString().padStart(2, '0') + bankBin + merchantId;
+		
+		// ID 02: Service Code
+		const serviceCode = '0208QRIBFTTA';
+		
+		// Calculate total length for ID 38
+		const merchantAccountInfo = '38' + (guid.length + beneficiaryOrg.length + serviceCode.length).toString().padStart(2, '0') + guid + beneficiaryOrg + serviceCode;
+
+		// ID 62: Additional Data Field Template
+		const messageField = '08' + message.length.toString().padStart(2, '0') + message; // ID 08: Store Label/Bill Number
+		const additionalData = '62' + messageField.length.toString().padStart(2, '0') + messageField;
+
+		// ID 54: Transaction Amount
+		const amountField = '54' + (amount + '').length.toString().padStart(2, '0') + amount;
 
 		let code =
-			'000201' + //Phiên bản đặc tả QRCode
-			'010212' + //Phương thức khởi tạo. 11 = QR tĩnh; 12 = QR động
-			'3854' + //Thông tin tài khoản nhận tiền
-			'0010A000000727' +
-			'0124' +
-			'0006' +
-			bankIdByCode[bankCode] + //Id ngân hàng
-			'01' +
-			bankAccount.length.toString().padStart(2, '0') + //Số tài khoản
-			bankAccount +
-			'0208QRIBFTTA' +
-			'5303704' + //Mã tiền tệ - 3 ký tự - 704 = vnd
-			'54' + //Số tiền giao dịch - 7 ký tự - amount 1000000
-			(amount + '').length.toString().padStart(2, '0') +
-			amount +
-			'5802VN' + //Mã quốc gia
-			'62' + //Thông tin bổ sung
-			messPart.length.toString().padStart(2, '0') +
-			messPart +
-			'6304'; //Checksum
+			'000201' + //ID 00: Payload Format Indicator
+			'010212' + //ID 01: Point of Initiation Method (11 = static; 12 = dynamic)
+			merchantAccountInfo + //ID 38: Merchant Account Information
+			'5303704' + //ID 53: Transaction Currency (704 = VND)
+			amountField + //ID 54: Transaction Amount
+			'5802VN' + //ID 58: Country Code
+			additionalData + //ID 62: Additional Data Field Template
+			'6304'; //ID 63: CRC (placeholder)
 
 		let crc = lib.calcCRC(code);
 		code = code + crc.toString(16).toUpperCase().padStart(4, '0');
