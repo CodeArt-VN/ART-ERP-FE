@@ -147,7 +147,8 @@ export class PrintingService {
 								copies: option.copies,
 								duplex: option.duplex,
 								orientation: option.orientation,
-								paperSize: option.paperSize
+								paperSize: option.paperSize,
+								cssStyle: option.cssStyle
 							},
 							contents: []
 						});
