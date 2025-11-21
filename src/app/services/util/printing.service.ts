@@ -147,12 +147,13 @@ export class PrintingService {
 								copies: option.copies,
 								duplex: option.duplex,
 								orientation: option.orientation,
-								paperSize: option.paperSize
+								paperSize: option.paperSize,
+								cssStyle: option.cssStyle,
 							},
-							contents: []
+							contents: [],
 						});
 					}
-					
+
 					serverGroup.get(printerKey).contents.push(job);
 				});
 			});
@@ -381,10 +382,10 @@ export class PrintingService {
 
 				// size: {width: 2.25, height: 1.25}, units: 'in'
 			}
+
+			style = this.getOptimizedCSS('thermal');
 			if (option.cssStyle) {
-				style = option.cssStyle;
-			} else {
-				style = this.getOptimizedCSS('thermal');
+				style += option.cssStyle;
 			}
 			// if(data.options.scale)  convertOptions.orientation = data.options.scale; not found => todo
 		}
@@ -452,7 +453,9 @@ export class PrintingService {
 	 */
 	private getOptimizedCSS(printerType: 'thermal' | 'regular'): string {
 		if (printerType === 'thermal')
-			return `body,*{font-family:'Courier New','DejaVu Sans Mono',monospace!important;font-size:11px;color:#000!important;margin:0;padding:0;box-sizing:border-box}body{width:72mm;padding:5px;background:#fff;-webkit-print-color-adjust:exact}.bill{display:block;overflow:hidden!important;color:#000}.bill .sheet{box-shadow:none!important}.bill .title{color:#000;font-size:13px}.bill .header{text-align:center}.bill .header span{display:inline-block;width:100%}.bill .header .logo img{max-width:150px;max-height:75px}.bill .header .brand,.bill .header .bill-no{font-weight:bold}.bill .header .address{font-size:80%;font-style:italic}.bill .table-info{border:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info table{width:100%;border-collapse:collapse}.bill .table-info-top{border-top:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info-top table{width:100%;border-collapse:collapse}.bill .items{margin:5px 0}.bill .items table{width:100%;border-collapse:collapse}.bill .items tr td{border-bottom:1px dashed #ccc;padding-bottom:5px}.bill .items tr:last-child td{border:none!important}.bill .items .name{width:100%;padding-top:5px;padding-bottom:2px!important;border:none!important}.bill .items .code{font-weight:bold;text-transform:uppercase}.bill .items .quantity{font-weight:bold}.bill .items .total{text-align:right}.bill .message{text-align:center}.bill .header,.bill .table-info,.bill .table-info-top,.bill .items,.bill .message{padding-left:8px;padding-right:8px}.sheet{font-family:'Courier New','DejaVu Sans Mono',monospace!important;margin:0;overflow:hidden;position:relative;box-sizing:border-box;page-break-after:always;font-size:13px;background:#fff}.sheet.rpt table{width:100%;border-collapse:collapse}.page-header-space,.page-footer-space{height:10mm}.bold{font-weight:700}.text-right{text-align:right}.small{font-size:10px}@media print{body{margin:0!important;padding:5px!important}.bill{overflow:visible!important}}`;
+			return `:root {
+  --font-size: 10px;
+}body,*{font-family:'Courier New','DejaVu Sans Mono',monospace!important;font-size:calc(var(--font-size) * 1.1);color:#000!important;margin:0;padding:0;box-sizing:border-box}body{width:72mm;padding:5px;background:#fff;-webkit-print-color-adjust:exact}.bill{display:block;overflow:hidden!important;color:#000}.bill .sheet{box-shadow:none!important}.bill .title{color:#000;font-size:calc(var(--font-size) * 1.3)}.bill .header{text-align:center}.bill .header span{display:inline-block;width:100%}.bill .header .logo img{max-width:150px;max-height:75px}.bill .header .brand,.bill .header .bill-no{font-weight:bold}.bill .header .address{font-size:80%;font-style:italic}.bill .table-info{border:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info table{width:100%;border-collapse:collapse}.bill .table-info-top{border-top:solid;margin:5px 0;padding:5px;border-width:1px 0}.bill .table-info-top table{width:100%;border-collapse:collapse}.bill .items{margin:5px 0}.bill .items table{width:100%;border-collapse:collapse}.bill .items tr td{border-bottom:1px dashed #ccc;padding-bottom:5px}.bill .items tr:last-child td{border:none!important}.bill .items .name{width:100%;padding-top:5px;padding-bottom:2px!important;border:none!important}.bill .items .code{font-weight:bold;text-transform:uppercase}.bill .items .quantity{font-weight:bold}.bill .items .total{text-align:right}.bill .message{text-align:center}.bill .header,.bill .table-info,.bill .table-info-top,.bill .items,.bill .message{padding-left:8px;padding-right:8px}.sheet{font-family:'Courier New','DejaVu Sans Mono',monospace!important;margin:0;overflow:hidden;position:relative;box-sizing:border-box;page-break-after:always;font-size:13px;background:#fff}.sheet.rpt table{width:100%;border-collapse:collapse}.page-header-space,.page-footer-space{height:10mm}.bold{font-weight:700}.text-right{text-align:right}.small{font-size:10px}@media print{body{margin:0!important;padding:5px!important}.bill{overflow:visible!important}}`;
 		else return '';
 	}
 
