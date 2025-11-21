@@ -7,9 +7,8 @@ import { Subject, Observable } from 'rxjs';
 import { lib } from '../static/global-functions';
 
 export class FormManagementService {
-	createSelectDataSource(searchFunction, buildFlatTree = false, form = null, fieldId = null, bindValue = null, onAutoSelect = null, isFromBarcodeScan$ = null) {
+	createSelectDataSource(searchFunction, buildFlatTree = false) {
 		// Buffer scan state directly (no async subscription delay)
-		let isEnter = false
 		var dataSource = {
 			searchFunction: searchFunction,
 			loading: false,
@@ -33,17 +32,6 @@ export class FormManagementService {
 									}
 
 									return new Promise((resolve) => {
-										if (e && e.length === 1 && isEnter) {
-											if (form && fieldId) {
-												const valueToSet = bindValue ? e[0][bindValue] : e[0];
-												form.get(fieldId).setValue(valueToSet);
-												form.get(fieldId).markAsDirty();
-											}
-											if (onAutoSelect && typeof onAutoSelect === 'function') {
-												onAutoSelect(e[0]);
-											}
-										}
-										isEnter = false;
 										resolve(e);
 									});
 								})
@@ -53,12 +41,6 @@ export class FormManagementService {
 				);
 			},
 		};
-
-		isFromBarcodeScan$.subscribe((obj) => {
-			isEnter = obj.isEnter;
-			dataSource.input$.next(obj.term);
-		});
-
 		return dataSource;
 	}
 }
