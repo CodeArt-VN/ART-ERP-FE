@@ -3232,6 +3232,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_MemberCard:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/MemberCard/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/MemberCard"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/MemberCard/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/MemberCard/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/MemberCard/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MemberCard/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MemberCard/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MemberCard/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/MemberCard"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/MemberCard/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/MemberCard/" + id} 
+        }
+		
+	},
+
 	CRM_MembershipLoyalty:{
         getSearchList:{
             method: "GET",
@@ -4600,6 +4649,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "DCM/ProjectPerson/" + id} 
+        }
+		
+	},
+
+	DM_PR_ProgramItem:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DM/PR/ProgramItem/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DM/PR/ProgramItem"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DM/PR/ProgramItem/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DM/PR/ProgramItem/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DM/PR/ProgramItem"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DM/PR/ProgramItem/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
         }
 		
 	},

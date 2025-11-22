@@ -1934,6 +1934,30 @@ export interface CRM_Lead
     
 }
 
+export interface CRM_MemberCard
+{
+    IDMember?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Status?: string;
+    StartDate?: Date;
+    EndDate?: Date;
+    Type?: string;
+    SubType?: string;
+    Quota?: number;
+    DailyLimit?: number;
+    
+}
+
 export interface CRM_MembershipLoyalty
 {
     IDPolLevel?: number;
@@ -2565,6 +2589,25 @@ export interface DCM_ProjectPerson
     CreatedDate?: Date;
     ModifiedBy?: string;
     ModifiedDate?: Date;
+    
+}
+
+export interface DM_PR_ProgramItem
+{
+    IDProgram?: number;
+    IDItem?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDItemUoM?: number;
     
 }
 
@@ -6049,6 +6092,7 @@ export interface POS_MenuDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     Image?: string;
+    IDKitchens?: string;
     
 }
 
@@ -6315,6 +6359,7 @@ export interface PR_Program
     VoucherBreakPartLength?: number;
     VoucherBreakChar?: string;
     VoucherRadix?: number;
+    CalculatedDate?: Date;
     
 }
 
