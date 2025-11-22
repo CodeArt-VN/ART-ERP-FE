@@ -53,15 +53,31 @@ export class isNotDeleted {
 export class filterProperties implements PipeTransform {
 	transform(items: Array<any>, conditions: { [field: string]: any }): Array<any> {
 		return items.filter((item) => {
-			for (let field in conditions) {
-				if (conditions[field] === 'all' || conditions[field] === '') {
-					continue; // bỏ qua điều kiện này, kiểm tra tiếp
-				}
-				if (item[field] != conditions[field]) {
-					return false;
-				}
-			}
-			return true;
+			       for (let field in conditions) {  
+                const cond = conditions[field];
+
+                // Bỏ qua điều kiện all hoặc rỗng
+                if (cond === 'all' || cond === '' || cond == null) {
+                    continue;
+                }
+
+                const value = item[field];
+
+                // Nếu field trong item là array → kiểm tra includes
+                if (Array.isArray(value)) {
+                    if (!value.includes(cond)) {
+                        return false;
+                    }
+                }
+                // Nếu field trong item là single value → so sánh trực tiếp
+                else {
+                    if (value != cond) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
 		});
 	}
 }
