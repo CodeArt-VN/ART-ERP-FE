@@ -288,6 +288,7 @@
 		[appendTo]="appendTo"
 		[placeholder]="placeholder | translate"
 		(change)="onInputChange($event)"
+		(keydown)="ngSelectKeyDown($event)"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<div *ngIf="i.Id">

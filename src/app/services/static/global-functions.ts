@@ -797,23 +797,27 @@ export var lib = {
 		// Build sub-fields for ID 38 (Merchant Account Information)
 		const guid = '0010A000000727'; // ID 00: Globally Unique Identifier
 		
-		// ID 01: Beneficiary Organization
-		const bankBin = '0006' + bankIdByCode[bankCode]; // ID 00 inside 01: Acquiring Bank
-		const merchantId = '01' + bankAccount.length.toString().padStart(2, '0') + bankAccount; // ID 01 inside 01: Merchant ID
-		const beneficiaryOrg = '01' + (bankBin.length + merchantId.length).toString().padStart(2, '0') + bankBin + merchantId;
+		// ID 01: Beneficiary Organization - sub-fields bên trong chỉ có format: ID + LENGTH + VALUE
+		const bankBinValue = bankIdByCode[bankCode];
+		const bankBinField = '00' + bankBinValue.length.toString().padStart(2, '0') + bankBinValue; // ID 00: Acquiring Bank
+		const accountField = '01' + bankAccount.length.toString().padStart(2, '0') + bankAccount; // ID 01: Merchant Account
+		const beneficiaryOrgContent = bankBinField + accountField;
+		const beneficiaryOrg = '01' + beneficiaryOrgContent.length.toString().padStart(2, '0') + beneficiaryOrgContent;
 		
 		// ID 02: Service Code
 		const serviceCode = '0208QRIBFTTA';
 		
 		// Calculate total length for ID 38
-		const merchantAccountInfo = '38' + (guid.length + beneficiaryOrg.length + serviceCode.length).toString().padStart(2, '0') + guid + beneficiaryOrg + serviceCode;
+		const merchantAccountContent = guid + beneficiaryOrg + serviceCode;
+		const merchantAccountInfo = '38' + merchantAccountContent.length.toString().padStart(2, '0') + merchantAccountContent;
 
 		// ID 62: Additional Data Field Template
 		const messageField = '08' + message.length.toString().padStart(2, '0') + message; // ID 08: Store Label/Bill Number
 		const additionalData = '62' + messageField.length.toString().padStart(2, '0') + messageField;
 
 		// ID 54: Transaction Amount
-		const amountField = '54' + (amount + '').length.toString().padStart(2, '0') + amount;
+		const amountStr = amount.toString();
+		const amountField = '54' + amountStr.length.toString().padStart(2, '0') + amountStr;
 
 		let code =
 			'000201' + //ID 00: Payload Format Indicator

@@ -3,6 +3,7 @@ import { CapacitorBarcodeScanner, CapacitorBarcodeScannerOptions, CapacitorBarco
 import { Capacitor } from '@capacitor/core';
 import { EnvService } from '../core/env.service';
 import { lib } from '../static/global-functions';
+import { Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,12 +14,10 @@ export class BarcodeScannerService {
 		hint: 17,
 		scanInstructions: '',
 		//scanButton: false, scanText: 'Scan',
-		//cameraDirection: 1, //BACK	1; FRONT	2
+		//cameraDirection: 1; //BACK	1; FRONT	2
 		scanOrientation: 3, //PORTRAIT	1; LANDSCAPE	2; ADAPTIVE	3
 	};
-
 	constructor(public env: EnvService) {}
-
 	/**
 	 * Scans a barcode using the provided options or default options.
 	 * @param options - Optional custom options for the barcode scanner.

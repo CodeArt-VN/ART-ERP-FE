@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { EnvService } from '../core/env.service';
 import { PageDataManagementService } from './data-management.service';
 import { catchError, concat, distinctUntilChanged, mergeMap, of, switchMap, tap } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { lib } from '../static/global-functions';
 
 export class FormManagementService {
 	createSelectDataSource(searchFunction, buildFlatTree = false) {
-		return {
+		// Buffer scan state directly (no async subscription delay)
+		var dataSource = {
 			searchFunction: searchFunction,
 			loading: false,
 			input$: new Subject<string>(),
@@ -29,6 +30,7 @@ export class FormManagementService {
 									if (buildFlatTree) {
 										return lib.buildFlatTree(e, e);
 									}
+
 									return new Promise((resolve) => {
 										resolve(e);
 									});
@@ -39,5 +41,6 @@ export class FormManagementService {
 				);
 			},
 		};
+		return dataSource;
 	}
 }

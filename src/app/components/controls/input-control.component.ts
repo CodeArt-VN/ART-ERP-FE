@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
@@ -8,6 +9,7 @@ import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
 import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { FormulaExpandModalComponent } from './formula-expand-modal';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-input-control',
@@ -18,6 +20,9 @@ export class InputControlComponent implements OnInit {
 	lib;
 	searchTerm = '';
 	chartScriptId: string;
+	isFromBarcodeScan$ = new Subject<any>();
+	barcodeBuffer = '';
+	barcodeTimer = null;
 	@Input() set field(f: InputControlField) {
 		if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
@@ -49,7 +54,7 @@ export class InputControlComponent implements OnInit {
 			if (f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
 		}
 		if (this.isTree) {
-			if (this.isCollapsed == undefined) this.isCollapsed = false; 
+			if (this.isCollapsed == undefined) this.isCollapsed = false;
 
 			//showing current value in tree
 			let parents = [];
@@ -123,8 +128,10 @@ export class InputControlComponent implements OnInit {
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
 
-
 	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
+
+	// reference to the internal ng-select instance when used
+	@ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
 
 	imgPath = environment.staffAvatarsServer;
 
@@ -132,9 +139,10 @@ export class InputControlComponent implements OnInit {
 	quillEditor: any;
 	quillEditorId: string;
 
-	constructor(public monacoProvider: MonacoEditorLoaderService,
+	constructor(
+		public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
-		public dynamicScriptLoaderService: DynamicScriptLoaderService,
+		public dynamicScriptLoaderService: DynamicScriptLoaderService
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -142,7 +150,7 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
-		
+
 		// Initialize Quill editor ID if type is quill
 		if (this.type === 'quill' && !this.quillEditorId) {
 			this.quillEditorId = 'quillEditor' + lib.generateUID();
@@ -153,7 +161,7 @@ export class InputControlComponent implements OnInit {
 	}
 
 	disposableCompletionItemProvider: any = null;
-	monaco
+	monaco;
 	editorInstance: any;
 	initMonaco() {
 		// if(this.monaco) return;
@@ -222,7 +230,7 @@ export class InputControlComponent implements OnInit {
 				fontSize: 14,
 				automaticLayout: true,
 				minimap: { enabled: false },
-				wordWrap: 'on',           // ✅ tự động xuống dòng
+				wordWrap: 'on', // ✅ tự động xuống dòng
 				// wrappingIndent: 'indent', // ✅ canh lề đẹp khi xuống dòng
 				scrollBeyondLastLine: false, // ✅ tránh dư khoảng trắng dưới
 			});
@@ -248,7 +256,7 @@ export class InputControlComponent implements OnInit {
 			componentProps: {
 				dataSource: this.dataSource,
 				value: this.form.get(this.id).value,
-				item: this.form
+				item: this.form,
 			},
 		});
 		await modal.present();
@@ -271,10 +279,10 @@ export class InputControlComponent implements OnInit {
 		this.change.emit(value);
 	}
 
-
 	@Output() change = new EventEmitter();
 	@Output() inputChange = new EventEmitter();
 	@Output() select = new EventEmitter();
+	@Output() selectKeyDown = new EventEmitter();
 	onSelect(event) {
 		this.select.emit(event);
 	}
@@ -286,6 +294,30 @@ export class InputControlComponent implements OnInit {
 			)
 		) {
 			this.change.emit(event);
+		}
+	}
+
+	ngSelectKeyDown(e) {
+		clearTimeout(this.barcodeTimer);
+		if (e.key.length === 1) this.barcodeBuffer += e.key;
+		this.barcodeTimer = setTimeout(() => {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				e.stopPropagation();
+				this.selectKeyDown.emit({ term: this.barcodeBuffer, isEnter: true });
+				this.barcodeBuffer = '';
+			}
+		}, 50);
+	}
+	/**
+	 * Close the internal ng-select dropdown (if present) and emit change/touch on the control.
+	 * Used when the value was auto-selected programmatically to finish the UI interaction.
+	 */
+	closeDropdown(emitValue: boolean = true) {
+		try {
+			this.ngSelect?.close();
+		} catch (err) {
+			// ignore if no ng-select instance
 		}
 	}
 
