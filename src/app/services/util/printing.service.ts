@@ -385,7 +385,7 @@ export class PrintingService {
 
 			style = this.getOptimizedCSS('thermal');
 			if (option.cssStyle) {
-				style += option.cssStyle;
+				style = option.cssStyle;
 			}
 			// if(data.options.scale)  convertOptions.orientation = data.options.scale; not found => todo
 		}
