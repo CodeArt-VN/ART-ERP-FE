@@ -314,7 +314,7 @@
 				</ion-toolbar>
 			</ion-header>
 			<div class="safe-holder">
-				<div class="empty-message splash" *ngIf="!env.ready">
+				<div class="empty-message splash" *ngIf="!ui.isReady">
 					<div class="random-img" *ngIf="ui.randomImg">
 						<img appSvgImage [src]="ui.randomImg" />
 					</div>
@@ -358,7 +358,7 @@
 			menuId="appHelpDetail"
 			[swipeGesture]="false"
 			[hidden]="!ui.showHelp"
-			*ngIf="ui.showAppMenuHelp && env.ready"
+			*ngIf="ui.showAppMenuHelp"
 		>
 			<app-help-detail
 				*ngIf="env.user && env.user.Id && ui.pageConfigPageName && ui.showHelp"

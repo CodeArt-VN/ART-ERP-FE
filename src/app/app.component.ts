@@ -28,6 +28,7 @@ export interface ComponentUI {
 	appMessages: any[];
 	canGoBack: boolean;
 	showAppMenu: boolean;
+	isReady: boolean;
 
 	// Menu state
 	branchFormGroup: any;
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit {
 		appMessages: [],
 		canGoBack: false,
 		showAppMenu: true,
+		isReady: false,
 
 		// Menu state
 		branchFormGroup: null,
@@ -298,6 +300,7 @@ export class AppComponent implements OnInit {
 		await this.env.ready;
 		dogF && console.log('🌲 [AppComponent] Environment ready');
 
+		this.ui.isReady = true;
 		this.updateStatusbar();
 		this.eventHandler();
 		this.renderUI();
