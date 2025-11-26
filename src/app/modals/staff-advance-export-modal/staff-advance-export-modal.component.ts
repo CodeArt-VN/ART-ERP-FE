@@ -16,7 +16,7 @@ export class StaffAdvanceExportModalComponent implements OnInit {
 	fieldsOriginal: any = []; // original fields  (shown/hidden)
 	groupView: any = [
 		{
-			Name: 'Shown',
+			Name: 'Selected fields',
 			Fields: [],
 		},
 		{
@@ -38,49 +38,44 @@ export class StaffAdvanceExportModalComponent implements OnInit {
 			values[0].Fields.push(...values[1].data.map((f) => ({ Code: isNaN(f.UDF) ? f.UDF : 'UDF' + f.UDF, Name: f.Name })));
 			const valuesHidden = values[0]?.['Fields'].filter((f) => f.Code !== 'Id');
 			this.fieldsOriginal = [
-				{ Name: 'Shown', Fields: [] },
+				{ Name: 'Selected fields', Fields: [] },
 				{ Name: 'Hidden', Fields: [...valuesHidden] },
 			];
 			this.groupView = [
-				{ Name: 'Shown', Fields: [] },
+				{ Name: 'Selected fields', Fields: [] },
 				{ Name: 'Hidden', Fields: [...valuesHidden] },
 			];
 			this.groupView[1].Fields = this.groupView[1].Fields.filter((f) => f.Code !== 'Id');
-			
-			this.groupView[0].Fields.push({ Code: 'Id', Name: 'Id'});
-		});
 
-		// this.commonService
-		// 	.connect('GET', 'BI/Schema/GetSchemaByCode', { Code: 'HRM_Staff', Type: 'DBTable' })
-		// 	.toPromise()
-		// 	.then((schema: any) => {
-		// 		const valuesHidden = schema?.['Fields'];
-		// 		this.fieldsOriginal = [
-		// 			{ Name: 'Shown', Fields: [] },
-		// 			{ Name: 'Hidden', Fields: [...valuesHidden] },
-		// 		];
-		// 		this.groupView = [
-		// 			{ Name: 'Shown', Fields: [] },
-		// 			{ Name: 'Hidden', Fields: [...valuesHidden] },
-		// 		];
-		// 	});
+			this.groupView[0].Fields.push({ Code: 'Id', Name: 'Id' });
+		});
 	}
 
 	async closeModal(isApply: boolean = false) {
-		if (isApply) {
-			this.modalController.dismiss();
+		this.modalController.dismiss();
+	}
+
+	toggleAll(e) {
+		if (e.detail.checked) {
+			const fieldsToAdd = [...this.groupView[1].Fields];
+			fieldsToAdd.forEach((field) => {
+				this.addFieldToShown(field);
+			});
+		} else {
+			this.groupView[1].Fields = this.fieldsOriginal.find((g) => g.Name === 'Hidden').Fields.filter((f) => f.Code !== 'Id');
+			this.groupView[0].Fields = this.groupView[0].Fields.filter((f) => f.Code === 'Id');
 		}
 	}
 
 	doReorder(ev: any, fields: any[], nameGroup: string) {
-		if (nameGroup !== 'Shown') return;
+		if (nameGroup !== 'Selected fields') return;
 		const reorderedFields = ev.detail.complete(fields);
 		// Update Sort property for each field
 		reorderedFields.forEach((item, index) => {
 			item.Sort = index + 1;
 		});
 		// Update groupView
-		const groupUpdate = this.groupView.find((g) => g.Name === 'Shown');
+		const groupUpdate = this.groupView[0];
 		if (groupUpdate) {
 			groupUpdate.Fields = reorderedFields;
 		}
@@ -94,10 +89,10 @@ export class StaffAdvanceExportModalComponent implements OnInit {
 	}
 
 	removeAllFieldsFromShown() {
-		const fieldsToRemove = [...this.groupView[0].Fields.filter(f => f.Code !== 'Id')];
+		const fieldsToRemove = [...this.groupView[0].Fields.filter((f) => f.Code !== 'Id')];
 		const hiddenSchema = this.fieldsOriginal.find((g) => g.Name === 'Hidden').Fields;
 		// Remove all from Shown
-		this.groupView[0].Fields = this.groupView[0].Fields.filter(f => f.Code === 'Id');
+		this.groupView[0].Fields = this.groupView[0].Fields.filter((f) => f.Code === 'Id');
 		this.groupView[1].Fields = hiddenSchema;
 		// for each field to remove
 		// fieldsToRemove.forEach((field) => {
