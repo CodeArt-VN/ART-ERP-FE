@@ -1,0 +1,46 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>{{ 'Advanced export' | translate }}</ion-title>
+		<!-- Xuat du lieu -->
+		<ion-buttons slot="end">
+			<ion-button (click)="closeModal()" fill="clear">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme>
+	<ng-container>
+		<ion-list [inset]="true" *ngFor="let group of groupView">
+			<ion-list-header *ngIf="group.Name == 'Selected fields'">
+				<ion-label>
+					<h3>{{ group.Name | translate }}</h3>
+				</ion-label>
+				<!-- <ion-label (click)="removeAllFieldsFromShown()" *ngIf="group.Name == 'Selected fields' && groupView[0].Fields.length > 1">
+					<h3 class="hidden-all">{{ 'Hide all' | translate }}</h3>
+				</ion-label> -->
+			</ion-list-header>
+			<ion-reorder-group [disabled]="group.Name !== 'Selected fields'" (ionItemReorder)="doReorder($event, groupView[0].Fields, group.Name)">
+				<ion-item class="item-status" *ngFor="let field of group.Fields">
+					<ion-reorder *ngIf="group.Name === 'Selected fields'" slot="start"></ion-reorder>
+					<ion-label>
+						<h3>{{ field.Name | translate }}</h3>
+					</ion-label>
+					<ion-toggle
+						slot="end"
+						[checked]="group.Name === 'Selected fields'"
+						[disabled]="field.Code === 'Id'"
+						(ionChange)="group.Name === 'Selected fields' ? removeFieldFromShown(field) : addFieldToShown(field)"
+					></ion-toggle>
+				</ion-item>
+			</ion-reorder-group>
+		</ion-list>
+	</ng-container>
+</ion-content>
+<ion-footer>
+	<ion-toolbar>
+		<ion-label slot="end">{{ 'Select all' | translate }}</ion-label>
+		<ion-toggle size="small" slot="end" (ionChange)="toggleAll($event)"></ion-toggle>
+		<ion-button size="small" slot="end" [disabled]="groupView[0].Fields.length < 1" (click)="exportAdvance()">{{ 'Export' | translate }}</ion-button>
+	</ion-toolbar>
+</ion-footer>

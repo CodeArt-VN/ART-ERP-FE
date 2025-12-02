@@ -739,8 +739,12 @@ export class EnvService {
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
 			this.language.isDefault = this.language.current === this.language.default;
-			this.translate.use(this.language.current);
+			
+			// Wait for translation to load before continuing
+			await firstValueFrom(this.translate.use(this.language.current));
+			
 			this.languageTracking.next(this.language);
+			dogF && console.log('✅ [EnvService] Translation loaded for:', this.language.current);
 		}
 	}
 

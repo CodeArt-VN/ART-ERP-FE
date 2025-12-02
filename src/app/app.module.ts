@@ -39,6 +39,7 @@ import { DynamicTranslateLoaderService } from './services/util/translate-loader.
 import { DataCorrectionRequestModalPageModule } from './modals/data-correction-request-modal/data-correction-request-modal.module';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { CacheManagementService } from './services/core/cache-management.service';
+import { StaffAdvanceExportModalComponent } from './modals/staff-advance-export-modal/staff-advance-export-modal.component';
 
 export function createTranslateLoader(http: HttpClient, storage: CacheManagementService): DynamicTranslateLoaderService {
 	return new DynamicTranslateLoaderService(http, storage);
@@ -70,6 +71,7 @@ export function createTranslateLoader(http: HttpClient, storage: CacheManagement
 		POSCancelModalPage,
 		POSNotifyModalPage,
 		AdvanceFilterModalComponent,
+		StaffAdvanceExportModalComponent
 	],
 	exports: [],
 	bootstrap: [AppComponent],
