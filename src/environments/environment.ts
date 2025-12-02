@@ -28,7 +28,7 @@ export let environment = {
 	// NEW: Cache keys to clear on version updates
 	cacheKeysToClearOnNewVersion: [
 		// 'tempCache',        // Clear temp caches
-		// 'language/*'          // Clear old language cache
+		'Cache*'
 	],
 
 	// NEW: Cache keys to clear on server changes  
@@ -49,7 +49,7 @@ export let environment = {
 	migrationSettings: {
 		forceVersion: null,     // Force specific version behavior (for testing)
 		skipMigration: false,   // Skip migration completely (for testing)
-		enableDetailedLogs: false // Enable verbose migration logs
+		enableDetailedLogs: true // Enable verbose migration logs
 	}
 };
 

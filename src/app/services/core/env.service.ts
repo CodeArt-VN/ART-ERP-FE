@@ -1,23 +1,19 @@
-import { forwardRef, Inject, Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Network } from '@capacitor/network';
-import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment, dogF } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
-import { StorageService } from './storage.service';
 import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
-import { MigrationService } from './migration.service';
 import { CacheManagementService } from './cache-management.service';
 import { EVENT_TYPE } from '../static/event-type';
 import { UserProfile } from '../../interfaces/auth.interfaces';
 import { UserContextService } from '../auth/user-context.service';
 import { CacheConfig } from '../static/search-config';
 import { NavigationEnd, Router } from '@angular/router';
-import { SYS_StatusProvider, SYS_TypeProvider } from '../static/services.service';
-import { AuthenticationService } from '../auth/authentication.service';
 
 let ga: any;
 if ((window as any).ga) {
