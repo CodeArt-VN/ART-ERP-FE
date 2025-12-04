@@ -208,7 +208,7 @@ export class CacheManagementService {
 			accessCount: 0,
 			lastAccessed: now,
 			fromProvider: serviceName || 'unknown',
-			expireAction: config.expireAction || this.defaultConfig.expireAction || 'remove',
+			expireAction: config.expireAction || this.defaultConfig.expireAction || 'update',
 			query: config.query,
 			status: 'idle',
 			retryCount: 0,

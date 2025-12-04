@@ -27,7 +27,7 @@ export const environment = {
 
 	// NEW: Cache keys to clear on version updates
 	cacheKeysToClearOnNewVersion: [
-	
+		'Cache*'
 	],
 
 	// NEW: Cache keys to clear on server changes  
