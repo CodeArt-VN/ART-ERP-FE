@@ -174,6 +174,11 @@
  	margin-left: -16px;
  }
 
+ .c-control .c-input {
+ 	font-size: 2rem;
+ 	height: 3.375rem;
+ }
+
  .inline-control .c-label {
  	white-space: nowrap;
  	position: absolute;
@@ -181,7 +186,8 @@
  	width: auto;
  	font-weight: normal;
  	border: solid transparent;
- 	font-size: 1.3rem;
+ 	font-size: 2rem;
+ 	line-height: 2.375rem;
  }
 
  .inline-control .c-input {
@@ -190,6 +196,24 @@
 
  .input-money {
  	font-weight: bold;
+ }
+
+ ::ng-deep {
+ 	ion-toolbar::part(container) {
+ 		padding-inline-start: 0 !important;
+ 		padding-inline-end: 0 !important;
+ 	}
+ }
+
+ .coupon {
+ 	margin-right: 4px;
+ 	margin-left: 4px;
+ }
+
+ .coupon .coupon-left {
+ 	flex-direction: row;
+ 	border-right: dotted 2px var(--table-row-background);
+ 	min-width: 30px;
  }
 
  .c-checkbox {
@@ -212,7 +236,8 @@
  	print-color-adjust: exact;
  }
 
- .c-checkbox[type=radio] , .c-checkbox.radio {
+ .c-checkbox[type=radio],
+ .c-checkbox.radio {
  	border-radius: 50%;
  }
 
@@ -269,18 +294,19 @@
  	align-items: center;
  	opacity: 0;
  }
+
  .bank-select ion-card {
-  cursor: pointer;
-  border-radius: 10px;
-  padding: 4px;
-  transition: 0.2s;
-}
+ 	cursor: pointer;
+ 	border-radius: 10px;
+ 	padding: 4px;
+ 	transition: 0.2s;
+ }
 
-.bank-select ion-card.selected {
-  border: 2px solid var(--ion-color-success);
-  transform: scale(1.05);
-}
+ .bank-select ion-card.selected {
+ 	border: 2px solid var(--ion-color-success);
+ 	transform: scale(1.05);
+ }
 
-.payment-text {
-  font-weight: 500;
-}
+ .payment-text {
+ 	font-weight: 500;
+ }
