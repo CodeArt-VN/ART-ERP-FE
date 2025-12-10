@@ -554,12 +554,14 @@ export class EnvService {
 	 * Change enviroment selected branch and publish changeBranch event to app
 	 */
 	changeBranch(branchId) {
-		dogF && console.log('🌲 [EnvService] Changing branch to:', branchId);
-		this.setStorage(`SelectedBranch(${this.user.Id})` , branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
-		this.storage.app.selectedBranch = branchId;
-		let selectedBranch = this.branchList.find((d) => d.Id == this.storage.app.selectedBranch);
-		this.selectedBranchAndChildren = selectedBranch?.Query || [];
-		this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
+		let selectedBranch = this.branchList.find((d) => d.Id == branchId);
+		if (this.selectedBranch != branchId || this.selectedBranchAndChildren != selectedBranch?.Query) {
+			dogF && console.log('🌲 [EnvService] Changing branch to:', branchId);
+			this.storage.app.selectedBranch = branchId;
+			this.selectedBranchAndChildren = selectedBranch?.Query || [];
+			this.setStorage(`SelectedBranch(${this.user.Id})`, branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
+			this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
+		}
 	}
 
 	/**
@@ -593,9 +595,8 @@ export class EnvService {
 	 */
 	async getStatus(Code: string): Promise<any[]> {
 		return new Promise(async (resolve) => {
-			if (this.pv.statusList.length == 0) 
-				this.pv.statusList = await this.storage.get('SYS_Status', 'auto', null) || [];
-			
+			if (this.pv.statusList.length == 0) this.pv.statusList = (await this.storage.get('SYS_Status', 'auto', null)) || [];
+
 			let it = this.pv.statusList.find((d) => d.Code == Code);
 			if (it) resolve(this.pv.statusList.filter((d) => d.IDParent == it.Id));
 			else resolve([]);
@@ -610,9 +611,8 @@ export class EnvService {
 	 */
 	async getType(Code: string, AllChild = false): Promise<any[]> {
 		return new Promise(async (resolve) => {
-			if (this.pv.typeList.length == 0) 
-				this.pv.typeList = await this.storage.get('SYS_Type', 'auto', null) || [];
-			
+			if (this.pv.typeList.length == 0) this.pv.typeList = (await this.storage.get('SYS_Type', 'auto', null)) || [];
+
 			let it = this.pv.typeList.find((d) => d.Code == Code);
 			if (it) {
 				if (AllChild) {
@@ -735,10 +735,10 @@ export class EnvService {
 		if (this.language.current != this.storage.app.lang) {
 			this.language.current = this.storage.app.lang;
 			this.language.isDefault = this.language.current === this.language.default;
-			
+
 			// Wait for translation to load before continuing
 			await firstValueFrom(this.translate.use(this.language.current));
-			
+
 			this.languageTracking.next(this.language);
 			dogF && console.log('✅ [EnvService] Translation loaded for:', this.language.current);
 		}
