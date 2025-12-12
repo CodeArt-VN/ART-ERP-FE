@@ -69,7 +69,7 @@
 			class="ion-hide-md-down"
 			title="{{ 'Export' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
-			(click)="page.export()"
+			(click)="export()"
 		>
 			<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 		</ion-button>
@@ -304,7 +304,7 @@
 								[button]="true"
 								[detail]="false"
 								*ngIf="!page.selectedItems?.length && ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
-								(click)="isToolBarPopoverOpen = false; page.export()"
+								(click)="isToolBarPopoverOpen = false; export()"
 							>
 								<ion-icon color="warning" slot="start" name="cloud-download-outline"></ion-icon>
 								<ion-label> {{ 'Export' | translate }}</ion-label>
