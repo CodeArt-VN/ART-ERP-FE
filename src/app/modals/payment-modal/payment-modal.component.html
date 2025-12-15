@@ -65,6 +65,24 @@
 										<ion-label>BOD</ion-label>
 									</ion-item>
 
+									<!-- ========== Urbox ========== -->
+									<ion-item button (click)="changeType('Urbox')">
+										<img src="/assets/logos/banks/Urbox.png" style="width: 1.6em" slot="start" />
+										<ion-label>Urbox</ion-label>
+									</ion-item>
+
+									<!-- ========== Gotit ========== -->
+									<ion-item button (click)="changeType('Gotit')">
+										<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
+										<ion-label>Gotit</ion-label>
+									</ion-item>
+
+									<!-- ========== VNPay ========== -->
+									<ion-item button (click)="changeType('VNPay')">
+										<img src="/assets/logos/banks/vnpay.ico" style="width: 1.6em" slot="start" />
+										<ion-label>VNPay</ion-label>
+									</ion-item>
+
 									<!-- ========== CHUYỂN KHOẢN ========== -->
 									<ion-item button (click)="changeType('Transfer')">
 										<ion-icon name="wallet-outline" slot="start"></ion-icon>
@@ -376,9 +394,9 @@
 				<ion-col *ngIf="item.SaleOrder">
 					<span>{{ 'Total' | translate }}</span
 					>:&nbsp;
-					<span >{{ item?.SaleOrder.CalcTotalOriginal | number: '1.0-0' }} đ </span>
+					<span>{{ item?.SaleOrder.CalcTotalOriginal | number: '1.0-0' }} đ </span>
 					<ion-icon class="clickable" (click)="viewBill()" name="chevron-up-outline"></ion-icon>
-					
+
 					<!-- @if (item.SaleOrder.Received > 0) {
 						<br />
 						<span>{{ 'Amount paid' | translate }}</span
@@ -447,19 +465,15 @@
 	<ng-template>
 		<ion-header>
 			<ion-toolbar>
-				<ion-title>Bill Preview</ion-title>
+				<ion-title>{{ 'Bill Preview' | translate }}</ion-title>
 				<ion-buttons slot="end">
-					<ion-button (click)="closeBillPreview()">Close</ion-button>
+					<ion-button (click)="closeBillPreview()" color="secondary"><ion-icon slot="icon-only" name="close"></ion-icon></ion-button>
 				</ion-buttons>
 			</ion-toolbar>
 		</ion-header>
 
 		<ion-content>
-			 <iframe
-                #billIframe
-                class="bill-iframe"
-                sandbox="allow-same-origin allow-scripts"
-            ></iframe>
+			<iframe #billIframe class="bill-iframe" sandbox="allow-same-origin allow-scripts"></iframe>
 		</ion-content>
 	</ng-template>
 </ion-modal>
