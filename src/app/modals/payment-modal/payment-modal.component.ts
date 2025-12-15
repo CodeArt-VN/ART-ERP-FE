@@ -1,13 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { BANK_IncomingPaymentProvider, SALE_OrderProvider, SYS_ConfigProvider } from 'src/app/services/static/services.service';
-import { environment } from 'src/environments/environment';
+import { BANK_IncomingPaymentProvider, SALE_OrderProvider } from 'src/app/services/static/services.service';
 import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
-import { VoucherService } from 'src/app/pages/POS/pos-voucher-modal/voucherService';
+import { PromotionService } from 'src/app/services/custom/promotion.service';
 @Component({
 	selector: 'app-payment-modal',
 	templateUrl: './payment-modal.component.html',
@@ -15,13 +14,23 @@ import { VoucherService } from 'src/app/pages/POS/pos-voucher-modal/voucherServi
 	standalone: false,
 })
 export class PaymentModalComponent implements OnInit {
+	@ViewChild('billIframe', { static: false }) billIframe: ElementRef<HTMLIFrameElement>;
+	cssStyle = '';
+	isBillPreviewOpen = false;
 	step = 1;
 	title = '';
 	canEditVoucher: false;
 	formGroup: FormGroup;
 	edccList: any = [];
 	paymentStatusList: any = [];
-	promotionAppliedPrograms;
+	billHtml = '';
+	@Input() billElement: HTMLElement;
+	@Input() calcFunction: Function;
+	@Input() onUpdateItem: Function;
+	subPromotion: any;
+	promotionAppliedPrograms = [];
+	subscribePOSOrderDetail;
+
 	bankList: any = [
 		{ Code: 'VCB', Name: 'Vietcombank', Image: '/assets/logos/banks/VCB.png' },
 		{ Code: 'MB', Name: 'MB Bank', Image: '/assets/logos/banks/mb.png' },
@@ -49,13 +58,14 @@ export class PaymentModalComponent implements OnInit {
 	payment: any;
 	constructor(
 		private modalController: ModalController,
+		private promotionService: PromotionService,
 		private formBuilder: FormBuilder,
 		private incomingPaymentProvider: BANK_IncomingPaymentProvider,
 		private saleOrderProvider: SALE_OrderProvider,
 		private commonService: CommonService,
 		private env: EnvService,
 		private paymentService: PaymentService,
-		private voucherService: VoucherService
+		private voucherService: PromotionService
 	) {
 		this.formGroup = this.formBuilder.group({
 			IDBranch: [''],
@@ -85,7 +95,6 @@ export class PaymentModalComponent implements OnInit {
 			IDOriginalTransaction: [],
 		});
 	}
-	subscribePOSOrderDetail;
 	next() {
 		this.step++;
 	}
@@ -93,7 +102,10 @@ export class PaymentModalComponent implements OnInit {
 	back() {
 		this.step--;
 	}
-
+	ngAfterViewInit() {
+		console.log(this.billElement); // DOM thật
+		console.log(this.billElement.innerHTML); // HTML in ra khi cần
+	}
 	trackChangeSO = false;
 	async beforeDismiss() {
 		return this.trackChangeSO; // hoặc dữ liệu bạn muốn đẩy ra
@@ -104,86 +116,45 @@ export class PaymentModalComponent implements OnInit {
 			trackSO: this.trackChangeSO,
 		});
 	}
-	viewBill() {}
-	deleteVoucher(p, index) {
-		this.env.showPrompt('Do you want to remove this voucher?', 'REMOVING VOUCHER').then(() => {
-			this.voucherService.deleteVoucher(p, this.item.SaleOrder).then(() => {
-				this.saleOrderProvider.getAnItem(this.item.SaleOrder.Id).then((rs: any) => {
-					this.item.SaleOrder = rs;
-					this.item.DebtAmount = Math.round(rs.Debt);
-					this.item.TotalAmount = rs.Debt + rs.Received;
-					this.generateAmountButtons();
-					this.promotionAppliedPrograms.splice(index, 1);
-					this.trackChangeSO = true;
-				});
-			});
-		});
-	}
-	async processVouchers() {
-		const modal = await this.modalController.create({
-			component: POSVoucherModalPage,
-			canDismiss: true,
-			backdropDismiss: true,
-			cssClass: 'modal-change-table',
-			componentProps: {
-				SaleOrder: this.item.SaleOrder,
-			},
-		});
-		await modal.present();
-		const { data, role } = await modal.onWillDismiss();
-		if (data) {
-			this.item.SaleOrder = data;
-		}
-	}
-	analyticVoucher() {
-		this.promotionAppliedPrograms.forEach((item) => {
-			let i = item;
-			// let find = this.SaleOrder.Deductions.filter((p) => p.IDProgram == i.Id);
-			// if (find && find.length > 0) {
-			// 	if (i.MaxUsagePerCustomer < find.length) i.Used = true;
-			// }
-			if (i.IsByPercent == true) {
-				if (!i.ReducePercent) {
-					i.ReducePercent = i.Value;
-					i.Value = (i.Value * this.item.SaleOrder.OriginalTotalBeforeDiscount) / 100;
-					if (i.Value > i.MaxValue) {
-						i.Value = i.MaxValue;
-					}
-				}
-			}
-		});
 
-		// let find = this.SaleOrder.Deductions.filter((p) => p.IDProgram == i.Id);
-		// if (find && find.length > 0) {
-		// 	if (i.MaxUsagePerCustomer < find.length) i.Used = true;
-		// }
-	}
 	async ngOnInit() {
-		this.analyticVoucher();
-		this.subscribePOSOrderDetail = this.env.getEvents().subscribe((data) => {
-			if (!data.code?.startsWith('signalR:')) return;
-			if (data.id == this.env.user.StaffID) return;
-			if (!this.payment) return;
-			const value = JSON.parse(data.value);
-
-			switch (data.code) {
-				case 'signalR:POSOrderPaymentUpdate':
-					if (value.Id != this.payment?.Id) return;
-					this.payment.Status = value.Status;
-					this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
-
-					if (this.payment.Status == 'Fail') {
-						this.payment = null;
-						this.env.showAlert('', 'Please create new payment', 'Payment failed');
-						this.env.showMessage('Payment fail', 'danger');
-						this.back();
-					} else if (this.payment.Status == 'Success') {
-						this.env.showMessage('Payment success', 'success');
-						this.closeModal();
-					}
-					return;
-			}
+		if (!this.subPromotion) {
+			this.subPromotion = this.promotionService.appliedPromotions$.subscribe((list) => {
+				this.promotionAppliedPrograms = list;
+				console.log('PAYMENT nhận promotions:', list);
+			});
+		}
+		const observer = new MutationObserver(() => {
+			this.billHtml = this.billElement.outerHTML;
 		});
+		observer.observe(this.billElement, { childList: true, subtree: true });
+		this.analyticVoucher();
+		if (!this.subscribePOSOrderDetail) {
+			this.subscribePOSOrderDetail = this.env.getEvents().subscribe((data) => {
+				if (!data.code?.startsWith('signalR:')) return;
+				if (data.id == this.env.user.StaffID) return;
+				if (!this.payment) return;
+				const value = JSON.parse(data.value);
+
+				switch (data.code) {
+					case 'signalR:POSOrderPaymentUpdate':
+						if (value.Id != this.payment?.Id) return;
+						this.payment.Status = value.Status;
+						this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+
+						if (this.payment.Status == 'Fail') {
+							this.payment = null;
+							this.env.showAlert('', 'Please create new payment', 'Payment failed');
+							this.env.showMessage('Payment fail', 'danger');
+							this.back();
+						} else if (this.payment.Status == 'Success') {
+							this.env.showMessage('Payment success', 'success');
+							this.closeModal();
+						}
+						return;
+				}
+			});
+		}
 
 		let branch = this.env.branchList.find((b) => b.Id == this.item.IDBranch);
 		if (branch) this.item.BranchName = branch.Name;
@@ -398,14 +369,81 @@ export class PaymentModalComponent implements OnInit {
 		return str.replace('=', '').replace('=', '').replace('+', '-').replace('_', '/');
 	}
 
-	formatAmount(amount: number | string): string {
-		const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-		if (!isFinite(num) || isNaN(num)) return '000000000000';
-		// Convert to minor units (e.g. cents) expected by some terminals: multiply by 100
-		const minor = Math.round(num * 100);
-		return Math.abs(minor).toString().padStart(12, '0');
+	ngOnDestroy() {
+		if (this.subPromotion) this.subPromotion.unsubscribe();
 	}
-	// checkResult() {
-	//   this.paymentService.checkResultRequest(this.payment.Id);
-	// }
+
+	async viewBill() {
+		if (this.billElement) {
+			this.billHtml = this.billElement.outerHTML; // lấy nội dung thật
+		}
+		setTimeout(() => {
+			const iframeDoc = this.billIframe.nativeElement.contentDocument;
+			iframeDoc.open();
+			iframeDoc.write(`
+            <html>
+                <head>
+                    <style>
+                      ${this.cssStyle}
+                    </style>
+                </head>
+                <body>${this.billHtml}</body>
+            </html>
+        `);
+			iframeDoc.close();
+		});
+		this.isBillPreviewOpen = true;
+	}
+	closeBillPreview() {
+		this.isBillPreviewOpen = false;
+	}
+
+	//#region Voucher
+
+	deleteVoucher(p, index) {
+		this.env.showPrompt('Do you want to remove this voucher?', 'REMOVING VOUCHER').then(() => {
+			this.voucherService.deleteVoucher(this.item.SaleOrder, [p.VoucherCode]).then(() => {
+				this.saleOrderProvider.getAnItem(this.item.SaleOrder.Id).then(async (rs: any) => {
+					this.item.SaleOrder = await this.onUpdateItem(rs);
+					this.item.DebtAmount = Math.round(this.item.SaleOrder?.Debt);
+					this.formGroup.patchValue(this.item);
+					this.generateAmountButtons();
+				});
+			});
+		});
+	}
+	async processVouchers() {
+		const modal = await this.modalController.create({
+			component: POSVoucherModalPage,
+			canDismiss: true,
+			backdropDismiss: true,
+			cssClass: 'modal-change-table',
+			componentProps: {
+				SaleOrder: this.item.SaleOrder,
+			},
+		});
+		await modal.present();
+		const { data, role } = await modal.onWillDismiss();
+		if (data && this.onUpdateItem) {
+			this.item.SaleOrder = await this.onUpdateItem(data);
+			this.item.DebtAmount = Math.round(this.item.SaleOrder?.Debt);
+			this.formGroup.patchValue(this.item);
+			this.generateAmountButtons();
+		}
+	}
+	analyticVoucher() {
+		this.promotionAppliedPrograms?.forEach((item) => {
+			let i = item;
+			if (i.IsByPercent == true) {
+				if (!i.ReducePercent) {
+					i.ReducePercent = i.Value;
+					i.Value = (i.Value * this.item.SaleOrder.OriginalTotalBeforeDiscount) / 100;
+					if (i.Value > i.MaxValue) {
+						i.Value = i.MaxValue;
+					}
+				}
+			}
+		});
+	}
+	//#endregion
 }

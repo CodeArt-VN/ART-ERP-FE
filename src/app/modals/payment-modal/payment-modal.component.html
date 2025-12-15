@@ -349,7 +349,7 @@
 								</ion-button> -->
 						@if (canEditVoucher) {
 							<div class="coupon-left">
-								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p,i)" slot="icon-only" name="trash-outline"></ion-icon>
+								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
 							</div>
 						}
 
@@ -373,11 +373,18 @@
 	<ion-toolbar>
 		<ion-grid>
 			<ion-row>
-				<ion-col>
+				<ion-col *ngIf="item.SaleOrder">
 					<span>{{ 'Total' | translate }}</span
 					>:&nbsp;
-					<span>{{ item.TotalAmount | number: '1.0-0' }} đ</span>
+					<span >{{ item?.SaleOrder.CalcTotalOriginal | number: '1.0-0' }} đ </span>
 					<ion-icon class="clickable" (click)="viewBill()" name="chevron-up-outline"></ion-icon>
+					
+					<!-- @if (item.SaleOrder.Received > 0) {
+						<br />
+						<span>{{ 'Amount paid' | translate }}</span
+						>:&nbsp;
+						<span style="float:right">{{ item?.SaleOrder.Received | number: '1.0-0' }} đ</span>
+					} -->
 				</ion-col>
 				<ion-col class="ion-text-right">
 					<span>{{ 'Payment' | translate }}</span
@@ -435,3 +442,24 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-footer>
+<!-- Payment Page -->
+<ion-modal [isOpen]="isBillPreviewOpen" cssClass="bill-preview-modal" (didDismiss)="closeBillPreview()">
+	<ng-template>
+		<ion-header>
+			<ion-toolbar>
+				<ion-title>Bill Preview</ion-title>
+				<ion-buttons slot="end">
+					<ion-button (click)="closeBillPreview()">Close</ion-button>
+				</ion-buttons>
+			</ion-toolbar>
+		</ion-header>
+
+		<ion-content>
+			 <iframe
+                #billIframe
+                class="bill-iframe"
+                sandbox="allow-same-origin allow-scripts"
+            ></iframe>
+		</ion-content>
+	</ng-template>
+</ion-modal>
