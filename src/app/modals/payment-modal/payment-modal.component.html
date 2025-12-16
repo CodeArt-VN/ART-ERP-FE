@@ -41,7 +41,7 @@
 							</ion-card-header>
 							<ion-list>
 								<!-- Chỉ hiển thị nếu IsActiveTypeCash = true -->
-								<div *ngIf="item.IsActiveTypeCash">
+								<div *ngIf="IsActiveTypeCash">
 									<!-- ========== TIỀN MẶT ========== -->
 									<ion-item button (click)="changeType('Cash')">
 										<!-- <div slot="start" class="ion-align-self-start" style="margin-top: 6px">
@@ -101,7 +101,7 @@
 								</div>
 
 								<!-- Hiển thị nếu ZaloPay đang được kích hoạt -->
-								<div>
+								<div *ngIf="ZPIsActive">
 									<!-- ========== APPLE PAY ========== -->
 									<!-- <ion-item button (click)="changeType('ZalopayApp')">
 								<div slot="start" class="ion-align-self-start" style="margin-top:6px">
@@ -198,7 +198,7 @@
 							</div>
 
 							<!-- Ghi chú hoặc lý do hoàn tiền -->
-							<div class="c-control inline-control" *ngIf="item.IsActiveZlpay || item.IsActiveTypeCash">
+							<div class="c-control inline-control" *ngIf="ZPIsActive || IsActiveTypeCash">
 								<label class="c-label" for="Remark">
 									<span *ngIf="item.IsRefundTransaction; else remarkLabel">
 										{{ 'Refund reason' | translate }}
@@ -367,13 +367,16 @@
 								</ion-button> -->
 						@if (canEditVoucher) {
 							<div class="coupon-left">
-								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
+								<span
+									>{{ 'Reduce' | translate }} {{ p.Value | number: '1.0-0' }} đ
+									<!-- <span *ngIf="p.IsByPercent">({{ p.ReducePercent }}%)</span>-->
+								</span>
 							</div>
 						}
 
 						<div class="coupon-right">
-							<span
-								>{{ 'Reduce' | translate }} {{ p.Value | number: '1.0-0' }} đ
+							<span>
+								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
 								<!-- <span *ngIf="p.IsByPercent">({{ p.ReducePercent }}%)</span>-->
 							</span>
 							<!-- <small *ngIf="p.MinOrderValue">

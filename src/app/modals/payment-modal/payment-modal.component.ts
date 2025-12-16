@@ -23,6 +23,9 @@ export class PaymentModalComponent implements OnInit {
 	formGroup: FormGroup;
 	edccList: any = [];
 	paymentStatusList: any = [];
+	EDCCVCB_IsActive = false;
+	ZPIsActive = false;
+	IsActiveTypeCash = true;
 	billHtml = '';
 	@Input() billElement: HTMLElement;
 	@Input() calcFunction: Function;
@@ -35,7 +38,6 @@ export class PaymentModalComponent implements OnInit {
 		{ Code: 'VCB', Name: 'Vietcombank', Image: '/assets/logos/banks/VCB.png' },
 		{ Code: 'MB', Name: 'MB Bank', Image: '/assets/logos/banks/mb.png' },
 	];
-	URI = 'http://113.161.81.81:8771/api/action';
 	submitAttempt: boolean = false;
 	item: any = {
 		IDBranch: '',
@@ -44,8 +46,6 @@ export class PaymentModalComponent implements OnInit {
 		IDSaleOrder: '',
 		DebtAmount: '',
 		TotalAmount: '',
-		IsActiveInputAmount: true,
-		IsActiveTypeCash: true,
 		ReturnUrl: '',
 		Lang: '',
 		Timestamp: '',
@@ -82,12 +82,6 @@ export class PaymentModalComponent implements OnInit {
 			CreatedBy: [''],
 			Status: [''],
 			Timestamp: [''],
-			IsActiveInputAmount: [true],
-			IsActiveTypeCash: [true],
-			IsActiveZlpay: [true],
-			IsActiveTypeZalopayApp: [true],
-			IsActiveTypeATM: [true],
-			IsActiveTypeCC: [true],
 			IsRefundTransaction: [false],
 			ReturnUrl: [''],
 			Lang: [''],
@@ -101,20 +95,6 @@ export class PaymentModalComponent implements OnInit {
 
 	back() {
 		this.step--;
-	}
-	ngAfterViewInit() {
-		console.log(this.billElement); // DOM thật
-		console.log(this.billElement.innerHTML); // HTML in ra khi cần
-	}
-	trackChangeSO = false;
-	async beforeDismiss() {
-		return this.trackChangeSO; // hoặc dữ liệu bạn muốn đẩy ra
-	}
-	ionBackdropTap() {
-		// Gọi dismiss và trả về trackSO
-		this.modalController.dismiss({
-			trackSO: this.trackChangeSO,
-		});
 	}
 
 	async ngOnInit() {
@@ -158,15 +138,16 @@ export class PaymentModalComponent implements OnInit {
 
 		let branch = this.env.branchList.find((b) => b.Id == this.item.IDBranch);
 		if (branch) this.item.BranchName = branch.Name;
-		this.retryAsync(() => this.getEDCCConnection(), 3, 1000)
-			.then((rs) => {
-				this.edccList = rs;
-			})
-			.catch((err) => {
-				console.error('EDCC failed after 3 retries:', err);
-				this.env.showMessage('Unable to connect to terminal device!', 'danger');
-			});
-
+		if (this.EDCCVCB_IsActive) {
+			this.retryAsync(() => this.getEDCCConnection(), 3, 1000)
+				.then((rs) => {
+					this.edccList = rs;
+				})
+				.catch((err) => {
+					console.error('EDCC failed after 3 retries:', err);
+					this.env.showMessage('Unable to connect to terminal device!', 'danger');
+				});
+		}
 		this.formGroup.patchValue(this.item);
 		this.generateAmountButtons();
 	}
@@ -322,7 +303,7 @@ export class PaymentModalComponent implements OnInit {
 	// Đóng modal
 	// --------------------------------------------------------------------
 	closeModal() {
-		this.modalController.dismiss(this.trackChangeSO);
+		this.modalController.dismiss();
 	}
 
 	isRetryButton = false;
@@ -341,8 +322,6 @@ export class PaymentModalComponent implements OnInit {
 			SubType: 'VCB',
 			DebtAmount: this.item.DebtAmount,
 			Amount: this.formGroup.get('InputAmount').value,
-			IsActiveInputAmount: true,
-			IsActiveTypeCash: true,
 			ReturnUrl: window.location.href,
 			Lang: this.env.language.current,
 			Timestamp: Date.now(),

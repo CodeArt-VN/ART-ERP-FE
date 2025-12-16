@@ -186,7 +186,7 @@
  	width: auto;
  	font-weight: normal;
  	border: solid transparent;
- 	font-size: 2rem;
+ 	font-size: x-large;
  	line-height: 2.375rem;
  }
 
@@ -214,6 +214,7 @@
  	flex-direction: row;
  	border-right: dotted 2px var(--table-row-background);
  	min-width: 30px;
+	padding:5px;
  }
 
  .c-checkbox {
