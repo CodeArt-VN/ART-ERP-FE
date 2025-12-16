@@ -6,9 +6,10 @@ import QRCode from 'qrcode';
 
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { PURCHASE_OrderProvider, SYS_ConfigProvider } from 'src/app/services/static/services.service';
+import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { SYS_Config } from 'src/app/models/model-list-interface';
+import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
 
 @Component({
 	selector: 'app-po-note',
@@ -27,7 +28,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	sheets: any[] = [];
 	constructor(
 		public pageProvider: PURCHASE_OrderProvider,
-		public sysConfigProvider: SYS_ConfigProvider,
+		public sysConfigService: SYS_ConfigService,
 		public modalController: ModalController,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
@@ -56,18 +57,12 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	}
 	loadedData(event) {
 		super.loadedData(event);
-
-		let sysConfigQuery = ['SmallLogo'];
-		this.sysConfigProvider.read({
-			Code_in: sysConfigQuery,
-			IDBranch: this.item?.IDBranch
-		}).then((rs: any) => {
-			if (rs && rs.data?.length > 0) {
-				if (rs.data[0].Value) {
-					rs.data[0].Value = rs.data[0].Value.trim().replace(/^"(.*)"$/, '$1');
-					this.item._Branch.LogoURL = rs.data[0].Value;
-				}
+		this.sysConfigService.getConfig(this.env.selectedBranch, ['SmallLogo'])
+		.then((rs: any) => {
+			if (rs) {
+				this.item._Branch.LogoURL = rs.SmallLogo?.trim().replace(/^"(.*)"$/, '$1');
 			}
+			
 			this.loadPurchaseOrderNote();
 
 		}).catch(err => this.loadPurchaseOrderNote())
