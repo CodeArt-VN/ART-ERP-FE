@@ -86,7 +86,7 @@
 									<!-- ========== CHUYỂN KHOẢN ========== -->
 									<ion-item button (click)="changeType('Transfer')">
 										<ion-icon name="wallet-outline" slot="start"></ion-icon>
-										<ion-label>{{ 'Transfer' | translate }}</ion-label>
+										<ion-label>{{ 'Bank transfer' | translate }}</ion-label>
 									</ion-item>
 
 									<!-- Hiển thị danh sách ngân hàng khi chọn chuyển khoản -->
@@ -122,7 +122,7 @@
 										</div> -->
 										<img src="/assets/logos/banks/zalopay.ico" style="width: 1.6em" slot="start" />
 										<ion-label>
-											<span>{{ 'Thanh toán bằng ví ZaloPay' | translate }}</span>
+											<span>{{ 'Pay with ZaloPay wallet' | translate }}</span>
 										</ion-label>
 									</ion-item>
 									<!--
@@ -185,14 +185,13 @@
 									[ngModelOptions]="{ standalone: true }"
 									type="text"
 								/>
-								<!-- <input id="currency-field" type="text" placeholder="{{ 'Nhập số tiền' | translate }}"
-							class="c-input input-money" formControlName="InputAmount" /> -->
+							
 							</div>
 
 							<!-- Tiền thừa -->
 							<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction">
 								<label class="c-label" for="currency-thechange">
-									{{ 'Tiền thừa' | translate }}
+									{{ 'Excess amount' | translate }}
 								</label>
 								<input readonly id="currency-thechange" class="c-input input-money" [value]="changeAmount | number: '1.0-0'" />
 							</div>
@@ -239,15 +238,6 @@
 									</ion-row>
 									<ion-row *ngIf="edccList?.length > 0">
 										<ion-col size="auto" *ngFor="let edcc of edccList" style="flex: 0 0 auto; width: auto">
-											<!-- <input
-												type="radio"
-												[value]="edcc.REF_ID"
-												(change)="changeEDCC($event)"
-												class="c-checkbox PaymentType"
-												[id]="edcc.REF_ID"
-												formControlName="EDCC"
-												(click)="$event.stopPropagation()"
-											/> -->
 											<label class="list-group-item" [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)">
 												<span><img style="border: 1px solid #ccc" height="50px" src="/assets/logos/banks/EDCC.jpg" /></span>
 												<!-- {{ edcc.Bank }} -->
@@ -357,19 +347,15 @@
 					@if (canEditVoucher) {
 						<div class="coupon clickable" style="align-items: center; padding: 4px" (click)="processVouchers()">
 							<ion-icon name="ticket-outline"></ion-icon>{{ 'Add voucher' | translate }}
-							<!-- <a class="clickable" (click)="processVouchers()"> <ion-icon name="ticket-outline"></ion-icon> {{ 'Select or enter voucher code' | translate }} </a> -->
 						</div>
 					}
 
 					<div class="coupon" *ngFor="let p of this.promotionAppliedPrograms; let i = index">
-						<!-- <ion-button fill="clear" color="danger" class="ion-float-right ion-no-padding del-btn" size="small" (click)="deleteVoucher(p)">
-									<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-								</ion-button> -->
+						
 						@if (canEditVoucher) {
 							<div class="coupon-left">
 								<span
-									>{{ 'Reduce' | translate }} {{ p.Value | number: '1.0-0' }} đ
-									<!-- <span *ngIf="p.IsByPercent">({{ p.ReducePercent }}%)</span>-->
+									>{{ 'Reduce' | translate }} {{p.ReduceByPercent ??  p.Value | number: '1.0-0' }} đ
 								</span>
 							</div>
 						}
@@ -377,13 +363,8 @@
 						<div class="coupon-right">
 							<span>
 								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
-								<!-- <span *ngIf="p.IsByPercent">({{ p.ReducePercent }}%)</span>-->
 							</span>
-							<!-- <small *ngIf="p.MinOrderValue">
-										{{ 'For orders from' | translate }} {{ p.MinOrderValue | number: '1.0-0' }}
-										<span *ngIf="p.MaxValue"> - {{ 'Maximum' | translate }} {{ p.MaxValue | number: '1.0-0' }}</span>
-									</small> -->
-							<!-- <small *ngIf="p.ToDate">{{ 'Expiry' | translate }}: {{ p.ToDate | date: 'dd/MM/yyyy' }}</small> -->
+					
 						</div>
 					</div>
 				</div>
@@ -400,42 +381,15 @@
 					<span>{{ item?.SaleOrder.CalcTotalOriginal | number: '1.0-0' }} đ </span>
 					<ion-icon class="clickable" (click)="viewBill()" name="chevron-up-outline"></ion-icon>
 
-					<!-- @if (item.SaleOrder.Received > 0) {
-						<br />
-						<span>{{ 'Amount paid' | translate }}</span
-						>:&nbsp;
-						<span style="float:right">{{ item?.SaleOrder.Received | number: '1.0-0' }} đ</span>
-					} -->
 				</ion-col>
 				<ion-col class="ion-text-right">
 					<span>{{ 'Payment' | translate }}</span
 					>:&nbsp;
 					<span>{{ formGroup.controls.InputAmount.value | number: '1.0-0' }} đ</span>
 				</ion-col>
-				<!-- @if (formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'Transfer' && !payment && step == 2) {
-					<ion-col>
-						<ion-button
-							[disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
-							expand="block"
-							fill="solid"
-							color="success"
-							(click)="confirmPayment()"
-						>
-							<ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-							{{ 'Confirm' | translate }}
-						</ion-button>
-					</ion-col>
-				} -->
+			
 			</ion-row>
-			<!-- <ion-row> </ion-row> -->
 		</ion-grid>
-		<!-- <ion-buttons slot="start">
-			<ion-button *ngIf="payment && payment.Status == 'Processing'" expand="block" fill="solid" color="success"
-				(click)="checkResult()">
-				<ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-				{{ 'Check result' | translate }}
-			</ion-button>
-		</ion-buttons> -->
 
 		<ion-buttons slot="end">
 			<ion-button
@@ -449,17 +403,7 @@
 				<ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
 				{{ 'Confirm' | translate }}
 			</ion-button>
-			<!-- <ion-button
-				[disabled]="submitAttempt || !formGroup.get('EDCC').value"
-				*ngIf="formGroup.get('Type').value == 'Card' && !payment"
-				expand="block"
-				fill="solid"
-				color="success"
-				(click)="postSale()"
-			>
-				<ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-				{{ 'Create payment' | translate }}
-			</ion-button> -->
+		
 		</ion-buttons>
 	</ion-toolbar>
 </ion-footer>
