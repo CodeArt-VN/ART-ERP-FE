@@ -27,7 +27,8 @@ export class PaymentModalComponent implements OnInit {
 	ZPIsActive = false;
 	IsActiveTypeCash = true;
 	billHtml = '';
-	@Input() billElement: HTMLElement;
+	qrCodeHtml = '';
+	@Input() billElement: ElementRef;
 	@Input() calcFunction: Function;
 	@Input() onUpdateItem: Function;
 	subPromotion: any;
@@ -96,7 +97,23 @@ export class PaymentModalComponent implements OnInit {
 	back() {
 		this.step--;
 	}
+	ngAfterViewInit() {
+		if (!this.billElement?.nativeElement) return;
 
+		const observer = new MutationObserver((mutations) => {
+			console.log('DOM changed', mutations);
+
+			const qr = this.billElement.nativeElement.querySelector('.qr-section');
+			if (qr) {
+				this.qrCodeHtml = qr.outerHTML;
+			}
+		});
+
+		observer.observe(this.billElement.nativeElement, {
+			childList: true,
+			subtree: true,
+		});
+	}
 	async ngOnInit() {
 		if (!this.subPromotion) {
 			this.subPromotion = this.promotionService.appliedPromotions$.subscribe((list) => {
@@ -104,10 +121,7 @@ export class PaymentModalComponent implements OnInit {
 				this.analyticVoucher();
 			});
 		}
-		const observer = new MutationObserver(() => {
-			this.billHtml = this.billElement.outerHTML;
-		});
-		observer.observe(this.billElement, { childList: true, subtree: true });
+
 		this.analyticVoucher();
 		if (!this.subscribePOSOrderDetail) {
 			this.subscribePOSOrderDetail = this.env.getEvents().subscribe((data) => {
@@ -126,10 +140,15 @@ export class PaymentModalComponent implements OnInit {
 							this.payment = null;
 							this.env.showAlert('', 'Please create new payment', 'Payment failed');
 							this.env.showMessage('Payment fail', 'danger');
-							this.back();
+							//this.back();
 						} else if (this.payment.Status == 'Success') {
 							this.env.showMessage('Payment success', 'success');
-							this.closeModal();
+							if (this.payment.Amount < this.item.DebtAmount) {
+								this.item.DebtAmount -= this.payment.Amount;
+								this.payment = null;
+								this.formGroup.patchValue(this.item);
+								this.generateAmountButtons();
+							} else this.closeModal();
 						}
 						return;
 				}
@@ -217,17 +236,23 @@ export class PaymentModalComponent implements OnInit {
 		this.formGroup.get('SubType')?.setValue(sub);
 		this.formGroup.get('SubType').markAsDirty();
 		let type = this.formGroup.get('Type').value;
-		if (type == 'Transfer') {
-			this.confirmPayment();
-		} else if (type == 'Card') {
+		if (type == 'Card') {
 			this.postSale();
 		}
 	}
-	changeType(type) {
+	changeType(type, subType = null) {
 		this.formGroup.get('Type')?.setValue(type);
 		this.formGroup.get('Type').markAsDirty();
 		this.formGroup.get('SubType').setValue(null);
+		if (subType) this.formGroup.get('SubType').setValue(subType);
+		this.formGroup.get('InputAmount').setValue(Math.abs(this.item.DebtAmount));
 		this.next();
+		if (type == 'VietQR') {
+			const qr = this.billElement?.nativeElement?.querySelector('.qr-section');
+			if (qr) {
+				this.qrCodeHtml = qr.outerHTML;
+			}
+		}
 	}
 	changeEDCC(e) {
 		this.formGroup.get('Type').setValue('Card');
@@ -292,11 +317,21 @@ export class PaymentModalComponent implements OnInit {
 							IDTable: this.item.IDTable,
 						}),
 					});
-					this.closeModal();
+					if (res.Amount < this.item.DebtAmount) {
+						this.item.DebtAmount -= res.Amount;
+						this.payment = null;
+						this.formGroup.patchValue(this.item);
+						this.generateAmountButtons();
+						this.submitAttempt = false;
+					} else this.closeModal();
 				} else if (obj.Type == 'ZalopayApp') {
 					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
-					this.closeModal();
+					// this.closeModal();
 				}
+			})
+			.catch((err) => {
+				this.env.showMessage(err?.error?.Message ?? err, 'danger');
+				this.submitAttempt = false;
 			});
 	}
 	// --------------------------------------------------------------------
@@ -354,7 +389,7 @@ export class PaymentModalComponent implements OnInit {
 
 	async viewBill() {
 		if (this.billElement) {
-			this.billHtml = this.billElement.outerHTML; // lấy nội dung thật
+			this.billHtml = this.billElement.nativeElement.outerHTML; // lấy nội dung thật
 		}
 		setTimeout(() => {
 			const iframeDoc = this.billIframe.nativeElement.contentDocument;
