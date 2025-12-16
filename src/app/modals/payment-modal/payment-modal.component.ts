@@ -101,7 +101,7 @@ export class PaymentModalComponent implements OnInit {
 		if (!this.subPromotion) {
 			this.subPromotion = this.promotionService.appliedPromotions$.subscribe((list) => {
 				this.promotionAppliedPrograms = list;
-				console.log('PAYMENT nhận promotions:', list);
+				this.analyticVoucher();
 			});
 		}
 		const observer = new MutationObserver(() => {
@@ -414,11 +414,10 @@ export class PaymentModalComponent implements OnInit {
 		this.promotionAppliedPrograms?.forEach((item) => {
 			let i = item;
 			if (i.IsByPercent == true) {
-				if (!i.ReducePercent) {
-					i.ReducePercent = i.Value;
-					i.Value = (i.Value * this.item.SaleOrder.OriginalTotalBeforeDiscount) / 100;
-					if (i.Value > i.MaxValue) {
-						i.Value = i.MaxValue;
+				if (!i.ReduceByPercent) {
+					i.ReduceByPercent = (i.Value * this.item.SaleOrder.OriginalTotalBeforeDiscount) / 100;
+					if (i.ReduceByPercent > i.MaxValue) {
+						i.ReduceByPercent = i.MaxValue;
 					}
 				}
 			}
