@@ -102,7 +102,6 @@ export class LoginPage extends PageBase {
 			.showLoading('Please wait for a few moments', async () => {
 				await this.authService.login({ username: account.UserName, password: account.Password });
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
-				await this.profileService.checkAppStatusAndTypeList(true);
 				await this.profileService.getProfile(); // Force reload fresh data
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				this.goBack();

@@ -174,11 +174,20 @@ export var toolbarCommandRules = {
 		['Unapproved',		1,					1,				0,					0,				1,				1,				1],
 		['Approved',		0,					0,				0,					0,				0,				0,				0],
 	],
-	PR_Program :[
-		['Btns',			'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive'],
-		['New',					1,					1,				1,					1,				1,				1],
-		['Submitted',			0,					1,				1,					1,				0,				0],
-		['Rejected',			1,					0,				1,					0,				1,				1],
-		['Approved',			0,					1,				0,					0,				0,				0],
+	AC_ARInvoice :[
+	['Status',              'Submit', 'Disapprove', 	'Approve', 		'Cancel', 	'CreateEInvoice', 'UpdateEInvoice', 'Delete', 'Split', 'Merge',	'SignEInvoice'],
+	['ARInvoiceNew',         1,                      0,               1,            1,           0,                0,                1,        1,      1,     		0],
+	['ARInvoiceDraft',       1,                      0,               1,            1,           0,                0,                1,        1,      1,     		0],
+	['ARInvoiceRejected',    1,                      0,               0,            1,           0,                0,                1,        1,      1,     		0],
+	['ARInvoicePending',     0,                      0,               1,            1,           0,                0,                1,        1,      1,     		0],
+	['ARInvoiceApproved',    0,                      1,               0,            0,           1,                0,                0,        1,      1,     		0],
+	['ARInvoiceCanceled',    0,                      1,               0,            0,           0,                0,                1,        0,      0,     		0],
+	['ARInvoiceSplited',     0,                      0,               0,            1,           0,                0,                1,        0,      0,     		0],
+	['ARInvoiceMerged',      0,                      0,               0,            1,           0,                0,                1,        0,      0,     		0],
+	['EInvoiceEmpty',        0,                      0,               0,            0,           0,                0,                1,        0,      0,     		0],
+	['EInvoiceNew',          0,                      0,               0,            0,           0,                1,                0,        0,      0,     		1],
+	['EInvoiceRelease',      0,                      0,               0,            0,           0,                0,                0,        0,      0,     		0],
+	['EInvoiceCancel',       0,                      0,               0,            0,           0,                0,                0,        0,      0,     		0],
 	],
+
 };

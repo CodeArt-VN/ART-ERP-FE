@@ -6368,6 +6368,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffAgreement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffAgreement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffAgreement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        }
+		
+	},
+
+	HRM_StaffAgreementDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreementDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreementDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffAgreementDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffAgreementDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreementDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreementDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        }
+		
+	},
+
 	HRM_StaffAllowance:{
         getSearchList:{
             method: "GET",

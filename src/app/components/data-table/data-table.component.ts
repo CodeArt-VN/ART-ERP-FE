@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 import { DataTableEmptyMessageDirective } from './directives/data-table-empty-message-directive';
+import { dog } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-data-table',
@@ -47,7 +48,7 @@ export class DataTableComponent implements OnInit {
 		this._query = val;
 		if (this.formGroup) {
 			this.formGroup.patchValue(this._query);
-			console.log(this._query);
+			dog && console.log(this._query);
 
 			//this.onFilterSubmit(null);
 		}
@@ -76,7 +77,9 @@ export class DataTableComponent implements OnInit {
 			this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
 			this._rows = this._rowsBeforeFilter.filter((row) => {
 				return Object.keys(this.filterValue).every((key) => {
-					return String(row[key]).toLowerCase().includes(String(this.filterValue[key]).toLowerCase());
+					// Support nested property access for filtering
+					const rowValue = lib.getNestedProperty(row, key);
+					return String(rowValue).toLowerCase().includes(String(this.filterValue[key]).toLowerCase());
 				});
 			});
 		} else {
@@ -114,7 +117,6 @@ export class DataTableComponent implements OnInit {
 
 					group[column.property + 'From'] = new FormControl(this._query[column.property + 'From'] || defaultValue);
 					group[column.property + 'To'] = new FormControl(this._query[column.property + 'To'] || defaultValue);
-					// console.log(group);
 				}
 			}
 		});
@@ -279,8 +281,11 @@ export class DataTableComponent implements OnInit {
 			this._rows.sort((a, b) => {
 				for (const e of event) {
 					const comparison = e.Order === 'ASC' ? 1 : -1;
-					if (a[e.Dimension] > b[e.Dimension]) return comparison;
-					if (a[e.Dimension] < b[e.Dimension]) return -comparison;
+					// Support nested property access for sorting
+					const aValue = lib.getNestedProperty(a, e.Dimension);
+					const bValue = lib.getNestedProperty(b, e.Dimension);
+					if (aValue > bValue) return comparison;
+					if (aValue < bValue) return -comparison;
 				}
 				return 0;
 			});
