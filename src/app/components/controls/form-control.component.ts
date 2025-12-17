@@ -43,6 +43,8 @@ export class FormControlComponent implements OnInit {
 
 	@Input() label: string;
 
+	@Input() inline: boolean = false;
+
 	get isValid() {
 		return this.field.form.controls[this.field.id].valid;
 	}

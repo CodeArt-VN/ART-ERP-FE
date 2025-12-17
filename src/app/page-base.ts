@@ -571,7 +571,7 @@ export abstract class PageBase implements OnInit {
 						}
 
 						// if (loading) loading.dismiss();
-						this.env.showMessage('Import completed!', 'success');
+						this.env.showMessage('Saving completed!', 'success');
 						this.formGroup.markAsPristine();
 						this.cdr.detectChanges();
 						resolve(savedItem.Id);
@@ -973,7 +973,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	async changeBranch(ev: any) {
-		if (0 && !this.pageConfig.canChangeBranch) {
+		if (!this.pageConfig.canChangeBranch) {
 			return;
 		}
 		let popover = await this.popoverCtrl.create({

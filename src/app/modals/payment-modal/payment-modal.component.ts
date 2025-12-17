@@ -431,7 +431,7 @@ export class PaymentModalComponent implements OnInit {
 			component: POSVoucherModalPage,
 			canDismiss: true,
 			backdropDismiss: true,
-			cssClass: 'modal-change-table',
+			cssClass: 'modal90vh',
 			componentProps: {
 				SaleOrder: this.item.SaleOrder,
 			},

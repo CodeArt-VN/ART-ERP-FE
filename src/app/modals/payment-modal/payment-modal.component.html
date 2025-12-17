@@ -345,12 +345,8 @@
 	</ion-card-content>
 </ion-content>
 <ion-footer>
-	<div class="box" *ngIf="formGroup.get('Type').value == 'ZalopayApp' && !payment && step == 2">
-		<ion-buttons style="display: block" slot="end">
-			<ion-button expand="block" fill="solid" color="success" (click)="confirmPayment()">
-				{{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon>
-			</ion-button>
-		</ion-buttons>
+	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type').value == 'ZalopayApp' && !payment && step == 2">
+		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
 	</div>
 	<div class="box">
 		<div class="box-content">
@@ -400,19 +396,16 @@
 			</ion-row>
 		</ion-grid>
 
-		<ion-buttons slot="end">
-			<ion-button class="btn-paid" expand="block" fill="solid" shape="round"
-			[disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
-				*ngIf="formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'ZalopayApp' && formGroup.get('Type').value != 'VietQR' && !payment && step == 2"
-				expand="block"
+		<div slot="end">
+			<ion-button
 				fill="solid"
-				color="success"
-				(click)="confirmPayment()">
-				<ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+				[disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
+				*ngIf="formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'ZalopayApp' && formGroup.get('Type').value != 'VietQR' && !payment && step == 2"
+				(click)="confirmPayment()"
+			>
 				{{ 'Received' | translate }}
 			</ion-button>
-		
-		</ion-buttons>
+		</div>
 	</ion-toolbar>
 </ion-footer>
 <!-- Payment Page -->
