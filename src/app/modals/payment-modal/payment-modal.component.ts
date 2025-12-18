@@ -127,29 +127,31 @@ export class PaymentModalComponent implements OnInit {
 			this.subscribePOSOrderDetail = this.env.getEvents().subscribe((data) => {
 				if (!data.code?.startsWith('signalR:')) return;
 				if (data.id == this.env.user.StaffID) return;
-				if (!this.payment) return;
+				//if (!this.payment) return;
 				const value = JSON.parse(data.value);
 
 				switch (data.code) {
 					case 'signalR:POSOrderPaymentUpdate':
-						if (value.Id != this.payment?.Id) return;
-						this.payment.Status = value.Status;
-						this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
-
-						if (this.payment.Status == 'Fail') {
-							this.payment = null;
-							this.env.showAlert('', 'Please create new payment', 'Payment failed');
-							this.env.showMessage('Payment fail', 'danger');
-							//this.back();
-						} else if (this.payment.Status == 'Success') {
-							this.env.showMessage('Payment success', 'success');
-							if (this.payment.Amount < this.item.DebtAmount) {
-								this.item.DebtAmount -= this.payment.Amount;
+						if (value.IDSaleOrder != this.item.IDSaleOrder) return;
+						if (this.payment && value.Id == this.payment.Id) {
+							this.payment.Status == value.Status;
+							this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+							if (value.Status == 'Fail') {
 								this.payment = null;
+								this.env.showAlert('', 'Please create new payment', 'Payment failed');
+								this.env.showMessage('Payment fail', 'danger');
+								//this.back();
+							}
+						}
+						if (value.Status == 'Success') {
+							this.env.showMessage('Payment success', 'success');
+							if (value.Amount < this.item.DebtAmount) {
+								this.item.DebtAmount -= value.Amount;
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
+								if((this.payment && value.Id == this.payment.Id)) this.payment = null;
 							} else this.closeModal();
-						}
+						} 
 						return;
 				}
 			});
@@ -277,7 +279,7 @@ export class PaymentModalComponent implements OnInit {
 
 		let obj = this.formGroup.getRawValue();
 		obj.Status = 'Processing';
-		if (obj.Type == 'Cash' || obj.Type == 'Debt' || obj.Type == 'BOD' || obj.Type == 'Transfer') {
+		if (obj.Type == 'Cash' || obj.Type == 'Debt' || obj.Type == 'BOD' || obj.Type == 'Transfer' || (obj.Type == 'Card' && this.payment?.Id)) {
 			obj.Status = 'Success';
 		}
 		let payment = {
@@ -297,6 +299,7 @@ export class PaymentModalComponent implements OnInit {
 		let code = this.convertUrl(str);
 		obj.Code = code;
 		obj.Amount = obj.InputAmount;
+		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
 		this.commonService
 			.connect('POST', 'BANK/IncomingPayment', obj)
@@ -315,17 +318,16 @@ export class PaymentModalComponent implements OnInit {
 							Amount: this.payment.Amount,
 							IDBranch: this.item.IDBranch,
 							IDTable: this.item.IDTable,
+							Status: this.payment.Status,
+							Id: this.payment.Id,
 						}),
 					});
-					if (res.Amount < this.item.DebtAmount) {
-						this.item.DebtAmount -= res.Amount;
-						this.payment = null;
-						this.formGroup.patchValue(this.item);
-						this.generateAmountButtons();
-						this.submitAttempt = false;
-					} else this.closeModal();
+					this.submitAttempt = false;
+
 				} else if (obj.Type == 'ZalopayApp') {
 					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
+					this.next();
+					this.submitAttempt = false;
 					// this.closeModal();
 				}
 			})
@@ -354,7 +356,7 @@ export class PaymentModalComponent implements OnInit {
 			IDSaleOrder: this.item.IDSaleOrder,
 			IDTable: this.item.IDTable,
 			Type: 'Card',
-			SubType: 'VCB',
+			SubType: edcc.Bank,
 			DebtAmount: this.item.DebtAmount,
 			Amount: this.formGroup.get('InputAmount').value,
 			ReturnUrl: window.location.href,
@@ -375,6 +377,7 @@ export class PaymentModalComponent implements OnInit {
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
 				//this.next();
 				this.submitAttempt = false;
+				this.next();
 			})
 			.catch((err) => (this.submitAttempt = false));
 	}
@@ -411,7 +414,14 @@ export class PaymentModalComponent implements OnInit {
 	closeBillPreview() {
 		this.isBillPreviewOpen = false;
 	}
+	showConfirmButton() {
+		let type = this.formGroup.get('Type').value;
+		if (!['Card', 'ZalopayApp', 'VietQR'].includes(type) && this.step == 2) return true;
+		else if (type == 'Card' && this.step == 3) return true;
+	}
 
+	// (formGroup.get('Type').value == 'Card' && (step == 3 ||(edccList.length==0 && step == 2)))
+	// 	|| (formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'ZalopayApp' && formGroup.get('Type').value != 'VietQR' && step == 2 ))
 	//#region Voucher
 
 	deleteVoucher(p, index) {

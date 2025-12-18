@@ -12,7 +12,7 @@
 			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
 				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
 			</ion-button> -->
-			<ion-button *ngIf="step != 1 && !payment" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
+			<ion-button *ngIf="step != 1" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
 				<ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
@@ -28,7 +28,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content *ngIf="!payment" appScrollbarTheme>
+<ion-content appScrollbarTheme>
 	<form *ngIf="formGroup" [formGroup]="formGroup">
 		<ng-container [ngSwitch]="step">
 			<!-- PAGE 1 -->
@@ -268,84 +268,88 @@
 					</div>
 				</ion-card-content>
 			</div>
+			<!-- PAGE 3 -->
+			<div *ngSwitchCase="3">
+				<ion-card-header>
+					<ion-card-title class="ion-text-center" *ngIf="payment.Status != 'Processing'" [color]="payment?._Status.Color"
+						>{{ 'Payment' | translate }} {{ payment?.Status | translate | lowercase }}</ion-card-title
+					>
+					<ion-card-title class="ion-text-center" *ngIf="payment.Status == 'Processing'" [color]="payment?._Status.Color"
+						>{{ 'Awaiting payment' | translate }}
+					</ion-card-title>
+				</ion-card-header>
+
+				<ion-list>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Branch' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ item.BranchName }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Sale order' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">#{{ item.IDSaleOrder }}</ion-note>
+					</ion-item>
+					<ion-item *ngIf="payment.IsRefundTransaction">
+						<ion-label
+							><span>{{ 'Original Transaction' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">#{{ payment.IDOriginalTransaction }}</ion-note>
+					</ion-item>
+
+					<ion-item>
+						<ion-label
+							><span>{{ 'Payment code' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'yyMMdd' }}_{{ payment.Id }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Payment type' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.Type | translate }} </ion-note>
+						<ion-note slot="end" color="primary">{{ payment.SubType | translate }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Created date' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'HH:mm dd/MM/yyyy' }}</ion-note>
+					</ion-item>
+
+					<ion-item lines="none">
+						<ion-label>
+							<span>{{ 'Amount' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary"
+							><b>{{ payment.Amount | number: '1.0-0' }} <sup>đ</sup></b></ion-note
+						>
+					</ion-item>
+				</ion-list>
+				<ion-card-content>
+					<div class="c-control">
+						<ion-note>
+							<div class="ion-text-center">
+								<small>
+									<ion-icon name="shield-checkmark"></ion-icon>
+									<span>{{ 'SSL/TLS security certificate' | translate }}</span
+									><br />
+									<span>{{ 'All transaction information is securelyencrypted' | translate }}</span
+									>.
+								</small>
+							</div>
+						</ion-note>
+					</div>
+				</ion-card-content>
+			</div>
 		</ng-container>
 	</form>
 </ion-content>
-<ion-content *ngIf="payment">
-	<ion-card-header>
-		<ion-card-title class="ion-text-center" *ngIf="payment.Status != 'Processing'" [color]="payment?._Status.Color"
-			>{{ 'Payment' | translate }} {{ payment?.Status | translate | lowercase }}</ion-card-title
-		>
-		<ion-card-title class="ion-text-center" *ngIf="payment.Status == 'Processing'" [color]="payment?._Status.Color">{{ 'Awaiting payment' | translate }} </ion-card-title>
-	</ion-card-header>
 
-	<ion-list>
-		<ion-item>
-			<ion-label
-				><span>{{ 'Branch' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">{{ item.BranchName }}</ion-note>
-		</ion-item>
-		<ion-item>
-			<ion-label
-				><span>{{ 'Sale order' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">#{{ item.IDSaleOrder }}</ion-note>
-		</ion-item>
-		<ion-item *ngIf="payment.IsRefundTransaction">
-			<ion-label
-				><span>{{ 'Original Transaction' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">#{{ payment.IDOriginalTransaction }}</ion-note>
-		</ion-item>
-
-		<ion-item>
-			<ion-label
-				><span>{{ 'Payment code' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'yyMMdd' }}_{{ payment.Id }}</ion-note>
-		</ion-item>
-		<ion-item>
-			<ion-label
-				><span>{{ 'Payment type' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">{{ payment.Type | translate }} </ion-note>
-			<ion-note slot="end" color="primary">{{ payment.SubType | translate }}</ion-note>
-		</ion-item>
-		<ion-item>
-			<ion-label
-				><span>{{ 'Created date' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'HH:mm dd/MM/yyyy' }}</ion-note>
-		</ion-item>
-
-		<ion-item lines="none">
-			<ion-label>
-				<span>{{ 'Amount' | translate }}</span></ion-label
-			>
-			<ion-note slot="end" color="primary"
-				><b>{{ payment.Amount | number: '1.0-0' }} <sup>đ</sup></b></ion-note
-			>
-		</ion-item>
-	</ion-list>
-	<ion-card-content>
-		<div class="c-control">
-			<ion-note>
-				<div class="ion-text-center">
-					<small>
-						<ion-icon name="shield-checkmark"></ion-icon>
-						<span>{{ 'SSL/TLS security certificate' | translate }}</span
-						><br />
-						<span>{{ 'All transaction information is securelyencrypted' | translate }}</span
-						>.
-					</small>
-				</div>
-			</ion-note>
-		</div>
-	</ion-card-content>
-</ion-content>
 <ion-footer>
-	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type').value == 'ZalopayApp' && !payment && step == 2">
+	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type').value == 'ZalopayApp' && step == 2">
 		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
 	</div>
 	<div class="box">
@@ -380,7 +384,7 @@
 	<ion-toolbar>
 		<ion-grid>
 			<ion-row>
-				<ion-col *ngIf="item.SaleOrder" (click)="viewBill()">
+				<ion-col *ngIf="item.SaleOrder">
 					<ion-text class="clickable" (click)="viewBill()">
 						<span>{{ 'Total' | translate }}</span
 						>:&nbsp;
@@ -395,17 +399,13 @@
 				</ion-col>
 			</ion-row>
 		</ion-grid>
-
-		<div slot="end">
-			<ion-button
-				fill="solid"
-				[disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
-				*ngIf="formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'ZalopayApp' && formGroup.get('Type').value != 'VietQR' && !payment && step == 2"
-				(click)="confirmPayment()"
-			>
-				{{ 'Received' | translate }}
-			</ion-button>
-		</div>
+		@if (showConfirmButton()) {
+			<div slot="end">
+				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
+					{{ 'Received' | translate }}
+				</ion-button>
+			</div>
+		}
 	</ion-toolbar>
 </ion-footer>
 <!-- Payment Page -->
