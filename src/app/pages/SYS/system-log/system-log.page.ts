@@ -161,7 +161,7 @@ export class SystemLogPage extends PageBase {
 				componentProps: {
 					id: i.Id,
 				},
-				cssClass: 'my-custom-class',
+				cssClass: 'modal90vh',
 			});
 			return await modal.present();
 		}

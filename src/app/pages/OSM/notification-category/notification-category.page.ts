@@ -46,7 +46,7 @@ export class NotificationCategoryPage extends PageBase {
 				item: i,
 				id: i.Id,
 			},
-			cssClass: 'my-custom-class',
+			cssClass: 'modal90vh',
 		});
 		return await modal.present();
 	}

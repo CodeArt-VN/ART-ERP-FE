@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header collapse="fade">
 	<ion-toolbar>
 		<ion-title> {{'Data correction: '| translate}} {{model?.type| translate}} </ion-title>
 		<ion-buttons slot="end">
@@ -190,8 +190,18 @@
 	</ion-row>
 </ng-template>
 
-<ion-footer>
+<ion-footer collapse="fade">
 	<ion-toolbar>
-		<ion-button size="medium" slot="end" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+		<div slot="start">
+			
+        </div>
+		
+		<div slot="end">
+			<ion-button [strong]="true" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+            <ion-button fill="outline" color="warning" (click)="closeModal()" >
+                {{'Cancel' | translate}}
+            </ion-button>
+        </div>
+		
 	</ion-toolbar>
 </ion-footer>
