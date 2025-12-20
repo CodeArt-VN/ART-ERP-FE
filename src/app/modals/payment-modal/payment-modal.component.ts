@@ -116,8 +116,8 @@ export class PaymentModalComponent implements OnInit {
 	}
 	async ngOnInit() {
 		if (!this.subPromotion) {
-			this.subPromotion = this.promotionService.appliedPromotions$.subscribe((list) => {
-				this.promotionAppliedPrograms = list;
+			this.subPromotion = this.promotionService.voucherBySOObs$.subscribe((map) => {
+				this.promotionAppliedPrograms = map[this.item?.IDSaleOrder] || [];
 				this.analyticVoucher();
 			});
 		}
@@ -149,9 +149,9 @@ export class PaymentModalComponent implements OnInit {
 								this.item.DebtAmount -= value.Amount;
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
-								if((this.payment && value.Id == this.payment.Id)) this.payment = null;
+								if (this.payment && value.Id == this.payment.Id) this.payment = null;
 							} else this.closeModal();
-						} 
+						}
 						return;
 				}
 			});
@@ -323,7 +323,6 @@ export class PaymentModalComponent implements OnInit {
 						}),
 					});
 					this.submitAttempt = false;
-
 				} else if (obj.Type == 'ZalopayApp') {
 					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
 					this.next();
