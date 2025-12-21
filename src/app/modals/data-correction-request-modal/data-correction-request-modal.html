@@ -36,9 +36,9 @@
 							[attr.size-lg]="fg.get('subCols')?.value?.lg"
 							[attr.size-xl]="fg.get('subCols')?.value?.xl"
 						>
-						<ion-row>
-							<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
-						</ion-row>
+							<ion-row>
+								<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
+							</ion-row>
 						</ion-col>
 					</ng-container>
 				</ion-row>
@@ -192,16 +192,11 @@
 
 <ion-footer collapse="fade">
 	<ion-toolbar>
-		<div slot="start">
-			
-        </div>
-		
+		<div slot="start"></div>
+
 		<div slot="end">
+			<ion-button fill="outline" color="warning" (click)="closeModal()"> {{'Cancel' | translate}} </ion-button>
 			<ion-button [strong]="true" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
-            <ion-button fill="outline" color="warning" (click)="closeModal()" >
-                {{'Cancel' | translate}}
-            </ion-button>
-        </div>
-		
+		</div>
 	</ion-toolbar>
 </ion-footer>
