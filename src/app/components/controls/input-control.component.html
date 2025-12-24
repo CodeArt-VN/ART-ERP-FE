@@ -178,6 +178,12 @@
 		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
 			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
 		</ng-template>
+		<ng-template *ngIf="_inputControlTemplate" ng-label-tmp let-i="item">
+			<ng-template [ngTemplateOutlet]="_inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
+		<ng-template *ngIf="_inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+			<ng-template [ngTemplateOutlet]="_inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
 	</ng-select>
 
 	<!-- ng-select-branch -->

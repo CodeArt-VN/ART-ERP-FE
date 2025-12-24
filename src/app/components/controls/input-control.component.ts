@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { GlobalData } from 'src/app/services/static/global-variable';
 import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { FormulaExpandModalComponent } from './formula-expand-modal';
 import { Subject } from 'rxjs';
+import { InputControlTempateDirective } from './input-control-template.directive';
 
 @Component({
 	selector: 'app-input-control',
@@ -139,6 +140,17 @@ export class InputControlComponent implements OnInit {
 	quillEditor: any;
 	quillEditorId: string;
 
+	@Input('inputControlTemplate') _inputControlTemplateInput: TemplateRef<any>;
+
+	@ContentChild(InputControlTempateDirective, {
+		read: TemplateRef,
+		static: true,
+	})
+	_inputControlTemplateQuery: TemplateRef<any>;
+
+	get _inputControlTemplate(): TemplateRef<any> {
+		return this._inputControlTemplateInput || this._inputControlTemplateQuery;
+	}
 	constructor(
 		public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
