@@ -392,17 +392,22 @@
 						<ion-icon class="clickable" name="chevron-up-outline"></ion-icon>
 					</ion-text>
 				</ion-col>
-				<ion-col class="ion-text-right">
+				<ion-col class="ion-text-right" *ngIf="!item.IsRefundTransaction">
 					<span>{{ 'Payment required' | translate }}</span
 					>:&nbsp;
 					<span>{{ this.item.DebtAmount | number: '1.0-0' }} đ</span>
+				</ion-col>
+				<ion-col class="ion-text-right" *ngIf="item.IsRefundTransaction">
+					<span>{{ 'Refund amount' | translate }}</span
+					>:&nbsp;
+					<span>{{ this.item.RefundAmount | number: '1.0-0' }} đ</span>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
 		@if (showConfirmButton()) {
 			<div slot="end">
 				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
-					{{ 'Received' | translate }}
+					{{ item.IsRefundTransaction ? 'Refund' : ('Received' | translate) }}
 				</ion-button>
 			</div>
 		}
