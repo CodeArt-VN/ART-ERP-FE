@@ -12,7 +12,7 @@
 			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
 				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
 			</ion-button> -->
-			<ion-button *ngIf="step != 1" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
+			<ion-button *ngIf="step != 1 && !item.IsRefundTransaction" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
 				<ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
