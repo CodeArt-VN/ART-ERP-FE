@@ -280,7 +280,12 @@ export class PaymentModalComponent implements OnInit {
 	// Gửi yêu cầu thanh toán
 	// --------------------------------------------------------------------
 	async confirmPayment() {
-		this.submitAttempt = true;
+		if (this.item.IsRefundTransaction) {
+			if (this.formGroup.get('InputAmount').value > this.item.RefundAmount) {
+				this.env.showMessage('Refund amount cannot be greater than original amount', 'warning');
+				return;
+			}
+		}
 
 		if (!this.formGroup.get('InputAmount').value || this.formGroup.get('InputAmount').value <= 0) {
 			this.env.showMessage('Please input valid amount', 'warning');
@@ -290,7 +295,6 @@ export class PaymentModalComponent implements OnInit {
 			this.env.showMessage('Please choose payment method', 'warning');
 			return;
 		}
-
 		let obj = this.formGroup.getRawValue();
 		obj.Status = 'Processing';
 		if (
@@ -326,6 +330,9 @@ export class PaymentModalComponent implements OnInit {
 		obj.Amount = obj.InputAmount;
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (!this.item.IsRefundTransaction && obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
+
+		this.submitAttempt = true;
+
 		this.commonService
 			.connect('POST', 'BANK/IncomingPayment', obj)
 			.toPromise()
