@@ -101,7 +101,7 @@ export class PaymentModalComponent implements OnInit {
 		if (!this.billElement?.nativeElement) return;
 
 		const observer = new MutationObserver((mutations) => {
-			console.log('DOM changed', mutations);
+			// console.log('DOM changed', mutations);
 
 			const qr = this.billElement.nativeElement.querySelector('.qr-section');
 			if (qr) {
@@ -145,8 +145,13 @@ export class PaymentModalComponent implements OnInit {
 						}
 						if (value.Status == 'Success') {
 							this.env.showMessage('Payment success', 'success');
-							if (value.Amount < this.item.DebtAmount) {
+							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
 								this.item.DebtAmount -= value.Amount;
+								this.formGroup.patchValue(this.item);
+								this.generateAmountButtons();
+								if (this.payment && value.Id == this.payment.Id) this.payment = null;
+							} else if (this.item.IsRefundTransaction && value.Amount < this.item.RefundAmount) {
+								this.item.RefundAmount -= value.Amount;
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
@@ -170,6 +175,11 @@ export class PaymentModalComponent implements OnInit {
 				});
 		}
 		this.formGroup.patchValue(this.item);
+		if (this.item.IsRefundTransaction) {
+			this.formGroup.controls.Type.setValue('Cash');
+			this.formGroup.controls.Type.markAsDirty();
+			this.step = 2;
+		}
 		this.generateAmountButtons();
 	}
 	getEDCCConnection() {
@@ -218,6 +228,10 @@ export class PaymentModalComponent implements OnInit {
 
 		this.formGroup.get('InputAmount').setValue(debt);
 		this.formGroup.get('InputAmount').markAsDirty();
+		if (this.item.IsRefundTransaction) {
+			this.formGroup.get('InputAmount').setValue(this.item.RefundAmount);
+			this.formGroup.get('InputAmount').markAsDirty();
+		}
 	}
 
 	// --------------------------------------------------------------------
@@ -279,7 +293,16 @@ export class PaymentModalComponent implements OnInit {
 
 		let obj = this.formGroup.getRawValue();
 		obj.Status = 'Processing';
-		if (obj.Type == 'Cash' || obj.Type == 'Debt' || obj.Type == 'BOD' || obj.Type == 'Transfer' || (obj.Type == 'Card' && this.payment?.Id)) {
+		if (
+			obj.Type == 'Cash' ||
+			obj.Type == 'Debt' ||
+			obj.Type == 'Gotit' ||
+			obj.Type == 'Urbox' ||
+			obj.Type == 'VNPay' ||
+			obj.Type == 'BOD' ||
+			obj.Type == 'Transfer' ||
+			(obj.Type == 'Card' && this.payment?.Id)
+		) {
 			obj.Status = 'Success';
 		}
 		let payment = {
@@ -288,6 +311,8 @@ export class PaymentModalComponent implements OnInit {
 			IDCustomer: this.item.IDCustomer,
 			IDSaleOrder: this.item.IDSaleOrder,
 			DebtAmount: this.item.DebtAmount,
+			IsRefundTransaction: this.item.IsRefundTransaction,
+			IDOriginalTransaction: this.item.IDOriginalTransaction,
 			IsActiveInputAmount: true,
 			IsActiveTypeCash: true,
 			ReturnUrl: window.location.href,
@@ -300,7 +325,7 @@ export class PaymentModalComponent implements OnInit {
 		obj.Code = code;
 		obj.Amount = obj.InputAmount;
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
-		if (obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
+		if (!this.item.IsRefundTransaction && obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
 		this.commonService
 			.connect('POST', 'BANK/IncomingPayment', obj)
 			.toPromise()
