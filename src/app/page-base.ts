@@ -160,8 +160,9 @@ export abstract class PageBase implements OnInit {
 		event?.target?.complete();
 
 		if (this.pageConfig.isDetailPage) {
+			if (this.item == null || this.item?.IsDeleted) this.nav('not-found', 'back');
+			
 			if (this.item) {
-				if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 				this.formGroup?.patchValue(this.item);
 				this.formGroup?.markAsPristine();
 				this.cdr?.detectChanges();

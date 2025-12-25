@@ -122,7 +122,12 @@ export var lib = {
 		}
 	},
 	cloneObject(source) {
-		return JSON.parse(JSON.stringify(source));
+		try {
+			return JSON.parse(JSON.stringify(source));
+		} catch (err) {
+			console.error('Cannot clone object:', err);
+			return null;
+		}
 	},
 	getObject(path, obj) {
 		return path.split('.').reduce(function (prev, curr) {

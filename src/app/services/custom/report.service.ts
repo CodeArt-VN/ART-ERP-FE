@@ -161,7 +161,11 @@ export class ReportService extends BI_ReportProvider {
 	 */
 	getReport(reportId: number, reportCode: string = '', forceReload = false): BIReport {
 		let report = this.items.find((d) => d.Id == reportId || (d.Code == reportCode && reportCode));
-		if (!report && !reportId) this.env.showMessage('Report with Id=' + reportId + ' not found!', 'danger');
+		if (!report && !reportId) {
+			// Log id and code
+			console.log('Report with Id=' + reportId + ' and Code=' + reportCode + ' not found!');
+			this.env.showMessage('Report with Id=' + reportId + ' not found!', 'danger');
+		}
 		if (report && forceReload) {
 			this.getAnItem(report.Id).then((resp: any) => {
 				let originalReport = resp;
