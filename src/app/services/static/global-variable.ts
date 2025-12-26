@@ -505,6 +505,35 @@ APIList.HRM_TimesheetLog.approve = {
 
 
 
+APIList.AC_ARInvoice.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/SubmitForApproval';
+	},
+};
+
+APIList.AC_ARInvoice.Cancel = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Cancel';
+	},
+};
+
+APIList.AC_ARInvoice.approve = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Approve';
+	},
+};
+
+APIList.AC_ARInvoice.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Disapprove';
+	},
+};
+
+
 
 export var GlobalData: any = {
 	Filter: {

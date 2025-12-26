@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NavController, NavParams, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { concat, of, Subject } from 'rxjs';
@@ -42,16 +43,19 @@ export class PopoverPage {
 	isShowFromToDate = false;
 	saleOrderStatusList = [];
 	branchList = [];
-
+	formGroup: FormGroup;
 	constructor(
 		public staffProvider: HRM_StaffProvider,
-
+		public formBuilder: FormBuilder,
 		public env: EnvService,
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public popoverCtrl: PopoverController,
-		public translate: TranslateService
+		public translate: TranslateService,
 	) {
+		this.formGroup = this.formBuilder.group({
+			IDBranch: [''],
+		});
 		this.translate.get('Date').subscribe((message: string) => {
 			this._popConfig.singleDateLabel = message;
 		});
@@ -85,12 +89,22 @@ export class PopoverPage {
 		}
 
 		if (this.popConfig.isShowBranchSelect) {
-			this.branchList = lib.cloneObject(this.env.branchList);
+			let rawBrandList = lib.cloneObject(this.env.branchList);
+
 			let translateResult;
 			this.translate.get('all-unit').subscribe((message: string) => {
 				translateResult = message;
 			});
-			this.branchList.unshift({ Id: null, Name: translateResult });
+
+			rawBrandList.unshift({
+				Id: 'Root',
+				Name: translateResult,
+				IDParent: null,
+			});
+			rawBrandList.find(x => x.Code === 'Root').IDParent = 'Root';
+			lib.buildFlatTree(rawBrandList, [], true).then((resp: any) => {
+				this.branchList = resp;
+			});
 		}
 	}
 
@@ -161,6 +175,10 @@ export class PopoverPage {
 		}
 
 		this.popoverCtrl.dismiss(returnData);
+	}
+
+	changeBranch(event) {
+		this.popData.branch = event;
 	}
 
 	staffList$;

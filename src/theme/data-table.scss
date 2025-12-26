@@ -242,7 +242,10 @@ app-data-table,
 
 		.spacing {
 			display: inline-block;
-			padding-left: $cell-padding-horizontal;
+			border-left: solid 1px var(--menu-right-border-color);
+			margin-left: 7px;
+			padding-left: 9px;
+			height: 100%;
 		}
 
 		&.l1 {
@@ -510,6 +513,10 @@ app-data-table,
 		}
 		.c-input {
 			text-align: center;
+		}
+		&.tree{
+			justify-content: start;
+			text-align: left;
 		}
 	}
 

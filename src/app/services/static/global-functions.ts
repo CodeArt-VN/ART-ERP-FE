@@ -122,7 +122,12 @@ export var lib = {
 		}
 	},
 	cloneObject(source) {
-		return JSON.parse(JSON.stringify(source));
+		try {
+			return JSON.parse(JSON.stringify(source));
+		} catch (err) {
+			console.error('Cannot clone object:', err);
+			return null;
+		}
 	},
 	getObject(path, obj) {
 		return path.split('.').reduce(function (prev, curr) {
@@ -1139,4 +1144,32 @@ export var lib = {
 		'#ABB2B9',
 		'#48C9B0',
 	],
+
+	/**
+	 * Get nested property value from object using dot notation path
+	 * @param obj - Source object
+	 * @param path - Property path (e.g., '_SaleOrder.DailyBillNo')
+	 * @returns Property value or empty string if not found
+	 */
+	getNestedProperty(obj: any, path: string): any {
+		if (!obj || !path) return '';
+		
+		// Handle single-level property (backward compatibility)
+		if (!path.includes('.')) {
+			return obj[path] ?? '';
+		}
+		
+		// Handle nested property
+		const keys = path.split('.');
+		let result = obj;
+		
+		for (const key of keys) {
+			result = result?.[key];
+			if (result === null || result === undefined) {
+				return '';
+			}
+		}
+		
+		return result ?? '';
+	},
 };

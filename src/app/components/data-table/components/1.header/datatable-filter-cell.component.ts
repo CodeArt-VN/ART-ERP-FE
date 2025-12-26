@@ -33,8 +33,12 @@ export class DataTableFilterCellComponent {
 			this.field.form.controls.To.controls.IsNull.setValue(true);
 			this.field.form.controls.To.controls.Value.setValue(null);
 		} else {
-			if (this.field.type === 'text') this.field.form.get(this.field.id).setValue('');
-			else this.field.form.get(this.field.id).setValue(null);
+			// Use bracket notation to support nested property keys with dots
+			const control = this.field.form.controls[this.field.id];
+			if (control) {
+				if (this.field.type === 'text') control.setValue('');
+				else control.setValue(null);
+			}
 		}
 
 		this.filterFieldReset.emit();
@@ -88,4 +92,14 @@ export class DataTableFilterCellComponent {
 	constructor(private cd: ChangeDetectorRef) {}
 
 	ngOnInit() {}
+
+	hasFilterValue(): boolean {
+		if (!this.field?.form || !this.field?.id) {
+			return false;
+		}
+		// For nested properties with dots, use direct bracket notation
+		// because FormGroup.get() interprets dots as nested path
+		const control = this.field.form.controls[this.field.id];
+		return control ? !!control.value : false;
+	}
 }

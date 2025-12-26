@@ -77,8 +77,8 @@
 	<!-- radio -->
 	<ng-container *ngSwitchCase="'radio'">
 		<ng-container *ngFor="let i of dataSource; let j = index">
-			<input [type]="'radio'" class="c-checkbox" [id]="id + '_' + j" [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
-			<label class="c-label radio" [for]="id + '_' + j">
+			<input type="radio" class="c-checkbox" [id]="id + '_' + j" [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
+			<label class="c-label clickable radio" [for]="id + '_' + j">
 				<span>{{ i[bindLabel] | translate }}</span>
 			</label>
 		</ng-container>

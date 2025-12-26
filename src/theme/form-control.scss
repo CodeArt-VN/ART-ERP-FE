@@ -56,6 +56,7 @@
 	position: relative;
 
 	&.inline-control {
+		text-align: left;
 		.c-label {
 			white-space: nowrap;
 			position: absolute;
@@ -67,6 +68,10 @@
 		}
 		.c-input {
 			text-align: right;
+		}
+
+		.ng-select .ng-select-container .ng-value-container{
+			justify-content: flex-end;
 		}
 	}
 

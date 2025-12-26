@@ -4,7 +4,8 @@
 		!column.filterTemplate &&
 		column.canFilter &&
 		field.id &&
-		((column.filterControlType != 'time-frame' && field.form.controls[field.id]?.value) ||
+		field.id !== '#' &&
+		((column.filterControlType != 'time-frame' && hasFilterValue()) ||
 			(column.filterControlType == 'time-frame' && (!field.form.controls.From?.controls.IsNull.value || !field.form.controls.To?.controls.IsNull.value)))
 	"
 	class="min-btn clickable"

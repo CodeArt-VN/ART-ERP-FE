@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
 	selector: 'datatable-body-cell',
@@ -47,7 +48,7 @@ export class DataTableBodyCellComponent {
 
 	get dataType(): string {
 		if (this.format?.indexOf('1') > -1) return 'number';
-		if (this.format?.indexOf('yy') > -1 || this.format?.indexOf('HH')) return 'date';
+		if (this.format?.indexOf('yy') > -1 || this.format?.indexOf('HH') > -1) return 'date';
 		return 'string';
 	}
 
@@ -80,7 +81,8 @@ export class DataTableBodyCellComponent {
 			if (this.column.property == '#') {
 				value = this.rowIndex + 1;
 			} else {
-				value = this.row[this.column.property];
+				// Support nested property access (e.g., '_SaleOrder.DailyBillNo')
+				value = lib.getNestedProperty(this.row, this.column.property);
 			}
 		}
 

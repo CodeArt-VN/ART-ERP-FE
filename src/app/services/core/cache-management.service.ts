@@ -56,16 +56,21 @@ export class CacheManagementService {
 
 	private async init(): Promise<void> {
 		try {
-			await this.loadCacheRegistry();
+			
 
 			this.app.version = await this.getRoot('AppVersion');
-
 			const currentTenant = await this.getRoot('Tenant');
 			if (currentTenant && this.app.tenant !== currentTenant) {
 				dogF && console.log('🔧 [CacheManagementService] Set tenant', environment.appDomain, currentTenant);
 				this.app.tenant = currentTenant;
 				environment.appDomain = currentTenant;
 			}
+			
+			dogF && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);
+			await this.migration.executeMigration(this);
+			await this.loadCacheRegistry();
+
+			
 
 			this.app.userId = await this.getRoot('UserId');
 			this.app.lang = await this.get('Lang', 'auto', null);
@@ -83,8 +88,7 @@ export class CacheManagementService {
 				this.app.selectedBranch = this.app.userProfile.IDBranch;
 			}
 
-			dogF && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);
-			await this.migration.executeMigration(this);
+			
 			this._tracking$.next(true);
 
 			this.setupMaintenance();
@@ -204,7 +208,7 @@ export class CacheManagementService {
 			accessCount: 0,
 			lastAccessed: now,
 			fromProvider: serviceName || 'unknown',
-			expireAction: config.expireAction || this.defaultConfig.expireAction || 'remove',
+			expireAction: config.expireAction || this.defaultConfig.expireAction || 'update',
 			query: config.query,
 			status: 'idle',
 			retryCount: 0,

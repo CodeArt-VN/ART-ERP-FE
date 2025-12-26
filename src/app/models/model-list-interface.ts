@@ -1707,6 +1707,7 @@ export interface CRM_Contact
     LotableDate12?: Date;
     LotableDate13?: Date;
     LotableDate14?: Date;
+    SearchIndex?: string;
     
 }
 
@@ -2128,6 +2129,7 @@ export interface CRM_PartnerTaxInfo
     Email?: string;
     WorkPhone?: string;
     BillingAddress?: string;
+    IdentityCardNumber?: string;
     IsDefault?: boolean;
     
 }
@@ -3332,6 +3334,7 @@ export interface HRM_Staff
     BankAccountNumber?: number;
     BankName?: string;
     SocialInsuranceRate?: number;
+    SearchIndex?: string;
     
 }
 
@@ -3420,6 +3423,51 @@ export interface HRM_StaffAddress
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    
+}
+
+export interface HRM_StaffAgreement
+{
+    IDStaff?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    EffectiveFrom?: Date;
+    EffectiveTo?: Date;
+    Status?: string;
+    
+}
+
+export interface HRM_StaffAgreementDetail
+{
+    AgreementID?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Type?: string;
+    SubType?: string;
+    ChangeType?: string;
+    CalculationType?: string;
+    OldValue?: string;
+    NewValue?: string;
+    CoOldValue?: string;
+    CoNewValue?: string;
     
 }
 
@@ -6080,6 +6128,7 @@ export interface POS_MenuDetail
     IDMenu?: number;
     IDItem?: number;
     IDKitchen?: number;
+    IDKitchens?: string;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -6092,7 +6141,6 @@ export interface POS_MenuDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     Image?: string;
-    IDKitchens?: string;
     
 }
 
@@ -6525,6 +6573,12 @@ export interface PROD_BillOfMaterialsDetail
     IssueMethod?: string;
     IDWarehouse?: number;
     Name?: string;
+    MaxSelect?: number;
+    IsRequired?: boolean;
+    AllowMultiple?: boolean;
+    MinSelect?: number;
+    ExtraPrice?: number;
+    MaxQuantity?: number;
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
@@ -7214,6 +7268,7 @@ export interface SALE_Order
     CalcTotalDeductions?: number;
     CancellationReason?: string;
     TaxCode?: string;
+    DailyBillNo?: number;
     
 }
 
@@ -7272,6 +7327,7 @@ export interface SALE_OrderDeduction
 export interface SALE_OrderDetail
 {
     Id?: number;
+    IDParent?: number;
     RefID?: number;
     IDOrder?: number;
     RefOrder?: string;
@@ -8964,6 +9020,7 @@ export interface WMS_Item
     RefNum?: number;
     RefChar?: string;
     IsLocked?: boolean;
+    SearchIndex?: string;
     
 }
 

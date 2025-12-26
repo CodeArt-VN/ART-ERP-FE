@@ -1,0 +1,432 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title
+			><span *ngIf="item.IsRefundTransaction">
+				{{ 'Refund' | translate }}
+			</span>
+			<span *ngIf="!item.IsRefundTransaction">
+				{{ 'Payment' | translate }}
+			</span></ion-title
+		>
+		<ion-buttons slot="start">
+			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
+				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+			</ion-button> -->
+			<ion-button *ngIf="step != 1 && !item.IsRefundTransaction" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
+				<ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>{{ title | translate }}</ion-title>
+
+		<ion-buttons slot="primary">
+			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
+				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+			</ion-button> -->
+			<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme>
+	<form *ngIf="formGroup" [formGroup]="formGroup">
+		<ng-container [ngSwitch]="step">
+			<!-- PAGE 1 -->
+			<div *ngSwitchCase="1" style="min-height: 0%">
+				<ion-list [inset]="true" *ngIf="IsActiveTypeCash">
+					<ion-item button (click)="changeType('Cash')">
+						<ion-icon name="cash-outline" slot="start"></ion-icon>
+						<ion-label>{{ 'Cash' | translate }}</ion-label>
+					</ion-item>
+
+					<ion-item button (click)="changeType('Transfer')">
+						<ion-icon name="wallet-outline" slot="start"></ion-icon>
+						<ion-label>{{ 'Bank transfer' | translate }}</ion-label>
+					</ion-item>
+					<!-- ========== CÔNG NỢ ========== -->
+					<ion-item button (click)="changeType('Debt')">
+						<ion-icon name="cash-outline" slot="start"></ion-icon>
+						<ion-label>{{ 'Debt' | translate }}</ion-label>
+					</ion-item>
+
+					<!-- ========== BOD ========== -->
+					<ion-item button (click)="changeType('BOD')">
+						<ion-icon name="cash-outline" slot="start"></ion-icon>
+						<ion-label>BOD</ion-label>
+					</ion-item>
+					<ion-item button (click)="changeType('Urbox')">
+						<img src="/assets/logos/banks/Urbox.png" style="width: 1.6em" slot="start" />
+						<ion-label>Urbox</ion-label>
+					</ion-item>
+
+					<!-- ========== Gotit ========== -->
+					<ion-item button (click)="changeType('Gotit')">
+						<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
+						<ion-label>Gotit</ion-label>
+					</ion-item>
+
+					<!-- ========== VNPay ========== -->
+					<ion-item button (click)="changeType('VNPay')">
+						<img src="/assets/logos/banks/vnpay.ico" style="width: 1.6em" slot="start" />
+						<ion-label>VNPay</ion-label>
+					</ion-item>
+				</ion-list>
+
+				<ion-list ion-list [inset]="true">
+					<ion-item button (click)="changeType('VietQR')">
+						<ion-icon name="card-outline" slot="start"></ion-icon>
+						<ion-label class="ion-text-wrap">
+							<span>{{ 'VietQR' | translate }}</span>
+						</ion-label>
+					</ion-item>
+
+					<ion-item button (click)="changeType('Card')">
+						<ion-icon name="card-outline" slot="start"></ion-icon>
+						<ion-label class="ion-text-wrap">
+							<span>{{ 'Card' | translate }}</span>
+						</ion-label>
+					</ion-item>
+
+					<!-- Hiển thị nếu ZaloPay đang được kích hoạt -->
+					<!-- ========== APPLE PAY ========== -->
+					<!-- <ion-item button (click)="changeType('ZalopayApp')">
+								<div slot="start" class="ion-align-self-start" style="margin-top:6px">
+									<input type="radio" value="ApplePay" class="c-checkbox PaymentType"
+										id="listGroupRadioGrid4" formControlName="SubType">
+								</div>
+								<img src="/assets/logos/banks/applepay.svg" alt="Apple Pay" style="width: 1.6em;"
+									slot="start" />
+								<ion-label>
+									<span class="payment-text">{{ 'Apple Pay' | translate }}</span>
+								</ion-label>
+							</ion-item> -->
+
+					<!-- ========== ZALOPAY APP ========== -->
+					<ion-item *ngIf="ZPIsActive" button (click)="changeType('ZalopayApp')">
+						<!-- <div slot="start" class="ion-align-self-start" style="margin-top: 6px">
+											<input type="radio" value="Wallet" class="c-checkbox PaymentType" id="listGroupRadioGrid4" formControlName="SubType" />
+										</div> -->
+						<img src="/assets/logos/banks/zalopay.ico" style="width: 1.6em" slot="start" />
+						<ion-label>
+							<span>{{ 'Pay with ZaloPay wallet' | translate }}</span>
+						</ion-label>
+					</ion-item>
+					<!--
+							<ion-item button (click)="changeType('ZalopayApp')">
+								<div slot="start" class="ion-align-self-start" style="margin-top:6px">
+									<input type="radio" value="ATM" class="c-checkbox PaymentType"
+										id="listGroupRadioGrid4" formControlName="SubType">
+								</div>
+								<img src="/assets/logos/banks/zalopay.ico" style="width: 1.6em;" slot="start" />
+								<ion-label style="display:flex; align-items:center;">
+									<span>{{ 'Thẻ ATM' | translate }}</span>
+									<small>({{ 'Qua cổng ZaloPay' | translate }})</small>
+								</ion-label>
+							</ion-item>
+
+							<ion-item button (click)="changeType('ZalopayApp')">
+								<div slot="start" class="ion-align-self-start" style="margin-top:6px">
+									<input type="radio" value="Visa" class="c-checkbox PaymentType"
+										id="listGroupRadioGrid4" formControlName="SubType">
+								</div>
+								<img src="/assets/logos/banks/zalopay.ico" style="width: 1.6em;" slot="start" />
+								<ion-label style="display:flex; align-items:center;">
+									<span>{{ 'Thẻ Visa' | translate }}</span>
+									<small>({{ 'Qua cổng ZaloPay' | translate }})</small>
+								</ion-label>
+								<ion-radio slot="end" [checked]="paymentType === 'zalopaycc'"></ion-radio>
+							</ion-item> -->
+				</ion-list>
+			</div>
+
+			<!-- PAGE 2 -->
+			<div *ngSwitchCase="2">
+				<ion-card-content>
+					@if (formGroup.get('Type').value != 'VietQR') {
+						<!-- Gợi ý mệnh giá -->
+						<div id="gr-btn-amount" *ngIf="!item.IsRefundTransaction && this.formGroup.get('Type').value === 'Cash'" style="text-align: right; margin-bottom: 16px">
+							<ion-button *ngFor="let amount of btnAmounts" class="btn-amount" fill="outline" size="small" (click)="selectAmount(amount)">
+								{{ amount | number: '1.0-0' }} đ
+							</ion-button>
+						</div>
+
+						<!-- Ô nhập số tiền -->
+						<div class="c-control inline-control">
+							<label class="c-label" for="currency-thechange">
+								{{ item.IsRefundTransaction ? 'Refund amount' : ('Payment amount' | translate) }}
+							</label>
+							<app-input-control
+								[field]="{
+									id: 'InputAmount',
+									label: item.IsRefundTransaction ? 'Refund amount' : 'Payment amount',
+									type: 'number',
+									form: formGroup,
+								}"
+							>
+							</app-input-control>
+							<!-- <label class="c-label" for="currency-field">
+							<span *ngIf="item.IsRefundTransaction; else amountLabel">
+								{{ 'Refund amount' | translate }}
+							</span>
+							<ng-template #amountLabel>
+								{{ 'Payment amount' | translate }}
+							</ng-template>
+						</label>
+						<input
+							class="c-input"
+							mask="separator.2"
+							thousandSeparator=","
+							[allowNegativeNumbers]="false"
+							suffix=" ₫"
+							formControlName="InputAmount"
+							[ngModelOptions]="{ standalone: true }"
+							type="text"
+						/> -->
+						</div>
+
+						<!-- Tiền thừa -->
+						<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction">
+							<label class="c-label" for="currency-thechange">
+								{{ 'Excess amount' | translate }}
+							</label>
+							<input readonly id="currency-thechange" class="c-input input-money" [value]="changeAmount | number: '1.0-0'" />
+						</div>
+
+						<!-- Ghi chú hoặc lý do hoàn tiền -->
+						<div class="c-control inline-control" *ngIf="ZPIsActive || IsActiveTypeCash">
+							<label class="c-label" for="currency-thechange">
+								{{ item.IsRefundTransaction ? 'Refund reason' : ('Remark' | translate) }}
+							</label>
+							<app-input-control
+								[field]="{
+									id: 'Remark',
+									label: item.IsRefundTransaction ? 'Refund reason' : 'Remark',
+									type: 'textarea',
+									form: formGroup,
+								}"
+							>
+							</app-input-control>
+						</div>
+						<ion-label class="ion-text-wrap" *ngIf="formGroup.value.Type == 'Transfer'">
+							<fieldset *ngIf="formGroup.get('Type').value === 'Transfer'" id="bank-transfer">
+								<ion-grid>
+									<ion-row>
+										<ion-col
+											class="bank-item"
+											[class.active]="formGroup.get('SubType')?.value === bank.Code"
+											size="auto"
+											*ngFor="let bank of bankList"
+											style="flex: 0 0 auto; width: auto"
+										>
+											<!-- <input
+													type="radio"
+													[value]="bank.Code"
+													class="c-checkbox PaymentType"
+													[id]="bank.Code"
+													formControlName="SubType"
+													(click)="$event.stopPropagation()"
+												/> -->
+											<label class="list-group-item" [for]="bank.Code" (click)="$event.stopPropagation(); changeSubType(bank.Code)">
+												<span><img style="border: 1px solid #ccc" height="50px" [src]="bank.Image" /></span>
+											</label>
+										</ion-col>
+									</ion-row>
+								</ion-grid>
+							</fieldset>
+						</ion-label>
+						<fieldset id="bank-transfer" *ngIf="formGroup.get('Type').value == 'Card'">
+							<ion-grid>
+								<ion-row *ngIf="!edccList?.length">
+									<ion-col size="auto">
+										{{ 'Not found payment terminal' | translate }}
+									</ion-col>
+								</ion-row>
+								<ion-row *ngIf="edccList?.length > 0">
+									<ion-col size="auto" *ngFor="let edcc of edccList" style="flex: 0 0 auto; width: auto">
+										<label class="list-group-item" [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)">
+											<span><img style="border: 1px solid #ccc" height="50px" src="/assets/logos/banks/EDCC.jpg" /></span>
+											<!-- {{ edcc.Bank }} -->
+										</label>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</fieldset>
+					} @else {
+						<div class="text-center" [innerHTML]="qrCodeHtml"></div>
+					}
+					<!-- Thông báo bảo mật -->
+					<div class="c-control">
+						<ion-note>
+							<div class="ion-text-center">
+								<small>
+									<ion-icon name="shield-checkmark"></ion-icon>
+									{{ 'SSL/TLS security certificate' | translate }}<br />
+									{{ 'All transaction information is securely encrypted' | translate }}.
+								</small>
+							</div>
+						</ion-note>
+					</div>
+				</ion-card-content>
+			</div>
+			<!-- PAGE 3 -->
+			<div *ngSwitchCase="3">
+				<ion-card-header>
+					<ion-card-title class="ion-text-center" *ngIf="payment.Status != 'Processing'" [color]="payment?._Status.Color"
+						>{{ 'Payment' | translate }} {{ payment?.Status | translate | lowercase }}</ion-card-title
+					>
+					<ion-card-title class="ion-text-center" *ngIf="payment.Status == 'Processing'" [color]="payment?._Status.Color"
+						>{{ 'Awaiting payment' | translate }}
+					</ion-card-title>
+				</ion-card-header>
+
+				<ion-list>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Branch' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ item.BranchName }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Sale order' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">#{{ item.IDSaleOrder }}</ion-note>
+					</ion-item>
+					<ion-item *ngIf="payment.IsRefundTransaction">
+						<ion-label
+							><span>{{ 'Original Transaction' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">#{{ payment.IDOriginalTransaction }}</ion-note>
+					</ion-item>
+
+					<ion-item>
+						<ion-label
+							><span>{{ 'Payment code' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'yyMMdd' }}_{{ payment.Id }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Payment type' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.Type | translate }} </ion-note>
+						<ion-note slot="end" color="primary">{{ payment.SubType | translate }}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label
+							><span>{{ 'Created date' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary">{{ payment.CreatedDate | date: 'HH:mm dd/MM/yyyy' }}</ion-note>
+					</ion-item>
+
+					<ion-item lines="none">
+						<ion-label>
+							<span>{{ 'Amount' | translate }}</span></ion-label
+						>
+						<ion-note slot="end" color="primary"
+							><b>{{ payment.Amount | number: '1.0-0' }} <sup>đ</sup></b></ion-note
+						>
+					</ion-item>
+				</ion-list>
+				<ion-card-content>
+					<div class="c-control">
+						<ion-note>
+							<div class="ion-text-center">
+								<small>
+									<ion-icon name="shield-checkmark"></ion-icon>
+									<span>{{ 'SSL/TLS security certificate' | translate }}</span
+									><br />
+									<span>{{ 'All transaction information is securelyencrypted' | translate }}</span
+									>.
+								</small>
+							</div>
+						</ion-note>
+					</div>
+				</ion-card-content>
+			</div>
+		</ng-container>
+	</form>
+</ion-content>
+
+<ion-footer>
+	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type').value == 'ZalopayApp' && step == 2">
+		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
+	</div>
+	<div class="box">
+		<div class="box-content">
+			<div class="check-out">
+				<!-- <div class="box-title">{{ 'Promotion / Voucher' | translate }}</div> -->
+				<div class="check-out" style="min-height: 20px; display: flex">
+					@if (canEditVoucher) {
+						<div class="coupon clickable" style="align-items: center; padding: 4px" (click)="processVouchers()">
+							<ion-icon name="ticket-outline"></ion-icon>{{ 'Add voucher' | translate }}
+						</div>
+					}
+
+					<div class="coupon" *ngFor="let p of this.promotionAppliedPrograms; let i = index">
+						@if (canEditVoucher) {
+							<div class="coupon-left">
+								<span>{{ 'Reduce' | translate }} {{ p.ReduceByPercent ?? p.Value | number: '1.0-0' }} đ </span>
+							</div>
+						}
+
+						<div class="coupon-right">
+							<span>
+								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ion-toolbar>
+		<ion-grid>
+			<ion-row>
+				<ion-col *ngIf="item.SaleOrder">
+					<ion-text class="clickable" (click)="viewBill()">
+						<span>{{ 'Total' | translate }}</span
+						>:&nbsp;
+						<span>{{ item?.SaleOrder.CalcTotalOriginal | number: '1.0-0' }} đ </span>
+						<ion-icon class="clickable" name="chevron-up-outline"></ion-icon>
+					</ion-text>
+				</ion-col>
+				<ion-col class="ion-text-right" *ngIf="!item.IsRefundTransaction">
+					<span>{{ 'Payment required' | translate }}</span
+					>:&nbsp;
+					<span>{{ this.item.DebtAmount | number: '1.0-0' }} đ</span>
+				</ion-col>
+				<ion-col class="ion-text-right" *ngIf="item.IsRefundTransaction">
+					<span>{{ 'Refund amount' | translate }}</span
+					>:&nbsp;
+					<span>{{ this.item.RefundAmount | number: '1.0-0' }} đ</span>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		@if (showConfirmButton()) {
+			<div slot="end">
+				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
+					{{ item.IsRefundTransaction ? 'Refund' : ('Received' | translate) }}
+				</ion-button>
+			</div>
+		}
+	</ion-toolbar>
+</ion-footer>
+<!-- Payment Page -->
+<ion-modal [isOpen]="isBillPreviewOpen" cssClass="bill-preview-modal" (didDismiss)="closeBillPreview()">
+	<ng-template>
+		<ion-header>
+			<ion-toolbar>
+				<ion-title>{{ 'Bill Preview' | translate }}</ion-title>
+				<ion-buttons slot="end">
+					<ion-button (click)="closeBillPreview()" color="secondary"><ion-icon slot="icon-only" name="close"></ion-icon></ion-button>
+				</ion-buttons>
+			</ion-toolbar>
+		</ion-header>
+
+		<ion-content>
+			<iframe #billIframe class="bill-iframe" sandbox="allow-same-origin allow-scripts"></iframe>
+		</ion-content>
+	</ng-template>
+</ion-modal>

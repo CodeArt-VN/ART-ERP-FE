@@ -160,8 +160,9 @@ export abstract class PageBase implements OnInit {
 		event?.target?.complete();
 
 		if (this.pageConfig.isDetailPage) {
+			if (this.item == null || this.item?.IsDeleted) this.nav('not-found', 'back');
+			
 			if (this.item) {
-				if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 				this.formGroup?.patchValue(this.item);
 				this.formGroup?.markAsPristine();
 				this.cdr?.detectChanges();
@@ -571,7 +572,7 @@ export abstract class PageBase implements OnInit {
 						}
 
 						// if (loading) loading.dismiss();
-						this.env.showMessage('Import completed!', 'success');
+						this.env.showMessage('Saving completed!', 'success');
 						this.formGroup.markAsPristine();
 						this.cdr.detectChanges();
 						resolve(savedItem.Id);
@@ -973,7 +974,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	async changeBranch(ev: any) {
-		if (0 && !this.pageConfig.canChangeBranch) {
+		if (!this.pageConfig.canChangeBranch) {
 			return;
 		}
 		let popover = await this.popoverCtrl.create({

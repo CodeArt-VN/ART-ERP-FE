@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.23',
+	appVersion: '0.21.25',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
@@ -20,7 +20,7 @@ export const environment = {
 
 	// NEW: Cache keys to clear on version updates
 	cacheKeysToClearOnNewVersion: [
-	
+		'Cache*'
 	],
 
 	// NEW: Cache keys to clear on server changes  
@@ -47,4 +47,4 @@ export const environment = {
 
 // dog = dev log;
 export let dogF = false; // Framework log;
-export let dog = !environment.production; // Dev log
+export let dog = false; // Dev log

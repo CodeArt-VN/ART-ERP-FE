@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header collapse="fade">
 	<ion-toolbar>
 		<ion-title> {{'Data correction: '| translate}} {{model?.type| translate}} </ion-title>
 		<ion-buttons slot="end">
@@ -36,9 +36,9 @@
 							[attr.size-lg]="fg.get('subCols')?.value?.lg"
 							[attr.size-xl]="fg.get('subCols')?.value?.xl"
 						>
-						<ion-row>
-							<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
-						</ion-row>
+							<ion-row>
+								<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
+							</ion-row>
 						</ion-col>
 					</ng-container>
 				</ion-row>
@@ -190,8 +190,13 @@
 	</ion-row>
 </ng-template>
 
-<ion-footer>
+<ion-footer collapse="fade">
 	<ion-toolbar>
-		<ion-button size="medium" slot="end" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+		<div slot="start"></div>
+
+		<div slot="end">
+			<ion-button fill="outline" color="warning" (click)="closeModal()"> {{'Cancel' | translate}} </ion-button>
+			<ion-button [strong]="true" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+		</div>
 	</ion-toolbar>
 </ion-footer>

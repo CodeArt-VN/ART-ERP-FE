@@ -99,11 +99,9 @@ export class LoginPage extends PageBase {
 		let account = this.formGroup.getRawValue();
 
 		this.env
-			.showLoading('Please wait for a few moments', this.authService.login({ username: account.UserName, password: account.Password }))
-			.then(async (data) => {
-				// After login success, get profile data and process through UserContextService
+			.showLoading('Please wait for a few moments', async () => {
+				await this.authService.login({ username: account.UserName, password: account.Password });
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
-				await this.profileService.checkAppStatusAndTypeList(true);
 				await this.profileService.getProfile(); // Force reload fresh data
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				this.goBack();
@@ -129,7 +127,8 @@ export class LoginPage extends PageBase {
 			.then((loading) => {
 				loading.present();
 
-				this.externalAuthService.handleOAuthCallback(provider, externalAccessToken)
+				this.externalAuthService
+					.handleOAuthCallback(provider, externalAccessToken)
 					.then(async (data) => {
 						// Load user data after successful external login
 						dogF && console.log('🔑 [LoginPage] External login successful, loading user data...');
@@ -224,14 +223,13 @@ export class LoginPage extends PageBase {
 		try {
 			const data = { Email: email };
 
-			dogF && console.log('🌐 [LoginPage] Calling forgot password API...', {
-				url: APIList.ACCOUNT.forgotPassword.url,
-				method: APIList.ACCOUNT.forgotPassword.method
-			});
+			dogF &&
+				console.log('🌐 [LoginPage] Calling forgot password API...', {
+					url: APIList.ACCOUNT.forgotPassword.url,
+					method: APIList.ACCOUNT.forgotPassword.method,
+				});
 
-			const response = await this.commonService
-				.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data)
-				.toPromise();
+			const response = await this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data).toPromise();
 
 			dogF && console.log('✅ [LoginPage] Password reset request successful:', response);
 

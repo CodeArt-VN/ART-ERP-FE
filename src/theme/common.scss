@@ -1237,6 +1237,10 @@ ion-content.cameraFrame {
 		--width: 90vw;
 	}
 
+	.modal90vh {
+		--height: 90vh;
+	}
+
 	.modal-welcome-page {
 		--height: 100%;
 		--width: 100%;
@@ -1269,9 +1273,10 @@ ion-content.cameraFrame {
 		--width: 535px;
 	}
 
-	.modal-payments {
-		--height: 570px;
-		--width: 700px;
+	
+	.modal-combo {
+		--height: 90vh;
+		--width: 45vw;
 	}
 }
 

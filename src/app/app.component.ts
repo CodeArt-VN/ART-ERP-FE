@@ -307,6 +307,10 @@ export class AppComponent implements OnInit {
 
 		this.initNotification();
 		this.serviceWorkerRegister();
+
+		setTimeout(() => {
+			this.userProfileService.getProfile();
+		}, 0);
 	}
 
 	eventHandler() {
