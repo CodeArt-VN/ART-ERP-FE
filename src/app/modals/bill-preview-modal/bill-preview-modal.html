@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ title | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" color="secondary">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding" scrollY="true" >
+  <div class="iframe-container">
+    <iframe #billIframe 
+            class="bill-iframe" 
+            sandbox="allow-same-origin allow-scripts" 
+            frameborder="0">
+    </iframe>
+  </div>
+</ion-content>
