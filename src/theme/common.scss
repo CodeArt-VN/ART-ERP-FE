@@ -1,6 +1,7 @@
 //html without class mobile-font
 html:not(.mobile-font) {
 	font-size: 16px;
+
 	body {
 		font-size: calc(10 / 16 * 1.4rem);
 	}
@@ -44,12 +45,12 @@ ion-content {
 
 ion-accordion {
 	ion-item {
-		--border-width: 0.55px 0px 0  0px;
+		--border-width: 0.55px 0px 0 0px;
 		--border-color: var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-250, var(--ion-background-color-step-250, #c8c7cc))));
 	}
 
 	background-color: unset;
-	
+
 }
 
 ion-virtual-scroll,
@@ -63,14 +64,17 @@ ion-picker {
 
 ion-popover {
 	--width: auto;
+
 	ion-label {
 		white-space: nowrap;
 	}
+
 	&.w300 {
 		--min-width: 260px;
 		--width: 300px;
 		--max-width: 400px;
 	}
+
 	&.delivery-review-filter {
 		--width: 260px !important;
 		--max-width: 400px;
@@ -129,13 +133,14 @@ ion-header,
 app-list-toolbar,
 app-toolbar,
 app-detail-toolbar {
-	> ion-toolbar:not(.no-padding) {
+	>ion-toolbar:not(.no-padding) {
 		--padding-start: 40px;
 
 		@media screen and (max-width: 991px) {
 			--padding-start: 40px;
 		}
 	}
+
 	ion-toolbar:last-of-type {
 		--border-color: var(--menu-right-border-color);
 	}
@@ -183,12 +188,15 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
 	/* display: none; <- Crashes Chrome on hover */
 	-webkit-appearance: none;
-	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+	margin: 0;
+	/* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type='number'] {
-	appearance: textfield; /* Standard */
-	-moz-appearance: textfield; /* Firefox */
+	appearance: textfield;
+	/* Standard */
+	-moz-appearance: textfield;
+	/* Firefox */
 }
 
 // input, select{
@@ -295,18 +303,22 @@ input[type='number'] {
 	flex-wrap: nowrap;
 	align-items: center;
 }
+
 .flex-left {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
 }
+
 .flex-center {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
+
 .flex-break {
-	flex-basis: 100% !important; /* Forces a line break */
+	flex-basis: 100% !important;
+	/* Forces a line break */
 }
 
 .alert-text-left {
@@ -335,6 +347,7 @@ input[type='number'] {
 .success {
 	color: var(--ion-color-success) !important;
 }
+
 .danger {
 	color: var(--ion-color-danger) !important;
 }
@@ -354,6 +367,7 @@ input[type='number'] {
 	justify-content: flex-start;
 
 	padding-left: 0;
+
 	.button-clear {
 		--padding-start: 5px;
 		--padding-end: 5px;
@@ -755,6 +769,7 @@ ion-app {
 
 
 }
+
 .sticky-bottom {
 	top: auto;
 	border-top: solid 1px var(--menu-right-border-color);
@@ -958,7 +973,7 @@ ion-app {
 					border-radius: 0 0 18px 18px;
 				}
 
-				& > div {
+				&>div {
 					white-space: nowrap;
 				}
 			}
@@ -1114,12 +1129,15 @@ ion-content.cameraFrame {
 
 .e-tooltip {
 	min-width: 200px;
+
 	.w-full {
 		width: 100%;
 		line-height: calc(10 / 16 * 1.5rem);
+
 		td {
 			padding: 5px 0;
 		}
+
 		.e-value {
 			text-align: right;
 			font-weight: bold;
@@ -1170,27 +1188,35 @@ ion-content.cameraFrame {
 	0% {
 		transform: rotate(0);
 	}
+
 	15% {
 		transform: rotate(5deg);
 	}
+
 	30% {
 		transform: rotate(-5deg);
 	}
+
 	45% {
 		transform: rotate(4deg);
 	}
+
 	60% {
 		transform: rotate(-4deg);
 	}
+
 	75% {
 		transform: rotate(2deg);
 	}
+
 	85% {
 		transform: rotate(-2deg);
 	}
+
 	92% {
 		transform: rotate(1deg);
 	}
+
 	100% {
 		transform: rotate(0);
 	}
@@ -1241,6 +1267,14 @@ ion-content.cameraFrame {
 		--height: 90vh;
 	}
 
+	.bill-preview-modal {
+		--width: 600px;
+		--height: 100%;
+		--border-radius: 12px;
+	}
+
+
+
 	.modal-welcome-page {
 		--height: 100%;
 		--width: 100%;
@@ -1273,7 +1307,7 @@ ion-content.cameraFrame {
 		--width: 535px;
 	}
 
-	
+
 	.modal-combo {
 		--height: 90vh;
 		--width: 45vw;
@@ -1284,6 +1318,7 @@ ion-content.cameraFrame {
 	.hiddenMd {
 		display: none !important;
 	}
+
 	.titleMainPageActive {
 		display: flex !important;
 	}
