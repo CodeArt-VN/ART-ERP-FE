@@ -302,7 +302,7 @@ export class PaymentModalComponent implements OnInit {
 			obj.Type == 'Debt' ||
 			obj.Type == 'Gotit' ||
 			obj.Type == 'Urbox' ||
-			obj.Type == 'VNPay' ||
+			obj.Type == 'VNPAY' ||
 			obj.Type == 'BOD' ||
 			obj.Type == 'Transfer' ||
 			(obj.Type == 'Card' && this.payment?.Id)
