@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.iframe-container {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.bill-iframe {
+  width: 100%;
+  min-height: 100%;
+  border: none;
+  border-radius: 8px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+// Tùy chỉnh modal
+// :host ::ng-deep {
+//   .modal-wrapper {
+//     border-radius: 12px;
+//     overflow: hidden;
+
+//     ion-content {
+//       --overflow: hidden;
+//     }
+//   }
+// }

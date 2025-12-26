@@ -413,20 +413,3 @@
 		}
 	</ion-toolbar>
 </ion-footer>
-<!-- Payment Page -->
-<ion-modal [isOpen]="isBillPreviewOpen" cssClass="bill-preview-modal" (didDismiss)="closeBillPreview()">
-	<ng-template>
-		<ion-header>
-			<ion-toolbar>
-				<ion-title>{{ 'Bill Preview' | translate }}</ion-title>
-				<ion-buttons slot="end">
-					<ion-button (click)="closeBillPreview()" color="secondary"><ion-icon slot="icon-only" name="close"></ion-icon></ion-button>
-				</ion-buttons>
-			</ion-toolbar>
-		</ion-header>
-
-		<ion-content>
-			<iframe #billIframe class="bill-iframe" sandbox="allow-same-origin allow-scripts"></iframe>
-		</ion-content>
-	</ng-template>
-</ion-modal>

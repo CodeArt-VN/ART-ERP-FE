@@ -7,6 +7,7 @@ import { BANK_IncomingPaymentProvider, SALE_OrderProvider } from 'src/app/servic
 import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
 import { PromotionService } from 'src/app/services/custom/promotion.service';
+import { BillPreviewComponent } from '../bill-preview-modal/bill-preview-modal';
 @Component({
 	selector: 'app-payment-modal',
 	templateUrl: './payment-modal.component.html',
@@ -66,7 +67,7 @@ export class PaymentModalComponent implements OnInit {
 		private commonService: CommonService,
 		private env: EnvService,
 		private paymentService: PaymentService,
-		private voucherService: PromotionService
+		private voucherService: PromotionService,
 	) {
 		this.formGroup = this.formBuilder.group({
 			IDBranch: [''],
@@ -420,27 +421,30 @@ export class PaymentModalComponent implements OnInit {
 	ngOnDestroy() {
 		if (this.subPromotion) this.subPromotion.unsubscribe();
 	}
+	private getQrCodeHtml(): string {
+		if (!this.billElement?.nativeElement) return '';
+		const qr = this.billElement.nativeElement.querySelector('.qr-section');
+		return qr ? qr.outerHTML : '';
+	}
 
 	async viewBill() {
-		if (this.billElement) {
-			this.billHtml = this.billElement.nativeElement.outerHTML; // lấy nội dung thật
-		}
-		setTimeout(() => {
-			const iframeDoc = this.billIframe.nativeElement.contentDocument;
-			iframeDoc.open();
-			iframeDoc.write(`
-            <html>
-                <head>
-                    <style>
-                      ${this.cssStyle}
-                    </style>
-                </head>
-                <body>${this.billHtml}</body>
-            </html>
-        `);
-			iframeDoc.close();
+		if (!this.billElement) return;
+		const billHtml = this.billElement.nativeElement.outerHTML;
+		const qrCodeHtml = this.getQrCodeHtml();
+		const modal = await this.modalController.create({
+			component: BillPreviewComponent,
+			componentProps: {
+				billHtml: billHtml,
+				cssStyle: this.cssStyle || '',
+				title: 'Bill Preview',
+				qrCodeHtml: qrCodeHtml || '',
+			},
+			cssClass: 'bill-preview-modal',
+			showBackdrop: true,
+			backdropDismiss: true,
 		});
-		this.isBillPreviewOpen = true;
+		await modal.present();
+		
 	}
 	closeBillPreview() {
 		this.isBillPreviewOpen = false;
