@@ -158,9 +158,8 @@ export abstract class PageBase implements OnInit {
 	loadedData(event = null, ignoredFromGroup = false) {
 		this.pageConfig.showSpinner = false;
 		event?.target?.complete();
-		
 
-		if (this.pageConfig.isDetailPage) {	
+		if (this.pageConfig.isDetailPage) {
 			if (this.item) {
 				if (this.item.hasOwnProperty('IsDeleted') && this.item.IsDeleted) this.nav('not-found', 'back');
 				this.formGroup?.patchValue(this.item);
