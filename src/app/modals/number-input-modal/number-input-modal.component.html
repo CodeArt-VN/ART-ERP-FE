@@ -31,12 +31,14 @@
 			<button (click)="onButtonPress('1')">1</button>
 			<button (click)="onButtonPress('2')">2</button>
 			<button (click)="onButtonPress('3')">3</button>
-			<button class="action" (click)="onButtonPress('<=')">&lt;=</button>
+			<button color="medium" (click)="onButtonPress('<=')">
+				<ion-icon slot="icon-only" name="backspace-outline"></ion-icon>
+			</button>
 		</div>
 		<div class="row">
 			<button class="wide" (click)="onButtonPress('0')">0</button>
-			<button (click)="onButtonPress('.')">.</button>
-			<button class="action" (click)="onButtonPress('Enter')">Enter</button>
+			<button [disabled]="!POSAllowDecimalQuantity" (click)="onButtonPress('.')">.</button>
+			<button class="action" (click)="onButtonPress('Enter')"><ion-icon name="enter-outline"></ion-icon></button>
 		</div>
 	</div>
 </ion-content>

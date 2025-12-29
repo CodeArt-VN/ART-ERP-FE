@@ -42,6 +42,20 @@ export class NumberInputModalComponent implements OnInit {
 		return this._message;
 	}
 
+	private _autoEmit = false;
+	@Input()
+	set autoEmit(v: boolean) {
+		this._autoEmit = v ?? false;
+		this.triggerNativeChange();
+	}
+
+	private _POSAllowDecimalQuantity = false;
+	@Input()
+	set POSAllowDecimalQuantity(v: boolean) {
+		this._POSAllowDecimalQuantity = v ?? false;
+		this.triggerNativeChange();
+	}
+
 	// Emit change whenever user types or presses keypad
 	@Output() change = new EventEmitter<{ value: string; isValid: boolean; message: string }>();
 
@@ -90,7 +104,7 @@ export class NumberInputModalComponent implements OnInit {
 			this._value = this._value + key;
 		}
 		this.updateDisplayedValue(this._value);
-		this.emitChange();
+		if (this._autoEmit) this.emitChange();
 	}
 
 	private emitChange() {
