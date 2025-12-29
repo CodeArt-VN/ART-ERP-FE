@@ -42,6 +42,7 @@ import { CacheManagementService } from './services/core/cache-management.service
 import { StaffAdvanceExportModalComponent } from './modals/staff-advance-export-modal/staff-advance-export-modal.component';
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 import { BillPreviewComponent } from './modals/bill-preview-modal/bill-preview-modal';
+import { NumberInputModalComponent } from './modals/number-input-modal/number-input-modal.component';
 
 export function createTranslateLoader(http: HttpClient, storage: CacheManagementService): DynamicTranslateLoaderService {
 	return new DynamicTranslateLoaderService(http, storage);
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient, storage: CacheManagement
 		POSCancelModalPage,
 		POSNotifyModalPage,
 		PaymentModalComponent,
+		NumberInputModalComponent,
 		BillPreviewComponent,
 		AdvanceFilterModalComponent,
 		StaffAdvanceExportModalComponent
