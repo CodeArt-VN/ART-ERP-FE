@@ -18,7 +18,9 @@ export class NumberInputModalComponent implements OnInit {
 		this.updateDisplayedValue(this._value);
 		this.triggerNativeChange();
 	}
-	get value() { return this._value; }
+	get value() {
+		return this._value;
+	}
 
 	private _isValid = true;
 	@Input()
@@ -26,7 +28,9 @@ export class NumberInputModalComponent implements OnInit {
 		this._isValid = !!v;
 		this.triggerNativeChange();
 	}
-	get isValid() { return this._isValid; }
+	get isValid() {
+		return this._isValid;
+	}
 
 	private _message = '';
 	@Input()
@@ -34,7 +38,9 @@ export class NumberInputModalComponent implements OnInit {
 		this._message = v ?? '';
 		this.triggerNativeChange();
 	}
-	get message() { return this._message; }
+	get message() {
+		return this._message;
+	}
 
 	// Emit change whenever user types or presses keypad
 	@Output() change = new EventEmitter<{ value: string; isValid: boolean; message: string }>();
@@ -47,7 +53,7 @@ export class NumberInputModalComponent implements OnInit {
 	constructor(
 		public modalController: ModalController,
 		public env: EnvService,
-		private cd: ChangeDetectorRef,
+		private cd: ChangeDetectorRef
 	) {}
 
 	ngOnInit(): void {}
@@ -74,7 +80,11 @@ export class NumberInputModalComponent implements OnInit {
 		} else if (key === '000') {
 			this._value = this._value + '000';
 		} else if (key === 'Enter') {
-			this.emitChange();
+			try {
+				this.modalController.dismiss({ value: this._value });
+			} catch (err) {
+				console.warn('dismiss error', err);
+			}
 			return;
 		} else {
 			this._value = this._value + key;
@@ -109,5 +119,8 @@ export class NumberInputModalComponent implements OnInit {
 			console.warn('triggerNativeChange failed', err);
 		}
 	}
-	
+
+	async closeModal() {
+		await this.modalController.dismiss(null);
+	}
 }

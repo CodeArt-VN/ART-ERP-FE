@@ -1,11 +1,14 @@
 <ion-header>
 	<ion-toolbar>
 		<ion-title>{{ 'Number input' | translate }}</ion-title>
-
+		<ion-buttons slot="primary">
+			<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 <ion-content appScrollbarTheme class="number-input-modal">
-
 	<div class="display-wrap">
 		<input #textInput type="text" class="display" [value]="displayed" (input)="onUserInput($event)" />
 		<div class="message" *ngIf="message">{{ message }}</div>
@@ -36,6 +39,4 @@
 			<button class="action" (click)="onButtonPress('Enter')">Enter</button>
 		</div>
 	</div>
-
 </ion-content>
-
