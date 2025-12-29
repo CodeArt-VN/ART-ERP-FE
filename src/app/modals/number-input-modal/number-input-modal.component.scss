@@ -1,0 +1,70 @@
+:host {
+	display: block;
+}
+
+.number-input-modal {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+
+.display-wrap {
+	background: #fff;
+	border: 1px solid #ddd;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.display-wrap .display {
+	font-size: 28px;
+	font-weight: 700;
+	text-align: right;
+	padding: 0.5rem;
+	border: 1px solid #e6e6e6;
+	border-radius: 4px;
+}
+
+.display-wrap .message {
+	margin-top: 0.5rem;
+	color: #d9534f;
+	font-size: 12px;
+}
+
+.keypad {
+	margin-top: 1rem;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 8px;
+}
+
+.keypad .row {
+	display: contents;
+}
+
+.keypad button {
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 18px 0;
+	font-size: 18px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.keypad button.action {
+	background: #f5f5f5;
+	font-weight: 600;
+}
+
+.keypad button.wide {
+	grid-column: span 2;
+}
+
+@media (min-width: 600px) {
+	.display-wrap .display { font-size: 36px; }
+	.keypad button { padding: 22px 0; font-size: 20px; }
+}
+
