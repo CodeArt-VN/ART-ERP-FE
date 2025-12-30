@@ -1,9 +1,16 @@
-
 <ion-content appScrollbarTheme class="number-input-modal">
 	<div class="modal-inner">
 		<div class="display-wrap">
-		<input #textInput type="number" class="display" [value]="displayed" (input)="onUserInput($event)" />
-		<div class="message" *ngIf="message">{{ message }}</div>
+			<input
+				#textInput
+				type="text"
+				[step]="POSAllowDecimalQuantity ? 'any' : '1'"
+				[attr.inputmode]="POSAllowDecimalQuantity ? 'decimal' : 'numeric'"
+				class="display"
+				[value]="displayed"
+				(input)="onUserInput($event)"
+			/>
+			<div class="message" *ngIf="message">{{ message }}</div>
 		</div>
 
 		<div class="keypad">

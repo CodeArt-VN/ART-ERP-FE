@@ -55,6 +55,9 @@ export class NumberInputModalComponent implements OnInit {
 		this._POSAllowDecimalQuantity = v ?? false;
 		this.triggerNativeChange();
 	}
+	get POSAllowDecimalQuantity() {
+		return this._POSAllowDecimalQuantity;
+	}
 
 	// Emit change whenever user types or presses keypad
 	@Output() change = new EventEmitter<{ value: string; isValid: boolean; message: string }>();
