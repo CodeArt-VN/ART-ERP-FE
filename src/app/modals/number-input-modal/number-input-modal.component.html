@@ -2,7 +2,7 @@
 <ion-content appScrollbarTheme class="number-input-modal">
 	<div class="modal-inner">
 		<div class="display-wrap">
-		<input #textInput type="text" class="display" [value]="displayed" (input)="onUserInput($event)" />
+		<input #textInput type="number" class="display" [value]="displayed" (input)="onUserInput($event)" />
 		<div class="message" *ngIf="message">{{ message }}</div>
 		</div>
 
