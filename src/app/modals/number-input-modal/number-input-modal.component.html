@@ -1,44 +1,37 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-title>{{ 'Number input' | translate }}</ion-title>
-		<ion-buttons slot="primary">
-			<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="closeModal()">
-				<ion-icon slot="icon-only" name="close"></ion-icon>
-			</ion-button>
-		</ion-buttons>
-	</ion-toolbar>
-</ion-header>
+
 <ion-content appScrollbarTheme class="number-input-modal">
-	<div class="display-wrap">
+	<div class="modal-inner">
+		<div class="display-wrap">
 		<input #textInput type="text" class="display" [value]="displayed" (input)="onUserInput($event)" />
 		<div class="message" *ngIf="message">{{ message }}</div>
-	</div>
+		</div>
 
-	<div class="keypad">
-		<div class="row">
-			<button (click)="onButtonPress('7')">7</button>
-			<button (click)="onButtonPress('8')">8</button>
-			<button (click)="onButtonPress('9')">9</button>
-			<button class="action" (click)="onButtonPress('AC')">AC</button>
-		</div>
-		<div class="row">
-			<button (click)="onButtonPress('4')">4</button>
-			<button (click)="onButtonPress('5')">5</button>
-			<button (click)="onButtonPress('6')">6</button>
-			<button class="action" (click)="onButtonPress('000')">000</button>
-		</div>
-		<div class="row">
-			<button (click)="onButtonPress('1')">1</button>
-			<button (click)="onButtonPress('2')">2</button>
-			<button (click)="onButtonPress('3')">3</button>
-			<button color="medium" (click)="onButtonPress('<=')">
-				<ion-icon slot="icon-only" name="backspace-outline"></ion-icon>
-			</button>
-		</div>
-		<div class="row">
-			<button class="wide" (click)="onButtonPress('0')">0</button>
-			<button [disabled]="!POSAllowDecimalQuantity" (click)="onButtonPress('.')">.</button>
-			<button class="action" (click)="onButtonPress('Enter')"><ion-icon name="enter-outline"></ion-icon></button>
+		<div class="keypad">
+			<div class="row">
+				<button (click)="onButtonPress('7')">7</button>
+				<button (click)="onButtonPress('8')">8</button>
+				<button (click)="onButtonPress('9')">9</button>
+				<button class="action" (click)="onButtonPress('AC')">AC</button>
+			</div>
+			<div class="row">
+				<button (click)="onButtonPress('4')">4</button>
+				<button (click)="onButtonPress('5')">5</button>
+				<button (click)="onButtonPress('6')">6</button>
+				<button class="action" (click)="onButtonPress('000')">000</button>
+			</div>
+			<div class="row">
+				<button (click)="onButtonPress('1')">1</button>
+				<button (click)="onButtonPress('2')">2</button>
+				<button (click)="onButtonPress('3')">3</button>
+				<button color="medium" (click)="onButtonPress('<=')">
+					<ion-icon slot="icon-only" name="backspace-outline"></ion-icon>
+				</button>
+			</div>
+			<div class="row">
+				<button class="wide" (click)="onButtonPress('0')">0</button>
+				<button [disabled]="!POSAllowDecimalQuantity" (click)="onButtonPress('.')">.</button>
+				<button class="action" (click)="onButtonPress('Enter')"><ion-icon name="enter-outline"></ion-icon></button>
+			</div>
 		</div>
 	</div>
 </ion-content>
