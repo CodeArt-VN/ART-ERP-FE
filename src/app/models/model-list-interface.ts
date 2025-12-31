@@ -100,6 +100,7 @@ export interface AC_ARInvoice
     IDBusinessPartner?: number;
     IDSaleOrder?: number;
     IDParent?: number;
+    IDTaxInfo?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -6539,6 +6540,24 @@ export interface PR_PromotionTracking
     
 }
 
+export interface PROD_ApplyItemsReplacement
+{
+    IDGroup?: number;
+    IDReplaceByItem?: number;
+    IDItem?: number;
+    Id?: number;
+    EffectiveDateFrom?: Date;
+    EffectiveDateTo?: Date;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
 export interface PROD_BillOfMaterials
 {
     Id?: number;
@@ -6603,6 +6622,41 @@ export interface PROD_ItemInVendor
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_ItemReplacement
+{
+    IDGroup?: number;
+    IDItem?: number;
+    IDUoM?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Quantity?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_ItemReplacementGroup
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
     ModifiedDate?: Date;
     
 }
@@ -6902,6 +6956,24 @@ export interface PROD_OrderDetail
     
 }
 
+export interface PROD_SubstitutionGroupRule
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    EffectiveFrom?: Date;
+    EffectiveTo?: Date;
+    Priority?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
 export interface PURCHASE_ItemPlanningData
 {
     IDBranch?: number;
@@ -6988,6 +7060,23 @@ export interface PURCHASE_OrderDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     SuggestedQuantity?: number;
+    
+}
+
+export interface PURCHASE_OrderInterval
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Type?: string;
+    Value?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
 }
 
@@ -7177,6 +7266,7 @@ export interface SALE_Order
     IDContract?: number;
     IDType?: number;
     IDParent?: number;
+    IDTaxInfo?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -7814,6 +7904,21 @@ export interface SYS_Currency
     CreatedDate?: Date;
     ModifiedDate?: Date;
     Decimals?: number;
+    ForeignName?: string;
+    DiffDebitAccount?: string;
+    DiffCreditAccount?: string;
+    RevalDebitAccount?: string;
+    RevalCreditAccount?: string;
+    Read1?: string;
+    Read2?: string;
+    Read3?: string;
+    Read4?: string;
+    Read5?: string;
+    ReadEn1?: string;
+    ReadEn2?: string;
+    ReadEn3?: string;
+    ReadEn4?: string;
+    ReadEn5?: string;
     
 }
 
@@ -7830,6 +7935,23 @@ export interface SYS_DataPermissionList
     Remark?: string;
     Sort?: number;
     IsDisabled?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface SYS_ExchangeRate
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Rate?: number;
+    ExchangeDate?: Date;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
     CreatedBy?: string;
     CreatedDate?: Date;
     ModifiedBy?: string;
