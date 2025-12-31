@@ -55,6 +55,9 @@ export class NumberInputModalComponent implements OnInit {
 		this._POSAllowDecimalQuantity = v ?? false;
 		this.triggerNativeChange();
 	}
+	get POSAllowDecimalQuantity() {
+		return this._POSAllowDecimalQuantity;
+	}
 
 	// Emit change whenever user types or presses keypad
 	@Output() change = new EventEmitter<{ value: string; isValid: boolean; message: string }>();
@@ -81,7 +84,33 @@ export class NumberInputModalComponent implements OnInit {
 	onUserInput(ev: Event) {
 		const input = ev.target as HTMLInputElement;
 		this._value = input.value;
-		this.displayed = this._value;
+		if (this.POSAllowDecimalQuantity) {
+			// Chỉ cho: số + 1 dấu .
+			this._value = this._value.replace(/[^0-9.]/g, '');
+
+			const dotIndex = this._value.indexOf('.');
+			if (dotIndex !== -1) {
+				// chỉ giữ 1 dấu .
+				this._value = this._value.substring(0, dotIndex + 1) + this._value.substring(dotIndex + 1).replace(/\./g, '');
+			}
+		} else {
+			// Chỉ cho số nguyên
+			this._value = this._value.replace(/\D/g, '');
+		}
+
+		// Ensure the native input element shows the filtered value immediately
+		try {
+			input.value = this._value ?? '';
+			// keep caret at end
+			const pos = (this._value || '').length;
+			if (typeof input.setSelectionRange === 'function') {
+				input.setSelectionRange(pos, pos);
+			}
+		} catch (err) {
+			// ignore
+		}
+
+		this.updateDisplayedValue(this._value);
 		this.emitChange();
 	}
 
