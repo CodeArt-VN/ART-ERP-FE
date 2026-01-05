@@ -12199,6 +12199,55 @@ export var APIListBase = {
 		
 	},
 
+	PROD_ApplyItemsReplacement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ApplyItemsReplacement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ApplyItemsReplacement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ApplyItemsReplacement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ApplyItemsReplacement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ApplyItemsReplacement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ApplyItemsReplacement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
+        }
+		
+	},
+
 	PROD_BillOfMaterials:{
         getSearchList:{
             method: "GET",
@@ -12342,6 +12391,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PROD/ItemInVendor/" + id} 
+        }
+		
+	},
+
+	PROD_ItemReplacement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ItemReplacement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ItemReplacement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        }
+		
+	},
+
+	PROD_ItemReplacementGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacementGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacementGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ItemReplacementGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ItemReplacementGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacementGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacementGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
         }
 		
 	},
@@ -12787,6 +12934,55 @@ export var APIListBase = {
 		
 	},
 
+	PROD_SubstitutionGroupRule:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/SubstitutionGroupRule/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/SubstitutionGroupRule"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/SubstitutionGroupRule/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/SubstitutionGroupRule/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/SubstitutionGroupRule"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/SubstitutionGroupRule/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        }
+		
+	},
+
 	PURCHASE_ItemPlanningData:{
         getSearchList:{
             method: "GET",
@@ -12930,6 +13126,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PURCHASE/OrderDetail/" + id} 
+        }
+		
+	},
+
+	PURCHASE_OrderInterval:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/OrderInterval/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/OrderInterval"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/OrderInterval/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/OrderInterval/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/OrderInterval"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/OrderInterval/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
         }
 		
 	},
@@ -14351,6 +14596,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/DataPermissionList/" + id} 
+        }
+		
+	},
+
+	SYS_ExchangeRate:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/ExchangeRate/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/ExchangeRate"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/ExchangeRate/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/ExchangeRate/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/ExchangeRate"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/ExchangeRate/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
         }
 		
 	},
