@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.30',
+	appVersion: '0.21.31',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
@@ -20,7 +20,7 @@ export const environment = {
 
 	// NEW: Cache keys to clear on version updates
 	cacheKeysToClearOnNewVersion: [
-		'Cache*'
+		//'Cache*'
 	],
 
 	// NEW: Cache keys to clear on server changes  
