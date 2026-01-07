@@ -503,6 +503,13 @@ APIList.HRM_TimesheetLog.approve = {
 	},
 };
 
+APIList.HRM_TimesheetLog.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetLog/Disapprove';
+	},
+};
+
 
 
 APIList.AC_ARInvoice.submitForApproval = {
