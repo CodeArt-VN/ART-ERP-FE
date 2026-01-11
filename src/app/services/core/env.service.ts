@@ -222,6 +222,14 @@ export class EnvService {
 		if (err.error?.ExceptionMessage) {
 			try {
 				let message = JSON.parse(err.error.ExceptionMessage);
+				if (message.Message) {
+					try {
+						message = JSON.parse(message.Message);
+						this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+					} catch (e) {
+						this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+					}
+				}
 				this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
 			} catch (e) {
 				this.showMessage(err.error.ExceptionMessage, 'danger');
