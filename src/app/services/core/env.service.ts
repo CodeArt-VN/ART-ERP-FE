@@ -229,8 +229,7 @@ export class EnvService {
 					} catch (e) {
 						this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
 					}
-				}
-				this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+				} else this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
 			} catch (e) {
 				this.showMessage(err.error.ExceptionMessage, 'danger');
 			}
