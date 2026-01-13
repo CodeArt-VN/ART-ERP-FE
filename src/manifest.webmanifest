@@ -1,7 +1,7 @@
 {
-  "name": "ART ERP",
-  "short_name": "ART",
-  "description": "ART ERP Progressive Web App",
+  "name": "IN ERP",
+  "short_name": "IN ERP",
+  "description": "IN ERP Progressive Web App",
   "theme_color": "#1976d2",
   "background_color": "#ffffff",
   "display": "standalone",
