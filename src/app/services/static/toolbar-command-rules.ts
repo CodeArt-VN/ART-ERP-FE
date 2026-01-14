@@ -40,7 +40,7 @@ export var toolbarCommandRules = {
 	],
 
 	PURCHASE_Quotation: [
-		['Btns',			'ChangeBranch',		'Merge',		'Split',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive',		'Confirm',		'SendQuotationRequest',		'CopyToPurchaseRequest',		'CopyToPO',		'CopyToPriceListVersion'],
+		['Btns',			'ChangeBranch',		'Merge',		'Split',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive',		'Confirm',		'SendQuotationRequest',		'CopyToPurchaseRequest',		'CopyToPurchaseOrder',		'CopyToPriceListVersion'],
 		['Draft',			1,					1,				1,				1,				0,					1,				1,				1,				1,				0,				1,								0,								0,				0],
 		['Splitted',		0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,								0,								0,				0],
 		['Merged',			0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,								0,								0,				0],
