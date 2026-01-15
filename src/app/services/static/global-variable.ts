@@ -433,6 +433,34 @@ APIList.HRM_StaffOvertimeRequest.disapprove = {
 	},
 };
 
+APIList.HRM_StaffTimeOffRequest.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Approve';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Disapprove';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Approve';
+	},
+};
+
+
+APIList.HRM_StaffTimeOffRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Submit';
+	},
+};
 //
 
 APIList.HRM_StaffPayroll.submitForApproval = {
