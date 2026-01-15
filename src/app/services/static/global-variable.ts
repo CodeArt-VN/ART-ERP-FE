@@ -440,6 +440,21 @@ APIList.HRM_StaffTimeOffRequest.approve = {
 	},
 };
 
+APIList.HRM_StaffTimeOffRequest.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Disapprove';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Approve';
+	},
+};
+
+
 APIList.HRM_StaffTimeOffRequest.submitForApproval = {
 	method: 'POST',
 	url: function () {
