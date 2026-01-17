@@ -74,7 +74,7 @@
 }
 
 .keypad button {
-    background: var(--ion-item-background, #fff);
+    background: var(--menu-background-bottom, var(--ion-item-background, #fff));
     border: 1px solid var(--menu-right-border-color, #e6e6e6);
 	box-sizing: border-box;
 	/* fill the grid cell completely */
