@@ -6,6 +6,9 @@ import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
 import { lib } from 'src/app/services/static/global-functions';
 import { DataTableEmptyMessageDirective } from './directives/data-table-empty-message-directive';
 import { dog } from 'src/environments/environment';
+import { EnvService } from 'src/app/services/core/env.service';
+import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 
 @Component({
 	selector: 'app-data-table',
@@ -14,6 +17,12 @@ import { dog } from 'src/environments/environment';
 	standalone: false,
 })
 export class DataTableComponent implements OnInit {
+	private static rowLineClampState = {
+		branch: null as any,
+		mode: null as string | null,
+		loading: null as Promise<void> | null,
+	};
+
 	_allColumns: TableColumn[];
 	_inputColumns: TableColumn[];
 	_columnTemplates: QueryList<DataTableColumnDirective>;
@@ -199,10 +208,21 @@ export class DataTableComponent implements OnInit {
 
 	constructor(
 		private columnChangesService: ColumnChangesService,
-		public formBuilder: FormBuilder
+		public formBuilder: FormBuilder,
+		private env: EnvService,
+		private sysConfigService: SYS_ConfigService
 	) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.loadRowLineClampConfig();
+		this._subscriptions.push(
+			this.env.getEvents().subscribe((data) => {
+				if (data.Code === EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
+					this.loadRowLineClampConfig(true);
+				}
+			})
+		);
+	}
 
 	ngAfterContentInit() {
 		this.columnTemplates.changes.subscribe((v) => this.translateColumns(v));
@@ -263,6 +283,57 @@ export class DataTableComponent implements OnInit {
 				}
 			})
 		);
+	}
+
+	private loadRowLineClampConfig(force = false) {
+		const branchId = this.env?.selectedBranch ?? null;
+		if (branchId == null) {
+			this.env?.ready?.then(() => this.loadRowLineClampConfig(true));
+			return;
+		}
+		if (!force && DataTableComponent.rowLineClampState.branch === branchId) {
+			this.applyRowLineClamp(DataTableComponent.rowLineClampState.mode);
+			return;
+		}
+		if (DataTableComponent.rowLineClampState.loading) {
+			return;
+		}
+
+		DataTableComponent.rowLineClampState.loading = this.sysConfigService
+			.getConfig(branchId, ['UIDatatableRowLineClamp'])
+			.then((config) => {
+				const mode = this.normalizeRowLineClampConfig(config);
+				DataTableComponent.rowLineClampState.branch = branchId;
+				DataTableComponent.rowLineClampState.mode = mode;
+				this.applyRowLineClamp(mode);
+			})
+			.finally(() => {
+				DataTableComponent.rowLineClampState.loading = null;
+			});
+	}
+
+	private normalizeRowLineClampConfig(config: any): string | null {
+		const value = config?.UIDatatableRowLineClamp;
+		if (!value) return null;
+		if (typeof value === 'string') return value;
+		return value?.Code || value?.Value || null;
+	}
+
+	private applyRowLineClamp(mode?: string | null) {
+		const root = document.documentElement;
+		root.classList.remove('datatable-row-line-clamp-two-lines', 'datatable-row-line-clamp-wrap');
+		root.removeAttribute('data-datatable-row-line-clamp');
+
+		if (!mode) return;
+		const normalized = String(mode).toLowerCase().replace(/\s+/g, '');
+		if (normalized === '1line') {
+			return;
+		}
+		if (normalized === 'wrap') {
+			root.setAttribute('data-datatable-row-line-clamp', 'wrap');
+		} else if (normalized === '2lines') {
+			root.setAttribute('data-datatable-row-line-clamp', '2lines');
+		}
 	}
 
 	@Output() sort: EventEmitter<any> = new EventEmitter();

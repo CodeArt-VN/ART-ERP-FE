@@ -54,6 +54,7 @@ export class DataTableBodyCellComponent {
 
 	cellContext: any = {};
 	value: any;
+	@HostBinding('attr.title') cellTitle = '';
 
 	private _element: any;
 
@@ -91,9 +92,23 @@ export class DataTableBodyCellComponent {
 			this.cellContext.column = this.column;
 			this.cellContext.row = this.row;
 			this.cellContext.value = value;
+			this.cellTitle = this.buildCellTitle(value);
 		}
 
 		this.cellContext.idx = this.rowIndex;
+	}
+
+	private buildCellTitle(value: any): string {
+		if (this.column?.checkbox) return '';
+		if (value === null || value === undefined) return '';
+		if (value instanceof Date) {
+			return lib.dateFormat(value, this.format || 'yyyy-mm-dd');
+		}
+		const valueType = typeof value;
+		if (valueType === 'string' || valueType === 'number' || valueType === 'boolean') {
+			return String(value);
+		}
+		return '';
 	}
 
 	@Output() activate: EventEmitter<any> = new EventEmitter();
