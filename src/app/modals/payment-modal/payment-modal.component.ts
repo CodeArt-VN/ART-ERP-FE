@@ -460,6 +460,9 @@ export class PaymentModalComponent implements OnInit {
 	//#region Voucher
 
 	deleteVoucher(p, index) {
+		if (p?.IsAutoApply) {
+			return;
+		}
 		this.env.showPrompt('Do you want to remove this voucher?', 'REMOVING VOUCHER').then(() => {
 			this.voucherService.deleteVoucher(this.item.SaleOrder, [p.VoucherCode]).then(() => {
 				this.saleOrderProvider.getAnItem(this.item.SaleOrder.Id).then(async (rs: any) => {
