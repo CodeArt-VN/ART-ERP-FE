@@ -54,14 +54,35 @@ export class PromotionService {
 				})
 				.toPromise()
 				.then((savedItem: any) => {
-					const map = { ...this.voucherBySO$.value };
-					map[so.Id] = [...(map[so.Id] || []), code];
-					this.voucherBySO$.next(map);
+					this.getPromotionProgram(so.Id);
 					this.env.showMessage('Saving completed!', 'success');
 					resolve(savedItem);
 				})
 				.catch((err) => {
 					this.env.showErrorMessage(err);
+					resolve(null);
+				});
+		});
+	}
+
+	autoApplyVoucher(so: any, voucherCodes: string[], isCheckOnly = false) {
+		if (!so?.Id) return Promise.resolve(null);
+		if (!voucherCodes || voucherCodes.length === 0) return Promise.resolve(null);
+		return new Promise((resolve) => {
+			this.commonService
+				.connect('POST', 'PR/Program/UseVoucher/', {
+					VoucherCodeList: voucherCodes,
+					SaleOrder: so,
+					IsCheckOnly: isCheckOnly,
+				})
+				.toPromise()
+				.then((savedItem: any) => {
+					this.getPromotionProgram(so.Id);
+					resolve(savedItem);
+				})
+				.catch((err) => {
+					// Silent fail for auto-apply
+					console.warn(err);
 					resolve(null);
 				});
 		});

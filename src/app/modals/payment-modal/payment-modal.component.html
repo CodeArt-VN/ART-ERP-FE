@@ -371,9 +371,11 @@
 						}
 
 						<div class="coupon-right">
-							<span>
-								<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
-							</span>
+							@if (!p.IsAutoApply) {
+								<span>
+									<ion-icon class="clickable" color="danger" (click)="deleteVoucher(p, i)" slot="icon-only" name="trash-outline"></ion-icon>
+								</span>
+							}
 						</div>
 					</div>
 				</div>
