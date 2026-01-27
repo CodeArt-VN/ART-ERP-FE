@@ -450,14 +450,6 @@ APIList.HRM_StaffTimeOffRequest.disapprove = {
 APIList.HRM_StaffTimeOffRequest.submitForApproval = {
 	method: 'POST',
 	url: function () {
-		return 'HRM/StaffTimeOffRequest/Approve';
-	},
-};
-
-
-APIList.HRM_StaffTimeOffRequest.submitForApproval = {
-	method: 'POST',
-	url: function () {
 		return 'HRM/StaffTimeOffRequest/Submit';
 	},
 };
