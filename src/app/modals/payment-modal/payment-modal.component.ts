@@ -8,6 +8,7 @@ import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
 import { PromotionService } from 'src/app/services/custom/promotion.service';
 import { BillPreviewComponent } from '../bill-preview-modal/bill-preview-modal';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 @Component({
 	selector: 'app-payment-modal',
 	templateUrl: './payment-modal.component.html',
@@ -351,7 +352,7 @@ export class PaymentModalComponent implements OnInit {
 						IsRefundTransaction: this.item.IsRefundTransaction,
 						Id: this.payment.Id,
 					};
-					this.env.publishEvent({ code: 'app:POSOrderPaymentUpdate', value: JSON.stringify(paymentUpdate) });
+					this.env.publishEvent({ code: EVENT_TYPE.POS.ORDER_PAYMENT_UPDATE, value: JSON.stringify(paymentUpdate) });
 				}
 				//this.next();
 				if (this.payment.Status == 'Success') {
