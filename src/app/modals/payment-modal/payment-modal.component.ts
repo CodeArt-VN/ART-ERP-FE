@@ -340,6 +340,19 @@ export class PaymentModalComponent implements OnInit {
 			.then(async (res: any) => {
 				this.payment = res;
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+				if (this.item.IsRefundTransaction) {
+					const paymentUpdate = {
+						IDSaleOrder: this.item.IDSaleOrder,
+						IDBranch: this.item.IDBranch,
+						IDTable: this.item.IDTable,
+						Status: this.payment.Status,
+						Amount: this.payment.Amount,
+						Type: this.payment.Type || obj.Type,
+						IsRefundTransaction: this.item.IsRefundTransaction,
+						Id: this.payment.Id,
+					};
+					this.env.publishEvent({ code: 'app:POSOrderPaymentUpdate', value: JSON.stringify(paymentUpdate) });
+				}
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
