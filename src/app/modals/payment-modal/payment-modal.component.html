@@ -137,6 +137,43 @@
 								<ion-radio slot="end" [checked]="paymentType === 'zalopaycc'"></ion-radio>
 							</ion-item> -->
 				</ion-list>
+
+				<!-- ========== Cash voucher ========== -->
+
+				<ion-list ion-list [inset]="true">
+					<ion-item button (click)="changeType('CashVoucher')">
+						<ion-icon name="card-outline" slot="start"></ion-icon>
+						<ion-label class="ion-text-wrap">
+							<span>{{ 'Cash Voucher' | translate }}</span>
+						</ion-label>
+					</ion-item>
+				</ion-list>
+
+				<!-- ========== HTTT ========== -->
+				<ion-list ion-list [inset]="true" *ngIf="paymentList?.length">
+					<!-- Loop HTTT -->
+					<ion-item *ngFor="let p of paymentList">
+						<ion-icon name="card-outline" slot="start"></ion-icon>
+						<ion-label class="ion-text-wrap">
+							<span>
+								<span *ngIf="p?.IncomingPayment?.IsRefundTransaction">
+									<ion-text color="danger">{{ 'Refund' | translate }}</ion-text> |
+								</span>
+								{{ p?.IncomingPayment?.TypeText || p?.IncomingPayment?.Type || '---' }}
+								<small *ngIf="p?.IncomingPayment?.SubType">| {{ p.IncomingPayment.SubType }}</small>
+							</span>
+							<small *ngIf="p?.IncomingPayment?.CreatedDate">
+								| {{ p.IncomingPayment.CreatedDate | date: 'HH:mm dd/MM' }}
+								<ion-text [color]="p?.IncomingPayment?.IsRefundTransaction ? 'danger' : p?.IncomingPayment?._Status?.Color">
+									{{ p?.IncomingPayment?._Status?.Name }}
+								</ion-text>
+							</small>
+						</ion-label>
+						<ion-note slot="end" [color]="p?.IncomingPayment?.IsRefundTransaction ? 'danger' : 'dark'">
+							{{ p?.Amount ?? p?.IncomingPayment?.Amount | number: '1.0-0' }} đ
+						</ion-note>
+					</ion-item>
+				</ion-list>
 			</div>
 
 			<!-- PAGE 2 -->
@@ -148,6 +185,23 @@
 							<ion-button *ngFor="let amount of btnAmounts" class="btn-amount" fill="outline" size="small" (click)="selectAmount(amount)">
 								{{ amount | number: '1.0-0' }} đ
 							</ion-button>
+						</div>
+
+						<!-- Ô nhập voucher code -->
+						<div class="c-control inline-control" *ngIf="formGroup.get('Type').value == 'CashVoucher'">
+							<label class="c-label" for="currency-thechange">
+								{{ 'CashVoucher' | translate }}
+							</label>
+							<app-input-control
+								[field]="{
+									id: 'VoucherCode',
+									label: 'Voucher code',
+									type: 'text',
+									form: formGroup,
+								}"
+								(change)="voucherCodeChange()"
+							>
+							</app-input-control>
 						</div>
 
 						<!-- Ô nhập số tiền -->
@@ -185,7 +239,7 @@
 						</div>
 
 						<!-- Tiền thừa -->
-						<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction">
+						<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction && formGroup.get('Type').value != 'CashVoucher'">
 							<label class="c-label" for="currency-thechange">
 								{{ 'Excess amount' | translate }}
 							</label>
