@@ -83,6 +83,9 @@ export class PurchaseOrderNoteComponent extends PageBase {
 				//const o = this.PO;
 				this.item.OrderDateText = lib.dateFormat(this.item.OrderDate, 'dd/mm/yy hh:MM');
 				this.item.ExpectedReceiptDateText = lib.dateFormat(this.item.ExpectedReceiptDate, 'dd/mm/yy hh:MM');
+				if (this.item.ReceiptedDate) {
+					this.item.ReceiptedDateText = lib.dateFormat(this.item.ReceiptedDate, 'dd/mm/yy hh:MM');
+				}
 				this.item.StatusText = lib.getAttrib(this.item.Status, this.statusList, 'Name', 'NA', 'Code');
 				var self = this;
 				QRCode.toDataURL(

@@ -19,12 +19,12 @@
 					<table class="rpt-header" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
-								<td rowspan="6" class="logo">
+								<td rowspan="8" class="logo">
 									<img [src]="item._Branch.LogoURL" (error)="$event.src='assets/RPT-Logo-ART.png'" />
 								</td>
 								<td colspan="2" class="bol title">{{'Purchase order' | translate}}</td>
 								<td class="bol num" colspan="2">{{item.Code? item.Code : 'PO: '+item.Id}}</td>
-								<td rowspan="6" class="topQR">
+								<td rowspan="8" class="topQR">
 									<div *ngIf="item.Code">{{'PO' | translate}}:{{item.Id}}</div>
 									<a [href]="'#/'+'purchase-order/'+item.Id" (click)="nav('purchase-order/'+item.Id,'forward')">
 										<img class="qrc" [src]="item.QRC" />
@@ -64,6 +64,18 @@
 									</span>
 								</td>
 							</tr>
+							<tr *ngIf="item._Warehouse">
+								<td colspan="4">
+									<b>{{'Warehouse' | translate}}:</b>
+									{{item._Warehouse?.Name}}
+								</td>
+							</tr>
+							<tr *ngIf="item.ReceiptedDateText">
+								<td colspan="4">
+									<b>{{'Receipt date' | translate}}:</b>
+									{{item.ReceiptedDateText}}
+								</td>
+							</tr>
 						</tbody>
 					</table>
 
@@ -75,7 +87,7 @@
 									<td>
 										<div class="ten-sp ck">{{'Product / Service name' | translate}}</div>
 									</td>
-									<td class="cen" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">Quy cách</td>
+									<!-- <td class="cen" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">Quy cách</td> -->
 
 									<ng-container *ngIf="!PONShowEACaseOnly">
 										<td class="cen">{{'Unit' | translate}}</td>
@@ -105,9 +117,9 @@
 												<em>{{i.Remark}}</em>
 											</div>
 										</td>
-										<td class="num bol" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">
+										<!-- <td class="num bol" *ngIf="PONShowPackingUoM && !PONShowEACaseOnly">
 											<span> {{i._PackingUoM}}</span>
-										</td>
+										</td> -->
 										<ng-container *ngIf="!PONShowEACaseOnly">
 											<td class="num bol">
 												<span> {{uom.UoMName}} </span>
@@ -130,7 +142,7 @@
 										</ng-container>
 
 										<td class="num">{{i.UoMPriceText}}</td>
-										<td class="num" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{i.TotalAfterTaxText}}</td>
+										<td class="num" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{i.TotalBeforeDiscountText}}</td>
 
 										<!-- <td class="num" [attr.rowspan]="i._SplitUoMs.length" >{{i.TaxRate}}</td>
 										<td class="num" [attr.rowspan]="i._SplitUoMs.length" >{{i.Tax}}</td>
@@ -139,19 +151,22 @@
 								</ng-container>
 
 								<tr style="border-top: dashed 1px #000">
-									<td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td>
+									<!-- <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td> -->
+									<td [attr.colspan]="5" class="num">{{'Total amount' | translate}}</td>
 									<td class="num">
 										<b>{{item.TotalBeforeDiscountText}}</b>
 									</td>
 								</tr>
 								<tr>
-									<td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'VAT' | translate}}</td>
+									<!-- <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'VAT' | translate}}</td> -->
+									<td [attr.colspan]="5" class="num">{{'VAT' | translate}}</td>
 									<td class="num">
 										<b>{{item.TotalTaxText}}</b>
 									</td>
 								</tr>
 								<tr>
-									<td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td>
+									<!-- <td [attr.colspan]="PONShowPackingUoM? 6:5" class="num">{{'Total amount' | translate}}</td> -->
+									<td [attr.colspan]="5" class="num">{{'Total amount' | translate}}</td>
 									<td class="num">
 										<b>{{item.TotalAfterTaxText}}</b>
 									</td>
