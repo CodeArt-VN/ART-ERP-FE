@@ -8,6 +8,7 @@ import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
 import { PromotionService } from 'src/app/services/custom/promotion.service';
 import { BillPreviewComponent } from '../bill-preview-modal/bill-preview-modal';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 @Component({
 	selector: 'app-payment-modal',
 	templateUrl: './payment-modal.component.html',
@@ -29,13 +30,14 @@ export class PaymentModalComponent implements OnInit {
 	IsActiveTypeCash = true;
 	billHtml = '';
 	qrCodeHtml = '';
+	program: any;
 	@Input() billElement: ElementRef;
 	@Input() calcFunction: Function;
 	@Input() onUpdateItem: Function;
 	subPromotion: any;
 	promotionAppliedPrograms = [];
 	subscribePOSOrderDetail;
-
+	paymentList: any[] = [];
 	bankList: any = [
 		{ Code: 'VCB', Name: 'Vietcombank', Image: '/assets/logos/banks/VCB.png' },
 		{ Code: 'MB', Name: 'MB Bank', Image: '/assets/logos/banks/mb.png' },
@@ -66,8 +68,7 @@ export class PaymentModalComponent implements OnInit {
 		private saleOrderProvider: SALE_OrderProvider,
 		private commonService: CommonService,
 		private env: EnvService,
-		private paymentService: PaymentService,
-		private voucherService: PromotionService,
+		private paymentService: PaymentService
 	) {
 		this.formGroup = this.formBuilder.group({
 			IDBranch: [''],
@@ -89,6 +90,7 @@ export class PaymentModalComponent implements OnInit {
 			Lang: [''],
 			EDCC: [''],
 			IDOriginalTransaction: [],
+			VoucherCode: [''],
 		});
 	}
 	next() {
@@ -97,6 +99,10 @@ export class PaymentModalComponent implements OnInit {
 
 	back() {
 		this.step--;
+		if (this.formGroup.get('VoucherCode').value) {
+			this.formGroup.get('VoucherCode').setValue('');
+			this.formGroup.get('InputAmount').enable();
+		}
 	}
 	ngAfterViewInit() {
 		if (!this.billElement?.nativeElement) return;
@@ -157,6 +163,7 @@ export class PaymentModalComponent implements OnInit {
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
 							} else this.closeModal();
+							this.back();
 						}
 						return;
 				}
@@ -269,6 +276,10 @@ export class PaymentModalComponent implements OnInit {
 			if (qr) {
 				this.qrCodeHtml = qr.outerHTML;
 			}
+		} else if (type == 'CashVoucher') {
+			this.formGroup.get('InputAmount').markAsPristine();
+			this.formGroup.get('InputAmount').setValue(0);
+			this.formGroup.get('InputAmount').disable();
 		}
 	}
 	changeEDCC(e) {
@@ -306,6 +317,7 @@ export class PaymentModalComponent implements OnInit {
 			obj.Type == 'VNPAY' ||
 			obj.Type == 'BOD' ||
 			obj.Type == 'Transfer' ||
+			obj.Type == 'CashVoucher' ||
 			(obj.Type == 'Card' && this.payment?.Id)
 		) {
 			obj.Status = 'Success';
@@ -325,6 +337,9 @@ export class PaymentModalComponent implements OnInit {
 			Timestamp: Date.now(),
 			CreatedBy: this.env.user.Email,
 		};
+		if (obj.Type == 'CashVoucher' && this.program) {
+			obj['Remark'] = this.program.Id + '-' + this.formGroup.get('VoucherCode').value;
+		}
 		let str = window.btoa(JSON.stringify(payment));
 		let code = this.convertUrl(str);
 		obj.Code = code;
@@ -340,6 +355,19 @@ export class PaymentModalComponent implements OnInit {
 			.then(async (res: any) => {
 				this.payment = res;
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+				if (this.item.IsRefundTransaction) {
+					const paymentUpdate = {
+						IDSaleOrder: this.item.IDSaleOrder,
+						IDBranch: this.item.IDBranch,
+						IDTable: this.item.IDTable,
+						Status: this.payment.Status,
+						Amount: this.payment.Amount,
+						Type: this.payment.Type || obj.Type,
+						IsRefundTransaction: this.item.IsRefundTransaction,
+						Id: this.payment.Id,
+					};
+					this.env.publishEvent({ code: EVENT_TYPE.POS.ORDER_PAYMENT_UPDATE, value: JSON.stringify(paymentUpdate) });
+				}
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
@@ -444,7 +472,6 @@ export class PaymentModalComponent implements OnInit {
 			backdropDismiss: true,
 		});
 		await modal.present();
-		
 	}
 	closeBillPreview() {
 		this.isBillPreviewOpen = false;
@@ -457,6 +484,7 @@ export class PaymentModalComponent implements OnInit {
 
 	// (formGroup.get('Type').value == 'Card' && (step == 3 ||(edccList.length==0 && step == 2)))
 	// 	|| (formGroup.get('Type').value != 'Card' && formGroup.get('Type').value != 'ZalopayApp' && formGroup.get('Type').value != 'VietQR' && step == 2 ))
+
 	//#region Voucher
 
 	deleteVoucher(p, index) {
@@ -464,7 +492,7 @@ export class PaymentModalComponent implements OnInit {
 			return;
 		}
 		this.env.showPrompt('Do you want to remove this voucher?', 'REMOVING VOUCHER').then(() => {
-			this.voucherService.deleteVoucher(this.item.SaleOrder, [p.VoucherCode]).then(() => {
+			this.promotionService.deleteVoucher(this.item.SaleOrder, [p.VoucherCode]).then(() => {
 				this.saleOrderProvider.getAnItem(this.item.SaleOrder.Id).then(async (rs: any) => {
 					this.item.SaleOrder = await this.onUpdateItem(rs);
 					this.item.DebtAmount = Math.round(this.item.SaleOrder?.Debt);
@@ -507,4 +535,36 @@ export class PaymentModalComponent implements OnInit {
 		});
 	}
 	//#endregion
+
+	//region CashVoucher
+	voucherCodeChange() {
+		let code = this.formGroup.get('VoucherCode').value;
+		if (!code || code.trim() == '') {
+			return;
+		}
+		let postDTO = {
+			VoucherCodeList: [code],
+			SaleOrder: this.item.SaleOrder,
+		};
+		this.promotionService.commonService
+			.connect('POST', 'PR/Program/CheckVoucher', postDTO)
+			.toPromise()
+			.then((voucher: any) => {
+				if (voucher.length > 0) {
+					if (voucher[0].CanUse) {
+						this.program = voucher[0].Program;
+						let value = this.program.Value;
+						this.formGroup.get('InputAmount').setValue(value);
+						this.formGroup.get('InputAmount').markAsDirty();
+					}else{
+						this.env.showMessage(voucher[0].ErrorMesage,'danger');
+					}
+				} else {
+					this.env.showMessage('Voucher code is not valid', 'danger');
+				}
+			})
+			.catch((err) => this.env.showErrorMessage(err));
+	}
+
+	//endregion
 }
