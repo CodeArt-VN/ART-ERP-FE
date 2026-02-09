@@ -19,12 +19,12 @@
 					<table class="rpt-header" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
-								<td rowspan="8" class="logo">
+								<td rowspan="11" class="logo">
 									<img [src]="item._Branch.LogoURL" (error)="$event.src='assets/RPT-Logo-ART.png'" />
 								</td>
 								<td colspan="2" class="bol title">{{'Purchase order' | translate}}</td>
 								<td class="bol num" colspan="2">{{item.Code? item.Code : 'PO: '+item.Id}}</td>
-								<td rowspan="8" class="topQR">
+								<td rowspan="11" class="topQR">
 									<div *ngIf="item.Code">{{'PO' | translate}}:{{item.Id}}</div>
 									<a [href]="'#/'+'purchase-order/'+item.Id" (click)="nav('purchase-order/'+item.Id,'forward')">
 										<img class="qrc" [src]="item.QRC" />
@@ -35,12 +35,6 @@
 								<td *ngIf="!item._Storer?.Name" class="head-c1 bol" colspan="2"></td>
 								<td *ngIf="item._Storer?.Name"class="head-c1 bol" colspan="2">{{item._Storer.CompanyName}}</td>
 								<td class="bol num" colspan="2">{{item.OrderDateText}}</td>
-							</tr>
-							<tr>
-								<td colspan="4">
-									<span>{{item._Branch.Address}}</span>
-								</td>
-								<td colspan="2"></td>
 							</tr>
 							<tr>
 								<td></td>
@@ -70,7 +64,30 @@
 									{{item._Warehouse?.Name}}
 								</td>
 							</tr>
-							<tr *ngIf="item.ReceiptedDateText">
+							<tr>
+								<td colspan="4">
+									<span>{{item._Warehouse?.Address}}</span>
+								</td>
+							</tr>
+							<tr *ngIf="item._Warehouse?.TemplateHeader">
+								<td colspan="4">
+									<b>{{'Recipient' | translate}}:</b>
+									<span>&nbsp;{{item._Warehouse?.TemplateHeader}}</span>
+								</td>
+							</tr>
+							<tr *ngIf="item._Warehouse?.Phone">
+								<td colspan="4">
+									<b>{{'Phone' | translate}} 1:</b>
+									<span>&nbsp;{{item._Warehouse?.Phone}}</span>
+								</td>
+							</tr>
+							<tr *ngIf="item._Warehouse?.Phone2">
+								<td colspan="4">
+									<b>{{'Phone' | translate}} 2:</b>
+									<span>&nbsp;{{item._Warehouse?.Phone2}}</span>
+								</td>
+							</tr>
+							<tr>
 								<td colspan="4">
 									<b>{{'Receipt date' | translate}}:</b>
 									{{item.ReceiptedDateText}}
@@ -106,7 +123,7 @@
 									<td class="num">TT sau thuế</td> -->
 								</tr>
 								<ng-container *ngFor="let i of item.OrderLines; let idx = index; ">
-									<tr *ngFor="let uom of i._SplitUoMs; let gdx = index; ">
+									<tr *ngFor="let uom of i._SplitUoMs; let gdx = index; " class="order-line">
 										<td class="cen" [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">{{idx+1}}</td>
 										<td [attr.rowspan]="i._SplitUoMs.length" *ngIf="gdx == 0">
 											<div class="ten-sp ck">
