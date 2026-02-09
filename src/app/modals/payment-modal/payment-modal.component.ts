@@ -8,6 +8,7 @@ import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
 import { PromotionService } from 'src/app/services/custom/promotion.service';
 import { BillPreviewComponent } from '../bill-preview-modal/bill-preview-modal';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 @Component({
 	selector: 'app-payment-modal',
 	templateUrl: './payment-modal.component.html',
@@ -340,6 +341,19 @@ export class PaymentModalComponent implements OnInit {
 			.then(async (res: any) => {
 				this.payment = res;
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+				if (this.item.IsRefundTransaction) {
+					const paymentUpdate = {
+						IDSaleOrder: this.item.IDSaleOrder,
+						IDBranch: this.item.IDBranch,
+						IDTable: this.item.IDTable,
+						Status: this.payment.Status,
+						Amount: this.payment.Amount,
+						Type: this.payment.Type || obj.Type,
+						IsRefundTransaction: this.item.IsRefundTransaction,
+						Id: this.payment.Id,
+					};
+					this.env.publishEvent({ code: EVENT_TYPE.POS.ORDER_PAYMENT_UPDATE, value: JSON.stringify(paymentUpdate) });
+				}
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
