@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tra cứu hóa đơn điện tử</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700&family=Roboto+Slab:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #14151d;
+        --muted: #61657a;
+        --accent: #2c6bff;
+        --accent-2: #00c2a8;
+        --surface: #ffffff;
+        --surface-alt: #f7f4f0;
+        --shadow: 0 16px 40px rgba(19, 22, 40, 0.12);
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Roboto Slab", "Times New Roman", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 20% 10%, #e5f2ff 0%, transparent 45%),
+          radial-gradient(circle at 90% 30%, #fff4db 0%, transparent 50%),
+          linear-gradient(135deg, #f3f7ff 0%, #fffaf2 50%, #f2fff7 100%);
+        min-height: 100vh;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 24px 72px;
+        display: grid;
+        gap: 32px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-family: "Unbounded", "Trebuchet MS", sans-serif;
+        font-size: clamp(28px, 4vw, 46px);
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 680px;
+        line-height: 1.6;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 28px;
+      }
+
+      .card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(44, 107, 255, 0.08), rgba(0, 194, 168, 0.05));
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+      }
+
+      .card:hover::after {
+        opacity: 1;
+      }
+
+      .form-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .tag {
+        background: #eef2ff;
+        color: #3142a1;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .form-row {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #d9dde7;
+        border-radius: var(--radius-sm);
+        font-size: 16px;
+        font-family: "Roboto Slab", "Times New Roman", serif;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(44, 107, 255, 0.15);
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .option {
+        position: relative;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid #e1e3ea;
+        background: #fbfbfd;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .option input {
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid #a9b0c7;
+        display: inline-block;
+        position: relative;
+      }
+
+      .option input:checked {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(44, 107, 255, 0.2);
+      }
+
+      .option input:checked::after {
+        content: "";
+        position: absolute;
+        inset: 3px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .option.active {
+        border-color: rgba(44, 107, 255, 0.5);
+        background: #f0f5ff;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: 16px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2c6bff, #00c2a8);
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 12px 20px rgba(44, 107, 255, 0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 30px rgba(44, 107, 255, 0.25);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--accent);
+        border: 1px dashed rgba(44, 107, 255, 0.5);
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .helper {
+        display: grid;
+        gap: 14px;
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .result {
+        background: #f5f8ff;
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: none;
+        gap: 8px;
+        border: 1px solid rgba(44, 107, 255, 0.2);
+      }
+
+      .result.show {
+        display: grid;
+      }
+
+      .result a {
+        text-decoration: none;
+      }
+
+      .result-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .result-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #d4885e, #e9b07a);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 12px 18px rgba(212, 136, 94, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      }
+
+      .result-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 26px rgba(212, 136, 94, 0.36);
+        filter: saturate(1.1);
+      }
+
+      .result-cta .icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+      }
+
+      .result-hint {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .status {
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+        font-size: 14px;
+        display: none;
+      }
+
+      .status.show {
+        display: block;
+      }
+
+      .status.info {
+        background: #eef4ff;
+        color: #2a46a8;
+      }
+
+      .status.success {
+        background: #e9fbf5;
+        color: #136f5c;
+      }
+
+      .status.error {
+        background: #fff0f1;
+        color: #a02c2c;
+      }
+
+      .aside {
+        background: var(--surface-alt);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .aside h3 {
+        margin: 0;
+        font-family: "Unbounded", "Trebuchet MS", sans-serif;
+        font-size: 18px;
+      }
+
+      .bill-preview {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 16px;
+        border: 1px solid #e3e0d8;
+        min-height: 220px;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        text-align: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .bill-preview::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(130deg, rgba(255, 200, 120, 0.2), rgba(44, 107, 255, 0.08));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .bill-preview.active::before {
+        opacity: 1;
+      }
+
+      .bill-badge {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .bill-code {
+        font-family: "Unbounded", "Trebuchet MS", sans-serif;
+        font-size: 20px;
+        margin: 0;
+      }
+
+      .bill-caption {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .steps {
+        display: grid;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .steps span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .steps span::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-2);
+      }
+
+      .float-chip {
+        position: absolute;
+        top: -14px;
+        right: 24px;
+        background: #fff5e8;
+        color: #9a5600;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        box-shadow: 0 6px 16px rgba(154, 86, 0, 0.12);
+      }
+
+      .animation-group {
+        opacity: 0;
+        transform: translateY(12px);
+        animation: fadeUp 0.7s ease forwards;
+      }
+
+      .animation-group.delay-1 {
+        animation-delay: 0.1s;
+      }
+
+      .animation-group.delay-2 {
+        animation-delay: 0.2s;
+      }
+
+      .animation-group.delay-3 {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 32px 16px 60px;
+        }
+
+        .card,
+        .aside {
+          padding: 20px;
+        }
+
+        .button-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <!-- https://tchd.ehoadon.vn/Lookup?InvoiceGUID= -->
+  <body data-api-lookup="/api/v1/AC/ARInvoice/LookupEInvoice">
+    <main class="page">
+      <section class="hero animation-group">
+        <h1>Tra cứu hóa đơn điện tử</h1>
+        <p>
+          Nhập đúng IDSO, IDAR hoặc Mã tra cứu để mở nhanh hóa đơn điện tử trên hệ thống BKAV.
+          Giao diện được tối ưu cho người dùng mới và thao tác tại quầy.
+        </p>
+      </section>
+
+      <section class="grid">
+        <div class="card animation-group delay-1">
+          <div class="form-header">
+            <h2 style="margin: 0; font-family: 'Unbounded', sans-serif;">Thông tin tra cứu</h2>
+            <span class="tag">Mặc định: Mã tra cứu</span>
+          </div>
+
+          <div class="form-row">
+            <label for="lookupType">Chọn loại tra cứu</label>
+            <div class="options" id="lookupType">
+              <label class="option active">
+                <input type="radio" name="lookup" value="code" checked />
+                Mã tra cứu
+              </label>
+              <label class="option">
+                <input type="radio" name="lookup" value="SO" />
+                SO (IDSO)
+              </label>
+              <label class="option">
+                <input type="radio" name="lookup" value="AR" />
+                AR (IDAR)
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="lookupValue">Nhập mã cần tra cứu</label>
+            <input
+              id="lookupValue"
+              type="text"
+              placeholder="Ví dụ: MTC-2025-000231"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="button-row">
+            <button class="btn-primary" id="btnLookup">Tra cứu hóa đơn</button>
+            <button class="btn-secondary" id="btnClear" type="button">Xóa nhập liệu</button>
+          </div>
+
+          <div class="helper">
+            <div>
+              ✅ Nếu tìm thấy dữ liệu, hệ thống sẽ hiển thị link xem hóa đơn điện tử BKAV. Nhấn
+              để mở hóa đơn.
+            </div>
+            <div class="result" id="resultBox">
+              <div>Kết quả phù hợp:</div>
+              <div class="result-actions">
+                <a href="#" target="_blank" rel="noopener" id="invoiceLink" class="result-cta">
+                  <span class="icon">↗</span>
+                  Mở hóa đơn điện tử
+                </a>
+                <span class="result-hint">Bấm để mở hóa đơn BKAV</span>
+              </div>
+              <small id="invoiceMeta"></small>
+            </div>
+            <div class="status" id="statusMessage"></div>
+          </div>
+        </div>
+
+        <aside class="aside animation-group delay-2">
+          <h3>Hướng dẫn lấy số tra cứu</h3>
+          <div class="bill-preview active" id="billPreview">
+            <div class="bill-badge" id="billBadge">Mã tra cứu</div>
+            <p class="bill-code" id="billCode">MPEW62P9BHD</p>
+            <p class="bill-caption" id="billCaption">
+              Số nằm ở góc phải hóa đơn hoặc trên email xác nhận.
+            </p>
+          </div>
+          <div class="steps" id="billSteps">
+            <span>Chọn đúng loại tra cứu ở form bên trái.</span>
+            <span>Đối chiếu số trên chứng từ tương ứng.</span>
+            <span>Nhập mã và bấm Tra cứu hóa đơn.</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const lookupOptions = document.querySelectorAll(".option");
+      const lookupInputs = document.querySelectorAll("input[name='lookup']");
+      const lookupValue = document.getElementById("lookupValue");
+      const resultBox = document.getElementById("resultBox");
+      const invoiceLink = document.getElementById("invoiceLink");
+      const invoiceMeta = document.getElementById("invoiceMeta");
+      const statusMessage = document.getElementById("statusMessage");
+      const btnLookup = document.getElementById("btnLookup");
+      const btnClear = document.getElementById("btnClear");
+      const billPreview = document.getElementById("billPreview");
+      const billBadge = document.getElementById("billBadge");
+      const billCode = document.getElementById("billCode");
+      const billCaption = document.getElementById("billCaption");
+
+      const BASE_API_URL = "http://localhost:54009";
+      const API_LOOKUP_URL =
+        document.body.getAttribute("data-api-lookup") || "/api/v1/AC/ARInvoice/LookupEInvoice";
+      const BKAV_LOOKUP_URL = "https://tchd.ehoadon.vn/Lookup?InvoiceGUID=";
+
+      const previewMap = {
+        code: {
+          badge: "Mã tra cứu",
+          sample: "MPEW62P9BHD",
+          caption: "Số nằm ở góc phải hóa đơn hoặc trên email xác nhận."
+        },
+        SO: {
+          badge: "SO (IDSO)",
+          sample: "102456",
+          caption: "Lấy từ phiếu bán hàng / đơn đặt hàng, cột IDSO (chỉ nhập số)."
+        },
+        AR: {
+          badge: "AR (IDAR)",
+          sample: "51234",
+          caption: "Lấy từ danh sách AR, trường IDAR (chỉ nhập số)."
+        }
+      };
+
+      const placeholders = {
+        code: "Ví dụ: MPEW62P9BHD",
+        SO: "Ví dụ: 102456",
+        AR: "Ví dụ: 51234"
+      };
+
+      function setStatus(message, tone = "info") {
+        if (!message) {
+          statusMessage.textContent = "";
+          statusMessage.className = "status";
+          return;
+        }
+        statusMessage.textContent = message;
+        statusMessage.className = `status show ${tone}`;
+      }
+
+      function getLookupType() {
+        return document.querySelector("input[name='lookup']:checked").value;
+      }
+
+      function isNumericMode() {
+        const type = getLookupType();
+        return type === "SO" || type === "AR";
+      }
+
+      function setActiveOption(value) {
+        lookupOptions.forEach((option) => {
+          const input = option.querySelector("input");
+          option.classList.toggle("active", input.value === value);
+          input.checked = input.value === value;
+        });
+        const preview = previewMap[value];
+        billPreview.classList.add("active");
+        billBadge.textContent = preview.badge;
+        billCode.textContent = preview.sample;
+        billCaption.textContent = preview.caption;
+        lookupValue.placeholder = placeholders[value];
+        lookupValue.inputMode = value === "code" ? "text" : "numeric";
+        lookupValue.pattern = value === "code" ? "" : "[0-9]*";
+        if (value !== "code") {
+          const currentValue = lookupValue.value;
+          const hasLetters = /\p{L}/u.test(currentValue);
+          lookupValue.value = hasLetters ? "" : currentValue.replace(/\D/g, "");
+        }
+      }
+
+      function normalizeNumericValue(value) {
+        return value.replace(/\D/g, "");
+      }
+
+      async function lookupInvoice(value) {
+        const lookupType = getLookupType();
+        const rawValue = value.trim();
+        const normalizedValue = isNumericMode() ? normalizeNumericValue(rawValue) : rawValue;
+
+        if (!normalizedValue) {
+          setStatus("Vui lòng nhập mã cần tra cứu.", "error");
+          resultBox.classList.remove("show");
+          return;
+        }
+
+        if (isNumericMode() && !/^\d+$/.test(normalizedValue)) {
+          setStatus("SO/AR chỉ cho phép nhập số.", "error");
+          resultBox.classList.remove("show");
+          return;
+        }
+
+        const typeParam = lookupType === "SO" ? "SO" : lookupType === "AR" ? "AR" : "CODE";
+        const url = `${BASE_API_URL}${API_LOOKUP_URL}?type=${encodeURIComponent(typeParam)}&code=${encodeURIComponent(normalizedValue)}`;
+
+        setStatus("Đang tra cứu hóa đơn điện tử...", "info");
+        resultBox.classList.remove("show");
+        btnLookup.disabled = true;
+        const previousText = btnLookup.textContent;
+        btnLookup.textContent = "Đang tra cứu...";
+
+        try {
+          const response = await fetch(url, { method: "GET" });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          let payload = null;
+          try {
+            payload = await response.json();
+          } catch (err) {
+            payload = await response.text();
+          }
+
+          let guid = "";
+          if (typeof payload === "string") {
+            guid = payload;
+          } else if (payload && typeof payload === "object") {
+            guid = payload.InvoiceGUID || payload.invoiceGuid || payload.guid || "";
+          } else if (typeof payload === "number") {
+            guid = String(payload);
+          }
+
+          guid = (guid || "").toString().trim();
+
+          if (!guid) {
+            setStatus("Không tìm thấy hóa đơn điện tử phù hợp.", "error");
+            return;
+          }
+
+          invoiceLink.href = `${BKAV_LOOKUP_URL}${encodeURIComponent(guid)}`;
+          invoiceMeta.textContent = `Loại tra cứu: ${previewMap[lookupType].badge} • Giá trị nhập: ${normalizedValue}`;
+          resultBox.classList.add("show");
+          setStatus("Đã tìm thấy hóa đơn điện tử. Nhấn link để mở.", "success");
+        } catch (error) {
+          setStatus("Không thể kết nối API tra cứu. Vui lòng thử lại.", "error");
+        } finally {
+          btnLookup.disabled = false;
+          btnLookup.textContent = previousText;
+        }
+      }
+
+      lookupInputs.forEach((input) => {
+        input.addEventListener("change", (event) => {
+          setActiveOption(event.target.value);
+          resultBox.classList.remove("show");
+          setStatus("");
+        });
+      });
+
+      btnLookup.addEventListener("click", () => {
+        lookupInvoice(lookupValue.value);
+      });
+
+      btnClear.addEventListener("click", () => {
+        lookupValue.value = "";
+        resultBox.classList.remove("show");
+        setStatus("");
+        lookupValue.focus();
+      });
+
+      lookupValue.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          lookupInvoice(lookupValue.value);
+          return;
+        }
+        if (!isNumericMode()) {
+          return;
+        }
+        const allowedKeys = [
+          "Backspace",
+          "Delete",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "Home",
+          "End",
+          "Tab"
+        ];
+        if (allowedKeys.includes(event.key) || event.ctrlKey || event.metaKey) {
+          return;
+        }
+        if (!/^\d$/.test(event.key)) {
+          event.preventDefault();
+        }
+      });
+
+      lookupValue.addEventListener("input", () => {
+        if (isNumericMode()) {
+          lookupValue.value = normalizeNumericValue(lookupValue.value);
+        }
+      });
+
+      setActiveOption("code");
+    </script>
+  </body>
+</html>
