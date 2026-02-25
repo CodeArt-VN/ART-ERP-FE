@@ -7,6 +7,7 @@ import { PageBase } from "src/app/page-base";
 import { ShareModule } from "src/app/share.module";
 import QRCode from "qrcode";
 import { EnvService } from "src/app/services/core/env.service";
+import { HRM_StaffProvider } from "src/app/services/static/services.service";
 
 interface QRWalletPayload {
 	StaffId: number;
@@ -54,6 +55,7 @@ export class QRWalletPage extends PageBase {
 	};
 
 	constructor(
+		public pageProvider: HRM_StaffProvider,
 		public env: EnvService,
 		public navCtrl: NavController,
 		public modalController: ModalController
@@ -67,7 +69,23 @@ export class QRWalletPage extends PageBase {
 	}
 
 	preLoadData(event?: any): void {
-		this.initQRData().finally(() => this.loadedData(event));
+		this.id = this.env.user?.StaffID;
+		super.preLoadData(event);
+	}
+
+	loadedData(event?: any): void {
+		if (!this.item) {
+			this.ui.vcardText = "";
+			this.ui.myQrUrl = "";
+			this.ui.useModeCards.forEach((card) => {
+				card.Payload = null;
+				card.QrUrl = "";
+			});
+			super.loadedData(event);
+			return;
+		}
+
+		this.initQRData().finally(() => super.loadedData(event));
 	}
 
 	refresh(event = null) {
@@ -80,29 +98,26 @@ export class QRWalletPage extends PageBase {
 	}
 
 	async buildMyQR() {
-		const user = this.env.user || {};
-		const branchName = this.env.branchList?.find((d) => d.Id == this.env.user.IDBranch)?.Name || "";
-		const phone = user.Phone || "";
-
-		const lines: string[] = ["BEGIN:MYCARD"];
-
-		if (user.FullName) {
-			lines.push("FN:" + user.FullName);
-		}
-
-		if (phone) {
-			lines.push("TEL;TYPE=CELL:" + phone);
-		}
-
-		if (user.Email) {
-			lines.push("EMAIL:" + user.Email);
-		}
-
-		if (branchName) {
-			lines.push("ORG:" + branchName);
-		}
-
-		lines.push("END:MYCARD");
+		const staff = this.item || {};
+		const branchName = this.env.branchList?.find((d) => d.Id == staff.IDBranch)?.Name ?? "";
+		const department = this.env.branchList?.find((d) => d.Id == staff.IDDepartment)?.Name ?? "";
+		const jobTitle = this.env.branchList?.find((d) => d.Id == staff.IDJobTitle)?.Name ?? "";
+		
+		const lines: string[] = [
+			"BEGIN:MYCARD",
+			"FN:" + (staff.FullName ?? ""),
+			"TEL;TYPE=CELL:" + (staff.PhoneNumber ?? ""),
+			"EMAIL:" + (staff.Email ?? ""),
+			"ID:" + (staff.Id ?? ""),
+			"CODE:" + (staff.Code ?? ""),
+			"GENDER:" + (staff.Gender ?? ""),
+			"DOB:" + (staff.DOB ?? ""),
+			"ADDRESS:" + (staff.Address ?? ""),
+			"DEPARTMENT:" + department,
+			"JOBTITLE:" + jobTitle,
+			"ORG:" + branchName,
+			"END:MYCARD",
+		];
 
 		this.ui.vcardText = lines.join("\n");
 		this.ui.myQrUrl = await this.toQrDataUrl(this.ui.vcardText);
