@@ -14,11 +14,14 @@ import { UserProfile, UserSettings } from '../../interfaces/auth.interfaces';
 import { dogF } from 'src/environments/environment';
 import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserSettingProvider } from '../static/services.service';
 import { CacheManagementService } from '../core/cache-management.service';
+import { EVENT_TYPE } from '../static/event-type';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UserProfileService {
+	private accountStatusCheckingPromise?: Promise<void>;
+
 	constructor(
 		private typeProvider: SYS_TypeProvider,
 		private statusProvider: SYS_StatusProvider,
@@ -42,7 +45,8 @@ export class UserProfileService {
 
 		try {
 			// Get fresh data from API and process through UserContextService
-			const userData = await this.commonService.connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null).toPromise();
+			const userData: any = await this.commonService.connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url + '?GetMenu=true', null).toPromise();
+			this.assertProfileIsActive(userData);
 
 			dogF && console.log('👤 [UserProfileService] Profile loaded from server', userData);
 			await this.userContextService.setupUserContext(userData);
@@ -50,6 +54,41 @@ export class UserProfileService {
 		} catch (error) {
 			dogF && console.error('❌ [UserProfileService] Error getting profile:', error);
 			throw error;
+		}
+	}
+
+	/**
+	 * Validate account status on route navigation.
+	 * This call is lightweight (no GetMenu) and allows forced logout without page refresh.
+	 */
+	async validateAccountStatus(): Promise<void> {
+		if (!this.env.user || !this.env.user.Id) {
+			return;
+		}
+
+		if (this.accountStatusCheckingPromise) {
+			return this.accountStatusCheckingPromise;
+		}
+
+		this.accountStatusCheckingPromise = this.commonService
+			.connect(APIList.ACCOUNT.getUserData.method, APIList.ACCOUNT.getUserData.url, null)
+			.toPromise()
+			.then((userData: any) => {
+				this.assertProfileIsActive(userData);
+			})
+			.finally(() => {
+				this.accountStatusCheckingPromise = undefined;
+			});
+
+		return this.accountStatusCheckingPromise;
+	}
+
+	private assertProfileIsActive(userData: any): void {
+		if (Number(userData?.StaffID ?? 0) === 0) {
+			dogF && console.warn('[UserProfileService] Invalid profile detected: StaffID = 0. Force logout.');
+			this.env.showMessage('Account is no longer valid. Please sign in again or contact administrator.', 'danger');
+			this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
+			throw new Error('USER_PROFILE_INVALID_STAFF_ID');
 		}
 	}
 

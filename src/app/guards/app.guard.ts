@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EnvService } from '../services/core/env.service';
-import { UserContextService } from '../services/auth/user-context.service';
+import { UserProfileService } from '../services/auth/user-profile.service';
 import { dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
 
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 	constructor(
 		public router: Router,
 		public env: EnvService,
-		public userContextService: UserContextService
+		private userProfileService: UserProfileService
 	) {}
 
 	// canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
@@ -50,7 +50,19 @@ export class AuthGuard implements CanActivate {
 	}
 
 	checkCanUse(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		return new Promise<boolean>((resolve) => {
+		return new Promise<boolean>(async (resolve) => {
+			if (this.env.user && this.env.user.Id) {
+				try {
+					await this.userProfileService.validateAccountStatus();
+				} catch (error: any) {
+					if (error?.message === 'USER_PROFILE_INVALID_STAFF_ID') {
+						resolve(false);
+						return;
+					}
+					dogF && console.warn('[AuthGuard] Account status check failed, continue with local permissions:', error);
+				}
+			}
+
 			this.env.checkFormPermission(state.url).then((result: Boolean) => {
 				if (result) {
 					resolve(true);
