@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Platform, MenuController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, MenuController, ModalController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
@@ -18,6 +18,7 @@ import { OSM_NotificationService } from './services/custom/notifications.service
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
+import { QRWalletPage } from './pages/SYS/qr-wallet/qr-wallet.page';
 
 register();
 
@@ -193,6 +194,20 @@ export class AppComponent implements OnInit {
 			this.userCPPopover.event = e;
 			this.ui.isUserCPOpen = true;
 		},
+		openQRWalletModal: async (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+
+			this.ui.isUserCPOpen = false;
+			this.menu.close();
+
+			const modal = await this.modalController.create({
+				component: QRWalletPage,
+				cssClass: 'modal90',
+			});
+
+			await modal.present();
+		},
 
 		logout: (event) => {
 			event.preventDefault();
@@ -268,6 +283,7 @@ export class AppComponent implements OnInit {
 		private router: Router,
 		private navCtrl: NavController,
 		private menu: MenuController,
+		private modalController: ModalController,
 		public env: EnvService,
 		private formBuilder: FormBuilder,
 		private notificationService: OSM_NotificationService
