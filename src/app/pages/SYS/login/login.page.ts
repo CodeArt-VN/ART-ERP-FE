@@ -109,8 +109,6 @@ export class LoginPage extends PageBase {
 			.catch((err) => {
 				if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
 					this.env.showMessage('Cannot connect to tenant, please recheck', 'danger');
-				} else if (err?.message === 'USER_PROFILE_INVALID_STAFF_ID') {
-					// Message + logout are already handled in UserProfileService.getProfile()
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('locked out') > -1) {
 					this.env.showMessage('Account is not activated or being locked', 'danger');
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('user name or password is incorrect') > -1) {
@@ -141,9 +139,7 @@ export class LoginPage extends PageBase {
 					})
 					.catch((err) => {
 						loading.dismiss();
-						if (err?.message !== 'USER_PROFILE_INVALID_STAFF_ID') {
-							this.env.showMessage('Unable to log in, please try again');
-						}
+						this.env.showMessage('Unable to log in, please try again');
 					});
 			});
 	}
