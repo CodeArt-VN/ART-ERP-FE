@@ -107,7 +107,10 @@ export class UserContextService {
 		try {
 			// Validate user object
 			if (!user || !user.Id) {
-				dogF && console.warn('⚠️ [UserContextService] Cannot set user: user is null or undefined');
+				dogF && console.warn('[UserContextService] Invalid user payload. Clearing current user context');
+				if (isSave) {
+					await this.clearInvalidUserState();
+				}
 				return;
 			}
 
@@ -142,6 +145,25 @@ export class UserContextService {
 		} catch (error) {
 			dogF && console.error('🚨 [UserContextService] Error setting current user:', error);
 		}
+	}
+	private async clearInvalidUserState(): Promise<void> {
+		const previousUserId = this.cache.app.userId;
+
+		this.cache.app.userProfile = null;
+		this.cache.app.userId = null;
+		this.cache.app.selectedBranch = null;
+
+		await this.cache.removeRoot('UserId');
+		await this.cache.remove('Token', 'auto', null);
+
+		if (previousUserId) {
+			await this.cache.remove(`UserProfile(${previousUserId})`, 'auto', null);
+			await this.cache.remove(`SelectedBranch(${previousUserId})`, 'auto', null);
+		}
+
+		this.currentUser$.next(this.nullUser);
+		this.currentSession$.next(null);
+		this.userRoles$.next([]);
 	}
 
 	/**
@@ -380,3 +402,4 @@ export class UserContextService {
 		}
 	}
 }
+

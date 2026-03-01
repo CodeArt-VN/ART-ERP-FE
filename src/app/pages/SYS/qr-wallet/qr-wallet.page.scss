@@ -1,0 +1,14 @@
+﻿.qr-holder {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 16px;
+}
+
+.qr-holder img {
+	max-width: 320px;
+	width: 100%;
+	height: auto;
+	border: 1px solid var(--ion-color-light-shade);
+	border-radius: 8px;
+	background: #fff;
+}
