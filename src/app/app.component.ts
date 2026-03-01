@@ -154,7 +154,8 @@ export class AppComponent implements OnInit {
 
 			this.menu.close();
 			if (direction == 'root') {
-				this.navCtrl.navigateRoot(path);
+				// Dùng Router.replaceUrl thay navigateRoot - Ionic 8 navigateRoot không clear stack đúng, khiến canGoBack() luôn true
+				this.router.navigateByUrl(path, { replaceUrl: true });
 			} else if (direction == 'forward') {
 				this.navCtrl.navigateForward(path);
 			}
