@@ -170,7 +170,7 @@ app-data-table,
 			background-color: var(--table-row-hover-background);
 			.col-sticky {
 				background-color: var(--table-cell-sticky-background);
-				backdrop-filter: blur(10px);
+				//backdrop-filter: blur(10px);
 			}
 		}
 
@@ -179,7 +179,7 @@ app-data-table,
 
 			.col-sticky {
 				background-color: var(--table-cell-sticky-background);
-				backdrop-filter: blur(10px);
+				//backdrop-filter: blur(10px);
 			}
 		}
 		&.divider{
@@ -521,7 +521,7 @@ app-data-table,
 	}
 
 	.col-name {
-		min-width: 250px;
+		min-width: 150px;
 
 		&.item-name {
 			min-width: 400px;
@@ -534,7 +534,7 @@ app-data-table,
 		left: 0;
 		//background: var(--table-header-background);
 		background-color: var(--table-cell-sticky-background);
-		backdrop-filter: blur(10px);
+		//backdrop-filter: blur(10px);
 		border-right: solid var(--menu-right-border-color);
 		border-left: solid var(--menu-right-border-color);
 	}
@@ -733,7 +733,7 @@ app-data-table,
 
 			.row {
 				flex-wrap: wrap;
-				padding: 16px 100px 16px 35px;
+				padding: 16px 16px 16px 35px;
 				margin: 16px;
 				border-radius: 10px;
 				background-color: var(--table-row-background);
@@ -836,7 +836,7 @@ app-data-table,
 					position: absolute;
 					right: 8px;
 					min-width: fit-content;
-					margin-top: -5px;
+					margin-top: 0px;
 
 					.bar-holder {
 						justify-content: flex-end;
@@ -852,7 +852,7 @@ app-data-table,
 					position: absolute;
 					right: 8px;
 					min-width: fit-content;
-					margin-top: calc(10 / 16 * 2rem);
+					margin-top: calc(10 / 16 * 3rem);
 					font-size: 160%;
 					color: var(--ion-color-primary) !important;
 					font-weight: bold;
@@ -905,7 +905,7 @@ app-data-table,
 
 				.col-remark {
 					order: 8;
-					min-width: calc(100% + 100px) !important;
+					min-width: calc(100%) !important;
 					color: var(--ion-color-medium) !important;
 					font-size: 90%;
 					font-weight: normal !important;
@@ -919,6 +919,18 @@ app-data-table,
 		}
 		@media screen and (max-width: calc(1164px + 0px)) {
 			@include smallWidth;
+		}
+	}
+
+	&.responsive.padding-number-right {
+		@media screen and (max-width: calc(1164px + 0px)) {
+			.row {
+				padding-right: 110px !important;
+
+				.col-remark {
+					min-width: calc(100% + 110px) !important;
+				}
+			}
 		}
 	}
 }

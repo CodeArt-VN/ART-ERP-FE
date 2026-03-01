@@ -133,6 +133,8 @@ ion-header,
 app-list-toolbar,
 app-toolbar,
 app-detail-toolbar {
+
+
 	>ion-toolbar:not(.no-padding) {
 		--padding-start: 40px;
 
@@ -144,6 +146,10 @@ app-detail-toolbar {
 	ion-toolbar:last-of-type {
 		--border-color: var(--menu-right-border-color);
 	}
+}
+ion-toolbar:first-of-type {
+	--padding-top: 0 !important;
+	padding-top: 0 !important;
 }
 
 [hidden] {

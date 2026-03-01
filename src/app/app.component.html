@@ -54,7 +54,7 @@
 					*ngIf="ui.isShowSearch && env.user"
 				>
 					<ion-header>
-						<ion-toolbar class="no-padding" style="padding-top: 13px">
+						<ion-toolbar class="no-padding" style="padding-top: 13px!important;">
 							<ion-buttons slot="start">
 								<ion-button (click)="uiEvents.closeSearch()">
 									<ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -308,9 +308,7 @@
 			<ion-header class="menu-toogle-btn" *ngIf="env.user && env.user.Id && ui.showMenu">
 				<ion-toolbar>
 					<ion-buttons slot="start">
-						<ion-back-button *ngIf="ui.canGoBack"></ion-back-button>
-						<ion-menu-button *ngIf="!ui.canGoBack"></ion-menu-button>
-
+						<ion-menu-button></ion-menu-button>
 						<ion-button class="hide-small" (click)="uiEvents.toggleCompactMenu()">
 							<ion-icon slot="icon-only" name="menu-outline"></ion-icon>
 						</ion-button>
@@ -408,7 +406,7 @@
 				</span>
 			</ng-container>
 
-			<a class="text user-name" (click)="uiEvents.goToPage('/profile', $event, 'forward')" [routerLink]="['/profile']" *ngIf="env.user && env.user.Id">{{
+			<a class="text user-name" (click)="uiEvents.presentUserCPPopover($event)" *ngIf="env.user && env.user.Id">{{
 				env.user.UserName
 			}}</a>
 			<a class="text" href=".">{{ env.app.version }} </a>

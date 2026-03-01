@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Platform, MenuController, ModalController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
+import { MenuController, ModalController, NavController, PopoverController, IonRouterOutlet } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { ActionPerformed, PushNotifications, Token } from '@capacitor/push-notifications';
@@ -283,7 +283,7 @@ export class AppComponent implements OnInit {
 		private authenticationService: AuthenticationService,
 		private router: Router,
 		private navCtrl: NavController,
-		private menu: MenuController,
+		public menu: MenuController,
 		private modalController: ModalController,
 		public env: EnvService,
 		private formBuilder: FormBuilder,
