@@ -1,20 +1,97 @@
-﻿.qr-holder {
+﻿.wallet-header ion-toolbar {
+	--background: #ffffff;
+	--color: #1f2937;
+	border-bottom: 1px solid #dce7f4;
+}
+
+.wallet-screen {
+	padding: 14px 12px 106px;
+}
+
+.payment-card {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 14px;
+	border: 1px solid #dce7f4;
+	box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+	min-height: 310px;
+	margin-bottom: 20px;
+}
+
+.my-qr-card {
+	min-height: 310px;
+}
+
+.qr-name {
+	text-align: center;
+	font-size: 14px;
+	font-weight: 600;
+	color: #334155;
+	margin-bottom: 8px;
+}
+
+.qr-holder {
 	display: flex;
 	justify-content: center;
-	margin-bottom: 16px;
+	margin-bottom: 10px;
 }
 
 .qr-holder img {
-	max-width: 320px;
 	width: 100%;
+	max-width: 224px;
 	height: auto;
-	border: 1px solid var(--ion-color-light-shade);
-	border-radius: 8px;
-	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	background: #ffffff;
 }
 
 .qr-timeout {
-	text-align: center;
-	color: var(--ion-color-medium);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 6px;
+	color: #6b7280;
 	font-size: 14px;
+}
+
+.wallet-bottom-segment {
+	position: fixed;
+	bottom: 12px;
+	padding: 4px;
+	border-radius: 14px;
+	background: #ffffff;
+	border: 1px solid #dce7f4;
+	box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.wallet-bottom-segment ion-segment-button {
+	--color: #64748b;
+	--color-checked: #ffffff;
+	--indicator-color: var(--ion-color-primary);
+	--indicator-box-shadow: none;
+	min-height: 50px;
+}
+
+.wallet-bottom-segment ion-label {
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.wallet-bottom-segment ion-icon {
+	font-size: 18px;
+	margin-bottom: 2px;
+}
+
+@media (min-width: 768px) {
+	.wallet-screen {
+		max-width: 430px;
+		margin: 0 auto;
+	}
+
+	.wallet-bottom-segment {
+		max-width: 430px;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+	}
 }
