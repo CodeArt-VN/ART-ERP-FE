@@ -44,6 +44,9 @@
 							<div class="qr-holder" *ngIf="card.QrUrl">
 								<img [src]="card.QrUrl" [alt]="card.Name" />
 							</div>
+							<div class="qr-timeout" *ngIf="card.QrUrl">
+								{{ 'Reload in' | translate }} {{ card.TimeoutInSeconds }}s
+							</div>
 						</ion-col>
 					</ion-row>
 				</ion-grid>

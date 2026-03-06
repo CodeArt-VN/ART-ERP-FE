@@ -9,6 +9,8 @@ import QRCode from "qrcode";
 import { EnvService } from "src/app/services/core/env.service";
 import { HRM_StaffProvider } from "src/app/services/static/services.service";
 
+const USE_MODE_TIMEOUT_SECONDS = 30;
+
 interface QRWalletPayload {
 	StaffId: number;
 	BusinessPartnerId: number;
@@ -22,6 +24,7 @@ interface UseModeCard {
 	Type: string;
 	Payload: QRWalletPayload;
 	QrUrl: string;
+	TimeoutInSeconds: number;
 }
 
 interface QRWalletUI {
@@ -50,9 +53,11 @@ export class QRWalletPage extends PageBase {
 				Type: "Security Pos",
 				Payload: null,
 				QrUrl: "",
+				TimeoutInSeconds: USE_MODE_TIMEOUT_SECONDS,
 			}
 		],
 	};
+	private useModeCountdownInterval: any = null;
 
 	constructor(
 		public pageProvider: HRM_StaffProvider,
@@ -64,11 +69,21 @@ export class QRWalletPage extends PageBase {
 		this.pageConfig.isDetailPage = true;
 	}
 
-	segmentChanged(ev: any) {
-		this.ui.segmentView = ev.detail.value;
+	async segmentChanged(ev: any) {
+		const nextSegment = ev.detail.value;
+		this.ui.segmentView = nextSegment;
+
+		if (nextSegment == "s2") {
+			await this.resetUseModeCardsOnSegmentChange();
+			return;
+		}
+
+		this.stopUseModeCountdown();
+		this.resetAllUseModeCardsState();
 	}
 
 	preLoadData(event?: any): void {
+		this.stopUseModeCountdown();
 		this.id = this.env.user?.StaffID;
 		super.preLoadData(event);
 	}
@@ -77,9 +92,11 @@ export class QRWalletPage extends PageBase {
 		if (!this.item) {
 			this.ui.vcardText = "";
 			this.ui.myQrUrl = "";
+			this.stopUseModeCountdown();
 			this.ui.useModeCards.forEach((card) => {
 				card.Payload = null;
 				card.QrUrl = "";
+				card.TimeoutInSeconds = USE_MODE_TIMEOUT_SECONDS;
 			});
 			super.loadedData(event);
 			return;
@@ -95,6 +112,12 @@ export class QRWalletPage extends PageBase {
 	async initQRData() {
 		await this.buildMyQR();
 		await this.buildUseModeQR();
+		if (this.ui.segmentView == "s2") {
+			this.startUseModeCountdown();
+		} else {
+			this.stopUseModeCountdown();
+			this.resetAllUseModeCardsState();
+		}
 	}
 
 	async buildMyQR() {
@@ -124,19 +147,7 @@ export class QRWalletPage extends PageBase {
 	}
 
 	async buildUseModeQR() {
-		const user = this.env.user || {};
-		const modeCard = this.ui.useModeCards[0];
-		if (!modeCard) return;
-
-		const payload: QRWalletPayload = {
-			StaffId: Number(user.StaffID || 0),
-			BusinessPartnerId: Number(user.IDBusinessPartner || 0),
-			Type: modeCard.Type,
-			Timespan: Date.now() + 30000,
-		};
-
-		modeCard.Payload = payload;
-		modeCard.QrUrl = await this.toQrDataUrl(JSON.stringify(payload));
+		await Promise.all(this.ui.useModeCards.map((card) => this.buildUseModeCardQR(card)));
 	}
 
 	async toQrDataUrl(text: string): Promise<string> {
@@ -147,5 +158,60 @@ export class QRWalletPage extends PageBase {
 			margin: 1,
 			type: "image/webp",
 		});
+	}
+
+	async buildUseModeCardQR(card: UseModeCard) {
+		const user = this.env.user || {};
+		const payload: QRWalletPayload = {
+			StaffId: user.StaffID,
+			BusinessPartnerId: user.IDBusinessPartner,
+			Type: card.Type,
+			Timespan: Date.now(),
+		};
+
+		card.Payload = payload;
+		card.QrUrl = await this.toQrDataUrl(JSON.stringify(payload));
+	}
+
+	resetAllUseModeCardsState() {
+		this.ui.useModeCards.forEach((card) => {
+			card.TimeoutInSeconds = USE_MODE_TIMEOUT_SECONDS;
+		});
+	}
+
+	startUseModeCountdown() {
+		this.stopUseModeCountdown();
+		if (!this.ui.useModeCards.length) return;
+
+		this.useModeCountdownInterval = setInterval(() => {
+			this.ui.useModeCards.forEach((card) => {
+				if (card.TimeoutInSeconds > 1) {
+					card.TimeoutInSeconds -= 1;
+					return;
+				}
+
+				card.TimeoutInSeconds = USE_MODE_TIMEOUT_SECONDS;
+				this.buildUseModeCardQR(card);
+			});
+		}, 1000);
+	}
+
+	async resetUseModeCardsOnSegmentChange() {
+		this.stopUseModeCountdown();
+		this.resetAllUseModeCardsState();
+		await Promise.all(this.ui.useModeCards.map((card) => this.buildUseModeCardQR(card)));
+		this.startUseModeCountdown();
+	}
+
+	stopUseModeCountdown() {
+		if (!this.useModeCountdownInterval) return;
+
+		clearInterval(this.useModeCountdownInterval);
+		this.useModeCountdownInterval = null;
+	}
+
+	ngOnDestroy() {
+		this.stopUseModeCountdown();
+		super.ngOnDestroy();
 	}
 }
