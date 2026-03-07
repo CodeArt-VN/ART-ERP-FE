@@ -204,7 +204,7 @@ export class AppComponent implements OnInit {
 
 			const modal = await this.modalController.create({
 				component: QRWalletPage,
-				cssClass: 'modal90',
+				cssClass: 'modal90vh',
 			});
 
 			await modal.present();
