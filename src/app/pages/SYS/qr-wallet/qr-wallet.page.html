@@ -1,9 +1,21 @@
 ﻿<ion-header>
 	<ion-toolbar>
+		<ion-buttons slot="start" *ngIf="ui.selectedQrItem">
+			<ion-button (click)="closeQrDetail()" title="Back">
+				<ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>QR Wallet</ion-title>
 		<ion-buttons slot="end">
-			<ion-button (click)="refresh()" title="{{ 'Refresh' | translate }}">
+			<ion-button *ngIf="!ui.selectedQrItem" (click)="refresh()" title="{{ 'Refresh' | translate }}">
 				<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 			</ion-button>
+			<ng-container *ngIf="ui.selectedQrItem as selectedItem">
+				<ion-button *ngIf="selectedItem.Type !== 'voucher'" (click)="openDetailActions(selectedItem, $event)"
+					title="Actions">
+					<ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+				</ion-button>
+			</ng-container>
 			<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
 				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
 			</ion-button>
@@ -11,41 +23,101 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme [fullscreen]="true">
-	<div class="wallet-screen">	
-		<ng-template #myQrTemplate>
-			<div class="payment-card my-qr-card">
-				<div class="qr-name" *ngIf="ui.myQrUrl">{{ 'My QR' | translate }}</div>
-				<div class="qr-holder" *ngIf="ui.myQrUrl">
-					<img [src]="ui.myQrUrl" alt="My QR" />
-				</div>
-			</div>
-		</ng-template>
-		<ng-container *ngIf="ui.segmentView == 's2'; else myQrTemplate">
-			<div class="payment-card" *ngFor="let card of ui.useModeCards">
-				<div class="qr-name" *ngIf="card.QrUrl">{{ card.Name | translate }}</div>
-				<div class="qr-holder" *ngIf="card.QrUrl">
-					<img [src]="card.QrUrl" [alt]="card.Name" />
-				</div>
+<ion-content appScrollbarTheme class="qr-wallet-content" [fullscreen]="true">
+	<ion-toolbar class="filter-toolbar" *ngIf="!ui.selectedQrItem">
+		<div class="filter-chip-group">
+			<ion-chip [color]="ui.filterMode === 'ALL' ? 'primary' : null" (click)="setFilterMode('ALL')">
+				<ion-label>ALL</ion-label>
+			</ion-chip>
+			<ion-chip [color]="ui.filterMode === 'Voucher' ? 'primary' : null" (click)="setFilterMode('Voucher')">
+				<ion-label>Voucher</ion-label>
+			</ion-chip>
+			<ion-chip [color]="ui.filterMode === 'Other' ? 'primary' : null" (click)="setFilterMode('Other')">
+				<ion-label>Other</ion-label>
+			</ion-chip>
+		</div>
+	</ion-toolbar>
 
-				<div class="qr-timeout" *ngIf="card.QrUrl">
-					<ion-icon name="reload-outline"></ion-icon>
-					<span>{{ 'Reload in' | translate }} {{ card.TimeoutInSeconds }}s</span>
-				</div>
-			</div>
+	<ng-container *ngIf="!ui.selectedQrItem; else qrDetailTemplate">
+		<ion-list lines="none" class="qr-list">
+			<ion-card class="qr-list-card qr-list-item"
+				*ngFor="let item of filteredQrItems; let i = index" [class.stack-overlap]="i > 0"
+				(click)="openQrDetail(item)">
+				<ion-card-header>
+					<div class="card-top">
+						<div class="card-icon">
+							<ion-icon [name]="item.Icon"></ion-icon>
+						</div>
+						<div class="card-meta">
+							<ion-card-title>{{ item.Title }}</ion-card-title>
+							<ion-card-subtitle>{{ item.Type }}</ion-card-subtitle>
+						</div>
+						<div class="card-actions">
+							<ion-button fill="clear" size="small" (click)="saveQrItem(item, $event)">
+								<ion-icon slot="icon-only" name="download-outline"></ion-icon>
+							</ion-button>
+							<ion-button fill="clear" size="small" (click)="shareQrItem(item, $event)">
+								<ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+							</ion-button>
+						</div>
+					</div>
+				</ion-card-header>
 
-		</ng-container>
+				<ion-card-content>
+					<div class="list-card-qr" [class.list-card-qr-my]="item.Type === 'my-qr'">
+						<ng-container *ngIf="item.Type === 'my-qr'">
+							<div class="my-qr-profile" *ngIf="myCardProfile.fullName || myCardProfile.jobTitle">
+								<p class="my-qr-fullname" *ngIf="myCardProfile.fullName">{{ myCardProfile.fullName }}</p>
+								<p class="my-qr-jobtitle" *ngIf="myCardProfile.jobTitle">{{ myCardProfile.jobTitle }}</p>
+							</div>
+							<img *ngIf="item.QrUrl" [src]="item.QrUrl" [alt]="item.Title" />
+						</ng-container>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</ion-list>
+	</ng-container>
 
-	</div>
+	<ng-template #qrDetailTemplate>
+		<div class="qr-detail-view" *ngIf="ui.selectedQrItem as item">
+			<ion-card class="detail-card">
+				<ion-card-subtitle>{{ item.Type }}</ion-card-subtitle>
+				<ion-card-title>{{ item.Title }}</ion-card-title>
+				<ion-card-subtitle>{{ item.Remark }}</ion-card-subtitle>
 
-	<ion-segment class="wallet-bottom-segment" (ionChange)="segmentChanged($event)" [value]="ui.segmentView">
-		<ion-segment-button value="s1">
-			<ion-icon name="scan-outline"></ion-icon>
-			<ion-label>My QR</ion-label>
-		</ion-segment-button>
-		<ion-segment-button value="s2">
-			<ion-icon name="qr-code-outline"></ion-icon>
-			<ion-label>QR use mode</ion-label>
-		</ion-segment-button>
-	</ion-segment>
+				<ion-card-content class="detail-head">
+					<div class="detail-qr" *ngIf="item.QrUrl">
+						<img [src]="item.QrUrl" [alt]="item.Title" />
+					</div>
+
+					<div class="detail-timeout" *ngIf="item.Type !== 'my-qr'">
+						{{ 'Reload in' | translate }} {{ item.TimeoutInSeconds }}s
+					</div>
+
+					<ion-item lines="none">
+						<ion-label>
+							<h3>Title</h3>
+							<p>{{ item.Title }}</p>
+						</ion-label>
+						<ion-button fill="clear" size="small" (click)="copyDetailValue(item.Title, $event)">
+							<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+						</ion-button>
+					</ion-item>
+
+					<ion-item lines="none">
+						<ion-label>
+							<h3>QR content</h3>
+							<p>{{ item.QrContent }}</p>
+						</ion-label>
+						<ion-button fill="clear" size="small" (click)="copyDetailValue(item.QrContent, $event)">
+							<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+						</ion-button>
+					</ion-item>
+				</ion-card-content>
+
+
+
+			</ion-card>
+		</div>
+	</ng-template>
 </ion-content>
