@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
 	appId: 'vn.inholdings.app.erp',
 	appName: 'In-Holdings',
-	webDir: 'www',
+	webDir: 'www/browser',
 	bundledWebRuntime: false,
 	server: {
 		cleartext: true,
