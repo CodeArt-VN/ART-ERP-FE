@@ -10,7 +10,7 @@ import { EnvService } from "src/app/services/core/env.service";
 import { HRM_StaffProvider } from "src/app/services/static/services.service";
 
 const USE_MODE_TIMEOUT_SECONDS = 30;
-type QRFilterMode = "ALL" | "Voucher" | "Other";
+type QRFilterMode = "All" | "Voucher" | "Other";
 
 interface QRWalletPayload {
 	StaffId: number;
@@ -50,7 +50,7 @@ interface QRWalletUI {
 })
 export class QRWalletPage extends PageBase {
 	ui: QRWalletUI = {
-		filterMode: "ALL",
+		filterMode: "All",
 		selectedQrItem: null,
 		qrItems: [
 			{
@@ -66,9 +66,9 @@ export class QRWalletPage extends PageBase {
 			},
 			{
 				Code: "my-qr",
-				Title: "My QR",
+				Title: "My Card",
 				Type: "my-qr",
-				Remark: "",
+				Remark: "Personal profile QR",
 				Icon: "person-circle-outline",
 				PinToEnd: true,
 				Payload: null,
@@ -167,14 +167,16 @@ export class QRWalletPage extends PageBase {
 					text: "Edit",
 					icon: "create-outline",
 					handler: () => {
-						this.openEditQrContent(item);
+						// this.openEditQrContent(item);
 					},
 				},
 				{
 					text: "Delete",
 					icon: "trash-outline",
 					role: "destructive",
-					handler: () => this.deleteQrItem(item),
+					handler: () => {
+						//this.deleteQrItem(item);
+					}
 				},
 				{
 					text: "Cancel",
@@ -304,6 +306,22 @@ export class QRWalletPage extends PageBase {
 		}
 	}
 
+	formatQrContent(content: string) {
+		const text = String(content ?? "").trim();
+		if (!text) return "";
+
+		const looksLikeJson =
+			(text.startsWith("{") && text.endsWith("}")) || (text.startsWith("[") && text.endsWith("]"));
+
+		if (!looksLikeJson) return content;
+
+		try {
+			return JSON.stringify(JSON.parse(text), null, 2);
+		} catch {
+			return content;
+		}
+	}
+
 	async initQRData() {
 		await this.buildListQRCodes();
 		this.startUseModeCountdown();
@@ -318,7 +336,6 @@ export class QRWalletPage extends PageBase {
 		const fullName = this.myCardProfile.fullName || (staff.FullName ?? "");
 
 		const lines: string[] = [
-			"BEGIN:MYCARD",
 			"FN:" + fullName,
 			"TEL;TYPE=CELL:" + (staff.PhoneNumber ?? ""),
 			"EMAIL:" + (staff.Email ?? ""),
@@ -330,7 +347,6 @@ export class QRWalletPage extends PageBase {
 			"DEPARTMENT:" + department,
 			"JOBTITLE:" + jobTitle,
 			"ORG:" + branchName,
-			"END:MYCARD",
 		];
 
 		return lines.join("\n");
@@ -345,7 +361,7 @@ export class QRWalletPage extends PageBase {
 		if (item.Type === "my-qr") {
 			const myCardContent = this.buildMyCardContent();
 			item.Payload = null;
-			item.QrContent = "";
+			item.QrContent = myCardContent;
 			item.QrUrl = await this.toQrDataUrl(myCardContent);
 			item.TimeoutInSeconds = 0;
 			return;
@@ -361,11 +377,9 @@ export class QRWalletPage extends PageBase {
 		};
 
 		item.Payload = payload;
-		item.QrContent =
-			item.Type === "voucher"
-				? `VoucherCode: ${item.VoucherCode || item.Code}\nProgram: ${item.Title}\nCanUse: ${item.CanUse === false ? "No" : "Yes"}`
-				: `Type: ${payload.Type}\nStaffId: ${payload.StaffId}\nBusinessPartnerId: ${payload.BusinessPartnerId}`;
-		item.QrUrl = await this.toQrDataUrl(JSON.stringify(payload));
+		const qrRawContent = JSON.stringify(payload);
+		item.QrContent = qrRawContent;
+		item.QrUrl = await this.toQrDataUrl(qrRawContent);
 	}
 
 	async toQrDataUrl(text: string): Promise<string> {
@@ -405,7 +419,7 @@ export class QRWalletPage extends PageBase {
 	applyFilter() {
 		const { filterMode, qrItems } = this.ui;
 		const filtered = qrItems.filter((item) => {
-			if (filterMode === "ALL") return true;
+			if (filterMode === "All") return true;
 
 			const isVoucher = item.Type === "voucher";
 			const isMyQr = item.Type === "my-qr";
