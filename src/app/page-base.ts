@@ -945,7 +945,8 @@ export abstract class PageBase implements OnInit {
 		} else if (direction == 'back') {
 			this.navCtrl.navigateBack(URL);
 		} else {
-			this.navCtrl.navigateRoot(URL);
+			const url = Array.isArray(URL) ? URL[0] : URL;
+			this.navCtrl.router.navigateByUrl(url, { replaceUrl: true });
 		}
 	}
 

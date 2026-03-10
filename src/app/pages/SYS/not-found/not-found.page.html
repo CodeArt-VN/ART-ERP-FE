@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-toolbar *ngIf="!pageConfig.isShowSearch">
 		<ion-buttons slot="start">
-			<ion-back-button></ion-back-button>
+			<ion-back-button *ngIf="!isFromLogin"></ion-back-button>
 			<ion-button color="dark"> {{'Cannot find' | translate}} </ion-button>
 		</ion-buttons>
 	</ion-toolbar>
