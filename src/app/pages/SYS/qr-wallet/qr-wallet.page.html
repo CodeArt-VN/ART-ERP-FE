@@ -1,8 +1,13 @@
 ﻿<ion-header>
 	<ion-toolbar>
-		<ion-title>{{ 'QR wallet' | translate }}</ion-title>
+		<ion-buttons slot="start" *ngIf="ui.selectedQrItem">
+			<ion-button (click)="closeQrDetail()" title="{{ 'Back' | translate }}">
+				<ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>{{ 'QR Wallet' | translate }}</ion-title>
 		<ion-buttons slot="end">
-			<ion-button (click)="refresh()" title="{{ 'Refresh' | translate }}">
+			<ion-button *ngIf="!ui.selectedQrItem" (click)="refresh()" title="{{ 'Refresh' | translate }}">
 				<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 			</ion-button>
 			<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
@@ -12,42 +17,93 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme class="ion-padding">
-	<div class="main-view">
-		<div class="row-full shadow full-screen">
-			<ion-toolbar color="primary">
-				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="ui.segmentView">
-					<ion-segment-button value="s1">
-						<ion-label>{{ 'My QR' | translate }}</ion-label>
-					</ion-segment-button>
-					<ion-segment-button value="s2">
-						<ion-label>{{ 'QR use mode' | translate }}</ion-label>
-					</ion-segment-button>
-				</ion-segment>
-			</ion-toolbar>
-
-			<div *ngIf="ui.segmentView == 's1'" class="ion-padding">
-				<div class="qr-holder" *ngIf="ui.myQrUrl">
-					<img [src]="ui.myQrUrl" alt="My QR" />
-				</div>
-			</div>
-
-			<div *ngIf="ui.segmentView == 's2'" class="ion-padding">
-				<ion-grid fixed>
-					<ion-row class="hr-group" *ngFor="let card of ui.useModeCards">
-						<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
-							<ion-list-header class="ion-no-padding">
-								<ion-label color="primary">{{ card.Name | translate }}</ion-label>
-							</ion-list-header>
-						</ion-col>
-						<ion-col size="12" size-sm size-xl="6">
-							<div class="qr-holder" *ngIf="card.QrUrl">
-								<img [src]="card.QrUrl" [alt]="card.Name" />
-							</div>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
-			</div>
+<ion-content appScrollbarTheme class="qr-wallet-content" [fullscreen]="true">
+	<ion-toolbar class="filter-toolbar" *ngIf="!ui.selectedQrItem">
+		<div class="filter-chip-group">
+			<ion-chip [color]="ui.filterMode === 'All' ? 'primary' : null" (click)="setFilterMode('All')">
+				<ion-label>{{ 'All' | translate }}</ion-label>
+			</ion-chip>
+			<ion-chip [color]="ui.filterMode === 'Voucher' ? 'primary' : null" (click)="setFilterMode('Voucher')">
+				<ion-label>{{ 'Voucher' | translate }}</ion-label>
+			</ion-chip>
+			<ion-chip [color]="ui.filterMode === 'Other' ? 'primary' : null" (click)="setFilterMode('Other')">
+				<ion-label>{{ 'Other' | translate }}</ion-label>
+			</ion-chip>
 		</div>
-	</div>
+	</ion-toolbar>
+
+	<ng-container *ngIf="!ui.selectedQrItem; else qrDetailTemplate">
+		<ion-list lines="none" class="qr-list">
+			<ion-card class="qr-list-card qr-list-item" *ngFor="let item of filteredQrItems; let i = index"
+				[class.stack-overlap]="i > 0" (click)="openQrDetail(item)">
+				<ion-card-header>
+					<ion-card-subtitle class="card-sub-top">{{ item.Type }}</ion-card-subtitle>
+					<ion-card-title class="card-top"><ion-icon [name]="item.Icon"></ion-icon> {{ item.Title }}</ion-card-title>
+				</ion-card-header>
+				<ion-card-content class="qr-list-card-content">
+					<ion-list class="my-qr-list" *ngIf="item.Type === 'my-qr'">
+						<ion-item lines="none" class="my-qr-list-item">
+							<ion-label>
+								<h3 class="my-qr-list-name">{{ myCardProfile.fullName }}</h3>
+								<p class="my-qr-list-job">{{ myCardProfile.jobTitle }}</p>
+							</ion-label>
+							<img slot="end" class="qr-list-card-img" *ngIf="item.QrUrl" [src]="item.QrUrl" [alt]="item.Title" />
+						</ion-item>
+					</ion-list>
+				</ion-card-content>
+			</ion-card>
+		</ion-list>
+	</ng-container>
+
+	<ng-template #qrDetailTemplate>
+		<ion-card *ngIf="ui.selectedQrItem as item" class="detail-card qr-list-card">
+			<ion-card-header class="detail-card-header">
+				<ion-card-subtitle class="detail-remark">{{ item.Remark }}</ion-card-subtitle>
+				<ion-card-title class="card-top detail-title">{{ item.Title }}</ion-card-title>
+				<ion-card-subtitle class="card-sub-top detail-type">{{ item.Type }}</ion-card-subtitle>
+			</ion-card-header>
+
+			<ion-card-content class="detail-card-content">
+				<div class="detail-qr-wrap" *ngIf="item.QrUrl">
+					<img class="detail-qr-img" [src]="item.QrUrl" [alt]="item.Title" />
+				</div>
+				<div class="detail-timeout" *ngIf="item.Type !== 'my-qr'">
+					{{ 'Reload in' | translate }} {{ item.TimeoutInSeconds }}s
+				</div>
+				<ion-list class="detail-list">
+					<ion-item lines="inset">
+						<ion-label>
+							<h2>{{ 'Title' | translate }}:</h2>
+							<p>{{ item.Title }}</p>
+						</ion-label>
+						<ion-button slot="end" fill="clear" size="small" (click)="copyDetailValue(item.Title, $event)">
+							<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+						</ion-button>
+					</ion-item>
+
+					<ion-item lines="none">
+						<ion-label>
+							<h2>{{ 'QR content' | translate }}:</h2>
+							<p class="qr-content-value">{{ formatQrContent(item.QrContent) }}</p>
+						</ion-label>
+						<ion-button slot="end" fill="clear" size="small" (click)="copyDetailValue(item.QrContent, $event)">
+							<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+						</ion-button>
+					</ion-item>
+				</ion-list>
+
+				<div class="detail-action-row">
+					<ion-button fill="clear" size="small" (click)="saveQrItem(item, $event)">
+						<ion-icon slot="icon-only" name="download-outline"></ion-icon>
+					</ion-button>
+					<ion-button fill="clear" size="small" (click)="shareQrItem(item, $event)">
+						<ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+					</ion-button>
+					<ion-button fill="clear" size="small" *ngIf="item.Type !== 'voucher'" (click)="openDetailActions(item, $event)">
+						<ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+					</ion-button>
+				</div>
+			</ion-card-content>
+		</ion-card>
+	</ng-template>
 </ion-content>
