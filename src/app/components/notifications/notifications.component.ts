@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { CommonService } from 'src/app/services/core/common.service';
@@ -23,7 +24,8 @@ export class NotificationsComponent extends PageBase {
 		public notificationReceiverProvider: OSM_NotificationReceiverProvider,
 		public commonService: CommonService,
 		public env: EnvService,
-		public navCtrl: NavController
+		public navCtrl: NavController,
+		public router: Router
 	) {
 		super();
 	}
@@ -192,7 +194,8 @@ export class NotificationsComponent extends PageBase {
 		} else if (direction == 'back') {
 			this.navCtrl.navigateBack(URL);
 		} else {
-			this.navCtrl.navigateRoot(URL);
+			const url = Array.isArray(URL) ? URL[0] : URL;
+			this.router.navigateByUrl(url, { replaceUrl: true });
 		}
 	}
 	@ViewChild('morePopover') morePopover!: HTMLIonPopoverElement;
