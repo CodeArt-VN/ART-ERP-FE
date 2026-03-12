@@ -1,0 +1,14 @@
+<svg width="608" height="246" viewBox="0 0 608 246" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.5">
+<!-- Binary / signal waves -->
+<path d="M0 60 L40 60 L40 100 L80 100 L80 60 L120 60 L120 100 L160 100 L160 60 L200 60" stroke="white" stroke-width="2" fill="none" stroke-opacity="0.4"/>
+<path d="M0 140 L30 140 L30 180 L70 180 L70 140 L110 140 L110 180 L150 180 L150 140 L190 140" stroke="white" stroke-width="2" fill="none" stroke-opacity="0.35"/>
+<path d="M250 80 L290 80 L290 120 L330 120 L330 80 L370 80 L370 120 L410 120 L410 80" stroke="white" stroke-width="2" fill="none" stroke-opacity="0.4"/>
+<!-- Right side - larger signal -->
+<path d="M450 40 L500 40 L500 100 L550 100 L550 40 L608 40" stroke="white" stroke-width="2" fill="none" stroke-opacity="0.4"/>
+<path d="M450 160 L520 160 L520 200 L580 200 L580 160 L608 160" stroke="white" stroke-width="2" fill="none" stroke-opacity="0.35"/>
+<!-- Dots accent -->
+<circle cx="550" cy="120" r="3" fill="white" fill-opacity="0.5"/>
+<circle cx="580" cy="180" r="3" fill="white" fill-opacity="0.4"/>
+</g>
+</svg>

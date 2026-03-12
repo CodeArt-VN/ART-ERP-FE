@@ -8,6 +8,9 @@ export const SYSRoutes: Routes = [
     { path: 'not-found', loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundPageModule), canActivate: [AuthGuard] },
     { path: 'setting', loadChildren: () => import('./setting/setting.module').then(m => m.SettingPageModule), canActivate: [AuthGuard] },
     { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule), canActivate: [AuthGuard] },
+	{ path: 'user-card', loadChildren: () => import('./user-card/user-card.module').then(m => m.UserCardPageModule), canActivate: [AuthGuard] },
+	{ path: 'user-card/:id', loadChildren: () => import('./user-card-detail/user-card-detail.module').then(m => m.UserCardDetailPageModule), canActivate: [AuthGuard] },
+	{ path: 'user-card-viewer', loadChildren: () => import('./user-card-viewer/user-card-viewer.module').then(m => m.UserCardViewerPageModule), canActivate: [AuthGuard] },
     { path: 'default', loadChildren: () => import('./default/default.module').then(m => m.DefaultPageModule), canActivate: [AuthGuard] },
     
     { path: 'system-status', loadChildren: () => import('./system-status/system-status.module').then(m => m.SystemStatusPageModule), canActivate: [AuthGuard] },

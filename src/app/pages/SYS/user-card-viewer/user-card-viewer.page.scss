@@ -1,0 +1,105 @@
+/* Card full height khi vừa, scroll khi nội dung vượt */
+.viewer-content {
+	--padding-top: 8px;
+	--padding-bottom: 8px;
+	--padding-start: 12px;
+	--padding-end: 12px;
+	.viewer-card-wrap {
+		display: flex;
+		flex-direction: column;
+		min-height: 100%;
+	}
+	ion-card.viewer-card {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		min-height: 0;
+	}
+}
+
+/* Card */
+ion-card.viewer-card {
+	--ion-card-background: var(--menu-background-top);
+	--color: #fff;
+	ion-card-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding: 16px;
+		min-height: 0;
+	}
+}
+
+/* QR canh giữa ngang, margin dọc 32 */
+.qr-center {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 32px 0;
+	min-height: 0;
+	gap: 8px;
+}
+.countdown-badge {
+	background: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	padding: 4px 12px;
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.card-header {
+	flex-shrink: 0;
+}
+
+.card-footer {
+	flex-shrink: 0;
+	text-align: center;
+	h2, p {
+		margin: 0;
+		color: #fff;
+	}
+}
+
+/* Card - gradient + bg từ --card-bg-url (theo card.type), màu từ --card-color-rgb */
+ion-card.card-bg {
+	background:
+		var(--card-bg-url, url(/assets/bg-layers.svg)) right bottom / auto no-repeat,
+		linear-gradient(90deg, rgba(var(--ion-color-light-rgb, 0, 0, 0), 1) -100%, rgba(var(--card-color-rgb, var(--ion-color-primary-rgb, 0, 0, 0)), 1) 100%) 0% 0% / 100%;
+}
+ion-card.card-bg ion-card-content {
+	--background: transparent;
+	--color: #fff;
+	position: relative;
+}
+ion-card.card-bg ion-card-content > ion-item {
+	--background: transparent;
+	--color: #fff;
+}
+/* QR code - kích thước cố định để quét */
+.qr-img {
+	width: min(280px, 75vw);
+	height: min(280px, 75vw);
+	max-width: 280px;
+	max-height: 280px;
+	background: #fff;
+	padding: 12px;
+	border-radius: 12px;
+	object-fit: contain;
+}
+
+/* Content box - nền sáng để đọc QR content trên thẻ tối */
+ion-list.content-box {
+	flex-shrink: 0;
+	--background: #fff;
+	--color: #333;
+	border-radius: 10px;
+	margin-top: 16px;
+	ion-item {
+		--background: #fff;
+		--color: #333;
+	}
+}

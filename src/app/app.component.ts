@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -11,14 +11,13 @@ import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
 
 import { EnvService } from './services/core/env.service';
-import { BRA_BranchProvider, SYS_UserSettingProvider } from './services/static/services.service';
 import { dogF, environment } from 'src/environments/environment';
 import { lib } from './services/static/global-functions';
 import { OSM_NotificationService } from './services/custom/notifications.service';
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
-import { QRWalletPage } from './pages/SYS/qr-wallet/qr-wallet.page';
+import { UserCardPage } from './pages/SYS/user-card/user-card.page';
 
 register();
 
@@ -202,7 +201,7 @@ export class AppComponent implements OnInit {
 			this.menu.close();
 
 			const modal = await this.modalController.create({
-				component: QRWalletPage,
+				component: UserCardPage,
 				cssClass: 'modal90vh',
 			});
 

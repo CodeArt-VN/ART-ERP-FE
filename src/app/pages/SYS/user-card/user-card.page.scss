@@ -1,0 +1,43 @@
+ion-card {
+	--ion-card-background: var(--menu-background-top);
+	margin-top: 0px;
+	margin-bottom: -7px;
+	--color: #fff;
+	--ion-color-step-400: #fff !important;
+
+	ion-card-content {
+		padding-bottom: 23px;
+		position: relative;
+	}
+
+	ion-list {
+		--ion-item-background: transparent;
+	}
+
+	&.card-bg {
+		background:
+			var(--card-bg-url, url(/assets/bg-layers.svg)) right bottom / contain no-repeat,
+			linear-gradient(90deg, rgba(var(--ion-color-light-rgb, 0, 0, 0), 1) -100%, rgba(var(--card-color-rgb, var(--ion-color-primary-rgb, 0, 0, 0)), 1) 100%) 0% 0% / 100%;
+	}
+}
+
+/* Card background colors - minimal custom CSS */
+ion-card.card-bg ion-item,
+ion-card.card-bg ion-card-content {
+	--background: transparent;
+	--color: #fff !important;
+}
+
+ion-thumbnail.qr-thumb {
+	--size: 80px;
+}
+
+.info-col {
+	display: flex;
+	align-items: flex-end;
+}
+.qr-col {
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+}

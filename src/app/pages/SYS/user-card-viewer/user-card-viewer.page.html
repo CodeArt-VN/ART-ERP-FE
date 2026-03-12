@@ -1,0 +1,80 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="end">
+			<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
+				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme [fullscreen]="true" class="viewer-content">
+	<div *ngIf="card" #cardContainer class="viewer-card-wrap">
+		<!-- Profile / member-card -->
+		<ion-card *ngIf="isProfileType(card.type) || isMemberCardType(card.type)" class="viewer-card card-bg" [style.--card-bg-url]="getCardBgUrl(card)" [style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'">
+			<ion-card-content>
+				<ion-item  class="card-header">
+					<ion-avatar slot="start">
+						<ion-img #img [src]="card.avatarUrl || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					</ion-avatar>
+					<ion-label>
+						<h2>{{ card.title | translate }}</h2>
+					</ion-label>
+				</ion-item>
+				<div class="qr-center">
+					<ion-img *ngIf="displayQrUrl" [src]="displayQrUrl" [alt]="card.title" class="qr-img"></ion-img>
+					<div *ngIf="isMemberCardType(card.type) && countdownSeconds > 0" class="countdown-badge">{{ countdownSeconds }}s</div>
+				</div>
+				<div class="card-footer">
+					<h2>{{ card.fullName || card.subtitle }}</h2>
+					<p>{{ card.email }}</p>
+				</div>
+			</ion-card-content>
+		</ion-card>
+
+		<!-- Simple card (không bao gồm member-card) -->
+		<ion-card *ngIf="!isProfileType(card.type) && !isMemberCardType(card.type)" class="viewer-card card-bg" [style.--card-bg-url]="getCardBgUrl(card)" [style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'">
+			<ion-card-content>
+				<ion-item  class="card-header">
+					<ion-icon *ngIf="card.icon" [name]="card.icon" slot="start"></ion-icon>
+					<ion-thumbnail *ngIf="card.imageUrl && !card.icon" slot="start">
+						<ion-img #img [src]="card.imageUrl" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+					</ion-thumbnail>
+					<ion-label>{{ card.type | translate }}</ion-label>
+				</ion-item>
+				<div class="qr-center">
+					<ion-img *ngIf="displayQrUrl" [src]="displayQrUrl" [alt]="card.title" class="qr-img"></ion-img>
+				</div>
+				<div class="card-footer">
+					<h2>{{ card.title | translate }}</h2>
+					<p>{{ card.remark || '' }}</p>
+				</div>
+				<ion-list *ngIf="card.qrContent" lines="none" class="content-box">
+					<ion-list-header>{{ 'Content' | translate }}</ion-list-header>
+					<ion-item>
+						<ion-label>
+							<h3>{{ 'QR content' | translate }}</h3>
+							<p>{{ formatQrContent(card.qrContent) }}</p>
+						</ion-label>
+						<ion-button slot="end" fill="clear" size="small" (click)="copyQrContent()">
+							<ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+						</ion-button>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>
+		</ion-card>
+	</div>
+</ion-content>
+
+<ion-footer [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="end">
+			<ion-button (click)="shareCard()">
+				<ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+			</ion-button>
+			<ion-button (click)="saveCard()">
+				<ion-icon slot="icon-only" name="download-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-footer>

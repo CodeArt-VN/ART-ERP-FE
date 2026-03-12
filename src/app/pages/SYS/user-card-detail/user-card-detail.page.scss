@@ -1,0 +1,28 @@
+/* Minimal CSS - dùng ion-avatar, ion-button */
+.avatar-placeholder {
+	--background: var(--ion-color-success);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	ion-icon {
+		font-size: 24px;
+		color: #fff;
+	}
+}
+
+.color-picker {
+	flex-wrap: wrap;
+	ion-button.color-circle {
+		--border-radius: 50%;
+		--padding-start: 0;
+		--padding-end: 0;
+		width: 32px;
+		height: 32px;
+		margin: 4px;
+		&.selected {
+			--border-width: 2px;
+			--border-style: solid;
+			--border-color: var(--ion-color-dark);
+		}
+	}
+}

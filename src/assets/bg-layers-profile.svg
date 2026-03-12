@@ -1,0 +1,16 @@
+<svg width="608" height="246" viewBox="0 0 608 246" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.5">
+<!-- Profile - network/connection nodes -->
+<circle cx="450" cy="60" r="25" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.4"/>
+<circle cx="520" cy="120" r="20" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+<circle cx="380" cy="140" r="18" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.4"/>
+<circle cx="550" cy="180" r="22" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+<!-- Connection lines - social graph -->
+<line x1="450" y1="60" x2="520" y2="120" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+<line x1="450" y1="60" x2="380" y2="140" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+<line x1="520" y1="120" x2="550" y2="180" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+<!-- User icon hint -->
+<circle cx="250" cy="120" r="35" fill="white" fill-opacity="0.15"/>
+<circle cx="250" cy="100" r="12" fill="white" fill-opacity="0.25"/>
+</g>
+</svg>
