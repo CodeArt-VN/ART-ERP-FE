@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-title>{{ 'Advanced filter' | translate }}</ion-title>
 		<ion-buttons slot="primary">
@@ -11,7 +11,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme>
+<ion-content appScrollbarTheme [fullscreen]="true">
 	<form [formGroup]="form" *ngIf="selectedSchema">
 		<ion-accordion-group [value]="['first', 'second', 'third']" multiple="true">
 			<ion-accordion value="first" style="background: transparent" *ngIf="renderGroup.Filter || !renderGroup">
@@ -325,7 +325,7 @@
 		<!-- datepicker -->
 		<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
 			<ng-template>
-				<ion-content appScrollbarTheme>
+				<ion-content appScrollbarTheme [fullscreen]="true">
 					<ion-segment scrollable="false" (ionChange)="segmentTimeframeChanged($event)" [value]="pickerControl.controls.Type.value" mode="md">
 						<ion-segment-button value="Relative">
 							<ion-label>{{ 'Relative' | translate }}</ion-label>
@@ -381,7 +381,7 @@
 		<!-- Sort by -->
 		<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
 			<ng-template>
-				<ion-content appScrollbarTheme>
+				<ion-content appScrollbarTheme [fullscreen]="true">
 					<ion-list *ngIf="pickerControl.controls.Type.value == 'Relative'">
 						<div>
 							<ng-container *ngIf="pickerGroupName == 'CompareTo'">

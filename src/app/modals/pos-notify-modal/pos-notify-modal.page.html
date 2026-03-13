@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-title>Thông báo</ion-title>
 		<ion-buttons slot="primary">
@@ -14,7 +14,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme>
+<ion-content appScrollbarTheme [fullscreen]="true">
 	<app-page-message [itemsLength]="item.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 	<div *ngIf="item.length && pageConfig.showSpinner==false" class="ion-padding">
 		<ion-item *ngFor="let i of item; let j = index;" lines="none" class="ion-margin-top c-input">

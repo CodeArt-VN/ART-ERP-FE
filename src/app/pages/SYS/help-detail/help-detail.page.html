@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-buttons slot="start" [collapse]="true">
 			<ion-back-button
@@ -28,7 +28,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="ion-padding" style="height: 100vh">
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding" style="height: 100vh">
 	<!-- <div class="main-view" *ngIf="showEditorContent">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">

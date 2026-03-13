@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-title>{{ 'Advanced export' | translate }}</ion-title>
 		<!-- Xuat du lieu -->
@@ -9,7 +9,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme>
+<ion-content appScrollbarTheme [fullscreen]="true">
 	<ng-container>
 		<ion-list [inset]="true" *ngFor="let group of groupView">
 			<ion-list-header *ngIf="group.Name == 'Selected fields'">

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<app-toolbar [page]="this" AcceptFile=".json">
 		<ion-button fill="clear" title="Export Json" (click)="export()" *ngIf="pageConfig.canExport && formGroup.get('Type').value == 'Collection'">
 			<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
@@ -9,7 +9,7 @@
 	</app-toolbar>
 	<!-- *ngIf="pageConfig.canExport" -->
 </ion-header>
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">

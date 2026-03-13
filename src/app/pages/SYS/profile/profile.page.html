@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<app-detail-toolbar [page]="this"></app-detail-toolbar>
 	<!-- <ion-toolbar>
 		
@@ -11,7 +11,7 @@
 	</ion-toolbar> -->
 </ion-header>
 
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
 	<div class="one-col ion-padding">
 		<div class="ion-text-center" *ngIf="env.user">
 			<ion-avatar class="avatar" slot="start">

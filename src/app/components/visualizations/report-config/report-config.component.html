@@ -304,7 +304,7 @@
 	<!-- datepicker -->
 	<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
 		<ng-template>
-			<ion-content appScrollbarTheme>
+			<ion-content appScrollbarTheme [fullscreen]="true">
 				<ion-segment scrollable="false" (ionChange)="segmentTimeframeChanged($event)" [value]="pickerControl.controls.Type.value" mode="md">
 					<ion-segment-button value="Relative">
 						<ion-label>{{ 'Relative' | translate }}</ion-label>

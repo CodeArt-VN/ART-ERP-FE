@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="scrollx">
+<ion-content [fullscreen]="true" appScrollbarTheme class="scrollx">
 	<app-page-title *ngIf="!item?.Id" class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 	<app-page-title
 		*ngIf="item?.Id"

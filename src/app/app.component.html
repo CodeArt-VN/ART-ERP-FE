@@ -13,7 +13,7 @@
 			menuId="appMenu"
 			
 		>
-			<ion-header>
+			<ion-header [translucent]="true">
 				<div class="close-menu">
 					<ion-toolbar>
 						<ion-buttons slot="start">
@@ -42,7 +42,7 @@
 					</div>
 				</div>
 			</ion-header>
-			<ion-content appScrollbarTheme>
+			<ion-content appScrollbarTheme [fullscreen]="true">
 				<!-- https://github.com/ionic-team/ionic-v3/issues/737#issuecomment-519105142 -->
 
 				<div
@@ -53,7 +53,7 @@
 					}"
 					*ngIf="ui.isShowSearch && env.user"
 				>
-					<ion-header>
+					<ion-header [translucent]="true">
 						<ion-toolbar class="no-padding" style="padding-top: 13px!important;">
 							<ion-buttons slot="start">
 								<ion-button (click)="uiEvents.closeSearch()">
@@ -305,7 +305,7 @@
 		</ion-menu>
 
 		<ion-router-outlet id="main-content" main [swipeGesture]="false">
-			<ion-header class="menu-toogle-btn" *ngIf="env.user && env.user.Id && ui.showMenu">
+			<ion-header [translucent]="true" class="menu-toogle-btn" *ngIf="env.user && env.user.Id && ui.showMenu">
 				<ion-toolbar>
 					<ion-buttons slot="start">
 						<ion-menu-button></ion-menu-button>
