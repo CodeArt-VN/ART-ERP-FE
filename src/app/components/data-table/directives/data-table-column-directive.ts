@@ -18,7 +18,7 @@ export class DataTableColumnDirective implements OnChanges {
 	@Input() filterClass: string | ((data: any) => string | any);
 	@Input() cellClass: string | ((data: any) => string | any);
 	@Input() sticky: boolean;
-	@Input() format: boolean;
+	@Input() format: string;
 	@Input() dataType: string = 'string';
 	@Input() canFilter: boolean = true;
 	@Input() filterControlType:

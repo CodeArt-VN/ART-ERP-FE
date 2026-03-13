@@ -27,10 +27,10 @@ export interface InputControlField {
 		| 'color';
 
 	id: string;
-	secondaryId: string;
+	secondaryId?: string;
 
-	label: string;
-	color: string;
+	label?: string;
+	color?: string;
 
 	placeholder?: string;
 
@@ -46,9 +46,9 @@ export interface InputControlField {
 
 	noCheckDirty?: boolean;
 
-	appendTo: string;
+	appendTo?: string;
 
-	virtualScroll: boolean;
+	virtualScroll?: boolean;
 
 	treeConfig?: {
 		isTree?: boolean;
