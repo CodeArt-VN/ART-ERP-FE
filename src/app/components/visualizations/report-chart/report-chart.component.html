@@ -1,4 +1,4 @@
-<div *ngIf="report" class="chart-holder" [class]="[viewMode]" [ngClass]="{ glass: viewMode != 'mini' }">
+<div *ngIf="report" class="chart-holder" [class]="viewMode" [ngClass]="{ glass: viewMode != 'mini' }">
 	<!-- chart title -->
 	<ion-item lines="none" *ngIf="viewMode == 'dashboard'">
 		<ion-icon [name]="report.Icon || 'stats-chart'" [color]="report.Color || 'primary'" slot="start"></ion-icon>
@@ -159,7 +159,6 @@
 	<app-e-chart
 		class="app-chart"
 		*ngIf="(viewMode != 'dashboard' || (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')) && rptLoaded && (rawData.length || report.DataConfig.Schema.Id == null)"
-		[reportId]="reportId"
 		[viewMode]="viewMode"
 		[chartType]="chartType"
 		[chartScript]="chartScript"
@@ -185,7 +184,7 @@
 					secondaryId: 'To',
 					type: 'time-frame',
 					label: 'Time range',
-					form: form.controls.TimeFrame,
+					form: $any(form.controls.TimeFrame),
 				}"
 				(change)="onChangeTimeRange($event)"
 			></app-input-control>

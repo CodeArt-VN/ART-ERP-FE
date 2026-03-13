@@ -22,6 +22,7 @@ export class HelpDetailComponent extends PageBase {
 	_helpCode;
 	_helpName;
 	@Input() pageConfig;
+	@Input() BackHref?: string;
 	@Input() set helpCode(value: string) {
 		this._helpCode = value;
 		if (this.formLoaded) {

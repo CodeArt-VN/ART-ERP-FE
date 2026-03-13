@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-color-picker',
@@ -7,6 +7,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 	standalone: false,
 })
 export class ColorPickerComponent implements OnInit {
+	@Input() color: string;
+	
 	items = [
 		{ Code: 'primary', Name: 'Primary' },
 		{ Code: 'secondary', Name: 'Secondary' },

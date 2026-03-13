@@ -63,7 +63,14 @@ export class ReportConfigComponent implements OnInit {
 		public schemaService: SYS_SchemaProvider,
 		public formBuilder: FormBuilder,
 		public dynamicScriptLoaderService: DynamicScriptLoaderService
-	) {}
+	) {
+		this.pickerControl = this.formBuilder.group({
+			Type: ['Relative'],
+			Value: [null],
+			Period: ['Day'],
+			Amount: [1],
+		});
+	}
 
 	ngOnInit() {
 		this._intervalDataSource = [
@@ -299,10 +306,21 @@ export class ReportConfigComponent implements OnInit {
 
 	@ViewChild('popoverPub') popoverPub;
 	isOpenPopover = false;
+	isOpenDatePicker = false;
 	listControls: any;
 	formGroup: any;
 	tempForm: any;
-	pickerGroupName;
+	pickerGroupName: string;
+	pickerControl: FormGroup;
+
+	dismissDatePicker(_apply?: boolean): void {
+		this.isOpenDatePicker = false;
+	}
+
+	segmentTimeframeChanged(_e: unknown): void {}
+
+	pickDate(_config: unknown): void {}
+
 	presentPopover(event, fg, groupName) {
 		this.pickerGroupName = groupName;
 		this.formGroup = fg;

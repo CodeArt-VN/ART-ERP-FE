@@ -6,7 +6,7 @@
 		field.id &&
 		field.id !== '#' &&
 		((column.filterControlType != 'time-frame' && hasFilterValue()) ||
-			(column.filterControlType == 'time-frame' && (!field.form.controls.From?.controls.IsNull.value || !field.form.controls.To?.controls.IsNull.value)))
+			(column.filterControlType == 'time-frame' && (!$any(field.form.get('From')).controls.IsNull.value || !$any(field.form.get('To')).controls.IsNull.value)))
 	"
 	class="min-btn clickable"
 	(click)="onFilterFieldReset()"

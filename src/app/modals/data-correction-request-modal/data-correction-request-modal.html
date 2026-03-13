@@ -97,7 +97,7 @@
 				<!-- Render Form Array -->
 				<ng-container *ngIf="type === 'addresses-component'">
 					<app-address
-						*ngFor="let addressCtrl of fg.get(i).controls; let j = index"
+						*ngFor="let addressCtrl of $any(fg.get(i)).controls; let j = index"
 						[address]="addressCtrl.value"
 						[canEdit]="true"
 						[mapLoading]="env.isMapLoaded"
@@ -116,7 +116,7 @@
 
 				<ng-container *ngIf="type === 'tax-infos-component'">
 					<app-tax-info
-						*ngFor="let taxInfo of fg.get(i).controls; let j = index"
+						*ngFor="let taxInfo of $any(fg.get(i)).controls; let j = index"
 						[taxInfo]="taxInfo.value"
 						[canEdit]="pageConfig.canEdit"
 						(onChange)="changeTaxInfo(taxInfo,fg,$event)"

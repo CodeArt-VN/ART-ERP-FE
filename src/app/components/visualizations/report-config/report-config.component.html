@@ -13,10 +13,10 @@
 							label: 'Data from',
 							type: 'ng-select-schema',
 							dataSource: _IDSchemaDataSource,
-							clearable: 'true',
+							clearable: true,
 							bindLabel: 'Name',
 							bindValue: 'Id',
-							form: form.controls.Schema,
+							form: $any(form.controls.Schema),
 						}"
 						(change)="changeSchema($event)"
 					></app-form-control>
@@ -31,26 +31,26 @@
 						dataSource: _schemaDetailsList,
 						bindValue: 'Code',
 						bindLabel: 'Name',
-						form: form.controls.TimeFrame,
+						form: $any(form.controls.TimeFrame),
 					}"
 					(change)="onChange($event)"
 				></app-form-control>
 
 				<app-form-control
-					*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+					*ngIf="$any(form.controls.TimeFrame).controls.Dimension.value"
 					[field]="{
 						id: 'From',
 						secondaryId: 'To',
 						type: 'time-frame',
 						label: 'Time range',
-						form: form.controls.TimeFrame,
-						condition: form.controls.TimeFrame.controls.Dimension.value,
+						form: $any(form.controls.TimeFrame),
+						condition: $any(form.controls.TimeFrame).controls.Dimension.value,
 					}"
 					(change)="onChange($event)"
 				></app-form-control>
 
 				<app-form-control
-					*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+					*ngIf="$any(form.controls.TimeFrame).controls.Dimension.value"
 					[field]="{
 						id: 'CompareTo',
 						type: 'date-compare-to',
@@ -64,12 +64,12 @@
 					<div class="c-control">
 						<label class="c-label">{{ 'Time interval for the chart' | translate }}</label>
 						<span class="c-input btns">
-							<ion-button fill="clear" size="small" (click)="presentPopover($event, form.controls.Interval, 'Interval')">
+							<ion-button fill="clear" size="small" (click)="presentPopover($event, $any(form.controls.Interval), 'Interval')">
 								<ion-icon color="dark" slot="start" name="bar-chart-outline"></ion-icon>
 
-								{{ form.controls.Interval?.controls.Title?.value || form.controls.Interval?.controls.Property?.value }}
+								{{ $any(form.controls.Interval)?.controls.Title?.value || $any(form.controls.Interval)?.controls.Property?.value }}
 								<ion-text color="dark">&nbsp; {{ 'by' | translate }} &nbsp;</ion-text>
-								{{ form.controls.Interval?.controls.Type?.value }}
+								{{ $any(form.controls.Interval)?.controls.Type?.value }}
 							</ion-button>
 						</span>
 					</div>
@@ -79,9 +79,9 @@
 					<div class="c-control">
 						<label class="c-label">{{ 'Compare By' | translate }}</label>
 						<span class="c-input" style="flex-wrap: wrap; height: auto">
-							<ion-chip color="blue" *ngFor="let c of form.controls.CompareBy.controls" style="height: auto; margin: 0; margin-right: 2px">
+							<ion-chip color="blue" *ngFor="let c of $any(form.controls.CompareBy).controls" style="height: auto; margin: 0; margin-right: 2px">
 								<ion-label (click)="presentPopover($event, c, 'CompareBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
-								<ion-icon name="close" (click)="removeForm($event, c, form.controls.CompareBy)"></ion-icon>
+								<ion-icon name="close" (click)="removeForm($event, c, $any(form.controls.CompareBy))"></ion-icon>
 							</ion-chip>
 							<ion-button fill="clear" size="small" (click)="addNewForm($event, 'CompareBy')"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
 						</span>
@@ -92,9 +92,9 @@
 					<div class="c-control">
 						<label class="c-label">{{ 'Measure By' | translate }}</label>
 						<span class="c-input" style="flex-wrap: wrap; height: auto">
-							<ion-chip color="warning" *ngFor="let c of form.controls.MeasureBy.controls" style="height: auto; margin: 0; margin-right: 2px">
+							<ion-chip color="warning" *ngFor="let c of $any(form.controls.MeasureBy).controls" style="height: auto; margin: 0; margin-right: 2px">
 								<ion-label (click)="presentPopover($event, c, 'MeasureBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
-								<ion-icon name="close" (click)="removeForm($event, c, form.controls.MeasureBy)"></ion-icon>
+								<ion-icon name="close" (click)="removeForm($event, c, $any(form.controls.MeasureBy))"></ion-icon>
 							</ion-chip>
 							<ion-button fill="clear" size="small" (click)="addNewForm($event, 'MeasureBy')"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
 						</span>

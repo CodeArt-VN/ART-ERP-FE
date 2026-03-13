@@ -8,7 +8,7 @@ import { lib } from '../services/static/global-functions';
 	standalone: false,
 })
 export class DateFriendlyPipe implements PipeTransform {
-	transform(date: string): Observable<string> {
+	transform(date): Observable<string> {
 		return timer(0, 1000).pipe(
 			map(() => {
 				return lib.dateFormatFriendly(date);

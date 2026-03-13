@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 export interface InputControlField {
 	form: FormGroup;
 
-	type:
+	type?:
 		| 'text'
 		| 'number'
 		| 'email'
@@ -17,6 +17,9 @@ export interface InputControlField {
 		| 'ng-select-status'
 		| 'ng-select-bp'
 		| 'ng-select-item'
+		| 'ng-select-staff'
+		| 'ng-select-async'
+		| 'ng-select-schema'
 		| 'textarea'
 		| 'branch-breadcrumbs'
 		| 'span-text'
@@ -24,7 +27,11 @@ export interface InputControlField {
 		| 'span-date'
 		| 'span-datetime'
 		| 'icon'
-		| 'color';
+		| 'color'
+		| 'icon-color'
+		| 'time-frame'
+		| 'date-compare-to'
+		| string;
 
 	id: string;
 	secondaryId?: string;
@@ -48,6 +55,8 @@ export interface InputControlField {
 
 	appendTo?: string;
 
+	condition?: any;
+
 	virtualScroll?: boolean;
 
 	treeConfig?: {
@@ -62,6 +71,6 @@ export interface InputControlField {
 		selectedBranch?: number;
 		showingType?: string;
 		showingDisable?: boolean;
-		showingMode: 'showAll' | 'showSelectedAndChildren';
+		showingMode?: 'showAll' | 'showSelectedAndChildren';
 	};
 }

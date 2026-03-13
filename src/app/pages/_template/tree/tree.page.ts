@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { ItemReorderEventDetail } from '@ionic/angular';
 
 import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
@@ -66,6 +67,10 @@ export class TreePage extends PageBase {
 			i.showdetail = !this.isAllRowOpened;
 			this.toggleRow(this.itemsState, i, true);
 		});
+	}
+
+	handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+		ev.detail.complete();
 	}
 
 	onGroupChange(g) {

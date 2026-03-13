@@ -52,10 +52,10 @@
 										label: 'Data from',
 										type: 'ng-select-schema',
 										dataSource: _IDSchemaDataSource,
-										clearable: 'true',
+										clearable: true,
 										bindLabel: 'Name',
 										bindValue: 'Id',
-										form: formGroup.controls._Config.get('Schema'),
+										form: $any(formGroup.controls._Config.get('Schema')),
 									}"
 										(change)="changeSchema($event)"
 									></app-form-control>
@@ -70,7 +70,7 @@
 								dataSource: _schemaDetailsList,
 								bindValue: 'Code',
 								bindLabel: 'Name',
-								form: formGroup.controls._Config.get('TimeFrame'),
+								form: $any(formGroup.controls._Config.get('TimeFrame')),
 							}"
 								></app-form-control>
 
@@ -81,8 +81,8 @@
 								secondaryId: 'To',
 								type: 'time-frame',
 								label: 'Time range',
-								form: formGroup.controls._Config.get('TimeFrame'),
-								condition: formGroup.controls._Config.controls.TimeFrame?.get('Dimension')?.value,
+								form: $any(formGroup.controls._Config.get('TimeFrame')),
+								condition: formGroup.get('_Config')?.get('TimeFrame')?.get('Dimension')?.value,
 							}"
 								></app-form-control>
 
@@ -92,7 +92,7 @@
 								id: 'CompareTo',
 								type: 'date-compare-to',
 								label: 'Compare to',
-								form: formGroup.controls._Config,
+								form: $any(formGroup.controls._Config),
 							}"
 								></app-form-control>
 
@@ -118,11 +118,11 @@
 										<span class="c-input" style="flex-wrap: wrap; height: auto">
 											<ion-chip
 												color="blue"
-												*ngFor="let c of formGroup.controls._Config.get('CompareBy')?.controls"
+												*ngFor="let c of $any(formGroup.get('_Config').get('CompareBy')).controls"
 												style="height: auto; margin: 0; margin-right: 2px"
 											>
 												<ion-label (click)="presentPopover($event, c, 'CompareBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
-												<ion-icon name="close" (click)="removeForm($event, c, formGroup.controls._Config.controls.CompareBy)"></ion-icon>
+												<ion-icon name="close" (click)="removeForm($event, c, $any(formGroup.get('_Config').get('CompareBy')))"></ion-icon>
 											</ion-chip>
 											<ion-button fill="clear" size="small" (click)="addNewForm($event, 'CompareBy')"
 												><ion-icon name="add-circle-outline"></ion-icon
@@ -137,7 +137,7 @@
 										<span class="c-input" style="flex-wrap: wrap; height: auto">
 											<ion-chip
 												color="warning"
-												*ngFor="let c of formGroup.controls._Config.get('MeasureBy')?.controls"
+												*ngFor="let c of $any(formGroup.get('_Config').get('MeasureBy')).controls"
 												style="height: auto; margin: 0; margin-right: 2px"
 											>
 												<ion-label (click)="presentPopover($event, c, 'MeasureBy')">{{ c.get('Title')?.value || c.get('Property')?.value }}</ion-label>
