@@ -7,12 +7,12 @@
 		<ion-back-button
 			*ngIf="page.pageConfig.isDetailPage"
 			[defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
-			[text]="(page.pageConfig.pageTitle ? page.pageConfig.pageTitle : 'Back') | translate"
+			[text]="((pageTitle || page.pageConfig.pageTitle) ? (pageTitle || page.pageConfig.pageTitle) : 'Back') | translate"
 		>
 		</ion-back-button>
 
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length">
-			{{ page.pageConfig.pageTitle | translate }}
+			{{ (pageTitle || page.pageConfig.pageTitle) | translate }}
 		</ion-button>
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">
 			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}

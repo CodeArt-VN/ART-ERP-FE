@@ -10,8 +10,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 //
 //Custom component
-import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
-
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { ShareDataTableModule } from './data-table/share-data-table.module';
@@ -50,7 +48,6 @@ import { PageNotificationComponent } from './page-notification/page-notification
 	// providers: [provideNgxMask()],
 
 	declarations: [
-		ListToolbarComponent,
 		ToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
@@ -63,7 +60,6 @@ import { PageNotificationComponent } from './page-notification/page-notification
 	],
 	exports: [
 		HelpDetailComponent,
-		ListToolbarComponent,
 		ToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
