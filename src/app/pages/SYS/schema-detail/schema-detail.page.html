@@ -48,7 +48,7 @@
 											<span class="bold">{{g.get('Code').value}}</span>
 											<span *ngIf="g.get('Name').value"> - <ion-text color="medium">{{g.get('Name').value | translate}}</ion-text></span>
 										</ion-label>
-										<ion-button color="danger" (click)="removeField(g,dx)" fill="clear" slot="end">
+										<ion-button color="danger" (click)="removeField(g,idx)" fill="clear" slot="end">
 											<ion-icon slot="icon-only" name="trash"></ion-icon>
 										</ion-button>
 										<ion-reorder slot="end"></ion-reorder>

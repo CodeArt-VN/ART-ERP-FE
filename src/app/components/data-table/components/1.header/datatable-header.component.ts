@@ -33,6 +33,10 @@ export class DataTableHeaderComponent implements OnInit {
 
 	ngOnInit() {}
 
+	getSortOrder(column: any): 'ASC' | 'DESC' | '' {
+		return this._query?.Sort?.find((s: any) => s.Dimension === column?.property)?.Order || '';
+	}
+
 	@Output() filterInputChange: EventEmitter<any> = new EventEmitter();
 	onFilterInputChange(e) {
 		this.filterInputChange.emit(e);

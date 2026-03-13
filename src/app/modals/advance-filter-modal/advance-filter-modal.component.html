@@ -28,26 +28,26 @@
 							dataSource: _timeDimension,
 							bindValue: 'Code',
 							bindLabel: 'Name',
-							form: form.controls.TimeFrame,
+							form: $any(form.controls.TimeFrame),
 							clearable: true,
 						}"
 					></app-form-control>
 
 					<app-form-control
-						*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+						*ngIf="$any(form.controls.TimeFrame).controls.Dimension.value"
 						[field]="{
 							id: 'From',
 							secondaryId: 'To',
 							type: 'time-frame',
 							label: 'Time range',
-							form: form.controls.TimeFrame,
-							condition: form.controls.TimeFrame.controls.Dimension.value,
+							form: $any(form.controls.TimeFrame),
+							condition: $any(form.controls.TimeFrame).controls.Dimension.value,
 							clearable: true,
 						}"
 					></app-form-control>
 
 					<app-form-control
-						*ngIf="form.controls.TimeFrame.controls.Dimension.value"
+						*ngIf="$any(form.controls.TimeFrame).controls.Dimension.value"
 						[field]="{
 							id: 'CompareTo',
 							type: 'date-compare-to',

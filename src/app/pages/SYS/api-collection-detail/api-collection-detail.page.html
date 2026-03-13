@@ -189,7 +189,7 @@
 								<ng-container [formGroup]="c">
 									<div class="col-checkbox cell">
 										<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Params', true)" />
-										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
+										<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : $any(c) }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 									</div>
 									<div class="col-name cell">
 										<app-input-control
@@ -229,27 +229,27 @@
 			</ion-grid>
 			<!-- Authorization -->
 			<ion-grid fixed *ngIf="segmentView == 's2'">
-				<form [formGroup]="formGroup.get('_Authorization')">
+				<form [formGroup]="$any(formGroup.get('_Authorization'))">
 					<ion-row class="hr-group ion-padding">
 						<ion-col size="12" size-sm size-xl="4">
 							<app-form-control
-								[field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : formGroup.get('_Authorization') }"
+								[field]="{id:'Type', type : 'ng-select',dataSource: authorizationList, bindLabel:'Name', bindValue:'Code', form : $any(formGroup.get('_Authorization')) }"
 								(change)="saveChangeJson('Authorization')"
 							></app-form-control>
 						</ion-col>
 						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Bearer'">
 							<app-form-control
-								[field]="{id:'Token', type : 'text', label: 'Token', form : formGroup.get('_Authorization') }"
+								[field]="{id:'Token', type : 'text', label: 'Token', form : $any(formGroup.get('_Authorization')) }"
 								(change)="saveChangeJson('Authorization')"
 							></app-form-control>
 						</ion-col>
 						<ion-col size="12" size-sm size-xl="6" *ngIf="formGroup.get('_Authorization').get('Type').value == 'Basic'">
 							<app-form-control
-								[field]="{id:'Username', type : 'text', label: 'Username', form : formGroup.get('_Authorization') }"
+								[field]="{id:'Username', type : 'text', label: 'Username', form : $any(formGroup.get('_Authorization')) }"
 								(change)="saveChangeJson('Authorization')"
 							></app-form-control>
 							<app-form-control
-								[field]="{id:'Password', type : 'text', label: 'Password', form : formGroup.get('_Authorization') }"
+								[field]="{id:'Password', type : 'text', label: 'Password', form : $any(formGroup.get('_Authorization')) }"
 								(change)="saveChangeJson('Authorization')"
 							></app-form-control>
 						</ion-col>
@@ -273,19 +273,19 @@
 						<ng-container *ngIf="!pageConfig.showSpinner">
 							<div *ngFor="let c of formGroup.get('_Header')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 								<div class="col-checkbox cell">
-									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Header', 'Value')" />
+									<input class="c-checkbox" type="checkbox" [checked]="!(c.get('Disabled')?.value ?? false)" (change)="changeDisabled(c,'Header', false, 'Value')" />
 								</div>
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
+									<app-input-control [field]="{id:'Key', type : 'text', form : $any(c) }" (change)="saveChangeJson('Header',true)"></app-input-control>
 								</div>
 
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Header',true)"></app-input-control>
+									<app-input-control [field]="{id:'Value', type : 'text', form : $any(c) }" (change)="saveChangeJson('Header',true)"></app-input-control>
 								</div>
 
 								<div class="col-name cell">
 									<app-input-control
-										[field]="{id:'Description', label:'Remark', type : 'text', form : c }"
+										[field]="{id:'Description', label:'Remark', type : 'text', form : $any(c) }"
 										(change)="saveChangeJson('Header',true)"
 									></app-input-control>
 								</div>
@@ -311,13 +311,13 @@
 				<ion-row class="hr-group ion-padding">
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control
-							[field]="{id:'BodyType', type : 'ng-select', dataSource: bodyType, bindLabel:'Name', bindValue:'Code', label: 'Body type', form : formGroup.get('_Body') }"
+							[field]="{id:'BodyType', type : 'ng-select', dataSource: bodyType, bindLabel:'Name', bindValue:'Code', label: 'Body type', form : $any(formGroup.get('_Body')) }"
 							(change)="changeBodyType()"
 						></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4" *ngIf="formGroup.get('_Body').get('BodyType').value =='raw'">
 						<app-form-control
-							[field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : formGroup.get('_Body') }"
+							[field]="{id:'DataType', type : 'ng-select', dataSource: dataType, bindLabel:'Name', bindValue:'Code', label: 'Data type', form : $any(formGroup.get('_Body')) }"
 							(change)="saveChangeJson('Body')"
 						></app-form-control>
 					</ion-col>
@@ -362,11 +362,11 @@
 									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Body',true, 'Value')" />
 								</div>
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
+									<app-input-control [field]="{id:'Key', type : 'text', form : $any(c) }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
 								</div>
 
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
+									<app-input-control [field]="{id:'Value', type : 'text', form : $any(c) }" (change)="saveChangeJson('Body',true, c,'Value')"></app-input-control>
 								</div>
 
 								<div class="col-icon cell clickable" (click)="removeField(j,'Body',true, 'Value')">
@@ -446,17 +446,17 @@
 						<div *ngFor="let c of formGroup.get('_Varibles')['controls'] ;let j = index" class="row" [ngClass]="{odd: j % 2 != 0}">
 							<div class="col-checkbox cell">
 								<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Varibles', true)" />
-								<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : c }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
+								<!-- <app-input-control [field]="{id:'Disabled', type : 'checkbox', form : $any(c) }" (change)="changeDisabled(c,'Params', true)"></app-input-control> -->
 							</div>
 							<div class="col-name cell">
-								<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Varibles')"></app-input-control>
+								<app-input-control [field]="{id:'Key', type : 'text', form : $any(c) }" (change)="saveChangeJson('Varibles')"></app-input-control>
 							</div>
 
 							<div class="col-name cell">
-								<app-input-control [field]="{id:'InitialValue', type : 'text', form : c }" (change)="saveChangeJson('Varibles',true)"></app-input-control>
+								<app-input-control [field]="{id:'InitialValue', type : 'text', form : $any(c) }" (change)="saveChangeJson('Varibles',true)"></app-input-control>
 							</div>
 							<div class="col-name cell">
-								<app-input-control [field]="{id:'CurrentValue', type : 'text', form : c }" (change)="saveChangeJson('Varibles',true)"></app-input-control>
+								<app-input-control [field]="{id:'CurrentValue', type : 'text', form : $any(c) }" (change)="saveChangeJson('Varibles',true)"></app-input-control>
 							</div>
 
 							<div class="col-icon cell clickable" (click)="removeField(j,'Varibles')">
@@ -495,14 +495,14 @@
 									<input class="c-checkbox" type="checkbox" [checked]="!c.get('Disabled').value" (change)="changeDisabled(c,'Setting', true)" />
 								</div>
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Key', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
+									<app-input-control [field]="{id:'Key', type : 'text', form : $any(c) }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
 
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Value', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
+									<app-input-control [field]="{id:'Value', type : 'text', form : $any(c) }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
 								<div class="col-name cell">
-									<app-input-control [field]="{id:'Description', type : 'text', form : c }" (change)="saveChangeJson('Setting',true)"></app-input-control>
+									<app-input-control [field]="{id:'Description', type : 'text', form : $any(c) }" (change)="saveChangeJson('Setting',true)"></app-input-control>
 								</div>
 								<div class="col-icon cell clickable" (click)="removeField(j,'Setting')">
 									<ion-icon color="danger" *ngIf="pageConfig.canEdit && pageConfig.canDelete" name="trash"></ion-icon>

@@ -37,7 +37,8 @@ export class DataTableColumnDirective implements OnChanges {
 		| 'branch-breadcrumbs'
 		| 'span-number'
 		| 'span-date'
-		| 'span-datetime' = 'text';
+		| 'span-datetime'
+		| 'time-frame' = 'text';
 
 	@Input() filterDataSource: any[];
 	@Input() filterBindValue: string;

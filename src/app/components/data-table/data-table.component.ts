@@ -63,6 +63,7 @@ export class DataTableComponent implements OnInit {
 
 	_rowsBeforeFilter: any[];
 	@Output() filter: EventEmitter<any> = new EventEmitter();
+	@Output() queryChange: EventEmitter<any> = new EventEmitter();
 	onFilterSubmit(e) {
 		this.filterValue = this.formGroup.getRawValue();
 
@@ -73,6 +74,7 @@ export class DataTableComponent implements OnInit {
 			}
 		});
 
+		this.queryChange.emit(this.filterValue);
 		if (this.isQueryLocalOnly) {
 			this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
 			this._rows = this._rowsBeforeFilter.filter((row) => {

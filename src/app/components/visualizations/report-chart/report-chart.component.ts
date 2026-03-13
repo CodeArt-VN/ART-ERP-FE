@@ -181,6 +181,11 @@ export class ReportChartComponent implements OnInit {
 
 	/**	Control tool popover */
 	isToolPopoverOpen = false;
+	showSummaryCardsPopover = false;
+
+	get expressionType(): string {
+		return this._gridItem?.Config?.Type ?? 'Chart';
+	}
 	presentToolPopover(e: Event) {
 		this.toolPopover.event = e;
 		this.isToolPopoverOpen = true;

@@ -19,13 +19,13 @@ export class DataTableBodyCellComponent {
 		return this._column;
 	}
 
-	_row: any[];
-	@Input() set row(val: any[]) {
+	_row: any;
+	@Input() set row(val: any) {
 		this._row = val;
 		this.checkValueUpdates();
 	}
 
-	get row(): any[] {
+	get row(): any {
 		return this._row;
 	}
 

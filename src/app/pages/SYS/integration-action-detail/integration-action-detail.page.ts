@@ -351,4 +351,7 @@ export class IntegrationActionDetailPage extends PageBase {
 	toggleReorder() {
 		this.isDisabled = !this.isDisabled;
 	}
+
+	//TODO: Remove empty functions
+	noCheckDirty = false;
 }

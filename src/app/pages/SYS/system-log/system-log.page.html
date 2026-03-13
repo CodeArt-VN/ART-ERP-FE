@@ -17,7 +17,7 @@
 			<app-form-control (change)="changeFilter()" [field]="{id:'From',secondaryId: 'To', label: 'Time range', type : 'time-frame', form : formGroup}"></app-form-control>
 			<app-form-control
 				(change)="changeFilter()"
-				[field]="{id:'Type', label: 'Type', type : 'ng-select',dataSource:typeList, bindLable:'Name',bindValue:'Code', form : formGroup}"
+				[field]="{id:'Type', label: 'Type', type : 'ng-select',dataSource:typeList, bindLabel:'Name',bindValue:'Code', form : formGroup}"
 			></app-form-control>
 		</div>
 		<ion-list>

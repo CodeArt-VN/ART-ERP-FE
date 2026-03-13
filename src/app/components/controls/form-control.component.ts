@@ -45,6 +45,10 @@ export class FormControlComponent implements OnInit {
 
 	@Input() inline: boolean = false;
 
+	@Input() clearable: boolean;
+
+	@Input() virtualScroll: boolean;
+
 	get isValid() {
 		return this.field.form.controls[this.field.id].valid;
 	}
