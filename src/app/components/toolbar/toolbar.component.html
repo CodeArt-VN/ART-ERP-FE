@@ -1,4 +1,4 @@
-<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }">
+<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
 	
 	<!-- left-tool-bar -->
 	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }">
