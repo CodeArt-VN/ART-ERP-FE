@@ -12,6 +12,7 @@ import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { FormManagementService } from 'src/app/services/page/form-management.service';
 import QRCode from 'qrcode';
 import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-payment-modal',
@@ -28,6 +29,7 @@ export class PaymentModalComponent implements OnInit {
 	canEditVoucher: false;
 	formGroup: FormGroup;
 	edccList: any = [];
+	_defaultREFID = '';
 	paymentStatusList: any = [];
 	EDCCVCB_IsActive = false;
 	ZPIsActive = false;
@@ -754,11 +756,10 @@ export class PaymentModalComponent implements OnInit {
 			skip_reserved_when_mark_used: true,
 		};
 		this.commonService
-			.connect('POST', 'GotIt/CheckMultiple', postDTO)
+			.connect('POST', environment.appDomain + 'api/GotIt/CheckMultiple', postDTO)
 			.toPromise()
 			.then((voucher: any) => {
 				if (voucher) {
-					debugger;
 					if (voucher.success) {
 						let toltal = this.formGroup.get('InputAmount').value || 0;
 						this.formGroup.get('InputAmount').setValue(voucher.data[0].value + toltal);
@@ -796,7 +797,7 @@ export class PaymentModalComponent implements OnInit {
 		let code = this.listVoucherUsed.map((v) => v.code);
 		let postDTO = { pin: this.pin, codes: code, bill_number: this.item.SaleOrder.Id?.toString(), skip_reserved_when_mark_used: true, bill_total: this.item.DebtAmount };
 		try {
-			const res: any = await this.commonService.connect('POST', 'GotIt/MarkUseMultiple', postDTO).toPromise();
+			const res: any = await this.commonService.connect('POST', environment.appDomain + 'api/GotIt/MarkUseMultiple', postDTO).toPromise();
 			if (res.success) {
 				this.env.showMessage('Vouchers used successfully', 'success');
 			} else {
