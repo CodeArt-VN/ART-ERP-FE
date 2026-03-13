@@ -193,7 +193,7 @@ export class PaymentModalComponent implements OnInit {
 		let branch = this.env.branchList.find((b) => b.Id == this.item.IDBranch);
 		if (branch) this.item.BranchName = branch.Name;
 		if (this.EDCCVCB_IsActive) {
-			this.retryAsync(() => this.getEDCCConnection(), 3, 1000)
+			this.retryAsync(() => this.paymentService.getEDCCConnection(), 3, 1000)
 				.then((rs) => {
 					this.edccList = rs;
 				})
@@ -226,21 +226,7 @@ export class PaymentModalComponent implements OnInit {
 		});
 		this.approverDataSource.initSearch();
 	}
-	getEDCCConnection() {
-		return new Promise((resolve, reject) => {
-			this.incomingPaymentProvider.commonService
-				.connect('GET', 'BANK/IncomingPayment/GetEDCCConnection', {})
-				.toPromise()
-				.then((rs) => {
-					console.log(rs);
-					resolve(rs);
-				})
-				.catch((err) => {
-					this.env.showMessage(err.error?.ExceptionMessage, 'danger');
-					reject(null);
-				});
-		});
-	}
+
 	async retryAsync<T>(fn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> {
 		try {
 			return await fn();
