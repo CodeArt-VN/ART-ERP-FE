@@ -345,10 +345,10 @@
 									</ion-col>
 								</ion-row>
 								<ion-row *ngIf="edccList?.length > 0">
-									<ion-col size="auto" *ngFor="let edcc of edccList" style="flex: 0 0 auto; width: auto">
-										<label class="list-group-item" [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)">
-											<span><img style="border: 1px solid #ccc" height="50px" src="/assets/logos/banks/EDCC.jpg" /></span>
-											<!-- {{ edcc.Bank }} -->
+									<ion-col size="auto" *ngFor="let edcc of edccList" class="edcc-col" [class.active-edcc]="edcc.REF_ID == _defaultREFID">
+										<label [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)" class="edcc-item">
+											<img src="/assets/logos/banks/EDCC.jpg" />
+											<span>{{ edcc.SERIAL.slice(-8) }}</span>
 										</label>
 									</ion-col>
 								</ion-row>
