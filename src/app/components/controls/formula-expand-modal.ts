@@ -105,7 +105,7 @@ export class FormulaExpandModalComponent implements OnInit {
     this.editorInstance.focus(); // đưa focus lại editor
   }
 
-  onKeyDown(event: KeyboardEvent) {
+  onKeyDown(event: Event) {
     this.isAllRowOpened = false;
     this.keyword$.next((event.target as HTMLInputElement).value);
   }

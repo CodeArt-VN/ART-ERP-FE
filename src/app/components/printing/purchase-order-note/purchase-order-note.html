@@ -20,7 +20,7 @@
 						<tbody>
 							<tr>
 								<td rowspan="11" class="logo">
-									<img [src]="item._Branch.LogoURL" (error)="$event.src='assets/RPT-Logo-ART.png'" />
+									<img [src]="item._Branch.LogoURL" (error)="$any($event.target).src='assets/RPT-Logo-ART.png'" />
 								</td>
 								<td colspan="2" class="bol title">{{'Purchase order' | translate}}</td>
 								<td class="bol num" colspan="2">{{item.Code? item.Code : 'PO: '+item.Id}}</td>
