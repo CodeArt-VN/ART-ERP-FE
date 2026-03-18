@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-buttons slot="end">
 			<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
@@ -11,9 +11,14 @@
 <ion-content appScrollbarTheme [fullscreen]="true" class="viewer-content">
 	<div *ngIf="card" #cardContainer class="viewer-card-wrap">
 		<!-- Profile / member-card -->
-		<ion-card *ngIf="isProfileType(card.type) || isMemberCardType(card.type)" class="viewer-card card-bg" [style.--card-bg-url]="getCardBgUrl(card)" [style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'">
+		<ion-card
+			*ngIf="isProfileType(card.type) || isMemberCardType(card.type)"
+			class="viewer-card card-bg"
+			[style.--card-bg-url]="getCardBgUrl(card)"
+			[style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'"
+		>
 			<ion-card-content>
-				<ion-item  class="card-header">
+				<ion-item class="card-header">
 					<ion-avatar slot="start">
 						<ion-img #img [src]="card.avatarUrl || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
 					</ion-avatar>
@@ -33,9 +38,14 @@
 		</ion-card>
 
 		<!-- Simple card (không bao gồm member-card) -->
-		<ion-card *ngIf="!isProfileType(card.type) && !isMemberCardType(card.type)" class="viewer-card card-bg" [style.--card-bg-url]="getCardBgUrl(card)" [style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'">
+		<ion-card
+			*ngIf="!isProfileType(card.type) && !isMemberCardType(card.type)"
+			class="viewer-card card-bg"
+			[style.--card-bg-url]="getCardBgUrl(card)"
+			[style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'"
+		>
 			<ion-card-content>
-				<ion-item  class="card-header">
+				<ion-item class="card-header">
 					<ion-icon *ngIf="card.icon" [name]="card.icon" slot="start"></ion-icon>
 					<ion-thumbnail *ngIf="card.imageUrl && !card.icon" slot="start">
 						<ion-img #img [src]="card.imageUrl" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
@@ -66,15 +76,17 @@
 	</div>
 </ion-content>
 
-<ion-footer [translucent]="true">
+<ion-footer [translucent]="true" collapse="fade">
 	<ion-toolbar>
-		<ion-buttons slot="end">
-			<ion-button (click)="shareCard()">
-				<ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+		<div slot="end">
+			<ion-button fill="clear" (click)="shareCard()">
+				<ion-icon name="share-social-outline"></ion-icon>
+				{{ 'Share' | translate }}
 			</ion-button>
-			<ion-button (click)="saveCard()">
-				<ion-icon slot="icon-only" name="download-outline"></ion-icon>
+			<ion-button fill="clear" (click)="saveCard()">
+				<ion-icon name="download-outline"></ion-icon>
+				{{ 'Save' | translate }}
 			</ion-button>
-		</ion-buttons>
+		</div>
 	</ion-toolbar>
 </ion-footer>

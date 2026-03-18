@@ -1,3 +1,5 @@
+@use './mixins' as mixins;
+
 //html without class mobile-font
 html:not(.mobile-font) {
 	font-size: 16px;
@@ -50,7 +52,6 @@ ion-accordion {
 	}
 
 	background-color: unset;
-
 }
 
 ion-virtual-scroll,
@@ -131,9 +132,7 @@ app-page-title {
 
 ion-header,
 app-toolbar {
-
-
-	>ion-toolbar:not(.no-padding) {
+	> ion-toolbar:not(.no-padding) {
 		--padding-start: 40px;
 
 		@media screen and (max-width: 991px) {
@@ -148,6 +147,13 @@ app-toolbar {
 ion-toolbar:first-of-type {
 	--padding-top: 0 !important;
 	padding-top: 0 !important;
+}
+
+ion-footer{
+	div>ion-button{
+		min-height: 40px;
+		--border-radius: 8px;
+	}
 }
 
 [hidden] {
@@ -302,8 +308,6 @@ input[type='number'] {
 	white-space: normal !important;
 }
 
-
-
 .flex-nowrap {
 	display: flex !important;
 	flex-wrap: nowrap;
@@ -389,6 +393,10 @@ input[type='number'] {
 	padding: 3px 7px;
 	margin: 0;
 	border-radius: 5px;
+}
+
+.translucent {
+	@include mixins.translucent;
 }
 
 .shadow {
@@ -772,8 +780,6 @@ ion-app {
 		//background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
 		background: linear-gradient(180deg, var(--feature-background-top), var(--feature-background-bottom));
 	}
-
-
 }
 
 .sticky-bottom {
@@ -850,10 +856,10 @@ ion-app {
 }
 
 .main-view {
-	// margin-right: 0;
-	// @media screen and (min-width: 1024px) {
-	//     margin-right: 320px;
-	// }
+	padding: 0px 16px 16px 16px;
+	@media screen and (max-width: calc(320px)) {
+		padding: 0 0 5px 0;
+	}
 
 	.row-full {
 		background: var(--table-row-background);
@@ -979,7 +985,7 @@ ion-app {
 					border-radius: 0 0 18px 18px;
 				}
 
-				&>div {
+				& > div {
 					white-space: nowrap;
 				}
 			}
@@ -1279,8 +1285,6 @@ ion-content.cameraFrame {
 		--border-radius: 12px;
 	}
 
-
-
 	.modal-welcome-page {
 		--height: 100%;
 		--width: 100%;
@@ -1312,7 +1316,6 @@ ion-content.cameraFrame {
 		--height: 450px;
 		--width: 535px;
 	}
-
 
 	.modal-combo {
 		--height: 90vh;

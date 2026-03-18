@@ -1,9 +1,10 @@
 /* Card full height khi vừa, scroll khi nội dung vượt */
 .viewer-content {
-	--padding-top: 8px;
-	--padding-bottom: 8px;
-	--padding-start: 12px;
-	--padding-end: 12px;
+	--padding-top: 0px;
+	--padding-bottom: 16px;
+	--padding-start: 16px;
+	--padding-end: 16px;
+
 	.viewer-card-wrap {
 		display: flex;
 		flex-direction: column;

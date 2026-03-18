@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title
 			><span *ngIf="item.IsRefundTransaction">
@@ -457,7 +457,7 @@
 	</form>
 </ion-content>
 
-<ion-footer>
+<ion-footer [translucent]="true" collapse="fade">
 	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type')?.value == 'ZalopayApp' && step == 2">
 		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
 	</div>

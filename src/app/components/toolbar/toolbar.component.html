@@ -51,7 +51,7 @@
 
 		<!-- Search -->
 		<ion-button
-			class="ion-hide-md-down"
+			
 			title="{{ 'Search' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
 			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
@@ -60,7 +60,7 @@
 		</ion-button>
 
 		<!-- Refresh -->
-		<ion-button title="{{ 'Refresh' | translate }}" *ngIf="!page.selectedItems?.length && page.pageConfig.ShowRefresh" (click)="page.refresh()">
+		<ion-button class="ion-hide-md-down" title="{{ 'Refresh' | translate }}" *ngIf="!page.selectedItems?.length && page.pageConfig.ShowRefresh" (click)="page.refresh()">
 			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 		</ion-button>
 

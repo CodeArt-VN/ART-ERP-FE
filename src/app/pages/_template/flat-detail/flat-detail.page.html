@@ -4,6 +4,10 @@
 
 <ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+		
+
+		<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">
 				<ion-row class="hr-group">

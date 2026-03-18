@@ -1,3 +1,5 @@
+@use './mixins' as mixins;
+
 .table-contain {
 	overflow: hidden;
 	overflow-x: auto !important;
@@ -59,8 +61,7 @@ app-data-table,
 		//border-bottom: solid 2px rgba(var(--ion-color-primary-rgb, 0, 0, 0), .9);
 		border-bottom: solid 1px var(--menu-right-border-color);
 		//background: rgba(var(--table-header-background-rgb, 0, 0, 0), .6) !important;
-		-webkit-backdrop-filter: saturate(180%) blur(20px);
-        backdrop-filter: saturate(180%) blur(20px);
+		@include mixins.translucent;
 
 		&.filter {
 			margin-top: -1px;
@@ -927,7 +928,7 @@ app-data-table,
 
 	&.responsive.padding-number-right {
 		@media screen and (max-width: calc(1164px + 0px)) {
-			.row {
+			.row:not(.header) {
 				padding-right: 110px !important;
 
 				.col-remark {

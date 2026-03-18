@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title>{{ 'Advanced export' | translate }}</ion-title>
 		<!-- Xuat du lieu -->
@@ -37,7 +37,7 @@
 		</ion-list>
 	</ng-container>
 </ion-content>
-<ion-footer>
+<ion-footer [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-label slot="end">{{ 'Select all' | translate }}</ion-label>
 		<ion-toggle size="small" slot="end" (ionChange)="toggleAll($event)"></ion-toggle>
