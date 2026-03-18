@@ -7,24 +7,43 @@ import { EnvService } from 'src/app/services/core/env.service';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
+	constructor(
+		private commonService: CommonService,
+		private env: EnvService
+	) {}
 
+	// public async checkResultRequest(IDPayment): Promise<any> {
+	//     return this.commonService.connect('GET', 'BANK/IncomingPayment/CheckPaymentResult', { IDPayment: IDPayment }).toPromise()
+	// }
 
-    constructor(private commonService: CommonService, private env: EnvService) {
-    }
+	getEDCCConnection() {
+		return new Promise((resolve, reject) => {
+			this.commonService
+				.connect('GET', 'BANK/IncomingPayment/GetEDCCConnection', {})
+				.toPromise()
+				.then((rs) => {
+					console.log(rs);
+					resolve(rs);
+				})
+				.catch((err) => {
+					this.env.showMessage(err.error?.ExceptionMessage, 'danger');
+					reject(null);
+				});
+		});
+	}
 
-    // public async checkResultRequest(IDPayment): Promise<any> {
-    //     return this.commonService.connect('GET', 'BANK/IncomingPayment/CheckPaymentResult', { IDPayment: IDPayment }).toPromise()
-    // }
-    public async postEDCCSale(payment) {
-        return new Promise((resolve, reject) => {
-            this.commonService.connect('POST', "BANK/IncomingPayment/PostEDCCSale", payment).toPromise().then(rs => {
-                resolve(rs)
-            }).catch(err => {
-                reject(null);
-                this.env.showMessage(err.error?.ExceptionMessage, 'danger');
-            });
-        })
-
-    }
-
+	public async postEDCCSale(payment) {
+		return new Promise((resolve, reject) => {
+			this.commonService
+				.connect('POST', 'BANK/IncomingPayment/PostEDCCSale', payment)
+				.toPromise()
+				.then((rs) => {
+					resolve(rs);
+				})
+				.catch((err) => {
+					reject(null);
+					this.env.showMessage(err.error?.ExceptionMessage, 'danger');
+				});
+		});
+	}
 }
