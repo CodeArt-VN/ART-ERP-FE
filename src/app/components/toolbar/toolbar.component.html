@@ -11,13 +11,13 @@
 		>
 		</ion-back-button>
 
-		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length">
+		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length && pageTitle != 'app-page-title'">
 			{{ (pageTitle || page.pageConfig.pageTitle) | translate }}
 		</ion-button>
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">
 			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}
 		</ion-button>
-		<ng-content select="[startTitle]"></ng-content>
+		<ng-content *ngIf="!page.selectedItems?.length" select="[startTitle]"></ng-content>
 	</ion-buttons>
 
 	<!-- fake back -->
