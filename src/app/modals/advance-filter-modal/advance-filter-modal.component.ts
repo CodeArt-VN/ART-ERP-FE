@@ -3,7 +3,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ReportDataConfig } from 'src/app/interfaces/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
+import { ReportService } from 'src/app/services/custom/report.service';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
+import { lib } from 'src/app/services/static/global-functions';
 
 @Component({
 	selector: 'app-advance-filter-modal',
@@ -20,6 +22,7 @@ export class AdvanceFilterModalComponent implements OnInit {
 	isOpenDatePicker = false;
 	_schemaDetailsList: any[] = [];
 	_timeDimension: any[] = [];
+	_timePeriodList: any[] = [];
 	_intervalDataSource: any[] = [];
 	_measureMethodDataSource: any[] = [];
 	confirmButtonText = 'Confirm';
@@ -35,8 +38,21 @@ export class AdvanceFilterModalComponent implements OnInit {
 		public formBuilder: FormBuilder,
 		public schemaProvider: SYS_SchemaProvider,
 		public modalController: ModalController,
-		public env: EnvService
-	) {}
+		public env: EnvService,
+		public rpt: ReportService
+	) {
+		this.pickerControl = this.formBuilder.group({
+			Type: ['Relative'],
+			Value: [null],
+			Period: ['Day'],
+			Amount: [1],
+		});
+	}
+
+	pickerControl: FormGroup;
+	segmentTimeframeChanged(_e: unknown): void {}
+	pickDate(_config: unknown): void {}
+	onChange(_e?: unknown): void {}
 	ngOnInit(): void {
 		this._intervalDataSource = [
 			{ Code: 'Hour', Name: 'Hour' },
@@ -85,6 +101,10 @@ export class AdvanceFilterModalComponent implements OnInit {
 			this._schemaDetailsList = this.selectedSchema.Fields;
 			this._timeDimension = [...this._schemaDetailsList.filter((d) => ['datetime', 'date'].includes(d.DataType))];
 		}
+		this._timePeriodList = lib.cloneObject(this.rpt.commonOptions.timeConfigPeriod || []);
+		this._timePeriodList.forEach((p: any) => {
+			p.name = (p.name || p.Name || '').toLowerCase() + ' ago';
+		});
 	}
 
 	buildForm(c) {

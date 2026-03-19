@@ -10,6 +10,8 @@
 		*ngIf="field"
 		[field]="field"
 		[inputControlTemplate]="inputControlTemplate"
+		[clearable]="clearable ?? field?.clearable"
+		[virtualScroll]="virtualScroll ?? field?.virtualScroll"
 		(change)="onChange($event)"
 		(inputChange)="onInputChange($event)"
 		(nav)="onNav($event)"

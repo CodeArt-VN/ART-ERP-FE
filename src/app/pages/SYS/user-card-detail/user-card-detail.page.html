@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="start" *ngIf="!navParams?.data?.isModal">
+			<ion-back-button defaultHref="/sys/user-card"></ion-back-button>
+		</ion-buttons>
+		<ion-title>{{ 'Other card' | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
+				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme [fullscreen]="true" class="ion-padding">
+	<div id="detail-page" style="position: absolute"></div>
+	<form [formGroup]="formGroup">
+		<!-- Avatar section -->
+		<ion-item lines="none" class="ion-margin-bottom">
+			<ion-avatar slot="start" class="avatar-placeholder">
+				<ion-icon name="grid-outline"></ion-icon>
+			</ion-avatar>
+			<ion-label class="ion-text-wrap">
+				<p>{{ 'Avatar helps you find the card faster' | translate }}</p>
+				<ion-button fill="outline" size="small" (click)="changeAvatar()">
+					{{ 'Change avatar' | translate }}
+				</ion-button>
+			</ion-label>
+		</ion-item>
+
+		<ion-grid fixed>
+			<ion-row class="hr-group">
+				<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+					<ion-list-header class="ion-no-padding">
+						<ion-label color="primary">{{ 'Other card' | translate }}</ion-label>
+					</ion-list-header>
+				</ion-col>
+				<ion-col size="12" size-sm size-xl="4">
+					<app-form-control [field]="{ id: 'CardType', label: 'Card type', type: 'ng-select', dataSource: cardTypeOptions, bindValue: 'value', bindLabel: 'label', form: formGroup }" (change)="formGroup.markAsDirty()"></app-form-control>
+					<app-form-control [field]="{ id: 'Title', label: 'Title', type: 'text', form: formGroup, placeholder: 'Enter title' }" (change)="formGroup.markAsDirty()"></app-form-control>
+					<ion-item lines="none">
+						<ion-label position="stacked">{{ 'Attached image' | translate }}</ion-label>
+					</ion-item>
+					<ion-button fill="outline" color="primary" (click)="addImage()">
+						<ion-icon name="image-outline" slot="start"></ion-icon>
+						{{ 'Add image' | translate }}
+					</ion-button>
+					<app-form-control [field]="{ id: 'Description', label: 'Description', type: 'textarea', form: formGroup, placeholder: 'Enter description' }" (change)="formGroup.markAsDirty()"></app-form-control>
+					<ion-item lines="none">
+						<ion-label position="stacked">{{ 'Card color' | translate }}</ion-label>
+					</ion-item>
+					<ion-buttons class="ion-margin-bottom color-picker">
+						<ion-button *ngFor="let c of cardColors" fill="solid" size="small" class="color-circle" [class.selected]="formGroup.get('Color').value === c.value" [style.--background]="c.hex" (click)="selectColor(c.value)"></ion-button>
+					</ion-buttons>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</form>
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-button expand="block" (click)="saveChange()" [disabled]="!formGroup.dirty || submitAttempt">
+			{{ 'Save' | translate }}
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>

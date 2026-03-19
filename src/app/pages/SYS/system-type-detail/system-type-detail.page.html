@@ -1,4 +1,4 @@
-<ion-header collapse="fade">
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title>{{item.Name}}</ion-title>
 
@@ -9,7 +9,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
 	<form [formGroup]="formGroup">
 		<ion-grid fixed>
 			<ion-row>
@@ -17,7 +17,7 @@
 					<app-form-control [field]="{id:'Code',label:'Code',type:'text',form:formGroup}"></app-form-control>
 					<app-form-control [field]="{id:'Name',label:'Name',type:'text',form:formGroup}"></app-form-control>
 					<app-form-control
-						[field]="{id:'IDParent',label:'Belonged to',type:'ng-select',dataSource:items,bindLable:'Name',bindValue:'Id',form:formGroup,
+						[field]="{id:'IDParent',label:'Belonged to',type:'ng-select',dataSource:items,bindLabel:'Name',bindValue:'Id',form:formGroup,
 						treeConfig:{searchFnDefault: true,isTree: true, isCollapsed: true}}"
 					></app-form-control>
 					<app-form-control

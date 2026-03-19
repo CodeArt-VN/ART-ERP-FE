@@ -21,7 +21,7 @@
 								parent: parent,
 							}"
 						></ng-container>
-						<div cdkDragHandle class="cell col-reorder" *ngIf="form.controls.Logicals.controls.length || form.get('Dimension')?.value != 'logical'">
+						<div cdkDragHandle class="cell col-reorder" *ngIf="$any(form.get('Logicals')).controls.length || form.get('Dimension')?.value != 'logical'">
 							<ion-icon name="reorder-two-outline"></ion-icon>
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 						*ngTemplateOutlet="
 							recursiveList;
 							context: {
-								list: form.controls.Logicals.controls,
+								list: $any(form.get('Logicals')).controls,
 								parent: form,
 							}
 						"
@@ -49,12 +49,12 @@
 						</div>
 					</div>
 				</form>
-				<div *ngIf="form.controls.Logicals?.controls.length > 0">
+				<div *ngIf="$any(form.get('Logicals')).controls.length > 0">
 					<ng-container
 						*ngTemplateOutlet="
 							recursiveList;
 							context: {
-								list: form.controls.Logicals.controls,
+								list: $any(form.get('Logicals')).controls,
 								parent: form,
 							}
 						"
@@ -114,7 +114,7 @@
 		<a
 			class="cell col-icon removeBtn"
 			(click)="removeForm(form, parent)"
-			*ngIf="parent && (form.get('Dimension')?.value != 'logical' || form.controls.Logicals.controls.length == 0)"
+			*ngIf="parent && (form.get('Dimension')?.value != 'logical' || $any(form.get('Logicals')).controls.length == 0)"
 		>
 			<ion-icon color="danger" class="min-btn" name="trash-outline"></ion-icon>
 		</a>

@@ -18,7 +18,7 @@ declare var ace: any;
 	standalone: false,
 })
 export class APICollectionDetailPage extends PageBase {
-	statusList: [];
+	statusList: any[] = [];
 	methodList: any = [];
 	typeList: any = [];
 	authorizationList: any = [];
@@ -320,6 +320,22 @@ export class APICollectionDetailPage extends PageBase {
 		}
 	}
 
+	deleteItems(controlName, fg = null, parentKey = null, arrayName = null) {
+		// Override PageBase - api-collection uses deleteItems with 1 or 4 args
+		if (fg && parentKey && arrayName) {
+			const formArray = fg.get(arrayName) as FormArray;
+			if (formArray) {
+				while (formArray.length > 0) formArray.removeAt(0);
+				this.saveChangeJson(parentKey, true, fg, arrayName);
+			}
+		} else {
+			const groups = this.formGroup.get('_' + controlName) as FormArray;
+			if (groups) {
+				while (groups.length > 0) groups.removeAt(0);
+				this.saveChangeJson(controlName);
+			}
+		}
+	}
 	removeField(index, controlName, isArray = false, arrayName = '') {
 		if (isArray) {
 			// TH array trong formGroup
@@ -647,4 +663,7 @@ export class APICollectionDetailPage extends PageBase {
 				});
 		});
 	}
+
+	//TODO: Remove empty functions
+	noCheckDirty = false;
 }

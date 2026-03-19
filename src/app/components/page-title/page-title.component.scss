@@ -19,7 +19,7 @@
 			color: var(--ion-color-medium);
 			margin: -3px 16px 0 0;
 
-			@media screen and (max-width: calc(1024px)) {
+			@media screen and (max-width: calc(768px)) {
 				margin-right: 0;
 				font-size: calc(10 / 16 * 2rem);
 			}

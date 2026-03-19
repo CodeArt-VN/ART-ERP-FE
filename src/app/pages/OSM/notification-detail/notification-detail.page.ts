@@ -150,21 +150,27 @@ export class NotificationDetailPage extends PageBase {
 	}
 
 	ngAfterViewInit() {
-		this.quillElementTitle.changes.subscribe((elements) => {
-			if (typeof elements.first !== 'undefined') {
-				this.loadQuillEditor();
-			}
-		});
-		this.quillElementBody.changes.subscribe((elements) => {
-			if (typeof elements.first !== 'undefined') {
-				this.loadQuillEditor();
-			}
-		});
-		this.quillElementSubtitle.changes.subscribe((elements) => {
-			if (typeof elements.first !== 'undefined') {
-				this.loadQuillEditor();
-			}
-		});
+		this.subscriptions.push(
+			this.quillElementTitle.changes.subscribe((elements) => {
+				if (typeof elements.first !== 'undefined') {
+					this.loadQuillEditor();
+				}
+			})
+		);
+		this.subscriptions.push(
+			this.quillElementBody.changes.subscribe((elements) => {
+				if (typeof elements.first !== 'undefined') {
+					this.loadQuillEditor();
+				}
+			})
+		);
+		this.subscriptions.push(
+			this.quillElementSubtitle.changes.subscribe((elements) => {
+				if (typeof elements.first !== 'undefined') {
+					this.loadQuillEditor();
+				}
+			})
+		);
 	}
 
 	initQuill() {

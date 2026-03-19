@@ -1,0 +1,12 @@
+<svg width="608" height="246" viewBox="0 0 608 246" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.5">
+<!-- Shield - membership badge -->
+<path d="M500 40 L580 80 L580 160 L500 200 L420 160 L420 80 Z" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.4"/>
+<path d="M470 70 L530 70 L530 130 L500 150 L470 130 Z" fill="white" fill-opacity="0.15"/>
+<!-- VIP / member stars -->
+<path d="M350 80 L360 100 L382 100 L365 114 L372 136 L350 124 L328 136 L335 114 L318 100 L340 100 Z" fill="white" fill-opacity="0.35"/>
+<path d="M250 140 L256 154 L272 154 L260 164 L264 180 L250 172 L236 180 L240 164 L228 154 L244 154 Z" fill="white" fill-opacity="0.3"/>
+<!-- Card strip -->
+<rect x="380" y="180" width="120" height="8" rx="2" fill="white" fill-opacity="0.3"/>
+</g>
+</svg>

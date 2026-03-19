@@ -1,0 +1,154 @@
+<ion-tabs>
+	<ion-tab tab="cards">
+		<div id="cards-page" class="ion-page">
+			<ion-header [translucent]="true">
+				<ion-toolbar>
+					<ion-title>{{ 'Cards & Tickets' | translate }}</ion-title>
+					<ion-buttons slot="end">
+						<!-- <ion-button (click)="addNew(); $event.stopPropagation()">
+							<ion-icon slot="icon-only" name="add-outline"></ion-icon>
+						</ion-button> -->
+						<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
+							<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+				<!-- <ion-toolbar>
+					<ion-segment [value]="filterMode" (ionChange)="setFilterMode($event.detail.value)">
+						<ion-segment-button value="all">
+							<ion-label>{{ 'All' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="profile">
+							<ion-label>{{ 'Profile card' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="other">
+							<ion-label>{{ 'Other card' | translate }}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+				</ion-toolbar> -->
+				<div class="ion-padding">
+					<ion-button (click)="setFilterMode('all')" [fill]="filterMode === 'all' ? 'solid' : 'outline'" size="small"> {{ 'All' | translate }} </ion-button>
+					<ion-button (click)="setFilterMode('profile')" [fill]="filterMode === 'profile' ? 'solid' : 'outline'" size="small">
+						{{ 'Profile card' | translate }}
+					</ion-button>
+					<ion-button (click)="setFilterMode('other')" [fill]="filterMode === 'other' ? 'solid' : 'outline'" size="small"> {{ 'Other card' | translate }} </ion-button>
+				</div>
+			</ion-header>
+			<ion-content appScrollbarTheme [fullscreen]="true">
+				<ng-container *ngFor="let card of filteredCards">
+					<!-- Profile card -->
+					<ion-card
+						*ngIf="card.type == 'my-profile'"
+						class="card-bg"
+						[style.--card-bg-url]="getCardBgUrl(card)"
+						[style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'"
+						button="true"
+						(click)="openCardViewer(card)"
+					>
+						<ion-card-content>
+							<ion-item lines="none">
+								<ion-avatar slot="start">
+									<ion-img #img [src]="card.imageUrl || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+								</ion-avatar>
+								<ion-label>
+									<h2>{{ card.title | translate }}</h2>
+								</ion-label>
+							</ion-item>
+
+							<ion-grid>
+								<ion-row>
+									<ion-col size="6" class="info-col">
+										<span>
+											<h2>{{ card.fullName }}</h2>
+											<p>{{ card.email }}</p>
+										</span>
+									</ion-col>
+									<ion-col size="6" class="qr-col">
+										<ion-thumbnail *ngIf="card.qrUrl" class="qr-thumb">
+											<ion-img [src]="card.qrUrl"></ion-img>
+										</ion-thumbnail>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</ion-card-content>
+					</ion-card>
+
+					<!-- Simple cards -->
+					<ion-card
+						*ngIf="card.type != 'my-profile'"
+						class="card-bg"
+						[style.--card-bg-url]="getCardBgUrl(card)"
+						[style.--card-color-rgb]="'var(--ion-color-' + (card.color || 'primary') + '-rgb)'"
+						button="true"
+						(click)="openCardViewer(card)"
+					>
+						<ion-card-content>
+							<ion-item lines="none">
+								<ion-icon *ngIf="card.icon" [name]="card.icon" slot="start"></ion-icon>
+								<ion-avatar *ngIf="card.imageUrl" slot="start">
+									<ion-img #img [src]="card.imageUrl" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+								</ion-avatar>
+								<ion-label>
+									<h2>{{ card.title | translate }}</h2>
+									<!-- <p>{{ card.type | translate }}</p> -->
+								</ion-label>
+							</ion-item>
+						</ion-card-content>
+					</ion-card>
+				</ng-container>
+				<div class="ion-padding"></div>
+			</ion-content>
+		</div>
+	</ion-tab>
+
+	<ion-tab tab="account">
+		<div id="account-page" class="ion-page">
+			<ion-header [translucent]="true">
+				<ion-toolbar>
+					<ion-title>{{ 'Account' | translate }}</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
+							<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content appScrollbarTheme [fullscreen]="true" class="ion-padding">
+				<app-page-message [showSpinner]="false" [itemsLength]="0" [message]="'No data available'" [subMessage]="'No data available'"> </app-page-message>
+			</ion-content>
+		</div>
+	</ion-tab>
+
+	<ion-tab tab="history">
+		<div id="history-page" class="ion-page">
+			<ion-header [translucent]="true">
+				<ion-toolbar>
+					<ion-title>{{ 'History' | translate }}</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="closeModal()" title="{{ 'Close' | translate }}">
+							<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content appScrollbarTheme [fullscreen]="true" class="ion-padding">
+				<app-page-message [showSpinner]="false" [itemsLength]="0" [message]="'No data available'" [subMessage]="'No data available'"> </app-page-message>
+			</ion-content>
+		</div>
+	</ion-tab>
+
+	<ion-tab-bar slot="bottom">
+		<ion-tab-button tab="account">
+			<ion-icon name="wallet-outline"></ion-icon>
+			<ion-label>{{ 'Account' | translate }}</ion-label>
+		</ion-tab-button>
+		<ion-tab-button tab="history">
+			<ion-icon name="time-outline"></ion-icon>
+			<ion-label>{{ 'History' | translate }}</ion-label>
+		</ion-tab-button>
+		<ion-tab-button tab="cards">
+			<ion-icon name="card-outline"></ion-icon>
+			<ion-label>{{ 'Cards & Tickets' | translate }}</ion-label>
+		</ion-tab-button>
+	</ion-tab-bar>
+</ion-tabs>

@@ -24,6 +24,7 @@ var URLSearchParams: any;
 })
 export class LoginPage extends PageBase {
 	password: string = '';
+	email = '';
 	formGroup: FormGroup;
 	submitAttempt = false;
 	returnUrl: string;
@@ -217,7 +218,7 @@ export class LoginPage extends PageBase {
 	 * Request password reset
 	 * Migrated from AccountService.forgotPassword()
 	 */
-	async forgotPassword(email: string): Promise<any> {
+	async forgotPassword(email: string = null): Promise<any> {
 		dogF && console.log('🔐 [LoginPage] Requesting password reset...', { email });
 
 		try {

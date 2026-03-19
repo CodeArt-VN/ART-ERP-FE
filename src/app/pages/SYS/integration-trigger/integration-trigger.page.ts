@@ -61,4 +61,7 @@ export class IntegrationTriggerPage extends PageBase {
 
 		this.refresh();
 	}
+
+	//TODO: Remove empty functions
+	handleReorder(_e?: any) {}
 }

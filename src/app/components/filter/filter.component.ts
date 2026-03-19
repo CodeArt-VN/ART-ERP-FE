@@ -137,7 +137,7 @@ export class FilterComponent implements OnInit {
 	}
 
 	@Output() submit = new EventEmitter();
-	onFormSubmit() {
+	onFormSubmit(_e?: any) {
 		if (!this.form.valid) {
 			this.getMessage({
 				message: 'Please recheck information highlighted in red above',

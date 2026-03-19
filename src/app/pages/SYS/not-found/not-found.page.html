@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar *ngIf="!pageConfig.isShowSearch">
 		<ion-buttons slot="start">
 			<ion-back-button *ngIf="!isFromLogin"></ion-back-button>
@@ -7,7 +7,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<!-- <ion-content appScrollbarTheme>
+<!-- <ion-content [fullscreen]="true" appScrollbarTheme>
 	<div class="one-col ion-padding">
 		<div class="ion-text-center">
 			<img class="logo" src="../../../assets/gem-logo-190.png">
@@ -22,7 +22,7 @@
 	</div>
 </ion-content> -->
 
-<ion-content appScrollbarTheme scroll-y="false">
+<ion-content [fullscreen]="true" appScrollbarTheme scroll-y="false">
 	<!-- <div *ngIf="pageConfig.showSpinner" class="page-loading">
 		<ion-spinner name="dots"></ion-spinner>
 	</div> -->

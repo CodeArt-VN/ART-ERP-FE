@@ -238,4 +238,7 @@ export class SchemaDetailPage extends PageBase {
 	}
 
 	//#endregion
+
+	//TODO: Remove empty functions
+	show = false;
 }

@@ -14,7 +14,7 @@
 						<tbody>
 							<tr>
 								<td rowspan="5" class="logo">
-									<img [src]="item.BranchLogoURL" (error)="$event.src='assets/RPT-Logo-ART.png'" />
+									<img [src]="item.BranchLogoURL" (error)="$any($event.target).src='assets/RPT-Logo-ART.png'" />
 									<!-- <ion-img #img [src]="item.CompanyLogoURL" (ionError)="img.src = 'assets/RPT-Logo-ART.png'"></ion-img> -->
 								</td>
 								<td colspan="2" class="bol title">{{'Delivery - payment slip' | translate}}</td>

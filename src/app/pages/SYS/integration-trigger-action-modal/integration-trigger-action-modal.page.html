@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-buttons slot="start" class="ion-hide-sm-down_">
 			<ion-button color="dark" class="ion-hide-sm-down"> {{'Trigger action mapping' | translate}} </ion-button>
@@ -21,7 +21,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="header-table">
+<ion-content appScrollbarTheme class="header-table" [fullscreen]="true">
 	<div class="main-view">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">

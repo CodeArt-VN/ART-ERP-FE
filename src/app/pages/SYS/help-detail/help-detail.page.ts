@@ -22,6 +22,7 @@ export class HelpDetailComponent extends PageBase {
 	_helpCode;
 	_helpName;
 	@Input() pageConfig;
+	@Input() BackHref?: string;
 	@Input() set helpCode(value: string) {
 		this._helpCode = value;
 		if (this.formLoaded) {
@@ -34,7 +35,6 @@ export class HelpDetailComponent extends PageBase {
 	isShowEdit = false;
 	showEditorContent = false;
 	contentBefore = '';
-	subscription;
 	isChangeLanguage = false;
 	isFullScreen = false;
 
@@ -56,19 +56,19 @@ export class HelpDetailComponent extends PageBase {
 		super();
 		this.pageConfig.showSpinner = false;
 		this.pageConfig.pageCode = 'help';
-		this.subscription = this.env.getEvents().subscribe((data) => {
-			if (data.Code == EVENT_TYPE.APP.CHANGE_LANGUAGE) {
-				this.isChangeLanguage = true;
-				this.loadData();
-			}
-		});
+		this.subscriptions.push(
+			this.env.getEvents().subscribe((data) => {
+				if (data.Code == EVENT_TYPE.APP.CHANGE_LANGUAGE) {
+					this.isChangeLanguage = true;
+					this.loadData();
+				}
+			})
+		);
 		this.buildFormGroup();
 	}
 
 	ngOnDestroy(): void {
-		if (this.subscription) {
-			this.subscription.unsubscribe();
-		}
+		super.ngOnDestroy();
 	}
 
 	@Output() closeHelp = new EventEmitter();
@@ -114,11 +114,13 @@ export class HelpDetailComponent extends PageBase {
 		});
 	}
 	ngAfterViewInit() {
-		this.quillElement.changes.subscribe((elements) => {
-			if (typeof elements.first !== 'undefined') {
-				this.loadQuillEditor();
-			}
-		});
+		this.subscriptions.push(
+			this.quillElement.changes.subscribe((elements) => {
+				if (typeof elements.first !== 'undefined') {
+					this.loadQuillEditor();
+				}
+			})
+		);
 	}
 
 	loadQuillEditor() {

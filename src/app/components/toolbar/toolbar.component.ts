@@ -17,14 +17,8 @@ export class ToolbarComponent implements OnInit {
 
 	@Input() page;
 
-	@Input() pageConfig; //remove this line
-
 	@Input() BackHref;
-	@Input() pageTitle;
-	@Input() selectedTitle;
-	@Input() selectedItems; //remove this line
-
-	@Input() query: any = {}; //remove this line
+	@Input() pageTitle; // optional override for page.pageConfig.pageTitle
 
 	@Input() CenterTitle;
 
@@ -68,12 +62,13 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		if (this.page.pageConfig?.pageTitle)
+		if (this.pageTitle) {
+			window.document.title = typeof this.pageTitle === 'string' ? this.pageTitle : '';
+		} else if (this.page.pageConfig?.pageTitle) {
 			this.translate.get(this.page.pageConfig.pageTitle).subscribe((text: string) => {
-				this.pageTitle = text;
 				window.document.title = text;
 			});
-		//  this.initShowButtons();
+		}
 	}
 
 	toggleFeature() {

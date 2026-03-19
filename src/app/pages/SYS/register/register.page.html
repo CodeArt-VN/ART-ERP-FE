@@ -1,4 +1,4 @@
-<ion-header class="head-bg ion-no-border">
+<ion-header [translucent]="true" class="head-bg ion-no-border">
 	<ion-toolbar class="transparent ion-no-border">
 		<!-- <ion-buttons slot="start">
       <ion-button class="back-btn" color="light" (click)="goBack()">
@@ -18,7 +18,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme class="gray">
+<ion-content [fullscreen]="true" appScrollbarTheme class="gray">
 	<ion-fab class="fake-header-bg" vertical="top" horizontal="left" slot="fixed"> </ion-fab>
 	<div class="main-content">
 		<div class="summary">

@@ -9,7 +9,7 @@
 		}"
 		[column]="column"
 		[filterValue]="_filterValue"
-		[sortOrder]="sortOrder"
+		[sortOrder]="getSortOrder(column)"
 		(sort)="onSort($event)"
 	></datatable-header-cell>
 

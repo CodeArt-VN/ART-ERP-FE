@@ -1,3 +1,5 @@
+@use './mixins' as mixins;
+
 //html without class mobile-font
 html:not(.mobile-font) {
 	font-size: 16px;
@@ -50,7 +52,6 @@ ion-accordion {
 	}
 
 	background-color: unset;
-
 }
 
 ion-virtual-scroll,
@@ -130,12 +131,8 @@ app-page-title {
 }
 
 ion-header,
-app-list-toolbar,
-app-toolbar,
-app-detail-toolbar {
-
-
-	>ion-toolbar:not(.no-padding) {
+app-toolbar {
+	> ion-toolbar:not(.no-padding) {
 		--padding-start: 40px;
 
 		@media screen and (max-width: 991px) {
@@ -150,6 +147,17 @@ app-detail-toolbar {
 ion-toolbar:first-of-type {
 	--padding-top: 0 !important;
 	padding-top: 0 !important;
+}
+ion-content ion-header.header-collapse-condense ion-toolbar{
+	--padding-start: 0;
+	--ion-background-color: transparent;
+}
+
+ion-footer{
+	div>ion-button{
+		min-height: 40px;
+		--border-radius: 8px;
+	}
 }
 
 [hidden] {
@@ -304,74 +312,6 @@ input[type='number'] {
 	white-space: normal !important;
 }
 
-@mixin datatable-row-line-clamp {
-	app-data-table datatable-body .cell,
-	.table .row:not(.header) .cell {
-		> span,
-		> a,
-		> ion-text,
-		> ion-label,
-		.text-item,
-		.sub-text {
-			min-width: 0;
-			max-width: 100%;
-			@content;
-		}
-	}
-}
-
-[class~='2lines' i] {
-	min-width: 0;
-	max-width: 100%;
-	display: -webkit-box;
-	white-space: normal;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-
-	app-data-table datatable-body .cell,
-	.table .row:not(.header) .cell {
-		white-space: normal !important;
-	}
-
-	@include datatable-row-line-clamp {
-		display: -webkit-box;
-		white-space: normal;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-	}
-}
-
-[class~='wrap' i] {
-	min-width: 0;
-	max-width: 100%;
-	display: block;
-	white-space: normal;
-	overflow: visible;
-	text-overflow: clip;
-	-webkit-line-clamp: unset;
-	-webkit-box-orient: unset;
-
-	app-data-table datatable-body .cell,
-	.table .row:not(.header) .cell {
-		white-space: normal !important;
-		overflow: visible !important;
-		text-overflow: clip !important;
-	}
-
-	@include datatable-row-line-clamp {
-		display: block;
-		white-space: normal;
-		overflow: visible;
-		text-overflow: clip;
-		-webkit-line-clamp: unset;
-		-webkit-box-orient: unset;
-	}
-}
-
 .flex-nowrap {
 	display: flex !important;
 	flex-wrap: nowrap;
@@ -457,6 +397,10 @@ input[type='number'] {
 	padding: 3px 7px;
 	margin: 0;
 	border-radius: 5px;
+}
+
+.translucent {
+	@include mixins.translucent;
 }
 
 .shadow {
@@ -840,8 +784,6 @@ ion-app {
 		//background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
 		background: linear-gradient(180deg, var(--feature-background-top), var(--feature-background-bottom));
 	}
-
-
 }
 
 .sticky-bottom {
@@ -918,10 +860,10 @@ ion-app {
 }
 
 .main-view {
-	// margin-right: 0;
-	// @media screen and (min-width: 1024px) {
-	//     margin-right: 320px;
-	// }
+	padding: 0px 16px 16px 16px;
+	@media screen and (max-width: calc(320px)) {
+		padding: 0 0 5px 0;
+	}
 
 	.row-full {
 		background: var(--table-row-background);
@@ -1047,7 +989,7 @@ ion-app {
 					border-radius: 0 0 18px 18px;
 				}
 
-				&>div {
+				& > div {
 					white-space: nowrap;
 				}
 			}
@@ -1347,8 +1289,6 @@ ion-content.cameraFrame {
 		--border-radius: 12px;
 	}
 
-
-
 	.modal-welcome-page {
 		--height: 100%;
 		--width: 100%;
@@ -1380,7 +1320,6 @@ ion-content.cameraFrame {
 		--height: 450px;
 		--width: 535px;
 	}
-
 
 	.modal-combo {
 		--height: 90vh;

@@ -19,9 +19,9 @@ export class APICollectionPage extends PageBase {
 	itemsState: any = [];
 	isAllRowOpened = true;
 	itemsView = [];
-	statusList: [];
+	statusList: any[] = [];
 	fileImport: any;
-	providerDataSource: [];
+	providerDataSource: any[] = [];
 	constructor(
 		public pageProvider: SYS_APICollectionProvider,
 		public integrationProvider: SYS_IntegrationProviderProvider,

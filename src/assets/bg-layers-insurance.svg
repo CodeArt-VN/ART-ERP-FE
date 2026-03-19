@@ -1,0 +1,13 @@
+<svg width="608" height="246" viewBox="0 0 608 246" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.5">
+<!-- Shield - protection -->
+<path d="M480 30 L580 80 L580 180 L480 220 L380 180 L380 80 Z" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.4"/>
+<path d="M450 70 L510 70 L510 130 L480 150 L450 130 Z" fill="white" fill-opacity="0.2"/>
+<!-- Medical cross -->
+<rect x="330" y="80" width="30" height="80" fill="white" fill-opacity="0.35"/>
+<rect x="300" y="110" width="90" height="20" fill="white" fill-opacity="0.35"/>
+<!-- Small shields -->
+<path d="M200 100 L240 120 L240 160 L200 180 L160 160 L160 120 Z" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+<path d="M100 140 L130 155 L130 185 L100 200 L70 185 L70 155 Z" fill="none" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+</g>
+</svg>

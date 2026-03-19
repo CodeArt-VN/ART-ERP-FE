@@ -48,7 +48,10 @@ export class AddressComponent extends PageBase {
 		this.typeList = value;
 	}
 	@Input() set mapLoading(value) {
-		this.env.isMapLoaded = value;
+		if (value !== undefined) this.env.isMapLoaded = value;
+	}
+	@Input('loadingMap') set loadingMap(value) {
+		if (value !== undefined) this.env.isMapLoaded = value;
 	}
 	mapLoaded: Observable<boolean>;
 	center: google.maps.LatLngLiteral = {

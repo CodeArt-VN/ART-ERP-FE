@@ -273,7 +273,7 @@ export class QuillEditorComponent implements OnInit {
 	}
 
 	isSubActive = false;
-	onKeyDown(event: KeyboardEvent) {
+	onKeyDown(event: Event) {
 		this.isAllRowOpened = false;
 		this.keyword$.next((event.target as HTMLInputElement).value);
 	}

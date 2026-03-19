@@ -48,6 +48,7 @@ export abstract class PageBase implements OnInit {
 		Take: 100,
 		Skip: 0,
 	};
+	maskConfig = { thousandSeparator: ',' };
 	schemaPage: any;
 	pageConfig: PageConfig = {
 		pageCode: '',

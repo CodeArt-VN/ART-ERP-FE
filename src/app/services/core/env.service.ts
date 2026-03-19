@@ -28,6 +28,9 @@ if ((window as any).ga) {
  * @class EnvService
  */
 export class EnvService {
+	//TODO: Remove empty functions
+	isMobile = false;
+
 	public app = {
 		version: 'v' + environment.appVersion,
 		theme: 'default-theme',

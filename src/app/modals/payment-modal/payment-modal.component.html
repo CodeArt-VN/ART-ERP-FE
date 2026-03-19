@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title
 			><span *ngIf="item.IsRefundTransaction">
@@ -28,7 +28,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme>
+<ion-content appScrollbarTheme [fullscreen]="true">
 	<form *ngIf="formGroup" [formGroup]="formGroup">
 		<ng-container [ngSwitch]="step">
 			<!-- PAGE 1 -->
@@ -345,10 +345,10 @@
 									</ion-col>
 								</ion-row>
 								<ion-row *ngIf="edccList?.length > 0">
-									<ion-col size="auto" *ngFor="let edcc of edccList" style="flex: 0 0 auto; width: auto">
-										<label class="list-group-item" [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)">
-											<span><img style="border: 1px solid #ccc" height="50px" src="/assets/logos/banks/EDCC.jpg" /></span>
-											<!-- {{ edcc.Bank }} -->
+									<ion-col size="auto" *ngFor="let edcc of edccList" class="edcc-col" [class.active-edcc]="edcc.REF_ID == _defaultREFID">
+										<label [for]="edcc.REF_ID" (click)="$event.stopPropagation(); changeEDCC(edcc)" class="edcc-item">
+											<img src="/assets/logos/banks/EDCC.jpg" />
+											<span>{{ edcc.SERIAL.slice(-8) }}</span>
 										</label>
 									</ion-col>
 								</ion-row>
@@ -457,7 +457,7 @@
 	</form>
 </ion-content>
 
-<ion-footer>
+<ion-footer [translucent]="true" collapse="fade">
 	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type')?.value == 'ZalopayApp' && step == 2">
 		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
 	</div>
