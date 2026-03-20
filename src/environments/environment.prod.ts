@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.44',
+	appVersion: '0.21.45',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
