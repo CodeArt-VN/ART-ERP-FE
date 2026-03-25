@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges, Optional } from '@angular/core';
+import { IonRouterOutlet, ModalController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AdvanceFilterModalComponent } from 'src/app/modals/advance-filter-modal/advance-filter-modal.component';
 import { EnvService } from 'src/app/services/core/env.service';
@@ -51,7 +51,8 @@ export class ToolbarComponent implements OnInit {
 	constructor(
 		public translate: TranslateService,
 		public env: EnvService,
-		public modalController: ModalController
+		public modalController: ModalController,
+		@Optional() public routerOutlet: IonRouterOutlet
 	) {
 		this.env.getEvents().subscribe((data) => {
 			if (data.Code == 'app:closePopListToolBar') {

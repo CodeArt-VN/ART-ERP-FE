@@ -2,7 +2,7 @@
 	
 	<!-- left-tool-bar -->
 	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }">
-		<ion-back-button *ngIf="!page.pageConfig.isDetailPage"></ion-back-button>
+		<ion-back-button *ngIf="!page.pageConfig.isDetailPage && (!routerOutlet || routerOutlet.canGoBack())"></ion-back-button>
 
 		<ion-back-button
 			*ngIf="page.pageConfig.isDetailPage"

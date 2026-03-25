@@ -43,6 +43,7 @@ export class AuthGuard implements CanActivate {
 				this.env.showMessage('System is initializing, please try again', 'warning');
 				this.router.navigate(['/login'], {
 					queryParams: { returnUrl: state.url },
+					replaceUrl: true,
 				});
 				resolve(false);
 			}
@@ -75,6 +76,7 @@ export class AuthGuard implements CanActivate {
 
 						this.router.navigate(['/login'], {
 							queryParams: { returnUrl: state.url },
+							replaceUrl: true,
 						});
 						resolve(false);
 					}
