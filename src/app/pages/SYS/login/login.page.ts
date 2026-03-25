@@ -75,7 +75,7 @@ export class LoginPage extends PageBase {
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
 		if (this.env.user && this.env.user.Id) {
-			void this.leaveToReturnUrl();
+			this.nav(this.returnUrl, 'back');
 		}
 
 		this.env.getStorage('Username')?.then((v) => {
@@ -83,20 +83,9 @@ export class LoginPage extends PageBase {
 		});
 	}
 
-	/**
-	 * Reset Ionic stack after login — only here, not via page.nav(...,'root').
-	 * Global navigateRoot in PageBase was reverted (f2d0afa); router+replaceUrl leaves /login in stack → back returns to login.
-	 */
-	private async leaveToReturnUrl(): Promise<void> {
-		let url = this.returnUrl || '/';
-		if (!url.startsWith('/')) {
-			url = '/' + url;
-		}
-		await this.navCtrl.navigateRoot(url, { replaceUrl: true });
-	}
-
 	goBack() {
-		void this.leaveToReturnUrl();
+		this.nav(this.returnUrl, 'back');
+		//this.navCtrl.back();
 	}
 
 	login() {
@@ -116,7 +105,7 @@ export class LoginPage extends PageBase {
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
 				await this.profileService.getProfile(); // Force reload fresh data
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
-				await this.leaveToReturnUrl();
+				this.goBack();
 			})
 			.catch((err) => {
 				if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
@@ -147,7 +136,7 @@ export class LoginPage extends PageBase {
 						await this.profileService.getProfile(); // Force reload fresh data
 						dogF && console.log('✅ [LoginPage] User data loaded, navigating back...');
 						loading.dismiss();
-						void this.leaveToReturnUrl();
+						this.goBack();
 					})
 					.catch((err) => {
 						loading.dismiss();
