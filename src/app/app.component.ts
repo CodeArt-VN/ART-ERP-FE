@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -67,7 +67,7 @@ export interface ComponentUI {
 	styleUrls: ['app.component.scss'],
 	standalone: false,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 	ui: ComponentUI = {
 		// App state
 		appTheme: 'default-theme',
@@ -310,6 +310,16 @@ export class AppComponent implements OnInit {
 		this.initializeApp();
 	}
 
+	ngAfterViewInit(): void {
+		this.syncNavigationCanGoBack();
+	}
+
+	private syncNavigationCanGoBack(): void {
+		const v = !!(this.routerOutlet && this.routerOutlet.canGoBack());
+		this.ui.canGoBack = v;
+		this.env.navigationCanGoBack = v;
+	}
+
 	async initializeApp() {
 		dogF && console.log('🌲 [AppComponent] Initialize App');
 		await this.env.ready;
@@ -398,7 +408,18 @@ export class AppComponent implements OnInit {
 		this.router.events.subscribe((event: any) => {
 			if (event instanceof NavigationEnd) {
 				dogF && console.log('🌲 [AppComponent] Navigation event:', event);
-				this.ui.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
+				const url = event.urlAfterRedirects || event.url;
+				if (this.env.user?.Id && url && !url.includes('/login')) {
+					try {
+						if (sessionStorage.getItem(this.env.SESSION_POST_LOGIN_NAV) === '1') {
+							sessionStorage.removeItem(this.env.SESSION_POST_LOGIN_NAV);
+							void this.navCtrl.navigateRoot(url, { replaceUrl: true });
+						}
+					} catch {
+						/* ignore */
+					}
+				}
+				this.syncNavigationCanGoBack();
 			}
 		});
 	}

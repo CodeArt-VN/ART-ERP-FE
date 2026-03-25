@@ -85,12 +85,35 @@ export class LoginPage extends PageBase {
 
 	/**
 	 * Reset Ionic stack after login — only here, not via page.nav(...,'root').
-	 * Global navigateRoot in PageBase was reverted (f2d0afa); router+replaceUrl leaves /login in stack → back returns to login.
+	 * SESSION_POST_LOGIN_NAV triggers AppComponent to navigateRoot again on NavigationEnd (drops /login from Ionic stack).
 	 */
+	private resolvePostLoginUrl(): string {
+		let raw = (this.returnUrl || '').trim();
+		if (raw.includes('://')) {
+			try {
+				const u = new URL(raw, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+				raw = u.pathname + u.search;
+			} catch {
+				return '/default';
+			}
+		}
+		let u = raw || '/default';
+		if (!u.startsWith('/')) {
+			u = '/' + u;
+		}
+		const path = u.split('?')[0].split('#')[0].toLowerCase();
+		if (path === '/' || path === '' || path === '/login' || path.includes('not-found')) {
+			return '/default';
+		}
+		return u;
+	}
+
 	private async leaveToReturnUrl(): Promise<void> {
-		let url = this.returnUrl || '/';
-		if (!url.startsWith('/')) {
-			url = '/' + url;
+		const url = this.resolvePostLoginUrl();
+		try {
+			sessionStorage.setItem(this.env.SESSION_POST_LOGIN_NAV, '1');
+		} catch {
+			/* private mode */
 		}
 		await this.navCtrl.navigateRoot(url, { replaceUrl: true });
 	}
