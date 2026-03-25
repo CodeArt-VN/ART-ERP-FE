@@ -28,9 +28,6 @@ if ((window as any).ga) {
  * @class EnvService
  */
 export class EnvService {
-	/** Set before login navigateRoot; AppComponent removes after one extra navigateRoot flattens Ionic stack */
-	readonly SESSION_POST_LOGIN_NAV = 'art-post-auth';
-
 	//TODO: Remove empty functions
 	isMobile = false;
 
@@ -111,12 +108,6 @@ export class EnvService {
 
 	/** Check is map library loaded */
 	public isMapLoaded = false;
-
-	/**
-	 * Set from AppComponent (IonRouterOutlet.canGoBack) on each NavigationEnd.
-	 * Toolbar lives in shared/lazy modules and cannot inject IonRouterOutlet — use this for list back.
-	 */
-	public navigationCanGoBack = false;
 
 	/** Get all Address subdivision */
 	public addressSubdivisionList = [];

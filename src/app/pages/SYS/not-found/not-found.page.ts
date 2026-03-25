@@ -34,17 +34,5 @@ export class NotFoundPage extends PageBase {
 		return prevUrl.includes('/login');
 	}
 
-	/** Custom header back: hide while post-login flatten runs or when router hints login (unreliable alone after navigateRoot). */
-	get showNotFoundToolbarBack(): boolean {
-		try {
-			if (sessionStorage.getItem(this.env.SESSION_POST_LOGIN_NAV) === '1') {
-				return false;
-			}
-		} catch {
-			/* ignore */
-		}
-		return !this.isFromLogin;
-	}
-
 	loadedData() {}
 }
