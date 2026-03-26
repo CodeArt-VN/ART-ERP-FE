@@ -48,9 +48,6 @@ export class LoginPage extends PageBase {
 	) {
 		super();
 
-		if (this.env.user && this.env.user.Id) {
-			this.preLoadData();
-		}
 		this.formGroup = formBuilder.group({
 			UserName: ['', Validators.compose([Validators.required])],
 			Password: ['', Validators.compose([Validators.required])],
@@ -72,15 +69,15 @@ export class LoginPage extends PageBase {
 
 	preLoadData() {
 		// get return url from route parameters or default to '/'
-		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'default';
 
 		if (this.env.user && this.env.user.Id) {
 			this.nav(this.returnUrl, 'back');
+		} else {
+			this.env.getStorage('Username')?.then((v) => {
+				this.formGroup.controls.UserName.setValue(v);
+			});
 		}
-
-		this.env.getStorage('Username')?.then((v) => {
-			this.formGroup.controls.UserName.setValue(v);
-		});
 	}
 
 	goBack() {

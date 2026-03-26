@@ -5,12 +5,14 @@ import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
 import { dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
+import { NavController } from '@ionic/angular';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
 	constructor(
+		public navCtrl: NavController,
 		public router: Router,
 		public env: EnvService,
 		public userContextService: UserContextService
@@ -56,12 +58,19 @@ export class AuthGuard implements CanActivate {
 					resolve(true);
 				} else {
 					if (this.env.user && this.env.user.Id) {
-						let firstView = this.env.user.Forms.filter((m) => m.Type == 0 || m.Type == 1 || m.Type == 2);
+						let firstView = this.env.user.Forms.filter((m) => {
+							if (!(m.Type == 0 || m.Type == 1 || m.Type == 2)) {
+								return false;
+							}
+							const formCodeWithSlash = m.Code + '/';
+							return this.router.config.some((r) => ((r?.path || '') + '/').startsWith(formCodeWithSlash));
+						});
 						if (firstView.length) {
 							if (state.url != '/default') {
 								this.env.showMessage('You are not authorized to access here. System would transfer to authorised page.', 'warning');
 							}
-							this.router.navigateByUrl(firstView[0].Code);
+							//this.router.navigateByUrl(firstView[0].Code);
+							this.navCtrl.navigateBack(firstView[0].Code);
 							resolve(false);
 						} else {
 							// not have any form so redirect to login page with the return url
@@ -73,9 +82,12 @@ export class AuthGuard implements CanActivate {
 						// not logged in so redirect to login page with the return url
 						this.env.showMessage('You are not authorized to access here, please log in again or use another account.', 'warning');
 
-						this.router.navigate(['/login'], {
+						this.navCtrl.navigateForward('/login', {
 							queryParams: { returnUrl: state.url },
 						});
+						// this.router.navigate(['/login'], {
+						// 	queryParams: { returnUrl: state.url },
+						// });
 						resolve(false);
 					}
 				}
