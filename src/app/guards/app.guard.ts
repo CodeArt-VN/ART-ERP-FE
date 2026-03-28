@@ -58,13 +58,37 @@ export class AuthGuard implements CanActivate {
 					resolve(true);
 				} else {
 					if (this.env.user && this.env.user.Id) {
-						let firstView = this.env.user.Forms.filter((m) => {
+						const isValidForm = (m) => {
 							if (!(m.Type == 0 || m.Type == 1 || m.Type == 2)) {
 								return false;
 							}
-							const formCodeWithSlash = m.Code + '/';
-							return this.router.config.some((r) => ((r?.path || '') + '/').startsWith(formCodeWithSlash));
-						});
+							const formCodeWithSlash = ((m.Code || '').replace(/^\/+|\/+$/g, '') || '') + '/';
+							return !!m.Code && this.router.config.some((r) => ((r?.path || '') + '/').startsWith(formCodeWithSlash));
+						};
+
+						let pinnedIds = [];
+						const pinnedValue = this.env.user?.UserSetting?.PinnedForms?.Value;
+						if (Array.isArray(pinnedValue)) {
+							pinnedIds = pinnedValue;
+						} else if (typeof pinnedValue == 'string' && pinnedValue) {
+							try {
+								const parsed = JSON.parse(pinnedValue);
+								pinnedIds = Array.isArray(parsed) ? parsed : [];
+							} catch (e) {
+								pinnedIds = [];
+							}
+						} else if (pinnedValue && typeof pinnedValue == 'object') {
+							pinnedIds = Array.isArray(pinnedValue) ? pinnedValue : [];
+						}
+
+						let firstView = [];
+						if (pinnedIds.length) {
+							firstView = pinnedIds.map((id) => this.env.user.Forms.find((f) => f.Id == id)).filter((f) => !!f && isValidForm(f));
+						}
+
+						if (!firstView.length) {
+							firstView = this.env.user.Forms.filter((m) => isValidForm(m));
+						}
 						if (firstView.length) {
 							if (state.url != '/default') {
 								this.env.showMessage('You are not authorized to access here. System would transfer to authorised page.', 'warning');
