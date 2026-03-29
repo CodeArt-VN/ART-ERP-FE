@@ -20,7 +20,7 @@ export class NotificationSegmentDetailPage extends PageBase {
 	selectedSchema: any;
 	canChangeReportConfig = true;
 	_IDSchemaDataSource: any = this.buildSelectDataSource((term) => {
-		return this.schemaService.search({ Take: 20, Skip: 0, Term: term });
+		return this.schemaService.search({ Take: 20, Skip: 0, Keyword: term });
 	});
 	_schemaDetailsList = [];
 	_intervalDataSource: any[] = [];

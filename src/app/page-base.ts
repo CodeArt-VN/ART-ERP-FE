@@ -185,19 +185,47 @@ export abstract class PageBase implements OnInit {
 				this.formGroup?.disable();
 			}
 		}
-		//set dividers for items
+		//set dividers: walk sort[0..n-1] in order; each step must match some divider.fields, else stop (any column without divider ⇒ no further dividers)
 		else if (this.pageConfig.dividers?.length && this.pageConfig.sort?.length > 0) {
-			console.log('loadedData', this.pageConfig.dividers, this.pageConfig.sort);
-			//Find the divider field by the first sort field
-			const divider = this.pageConfig.dividers.find((d) => d.field === this.pageConfig.sort[0].Dimension);
-			//If divider is found, then apply the divider function to each item
-			if (divider) {
-				console.log('Applying divider:', divider.field);
+			const sort = this.pageConfig.sort;
 
+			const clearRowDividers = () => {
+				this.items.forEach((item) => {
+					delete item['_divider'];
+					delete item['_dividers'];
+				});
+			};
+
+			const activeDividers: (typeof this.pageConfig.dividers)[number][] = [];
+			const usedDividerIdx = new Set<number>();
+			for (let j = 0; j < sort.length; j++) {
+				const dim = sort[j].Dimension;
+				const idx = this.pageConfig.dividers.findIndex((d) => d.fields?.includes(dim));
+				if (idx < 0) {
+					break;
+				}
+				if (!usedDividerIdx.has(idx)) {
+					usedDividerIdx.add(idx);
+					activeDividers.push(this.pageConfig.dividers[idx]);
+				}
+			}
+
+			if (!activeDividers.length) {
+				clearRowDividers();
+			} else {
 				this.items.forEach((item, index) => {
-					const dividerValue = divider.dividerFn(item, index, this.items);
-					if (dividerValue) {
-						item['_divider'] = dividerValue;
+					delete item['_divider'];
+					delete item['_dividers'];
+					const lines: string[] = [];
+					for (const divider of activeDividers) {
+						const dividerValue = divider.dividerFn(item, index, this.items);
+						if (dividerValue) {
+							lines.push(dividerValue);
+						}
+					}
+					if (lines.length) {
+						item['_dividers'] = lines;
+						item['_divider'] = lines[0];
 					}
 				});
 			}
