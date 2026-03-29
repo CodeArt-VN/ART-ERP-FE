@@ -14,6 +14,8 @@
 	<string>Dùng để checkin viếng thăm khách hàng</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Dùng để kiểm tra vị trí checkin của nhân viên</string>
+    <key>CAPACITOR_DEBUG</key>
+	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

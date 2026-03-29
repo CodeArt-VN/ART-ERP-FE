@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { ReportService } from 'src/app/services/report.service';
+import { ReportService } from 'src/app/services/custom/report.service';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 
 @Component({
@@ -26,7 +27,7 @@ export class QueryFilterComponent extends PageBase {
 		super();
 
 		this.pageConfig.subscribeEvent = this.env.getEvents().subscribe((data) => {
-			if (data.Code == 'changeBranch') {
+			if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 				this.changeBranchBtn();
 			} else {
 				this.refresh();

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { NoPreloading, PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/app.guard';
 
 import { ACCOUNTTANTRoutes } from './pages/ACCOUNTANT/routing.module';
@@ -28,6 +28,9 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  
+  { path: 'default', loadChildren: () => import('./pages/SYS/default/default.module').then(m => m.DefaultPageModule) },
+  
   { path: 'flat', loadChildren: () => import('./pages/_template/flat/flat.module').then(m => m.FlatPageModule), canActivate: [AuthGuard] },
   { path: 'flat/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [AuthGuard] },
     
@@ -47,8 +50,7 @@ const routes: Routes = [
   //BI/PURCHASE
   { path: 'purchase-reports', loadChildren: () => import('./pages/BI/PURCHASE/purchase-reports/purchase-reports.module').then(m => m.PurchaseReportsPageModule), canActivate: [AuthGuard] },
 
-
-  { path: '', redirectTo: 'default', pathMatch: 'full' },
+  { path: '', redirectTo: '/default', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found' },
 
 ];
@@ -78,7 +80,7 @@ let allRoutes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(allRoutes, { preloadingStrategy: PreloadAllModules, useHash: true })
+    RouterModule.forRoot(allRoutes, { preloadingStrategy: NoPreloading , useHash: true })
   ],
   exports: [RouterModule]
 })

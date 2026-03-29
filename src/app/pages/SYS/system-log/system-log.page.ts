@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { SYS_TypeProvider, vw_SYS_LogProvider } from 'src/app/services/static/services.service';
 import { FormBuilder } from '@angular/forms';
+import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
+import { SYS_TypeProvider, vw_SYS_LogProvider } from 'src/app/services/static/services.service';
 import { SystemLogDetailPage } from '../system-log-detail/system-log-detail.page';
 
 @Component({
@@ -160,7 +161,7 @@ export class SystemLogPage extends PageBase {
 				componentProps: {
 					id: i.Id,
 				},
-				cssClass: 'my-custom-class',
+				cssClass: 'modal90vh',
 			});
 			return await modal.present();
 		}

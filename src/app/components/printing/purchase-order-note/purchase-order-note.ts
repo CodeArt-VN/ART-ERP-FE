@@ -1,12 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
-import { lib } from 'src/app/services/static/global-functions';
-import QRCode from 'qrcode';
 import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
+import QRCode from 'qrcode';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
+import { lib } from 'src/app/services/static/global-functions';
+import { SYS_Config } from 'src/app/models/model-list-interface';
+import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
 
 @Component({
 	selector: 'app-po-note',
@@ -15,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 	standalone: false,
 })
 export class PurchaseOrderNoteComponent extends PageBase {
+	statusList = [];
 	@Input() ID;
 	@Input() item;
 	@Input() PONShowPackingUoM;
@@ -24,6 +28,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	sheets: any[] = [];
 	constructor(
 		public pageProvider: PURCHASE_OrderProvider,
+		public sysConfigService: SYS_ConfigService,
 		public modalController: ModalController,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
@@ -38,19 +43,36 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	}
 	preLoadData(event?: any): void {
 		this.id = this.ID;
-		if (this.item != null) {
-			this.loadedData(event);
-		} else {
-			super.preLoadData(event);
-		}
+
+		this.env.getStatus('PurchaseOrder').then((data: any) => {
+			this.statusList = data;
+		}).finally(() => {
+			if (this.item != null) {
+				this.loadedData(event);
+			} else {
+				super.preLoadData(event);
+			}
+		})
+
 	}
 	loadedData(event) {
 		super.loadedData(event);
-		this.loadPurchaseOrderNote();
+		this.sysConfigService.getConfig(this.env.selectedBranch, ['SmallLogo'])
+		.then((rs: any) => {
+			if (rs) {
+				this.item._Branch.LogoURL = rs.SmallLogo?.trim().replace(/^"(.*)"$/, '$1');
+			}
+			
+			this.loadPurchaseOrderNote();
+
+		}).catch(err => this.loadPurchaseOrderNote())
 	}
 	loadPurchaseOrderNote() {
 		this.submitAttempt = true;
-
+		if (!this.item?.Id) {
+			this.pageConfig.showSpinner = false;
+			return;
+		}
 		this.loadingController
 			.create({
 				cssClass: 'my-custom-class',
@@ -61,7 +83,10 @@ export class PurchaseOrderNoteComponent extends PageBase {
 				//const o = this.PO;
 				this.item.OrderDateText = lib.dateFormat(this.item.OrderDate, 'dd/mm/yy hh:MM');
 				this.item.ExpectedReceiptDateText = lib.dateFormat(this.item.ExpectedReceiptDate, 'dd/mm/yy hh:MM');
-				this.item.StatusText = lib.getAttrib(this.item.Status, this.env.statusList, 'Name', 'NA', 'Code');
+				if (this.item.ReceiptedDate) {
+					this.item.ReceiptedDateText = lib.dateFormat(this.item.ReceiptedDate, 'dd/mm/yy hh:MM');
+				}
+				this.item.StatusText = lib.getAttrib(this.item.Status, this.statusList, 'Name', 'NA', 'Code');
 				var self = this;
 				QRCode.toDataURL(
 					'PO:' + this.item.Id,

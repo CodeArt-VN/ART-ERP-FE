@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
+
 import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
 import { SYS_StatusProvider } from 'src/app/services/static/services.service';
 import { SystemStatusDetailPage } from '../system-status-detail/system-status-detail.page';
 
@@ -53,7 +54,7 @@ export class SystemStatusPage extends PageBase {
 				item: i,
 				id: i.Id,
 			},
-			cssClass: 'my-custom-class',
+			cssClass: 'modal90vh',
 		});
 		return await modal.present();
 	}

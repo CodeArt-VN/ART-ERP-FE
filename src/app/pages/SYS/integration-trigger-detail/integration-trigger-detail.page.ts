@@ -156,7 +156,7 @@ export class IntegrationTriggerDetailPage extends PageBase {
 		});
 	}
 
-	async showActionModal(fg) {
+	async showActionModal(fg = null) {
 		const modal = await this.modalController.create({
 			component: IntegrationTriggerActionModalPage,
 			componentProps: {

@@ -1,16 +1,24 @@
-import { forwardRef, Inject, Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Network } from '@capacitor/network';
-import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
-
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Observer, Subject, fromEvent, merge } from 'rxjs';
+import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment, dogF } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
-import { StorageService } from './storage.service';
-import { CommonService } from './common.service';
-import { LIST_AddressSubdivisionProvider } from '../static/services.service';
+import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
+import { CacheManagementService } from './cache-management.service';
+import { EVENT_TYPE } from '../static/event-type';
+import { UserProfile } from '../../interfaces/auth.interfaces';
+import { UserContextService } from '../auth/user-context.service';
+import { CacheConfig } from '../static/search-config';
+import { NavigationEnd, Router } from '@angular/router';
+
+let ga: any;
+if ((window as any).ga) {
+	ga = (window as any).ga;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -20,198 +28,100 @@ import { LIST_AddressSubdivisionProvider } from '../static/services.service';
  * @class EnvService
  */
 export class EnvService {
+	//TODO: Remove empty functions
+	isMobile = false;
+
+	public app = {
+		version: 'v' + environment.appVersion,
+		theme: 'default-theme',
+		isOnline: false,
+		tenant: {
+			current: environment.appDomain,
+			list: environment.appServers,
+		},
+	};
+
+	private pv: any = {
+		rawBranchList: [],
+		statusList: [],
+		typeList: [],
+		tenantReadySubject: new Subject<string>(),
+		lastMessage: '',
+	};
+
+	/** Check app is ready */
+	public ready: Promise<any> | null;
+
+	/** Get current logged in user */
+	public user: UserProfile | any = null;
+
+	constructor(
+		public storage: CacheManagementService,
+		public userContext: UserContextService,
+
+		private router: Router,
+		private toastController: ToastController,
+		private alertCtrl: AlertController,
+		private loadingController: LoadingController,
+		private translate: TranslateService,
+		private dynamicTranslateLoader: DynamicTranslateLoaderService
+	) {
+		dogF && console.log('👤 [EnvService] Constructor');
+		this.ready = new Promise((resolve, reject) => {
+			this.storage.tracking().subscribe((tracking) => {
+				if (tracking) {
+					this.preloadServices()
+						.then((_) => {
+							resolve(true);
+							this.loadServices();
+						})
+						.catch(reject);
+				}
+			});
+		});
+	}
+
 	public languageTracking = new Subject<any>();
 
 	/**
 	 * The lang currently used
 	 */
-	language: any = {
+	public language: any = {
 		default: 'vi-VN',
 		current: '',
 		isDefault: false,
 	};
 
-	/**
-	 * Set current language and translate resources
-	 * @param value Language code: 'vi-VN' | 'en-US'
-	 */
-	async setLang(value: string) {
-		if (!value) value = this.language.default;
-		this.translate.use(value);
-		this.setStorage('lang', value);
-		this.language.current = value;
-		this.language.isDefault = this.language.current == this.language.default;
-		this.languageTracking.next(this.language);
-	}
-
-	/** Get current app version */
-	version = environment.appVersion;
-
-	/** Get current logged in user */
-	user: any = {};
-
-	/** All cached config */
-	configs: any[] = [];
-
-	public configTracking = new Subject<any[]>();
-
-	/** Check enviroment is loaded */
-	isloaded = false;
-
-	/** Get current device infomation */
-	deviceInfo: any = null;
-
-	/** All branch list */
-	rawBranchList = [];
-
 	/** Get all flat tree branch list */
-	branchList = [];
+	public branchList = [];
 
 	/** Get all job title list */
-	jobTitleList = [];
+	public jobTitleList = [];
 
 	/** Get current branch id */
-	selectedBranch = null;
+	public get selectedBranch() {
+		return this.storage.app.selectedBranch;
+	}
 
 	/** Get current branch id and all children branch ids */
-	selectedBranchAndChildren = null;
-
-	/** All system status list */
-	statusList = [];
-
-	/** All system type list */
-	typeList = [];
-
-	/** Check platform is mobile*/
-	isMobile = false;
+	public selectedBranchAndChildren = null;
 
 	/** Check is map library loaded */
-	isMapLoaded = false;
+	public isMapLoaded = false;
 
 	/** Get all Address subdivision */
-	addressSubdivisionList = [];
-
-	/** Get network infomation */
-	networkInfo: any = {
-		isOnline: false,
-	};
+	public addressSubdivisionList = [];
 
 	/** Get current app domain */
 	get appPath() {
 		return window.location.origin + environment.appLocation + environment.versionLocation.replace('{{REPLACE_VERSION}}', environment.appVersion);
 	}
 
-	/** Check app is ready */
-	ready: Promise<any> | null;
-
-	/** Last message was shown */
-	lastMessage = '';
-
 	/** FCM token */
-	NotifyToken
+	public NotifyToken;
 
 	/** app event tracking */
 	public EventTracking = new Subject<any>();
-
-	constructor(
-		public plt: Platform,
-
-		public storage: StorageService,
-		public toastController: ToastController,
-		public alertCtrl: AlertController,
-		public loadingController: LoadingController,
-		public translate: TranslateService
-	) {
-		this.isMobile = this.plt.is('ios') || this.plt.is('android');
-		this.ready = new Promise((resolve, reject) => {
-			this.init().then(resolve).catch(reject);
-		});
-	}
-
-	/**
-	 * Init enviroment
-	 * Create storage service handle
-	 * Request app load languages
-	 * Add network listener
-	 * Connet SignalR
-	 */
-	async init() {
-		await this.storage.init();
-		this.typeList = await this.storage.get('SYS/Type');
-		this.statusList = await this.storage.get('SYS/Status');
-		this.publishEvent({ Code: 'app:loadLang' });
-		Network.addListener('networkStatusChange', (status) => {
-			this.publishEvent({ Code: 'app:networkStatusChange', status });
-			console.log('Network status changed', status);
-		});
-
-		this.trackOnline().subscribe((isOnline) => {
-			this.networkInfo.isOnline = isOnline;
-		});
-
-		const signalRConnection = new signalR.HubConnectionBuilder()
-			.configureLogging(signalR.LogLevel.Information)
-			.withUrl(environment.signalRServiceDomain + 'notify')
-			.withAutomaticReconnect()
-			.build();
-
-		signalRConnection
-			.start()
-			.then(function () {
-				console.log('SignalR Connected!');
-			})
-			.catch(function (err) {
-				return console.error(err.toString());
-			});
-
-		signalRConnection.on('BroadcastMessage', (e) => {
-			//console.log('BroadcastMessage', e);
-			//this.publishEvent({})
-			switch (e.code) {
-				case 'POSOrderPaymentUpdate':
-				case 'POSOrderFromCustomer':
-				case 'POSOrderFromStaff':
-				case 'POSSupport':
-				case 'POSCallToPay':
-				case 'POSLockOrderFromStaff':
-				case 'POSLockOrderFromCustomer':
-				case 'POSUnlockOrderFromStaff':
-				case 'POSUnlockOrderFromCustomer':
-				case 'POSLockOrder':
-				case 'POSUnlockOrder':
-				case 'POSOrderSplittedFromStaff':
-				case 'POSOrderMergedFromStaff':
-				case 'SOPaymentUpdate':
-					e.code = 'app:' + e.code;
-					this.publishEvent(e);
-					break;
-				case 'AppReload':
-					location.reload();
-					break;
-				case 'SystemMessage':
-					this.showMessage(e.value, e.name);
-					break;
-				case 'AppReloadOldVersion':
-					if (e.value.localeCompare(this.version) > 0) {
-						location.reload();
-					}
-					break;
-				case 'SystemAlert':
-					this.showAlert(e.value, null, e.name);
-					break;
-				default:
-					break;
-			}
-		});
-		signalRConnection.on('SendMessage', (user, message) => {
-			console.log('SendMessage', user, message);
-			//this.publishEvent({})
-		});
-		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
-			console.log('SaleOrdersUpdated', IDBranch, Ids);
-			this.publishEvent({ Code: 'sale-order-mobile' });
-		});
-	}
 
 	/**
 	 * Publish event for application
@@ -240,6 +150,16 @@ export class EnvService {
 		);
 	}
 
+	showBarMessage(id = '', icon = '', color = '', isShow = true, isBlink = false) {
+		this.publishEvent({
+			Code: EVENT_TYPE.APP.SHOW_APP_MESSAGE,
+			IsShow: isShow,
+			Id: id,
+			Icon: icon,
+			IsBlink: isBlink,
+			Color: color,
+		});
+	}
 	/**
 	 * Translate message and pass to showMessage method
 	 *
@@ -250,6 +170,7 @@ export class EnvService {
 	 * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
 	 */
 	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
+		if (typeof value === 'string') value = { value: value };
 		Promise.all([
 			this.translateResource(value ? { ...value, code: message } : message),
 			this.translateResource(value ? { ...value, code: subHeader } : subHeader),
@@ -261,11 +182,11 @@ export class EnvService {
 				translatedMessage = translatedMessage.join('<br>');
 			}
 
-			if (this.lastMessage == translatedMessage) return;
-			this.lastMessage = translatedMessage;
+			if (this.pv.lastMessage == translatedMessage) return;
+			this.pv.lastMessage = translatedMessage;
 
 			setTimeout(() => {
-				this.lastMessage = '';
+				this.pv.lastMessage = '';
 			}, 5000);
 
 			if (!showCloseButton) {
@@ -304,7 +225,14 @@ export class EnvService {
 		if (err.error?.ExceptionMessage) {
 			try {
 				let message = JSON.parse(err.error.ExceptionMessage);
-				this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+				if (message.Message) {
+					try {
+						message = JSON.parse(message.Message);
+						this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+					} catch (e) {
+						this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
+					}
+				} else this.showMessage(message.Message, 'danger', message, 5000, true, message.SubHeader, message.Header);
 			} catch (e) {
 				this.showMessage(err.error.ExceptionMessage, 'danger');
 			}
@@ -439,18 +367,43 @@ export class EnvService {
 		});
 	}
 
+	public async setLang(value?: string) {
+		value = value || this.language.default;
+		let hasResource = this.translate.getLangs().includes(value);
+
+		if (!hasResource) {
+			try {
+				const translations = await firstValueFrom(this.dynamicTranslateLoader.getTranslation(value));
+				if (translations && Object.keys(translations).length > 0) {
+					this.translate.setTranslation(value, translations);
+					dogF && console.log('Language loaded successfully via dynamic loader');
+					hasResource = true;
+				}
+			} catch (error) {
+				dogF && console.error('Failed to set language:', error);
+			}
+		}
+
+		this.translate.use(value);
+		this.language.current = value;
+		this.language.isDefault = value === this.language.default;
+		this.languageTracking.next(this.language);
+
+		this.setStorage('Lang', value, { enable: true, timeToLive: 365 * 24 * 60 }, null);
+		this.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_LANGUAGE, Value: value });
+	}
+
 	translateResource(resource) {
 		return new Promise((resolve) => {
 			if (resource == null) {
 				resolve(null);
-			} 
+			}
 			// Check if resource ís an array then translate each item and return an array of translated items
 			else if (Array.isArray(resource)) {
-				Promise.all(resource.map(item => this.translateResource(item))).then(translatedItems => {
+				Promise.all(resource.map((item) => this.translateResource(item))).then((translatedItems) => {
 					resolve(translatedItems);
 				});
-			}
-			else {
+			} else {
 				let key = typeof resource === 'object' ? resource.code : resource;
 				let value = typeof resource === 'object' ? resource : { value: null };
 
@@ -477,8 +430,8 @@ export class EnvService {
 	 * @param key The key to get storage
 	 * @returns Return the storage
 	 */
-	getStorage(key) {
-		return this.storage.get(key)!;
+	getStorage(key: string, query: any = null, branch: string = this.storage.app.selectedBranch) {
+		return this.storage.get(key, this.app.tenant.current, branch, query);
 	}
 
 	/**
@@ -487,16 +440,8 @@ export class EnvService {
 	 * @param value The value to save
 	 * @returns Return promise
 	 */
-	setStorage(key: string, value: any) {
-		return this.storage.set(key, value)!;
-	}
-
-	/**
-	 * Clear all storage value
-	 * @returns Return promise
-	 */
-	clearStorage() {
-		return this.storage.clear()!;
+	setStorage(key: string, value: any, config: CacheConfig = null, branch: string = this.storage.app.selectedBranch, serviceName: string = 'Manual') {
+		return this.storage.set(key, value, config, this.app.tenant.current, branch, serviceName);
 	}
 
 	/**
@@ -545,85 +490,88 @@ export class EnvService {
 	 */
 	loadBranch() {
 		return new Promise((resolve) => {
-			lib.buildFlatTree(this.rawBranchList, [], true).then((resp: any) => {
-				this.rawBranchList = resp;
-				this.branchList = [];
-				this.jobTitleList = [];
+			// Check if rawBranchList is different from user.BranchList
+			if (JSON.stringify(this.pv.rawBranchList) == JSON.stringify(this.user.BranchList)) {
+				dogF && console.log('🌲 [EnvService] Branch list is the same as user.BranchList');
+				resolve(true);
+				return;
+			}
+			dogF && console.log('🌲 [EnvService] Branch list is different from user.BranchList');
+			this.pv.rawBranchList = this.user.BranchList;
+			this.branchList = [];
+			this.jobTitleList = [];
 
-				console.log('reset branch + jobTitleList');
-
-				for (let ix = 0; ix < resp.length; ix++) {
-					const i: any = resp[ix];
-					i.Name = i.ShortName ? i.ShortName : i.Name;
-					i.disabled = true;
-					if (i.Type != 'TitlePosition') {
-						this.branchList.push(i);
-					}
-					this.jobTitleList.push(Object.assign({}, i));
+			for (let ix = 0; ix < this.pv.rawBranchList.length; ix++) {
+				const i: any = this.pv.rawBranchList[ix];
+				i.Name = i.ShortName ? i.ShortName : i.Name;
+				i.disabled = true;
+				if (i.Type != 'TitlePosition') {
+					this.branchList.push(i);
 				}
-				for (let ix = 0; ix < this.branchList.length; ix++) {
-					const i: any = this.branchList[ix];
-					i.IDs = [null];
-					this.getChildrenDepartmentID(i.IDs, i.Id);
-				}
+				this.jobTitleList.push(Object.assign({}, i));
+			}
+			for (let ix = 0; ix < this.branchList.length; ix++) {
+				const i: any = this.branchList[ix];
+				i.IDs = [null];
+				this.getChildrenDepartmentID(i.IDs, i.Id);
+			}
 
-				for (let ix = 0; ix < this.branchList.length; ix++) {
-					const i: any = this.branchList[ix];
-					i.Query = JSON.stringify(i.IDs);
-				}
+			for (let ix = 0; ix < this.branchList.length; ix++) {
+				const i: any = this.branchList[ix];
+				i.Query = JSON.stringify(i.IDs);
+			}
 
-				this.getStorage('selectedBranch').then((val) => {
-					if (this.user) {
-						for (let ix = 0; ix < this.user.Branchs.length; ix++) {
-							const b = this.user.Branchs[ix];
-							this.enablePermissionNode(b, this.branchList);
-							this.enablePermissionNode(b, this.jobTitleList);
+			if (this.user) {
+				for (let ix = 0; ix < this.user.Branchs.length; ix++) {
+					const b = this.user.Branchs[ix];
+					this.enablePermissionNode(b, this.branchList);
+					this.enablePermissionNode(b, this.jobTitleList);
+				}
+				setTimeout(() => {
+					for (let ix = 0; ix < this.jobTitleList.length; ix++) {
+						const i: any = this.jobTitleList[ix];
+						if (i.Type != 'TitlePosition') {
+							i.disabled = true;
 						}
-						setTimeout(() => {
-							for (let ix = 0; ix < this.jobTitleList.length; ix++) {
-								const i: any = this.jobTitleList[ix];
-								if (i.Type != 'TitlePosition') {
-									i.disabled = true;
-								}
-							}
-						}, 0);
-
-						this.branchList = [...this.branchList];
 					}
+				}, 0);
 
-					let selected: any = null;
+				this.branchList = [...this.branchList];
+			}
 
-					if (val) {
-						selected = this.branchList.find((d) => d.Id == val && d.disabled == false);
-					}
-					if (!selected) {
-						selected = this.branchList.find((d) => d.Id == this.user.IDBranch);
-					}
+			let selected: any = null;
 
-					if (selected) {
-						this.selectedBranch = selected.Id;
-						this.selectedBranchAndChildren = selected.Query;
-					} else {
-						this.selectedBranch = 0;
-						this.selectedBranchAndChildren = [0];
-					}
+			if (this.storage.app.selectedBranch) {
+				selected = this.branchList.find((d) => d.Id == this.storage.app.selectedBranch && d.disabled == false);
+			}
+			if (!selected) {
+				selected = this.branchList.find((d) => d.Id == this.user.IDBranch);
+			}
 
-					resolve(true);
-				});
-			});
+			if (selected) {
+				this.changeBranch(selected.Id);
+			} else {
+				dogF && console.error('🌲 [EnvService] Selected branch is not found');
+				debugger;
+				this.changeBranch(null);
+			}
+
+			resolve(true);
 		});
 	}
 
 	/**
 	 * Change enviroment selected branch and publish changeBranch event to app
 	 */
-	changeBranch() {
-		this.setStorage('selectedBranch', this.selectedBranch);
-		let selectedBranch = this.branchList.find((d) => d.Id == this.selectedBranch);
-		this.selectedBranchAndChildren = selectedBranch.Query;
-		this.publishEvent({ Code: 'changeBranch' });
-
-		this.configTracking.next(this.configs.filter((d) => d.IDBranch == this.selectedBranch));
+	changeBranch(branchId) {
+		let selectedBranch = this.branchList.find((d) => d.Id == branchId);
+		if (this.selectedBranch != branchId || this.selectedBranchAndChildren != selectedBranch?.Query) {
+			dogF && console.log('🌲 [EnvService] Changing branch to:', branchId);
+			this.storage.app.selectedBranch = branchId;
+			this.selectedBranchAndChildren = selectedBranch?.Query || [];
+			this.setStorage(`SelectedBranch(${this.user.Id})`, branchId, { enable: true, timeToLive: 365 * 24 * 60 }, null);
+			this.publishEvent({ Code: EVENT_TYPE.TENANT.BRANCH_SWITCHED });
+		}
 	}
 
 	/**
@@ -650,17 +598,17 @@ export class EnvService {
 		});
 	}
 
-	getConfig() {}
-
 	/**
 	 * Get status list by parent Code
 	 * @param Code Parent status code
 	 * @returns Return promise and resolve all children status list
 	 */
-	getStatus(Code: string): Promise<any[]> {
-		return new Promise((resolve) => {
-			let it = this.statusList.find((d) => d.Code == Code);
-			if (it) resolve(this.statusList.filter((d) => d.IDParent == it.Id));
+	async getStatus(Code: string): Promise<any[]> {
+		return new Promise(async (resolve) => {
+			if (this.pv.statusList.length == 0) this.pv.statusList = (await this.storage.get('SYS_Status', 'auto', null)) || [];
+
+			let it = this.pv.statusList.find((d) => d.Code == Code);
+			if (it) resolve(this.pv.statusList.filter((d) => d.IDParent == it.Id));
 			else resolve([]);
 		});
 	}
@@ -671,29 +619,31 @@ export class EnvService {
 	 * @param AllChild True will return flat tree type
 	 * @returns Return promise and Resolve type list
 	 */
-	getType(Code: string, AllChild = false): Promise<any[]> {
-		return new Promise((resolve) => {
-			let it = this.typeList.find((d) => d.Code == Code);
+	async getType(Code: string, AllChild = false): Promise<any[]> {
+		return new Promise(async (resolve) => {
+			if (this.pv.typeList.length == 0) this.pv.typeList = (await this.storage.get('SYS_Type', 'auto', null)) || [];
+
+			let it = this.pv.typeList.find((d) => d.Code == Code);
 			if (it) {
 				if (AllChild) {
-					let ids = lib.findChildren(this.typeList, it.Id);
-					let childs = this.typeList.filter((d) => ids.includes(d.Id));
+					let ids = lib.findChildren(this.pv.typeList, it.Id);
+					let childs = this.pv.typeList.filter((d) => ids.includes(d.Id));
 					lib.buildFlatTree(childs, [], true, it).then((result: any) => {
 						resolve(result);
 					});
-				} else resolve(this.typeList.filter((d) => d.IDParent == it.Id));
+				} else resolve(this.pv.typeList.filter((d) => d.IDParent == it.Id));
 			} else resolve([]);
 		});
 	}
 
 	async getTypeAsync(Code: string, AllChild = false) {
-		let it = this.typeList.find((d) => d.Code == Code);
+		let it = this.pv.typeList.find((d) => d.Code == Code);
 		if (it) {
 			if (AllChild) {
-				let ids = lib.findChildren(this.typeList, it.Id);
-				let childs = this.typeList.filter((d) => ids.includes(d.Id));
+				let ids = lib.findChildren(this.pv.typeList, it.Id);
+				let childs = this.pv.typeList.filter((d) => ids.includes(d.Id));
 				return await lib.buildSubNode(childs, [], it, []); //await lib.buildFlatTree(childs, [], true, it);
-			} else return this.typeList.filter((d) => d.IDParent == it.Id);
+			} else return this.pv.typeList.filter((d) => d.IDParent == it.Id);
 		} else return [];
 	}
 
@@ -721,7 +671,7 @@ export class EnvService {
 	searchBranch(predicate: (branch: any) => boolean): Promise<any[]> {
 		return new Promise((resolve) => {
 			// Find all branches that match the predicate
-			const matchedBranches = this.rawBranchList.filter(predicate);
+			const matchedBranches = this.pv.rawBranchList.filter(predicate);
 
 			// Collect all parent IDs
 			const parentIds = new Set<number>();
@@ -729,13 +679,13 @@ export class EnvService {
 				let currentBranch = branch;
 				while (currentBranch.IDParent) {
 					parentIds.add(currentBranch.IDParent);
-					currentBranch = this.rawBranchList.find((b) => b.Id === currentBranch.IDParent);
+					currentBranch = this.pv.rawBranchList.find((b) => b.Id === currentBranch.IDParent);
 					if (!currentBranch) break;
 				}
 			});
 
 			// Include all parent branches
-			const result = this.rawBranchList.filter((branch) => parentIds.has(branch.Id) || matchedBranches.includes(branch));
+			const result = this.pv.rawBranchList.filter((branch) => parentIds.has(branch.Id) || matchedBranches.includes(branch));
 
 			resolve(lib.cloneObject(result));
 		});
@@ -746,9 +696,8 @@ export class EnvService {
 			this.searchBranch((branch) => branch.Type === 'Warehouse' && (this.selectedBranchAndChildren.includes(branch.Id) || IgnoredSelectedBranch)).then((warehouses) => {
 				if (getParents) {
 					resolve(warehouses);
-					
 				} else {
-					resolve(warehouses.filter(d=>d.Type === 'Warehouse'));
+					resolve(warehouses.filter((d) => d.Type === 'Warehouse'));
 				}
 			});
 		});
@@ -775,6 +724,126 @@ export class EnvService {
 		});
 	}
 
+	/**
+	 * Initialize environment as central controller
+	 * This is the main entry point for environment setup
+	 */
+	private async preloadServices(): Promise<void> {
+		dogF && console.log('🚀 [EnvService] Starting environment initialization...');
+		try {
+			dogF && console.log('📋 [EnvService] Loading environment configuration...');
+			await this.loadEnvironmentConfig();
+
+			await this.initializeUserContext();
+		} catch (error) {
+			dogF && console.error('❌ [EnvService] Environment initialization failed:', error);
+			throw error;
+		}
+	}
+	private async loadEnvironmentConfig(): Promise<void> {
+		dogF && console.log('📋 [EnvService] Loading environment configuration...');
+		if (this.language.current != this.storage.app.lang) {
+			this.language.current = this.storage.app.lang;
+			this.language.isDefault = this.language.current === this.language.default;
+
+			// Wait for translation to load before continuing
+			await firstValueFrom(this.translate.use(this.language.current));
+
+			this.languageTracking.next(this.language);
+			dogF && console.log('✅ [EnvService] Translation loaded for:', this.language.current);
+		}
+	}
+
+	private async initializeUserContext() {
+		try {
+			dogF && console.log('👤 [EnvService] Initializing user context...');
+			let that = this;
+			//Track tenant context
+			this.userContext.getUserTenant().subscribe(async (tenant) => {
+				if (tenant) {
+					that.app.tenant.current = tenant.id;
+					dogF && console.log('🏢 [EnvService] Tenant context subscribe:', tenant);
+				}
+			});
+
+			//Track user context
+			this.userContext.getCurrentUser().subscribe(async (user) => {
+				if (user) {
+					dogF && console.log('👤 [EnvService] User context subscribe:', user);
+					if (user.Id) {
+						that.user = user;
+						that.loadBranch();
+					} else {
+						that.user = null;
+						that.pv.rawBranchList = [];
+						that.branchList = [];
+						that.jobTitleList = [];
+
+						that.publishEvent({ Code: EVENT_TYPE.USER.LOGGED_OUT_REMOTE });
+					}
+					that.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED });
+				}
+			});
+		} catch (error) {
+			dogF && console.error('Error initializing context:', error);
+			throw error;
+		}
+	}
+
+	private async loadServices(): Promise<void> {
+		dogF && console.log('🚀 [EnvService] continue environment initialization...');
+
+		try {
+			this.setupNetworkMonitoring();
+			this.storage.getCacheRegistry$().subscribe((cacheRegistry) => {
+				if (dogF && Array.isArray(cacheRegistry)) {
+					const tableData = cacheRegistry.map((item) => ({
+						key: item.key,
+						tenant: item.tenant,
+						branch: item.branch,
+						timeToLive: item.timeToLive,
+						expiresAt: lib.dateFormat(item.expiresAt, 'dd/mm/yy hh:MM'),
+						version: item.version,
+						status: item.status,
+						accessCount: item.accessCount,
+					}));
+					console.table(tableData, ['key', 'tenant', 'branch', 'timeToLive', 'expiresAt', 'version', 'status', 'accessCount']);
+				}
+			});
+			await this.setupDataStreams();
+			dogF && console.log('✅ [EnvService] Environment initialization completed successfully');
+
+			// Notify UI that environment is ready
+			this.publishEvent({ Code: EVENT_TYPE.APP.ENVIRONMENT_READY, Value: null });
+
+			// Setup analytics after environment is ready
+			this.setupAnalytics();
+		} catch (error) {
+			dogF && console.error('❌ [EnvService] Environment initialization failed:', error);
+			throw error;
+		}
+	}
+
+	private async setupDataStreams(): Promise<void> {
+		dogF && console.log('🌊 [EnvService] Setting up data streams...');
+		try {
+			this.setupSignalR();
+			// // Setup real-time data streams
+			// await this.setupRealTimeStreams();
+
+			// // Setup data synchronization
+			// await this.setupDataSync();
+
+			// // Setup offline data handling
+			// await this.setupOfflineDataHandling();
+
+			dogF && console.log('Data streams setup completed');
+		} catch (error) {
+			dogF && console.error('Failed to setup data streams:', error);
+			throw error;
+		}
+	}
+
 	/** @deprecated Deprecated, do not use. */
 	private enablePermissionNode(id, list) {
 		let currentItem = list.find((i) => i.Id == id);
@@ -791,6 +860,124 @@ export class EnvService {
 		for (let ix = 0; ix < children.length; ix++) {
 			const i = children[ix];
 			this.getChildrenDepartmentID(ids, i.Id);
+		}
+	}
+
+	/**
+	 * Setup SignalR (moved from init)
+	 */
+	private setupSignalR(): void {
+		const signalRConnection = new signalR.HubConnectionBuilder()
+			.configureLogging(signalR.LogLevel.Information)
+			.withUrl(environment.signalRServiceDomain + 'notify')
+			.withAutomaticReconnect()
+			.build();
+
+		signalRConnection
+			.start()
+			.then(() => dogF && console.log('SignalR Connected!'))
+			.catch((err) => dogF && console.error('SignalR connection failed:', err));
+
+		// Add existing event handlers
+		signalRConnection.on('BroadcastMessage', (e) => {
+			switch (e.code) {
+				case EVENT_TYPE.SYSTEM.RELOAD:
+					location.reload();
+					break;
+				case EVENT_TYPE.SYSTEM.MESSAGE:
+					this.showMessage(e.value, e.name);
+					break;
+				case EVENT_TYPE.SYSTEM.RELOAD_OLD_VERSION:
+					if (e.value.localeCompare(this.app.version) > 0) location.reload();
+					break;
+				case EVENT_TYPE.SYSTEM.ALERT:
+					this.showAlert(e.value, null, e.name);
+					break;
+				default:
+					e.code = 'signalR:' + e.code;
+					this.publishEvent(e);
+					break;
+			}
+		});
+
+		signalRConnection.on('SendMessage', (user, message) => {
+			dogF && console.log('SendMessage', user, message);
+		});
+
+		signalRConnection.on('SaleOrdersUpdated', (IDBranch, Ids) => {
+			dogF && console.log('SaleOrdersUpdated', IDBranch, Ids);
+			this.publishEvent({ Code: EVENT_TYPE.SALE.ORDERS_UPDATED });
+		});
+	}
+
+	/**
+	 * Setup network monitoring
+	 */
+	private setupNetworkMonitoring(): void {
+		Network.addListener('networkStatusChange', (status) => {
+			this.publishEvent({ Code: EVENT_TYPE.APP.NETWORK_STATUS_CHANGE, status });
+			dogF && console.log('Network status changed', status);
+		});
+
+		this.trackOnline().subscribe((isOnline) => {
+			this.app.isOnline = isOnline;
+		});
+	}
+
+	/**
+	 * Setup analytics for the user
+	 * Migrated from AccountService.setupAnalytics()
+	 */
+	private setupAnalytics(): void {
+		dogF && console.log('📊 [EnvService] Setting up analytics...');
+
+		this.router.events.subscribe((event: any) => {
+			if (event instanceof NavigationEnd) {
+				dogF && console.log('🌲 [AppComponent] Navigation event:', event);
+
+				if (ga) {
+					ga('set', 'page', 'test/' + event.urlAfterRedirects);
+					ga('send', 'pageview');
+					console.log(event.urlAfterRedirects);
+				}
+
+				//console.log(event);
+				// (<any>window).ga('set', 'page', event.urlAfterRedirects);
+				// (<any>window).ga('send', 'pageview');
+			}
+		});
+
+		if (this.user) {
+			try {
+				const woopraId = {
+					id: this.user.Id,
+					email: this.user.Email,
+					name: this.user.FullName,
+					avatar: this.user.Avatar,
+				};
+
+				dogF && console.log('🆔 [EnvService] Analytic ID configured:', woopraId);
+
+				// Setup Woopra tracking with retry mechanism
+				let woopraInterval: any = setInterval(() => {
+					if ((window as any)?.woopra) {
+						dogF && console.log('📈 [EnvService] Analytic identified');
+						(window as any).woopra.identify(woopraId);
+						(window as any).woopra.push();
+
+						if (woopraInterval) {
+							clearInterval(woopraInterval);
+							woopraInterval = null;
+						}
+
+						dogF && console.log('✅ [EnvService] Analytics setup completed');
+					}
+				}, 3000);
+			} catch (error) {
+				dogF && console.error('❌ [EnvService] Analytics setup failed:', error);
+			}
+		} else {
+			dogF && console.log('🚫 [EnvService] No user available for analytics setup');
 		}
 	}
 }

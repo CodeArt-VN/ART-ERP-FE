@@ -3,12 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-
-//3th party
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-//Custom component
 import { DataTableComponent } from './data-table.component';
 import { EmptyMessageChangesService, DataTableEmptyMessageDirective } from './directives/data-table-empty-message-directive';
 import { DataTableEmptyMessageTemplateDirective } from './directives/data-table-empty-message-template-directive';

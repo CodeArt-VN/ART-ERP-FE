@@ -3,7 +3,7 @@ import { NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { OSM_NotificationService } from 'src/app/services/notifications.service';
+import { OSM_NotificationService } from 'src/app/services/custom/notifications.service';
 import { OSM_NotificationReceiverProvider } from 'src/app/services/static/services.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class PageNotificationComponent extends PageBase {
 		};
 		this.notificationReceiverProvider.save(data).then((_) => {
 			this.env.publishEvent({
-				Code: 'app:notification',
+				Code: 'EVENT_TYPE.APP.NOTIFICATION',
 			});
 			// this.nav(i.Link);
 		});
@@ -55,7 +55,7 @@ export class PageNotificationComponent extends PageBase {
 			};
 			this.pageProvider.deleteNotification(postDTO).then((result: any) => {
 				this.env.publishEvent({
-					Code: 'app:notification',
+					Code: 'EVENT_TYPE.APP.NOTIFICATION',
 				});
 				const index = this.items.indexOf(i);
 				if (index > -1) {

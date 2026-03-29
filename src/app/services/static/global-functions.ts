@@ -1,4 +1,4 @@
-import { TimeConfig } from 'src/app/models/options-interface';
+import { TimeConfig } from 'src/app/interfaces/options-interface';
 
 export var lib = {
 	formatTimeConfig(time: TimeConfig, isPrevious = false) {
@@ -122,23 +122,60 @@ export var lib = {
 		}
 	},
 	cloneObject(source) {
-		return JSON.parse(JSON.stringify(source));
+		try {
+			return JSON.parse(JSON.stringify(source));
+		} catch (err) {
+			console.error('Cannot clone object:', err);
+			return null;
+		}
 	},
 	getObject(path, obj) {
 		return path.split('.').reduce(function (prev, curr) {
 			return prev ? prev[curr] : undefined;
 		}, obj || self);
 	},
-	generateUID() {
-		var d = new Date().getTime();
-		var uuid =
-			d +
-			'xxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-				var r = (d + Math.random() * 16) % 16 | 0;
-				d = Math.floor(d / 16);
-				return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
-			});
-		return uuid;
+
+	//console.log(generateUID('AAA', 'ZZZ', 16, 32));
+	generateUID(prefix = '', suffix = '', length = null, isUpperCase = true, isBreak = false, breakPartLength = 4, breakChar = '-', radix = 36) {
+		// Tính số breakChar cần thêm nếu dùng isBreak
+		let breakCharsCount = 0;
+		if (isBreak && breakPartLength > 0 && length) breakCharsCount = Math.floor(length / (breakPartLength + 1)) - 1;
+
+		// Kiểm tra chiều dài hợp lệ
+		if (length && prefix.length + suffix.length + breakCharsCount >= length)
+			throw new Error('Chiều dài của prefix và suffix cộng số breakChar không được lớn hơn hoặc bằng length');
+
+		let uid = '';
+		const part1 = new Date().getTime().toString(radix);
+		let part2 = '';
+		let isUsePart1 = true;
+		let part2Length = 6;
+
+		if (length) {
+			isUsePart1 = part1.length < length - (prefix.length + suffix.length + breakCharsCount);
+			part2Length = length - (prefix.length + suffix.length + breakCharsCount) - (isUsePart1 ? part1.length : 0);
+		}
+
+		if (part2Length > 0) for (let i = 0; i < part2Length; i++) part2 += Math.random().toString(radix).charAt(2);
+		uid = prefix + (isUsePart1 ? part1 : '') + part2 + suffix;
+
+		// Nếu cần break thì chia đều chuỗi thành các phần breakPartLength, nối bằng breakChar
+		if (isBreak && breakPartLength > 0) {
+			let parts = [];
+			for (let i = 0; i < uid.length; i += breakPartLength) {
+				var thisPart = uid.substr(i, breakPartLength);
+				var nextPart = uid.substr(i + breakPartLength, breakPartLength);
+				if (nextPart && nextPart.length < breakPartLength) {
+					thisPart += nextPart; // Nối phần cuối nếu không đủ độ dài
+					i += nextPart.length; // Cập nhật chỉ số i để bỏ qua phần đã nối
+				}
+				parts.push(thisPart);
+			}
+			uid = parts.join(breakChar);
+		}
+
+		if (isUpperCase) return uid.toUpperCase();
+		return uid;
 	},
 	generateCode(radix = 36) {
 		var d = new Date();
@@ -612,7 +649,9 @@ export var lib = {
 						fomular = fomular.split(g).join('treeItems.find(i=> i.Code && i.Code.indexOf("' + g + '")==0)["' + h + '"]');
 					});
 					try {
-						c[h] = eval(fomular);
+						// Sử dụng Function constructor thay vì eval để an toàn hơn
+						const func = new Function('treeItems', `return ${fomular}`);
+						c[h] = func(treeItems);
 					} catch (error) {
 						//console.log(error);
 					}
@@ -760,29 +799,40 @@ export var lib = {
 			vietinbank: '970415',
 		};
 
-		let messPart = '08' + message.length.toString().padStart(2, '0') + message;
+		// Build sub-fields for ID 38 (Merchant Account Information)
+		const guid = '0010A000000727'; // ID 00: Globally Unique Identifier
+		
+		// ID 01: Beneficiary Organization - sub-fields bên trong chỉ có format: ID + LENGTH + VALUE
+		const bankBinValue = bankIdByCode[bankCode];
+		const bankBinField = '00' + bankBinValue.length.toString().padStart(2, '0') + bankBinValue; // ID 00: Acquiring Bank
+		const accountField = '01' + bankAccount.length.toString().padStart(2, '0') + bankAccount; // ID 01: Merchant Account
+		const beneficiaryOrgContent = bankBinField + accountField;
+		const beneficiaryOrg = '01' + beneficiaryOrgContent.length.toString().padStart(2, '0') + beneficiaryOrgContent;
+		
+		// ID 02: Service Code
+		const serviceCode = '0208QRIBFTTA';
+		
+		// Calculate total length for ID 38
+		const merchantAccountContent = guid + beneficiaryOrg + serviceCode;
+		const merchantAccountInfo = '38' + merchantAccountContent.length.toString().padStart(2, '0') + merchantAccountContent;
+
+		// ID 62: Additional Data Field Template
+		const messageField = '08' + message.length.toString().padStart(2, '0') + message; // ID 08: Store Label/Bill Number
+		const additionalData = '62' + messageField.length.toString().padStart(2, '0') + messageField;
+
+		// ID 54: Transaction Amount
+		const amountStr = amount.toString();
+		const amountField = '54' + amountStr.length.toString().padStart(2, '0') + amountStr;
 
 		let code =
-			'000201' + //Phiên bản đặc tả QRCode
-			'010212' + //Phương thức khởi tạo. 11 = QR tĩnh; 12 = QR động
-			'3854' + //Thông tin tài khoản nhận tiền
-			'0010A000000727' +
-			'0124' +
-			'0006' +
-			bankIdByCode[bankCode] + //Id ngân hàng
-			'01' +
-			bankAccount.length.toString().padStart(2, '0') + //Số tài khoản
-			bankAccount +
-			'0208QRIBFTTA' +
-			'5303704' + //Mã tiền tệ - 3 ký tự - 704 = vnd
-			'54' + //Số tiền giao dịch - 7 ký tự - amount 1000000
-			(amount + '').length.toString().padStart(2, '0') +
-			amount +
-			'5802VN' + //Mã quốc gia
-			'62' + //Thông tin bổ sung
-			messPart.length.toString().padStart(2, '0') +
-			messPart +
-			'6304'; //Checksum
+			'000201' + //ID 00: Payload Format Indicator
+			'010212' + //ID 01: Point of Initiation Method (11 = static; 12 = dynamic)
+			merchantAccountInfo + //ID 38: Merchant Account Information
+			'5303704' + //ID 53: Transaction Currency (704 = VND)
+			amountField + //ID 54: Transaction Amount
+			'5802VN' + //ID 58: Country Code
+			additionalData + //ID 62: Additional Data Field Template
+			'6304'; //ID 63: CRC (placeholder)
 
 		let crc = lib.calcCRC(code);
 		code = code + crc.toString(16).toUpperCase().padStart(4, '0');
@@ -1000,16 +1050,126 @@ export var lib = {
 		return KetQua;
 	},
 
-	Colors : [
-		'#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#900C3F', '#581845', '#1ABC9C', '#2ECC71', '#3498DB',
-		'#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085', '#27AE60', '#2980B9',
-		'#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D', '#117A65', '#B03A2E',
-		'#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226', '#ABB2B9', '#48C9B0',
-		'#45B39D', '#52BE80', '#5DADE2', '#A569BD', '#5D6D7E', '#F8C471', '#EB984E', '#CD6155', '#D5DBDB', '#76D7C4',
-		'#73C6B6', '#82E0AA', '#85C1E9', '#BB8FCE', '#85929E', '#FAD7A0', '#EDBB99', '#E6B0AA', '#E5E8E8', '#1ABC9C',
-		'#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#F1C40F', '#E67E22', '#E74C3C', '#95A5A6', '#7F8C8D', '#16A085',
-		'#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#C0392B', '#BDC3C7', '#7D3C98', '#1F618D',
-		'#117A65', '#B03A2E', '#F4D03F', '#58D68D', '#5DADE2', '#AF7AC5', '#566573', '#F5B041', '#DC7633', '#A93226',
-		'#ABB2B9', '#48C9B0'
-	]
+	Colors: [
+		'#FF5733',
+		'#33FF57',
+		'#3357FF',
+		'#FF33A1',
+		'#FFC300',
+		'#900C3F',
+		'#581845',
+		'#1ABC9C',
+		'#2ECC71',
+		'#3498DB',
+		'#9B59B6',
+		'#34495E',
+		'#F1C40F',
+		'#E67E22',
+		'#E74C3C',
+		'#95A5A6',
+		'#7F8C8D',
+		'#16A085',
+		'#27AE60',
+		'#2980B9',
+		'#8E44AD',
+		'#2C3E50',
+		'#F39C12',
+		'#D35400',
+		'#C0392B',
+		'#BDC3C7',
+		'#7D3C98',
+		'#1F618D',
+		'#117A65',
+		'#B03A2E',
+		'#F4D03F',
+		'#58D68D',
+		'#5DADE2',
+		'#AF7AC5',
+		'#566573',
+		'#F5B041',
+		'#DC7633',
+		'#A93226',
+		'#ABB2B9',
+		'#48C9B0',
+		'#45B39D',
+		'#52BE80',
+		'#5DADE2',
+		'#A569BD',
+		'#5D6D7E',
+		'#F8C471',
+		'#EB984E',
+		'#CD6155',
+		'#D5DBDB',
+		'#76D7C4',
+		'#73C6B6',
+		'#82E0AA',
+		'#85C1E9',
+		'#BB8FCE',
+		'#85929E',
+		'#FAD7A0',
+		'#EDBB99',
+		'#E6B0AA',
+		'#E5E8E8',
+		'#1ABC9C',
+		'#2ECC71',
+		'#3498DB',
+		'#9B59B6',
+		'#34495E',
+		'#F1C40F',
+		'#E67E22',
+		'#E74C3C',
+		'#95A5A6',
+		'#7F8C8D',
+		'#16A085',
+		'#27AE60',
+		'#2980B9',
+		'#8E44AD',
+		'#2C3E50',
+		'#F39C12',
+		'#D35400',
+		'#C0392B',
+		'#BDC3C7',
+		'#7D3C98',
+		'#1F618D',
+		'#117A65',
+		'#B03A2E',
+		'#F4D03F',
+		'#58D68D',
+		'#5DADE2',
+		'#AF7AC5',
+		'#566573',
+		'#F5B041',
+		'#DC7633',
+		'#A93226',
+		'#ABB2B9',
+		'#48C9B0',
+	],
+
+	/**
+	 * Get nested property value from object using dot notation path
+	 * @param obj - Source object
+	 * @param path - Property path (e.g., '_SaleOrder.DailyBillNo')
+	 * @returns Property value or empty string if not found
+	 */
+	getNestedProperty(obj: any, path: string): any {
+		if (!obj || !path) return '';
+		
+		// Handle single-level property (backward compatibility)
+		if (!path.includes('.')) {
+			return obj[path] ?? '';
+		}
+		
+		// Handle nested property
+		const keys = path.split('.');
+		let result = obj;
+		
+		for (const key of keys) {
+			result = result?.[key];
+			if (result === null || result === undefined) {
+				return '';
+			}
+		}
+		
+		return result ?? '';
+	},
 };

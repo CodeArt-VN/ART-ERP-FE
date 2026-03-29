@@ -13,14 +13,14 @@
 		"target": "es2022",
 		"module": "es2020",
 		"lib": ["es2018", "dom"],
-		"useDefineForClassFields": false
+		"useDefineForClassFields": false,
+		"skipLibCheck": true
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
 		"strictInjectionParameters": true,
 		"strictInputAccessModifiers": true,
-		"strictTemplates": false,
-		"strictDomEventTypes": false,
-		"enableIvy": true
+		"strictTemplates": true,
+		"strictDomEventTypes": true
 	}
 }

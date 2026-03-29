@@ -1,11 +1,12 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { NavController, ModalController, NavParams, LoadingController, AlertController } from '@ionic/angular';
-import { PageBase } from 'src/app/page-base';
-import { ActivatedRoute } from '@angular/router';
-import { EnvService } from 'src/app/services/core/env.service';
-import { OSM_CategoryProvider } from 'src/app/services/static/services.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, NavParams, LoadingController, AlertController } from '@ionic/angular';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
 import { lib } from 'src/app/services/static/global-functions';
+import { OSM_CategoryProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-notification-category-detail',

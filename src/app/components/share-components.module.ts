@@ -7,13 +7,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 //
 //Custom component
-import { ListToolbarComponent } from './list-toolbar/list-toolbar.component';
-import { DetailToolbarComponent } from './detail-toolbar/detail-toolbar.component';
-import { ModalDetailToolbarComponent } from './modal-detail-toolbar/modal-detail-toolbar.component';
-
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { ShareDataTableModule } from './data-table/share-data-table.module';
@@ -41,7 +37,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		//
 		ShareInputControlsModule,
 		ShareDataTableModule,
@@ -52,10 +48,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 	// providers: [provideNgxMask()],
 
 	declarations: [
-		ListToolbarComponent,
-		DetailToolbarComponent,
 		ToolbarComponent,
-		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
 		HelpDetailComponent,
@@ -67,10 +60,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 	],
 	exports: [
 		HelpDetailComponent,
-		ListToolbarComponent,
-		DetailToolbarComponent,
 		ToolbarComponent,
-		ModalDetailToolbarComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
 		ShareInputControlsModule,
@@ -89,7 +79,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		//FileUploadModule
 
 		PipesModule,

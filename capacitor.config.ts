@@ -1,9 +1,9 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
 	appId: 'vn.codeart.art.dms2',
 	appName: 'ART DMS',
-	webDir: 'www',
+	webDir: 'www/browser',
 	bundledWebRuntime: false,
 	server: {
 		cleartext: true,
@@ -12,6 +12,9 @@ const config: CapacitorConfig = {
 	plugins: {
 		PushNotifications: {
 			presentationOptions: ['badge', 'sound', 'alert'],
+		},
+		SystemBars: {
+			insetsHandling: 'css',
 		},
 	},
 	android: {

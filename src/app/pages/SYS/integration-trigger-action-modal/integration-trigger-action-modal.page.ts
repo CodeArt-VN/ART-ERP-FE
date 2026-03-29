@@ -1,16 +1,11 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { NavController, ModalController, NavParams, LoadingController, AlertController } from '@ionic/angular';
-import { PageBase } from 'src/app/page-base';
-import { ActivatedRoute } from '@angular/router';
-import { EnvService } from 'src/app/services/core/env.service';
-import {
-	SYS_ActionProvider,
-	SYS_IntegrationProviderProvider,
-	SYS_SchemaProvider,
-	SYS_TriggerActionDataMappingProvider,
-	SYS_TriggerActionProvider,
-} from 'src/app/services/static/services.service';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ModalController, NavParams, LoadingController, AlertController } from '@ionic/angular';
+
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { SYS_ActionProvider, SYS_IntegrationProviderProvider, SYS_SchemaProvider, SYS_TriggerActionDataMappingProvider, SYS_TriggerActionProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-integration-trigger-action-modal',

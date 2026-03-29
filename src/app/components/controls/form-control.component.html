@@ -1,4 +1,4 @@
-<div class="c-control">
+<div class="c-control" [ngClass]="{'inline-control': inline === true }" >
 	<label class="c-label" [attr.for]="id" *ngIf="type != 'checkbox' && type != 'radio' && label">
 		{{ label | translate }}
 		<ng-content select="[label]"></ng-content>
@@ -10,6 +10,8 @@
 		*ngIf="field"
 		[field]="field"
 		[inputControlTemplate]="inputControlTemplate"
+		[clearable]="clearable ?? field?.clearable"
+		[virtualScroll]="virtualScroll ?? field?.virtualScroll"
 		(change)="onChange($event)"
 		(inputChange)="onInputChange($event)"
 		(nav)="onNav($event)"

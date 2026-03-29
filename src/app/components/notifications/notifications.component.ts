@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { OSM_NotificationService } from 'src/app/services/notifications.service';
+import { OSM_NotificationService } from 'src/app/services/custom/notifications.service';
 import { OSM_NotificationReceiverProvider } from 'src/app/services/static/services.service';
-
 
 @Component({
 	selector: 'app-notifications-modal',
@@ -21,10 +21,11 @@ export class NotificationsComponent extends PageBase {
 	@Input() autoLoad = true;
 	constructor(
 		public pageProvider: OSM_NotificationService,
-		public notificationReceiverProvider : OSM_NotificationReceiverProvider,
+		public notificationReceiverProvider: OSM_NotificationReceiverProvider,
 		public commonService: CommonService,
 		public env: EnvService,
-		public navCtrl: NavController
+		public navCtrl: NavController,
+		public router: Router
 	) {
 		super();
 	}
@@ -56,8 +57,6 @@ export class NotificationsComponent extends PageBase {
 	// 	// 	},
 	// 	// ];
 	// }
-
-
 
 	refresh() {
 		this.clearData();
@@ -118,7 +117,6 @@ export class NotificationsComponent extends PageBase {
 	// 	}
 	// }
 
-
 	readNoti(i) {
 		let data = {
 			Id: parseInt(i.IDReceiver),
@@ -126,7 +124,7 @@ export class NotificationsComponent extends PageBase {
 		};
 		this.notificationReceiverProvider.save(data).then((_) => {
 			this.env.publishEvent({
-				Code: 'app:notification',
+				Code: 'EVENT_TYPE.APP.NOTIFICATION',
 			});
 			this.nav(i.Link);
 		});
@@ -140,7 +138,7 @@ export class NotificationsComponent extends PageBase {
 			};
 			this.pageProvider.markAsRead(postDTO).then((result: any) => {
 				this.env.publishEvent({
-					Code: 'app:notification',
+					Code: 'EVENT_TYPE.APP.NOTIFICATION',
 				});
 			});
 		});
@@ -154,7 +152,7 @@ export class NotificationsComponent extends PageBase {
 			};
 			this.pageProvider.markAsUnRead(postDTO).then((result: any) => {
 				this.env.publishEvent({
-					Code: 'app:notification',
+					Code: 'EVENT_TYPE.APP.NOTIFICATION',
 				});
 			});
 		});
@@ -168,7 +166,7 @@ export class NotificationsComponent extends PageBase {
 			};
 			this.pageProvider.deleteNotification(postDTO).then((result: any) => {
 				this.env.publishEvent({
-					Code: 'app:notification',
+					Code: 'EVENT_TYPE.APP.NOTIFICATION',
 				});
 			});
 		});
@@ -196,7 +194,8 @@ export class NotificationsComponent extends PageBase {
 		} else if (direction == 'back') {
 			this.navCtrl.navigateBack(URL);
 		} else {
-			this.navCtrl.navigateRoot(URL);
+			const url = Array.isArray(URL) ? URL[0] : URL;
+			this.router.navigateByUrl(url, { replaceUrl: true });
 		}
 	}
 	@ViewChild('morePopover') morePopover!: HTMLIonPopoverElement;

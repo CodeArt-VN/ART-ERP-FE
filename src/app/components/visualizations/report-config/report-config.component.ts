@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, Subscription, catchError, concat, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
-import { BIReport, ReportDataConfig } from 'src/app/models/options-interface';
+import { BIReport, ReportDataConfig } from 'src/app/interfaces/options-interface';
 import { EnvService } from 'src/app/services/core/env.service';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
-import { ReportService } from 'src/app/services/report.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
+import { ReportService } from 'src/app/services/custom/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 import { SYS_SchemaProvider } from 'src/app/services/static/services.service';
@@ -63,7 +63,14 @@ export class ReportConfigComponent implements OnInit {
 		public schemaService: SYS_SchemaProvider,
 		public formBuilder: FormBuilder,
 		public dynamicScriptLoaderService: DynamicScriptLoaderService
-	) {}
+	) {
+		this.pickerControl = this.formBuilder.group({
+			Type: ['Relative'],
+			Value: [null],
+			Period: ['Day'],
+			Amount: [1],
+		});
+	}
 
 	ngOnInit() {
 		this._intervalDataSource = [
@@ -299,10 +306,21 @@ export class ReportConfigComponent implements OnInit {
 
 	@ViewChild('popoverPub') popoverPub;
 	isOpenPopover = false;
+	isOpenDatePicker = false;
 	listControls: any;
 	formGroup: any;
 	tempForm: any;
-	pickerGroupName;
+	pickerGroupName: string;
+	pickerControl: FormGroup;
+
+	dismissDatePicker(_apply?: boolean): void {
+		this.isOpenDatePicker = false;
+	}
+
+	segmentTimeframeChanged(_e: unknown): void {}
+
+	pickDate(_config: unknown): void {}
+
 	presentPopover(event, fg, groupName) {
 		this.pickerGroupName = groupName;
 		this.formGroup = fg;

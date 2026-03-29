@@ -1,11 +1,16 @@
-import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { NgSelectComponent } from '@ng-select/ng-select';
 import { FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+
 import { InputControlField } from './controls.interface';
 import { environment } from 'src/environments/environment';
 import { lib } from 'src/app/services/static/global-functions';
 import { GlobalData } from 'src/app/services/static/global-variable';
-import { MonacoEditorLoaderService } from 'src/app/services/custom.service';
-import { ModalController } from '@ionic/angular';
+import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
+import { FormulaExpandModalComponent } from './formula-expand-modal';
+import { Subject } from 'rxjs';
+import { InputControlTempateDirective } from './input-control-template.directive';
 
 @Component({
 	selector: 'app-input-control',
@@ -16,6 +21,9 @@ export class InputControlComponent implements OnInit {
 	lib;
 	searchTerm = '';
 	chartScriptId: string;
+	isFromBarcodeScan$ = new Subject<any>();
+	barcodeBuffer = '';
+	barcodeTimer = null;
 	@Input() set field(f: InputControlField) {
 		if (f.form) this.form = f.form;
 		if (f.type) this.type = f.type;
@@ -31,6 +39,7 @@ export class InputControlComponent implements OnInit {
 		if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
 		if (f.color) this.color = f.color;
 		if (f.appendTo !== undefined) this.appendTo = f.appendTo;
+		if (f.virtualScroll !== undefined) this.virtualScroll = f.virtualScroll;
 		if (f.branchConfig) {
 			if (f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
 			if (f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
@@ -66,9 +75,14 @@ export class InputControlComponent implements OnInit {
 			//show|unShow root level
 			if (this.rootCollapsed == false) this.expandRoot();
 		}
-		if(this.type == 'formula') {
+		if (this.type == 'formula') {
 			this.chartScriptId = 'chartScriptEditor' + lib.generateUID();
 			this.monacoProvider.load().then(() => this.initMonaco());
+		}
+		if (this.type == 'editor') {
+			if (!this.quillEditorId) {
+				this.quillEditorId = 'quillEditor' + lib.generateUID();
+			}
 		}
 	}
 
@@ -76,6 +90,8 @@ export class InputControlComponent implements OnInit {
 
 	@Input() type: string = 'text';
 	@Input() appendTo: string = '#ng-select-holder';
+
+	@Input() virtualScroll: boolean = false;
 
 	@Input() id: string;
 	@Input() secondaryId: string;
@@ -104,8 +120,8 @@ export class InputControlComponent implements OnInit {
 	@Input() searchFn?: any;
 	@Input() searchFnDefault?: boolean = false;
 	@Input() isTree: boolean = false;
-	@Input() isCollapsed?: boolean;
-	@Input() rootCollapsed?: boolean = true; // when isCollapsed,unCollapsed up to showingRootLevel
+	@Input() isCollapsed?: boolean = false;
+	@Input() rootCollapsed?: boolean = false; // when isCollapsed,unCollapsed up to showingRootLevel
 	//branchConfig
 	@Input() branchConfig?;
 	@Input() selectedBranch?: number;
@@ -113,10 +129,32 @@ export class InputControlComponent implements OnInit {
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
 
+	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
+
+	// reference to the internal ng-select instance when used
+	@ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
+
 	imgPath = environment.staffAvatarsServer;
 
-	constructor(public monacoProvider: MonacoEditorLoaderService,
+	// Quill editor properties
+	quillEditor: any;
+	quillEditorId: string;
+
+	@Input('inputControlTemplate') _inputControlTemplateInput: TemplateRef<any>;
+
+	@ContentChild(InputControlTempateDirective, {
+		read: TemplateRef,
+		static: true,
+	})
+	_inputControlTemplateQuery: TemplateRef<any>;
+
+	get _inputControlTemplate(): TemplateRef<any> {
+		return this._inputControlTemplateInput || this._inputControlTemplateQuery;
+	}
+	constructor(
+		public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
+		public dynamicScriptLoaderService: DynamicScriptLoaderService
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -124,14 +162,18 @@ export class InputControlComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.searchFnDefault && !this.searchFn) this.searchFn = this.searchShowAllChildren;
-	
+
+		// Initialize Quill editor ID if type is quill
+		if (this.type === 'quill' && !this.quillEditorId) {
+			this.quillEditorId = 'quillEditor' + lib.generateUID();
+		}
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
 	}
-	
+
 	disposableCompletionItemProvider: any = null;
-	monaco
+	monaco;
 	editorInstance: any;
 	initMonaco() {
 		// if(this.monaco) return;
@@ -198,8 +240,11 @@ export class InputControlComponent implements OnInit {
 				lineNumbersMinChars: 1,
 				fontFamily: 'JetBrains Mono, monospace',
 				fontSize: 14,
-				minimap: { enabled: false },
 				automaticLayout: true,
+				minimap: { enabled: false },
+				wordWrap: 'on', // ✅ tự động xuống dòng
+				// wrappingIndent: 'indent', // ✅ canh lề đẹp khi xuống dòng
+				scrollBeyondLastLine: false, // ✅ tránh dư khoảng trắng dưới
 			});
 			let latestContent = '';
 
@@ -217,17 +262,26 @@ export class InputControlComponent implements OnInit {
 		}
 	}
 	async openFormulaModal() {
-		// const modal = await this.modalController.create({
-		// 	component: FormulaModalPage,
-		// 	cssClass: 'modal90',
-		// 	componentProps: {
-		// 		dataSource: this.dataSource,
-		// 		value: this.form.get(this.id).value,
-		// 	},
-		// });
-		// await modal.present();
-		// const { data } = await modal.onWillDismiss();
-		
+		const modal = await this.modalController.create({
+			component: FormulaExpandModalComponent,
+			cssClass: 'modal90',
+			componentProps: {
+				dataSource: this.dataSource,
+				value: this.form.get(this.id).value,
+				item: this.form,
+			},
+		});
+		await modal.present();
+
+		const { data } = await modal.onWillDismiss();
+		if (data) {
+			this.form.get(this.id)?.setValue(data);
+			this.form.get(this.id)?.markAsDirty();
+			this.change.emit(data);
+			if (this.editorInstance) {
+				this.editorInstance.setValue(data);
+			}
+		}
 	}
 	saveContent() {
 		const value = this.editorInstance.getValue();
@@ -240,6 +294,7 @@ export class InputControlComponent implements OnInit {
 	@Output() change = new EventEmitter();
 	@Output() inputChange = new EventEmitter();
 	@Output() select = new EventEmitter();
+	@Output() selectKeyDown = new EventEmitter();
 	onSelect(event) {
 		this.select.emit(event);
 	}
@@ -251,6 +306,30 @@ export class InputControlComponent implements OnInit {
 			)
 		) {
 			this.change.emit(event);
+		}
+	}
+
+	ngSelectKeyDown(e) {
+		clearTimeout(this.barcodeTimer);
+		if (e.key.length === 1) this.barcodeBuffer += e.key;
+		this.barcodeTimer = setTimeout(() => {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				e.stopPropagation();
+				this.selectKeyDown.emit({ term: this.barcodeBuffer, isEnter: true });
+				this.barcodeBuffer = '';
+			}
+		}, 50);
+	}
+	/**
+	 * Close the internal ng-select dropdown (if present) and emit change/touch on the control.
+	 * Used when the value was auto-selected programmatically to finish the UI interaction.
+	 */
+	closeDropdown(emitValue: boolean = true) {
+		try {
+			this.ngSelect?.close();
+		} catch (err) {
+			// ignore if no ng-select instance
 		}
 	}
 

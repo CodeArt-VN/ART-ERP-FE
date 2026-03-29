@@ -9,7 +9,7 @@
 	#monaco-editor {
 		height: 300px; /* hoặc auto theo nhu cầu */
 	}
-	
+
 	.formula-button {
 		position: absolute;
 		z-index: 10;
@@ -26,6 +26,25 @@
 	.zoom-button {
 		left: 8px;
 		top: 24px;
+	}
+
+	.quill-editor-container {
+		min-height: 300px;
+		max-height: 500px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.quill-editor-container .ql-editor {
+		min-height: 250px;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.quill-editor-container .ql-toolbar {
+		border-bottom: 1px solid #ccc;
 	}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
@@ -58,8 +77,8 @@
 	<!-- radio -->
 	<ng-container *ngSwitchCase="'radio'">
 		<ng-container *ngFor="let i of dataSource; let j = index">
-			<input [type]="'radio'" class="c-checkbox" [id]="id + '_' + j" [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
-			<label class="c-label radio" [for]="id + '_' + j">
+			<input type="radio" class="c-checkbox" [id]="id + '_' + j" [value]="i[bindValue]" [name]="id" [formControlName]="id" (change)="onInputChange($event)" />
+			<label class="c-label clickable radio" [for]="id + '_' + j">
 				<span>{{ i[bindLabel] | translate }}</span>
 			</label>
 		</ng-container>
@@ -78,7 +97,6 @@
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
 		class="c-input c-dropdown"
 		[id]="id"
-		placeholder="{{ placeholder | translate }}"
 		[formControlName]="id"
 		(change)="onInputChange($event)"
 		(keydown)="onKeydown($event)"
@@ -159,11 +177,17 @@
 		<ng-template *ngIf="inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
 			<ng-template [ngTemplateOutlet]="inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
 		</ng-template>
+		<ng-template *ngIf="_inputControlTemplate" ng-label-tmp let-i="item">
+			<ng-template [ngTemplateOutlet]="_inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
+		<ng-template *ngIf="_inputControlTemplate" ng-option-tmp let-i="item" let-search="searchTerm">
+			<ng-template [ngTemplateOutlet]="_inputControlTemplate" [ngTemplateOutletContext]="{ item: i }"></ng-template>
+		</ng-template>
 	</ng-select>
 
 	<!-- ng-select-branch -->
 	<ng-select
-		[virtualScroll]="false"
+		[virtualScroll]="virtualScroll"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-branch'"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
@@ -268,6 +292,7 @@
 		[appendTo]="appendTo"
 		[placeholder]="placeholder | translate"
 		(change)="onInputChange($event)"
+		(keydown)="ngSelectKeyDown($event)"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
 			<div *ngIf="i.Id">
@@ -466,6 +491,19 @@
 			<ion-icon slot="icon-only" name="expand-outline"></ion-icon>
 		</ion-button>
 	</div>
+
+	<!-- Quill Rich Text Editor -->
+	<app-quill-editor
+		*ngSwitchCase="'editor'"
+		[form]="form"
+		[quillEditorId]="quillEditorId"
+		[id]="id"
+		[dataSource]="dataSource"
+		[placeholder]="placeholder"
+		(change)="change.emit($event)"
+	>
+	</app-quill-editor>
+
 	<!-- fomular -->
 	<!-- <div id="monaco-editor" *ngSwitchCase="'formula'" style="height: 7.5rem; border: 1px solid var(--menu-right-border-color);"></div> -->
 	<!-- <ion-accordion-group *ngSwitchCase="'fomular'"[id]="id" [value]="'afterScirpt'" multiple="true">
@@ -547,7 +585,7 @@
 
 		<ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
 			<ng-template>
-				<ion-content appScrollbarTheme>
+				<ion-content appScrollbarTheme [fullscreen]="true">
 					<app-icon-picker (selected)="onSelectIcon($event, form.controls[id])" [color]="color" [icon]="form.controls[id].value"></app-icon-picker>
 					<div style="padding-top: 25vh"></div>
 				</ion-content>
@@ -565,7 +603,7 @@
 		<ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
 			<ng-template>
 				<app-color-picker (selected)="onSelectColor($event, form.controls[secondaryId])" [color]="form.controls[secondaryId].value || 'dark'"></app-color-picker>
-				<ion-content appScrollbarTheme>
+				<ion-content appScrollbarTheme [fullscreen]="true">
 					<app-icon-picker
 						(selected)="onSelectIcon($event, form.controls[id])"
 						[color]="form.controls[secondaryId].value || color"
@@ -611,7 +649,7 @@
 	<!-- datepicker -->
 	<ion-popover class="w300" #popover [isOpen]="isOpenDatePicker" (didDismiss)="dismissDatePicker()">
 		<ng-template>
-			<ion-content appScrollbarTheme>
+			<ion-content appScrollbarTheme [fullscreen]="true">
 				<ion-segment scrollable="false" (ionChange)="segmentTimeframeChanged($event)" [value]="pickerControl.controls.Type.value" mode="md">
 					<ion-segment-button value="Relative">
 						<ion-label>{{ 'Relative' | translate }}</ion-label>
@@ -679,10 +717,15 @@
 <!-- Declare Template treeConfig -->
 <ng-template #treeConfigTemplate ng-option-tmp let-item="item" let-search="searchTerm">
 	<ng-container *ngIf="item && isTree">
-		<div class="flex-left" style="width: 100%; position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
+		<span class="hide-all" *ngIf="!item.show"></span>
+		<div class="flex-left" *ngIf="item.show" style="width: 100%; position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
 			<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing" *ngIf="k > 0"></span></ng-container>
-			<ion-icon
+			<ion-icon *ngIf="!virtualScroll"
 				(click)="$event.stopPropagation(); toggleRow(item)"
+				class="min-btn clickable"
+				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
+			></ion-icon>
+			<ion-icon *ngIf="virtualScroll"
 				class="min-btn clickable"
 				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
 			></ion-icon>

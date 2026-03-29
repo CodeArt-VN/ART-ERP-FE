@@ -2693,6 +2693,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_Brand:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Brand/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Brand"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Brand/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Brand/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Brand/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Brand/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Brand"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Brand/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Brand/" + id} 
+        }
+		
+	},
+
 	CRM_BusinessPartnerGroup:{
         getSearchList:{
             method: "GET",
@@ -2987,6 +3036,55 @@ export var APIListBase = {
 		
 	},
 
+	CRM_ContactUDF:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/ContactUDF"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/ContactUDF/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/ContactUDF/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/ContactUDF/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/ContactUDF/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/ContactUDF/" + id} 
+        }
+		
+	},
+
 	CRM_Contract:{
         getSearchList:{
             method: "GET",
@@ -3179,6 +3277,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "CRM/MemberCard/" + id} 
+        }
+		
+	},
+
+	CRM_MembershipLoyalty:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyalty/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyalty"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/MembershipLoyalty/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/MembershipLoyalty/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyalty/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyalty/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyalty"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyalty/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/MembershipLoyalty/" + id} 
+        }
+		
+	},
+
+	CRM_MembershipLoyaltyHistory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/MembershipLoyaltyHistory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/MembershipLoyaltyHistory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyaltyHistory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/MembershipLoyaltyHistory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/MembershipLoyaltyHistory/" + id} 
         }
 		
 	},
@@ -3477,6 +3673,202 @@ export var APIListBase = {
 		
 	},
 
+	CRM_PolBenefit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolBenefit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolBenefit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolBenefit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolBenefit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolBenefit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolBenefit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolBenefit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolBenefit/" + id} 
+        }
+		
+	},
+
+	CRM_PolLevel:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevel/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevel"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevel/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevel/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevel/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevel"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevel/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevel/" + id} 
+        }
+		
+	},
+
+	CRM_PolLevelBenefit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelBenefit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelBenefit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevelBenefit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevelBenefit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelBenefit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelBenefit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelBenefit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevelBenefit/" + id} 
+        }
+		
+	},
+
+	CRM_PolLoyalty:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLoyalty/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLoyalty"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLoyalty/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLoyalty/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLoyalty/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLoyalty"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLoyalty/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLoyalty/" + id} 
+        }
+		
+	},
+
 	CRM_Quotation:{
         getSearchList:{
             method: "GET",
@@ -3522,6 +3914,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "CRM/Quotation/" + id} 
+        }
+		
+	},
+
+	CRM_Reward:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Reward/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Reward"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Reward/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Reward/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Reward/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Reward/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Reward"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Reward/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Reward/" + id} 
+        }
+		
+	},
+
+	CRM_RewardCategory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/RewardCategory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/RewardCategory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/RewardCategory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/RewardCategory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/RewardCategory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/RewardCategory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/RewardCategory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/RewardCategory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/RewardCategory/" + id} 
         }
 		
 	},
@@ -4163,6 +4653,55 @@ export var APIListBase = {
 		
 	},
 
+	DM_PR_ProgramItem:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "DM/PR/ProgramItem/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "DM/PR/ProgramItem"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "DM/PR/ProgramItem/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "DM/PR/ProgramItem/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "DM/PR/ProgramItem/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "DM/PR/ProgramItem"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "DM/PR/ProgramItem/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "DM/PR/ProgramItem/" + id} 
+        }
+		
+	},
+
 	FINANCE_CostCenter:{
         getSearchList:{
             method: "GET",
@@ -4453,6 +4992,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/DeductionOnSalary/" + id} 
+        }
+		
+	},
+
+	HRM_LeaveType:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/LeaveType/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/LeaveType"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/LeaveType/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/LeaveType/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/LeaveType/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/LeaveType/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/LeaveType"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/LeaveType/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/LeaveType/" + id} 
         }
 		
 	},
@@ -5780,6 +6368,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffAgreement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffAgreement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffAgreement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffAgreement/" + id} 
+        }
+		
+	},
+
+	HRM_StaffAgreementDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreementDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffAgreementDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffAgreementDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffAgreementDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffAgreementDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreementDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffAgreementDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffAgreementDetail/" + id} 
+        }
+		
+	},
+
 	HRM_StaffAllowance:{
         getSearchList:{
             method: "GET",
@@ -6319,6 +7005,104 @@ export var APIListBase = {
 		
 	},
 
+	HRM_StaffEnrollment:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollment/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollment"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffEnrollment/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffEnrollment/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollment/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollment"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollment/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffEnrollment/" + id} 
+        }
+		
+	},
+
+	HRM_StaffEnrollmentDetail:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollmentDetail/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffEnrollmentDetail"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffEnrollmentDetail/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffEnrollmentDetail/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffEnrollmentDetail/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollmentDetail"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffEnrollmentDetail/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffEnrollmentDetail/" + id} 
+        }
+		
+	},
+
 	HRM_StaffFamily:{
         getSearchList:{
             method: "GET",
@@ -6658,6 +7442,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffLearningProcess/" + id} 
+        }
+		
+	},
+
+	HRM_StaffLeaveBalanceHistory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffLeaveBalanceHistory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffLeaveBalanceHistory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffLeaveBalanceHistory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffLeaveBalanceHistory/" + id} 
         }
 		
 	},
@@ -7687,6 +8520,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "HRM/StaffTimeOff/" + id} 
+        }
+		
+	},
+
+	HRM_StaffTimeOffRequest:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOffRequest/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "HRM/StaffTimeOffRequest"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "HRM/StaffTimeOffRequest/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "HRM/StaffTimeOffRequest/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "HRM/StaffTimeOffRequest/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOffRequest"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "HRM/StaffTimeOffRequest/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "HRM/StaffTimeOffRequest/" + id} 
         }
 		
 	},
@@ -9553,6 +10435,55 @@ export var APIListBase = {
 		
 	},
 
+	OST_FunctionalMatrix:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "OST/FunctionalMatrix/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "OST/FunctionalMatrix"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "OST/FunctionalMatrix/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "OST/FunctionalMatrix/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "OST/FunctionalMatrix/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "OST/FunctionalMatrix"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "OST/FunctionalMatrix/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "OST/FunctionalMatrix/" + id} 
+        }
+		
+	},
+
 	OST_Office:{
         getSearchList:{
             method: "GET",
@@ -10190,6 +11121,55 @@ export var APIListBase = {
 		
 	},
 
+	POS_CashHandover:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/CashHandover/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/CashHandover"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/CashHandover/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/CashHandover/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/CashHandover/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/CashHandover/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/CashHandover"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/CashHandover/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/CashHandover/" + id} 
+        }
+		
+	},
+
 	POS_Kitchen:{
         getSearchList:{
             method: "GET",
@@ -10431,6 +11411,153 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "POS/MenuDetail/" + id} 
+        }
+		
+	},
+
+	POS_Shift:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/Shift/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/Shift"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/Shift/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/Shift/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/Shift/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/Shift/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/Shift"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/Shift/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/Shift/" + id} 
+        }
+		
+	},
+
+	POS_ShiftOrder:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/ShiftOrder/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/ShiftOrder"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/ShiftOrder/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/ShiftOrder/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftOrder/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/ShiftOrder"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/ShiftOrder/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/ShiftOrder/" + id} 
+        }
+		
+	},
+
+	POS_ShiftReport:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/ShiftReport/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/ShiftReport"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/ShiftReport/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/ShiftReport/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/ShiftReport/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/ShiftReport/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/ShiftReport"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/ShiftReport/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/ShiftReport/" + id} 
         }
 		
 	},
@@ -10974,6 +12101,55 @@ export var APIListBase = {
 		
 	},
 
+	PR_ProgramVoucher:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PR/ProgramVoucher/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PR/ProgramVoucher"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PR/ProgramVoucher/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PR/ProgramVoucher/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PR/ProgramVoucher/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PR/ProgramVoucher"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PR/ProgramVoucher/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PR/ProgramVoucher/" + id} 
+        }
+		
+	},
+
 	PR_PromotionTracking:{
         getSearchList:{
             method: "GET",
@@ -11019,6 +12195,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PR/PromotionTracking/" + id} 
+        }
+		
+	},
+
+	PROD_ApplyItemsReplacement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ApplyItemsReplacement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ApplyItemsReplacement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ApplyItemsReplacement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ApplyItemsReplacement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ApplyItemsReplacement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ApplyItemsReplacement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ApplyItemsReplacement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ApplyItemsReplacement/" + id} 
         }
 		
 	},
@@ -11166,6 +12391,104 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PROD/ItemInVendor/" + id} 
+        }
+		
+	},
+
+	PROD_ItemReplacement:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacement/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacement"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ItemReplacement/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ItemReplacement/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacement/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacement"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacement/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ItemReplacement/" + id} 
+        }
+		
+	},
+
+	PROD_ItemReplacementGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacementGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ItemReplacementGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ItemReplacementGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ItemReplacementGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemReplacementGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacementGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ItemReplacementGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ItemReplacementGroup/" + id} 
         }
 		
 	},
@@ -11611,6 +12934,104 @@ export var APIListBase = {
 		
 	},
 
+	PROD_SubstitutionGroupRule:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/SubstitutionGroupRule/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/SubstitutionGroupRule"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/SubstitutionGroupRule/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/SubstitutionGroupRule/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/SubstitutionGroupRule/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/SubstitutionGroupRule"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/SubstitutionGroupRule/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/SubstitutionGroupRule/" + id} 
+        }
+		
+	},
+
+	PURCHASE_ItemPlanningData:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/ItemPlanningData/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/ItemPlanningData"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/ItemPlanningData/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/ItemPlanningData/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/ItemPlanningData/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/ItemPlanningData"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/ItemPlanningData/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/ItemPlanningData/" + id} 
+        }
+		
+	},
+
 	PURCHASE_Order:{
         getSearchList:{
             method: "GET",
@@ -11705,6 +13126,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PURCHASE/OrderDetail/" + id} 
+        }
+		
+	},
+
+	PURCHASE_OrderInterval:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PURCHASE/OrderInterval/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PURCHASE/OrderInterval"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PURCHASE/OrderInterval/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PURCHASE/OrderInterval/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PURCHASE/OrderInterval/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PURCHASE/OrderInterval"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PURCHASE/OrderInterval/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PURCHASE/OrderInterval/" + id} 
         }
 		
 	},
@@ -13126,6 +14596,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/DataPermissionList/" + id} 
+        }
+		
+	},
+
+	SYS_ExchangeRate:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/ExchangeRate/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/ExchangeRate"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/ExchangeRate/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/ExchangeRate/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/ExchangeRate/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/ExchangeRate"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/ExchangeRate/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/ExchangeRate/" + id} 
         }
 		
 	},

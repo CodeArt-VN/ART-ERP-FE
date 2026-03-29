@@ -1,4 +1,4 @@
-<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }">
+<ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
 	
 	<!-- left-tool-bar -->
 	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }">
@@ -7,17 +7,17 @@
 		<ion-back-button
 			*ngIf="page.pageConfig.isDetailPage"
 			[defaultHref]="BackHref ? BackHref : page.pageConfig.pageName"
-			[text]="(page.pageConfig.pageTitle ? page.pageConfig.pageTitle : 'Back') | translate"
+			[text]="((pageTitle || page.pageConfig.pageTitle) ? (pageTitle || page.pageConfig.pageTitle) : 'Back') | translate"
 		>
 		</ion-back-button>
 
-		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length">
-			{{ page.pageConfig.pageTitle | translate }}
+		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length && pageTitle != 'app-page-title'">
+			{{ (pageTitle || page.pageConfig.pageTitle) | translate }}
 		</ion-button>
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">
 			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}
 		</ion-button>
-		<ng-content select="[startTitle]"></ng-content>
+		<ng-content *ngIf="!page.selectedItems?.length" select="[startTitle]"></ng-content>
 	</ion-buttons>
 
 	<!-- fake back -->
@@ -51,7 +51,7 @@
 
 		<!-- Search -->
 		<ion-button
-			class="ion-hide-md-down"
+			
 			title="{{ 'Search' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
 			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
@@ -60,7 +60,7 @@
 		</ion-button>
 
 		<!-- Refresh -->
-		<ion-button title="{{ 'Refresh' | translate }}" *ngIf="!page.selectedItems?.length && page.pageConfig.ShowRefresh" (click)="page.refresh()">
+		<ion-button class="ion-hide-md-down" title="{{ 'Refresh' | translate }}" *ngIf="!page.selectedItems?.length && page.pageConfig.ShowRefresh" (click)="page.refresh()">
 			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
 		</ion-button>
 
@@ -69,7 +69,7 @@
 			class="ion-hide-md-down"
 			title="{{ 'Export' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
-			(click)="page.export()"
+			(click)="export()"
 		>
 			<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
 		</ion-button>
@@ -304,7 +304,7 @@
 								[button]="true"
 								[detail]="false"
 								*ngIf="!page.selectedItems?.length && ShowExport && page.pageConfig.canExport && !page.pageConfig.isDetailPage"
-								(click)="isToolBarPopoverOpen = false; page.export()"
+								(click)="isToolBarPopoverOpen = false; export()"
 							>
 								<ion-icon color="warning" slot="start" name="cloud-download-outline"></ion-icon>
 								<ion-label> {{ 'Export' | translate }}</ion-label>

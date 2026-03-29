@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title>{{item.Name}}</ion-title>
 
@@ -9,7 +9,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
 	<form [formGroup]="formGroup">
 		<ion-grid fixed>
 			<ion-row>
@@ -93,19 +93,23 @@
 						</label>
 						<textarea rows="3" class="c-input" id="Remark" formControlName="Remark" type="textarea"></textarea>
 					</div>
-
-					<div class="c-control ion-text-right" *ngIf="item.Id==0">
-						<label class="c-label" for=""></label>
-						<ion-button (click)="saveChange()">{{'Add' | translate}}</ion-button>
-					</div>
-					<div class="c-control ion-text-right" *ngIf="item.Id!=0">
-						<label class="c-label" for=""></label>
-						<ion-button (click)="saveChange()" [disabled]="!formGroup.dirty">{{'Save' | translate}}</ion-button>
-						<ion-button (click)="refresh()" color="warning">{{'Cancel' | translate}}</ion-button>
-						<ion-button *ngIf="item.Id && pageConfig.canDelete" (click)="delete()" color="danger">{{'Delete' | translate}}</ion-button>
-					</div>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
 	</form>
 </ion-content>
+<ion-footer collapse="fade">
+	<ion-toolbar>
+		<div slot="start">
+			<ion-button fill="outline" *ngIf="item.Id && pageConfig.canDelete" (click)="delete()" color="danger"> {{'Delete' | translate}} </ion-button>
+		</div>
+
+		<div slot="end">
+			<ion-button fill="outline" *ngIf="!item.Id" color="warning" (click)="closeModal()"> {{'Cancel' | translate}} </ion-button>
+			<ion-button fill="outline" *ngIf="item.Id && pageConfig.canEdit" (click)="refresh()" color="warning" [disabled]="!formGroup.dirty">
+				{{'Discard changes' | translate}}
+			</ion-button>
+			<ion-button [strong]="true" *ngIf="(pageConfig.canAdd || pageConfig.canEdit)" (click)="saveChange()" [disabled]="!formGroup.dirty"> {{'Save' | translate}} </ion-button>
+		</div>
+	</ion-toolbar>
+</ion-footer>

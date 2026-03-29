@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { DynamicScriptLoaderService } from 'src/app/services/custom.service';
+import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { CRM_PartnerAddressProvider, LIST_AddressSubdivisionProvider } from 'src/app/services/static/services.service';
 
 @Component({
@@ -48,7 +48,10 @@ export class AddressComponent extends PageBase {
 		this.typeList = value;
 	}
 	@Input() set mapLoading(value) {
-		this.env.isMapLoaded = value;
+		if (value !== undefined) this.env.isMapLoaded = value;
+	}
+	@Input('loadingMap') set loadingMap(value) {
+		if (value !== undefined) this.env.isMapLoaded = value;
 	}
 	mapLoaded: Observable<boolean>;
 	center: google.maps.LatLngLiteral = {

@@ -1,0 +1,33 @@
+
+<ion-content class="scrollx" [ngClass]="{'left withFeature' : dataSource?.length}" style="min-height: 400px;">
+	<ion-fab *ngIf="dataSource?.length" [ngClass]="{'ion-hide-md-down' : isSubActive}" class="feature no-print" vertical="bottom"
+		horizontal="start" slot="fixed">
+		<ion-item lines="full" class="c-control">
+			<input class="c-input" type="text" (input)="onKeyDown($event)" placeholder="Tìm kiếm..." />
+		</ion-item>
+		<ng-container *ngFor="let item of dataSourceGrouped; let j = index;">
+			<span class="hide-all" *ngIf="!item.show"></span>
+			<div class="flex-left" *ngIf="item.show" style="width: 100%; position: relative"
+				[ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
+				<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing"
+						*ngIf="k > 0"></span></ng-container>
+				<ion-icon (click)="$event.stopPropagation(); toggleRow(item,true)" class="min-btn clickable"
+					[name]="item.HasChild ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"></ion-icon>
+
+				<ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
+				<ion-text [ngOptionHighlight]="keyword$ | async" (click)="insertTextHandler(item)" class="text-warp"
+					[ngClass]="item.HasChild ? 'bold ' : ''"
+					[color]="'dark'">{{item.Name}}
+				</ion-text>
+			
+			</div>
+		</ng-container>
+
+	</ion-fab>
+	<div class="row-full full-screen">
+		<div class="quill-editor-container" style="min-height: 400px;">
+			<div [id]="quillEditorId" #quillEditor></div>
+		</div>
+	</div>
+	
+</ion-content>

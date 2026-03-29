@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SortConfig, Transform } from 'src/app/models/options-interface';
+import { SortConfig, Transform } from 'src/app/interfaces/options-interface';
 
 @Component({
 	selector: 'datatable-header',
@@ -32,6 +32,10 @@ export class DataTableHeaderComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit() {}
+
+	getSortOrder(column: any): 'ASC' | 'DESC' | '' {
+		return this._query?.Sort?.find((s: any) => s.Dimension === column?.property)?.Order || '';
+	}
 
 	@Output() filterInputChange: EventEmitter<any> = new EventEmitter();
 	onFilterInputChange(e) {

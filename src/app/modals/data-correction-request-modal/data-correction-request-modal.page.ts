@@ -2,10 +2,9 @@ import { Component, Input, NgModule } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
+import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-// import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
-import { MapCompsModule } from 'src/app/components/map-comps/map-comps.module';
 import { APPROVAL_RequestProvider } from 'src/app/services/static/services.service';
 
 @Component({
@@ -321,7 +320,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		return control instanceof FormArray;
 	}
 
-	getControlType(control: any | null): 'control' | 'group' | 'array' | null {
+	getControlType(control: any | null): 'control' | 'group' | 'array' | string | null {
 		if (!control) return null;
 		if (control.component) return control.component;
 		if (control instanceof FormControl) return 'control';
@@ -333,7 +332,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 	objectKeys(obj: any): string[] {
 		return Object.keys(obj);
 	}
-	changeAddress(addressCtrl: FormGroup, address: any, index: number) {
+	changeAddress(addressCtrl: FormGroup, address: any) {
 		Object.keys(address).forEach((key) => {
 			if (!addressCtrl.contains(key)) {
 				addressCtrl.addControl(key, new FormControl( address[key])); // Add dynamically
@@ -369,7 +368,7 @@ export class DataCorrectionRequestModalPage extends PageBase {
 		// console.log(fg.get('Addresses').controls.value);
 	}
 
-	changeTaxInfo(taxInfoFormGroup: FormGroup, fg: FormGroup, address: any, index: number) {
+	changeTaxInfo(taxInfoFormGroup: FormGroup, fg: FormGroup, address: any) {
 		let formArray = fg.get('TaxInfos') as FormArray;
 		if (address.IsDefault) {
 			formArray.controls

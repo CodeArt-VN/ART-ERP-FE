@@ -433,6 +433,26 @@ APIList.HRM_StaffOvertimeRequest.disapprove = {
 	},
 };
 
+APIList.HRM_StaffTimeOffRequest.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Approve';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Disapprove';
+	},
+};
+
+APIList.HRM_StaffTimeOffRequest.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/StaffTimeOffRequest/Submit';
+	},
+};
 //
 
 APIList.HRM_StaffPayroll.submitForApproval = {
@@ -496,6 +516,49 @@ APIList.HRM_TimesheetCycle.disapprove = {
 };
 
 
+APIList.HRM_TimesheetLog.approve = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetLog/Approve';
+	},
+};
+
+APIList.HRM_TimesheetLog.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'HRM/TimesheetLog/Disapprove';
+	},
+};
+
+
+
+APIList.AC_ARInvoice.submitForApproval = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/SubmitForApproval';
+	},
+};
+
+APIList.AC_ARInvoice.Cancel = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Cancel';
+	},
+};
+
+APIList.AC_ARInvoice.approve = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Approve';
+	},
+};
+
+APIList.AC_ARInvoice.disapprove = {
+	method: 'POST',
+	url: function () {
+		return 'AC/ARInvoice/Disapprove';
+	},
+};
 
 
 

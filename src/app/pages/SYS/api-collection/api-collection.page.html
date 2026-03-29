@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<app-toolbar pageTitle="{{'Organization structure' | translate}}" [page]="this" AcceptFile=".json">
 		<!-- <ion-buttons slot="start"*ngIf="pageConfig.canImport" class="ion-hide-sm-down_">
 		<ion-button fill="clear" title="Import Json"  (click)="presentPopover($event)" >
@@ -8,7 +8,7 @@
 	</app-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme class="scrollx" scroll-x="true">
+<ion-content [fullscreen]="true" appScrollbarTheme class="scrollx" scroll-x="true">
 	<!-- <input class="hide-all" #importfileJson type="file" accept=".json" (change)="importJson($event)" /> -->
 	<ion-refresher [disabled]="!pageConfig.refresher" [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
 		<ion-refresher-content></ion-refresher-content>
@@ -88,7 +88,7 @@
 	<!-- datepicker -->
 	<ion-popover class="w300" #popover [isOpen]="isOpenPopover" (didDismiss)="dismissPopover()">
 		<ng-template>
-			<ion-content appScrollbarTheme>
+			<ion-content [fullscreen]="true" appScrollbarTheme>
 				<ion-grid>
 					<form [formGroup]="formGroup" (submit)="dismissPopover(true)">
 						<ion-row>

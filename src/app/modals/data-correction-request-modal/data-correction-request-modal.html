@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title> {{'Data correction: '| translate}} {{model?.type| translate}} </ion-title>
 		<ion-buttons slot="end">
@@ -9,7 +9,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme class="ion-padding">
+<ion-content appScrollbarTheme class="ion-padding" [fullscreen]="true">
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
 		<ion-grid fixed>
 			<ng-container>
@@ -36,9 +36,9 @@
 							[attr.size-lg]="fg.get('subCols')?.value?.lg"
 							[attr.size-xl]="fg.get('subCols')?.value?.xl"
 						>
-						<ion-row>
-							<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
-						</ion-row>
+							<ion-row>
+								<ng-container *ngTemplateOutlet="RecursionForm; context:{ fg: fg}"></ng-container>
+							</ion-row>
 						</ion-col>
 					</ng-container>
 				</ion-row>
@@ -97,7 +97,7 @@
 				<!-- Render Form Array -->
 				<ng-container *ngIf="type === 'addresses-component'">
 					<app-address
-						*ngFor="let addressCtrl of fg.get(i).controls; let j = index"
+						*ngFor="let addressCtrl of $any(fg.get(i)).controls; let j = index"
 						[address]="addressCtrl.value"
 						[canEdit]="true"
 						[mapLoading]="env.isMapLoaded"
@@ -116,7 +116,7 @@
 
 				<ng-container *ngIf="type === 'tax-infos-component'">
 					<app-tax-info
-						*ngFor="let taxInfo of fg.get(i).controls; let j = index"
+						*ngFor="let taxInfo of $any(fg.get(i)).controls; let j = index"
 						[taxInfo]="taxInfo.value"
 						[canEdit]="pageConfig.canEdit"
 						(onChange)="changeTaxInfo(taxInfo,fg,$event)"
@@ -190,8 +190,13 @@
 	</ion-row>
 </ng-template>
 
-<ion-footer>
+<ion-footer [translucent]="true" collapse="fade">
 	<ion-toolbar>
-		<ion-button size="large" slot="end" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+		<div slot="start"></div>
+
+		<div slot="end">
+			<ion-button fill="outline" color="warning" (click)="closeModal()"> {{'Cancel' | translate}} </ion-button>
+			<ion-button [strong]="true" (click)="submitForm()">{{'Submit' | translate}}</ion-button>
+		</div>
 	</ion-toolbar>
 </ion-footer>

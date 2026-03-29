@@ -62,3 +62,6 @@
 	path = src/app/pages/PR
 	url = https://github.com/CodeArt-VN/ART-ERP-FE-PR.git
 	branch = main
+[submodule ".docs"]
+	path = .docs
+	url = https://github.com/CodeArt-VN/ART-ERP-FE-Documents.git

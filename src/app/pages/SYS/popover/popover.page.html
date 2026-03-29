@@ -112,27 +112,21 @@
 				</div>
 
 				<div class="c-control" *ngIf="popConfig.isShowBranchSelect">
-					<label class="c-label" for="IDBranch">{{popConfig.branchSelectLabel}}</label>
-					<ng-select
-						appendTo="#ng-select-holder"
-						[(ngModel)]="popData.branch"
-						class="c-input"
-						#IDBranch
-						labelForId="IDBranch"
-						[items]="branchList"
-						[virtualScroll]="true"
-						bindLabel="Name"
-						placeholder="{{'Select unit...' | translate}}"
-					>
-						<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
-							<div *ngIf="i">
-								<div>
-									<span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span>
-									<ion-text [color]=" i.Type == 'Company'? 'primary':'dark'" [ngOptionHighlight]="search">{{i.Name}}</ion-text>
-								</div>
-							</div>
-						</ng-template>
-					</ng-select>
+					<app-input-control
+						(change)="changeBranch($event)"
+						[field]="{
+							id: 'IDBranch',
+							label: 'Branch',
+							type: 'ng-select-branch',
+							virtualScroll: true,
+							dataSource: branchList,
+							bindLabel: 'Name',
+							bindValue: 'Id',
+							placeholder: 'Select unit..',
+							form: formGroup,
+						}"
+						>
+						</app-input-control>
 				</div>
 
 				<div class="c-control">

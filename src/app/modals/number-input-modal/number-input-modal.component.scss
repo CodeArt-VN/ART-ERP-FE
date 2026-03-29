@@ -1,0 +1,110 @@
+:host {
+	display: block;
+}
+
+.number-input-modal {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	/* remove outer padding so content can reach edges */
+	padding: 0;
+	box-sizing: border-box;
+	/* remove ionic safe area extra bottom padding inside modal */
+	--ion-safe-area-bottom: 0px;
+}
+
+.number-input-modal .modal-inner {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 0.5rem 0.5rem 0 0.5rem; /* keep top padding for display area, remove bottom padding */
+	box-sizing: border-box;
+	/* allow inner container to shrink inside ion-content */
+	min-height: 0;
+}
+
+.display-wrap {
+    background: var(--ion-card-background, #fff);
+    border: 1px solid var(--menu-right-border-color, #ddd);
+	/* slightly reduce padding so keypad gains a few pixels */
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	/* keep display area at its natural height so keypad can take remaining space */
+	flex: 0 0 auto;
+	box-sizing: border-box;
+}
+
+.display-wrap .display {
+	font-size: 28px;
+	font-weight: 700;
+	text-align: right;
+	padding: 0.5rem;
+    border: 1px solid var(--menu-right-border-color, #e6e6e6);
+	border-radius: 4px;
+    background: transparent;
+    color: var(--ion-text-color, #000);
+}
+
+.display-wrap .message {
+	margin-top: 0.5rem;
+    color: var(--ion-color-danger, #d9534f);
+	font-size: 12px;
+}
+
+.keypad {
+	margin-top: 0.35rem;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	/* use minmax(0,1fr) to avoid overflow when inside a flex container */
+	grid-template-rows: repeat(4, minmax(0, 1fr));
+	/* reduce gutters slightly to avoid rounding overflow */
+	grid-gap: 4px;
+	padding: 0;
+	/* allow keypad to expand and fill remaining modal height inside modal-inner */
+	flex: 1 1 0;
+	min-height: 0;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.keypad .row {
+	display: contents;
+}
+
+.keypad button {
+    background: var(--menu-background-bottom, var(--ion-item-background, #fff));
+    border: 1px solid var(--menu-right-border-color, #e6e6e6);
+	box-sizing: border-box;
+	/* fill the grid cell completely */
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	font-size: 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* avoid implicit min-height from line-height rounding */
+	line-height: 1;
+	min-height: 0;
+    color: var(--ion-text-color, #000);
+}
+
+.keypad button.action {
+    background: var(--menu-background-item-active, rgba(var(--ion-color-primary-rgb, 0,92,230), 0.08));
+    font-weight: 600;
+    color: var(--ion-color-primary, #005ce6);
+}
+
+.keypad button.wide {
+	grid-column: span 2;
+}
+
+@media (min-width: 600px) {
+	.display-wrap .display { font-size: 36px; }
+	.keypad button { font-size: 18px; }
+}
+

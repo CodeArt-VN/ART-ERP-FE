@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
 	selector: 'app-branch-breadcrumbs',
@@ -20,13 +20,25 @@ export class BranchBreadcrumbsComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit() {
-		if (this.Items && this.Id > -1) {
-			this.breadcrumbs = [];
-			this.addParent(this.Id);
+		this.loadData();
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['Id'] || changes['Items']) {
+			this.loadData();
 		}
 	}
 
+	loadData() {
+		this.breadcrumbs = [];
+		if (!Array.isArray(this.Items) || typeof this.Id !== 'number' || this.Id < 0) {
+			return;
+		}
+		this.addParent(this.Id);
+	}
+
 	addParent(id) {
+		if (id === null || id === undefined) return;
 		let parent = this.Items.find((d) => d.Id == id);
 
 		if (parent) {

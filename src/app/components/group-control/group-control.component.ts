@@ -41,7 +41,8 @@ export class GroupControlComponent implements OnInit {
 		} else if (direction == 'back') {
 			this.navCtrl.navigateBack(URL);
 		} else {
-			this.navCtrl.navigateRoot(URL);
+			const url = Array.isArray(URL) ? URL[0] : URL;
+			this.router.navigateByUrl(url, { replaceUrl: true });
 		}
 	}
 }

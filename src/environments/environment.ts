@@ -1,33 +1,22 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export let environment = {
 	production: false,
 	appVersion: '9dev',
 	appLocation: '/',
 	versionLocation: '',
-	//appDomain: 'https://demo.inholdings.vn/',
-	//appDomain: 'https://beta.inholdings.vn/',
-	//appDomain: 'https://artlogistics.vn/',
-	appDomain: "http://10.211.55.3:54009/",
-	//appDomain: 'http://art.appcenter.vn:54009/',
 	appServers: [
+		{ Code: 'https://api.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://beta.artlogistics.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
-		{ Code: 'https://demo.artlogistics.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
 		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
-
-		{ Code: 'https://app.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://beta.inholdings.vn/', Name: 'Beta server', Color: 'warning', Icon: 'cube-outline' },
-		{ Code: 'https://demo.inholdings.vn/', Name: 'Demo server', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
 
 		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 		{ Code: 'http://10.211.55.3:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
-	staffAvatarsServer: 'https://api.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
-	posImagesServer: 'https://api.inholdings.vn/',
+	appDomain: 'http://10.211.55.3:54009/',
+	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
+	posImagesServer: 'https://app.inholdings.vn/',
 	apiVersion: 'api/v1/',
 	showScrollbar: navigator.appVersion.indexOf('Win') > -1 || true,
 	// signalRServiceDomain: 'https://localhost:5001/'
@@ -35,13 +24,35 @@ export let environment = {
 	appStoreURL: 'http://itunes.apple.com/lb/app/ART-ERP/id1540404648?mt=8',
 	playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.erp&hl=vn',
 	loginEmail: '@inholdings.vn',
+
+	// NEW: Cache keys to clear on version updates
+	cacheKeysToClearOnNewVersion: [
+		// 'tempCache',        // Clear temp caches
+		'Cache*'
+	],
+
+	// NEW: Cache keys to clear on server changes  
+	cacheKeysToClearOnTenantSwitched: [
+		// 'tempCache/*'         // Clear temp server-specific cache
+	],
+
+	// NEW: Language loading strategy
+	languageStrategy: {
+		networkFirst: true,     // Try server URL first for web platform
+		fallbackToAssets: true, // Ultimate fallback to assets folder
+		cacheTimeout: 86400000, // 24 hours cache timeout (1 day)
+		retryAttempts: 3,       // Number of retry attempts
+		retryDelay: 1000       // Delay between retries (ms)
+	},
+
+	// NEW: Migration system settings
+	migrationSettings: {
+		forceVersion: null,     // Force specific version behavior (for testing)
+		skipMigration: false,   // Skip migration completely (for testing)
+		enableDetailedLogs: true // Enable verbose migration logs
+	}
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// dog = dev log;
+export let dogF = false; // Framework log;
+export let dog = !environment.production; // Current working log;

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
-import { EnvService } from 'src/app/services/core/env.service';
-import { PageBase } from 'src/app/page-base';
-import { BRA_BranchProvider,HRM_WorkRuleGroupProvider, OSM_CategoryProvider } from 'src/app/services/static/services.service';
 import { Location } from '@angular/common';
-import { SortConfig } from 'src/app/models/options-interface';
+import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+
+import { SortConfig } from 'src/app/interfaces/options-interface';
+import { PageBase } from 'src/app/page-base';
+import { EnvService } from 'src/app/services/core/env.service';
+import { BRA_BranchProvider, HRM_WorkRuleGroupProvider, OSM_CategoryProvider } from 'src/app/services/static/services.service';
 import { NotificationCategoryDetailPage } from '../notification-category-detail/notification-category-detail.page';
 
 @Component({
@@ -45,7 +46,7 @@ export class NotificationCategoryPage extends PageBase {
 				item: i,
 				id: i.Id,
 			},
-			cssClass: 'my-custom-class',
+			cssClass: 'modal90vh',
 		});
 		return await modal.present();
 	}

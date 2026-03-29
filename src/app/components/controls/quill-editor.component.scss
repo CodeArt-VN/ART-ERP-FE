@@ -1,0 +1,11 @@
+	.c-control {
+		position: unset;
+		margin: 0;
+
+		.c-input {
+			width: calc(100% - 16px);
+			border-color: var(--ion-color-primary);
+			margin: 4px;
+			color: var(--ion-color-primary);
+		}
+	}

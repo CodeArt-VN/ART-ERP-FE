@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
 	<ion-toolbar>
 		<ion-title *ngIf="item">{{item.LoggedBy}} - <small>{{item.Date | date: 'yyyy-MM-dd HH:mm'}}</small></ion-title>
 
@@ -9,6 +9,6 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content appScrollbarTheme fullscreen class="scrollx">
+<ion-content appScrollbarTheme class="scrollx" [fullscreen]="true">
 	<app-json-viewer *ngIf="item" [item]="item" [isCompare]="false"> </app-json-viewer>
 </ion-content>

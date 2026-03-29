@@ -1,13 +1,18 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { lib } from './services/static/global-functions';
-import { APIList } from './services/static/global-variable';
-import { PopoverPage } from './pages/SYS/popover/popover.page';
 import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
+
 import { FormControlComponent } from './components/controls/form-control.component';
 import { InputControlComponent } from './components/controls/input-control.component';
+import { PageConfig } from './interfaces/base-page-interface';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
+import { PopoverPage } from './pages/SYS/popover/popover.page';
+import { EVENT_TYPE } from './services/static/event-type';
+import { lib } from './services/static/global-functions';
+import { APIList } from './services/static/global-variable';
+import { dogF, environment } from 'src/environments/environment';
+import { PageDataManagementService } from './services/page/data-management.service';
+import { FormManagementService } from './services/page/form-management.service';
 
 @Component({
 	template: '',
@@ -15,6 +20,8 @@ import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advan
 	standalone: false,
 })
 export abstract class PageBase implements OnInit {
+	dataManagementService: PageDataManagementService;
+	formManagementService = new FormManagementService();
 	env;
 	route;
 	navCtrl;
@@ -41,8 +48,9 @@ export abstract class PageBase implements OnInit {
 		Take: 100,
 		Skip: 0,
 	};
+	maskConfig = { thousandSeparator: ',' };
 	schemaPage: any;
-	pageConfig: any = {
+	pageConfig: PageConfig = {
 		pageCode: '',
 		pageName: '',
 		pageTitle: '',
@@ -56,7 +64,7 @@ export abstract class PageBase implements OnInit {
 		isShowCheck: false,
 		isShowFeature: false,
 		infiniteScroll: true,
-		forceLoadData: true,
+		forceLoadData: false,
 		refresher: true,
 		showSpinner: true,
 		isEndOfData: false,
@@ -99,11 +107,10 @@ export abstract class PageBase implements OnInit {
 	clearData() {
 		this.pageConfig.showSpinner = true;
 		this.pageConfig.isEndOfData = false;
-		// this.query.Keyword = '';
 		this.items = [];
 	}
 
-	loadData(event = null) {
+	loadData(event = null, forceReload = false) {
 		if (this.pageConfig.isDetailPage) {
 			this.loadAnItem(event);
 		} else {
@@ -111,7 +118,7 @@ export abstract class PageBase implements OnInit {
 
 			if (this.pageProvider && !this.pageConfig.isEndOfData) {
 				if (event == 'search') {
-					this.pageProvider.read(this.query, this.pageConfig.forceLoadData).then((result: any) => {
+					this.pageProvider.read(this.query, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
 						if (result.data.length == 0) {
 							this.pageConfig.isEndOfData = true;
 						}
@@ -127,12 +134,7 @@ export abstract class PageBase implements OnInit {
 								this.pageConfig.isEndOfData = true;
 							}
 							if (result.data.length > 0) {
-								let firstRow = result.data[0];
-
-								//Fix dupplicate rows
-								if (this.items.findIndex((d) => d.Id == firstRow.Id) == -1) {
-									this.items = [...this.items, ...result.data];
-								}
+								this.items = this.dataManagementService.mergeItems(this.items, result.data);
 							}
 
 							this.loadedData(event);
@@ -255,45 +257,14 @@ export abstract class PageBase implements OnInit {
 	}
 
 	buildSelectDataSource(searchFunction, buildFlatTree = false) {
-		return {
-			searchFunction: searchFunction,
-			loading: false,
-			input$: new Subject<string>(),
-			selected: [],
-			items$: null,
-			initSearch() {
-				this.loading = false;
-				this.items$ = concat(
-					of(this.selected),
-					this.input$.pipe(
-						distinctUntilChanged(),
-						tap(() => (this.loading = true)),
-						switchMap((term) => {
-							return this.searchFunction(term).pipe(
-								catchError(() => of([])), // empty list on error
-								tap(() => (this.loading = false)),
-								mergeMap((e: any) => {
-									if (buildFlatTree) {
-										return lib.buildFlatTree(e, e);
-									}
-									return new Promise((resolve) => {
-										resolve(e);
-									});
-								})
-							);
-						})
-					)
-				);
-			},
-		};
+		return this.formManagementService.createSelectDataSource(searchFunction, buildFlatTree);
 	}
 
 	refresh(event = null) {
 		this.selectedItems = [];
 		if (!this.pageConfig.showSpinner) {
 			this.clearData();
-			this.env.setStorage('saved-query-' + this.pageConfig.pageName, this.query);
-			this.loadData(event);
+			this.loadData(event, true);
 		}
 	}
 
@@ -370,7 +341,7 @@ export abstract class PageBase implements OnInit {
 	}
 
 	showCommandBySelectedRows(selectedRows) {
-		const showCommandRules = this.pageProvider.showCommandRules;
+		const showCommandRules = this.pageProvider?.showCommandRules;
 		if (showCommandRules?.length) {
 			const statuses = selectedRows.map((row) => row.Status);
 			const filteredRules = showCommandRules.filter((rule) => statuses.includes(rule.Status));
@@ -492,25 +463,7 @@ export abstract class PageBase implements OnInit {
 	download(url) {
 		this.downloadURLContent(url);
 	}
-	private getAPIPathByPageName(pageName) {
-		let apiPath = null;
-		if (this.pageConfig.pageName == 'page-staff') {
-			apiPath = APIList.FILE_Import.NhanSu;
-		} else if (this.pageConfig.pageName == 'page-booking') {
-			apiPath = APIList.ReportAPI.Booking;
-		}
 
-		return apiPath;
-	}
-	private downloadContent(name, data) {
-		var pom = document.createElement('a');
-		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
-		pom.setAttribute('download', name);
-		pom.style.display = 'none';
-		document.body.appendChild(pom);
-		pom.click();
-		document.body.removeChild(pom);
-	}
 	downloadURLContent(url) {
 		if (url.indexOf('http') == -1) {
 			url = environment.appDomain + url;
@@ -538,7 +491,8 @@ export abstract class PageBase implements OnInit {
 				.catch((err) => {
 					console.log(err);
 
-					if ((err.status = 404)) {
+					// Kiểm tra err có phải là object và có thuộc tính status không
+					if (err && typeof err === 'object' && 'status' in err && err.status == 404) {
 						//this.nav('not-found', 'back');
 					} else {
 						this.item = null;
@@ -618,7 +572,7 @@ export abstract class PageBase implements OnInit {
 						}
 
 						// if (loading) loading.dismiss();
-						this.env.showMessage('Import completed!', 'success');
+						this.env.showMessage('Saving completed!', 'success');
 						this.formGroup.markAsPristine();
 						this.cdr.detectChanges();
 						resolve(savedItem.Id);
@@ -893,6 +847,8 @@ export abstract class PageBase implements OnInit {
 	events(e) {}
 
 	ngOnInit() {
+		this.dataManagementService = new PageDataManagementService(this.env, this.pageProvider, this.pageConfig, this.items);
+
 		// this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
 		let pageUrl = '';
 
@@ -918,7 +874,7 @@ export abstract class PageBase implements OnInit {
 				this.pageConfig.pageRemark = currentForm.Remark;
 				this.pageConfig.canEditHelpContent = true;
 
-				this.env.publishEvent({ Code: 'app:ViewDidEnter', Value: currentForm });
+				this.env.publishEvent({ Code: EVENT_TYPE.APP.VIEW_DID_ENTER, Value: currentForm });
 
 				let permissionList = this.env.user.Forms.filter((d) => d.IDParent == currentForm.Id);
 				if (permissionList.length) {
@@ -931,7 +887,7 @@ export abstract class PageBase implements OnInit {
 
 		this.subscriptions.push(
 			this.env.getEvents().subscribe((data) => {
-				if (data.Code == 'changeBranch') {
+				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.preLoadData(null);
 				} else if (data.Code == 'app:loadedLocalData') {
 					this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => {
@@ -990,7 +946,8 @@ export abstract class PageBase implements OnInit {
 		} else if (direction == 'back') {
 			this.navCtrl.navigateBack(URL);
 		} else {
-			this.navCtrl.navigateRoot(URL);
+			const url = Array.isArray(URL) ? URL[0] : URL;
+			this.navCtrl.router.navigateByUrl(url, { replaceUrl: true });
 		}
 	}
 
@@ -1014,11 +971,11 @@ export abstract class PageBase implements OnInit {
 
 	help() {
 		let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
-		this.env.publishEvent({ Code: 'app:ShowHelp', Value: code });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_HELP, Value: code });
 	}
 
 	async changeBranch(ev: any) {
-		if (0 && !this.pageConfig.canChangeBranch) {
+		if (!this.pageConfig.canChangeBranch) {
 			return;
 		}
 		let popover = await this.popoverCtrl.create({
@@ -1063,17 +1020,6 @@ export abstract class PageBase implements OnInit {
 			this.toggleRow(ls, i, true);
 		});
 	}
-
-	// toggleRowAll() {
-	// 	return new Promise((resolve) => {
-	// 		this.isAllRowOpened = !this.isAllRowOpened;
-	// 		for (let i of this.items) {
-	// 			i.showdetail = !this.isAllRowOpened;
-	// 			this.toggleRow(this.items, i, true);
-	// 		}
-	// 		resolve(true);
-	// 	});
-	// }
 
 	toggleRow(ls, ite, toogle = false) {
 		if (ite && ite.showdetail && toogle) {

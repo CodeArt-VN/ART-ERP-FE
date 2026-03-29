@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageBase } from 'src/app/page-base';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
-import { AccountService } from '../../../services/account.service';
+import { LoadingController, NavController } from '@ionic/angular';
+import { AuthenticationService } from '../../../services/auth/authentication.service';
+import { UserProfileService } from '../../../services/auth/user-profile.service';
+import { ExternalAuthService } from '../../../services/auth/external-auth.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ActivatedRoute } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
-import { ApiSetting } from 'src/app/services/static/api-setting';
-import { CustomService } from 'src/app/services/custom.service';
-import { environment } from 'src/environments/environment';
+import { CustomService } from 'src/app/services/custom/custom.service';
+import { environment, dogF } from 'src/environments/environment';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
+import { APIList } from 'src/app/services/static/global-variable';
 
 var URLSearchParams: any;
 
@@ -21,6 +24,7 @@ var URLSearchParams: any;
 })
 export class LoginPage extends PageBase {
 	password: string = '';
+	email = '';
 	formGroup: FormGroup;
 	submitAttempt = false;
 	returnUrl: string;
@@ -30,7 +34,9 @@ export class LoginPage extends PageBase {
 
 	constructor(
 		public pageProvider: CustomService,
-		public accountService: AccountService,
+		public authService: AuthenticationService,
+		public profileService: UserProfileService,
+		public externalAuthService: ExternalAuthService,
 		public env: EnvService,
 		public partnerProvider: BRA_BranchProvider,
 
@@ -42,9 +48,6 @@ export class LoginPage extends PageBase {
 	) {
 		super();
 
-		if (this.env.user && this.env.user.Id) {
-			this.preLoadData();
-		}
 		this.formGroup = formBuilder.group({
 			UserName: ['', Validators.compose([Validators.required])],
 			Password: ['', Validators.compose([Validators.required])],
@@ -59,55 +62,27 @@ export class LoginPage extends PageBase {
 	}
 
 	events(e) {
-		if (e.Code == 'app:loadedLocalData') {
+		if (e.Code == EVENT_TYPE.APP.LOADED_LOCAL_DATA) {
 			this.preLoadData();
 		}
 	}
 
 	preLoadData() {
 		// get return url from route parameters or default to '/'
-		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'default';
 
 		if (this.env.user && this.env.user.Id) {
 			this.nav(this.returnUrl, 'back');
+		} else {
+			this.env.getStorage('Username')?.then((v) => {
+				this.formGroup.controls.UserName.setValue(v);
+			});
 		}
-
-		this.env.getStorage('Username')?.then((v) => {
-			this.formGroup.controls.UserName.setValue(v);
-		});
 	}
 
 	goBack() {
 		this.nav(this.returnUrl, 'back');
 		//this.navCtrl.back();
-	}
-
-	forgotPassword() {
-		this.loadingCtrl
-			.create({
-				message: 'Vui lòng chờ gửi email...',
-			})
-			.then((loading) => {
-				loading.present();
-
-				this.accountService
-					.forgotPassword(this.formGroup.controls.UserName.value)
-					.then((data) => {
-						loading.dismiss();
-						this.env.showMessage('System has sent email for changing password, please check and follow instruction.', 'danger', null, 0, true);
-					})
-					.catch((err) => {
-						loading.dismiss();
-
-						if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-							this.env.showMessage('Cannot connect to server, please recheck');
-						} else if (err.status == 404) {
-							this.env.showMessage('Cannot find email, please recheck');
-						} else {
-							this.env.showMessage('Unable to send email, please try again');
-						}
-					});
-			});
 	}
 
 	login() {
@@ -122,13 +97,16 @@ export class LoginPage extends PageBase {
 		let account = this.formGroup.getRawValue();
 
 		this.env
-			.showLoading('Please wait for a few moments', this.accountService.login(account.UserName, account.Password))
-			.then((data) => {
+			.showLoading('Please wait for a few moments', async () => {
+				await this.authService.login({ username: account.UserName, password: account.Password });
+				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
+				await this.profileService.getProfile(); // Force reload fresh data
+				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				this.goBack();
 			})
 			.catch((err) => {
 				if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
-					this.env.showMessage('Cannot connect to server, please recheck', 'danger');
+					this.env.showMessage('Cannot connect to tenant, please recheck', 'danger');
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('locked out') > -1) {
 					this.env.showMessage('Account is not activated or being locked', 'danger');
 				} else if (err.error && err.error.error_description && err.error.error_description.indexOf('user name or password is incorrect') > -1) {
@@ -147,9 +125,13 @@ export class LoginPage extends PageBase {
 			.then((loading) => {
 				loading.present();
 
-				this.accountService
-					.ObtainLocalAccessToken(provider, externalAccessToken)
-					.then((data) => {
+				this.externalAuthService
+					.handleOAuthCallback(provider, externalAccessToken)
+					.then(async (data) => {
+						// Load user data after successful external login
+						dogF && console.log('🔑 [LoginPage] External login successful, loading user data...');
+						await this.profileService.getProfile(); // Force reload fresh data
+						dogF && console.log('✅ [LoginPage] User data loaded, navigating back...');
 						loading.dismiss();
 						this.goBack();
 					})
@@ -176,8 +158,8 @@ export class LoginPage extends PageBase {
 			.then((loading) => {
 				loading.present();
 
-				this.accountService
-					.getExternalLogins()
+				this.externalAuthService
+					.getLinkedProviders()
 					.then((data: [any]) => {
 						var it = data.filter((ite) => ite.Name == 'Facebook');
 						if (it.length) {
@@ -204,8 +186,8 @@ export class LoginPage extends PageBase {
 			.then((loading) => {
 				loading.present();
 
-				this.accountService
-					.getExternalLogins()
+				this.externalAuthService
+					.getLinkedProviders()
 					.then((data: [any]) => {
 						var it = data.filter((ite) => ite.Name == 'Google');
 						if (it.length) {
@@ -226,14 +208,37 @@ export class LoginPage extends PageBase {
 
 	ionViewWillEnter() {
 		super.ionViewWillEnter();
-		this.env.publishEvent({ Code: 'app:ShowMenu', Value: false });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: false });
 	}
 
-	ionViewDidEnter() {
-		super.ionViewDidEnter();
+	/**
+	 * Request password reset
+	 * Migrated from AccountService.forgotPassword()
+	 */
+	async forgotPassword(email: string = null): Promise<any> {
+		dogF && console.log('🔐 [LoginPage] Requesting password reset...', { email });
+
+		try {
+			const data = { Email: email };
+
+			dogF &&
+				console.log('🌐 [LoginPage] Calling forgot password API...', {
+					url: APIList.ACCOUNT.forgotPassword.url,
+					method: APIList.ACCOUNT.forgotPassword.method,
+				});
+
+			const response = await this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data).toPromise();
+
+			dogF && console.log('✅ [LoginPage] Password reset request successful:', response);
+
+			return response;
+		} catch (error) {
+			dogF && console.error('❌ [LoginPage] Password reset request failed:', error);
+			throw error;
+		}
 	}
 
 	ionViewWillLeave() {
-		this.env.publishEvent({ Code: 'app:ShowMenu', Value: true });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: true });
 	}
 }

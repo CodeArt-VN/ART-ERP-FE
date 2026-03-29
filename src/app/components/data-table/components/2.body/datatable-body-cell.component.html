@@ -12,8 +12,8 @@
 		<input *ngIf="column.checkbox" (click)="changeSelection(row, $event)" class="c-checkbox" [checked]="isSelected" type="checkbox" />
 		<ng-container *ngIf="value && !column.checkbox && column.property != 'Id'">
 			<span *ngIf="dataType == 'string'">{{ value }}</span>
-			<!-- <span class="hide-small" *ngIf="dataType == 'number'">{{ value | number: format }}</span> -->
-			<span *ngIf="dataType == 'number'">{{ value | numberFriendly }}</span>
+			<span *ngIf="dataType == 'number'" class="hide-small" >{{ value | number: format }}</span>
+			<span *ngIf="dataType == 'number'" class="show-small-inline" >{{ value | numberFriendly }}</span>
 			<span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
 		</ng-container>
 	</ng-container>

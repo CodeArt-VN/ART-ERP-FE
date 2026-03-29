@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+
 import { BranchBreadcrumbsComponent } from '../branch-breadcrumbs/branch-breadcrumbs.component';
 import { GroupControlComponent } from '../group-control/group-control.component';
 import { FieldControlComponent } from './field-control.component';
@@ -16,7 +18,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ShareDirectivesModule } from 'src/app/directives/share-directives.module';
 import { InputControlTempateDirective } from './input-control-template.directive';
-import { RouterModule } from '@angular/router';
+import { QuillEditorComponent } from './quill-editor.component';
 
 @NgModule({
 	imports: [
@@ -29,7 +31,7 @@ import { RouterModule } from '@angular/router';
 		NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,
-		NgOptionHighlightModule,
+		NgOptionHighlightDirective,
 		ShareDirectivesModule,
 		PipesModule,
 	],
@@ -38,6 +40,7 @@ import { RouterModule } from '@angular/router';
 	declarations: [
 		GroupControlComponent,
 		FieldControlComponent,
+		QuillEditorComponent,
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
@@ -48,6 +51,7 @@ import { RouterModule } from '@angular/router';
 	exports: [
 		GroupControlComponent,
 		FieldControlComponent,
+		QuillEditorComponent,
 		FormControlComponent,
 		InputControlComponent,
 		BranchBreadcrumbsComponent,
