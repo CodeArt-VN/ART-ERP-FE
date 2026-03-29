@@ -70,7 +70,7 @@ export interface ComponentUI {
 export class AppComponent implements OnInit {
 	ui: ComponentUI = {
 		// App state
-		appTheme: 'default-theme',
+		appTheme: 'artdistribution-theme',
 		isConnectFail: false,
 		appMessages: [],
 		canGoBack: false,
