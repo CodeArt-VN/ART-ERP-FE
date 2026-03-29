@@ -1,8 +1,8 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.49',
+	appVersion: '0.21.50',
 	appLocation: '/', // VirtualDirectory
-	versionLocation: '', // 'V{{REPLACE_VERSION}}/',
+	versionLocation: 'V{{REPLACE_VERSION}}/', // 'V{{REPLACE_VERSION}}/',
 	appServers: [
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://art.appcenter.vn/', Name: 'Backup server', Color: 'success', Icon: 'rocket' },
