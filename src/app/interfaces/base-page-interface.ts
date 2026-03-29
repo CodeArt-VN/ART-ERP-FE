@@ -29,8 +29,9 @@ export interface PageConfig {
 
 	// Sorting and display
 	sort: SortConfig[];
+	/** `fields`: sort Dimension aliases for one dividerFn. Walk `sort` from index 0: each dimension must match some divider or dividers stop; a later column without any matching `fields` ⇒ no dividers for that and following levels. */
 	dividers: Array<{
-		field: string;
+		fields: string[];
 		dividerFn: (item: any, index: number, items: any[]) => string | null;
 	}>;
 
