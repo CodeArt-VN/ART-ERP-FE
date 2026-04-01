@@ -11,8 +11,6 @@ import { BillPreviewComponent } from '../bill-preview-modal/bill-preview-modal';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { FormManagementService } from 'src/app/services/page/form-management.service';
 import QRCode from 'qrcode';
-import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-payment-modal',
@@ -57,7 +55,10 @@ export class PaymentModalComponent implements OnInit {
 
 	listVoucherType = ['Gotit', 'CashVoucher'];
 	listVoucherUsed: any[] = [];
-	pin = '';
+	gotItUseResult: any = null;
+	isVoucherChecking = false;
+	private voucherSaleOrderPayload: any = null;
+	private voucherSaleOrderSource: any = null;
 
 	submitAttempt: boolean = false;
 	item: any = {
@@ -86,8 +87,7 @@ export class PaymentModalComponent implements OnInit {
 		private contactProvider: CRM_ContactProvider,
 		private commonService: CommonService,
 		private env: EnvService,
-		private paymentService: PaymentService,
-		public sysConfigProvider: SYS_ConfigService
+		private paymentService: PaymentService
 	) {
 		this.formGroup = this.formBuilder.group({
 			IDBranch: [''],
@@ -117,7 +117,8 @@ export class PaymentModalComponent implements OnInit {
 		this.step++;
 	}
 
-	back() {
+	async back() {
+		if (!(await this.releasePendingGotitVouchers())) return;
 		this.step--;
 		if (this.formGroup.get('VoucherCode').value) {
 			this.formGroup.get('VoucherCode').setValue('');
@@ -174,11 +175,13 @@ export class PaymentModalComponent implements OnInit {
 							this.env.showMessage('Payment success', 'success');
 							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
 								this.item.DebtAmount -= value.Amount;
+								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
 							} else if (this.item.IsRefundTransaction && value.Amount < this.item.RefundAmount) {
 								this.item.RefundAmount -= value.Amount;
+								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
@@ -287,6 +290,11 @@ export class PaymentModalComponent implements OnInit {
 		}
 	}
 	async changeType(type, subType = null) {
+		const currentType = this.formGroup.get('Type').value;
+		if (currentType == 'Gotit' && type != 'Gotit') {
+			if (!(await this.releasePendingGotitVouchers())) return;
+		}
+
 		if (type === 'PaymentProposal') {
 			const ok = await this.ensureRequesterStaff();
 			if (!ok) return;
@@ -313,12 +321,8 @@ export class PaymentModalComponent implements OnInit {
 			this.formGroup.get('InputAmount').setValue(0);
 			this.formGroup.get('InputAmount').disable();
 		} else if (type == 'Gotit') {
+			this.gotItUseResult = null;
 			this.listVoucherUsed = [];
-			this.sysConfigProvider.getConfig(this.env.selectedBranch, ['PinForGotit']).then((res: any) => {
-				if (res) {
-					this.pin = res['PinForGotit'] || '';
-				}
-			});
 			this.formGroup.get('InputAmount').markAsPristine();
 			this.formGroup.get('InputAmount').disable();
 			let total = this.paymentList.reduce((sum, p) => sum + (p.Type == 'Gotit' ? p.Amount : 0), 0);
@@ -337,6 +341,8 @@ export class PaymentModalComponent implements OnInit {
 	// Gửi yêu cầu thanh toán
 	// --------------------------------------------------------------------
 	async confirmPayment() {
+		if (this.submitAttempt) return;
+
 		if (this.item.IsRefundTransaction) {
 			if (this.formGroup.get('InputAmount').value > this.item.RefundAmount) {
 				this.env.showMessage('Refund amount cannot be greater than original amount', 'warning');
@@ -352,6 +358,8 @@ export class PaymentModalComponent implements OnInit {
 			this.env.showMessage('Please choose payment method', 'warning');
 			return;
 		}
+		this.submitAttempt = true;
+
 		let obj = this.formGroup.getRawValue();
 		if (obj?.IDApproverContact !== undefined) {
 			delete obj.IDApproverContact;
@@ -392,23 +400,30 @@ export class PaymentModalComponent implements OnInit {
 		if (obj.Type == 'PaymentProposal') {
 			const requestId = await this.createPaymentProposalRequest(obj.Amount);
 			if (!requestId) {
+				this.submitAttempt = false;
 				return;
 			}
 		}
 		if (obj.Type == 'Gotit') {
 			const gotitRes = await this.useGotit();
 			if (!gotitRes?.success) {
+				this.submitAttempt = false;
 				return;
 			}
-			obj['Remark'] = gotitRes.data?.map((v) => v.code).join(',') || '';
+			const gotitCodes = new Set((gotitRes.data || []).map((v) => v.code));
+
+			obj['PaymentDetails'] = (this.listVoucherUsed || [])
+				.filter((v) => gotitCodes.has(v.code))
+				.map((v) => ({
+					Code: v.code,
+					Amount: v.amount,
+				}));
 		}
 		let str = window.btoa(JSON.stringify(payment));
 		let code = this.convertUrl(str);
 		obj.Code = code;
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (!this.item.IsRefundTransaction && obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
-
-		this.submitAttempt = true;
 
 		this.commonService
 			.connect('POST', 'BANK/IncomingPayment', obj)
@@ -450,6 +465,8 @@ export class PaymentModalComponent implements OnInit {
 					this.next();
 					this.submitAttempt = false;
 					// this.closeModal();
+				} else {
+					this.submitAttempt = false;
 				}
 			})
 			.catch((err) => {
@@ -548,7 +565,8 @@ export class PaymentModalComponent implements OnInit {
 	// --------------------------------------------------------------------
 	// Đóng modal
 	// --------------------------------------------------------------------
-	closeModal() {
+	async closeModal() {
+		if (!(await this.releasePendingGotitVouchers())) return;
 		this.modalController.dismiss();
 	}
 
@@ -596,6 +614,9 @@ export class PaymentModalComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
+		if (this.hasPendingGotitReservations()) {
+			void this.releasePendingGotitVouchers(false);
+		}
 		if (this.subPromotion) this.subPromotion.unsubscribe();
 	}
 	private getQrCodeHtml(): string {
@@ -648,6 +669,7 @@ export class PaymentModalComponent implements OnInit {
 			this.promotionService.deleteVoucher(this.item.SaleOrder, [p.VoucherCode]).then(() => {
 				this.saleOrderProvider.getAnItem(this.item.SaleOrder.Id).then(async (rs: any) => {
 					this.item.SaleOrder = await this.onUpdateItem(rs);
+					this.invalidateVoucherSaleOrderPayload();
 					this.item.DebtAmount = Math.round(this.item.SaleOrder?.Debt);
 					this.formGroup.patchValue(this.item);
 					this.generateAmountButtons();
@@ -669,6 +691,7 @@ export class PaymentModalComponent implements OnInit {
 		const { data, role } = await modal.onWillDismiss();
 		if (data && this.onUpdateItem) {
 			this.item.SaleOrder = await this.onUpdateItem(data);
+			this.invalidateVoucherSaleOrderPayload();
 			this.item.DebtAmount = Math.round(this.item.SaleOrder?.Debt);
 			this.formGroup.patchValue(this.item);
 			this.generateAmountButtons();
@@ -690,9 +713,9 @@ export class PaymentModalComponent implements OnInit {
 	//#endregion
 
 	voucherCodeChange() {
-		let code = this.formGroup.get('VoucherCode').value;
+		let code = this.formGroup.get('VoucherCode').value?.trim();
 		let type = this.formGroup.get('Type').value;
-		if (!code || code.trim() == '') {
+		if (this.isVoucherChecking || !code) {
 			return;
 		}
 
@@ -707,84 +730,103 @@ export class PaymentModalComponent implements OnInit {
 	}
 
 	//region CashVoucher
-	checkCashVoucher(code: string) {
-		let postDTO = {
-			VoucherCodeList: [code],
-			SaleOrder: this.item.SaleOrder,
-		};
-		this.promotionService.commonService
-			.connect('POST', 'PR/Program/CheckVoucher', postDTO)
-			.toPromise()
-			.then((voucher: any) => {
-				if (voucher.length > 0) {
-					if (voucher[0].CanUse) {
-						this.program = voucher[0].Program;
-						let value = this.program.Value;
-						this.formGroup.get('InputAmount').setValue(value);
-						this.formGroup.get('InputAmount').markAsDirty();
-					} else {
-						this.env.showMessage(voucher[0].ErrorMesage, 'danger');
-					}
+	async checkCashVoucher(code: string) {
+		const normalizedCode = code?.trim();
+		if (!normalizedCode) return;
+
+		this.setVoucherCheckingState(true);
+		try {
+			let postDTO = {
+				VoucherCodeList: [normalizedCode],
+				SaleOrder: this.getVoucherSaleOrderPayload(),
+			};
+			const voucher: any = await this.promotionService.commonService.connect('POST', 'PR/Program/CheckVoucher', postDTO).toPromise();
+			if (voucher.length > 0) {
+				if (voucher[0].CanUse) {
+					this.program = voucher[0].Program;
+					let value = this.program.Value;
+					this.formGroup.get('InputAmount').setValue(value);
+					this.formGroup.get('InputAmount').markAsDirty();
 				} else {
-					this.env.showMessage('Voucher code is not valid', 'danger');
+					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
 				}
-			})
-			.catch((err) => this.env.showErrorMessage(err));
+			} else {
+				this.env.showMessage('Voucher code is not valid', 'danger');
+			}
+		} catch (err) {
+			this.env.showErrorMessage(err);
+		} finally {
+			this.setVoucherCheckingState(false);
+		}
 	}
 	//endregion
 
 	//region Gotit
-	checkGotit(code: string) {
-		let postDTO = {
-			pin: this.pin,
-			codes: [code],
-			bill_number: this.item.SaleOrder.Id?.toString(),
-			skip_reserved_when_mark_used: true,
-		};
-		this.commonService
-			.connect('POST', environment.appDomain + 'api/GotIt/CheckMultiple', postDTO)
-			.toPromise()
-			.then((voucher: any) => {
-				if (voucher) {
-					if (voucher.success) {
-						let toltal = this.formGroup.get('InputAmount').value || 0;
-						this.formGroup.get('InputAmount').setValue(voucher.data[0].value + toltal);
-						if (this.formGroup.get('InputAmount').value > this.item.DebtAmount) {
-							this.formGroup.get('InputAmount').setValue(this.item.DebtAmount);
-						}
-						this.formGroup.get('InputAmount').markAsDirty();
-						this.formGroup.get('Type').setValue('Gotit');
-						this.formGroup.get('Type').markAsDirty();
-						if (this.listVoucherUsed.some((v) => v.Code == voucher.data[0].code)) {
-							this.env.showMessage('Voucher code has already been used', 'danger');
-							return;
-						}
-						this.listVoucherUsed.push(voucher.data[0]);
-						// this.program = { Name: 'Gotit Voucher', Value: voucher.value };
-						this.env.showMessage(this.env.language.current == 'vi-VN' ? voucher.message_vi : voucher.message_en, 'success');
-					} else {
-						this.env.showMessage(this.env.language.current == 'vi-VN' ? voucher.message_vi : voucher.message_en, 'danger');
+	async checkGotit(code: string) {
+		const normalizedCode = code?.trim();
+		if (!normalizedCode) return;
+		if (this.gotItUseResult?.success) {
+			this.env.showMessage('GotIt vouchers have already been used for this payment', 'warning');
+			this.formGroup.get('VoucherCode').setValue('');
+			return;
+		}
+		if (this.listVoucherUsed.some((v) => v.code == normalizedCode)) {
+			this.env.showMessage('Voucher code has already been reserved', 'danger');
+			this.formGroup.get('VoucherCode').setValue('');
+			return;
+		}
+
+		this.setVoucherCheckingState(true);
+		try {
+			let postDTO = {
+				Type: 'PromotionIntegration',
+				SubType: 'Gotit',
+				VoucherCodeList: [normalizedCode],
+				SaleOrder: this.getVoucherSaleOrderPayload(),
+			};
+			const voucher: any = await this.commonService.connect('POST', 'PR/Program/CheckVoucher', postDTO).toPromise();
+			if (voucher && voucher.length > 0) {
+				if (voucher[0].CanUse) {
+					let toltal = this.formGroup.get('InputAmount').value || 0;
+					let originalAmount = voucher[0].Program.Value;
+					let amount = voucher[0].Program.Value;
+					if (toltal + originalAmount > this.item.DebtAmount) {
+						amount = this.item.DebtAmount - toltal;
 					}
+					this.formGroup.get('InputAmount').setValue(toltal + amount);
+					this.formGroup.get('InputAmount').markAsDirty();
+					this.formGroup.get('Type').setValue('Gotit');
+					this.formGroup.get('Type').markAsDirty();
+					this.gotItUseResult = null;
+					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, originalAmount: originalAmount, amount: amount });
+					this.env.showMessage(voucher[0].ErrorMesage);
 				} else {
-					this.env.showMessage('Voucher code is not valid', 'danger');
+					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
 				}
-			})
-			.catch((err) => {
-				const detail = err?.error?.detail || err?.error?.message || err?.message;
-				if (detail) {
-					this.env.showMessage(detail, 'danger');
-				}
-				this.env.showErrorMessage(err);
-			})
-			.finally(() => this.formGroup.get('VoucherCode').setValue(''));
+			} else {
+				this.env.showMessage('Voucher code is not valid', 'danger');
+			}
+		} catch (err) {
+			const detail = err?.error?.detail || err?.error?.message || err?.message;
+			if (detail) {
+				this.env.showMessage(detail, 'danger');
+			}
+			this.env.showErrorMessage(err);
+		} finally {
+			this.setVoucherCheckingState(false, true);
+		}
 	}
 
 	async useGotit() {
+		if (this.gotItUseResult?.success) {
+			return this.gotItUseResult;
+		}
 		let code = this.listVoucherUsed.map((v) => v.code);
-		let postDTO = { pin: this.pin, codes: code, bill_number: this.item.SaleOrder.Id?.toString(), skip_reserved_when_mark_used: true, bill_total: this.item.DebtAmount };
+		let postDTO = { VoucherCodeList: code, SaleOrder: this.getVoucherSaleOrderPayload(), Type: 'PromotionIntegration', SubType: 'Gotit', ProviderCode: 'Gotit' };
 		try {
-			const res: any = await this.commonService.connect('POST', environment.appDomain + 'api/GotIt/MarkUseMultiple', postDTO).toPromise();
+			const res: any = await this.commonService.connect('POST', 'PR/Program/UseVoucher', postDTO).toPromise();
 			if (res.success) {
+				this.gotItUseResult = res;
 				this.env.showMessage('Vouchers used successfully', 'success');
 			} else {
 				this.env.showMessage('Failed to use vouchers', 'danger');
@@ -796,13 +838,154 @@ export class PaymentModalComponent implements OnInit {
 		}
 	}
 
-	removeGotitVoucher(idx) {
+	async removeGotitVoucher(idx) {
 		if (this.listVoucherUsed.length == 0) return;
+		if (this.gotItUseResult?.success) {
+			this.env.showMessage('Used vouchers cannot be removed', 'warning');
+			return;
+		}
+		const voucher = this.listVoucherUsed[idx];
+		if (!voucher) return;
+		try {
+			await this.promotionService.releaseIntegrationVouchers(this.getVoucherSaleOrderPayload(), [voucher.code], {
+				type: 'PromotionIntegration',
+				subType: 'Gotit',
+				providerCode: 'Gotit',
+			});
+		} catch (err) {
+			this.env.showErrorMessage(err);
+			return;
+		}
 		this.listVoucherUsed.splice(idx, 1);
-		this.formGroup.get('InputAmount').setValue(this.listVoucherUsed.reduce((sum, item) => sum + item.value, 0));
-		this.formGroup.get('InputAmount').markAsDirty();
+		this.refreshGotitAmount();
 	}
 	//endregion
+
+	private hasPendingGotitReservations() {
+		return this.formGroup.get('Type').value == 'Gotit' && this.listVoucherUsed.length > 0 && !this.gotItUseResult?.success;
+	}
+
+	private refreshGotitAmount() {
+		const existingTotal = this.paymentList.reduce((sum, p) => sum + (p.Type == 'Gotit' ? p.Amount : 0), 0);
+		let total = existingTotal + this.listVoucherUsed.reduce((sum, item) => sum + item.amount, 0);
+		if (total > this.item.DebtAmount) total = this.item.DebtAmount;
+		this.formGroup.get('InputAmount').setValue(total);
+		this.formGroup.get('InputAmount').markAsDirty();
+	}
+
+	private async releasePendingGotitVouchers(showError = true) {
+		if (!this.hasPendingGotitReservations()) {
+			this.listVoucherUsed = [];
+			this.gotItUseResult = null;
+			return true;
+		}
+		const voucherCodes = this.listVoucherUsed.map((v) => v.code);
+		try {
+			await this.promotionService.releaseIntegrationVouchers(this.getVoucherSaleOrderPayload(), voucherCodes, {
+				type: 'PromotionIntegration',
+				subType: 'Gotit',
+				providerCode: 'Gotit',
+			});
+			this.listVoucherUsed = [];
+			this.gotItUseResult = null;
+			this.refreshGotitAmount();
+			return true;
+		} catch (err) {
+			if (showError) this.env.showErrorMessage(err);
+			return false;
+		}
+	}
+
+	private invalidateVoucherSaleOrderPayload() {
+		this.voucherSaleOrderPayload = null;
+		this.voucherSaleOrderSource = null;
+	}
+
+	private setVoucherCheckingState(isChecking: boolean, clearInput = false) {
+		this.isVoucherChecking = isChecking;
+
+		const voucherControl = this.formGroup.get('VoucherCode');
+		if (!voucherControl) return;
+
+		if (isChecking) {
+			voucherControl.disable({ emitEvent: false });
+			return;
+		}
+
+		voucherControl.enable({ emitEvent: false });
+		if (clearInput) {
+			voucherControl.setValue('', { emitEvent: false });
+		}
+
+		if (!this.listVoucherType.includes(this.formGroup.get('Type').value)) return;
+		setTimeout(() => {
+			const voucherInput = document.getElementById('VoucherCode') as HTMLInputElement | null;
+			voucherInput?.focus();
+			voucherInput?.select();
+		}, 0);
+	}
+
+	// Strip the order graph down to the fields voucher APIs actually need.
+	private getVoucherSaleOrderPayload() {
+		const saleOrder = this.item?.SaleOrder || {};
+		if (this.voucherSaleOrderSource === saleOrder && this.voucherSaleOrderPayload) {
+			return this.voucherSaleOrderPayload;
+		}
+
+		const mapSubItems = (subItems: any[] = []) =>
+			subItems
+				.filter((sub) => sub && !sub.IsDeleted && Number(sub.Quantity || 0) > 0)
+				.map((sub) => ({
+					Id: sub.Id,
+					IDItem: sub.IDItem,
+					Quantity: Number(sub.Quantity || 0),
+					UoMPrice: Number(sub.UoMPrice || 0),
+					Tax: Number(sub.Tax ?? sub.OriginalTax ?? 0),
+					OriginalTax: Number(sub.OriginalTax ?? sub.Tax ?? 0),
+					IsDeleted: !!sub.IsDeleted,
+				}));
+
+		this.voucherSaleOrderSource = saleOrder;
+		this.voucherSaleOrderPayload = {
+			Id: saleOrder.Id,
+			IDBranch: saleOrder.IDBranch ?? this.item?.IDBranch,
+			IDCustomer: saleOrder.IDCustomer ?? this.item?.IDCustomer,
+			IDContact: saleOrder.IDContact ?? saleOrder.IDCustomer ?? this.item?.IDCustomer,
+			OrderDate: saleOrder.OrderDate,
+			Debt: Number(saleOrder.Debt ?? this.item?.DebtAmount ?? 0),
+			DebtAmount: Number(saleOrder.DebtAmount ?? this.item?.DebtAmount ?? 0),
+			OriginalTotalBeforeDiscount: Number(saleOrder.OriginalTotalBeforeDiscount ?? saleOrder.TotalBeforeDiscount ?? 0),
+			CalcTotalOriginal: Number(saleOrder.CalcTotalOriginal ?? saleOrder.TotalAfterTax ?? 0),
+			TotalAfterTax: Number(saleOrder.TotalAfterTax ?? saleOrder.CalcTotalOriginal ?? 0),
+			CalcTotalAdditions: Number(saleOrder.CalcTotalAdditions ?? 0),
+			CalcTotalDeductions: Number(saleOrder.CalcTotalDeductions ?? 0),
+			Deductions: (saleOrder.Deductions || [])
+				.filter((deduction) => deduction && !deduction.IsDeleted)
+				.map((deduction) => ({
+					Id: deduction.Id,
+					IDProgram: deduction.IDProgram,
+					VoucherCode: deduction.VoucherCode,
+					Type: deduction.Type,
+					SubType: deduction.SubType,
+					Amount: Number(deduction.Amount || 0),
+					IsDeleted: !!deduction.IsDeleted,
+				})),
+			OrderLines: (saleOrder.OrderLines || [])
+				.filter((line) => line && !line.IsDeleted && Number(line.Quantity || 0) > 0)
+				.map((line) => ({
+					Id: line.Id,
+					IDItem: line.IDItem,
+					Quantity: Number(line.Quantity || 0),
+					UoMPrice: Number(line.UoMPrice || 0),
+					Tax: Number(line.Tax ?? line.OriginalTax ?? 0),
+					OriginalTax: Number(line.OriginalTax ?? line.Tax ?? 0),
+					IsDeleted: !!line.IsDeleted,
+					SubItems: mapSubItems(line.SubItems || []),
+				})),
+		};
+
+		return this.voucherSaleOrderPayload;
+	}
 
 	//region GrabPay
 	async generateGrabPayQr() {
