@@ -136,7 +136,7 @@
 					</ion-item>
 
 					<!-- ========== Gotit ========== -->
-					<ion-item button (click)="changeType('Gotit')">
+					<ion-item button (click)="changeType('PromotionIntegration','Gotit')">
 						<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
 						<ion-label>Gotit</ion-label>
 					</ion-item>
@@ -267,7 +267,7 @@
 						<div class="c-control" *ngIf="listVoucherUsed?.length > 0">
 							<app-data-table class="box-shadow responsive" [rows]="listVoucherUsed" [trackBy]="'Id'">
 								<datatable-column class="col-name" name="Voucher code" property="code"></datatable-column>
-								<datatable-column class="col-number" name="Value" format="1.0-0" property="originalAmount"></datatable-column>
+								<datatable-column class="col-number" name="Value" format="1.0-0" property="amount"></datatable-column>
 								<datatable-column class="col-icon" name="" property="value">
 									<ng-template let-idx="idx" datatable-cell-template>
 										<ion-icon color="danger" class="min-btn clickable" name="trash-outline" (click)="removeGotitVoucher(idx)"></ion-icon>

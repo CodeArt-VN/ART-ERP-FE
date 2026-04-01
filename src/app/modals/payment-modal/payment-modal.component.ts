@@ -53,7 +53,7 @@ export class PaymentModalComponent implements OnInit {
 		{ Code: 'MB', Name: 'MB Bank', Image: '/assets/logos/banks/mb.png' },
 	];
 
-	listVoucherType = ['Gotit', 'CashVoucher'];
+	listVoucherType = ['PromotionIntegration', 'CashVoucher'];
 	listVoucherUsed: any[] = [];
 	gotItUseResult: any = null;
 	isVoucherChecking = false;
@@ -291,7 +291,7 @@ export class PaymentModalComponent implements OnInit {
 	}
 	async changeType(type, subType = null) {
 		const currentType = this.formGroup.get('Type').value;
-		if (currentType == 'Gotit' && type != 'Gotit') {
+		if (currentType == 'PromotionIntegration' && type != 'PromotionIntegration') {
 			if (!(await this.releasePendingGotitVouchers())) return;
 		}
 
@@ -320,12 +320,12 @@ export class PaymentModalComponent implements OnInit {
 			this.formGroup.get('InputAmount').markAsPristine();
 			this.formGroup.get('InputAmount').setValue(0);
 			this.formGroup.get('InputAmount').disable();
-		} else if (type == 'Gotit') {
+		} else if (type == 'PromotionIntegration') {
 			this.gotItUseResult = null;
 			this.listVoucherUsed = [];
 			this.formGroup.get('InputAmount').markAsPristine();
 			this.formGroup.get('InputAmount').disable();
-			let total = this.paymentList.reduce((sum, p) => sum + (p.Type == 'Gotit' ? p.Amount : 0), 0);
+			let total = this.paymentList.reduce((sum, p) => sum + (p.Type == 'PromotionIntegration' && p.SubType == 'Gotit' ? p.Amount : 0), 0);
 			this.formGroup.get('InputAmount').setValue(total);
 		}
 	}
@@ -368,7 +368,7 @@ export class PaymentModalComponent implements OnInit {
 		if (
 			obj.Type == 'Cash' ||
 			obj.Type == 'Debt' ||
-			obj.Type == 'Gotit' ||
+			obj.Type == 'PromotionIntegration' ||
 			obj.Type == 'Urbox' ||
 			obj.Type == 'VNPAY' ||
 			obj.Type == 'BOD' ||
@@ -404,7 +404,7 @@ export class PaymentModalComponent implements OnInit {
 				return;
 			}
 		}
-		if (obj.Type == 'Gotit') {
+		if (obj.Type == 'PromotionIntegration' && obj.SubType == 'Gotit') {
 			const gotitRes = await this.useGotit();
 			if (!gotitRes?.success) {
 				this.submitAttempt = false;
@@ -715,6 +715,7 @@ export class PaymentModalComponent implements OnInit {
 	voucherCodeChange() {
 		let code = this.formGroup.get('VoucherCode').value?.trim();
 		let type = this.formGroup.get('Type').value;
+		let subtype = this.formGroup.get('SubType').value;
 		if (this.isVoucherChecking || !code) {
 			return;
 		}
@@ -723,8 +724,9 @@ export class PaymentModalComponent implements OnInit {
 			case 'CashVoucher':
 				this.checkCashVoucher(code);
 				break;
-			case 'Gotit':
-				this.checkGotit(code);
+			case 'PromotionIntegration':
+				if (subtype == 'Gotit') this.checkGotit(code);
+
 				break;
 		}
 	}
@@ -788,17 +790,16 @@ export class PaymentModalComponent implements OnInit {
 			if (voucher && voucher.length > 0) {
 				if (voucher[0].CanUse) {
 					let toltal = this.formGroup.get('InputAmount').value || 0;
-					let originalAmount = voucher[0].Program.Value;
 					let amount = voucher[0].Program.Value;
-					if (toltal + originalAmount > this.item.DebtAmount) {
-						amount = this.item.DebtAmount - toltal;
-					}
+				
 					this.formGroup.get('InputAmount').setValue(toltal + amount);
 					this.formGroup.get('InputAmount').markAsDirty();
-					this.formGroup.get('Type').setValue('Gotit');
+					this.formGroup.get('Type').setValue('PromotionIntegration');
 					this.formGroup.get('Type').markAsDirty();
+					this.formGroup.get('SubType').setValue('Gotit');
+					this.formGroup.get('SubType').markAsDirty();
 					this.gotItUseResult = null;
-					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, originalAmount: originalAmount, amount: amount });
+					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, amount: amount });
 					this.env.showMessage(voucher[0].ErrorMesage);
 				} else {
 					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
@@ -862,11 +863,11 @@ export class PaymentModalComponent implements OnInit {
 	//endregion
 
 	private hasPendingGotitReservations() {
-		return this.formGroup.get('Type').value == 'Gotit' && this.listVoucherUsed.length > 0 && !this.gotItUseResult?.success;
+		return this.formGroup.get('Type').value == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit' && this.listVoucherUsed.length > 0 && !this.gotItUseResult?.success;
 	}
 
 	private refreshGotitAmount() {
-		const existingTotal = this.paymentList.reduce((sum, p) => sum + (p.Type == 'Gotit' ? p.Amount : 0), 0);
+		const existingTotal = this.paymentList.reduce((sum, p) => sum + (p.Type == 'PromotionIntegration' && p.SubType == 'Gotit' ? p.Amount : 0), 0);
 		let total = existingTotal + this.listVoucherUsed.reduce((sum, item) => sum + item.amount, 0);
 		if (total > this.item.DebtAmount) total = this.item.DebtAmount;
 		this.formGroup.get('InputAmount').setValue(total);
