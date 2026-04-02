@@ -113,6 +113,23 @@ export class PromotionService {
 		});
 	}
 
+	releaseIntegrationVouchers(saleOrder: any, voucherCodes: string[], options?: { type?: string; subType?: string; providerCode?: string }) {
+		if (!saleOrder?.Id || !voucherCodes || voucherCodes.length === 0) return Promise.resolve(true);
+		return new Promise((resolve, reject) => {
+			this.commonService
+				.connect('POST', 'PR/Program/UnUseVoucher/', {
+					SaleOrder: saleOrder,
+					VoucherCodeList: voucherCodes,
+					Type: options?.type,
+					SubType: options?.subType,
+					ProviderCode: options?.providerCode,
+				})
+				.toPromise()
+				.then(() => resolve(true))
+				.catch((err) => reject(err));
+		});
+	}
+
 	clearMemory(IDSO: number) {
 		const map = { ...this.voucherBySO$.value };
 		delete map[IDSO];
