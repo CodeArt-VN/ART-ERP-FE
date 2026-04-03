@@ -8,7 +8,6 @@ import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { PURCHASE_OrderProvider } from 'src/app/services/static/services.service';
 import { lib } from 'src/app/services/static/global-functions';
-import { SYS_Config } from 'src/app/models/model-list-interface';
 import { SYS_ConfigService } from 'src/app/services/custom/system-config.service';
 
 @Component({
@@ -44,35 +43,45 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	preLoadData(event?: any): void {
 		this.id = this.ID;
 
-		this.env.getStatus('PurchaseOrder').then((data: any) => {
-			this.statusList = data;
-		}).finally(() => {
-			if (this.item != null) {
-				this.loadedData(event);
-			} else {
-				super.preLoadData(event);
-			}
-		})
-
+		this.env
+			.getStatus('PurchaseOrder')
+			.then((data: any) => {
+				this.statusList = data;
+			})
+			.finally(() => {
+				if (this.item != null) {
+					this.loadedData(event);
+				} else {
+					super.preLoadData(event);
+				}
+			});
 	}
 	loadedData(event) {
 		super.loadedData(event);
-		this.sysConfigService.getConfig(this.env.selectedBranch, ['SmallLogo'])
-		.then((rs: any) => {
-			if (rs) {
-				this.item._Branch.LogoURL = rs.SmallLogo?.trim().replace(/^"(.*)"$/, '$1');
-			}
-			
-			this.loadPurchaseOrderNote();
 
-		}).catch(err => this.loadPurchaseOrderNote())
+		this.preparePurchaseOrderNote();
+		this.loadBranchLogo();
 	}
-	loadPurchaseOrderNote() {
-		this.submitAttempt = true;
-		if (!this.item?.Id) {
-			this.pageConfig.showSpinner = false;
+	loadBranchLogo() {
+		if (!this.item?.IDBranch) {
 			return;
 		}
+
+		this.sysConfigService
+			.getConfig(this.item.IDBranch, ['SmallLogo'])
+			.then((rs: any) => {
+				const logoURL = rs?.SmallLogo?.trim().replace(/^"(.*)"$/, '$1');
+				if (logoURL && this.item?._Branch) {
+					this.item._Branch.LogoURL = logoURL;
+				}
+			})
+			.catch(() => {});
+	}
+	preparePurchaseOrderNote() {
+		if (!this.ID) {
+			return;
+		}
+		this.submitAttempt = true;
 		this.loadingController
 			.create({
 				cssClass: 'my-custom-class',
@@ -122,7 +131,6 @@ export class PurchaseOrderNoteComponent extends PageBase {
 				this.submitAttempt = false;
 				if (loading) loading.dismiss();
 
-				if (loading) loading.dismiss();
 			});
 	}
 
