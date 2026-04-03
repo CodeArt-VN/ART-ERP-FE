@@ -23,6 +23,7 @@ export class PurchaseOrderNoteComponent extends PageBase {
 	@Input() PONShowPackingUoM;
 	@Input() PONShowEACaseOnly;
 	@Input() PONConvertToLargerUoM;
+	@Input() configByBranch;
 
 	sheets: any[] = [];
 	constructor(
@@ -60,25 +61,43 @@ export class PurchaseOrderNoteComponent extends PageBase {
 		super.loadedData(event);
 
 		this.preparePurchaseOrderNote();
-		this.loadBranchLogo();
+		this.loadConfigByIDBranch();
 	}
-	loadBranchLogo() {
+	applyConfigByBranch(configs: any = {}) {
+		if (this.PONConvertToLargerUoM == null && configs['PONConvertToLargerUoM'] != null) {
+			this.PONConvertToLargerUoM = configs['PONConvertToLargerUoM'];
+		}
+		if (this.PONShowPackingUoM == null && configs['PONShowPackingUoM'] != null) {
+			this.PONShowPackingUoM = configs['PONShowPackingUoM'];
+		}
+		if (this.PONShowEACaseOnly == null && configs['PONShowEACaseOnly'] != null) {
+			this.PONShowEACaseOnly = configs['PONShowEACaseOnly'];
+		}
+
+		const logoURL = configs['SmallLogo']?.trim().replace(/^"(.*)"$/, '$1');
+		if (logoURL && this.item?._Branch) {
+			this.item._Branch.LogoURL = logoURL;
+		}
+	}
+	loadConfigByIDBranch() {
 		if (!this.item?.IDBranch) {
 			return;
 		}
 
+		if (this.configByBranch?.IDBranch === this.item.IDBranch) {
+			this.applyConfigByBranch(this.configByBranch?.Configs);
+			return;
+		}
+
 		this.sysConfigService
-			.getConfig(this.item.IDBranch, ['SmallLogo'])
+			.getConfig(this.item.IDBranch, ['PONConvertToLargerUoM', 'PONShowPackingUoM', 'PONShowEACaseOnly', 'SmallLogo'])
 			.then((rs: any) => {
-				const logoURL = rs?.SmallLogo?.trim().replace(/^"(.*)"$/, '$1');
-				if (logoURL && this.item?._Branch) {
-					this.item._Branch.LogoURL = logoURL;
-				}
+				this.applyConfigByBranch(rs);
 			})
 			.catch(() => {});
 	}
 	preparePurchaseOrderNote() {
-		if (!this.ID) {
+		if (!this.item?.Id) {
 			return;
 		}
 		this.submitAttempt = true;
