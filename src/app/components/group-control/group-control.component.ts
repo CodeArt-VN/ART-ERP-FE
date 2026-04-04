@@ -9,6 +9,7 @@ import { NavController } from '@ionic/angular';
 })
 export class GroupControlComponent implements OnInit {
 	@Input() title;
+	@Input() code;
 	@Input() hideBorder;
 	@Input() fields: any[] = [];
 	@Output() onChange = new EventEmitter();
@@ -23,7 +24,8 @@ export class GroupControlComponent implements OnInit {
 		let navigationExtras: NavigationExtras = {
 			state: this.fields.map((c) => c.Code),
 		};
-		this.nav('/config-grid', 'forward', navigationExtras);
+		const url = this.code ? `/config-grid/${this.code}` : '/config-grid';
+		this.nav(url, 'forward', navigationExtras);
 	}
 	trackChange(data) {
 		this.onChange.emit(data);
