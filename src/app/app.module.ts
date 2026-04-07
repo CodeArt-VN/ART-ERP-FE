@@ -43,6 +43,7 @@ import { StaffAdvanceExportModalComponent } from './modals/staff-advance-export-
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 import { BillPreviewComponent } from './modals/bill-preview-modal/bill-preview-modal';
 import { NumberInputModalComponent } from './modals/number-input-modal/number-input-modal.component';
+import { NfcQrcodeScannerModalComponent } from './modals/nfc-qrcode-scanner-modal/nfc-qrcode-scanner-modal.component';
 
 export function createTranslateLoader(http: HttpClient, storage: CacheManagementService): DynamicTranslateLoaderService {
 	return new DynamicTranslateLoaderService(http, storage);
@@ -75,6 +76,7 @@ export function createTranslateLoader(http: HttpClient, storage: CacheManagement
 		POSNotifyModalPage,
 		PaymentModalComponent,
 		NumberInputModalComponent,
+		NfcQrcodeScannerModalComponent,
 		BillPreviewComponent,
 		AdvanceFilterModalComponent,
 		StaffAdvanceExportModalComponent
