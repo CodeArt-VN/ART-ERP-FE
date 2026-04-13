@@ -43,10 +43,6 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-
-			<div class="scanner-actions" *ngIf="canRetry">
-				<ion-button fill="outline" shape="round" (click)="retryCurrentMode()">Thu lai</ion-button>
-			</div>
 		</div>
 	</div>
 </ion-content>
@@ -54,12 +50,8 @@
 <ion-footer>
 	<ion-toolbar>
 		<div class="mode-switcher" [class.single-mode]="!canShowQrButton">
-			<ion-button *ngIf="canShowQrButton" [fill]="isMode('QR') ? 'solid' : 'outline'" [color]="isMode('QR') ? 'dark' : 'medium'" (click)="changeMode('QR')">
-				QR
-			</ion-button>
-			<ion-button [fill]="isMode('NFC') ? 'solid' : 'outline'" [color]="isMode('NFC') ? 'dark' : 'medium'" (click)="changeMode('NFC')">
-				NFC
-			</ion-button>
+			<ion-button *ngIf="canShowQrButton" [fill]="isMode('QR') ? 'solid' : 'outline'" [color]="isMode('QR') ? 'dark' : 'medium'" (click)="changeMode('QR')"> QR </ion-button>
+			<ion-button [fill]="isMode('NFC') ? 'solid' : 'outline'" [color]="isMode('NFC') ? 'dark' : 'medium'" (click)="changeMode('NFC')"> NFC </ion-button>
 		</div>
 	</ion-toolbar>
 </ion-footer>

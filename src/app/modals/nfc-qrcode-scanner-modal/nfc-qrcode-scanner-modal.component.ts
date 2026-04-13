@@ -223,6 +223,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				this.result = output;
 				this.isLoading = false;
 				this.statusMessage = 'Đã đọc dữ liệu NFC.';
+
 				void this.modalController.dismiss(output, 'confirm');
 			});
 
@@ -240,7 +241,9 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			});
 
 			this.statusMessage = 'Đưa thẻ NFC lại gần thiết bị để đọc dữ liệu.';
-			await plugin.startScan({ mode: 'auto' });
+			if (Capacitor.getPlatform() !== 'android') {
+				await plugin.startScan({ mode: 'auto' });
+			}
 		} catch (error) {
 			if (!this.isActionActive(token)) return;
 
