@@ -88,17 +88,17 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	}
 
 	get statusTitle(): string {
-		if (this.errorMessage) return 'Không thể tiếp tục';
-		if (this.result) return 'Đã đọc thành công';
-		if (this.currentMode === 'QR') return 'Đang quét QR Code';
-		return 'Đang chờ NFC';
+		if (this.errorMessage) return 'Unable to continue';
+		if (this.result) return 'Read successful';
+		if (this.currentMode === 'QR') return 'Scanning QR Code';
+		return 'Waiting for NFC';
 	}
 
 	get activeDescription(): string {
 		if (this.errorMessage) return this.errorMessage;
 		if (this.statusMessage) return this.statusMessage;
-		if (this.currentMode === 'QR') return 'Đưa QR Code vào khung camera để quét.';
-		return 'Đưa thẻ hoặc thiết bị NFC lại gần điện thoại.';
+		if (this.currentMode === 'QR') return 'Place the QR Code inside the camera frame to scan.';
+		return 'Hold the NFC card or device near the phone.';
 	}
 
 	get statusIcon(): string {
@@ -153,7 +153,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 
 	private async scanQrCode(token: number): Promise<void> {
 		this.isLoading = true;
-		this.statusMessage = 'Camera sẽ mở để quét QR Code.';
+		this.statusMessage = 'The camera will open to scan the QR Code.';
 
 		try {
 			const rawValue = await this.barcodeScannerService.scan();
@@ -174,22 +174,22 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			this.isLoading = false;
 			if (this.isCancelError(error)) {
 				this.wasCancelled = true;
-				this.statusMessage = 'Bạn đã hủy quét QR. Nhấn "Thử lại" để quét tiếp.';
+				this.statusMessage = 'You canceled the QR scan. Press "Retry" to scan again.';
 				return;
 			}
 
-			this.errorMessage = this.resolveErrorMessage(error, 'Không thể quét QR Code.');
+			this.errorMessage = this.resolveErrorMessage(error, 'Unable to scan the QR Code.');
 		}
 	}
 
 	private async startReadNfc(token: number): Promise<void> {
 		this.isLoading = true;
-		this.statusMessage = 'Đang khởi tạo đầu đọc NFC.';
+		this.statusMessage = 'Initializing the NFC reader.';
 
 		if (Capacitor.getPlatform() === 'web') {
 			this.isLoading = false;
 			this.isSupported = false;
-			this.errorMessage = 'NFC không hỗ trợ trên nền tảng web.';
+			this.errorMessage = 'NFC is not supported on the web platform.';
 			return;
 		}
 
@@ -201,7 +201,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		if (!plugin) {
 			this.isLoading = false;
 			this.isSupported = false;
-			this.errorMessage = 'Plugin NFC chưa được cài trong project. Cần cài `@exxili/capacitor-nfc` trước khi dùng NFC.';
+			this.errorMessage = 'The NFC plugin is not installed in this project. Install `@exxili/capacitor-nfc` before using NFC.';
 			return;
 		}
 
@@ -212,7 +212,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			if (!support?.supported) {
 				this.isLoading = false;
 				this.isSupported = false;
-				this.errorMessage = 'Thiết bị này không hỗ trợ NFC hoặc NFC đang bị tắt.';
+				this.errorMessage = 'This device does not support NFC or NFC is turned off.';
 				return;
 			}
 
@@ -222,7 +222,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				const output = this.normalizeNfcResult(data);
 				this.result = output;
 				this.isLoading = false;
-				this.statusMessage = 'Đã đọc dữ liệu NFC.';
+				this.statusMessage = 'NFC data read successfully.';
 
 				void this.modalController.dismiss(output, 'confirm');
 			});
@@ -233,14 +233,14 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				this.isLoading = false;
 				if (this.isCancelError(error)) {
 					this.wasCancelled = true;
-					this.statusMessage = 'Phiên NFC đã bị hủy. Nhấn "Thử lại" để đọc lại.';
+					this.statusMessage = 'The NFC session was canceled. Press "Retry" to read again.';
 					return;
 				}
 
-				this.errorMessage = this.resolveErrorMessage(error, 'Không thể đọc NFC.');
+				this.errorMessage = this.resolveErrorMessage(error, 'Unable to read NFC.');
 			});
 
-			this.statusMessage = 'Đưa thẻ NFC lại gần thiết bị để đọc dữ liệu.';
+			this.statusMessage = 'Hold the NFC card near the device to read data.';
 			if (Capacitor.getPlatform() !== 'android') {
 				await plugin.startScan({ mode: 'auto' });
 			}
@@ -248,7 +248,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			if (!this.isActionActive(token)) return;
 
 			this.isLoading = false;
-			this.errorMessage = this.resolveErrorMessage(error, 'Không thể khởi động phiên đọc NFC.');
+			this.errorMessage = this.resolveErrorMessage(error, 'Unable to start the NFC reading session.');
 		}
 	}
 
@@ -324,9 +324,9 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		const message = `${error?.error || error?.message || error || fallback}`.trim();
 
 		if (!message) return fallback;
-		if (/permission/i.test(message)) return 'Thiết bị chưa cấp quyền cần thiết.';
+		if (/permission/i.test(message)) return 'Required permissions have not been granted.';
 		if (/cancelled|canceled/i.test(message)) return fallback;
-		if (/not support|unsupported/i.test(message)) return 'Thiết bị không hỗ trợ tính năng này.';
+		if (/not support|unsupported/i.test(message)) return 'This device does not support this feature.';
 		return message;
 	}
 

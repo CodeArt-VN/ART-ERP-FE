@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>{{ title }}</ion-title>
+		<ion-title>{{ title | translate }}</ion-title>
 		<ion-buttons slot="end">
 			<ion-button fill="clear" color="danger" (click)="closeModal()">
 				<ion-icon slot="icon-only" name="close"></ion-icon>
@@ -12,7 +12,7 @@
 <ion-content appScrollbarTheme>
 	<div class="scanner-layout">
 		<div class="scanner-label-wrap">
-			<ion-text class="scanner-label">{{ label }}</ion-text>
+			<ion-text class="scanner-label">{{ label | translate }}</ion-text>
 		</div>
 
 		<div class="scanner-stage">
@@ -23,22 +23,22 @@
 				</div>
 
 				<div class="scanner-copy">
-					<h2>{{ statusTitle }}</h2>
-					<p>{{ activeDescription }}</p>
+					<h2>{{ statusTitle | translate }}</h2>
+					<p>{{ activeDescription | translate }}</p>
 				</div>
 			</div>
 
 			<ion-card *ngIf="result?.tagInfo" class="scanner-tag-info">
 				<ion-card-header>
-					<ion-card-title>Tag Info</ion-card-title>
+					<ion-card-title>{{ 'Tag Info' | translate }}</ion-card-title>
 				</ion-card-header>
 				<ion-card-content>
 					<div class="tag-line" *ngIf="result?.tagInfo?.uid">
-						<ion-text color="medium">UID</ion-text>
+						<ion-text color="medium">{{ 'UID' | translate }}</ion-text>
 						<strong>{{ result?.tagInfo?.uid }}</strong>
 					</div>
 					<div class="tag-line" *ngIf="result?.tagInfo?.type">
-						<ion-text color="medium">Type</ion-text>
+						<ion-text color="medium">{{ 'Type' | translate }}</ion-text>
 						<strong>{{ result?.tagInfo?.type }}</strong>
 					</div>
 				</ion-card-content>
