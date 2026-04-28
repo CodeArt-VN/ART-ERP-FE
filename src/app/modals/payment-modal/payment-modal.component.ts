@@ -378,6 +378,10 @@ export class PaymentModalComponent implements OnInit {
 		) {
 			obj.Status = 'Success';
 		}
+		if (obj.Type == 'GrabPay' && this.payment?.Id) {
+			obj.Status = 'Success';
+			obj.SubType = 'Grab';
+		}
 		let payment = {
 			IDBranch: this.item.IDBranch,
 			IDStaff: this.env.user.StaffID,
@@ -425,8 +429,25 @@ export class PaymentModalComponent implements OnInit {
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (!this.item.IsRefundTransaction && obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
 
+		const isGrabManualConfirm = obj.Type == 'GrabPay' && !!this.payment?.Id;
+		const requestUrl = isGrabManualConfirm ? 'BANK/IncomingPayment/PostIncomingPayment' : 'BANK/IncomingPayment';
+		const requestBody = isGrabManualConfirm
+			? {
+					Id: this.payment.Id,
+					IDBranch: this.item.IDBranch,
+					IDCustomer: this.item.IDCustomer,
+					IDSaleOrder: this.item.IDSaleOrder,
+					Amount: obj.Amount,
+					Type: 'GrabPay',
+					SubType: 'Grab',
+					Status: 'Success',
+					IsRefundTransaction: this.item.IsRefundTransaction,
+					IDOriginalTransaction: this.item.IDOriginalTransaction,
+			  }
+			: obj;
+
 		this.commonService
-			.connect('POST', 'BANK/IncomingPayment', obj)
+			.connect('POST', requestUrl, requestBody)
 			.toPromise()
 			.then(async (res: any) => {
 				this.payment = res;
@@ -1004,10 +1025,19 @@ export class PaymentModalComponent implements OnInit {
 		try {
 			const payload = {
 				action: 'BILL_GENERATED',
+				IDBranch: this.item?.IDBranch,
+				IDCustomer: this.item?.IDCustomer,
+				IDSaleOrder: this.item?.IDSaleOrder,
+				Amount: Number(this.formGroup.get('InputAmount')?.value || this.item?.DebtAmount || 0),
 				saleOrder: saleOrder,
 			}; // this.buildGrabSyncPOSOrderPayload();
 			const response: any = await this.commonService.connect('POST', 'BANK/IncomingPayment/GrabSyncPOSOrder', payload).toPromise();
 			const qrHtml = await this.resolveGrabQrHtml(response);
+			const incomingPayment = this.extractGrabIncomingPayment(response);
+			if (incomingPayment?.Id) {
+				this.payment = incomingPayment;
+				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+			}
 
 			if (!qrHtml) {
 				this.grabPayError = 'Grab API does not return QR code data';
@@ -1023,6 +1053,23 @@ export class PaymentModalComponent implements OnInit {
 		} finally {
 			this.isGrabPayLoading = false;
 		}
+	}
+
+	private extractGrabIncomingPayment(response: any): any {
+		if (!response) return null;
+		const incomingPayment = response?.data?.incomingPayment || response?.data?.IncomingPayment;
+		if (incomingPayment?.Id) return incomingPayment;
+		const id = response?.IDIncomingPayment || response?.response?.IDIncomingPayment || response?.response?.meta?.IDIncomingPayment;
+		if (id) {
+			return {
+				Id: id,
+				Type: 'GrabPay',
+				SubType: 'Grab',
+				Status: 'Processing',
+				Amount: Number(this.formGroup.get('InputAmount')?.value || this.item?.DebtAmount || 0),
+			};
+		}
+		return null;
 	}
 
 	private buildGrabSyncPOSOrderPayload() {
