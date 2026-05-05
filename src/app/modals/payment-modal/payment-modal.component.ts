@@ -342,6 +342,7 @@ export class PaymentModalComponent implements OnInit {
 	// --------------------------------------------------------------------
 	async confirmPayment() {
 		if (this.submitAttempt) return;
+		if (this.isGrabPaymentWaiting()) return;
 
 		if (this.item.IsRefundTransaction) {
 			if (this.formGroup.get('InputAmount').value > this.item.RefundAmount) {
@@ -378,6 +379,9 @@ export class PaymentModalComponent implements OnInit {
 		) {
 			obj.Status = 'Success';
 		}
+		// Manual "Received" for Grab only updates the pending IncomingPayment when
+		// the webhook is missing/late. The button is disabled while Grab is still
+		// waiting for customer confirmation.
 		if (obj.Type == 'GrabPay' && this.payment?.Id) {
 			obj.Status = 'Success';
 			obj.SubType = 'Grab';
@@ -497,6 +501,9 @@ export class PaymentModalComponent implements OnInit {
 	}
 
 	//#endregion
+	isGrabPaymentWaiting() {
+		return this.formGroup?.get('Type')?.value == 'GrabPay' && this.payment?.Id && this.payment?.Status == 'Processing';
+	}
 	private async ensureRequesterStaff(): Promise<boolean> {
 		if (this.requesterStaffId) return true;
 		const contactId = this.item?.IDCustomer || this.item?.SaleOrder?.IDContact;

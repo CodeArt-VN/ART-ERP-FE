@@ -518,7 +518,11 @@
 		</ion-grid>
 		@if (showConfirmButton()) {
 			<div slot="end">
-				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
+				<ion-button
+					fill="solid"
+					[disabled]="submitAttempt || isGrabPaymentWaiting() || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
+					(click)="confirmPayment()"
+				>
 					{{ item.IsRefundTransaction ? 'Refund' : ('Received' | translate) }}
 				</ion-button>
 			</div>
