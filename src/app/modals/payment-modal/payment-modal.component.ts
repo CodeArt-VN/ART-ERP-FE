@@ -186,7 +186,7 @@ export class PaymentModalComponent implements OnInit {
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
 							} else this.closeModal();
-							this.back();
+							if (this.step > 1) this.back();
 						}
 						return;
 				}
@@ -471,18 +471,18 @@ export class PaymentModalComponent implements OnInit {
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
-					this.env.publishEvent({
-						code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
-						value: JSON.stringify({
-							IDSaleOrder: this.item.IDSaleOrder,
-							TableName: this.item.TableName,
-							Amount: this.payment.Amount,
-							IDBranch: this.item.IDBranch,
-							IDTable: this.item.IDTable,
-							Status: this.payment.Status,
-							Id: this.payment.Id,
-						}),
-					});
+					// this.env.publishEvent({
+					// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
+					// 	value: JSON.stringify({
+					// 		IDSaleOrder: this.item.IDSaleOrder,
+					// 		TableName: this.item.TableName,
+					// 		Amount: this.payment.Amount,
+					// 		IDBranch: this.item.IDBranch,
+					// 		IDTable: this.item.IDTable,
+					// 		Status: this.payment.Status,
+					// 		Id: this.payment.Id,
+					// 	}),
+					// });
 					this.submitAttempt = false;
 				} else if (obj.Type == 'ZalopayApp') {
 					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
@@ -643,6 +643,7 @@ export class PaymentModalComponent implements OnInit {
 			void this.releasePendingGotitVouchers(false);
 		}
 		if (this.subPromotion) this.subPromotion.unsubscribe();
+		if (this.subscribePOSOrderDetail) this.subscribePOSOrderDetail?.unsubscribe();
 	}
 	private getQrCodeHtml(): string {
 		if (!this.billElement?.nativeElement) return '';
