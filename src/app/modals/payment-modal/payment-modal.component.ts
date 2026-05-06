@@ -1063,9 +1063,16 @@ export class PaymentModalComponent implements OnInit {
 				IDCustomer: this.item?.IDCustomer,
 				IDSaleOrder: this.item?.IDSaleOrder,
 				Amount: Number(this.formGroup.get('InputAmount')?.value || this.item?.DebtAmount || 0),
+				Type: 'GrabPay',
+				SubType: 'Grab',
 				saleOrder: saleOrder,
-			}; // this.buildGrabSyncPOSOrderPayload();
-			const response: any = await this.commonService.connect('POST', 'BANK/IncomingPayment/GrabSyncPOSOrder', payload).toPromise();
+			};
+			const response: any = await this.commonService.connect('POST', 'BANK/IncomingPayment', payload).toPromise();
+			if (response?.success === false) {
+				this.grabPayError = response?.message || 'Cannot generate GrabPay QR';
+				this.env.showMessage(this.grabPayError, 'danger');
+				return;
+			}
 			const qrHtml = await this.resolveGrabQrHtml(response);
 			const incomingPayment = this.extractGrabIncomingPayment(response);
 			if (incomingPayment?.Id) {
@@ -1106,66 +1113,6 @@ export class PaymentModalComponent implements OnInit {
 		return null;
 	}
 
-	private buildGrabSyncPOSOrderPayload() {
-		const saleOrder = this.item?.SaleOrder || {};
-		const amount = Number(this.item?.DebtAmount);
-
-		const mapSubItems = (subItems: any[]) =>
-			(subItems || [])
-				.filter((sub) => sub && !sub.IsDeleted && Number(sub.Quantity) > 0)
-				.map((sub) => ({
-					Id: sub.Id,
-					Code: sub.Code,
-					IDItem: sub.IDItem,
-					RefItem: sub.RefItem || sub.ItemCode || sub.Code,
-					ItemName: sub.ItemName || sub.Name,
-					ItemCode: sub.ItemCode || sub.Code,
-					Quantity: Number(sub.Quantity || 0),
-					UoMPrice: Number(sub.UoMPrice || 0),
-					Tax: Number(sub.Tax ?? sub.OriginalTax ?? 0),
-					IsDeleted: !!sub.IsDeleted,
-				}));
-
-		const orderLines = (saleOrder.OrderLines || [])
-			.filter((line) => line && !line.IsDeleted && Number(line.Quantity) > 0)
-			.map((line) => ({
-				Id: line.Id,
-				Code: line.Code,
-				IDItem: line.IDItem,
-				RefItem: line.RefItem || line.ItemCode || line.Code,
-				ItemName: line.ItemName || line.Name,
-				ItemCode: line.ItemCode || line.Code,
-				Quantity: Number(line.Quantity || 0),
-				UoMPrice: Number(line.UoMPrice || 0),
-				Tax: Number(line.Tax ?? line.OriginalTax ?? 0),
-				IsDeleted: !!line.IsDeleted,
-				SubItems: mapSubItems(line.SubItems),
-			}));
-
-		return {
-			action: 'BILL_GENERATED',
-			saleOrder: saleOrder,
-		};
-
-		// {
-		// 		Id: saleOrder.Id,
-		// 		Code: saleOrder.Code,
-		// 		RefID: saleOrder.RefID,
-		// 		OrderDate: saleOrder.OrderDate || new Date(),
-		// 		Currency: saleOrder.Currency || 'VND',
-		// 		CalcTotalOriginal: Number(saleOrder.CalcTotalOriginal || saleOrder.TotalAfterTax || amount),
-		// 		TotalAfterTax: Number(saleOrder.TotalAfterTax || saleOrder.CalcTotalOriginal || amount),
-		// 		Tax: Number(saleOrder.Tax || 0),
-		// 		CalcTotalAdditions: Number(saleOrder.CalcTotalAdditions || 0),
-		// 		CalcTotalDeductions: Number(saleOrder.CalcTotalDeductions || 0),
-		// 		PaymentMethod: 'GRABPAY',
-		// 		Received: amount,
-		// 		IDTable: this.item?.IDTable ?? saleOrder.IDTable,
-		// 		TableName: this.item?.TableName ?? saleOrder.TableName,
-		// 		NumberOfGuests: saleOrder.NumberOfGuests || 1,
-		// 		OrderLines: orderLines,
-		// 	}
-	}
 
 	private async resolveGrabQrHtml(response: any): Promise<string> {
 		const qrCandidate = this.findGrabQrCandidate(response);
