@@ -3,6 +3,7 @@ import { CommonService } from '../core/common.service';
 import { PR_ProgramProvider } from '../static/services.service';
 import { EnvService } from '../core/env.service';
 import { BehaviorSubject } from 'rxjs';
+import { SYS_ConfigService } from './system-config.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,12 +15,48 @@ export class PromotionService {
 	constructor(
 		public commonService: CommonService,
 		public programProvider: PR_ProgramProvider,
-		public env: EnvService
+		public env: EnvService,
+		private sysConfigService: SYS_ConfigService
 	) {}
 
-	getPromotions() {
+	private normalizeBrandId(value: any): number | null {
+		if (value == null || value === '' || value === 'null') return null;
+		const parsed = Number(value);
+		return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+	}
+
+	async getSOBrand(IDBranch = this.env.selectedBranch): Promise<number | null> {
+		if (!IDBranch) return null;
+		try {
+			const config: any = await this.sysConfigService.getConfig(IDBranch, ['SOBrand'], { SOBrand: null });
+			return this.normalizeBrandId(config?.SOBrand);
+		} catch (err) {
+			console.warn('Cannot resolve SOBrand config', err);
+			return null;
+		}
+	}
+
+	async withBrandScope(saleOrder: any): Promise<any> {
+		if (!saleOrder) return saleOrder;
+		const IDBrand = this.normalizeBrandId(saleOrder.IDBrand) ?? (await this.getSOBrand(saleOrder.IDBranch ?? this.env.selectedBranch));
+		return IDBrand ? { ...saleOrder, IDBrand } : saleOrder;
+	}
+
+	private async withBrandQuery(query: any, IDBranch = this.env.selectedBranch): Promise<any> {
+		const IDBrand = await this.getSOBrand(IDBranch);
+		return IDBrand ? { ...query, IDBrand } : query;
+	}
+
+	async getPromotions() {
+		const query = await this.withBrandQuery({
+			BetweenDate: new Date(),
+			Status: 'Approved',
+			IgnoredBranch: true,
+			SelectedBranch: this.env.selectedBranch,
+			GetByBranchConfig: true,
+		});
 		this.programProvider
-			.read({ BetweenDate: new Date(), Status: 'Approved', IgnoredBranch: true, SelectedBranch: this.env.selectedBranch, GetByBranchConfig: true })
+			.read(query)
 			.then((value: any) => {
 				this.promotionList = value.data;
 			});
@@ -29,27 +66,25 @@ export class PromotionService {
 		// trả ra FE trước cho smooth UI rồi di lấy voucher BE
 		const map = { ...this.voucherBySO$.value };
 		this.voucherBySO$.next(map);
-		return  this.programProvider.commonService
+		return this.programProvider.commonService
 			.connect('GET', 'PR/Program/AppliedProgramInSaleOrder', {
 				IDSO: IDSO,
 			})
 			.toPromise()
 			.then((data: any) => {
-		// update voucher Mới nhất
+				// update voucher Mới nhất
 				map[IDSO] = data || [];
 				this.voucherBySO$.next(map);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
 	}
 
 	applyVoucher(so: any, code: string) {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
+			const saleOrder = await this.withBrandScope(so);
 			this.commonService
 				.connect('POST', 'PR/Program/UseVoucher/', {
 					VoucherCodeList: [code],
-					SaleOrder: so,
+					SaleOrder: saleOrder,
 					IsCheckOnly: false,
 				})
 				.toPromise()
@@ -68,11 +103,12 @@ export class PromotionService {
 	autoApplyVoucher(so: any, voucherCodes: string[], isCheckOnly = false) {
 		if (!so?.Id) return Promise.resolve(null);
 		if (!voucherCodes || voucherCodes.length === 0) return Promise.resolve(null);
-		return new Promise((resolve) => {
+		return new Promise(async (resolve) => {
+			const saleOrder = await this.withBrandScope(so);
 			this.commonService
 				.connect('POST', 'PR/Program/UseVoucher/', {
 					VoucherCodeList: voucherCodes,
-					SaleOrder: so,
+					SaleOrder: saleOrder,
 					IsCheckOnly: isCheckOnly,
 				})
 				.toPromise()
@@ -89,10 +125,11 @@ export class PromotionService {
 	}
 
 	deleteVoucher(saleOrder: any, voucherCodes: string[]) {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
+			const scopedSaleOrder = await this.withBrandScope(saleOrder);
 			this.commonService
 				.connect('POST', 'PR/Program/UnUseVoucher/', {
-					SaleOrder: saleOrder,
+					SaleOrder: scopedSaleOrder,
 					VoucherCodeList: voucherCodes,
 				})
 				.toPromise()
@@ -115,10 +152,11 @@ export class PromotionService {
 
 	releaseIntegrationVouchers(saleOrder: any, voucherCodes: string[], options?: { type?: string; subType?: string; providerCode?: string }) {
 		if (!saleOrder?.Id || !voucherCodes || voucherCodes.length === 0) return Promise.resolve(true);
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
+			const scopedSaleOrder = await this.withBrandScope(saleOrder);
 			this.commonService
 				.connect('POST', 'PR/Program/UnUseVoucher/', {
-					SaleOrder: saleOrder,
+					SaleOrder: scopedSaleOrder,
 					VoucherCodeList: voucherCodes,
 					Type: options?.type,
 					SubType: options?.subType,
