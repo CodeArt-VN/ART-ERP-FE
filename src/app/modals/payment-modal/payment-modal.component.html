@@ -141,10 +141,10 @@
 						<ion-label>Gotit</ion-label>
 					</ion-item>
 
-					<!-- <ion-item button (click)="changeType('GrabPay')">
+					<ion-item button (click)="changeType('GrabPay')">
 						<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
 						<ion-label>Grab</ion-label>
-					</ion-item> -->
+					</ion-item>
 				</ion-list>
 				<!-- ========== Cash voucher ========== -->
 
@@ -518,7 +518,11 @@
 		</ion-grid>
 		@if (showConfirmButton()) {
 			<div slot="end">
-				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
+				<ion-button
+					fill="solid"
+					[disabled]="submitAttempt || isGrabPaymentWaiting() || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
+					(click)="confirmPayment()"
+				>
 					{{ item.IsRefundTransaction ? 'Refund' : ('Received' | translate) }}
 				</ion-button>
 			</div>
