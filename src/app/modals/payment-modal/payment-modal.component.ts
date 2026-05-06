@@ -186,7 +186,7 @@ export class PaymentModalComponent implements OnInit {
 								this.generateAmountButtons();
 								if (this.payment && value.Id == this.payment.Id) this.payment = null;
 							} else this.closeModal();
-							this.back();
+							if (this.step > 1) this.back();
 						}
 						return;
 				}
@@ -278,6 +278,39 @@ export class PaymentModalComponent implements OnInit {
 		}
 	}
 
+	private getPayableAmount() {
+		return Math.abs(Number(this.item.IsRefundTransaction ? this.item.RefundAmount : this.item.DebtAmount) || 0);
+	}
+
+	private getInputAmount() {
+		return Number(this.formGroup.get('InputAmount').value) || 0;
+	}
+
+	private canOverpay(type: string) {
+		return !this.item.IsRefundTransaction && type == 'Cash';
+	}
+
+	private isGotitPayment(type: string) {
+		return type == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit';
+	}
+
+	private validatePaymentAmount(type: string) {
+		const amount = this.getInputAmount();
+		const payableAmount = this.getPayableAmount();
+
+		if (!amount || amount <= 0) {
+			this.env.showMessage('Please input valid amount', 'warning');
+			return false;
+		}
+
+		if (amount > payableAmount && !this.canOverpay(type) && !this.isGotitPayment(type)) {
+			this.env.showMessage('Payment amount cannot be greater than payment required', 'warning');
+			return false;
+		}
+
+		return true;
+	}
+
 	// --------------------------------------------------------------------
 	// Chọn ngân hàng con (SubType) trong card / transfer
 	// --------------------------------------------------------------------
@@ -343,21 +376,12 @@ export class PaymentModalComponent implements OnInit {
 	async confirmPayment() {
 		if (this.submitAttempt) return;
 
-		if (this.item.IsRefundTransaction) {
-			if (this.formGroup.get('InputAmount').value > this.item.RefundAmount) {
-				this.env.showMessage('Refund amount cannot be greater than original amount', 'warning');
-				return;
-			}
-		}
-
-		if (!this.formGroup.get('InputAmount').value || this.formGroup.get('InputAmount').value <= 0) {
-			this.env.showMessage('Please input valid amount', 'warning');
-			return;
-		}
 		if (!this.formGroup.get('Type').value) {
 			this.env.showMessage('Please choose payment method', 'warning');
 			return;
 		}
+		if (!this.validatePaymentAmount(this.formGroup.get('Type').value)) return;
+
 		this.submitAttempt = true;
 
 		let obj = this.formGroup.getRawValue();
@@ -423,7 +447,7 @@ export class PaymentModalComponent implements OnInit {
 		let code = this.convertUrl(str);
 		obj.Code = code;
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
-		if (!this.item.IsRefundTransaction && obj.Amount > this.item.DebtAmount && this.formGroup.get('Type').value == 'Cash') obj.Amount = this.item.DebtAmount;
+		if (this.canOverpay(obj.Type) && obj.Amount > this.getPayableAmount()) obj.Amount = this.getPayableAmount();
 
 		this.commonService
 			.connect('POST', 'BANK/IncomingPayment', obj)
@@ -447,18 +471,18 @@ export class PaymentModalComponent implements OnInit {
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
-					this.env.publishEvent({
-						code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
-						value: JSON.stringify({
-							IDSaleOrder: this.item.IDSaleOrder,
-							TableName: this.item.TableName,
-							Amount: this.payment.Amount,
-							IDBranch: this.item.IDBranch,
-							IDTable: this.item.IDTable,
-							Status: this.payment.Status,
-							Id: this.payment.Id,
-						}),
-					});
+					// this.env.publishEvent({
+					// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
+					// 	value: JSON.stringify({
+					// 		IDSaleOrder: this.item.IDSaleOrder,
+					// 		TableName: this.item.TableName,
+					// 		Amount: this.payment.Amount,
+					// 		IDBranch: this.item.IDBranch,
+					// 		IDTable: this.item.IDTable,
+					// 		Status: this.payment.Status,
+					// 		Id: this.payment.Id,
+					// 	}),
+					// });
 					this.submitAttempt = false;
 				} else if (obj.Type == 'ZalopayApp') {
 					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
@@ -574,6 +598,7 @@ export class PaymentModalComponent implements OnInit {
 	isRePostSaleButton = false;
 	isReCheckResultButton = false;
 	async postSale() {
+		if (!this.validatePaymentAmount('Card')) return;
 		let edcc = this.edccList.find((d) => d.REF_ID == this.formGroup.get('EDCC').value);
 		if (!edcc) return;
 		let payment = {
@@ -618,6 +643,7 @@ export class PaymentModalComponent implements OnInit {
 			void this.releasePendingGotitVouchers(false);
 		}
 		if (this.subPromotion) this.subPromotion.unsubscribe();
+		if (this.subscribePOSOrderDetail) this.subscribePOSOrderDetail?.unsubscribe();
 	}
 	private getQrCodeHtml(): string {
 		if (!this.billElement?.nativeElement) return '';
@@ -746,7 +772,8 @@ export class PaymentModalComponent implements OnInit {
 			if (voucher.length > 0) {
 				if (voucher[0].CanUse) {
 					this.program = voucher[0].Program;
-					let value = this.program.Value;
+					let value = Number(this.program.Value) || 0;
+					if (value > this.getPayableAmount()) value = this.getPayableAmount();
 					this.formGroup.get('InputAmount').setValue(value);
 					this.formGroup.get('InputAmount').markAsDirty();
 				} else {
@@ -791,7 +818,7 @@ export class PaymentModalComponent implements OnInit {
 				if (voucher[0].CanUse) {
 					let toltal = this.formGroup.get('InputAmount').value || 0;
 					let amount = voucher[0].Program.Value;
-				
+
 					this.formGroup.get('InputAmount').setValue(toltal + amount);
 					this.formGroup.get('InputAmount').markAsDirty();
 					this.formGroup.get('Type').setValue('PromotionIntegration');
