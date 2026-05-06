@@ -1098,6 +1098,7 @@ export class PaymentModalComponent implements OnInit {
 
 	private extractGrabIncomingPayment(response: any): any {
 		if (!response) return null;
+		if (response?.Id) return response;
 		const incomingPayment = response?.data?.incomingPayment || response?.data?.IncomingPayment;
 		if (incomingPayment?.Id) return incomingPayment;
 		const id = response?.IDIncomingPayment || response?.response?.IDIncomingPayment || response?.response?.meta?.IDIncomingPayment;
