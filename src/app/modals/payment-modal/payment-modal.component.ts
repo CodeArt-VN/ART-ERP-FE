@@ -457,26 +457,7 @@ export class PaymentModalComponent implements OnInit {
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (this.canOverpay(obj.Type) && obj.Amount > this.getPayableAmount()) obj.Amount = this.getPayableAmount();
 
-		const isGrabManualConfirm = obj.Type == 'GrabPay' && !!this.payment?.Id;
-		const requestUrl = isGrabManualConfirm ? 'BANK/IncomingPayment/PostIncomingPayment' : 'BANK/IncomingPayment';
-		const requestBody = isGrabManualConfirm
-			? {
-					Id: this.payment.Id,
-					IDBranch: this.item.IDBranch,
-					IDCustomer: this.item.IDCustomer,
-					IDSaleOrder: this.item.IDSaleOrder,
-					Amount: obj.Amount,
-					Type: 'GrabPay',
-					SubType: 'Grab',
-					Status: 'Success',
-					IsRefundTransaction: this.item.IsRefundTransaction,
-					IDOriginalTransaction: this.item.IDOriginalTransaction,
-			  }
-			: obj;
-
-		this.commonService
-			.connect('POST', requestUrl, requestBody)
-			.toPromise()
+		this.incomingPaymentProvider.save(obj)
 			.then(async (res: any) => {
 				this.payment = res;
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
@@ -1045,6 +1026,8 @@ export class PaymentModalComponent implements OnInit {
 
 	//region GrabPay
 	async generateGrabPayQr() {
+		if (this.isGrabPayLoading) return;
+
 		const saleOrder = this.item?.SaleOrder;
 		if (!saleOrder) {
 			this.grabPayError = 'Sale order is required to generate GrabPay QR';
@@ -1067,7 +1050,7 @@ export class PaymentModalComponent implements OnInit {
 				SubType: 'Grab',
 				saleOrder: saleOrder,
 			};
-			const response: any = await this.commonService.connect('POST', 'BANK/IncomingPayment', payload).toPromise();
+			const response: any = await this.incomingPaymentProvider.save(payload);
 			if (response?.success === false) {
 				this.grabPayError = response?.message || 'Cannot generate GrabPay QR';
 				this.env.showMessage(this.grabPayError, 'danger');
