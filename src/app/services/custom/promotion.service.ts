@@ -29,19 +29,16 @@ export class PromotionService {
 		// trả ra FE trước cho smooth UI rồi di lấy voucher BE
 		const map = { ...this.voucherBySO$.value };
 		this.voucherBySO$.next(map);
-		return  this.programProvider.commonService
+		return this.programProvider.commonService
 			.connect('GET', 'PR/Program/AppliedProgramInSaleOrder', {
 				IDSO: IDSO,
 			})
 			.toPromise()
 			.then((data: any) => {
-		// update voucher Mới nhất
+				// update voucher Mới nhất
 				map[IDSO] = data || [];
 				this.voucherBySO$.next(map);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
 	}
 
 	applyVoucher(so: any, code: string) {

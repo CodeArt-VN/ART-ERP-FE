@@ -878,7 +878,13 @@ export class PaymentModalComponent implements OnInit {
 			return this.gotItUseResult;
 		}
 		let code = this.listVoucherUsed.map((v) => v.code);
-		let postDTO = { VoucherCodeList: code, SaleOrder: this.getVoucherSaleOrderPayload(), Type: 'PromotionIntegration', SubType: 'Gotit', ProviderCode: 'Gotit' };
+		let postDTO = {
+			VoucherCodeList: code,
+			SaleOrder: this.getVoucherSaleOrderPayload(),
+			Type: 'PromotionIntegration',
+			SubType: 'Gotit',
+			ProviderCode: 'Gotit',
+		};
 		try {
 			const res: any = await this.commonService.connect('POST', 'PR/Program/UseVoucher', postDTO).toPromise();
 			if (res.success) {
@@ -918,7 +924,12 @@ export class PaymentModalComponent implements OnInit {
 	//endregion
 
 	private hasPendingGotitReservations() {
-		return this.formGroup.get('Type').value == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit' && this.listVoucherUsed.length > 0 && !this.gotItUseResult?.success;
+		return (
+			this.formGroup.get('Type').value == 'PromotionIntegration' &&
+			this.formGroup.get('SubType').value == 'Gotit' &&
+			this.listVoucherUsed.length > 0 &&
+			!this.gotItUseResult?.success
+		);
 	}
 
 	private refreshGotitAmount() {
