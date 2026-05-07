@@ -794,7 +794,7 @@ export class PaymentModalComponent implements OnInit {
 		try {
 			let postDTO = {
 				VoucherCodeList: [normalizedCode],
-				SaleOrder: await this.promotionService.withBrandScope(this.getVoucherSaleOrderPayload()),
+				SaleOrder: this.getVoucherSaleOrderPayload(),
 			};
 			const voucher: any = await this.promotionService.commonService.connect('POST', 'PR/Program/CheckVoucher', postDTO).toPromise();
 			if (voucher.length > 0) {
@@ -839,7 +839,7 @@ export class PaymentModalComponent implements OnInit {
 				Type: 'PromotionIntegration',
 				SubType: 'Gotit',
 				VoucherCodeList: [normalizedCode],
-				SaleOrder: await this.promotionService.withBrandScope(this.getVoucherSaleOrderPayload()),
+				SaleOrder: this.getVoucherSaleOrderPayload(),
 			};
 			const voucher: any = await this.commonService.connect('POST', 'PR/Program/CheckVoucher', postDTO).toPromise();
 			if (voucher && voucher.length > 0) {
@@ -880,7 +880,7 @@ export class PaymentModalComponent implements OnInit {
 		let code = this.listVoucherUsed.map((v) => v.code);
 		let postDTO = {
 			VoucherCodeList: code,
-			SaleOrder: await this.promotionService.withBrandScope(this.getVoucherSaleOrderPayload()),
+			SaleOrder: this.getVoucherSaleOrderPayload(),
 			Type: 'PromotionIntegration',
 			SubType: 'Gotit',
 			ProviderCode: 'Gotit',
@@ -1016,7 +1016,6 @@ export class PaymentModalComponent implements OnInit {
 		this.voucherSaleOrderPayload = {
 			Id: saleOrder.Id,
 			IDBranch: saleOrder.IDBranch ?? this.item?.IDBranch,
-			IDBrand: saleOrder.IDBrand ?? this.item?.IDBrand,
 			IDCustomer: saleOrder.IDCustomer ?? this.item?.IDCustomer,
 			IDContact: saleOrder.IDContact ?? saleOrder.IDCustomer ?? this.item?.IDCustomer,
 			OrderDate: saleOrder.OrderDate,
