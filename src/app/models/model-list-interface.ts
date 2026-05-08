@@ -2187,6 +2187,7 @@ export interface CRM_PolBenefit
 export interface CRM_PolLevel
 {
     IDBranch?: number;
+    IDPolLevelGroup?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -2203,6 +2204,10 @@ export interface CRM_PolLevel
     Image?: string;
     Icon?: string;
     Color?: string;
+    TriggerMode?: string;
+    NextRun?: Date;
+    EvalPeriod?: number;
+    RetainThresholdAmount?: number;
     
 }
 
@@ -2220,6 +2225,40 @@ export interface CRM_PolLevelBenefit
     CreatedBy?: string;
     ModifiedBy?: string;
     CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+}
+
+export interface CRM_PolLevelGroup
+{
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface CRM_PolLevelGroupBrand
+{
+    IDPolLevelGroup?: number;
+    IDBrand?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
     ModifiedDate?: Date;
     
 }
@@ -5258,6 +5297,9 @@ export interface HRM_TimesheetTemplateDetail
     UDFValue?: string;
     Remark?: string;
     Sort?: number;
+    SummarySort?: number;
+    SummaryMethod?: string;
+    IsSummary?: boolean;
     IsLocked?: boolean;
     IsHidden?: boolean;
     IsDisabled?: boolean;
@@ -6063,6 +6105,27 @@ export interface POS_Kitchen
     
 }
 
+export interface POS_LogWorkOrder
+{
+    IDBranch?: number;
+    IDOrder?: number;
+    IDOrderLine?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Status?: string;
+    SavedTime?: Date;
+    
+}
+
 export interface POS_MemberCardPromotion
 {
     IDBranch?: number;
@@ -6364,12 +6427,14 @@ export interface PR_Program
     Code?: string;
     Name?: string;
     Type?: string;
+    SubType?: string;
     Status?: string;
     IsGenerateVoucher?: boolean;
     VoucherCode?: string;
     NumberOfGeneratedVoucher?: number;
     FromDate?: Date;
     ToDate?: Date;
+    IsNoExpiry?: boolean;
     IsPublic?: boolean;
     IsAutoApply?: boolean;
     IsApplyAllProduct?: boolean;
@@ -6378,6 +6443,7 @@ export interface PR_Program
     MinOrderValue?: number;
     IsByPercent?: boolean;
     MaxValue?: number;
+    IsUnlimitedMaxValue?: boolean;
     Value?: number;
     NumberOfCopy?: number;
     MaxUsagePerCustomer?: number;
@@ -6657,6 +6723,25 @@ export interface PROD_ItemReplacementGroup
     CreatedBy?: string;
     CreatedDate?: Date;
     ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+}
+
+export interface PROD_ItemVendorInBranch
+{
+    IDBranch?: number;
+    IDItem?: number;
+    IDVendor?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Sort?: number;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
     ModifiedDate?: Date;
     
 }
@@ -7003,6 +7088,7 @@ export interface PURCHASE_Order
     IDWarehouse?: number;
     IDStorer?: number;
     IDVendor?: number;
+    IDParent?: number;
     Id?: number;
     Code?: string;
     Name?: string;
@@ -7069,14 +7155,22 @@ export interface PURCHASE_OrderInterval
     Code?: string;
     Name?: string;
     Type?: string;
-    Value?: number;
     Sort?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
     CreatedBy?: string;
-    CreatedDate?: Date;
     ModifiedBy?: string;
+    CreatedDate?: Date;
     ModifiedDate?: Date;
+    StartDate?: Date;
+    EndDate?: Date;
+    Value?: number;
+    WeeklyDays?: string;
+    MonthlyMonths?: string;
+    MonthlyMethod?: boolean;
+    MonthlyDays?: string;
+    MonthlyWeeks?: string;
+    MonthlyWeekDays?: string;
     
 }
 
@@ -8325,12 +8419,23 @@ export interface SYS_SyncJob
     TryCount?: number;
     ExeDate?: Date;
     ErrorMessage?: string;
-    Request?: string;
-    Response?: string;
     CreatedDate?: Date;
     CreatedBy?: string;
-    ModifiedBy?: string;
-    ModifiedDate?: Date;
+    Priority?: number;
+    
+}
+
+export interface SYS_SyncJobIdentityReference
+{
+    Id?: number;
+    Type?: string;
+    ERPId?: number;
+    Provider?: string;
+    SubProvider?: string;
+    RefId?: number;
+    RefCode?: string;
+    CreatedBy?: string;
+    CreatedDate?: Date;
     
 }
 

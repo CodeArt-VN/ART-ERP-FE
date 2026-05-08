@@ -3820,6 +3820,104 @@ export var APIListBase = {
 		
 	},
 
+	CRM_PolLevelGroup:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelGroup/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelGroup"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevelGroup/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevelGroup/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevelGroup/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroup/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroup/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroup/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelGroup"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelGroup/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevelGroup/" + id} 
+        }
+		
+	},
+
+	CRM_PolLevelGroupBrand:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelGroupBrand/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PolLevelGroupBrand"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PolLevelGroupBrand/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PolLevelGroupBrand/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PolLevelGroupBrand/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroupBrand/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroupBrand/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PolLevelGroupBrand/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelGroupBrand"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PolLevelGroupBrand/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PolLevelGroupBrand/" + id} 
+        }
+		
+	},
+
 	CRM_PolLoyalty:{
         getSearchList:{
             method: "GET",
@@ -11219,6 +11317,55 @@ export var APIListBase = {
 		
 	},
 
+	POS_LogWorkOrder:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "POS/LogWorkOrder/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "POS/LogWorkOrder"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "POS/LogWorkOrder/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "POS/LogWorkOrder/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "POS/LogWorkOrder/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "POS/LogWorkOrder/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "POS/LogWorkOrder/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "POS/LogWorkOrder/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "POS/LogWorkOrder"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "POS/LogWorkOrder/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "POS/LogWorkOrder/" + id} 
+        }
+		
+	},
+
 	POS_MemberCardPromotion:{
         getSearchList:{
             method: "GET",
@@ -12489,6 +12636,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "PROD/ItemReplacementGroup/" + id} 
+        }
+		
+	},
+
+	PROD_ItemVendorInBranch:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "PROD/ItemVendorInBranch/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "PROD/ItemVendorInBranch"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "PROD/ItemVendorInBranch/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "PROD/ItemVendorInBranch/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "PROD/ItemVendorInBranch/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemVendorInBranch/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemVendorInBranch/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "PROD/ItemVendorInBranch/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "PROD/ItemVendorInBranch"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "PROD/ItemVendorInBranch/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "PROD/ItemVendorInBranch/" + id} 
         }
 		
 	},
@@ -15429,6 +15625,55 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "SYS/SyncJob/" + id} 
+        }
+		
+	},
+
+	SYS_SyncJobIdentityReference:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "SYS/SyncJobIdentityReference/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "SYS/SyncJobIdentityReference"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "SYS/SyncJobIdentityReference/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "SYS/SyncJobIdentityReference/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "SYS/SyncJobIdentityReference/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "SYS/SyncJobIdentityReference/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/SyncJobIdentityReference/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "SYS/SyncJobIdentityReference/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "SYS/SyncJobIdentityReference"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "SYS/SyncJobIdentityReference/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "SYS/SyncJobIdentityReference/" + id} 
         }
 		
 	},
