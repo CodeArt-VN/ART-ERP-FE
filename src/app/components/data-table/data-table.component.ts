@@ -45,15 +45,47 @@ export class DataTableComponent implements OnInit {
 
 	_query: any = {};
 	@Input() set query(val: any) {
-		this._query = val;
+		this._query = val ?? {};
 		if (this.formGroup) {
-			this.formGroup.patchValue(this._query);
+			this.formGroup.patchValue(this._query, { emitEvent: false });
 			dog && console.log(this._query);
 
 			//this.onFilterSubmit(null);
 		}
+		this.syncFilterIndicatorFromQuery();
 	}
 	filterValue: any;
+
+	/**
+	 * Header search icon reads filterValue (datatable-header-cell); without this, preset [query]
+	 * does not show icons until the user submits the filter row.
+	 */
+	private syncFilterIndicatorFromQuery() {
+		if (!this._allColumns?.length) {
+			return;
+		}
+		const fv: Record<string, unknown> = {};
+		const q = this._query || {};
+		for (const col of this._allColumns) {
+			if (!col.canFilter || !col.property) {
+				continue;
+			}
+			const p = col.property;
+			if (col.filterControlType === 'time-frame') {
+				const from = q[p + 'From'];
+				const to = q[p + 'To'];
+				if ((from != null && from !== '') || (to != null && to !== '')) {
+					fv[p] = true;
+				}
+			} else {
+				const v = q[p];
+				if (v != null && v !== '') {
+					fv[p] = v;
+				}
+			}
+		}
+		this.filterValue = Object.keys(fv).length ? fv : undefined;
+	}
 
 	@Output() filterInputChange: EventEmitter<any> = new EventEmitter();
 	onFilterInputChange(e) {
@@ -74,7 +106,9 @@ export class DataTableComponent implements OnInit {
 			}
 		});
 
-		this.queryChange.emit(this.filterValue);
+		// Preserve list query fields (e.g. IDOwner, Take, Skip) — filter form only has column keys;
+		// emitting filterValue alone breaks [(query)] two-way binding by replacing the whole object.
+		this.queryChange.emit({ ...(this._query || {}), ...this.filterValue });
 		if (this.isQueryLocalOnly) {
 			this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
 			this._rows = this._rowsBeforeFilter.filter((row) => {
@@ -123,6 +157,7 @@ export class DataTableComponent implements OnInit {
 			}
 		});
 		this.formGroup = new FormGroup(group);
+		this.syncFilterIndicatorFromQuery();
 	}
 
 	/**

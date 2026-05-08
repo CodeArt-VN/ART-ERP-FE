@@ -5,6 +5,7 @@
 	"author": "Hùng Vũ",
 	"homepage": "https://codeart.vn/",
 	"scripts": {
+		"postinstall": "node ./scripts/fix-exxili-capacitor-nfc.js",
 		"build-web": "node ./replace.build.js build web",
 		"ng": "ng",
 		"start": "ng serve",
@@ -51,6 +52,7 @@
 		"@capacitor/push-notifications": "^8.0.0",
 		"@capacitor/splash-screen": "^8.0.0",
 		"@capacitor/status-bar": "^8.0.0",
+		"@exxili/capacitor-nfc": "^0.0.13",
 		"@fullcalendar/angular": "^6.0.0",
 		"@fullcalendar/core": "^6.0.0",
 		"@fullcalendar/daygrid": "^6.0.0",

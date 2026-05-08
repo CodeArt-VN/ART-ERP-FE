@@ -48,7 +48,7 @@ export class ReportConfigComponent implements OnInit {
 					distinctUntilChanged(),
 					tap(() => (this.loading = true)),
 					switchMap((term) =>
-						this.searchProvider.search({ Take: 20, Skip: 0, Term: term }).pipe(
+						this.searchProvider.search({ Take: 20, Skip: 0, Keyword: term }).pipe(
 							catchError(() => of([])), // empty list on error
 							tap(() => (this.loading = false))
 						)

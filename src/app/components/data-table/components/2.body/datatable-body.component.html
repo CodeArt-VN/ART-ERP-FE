@@ -7,7 +7,12 @@
 <!-- [style.height]="calculateContainerHeight()" autosize -->
 <div *ngIf="rows.length && !showSpinner">
 	<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
-		<div class="row divider" *ngIf="row._divider">
+		<ng-container *ngIf="row._dividers?.length">
+			<div class="row divider" *ngFor="let line of row._dividers">
+				<div class="cell">{{line|translate}}</div>
+			</div>
+		</ng-container>
+		<div class="row divider" *ngIf="!row._dividers?.length && row._divider">
 			<div class="cell">{{row._divider|translate}}</div>
 		</div>
 		<datatable-body-row

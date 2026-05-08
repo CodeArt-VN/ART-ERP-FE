@@ -477,11 +477,11 @@ export var lib = {
 		return arr;
 	},
 
-	getAttrib(Term, Lst, GetAttrib = 'Name', defaultValue = '', FindAttrib = 'Id') {
+	getAttrib(Keyword, Lst, GetAttrib = 'Name', defaultValue = '', FindAttrib = 'Id') {
 		if (!Lst) {
 			return defaultValue;
 		}
-		var it = Lst.filter((ite) => (ite.IsDeleted === false || ite.IsDeleted == undefined) && ite[FindAttrib] == Term);
+		var it = Lst.filter((ite) => (ite.IsDeleted === false || ite.IsDeleted == undefined) && ite[FindAttrib] == Keyword);
 		if (it.length) {
 			return it[0][GetAttrib];
 		}

@@ -29,19 +29,16 @@ export class PromotionService {
 		// trả ra FE trước cho smooth UI rồi di lấy voucher BE
 		const map = { ...this.voucherBySO$.value };
 		this.voucherBySO$.next(map);
-		return  this.programProvider.commonService
+		return this.programProvider.commonService
 			.connect('GET', 'PR/Program/AppliedProgramInSaleOrder', {
 				IDSO: IDSO,
 			})
 			.toPromise()
 			.then((data: any) => {
-		// update voucher Mới nhất
+				// update voucher Mới nhất
 				map[IDSO] = data || [];
 				this.voucherBySO$.next(map);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
 	}
 
 	applyVoucher(so: any, code: string) {
@@ -110,6 +107,23 @@ export class PromotionService {
 					this.env.showErrorMessage(err);
 					reject(err);
 				});
+		});
+	}
+
+	releaseIntegrationVouchers(saleOrder: any, voucherCodes: string[], options?: { type?: string; subType?: string; providerCode?: string }) {
+		if (!saleOrder?.Id || !voucherCodes || voucherCodes.length === 0) return Promise.resolve(true);
+		return new Promise((resolve, reject) => {
+			this.commonService
+				.connect('POST', 'PR/Program/UnUseVoucher/', {
+					SaleOrder: saleOrder,
+					VoucherCodeList: voucherCodes,
+					Type: options?.type,
+					SubType: options?.subType,
+					ProviderCode: options?.providerCode,
+				})
+				.toPromise()
+				.then(() => resolve(true))
+				.catch((err) => reject(err));
 		});
 	}
 
