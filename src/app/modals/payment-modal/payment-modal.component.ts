@@ -836,7 +836,7 @@ export class PaymentModalComponent implements OnInit {
 					this.formGroup.get('SubType').markAsDirty();
 					this.gotItUseResult = null;
 					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, amount: amount });
-					this.env.showMessage(voucher[0].ErrorMesage);
+					this.env.showMessage(voucher[0].ErrorMesage,'success');
 				} else {
 					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
 				}
