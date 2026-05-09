@@ -1,12 +1,13 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.47',
+	appVersion: '0.21.58',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
 		{ Code: 'https://app.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
-		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://beta.inholdings.vn/', Name: 'Beta server', Color: 'danger', Icon: 'rocket' },
+		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'warning', Icon: 'airplane' },
+		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'warning', Icon: 'airplane' },
 	],
 	appDomain: 'https://app.inholdings.vn/',
 	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
