@@ -13,6 +13,7 @@ interface SerialPortLike {
 interface SerialNavigatorLike extends Navigator {
 	serial?: {
 		requestPort(): Promise<SerialPortLike>;
+		getPorts?: () => Promise<SerialPortLike[]>;
 	};
 }
 
@@ -159,8 +160,7 @@ export class Rd300WebSerialReader {
 			throw new Error('Web Serial is not supported by this browser. Use Chrome or Edge on HTTPS/localhost.');
 		}
 
-		this.report('Select the RD300 serial port.');
-		this.port = await serial.requestPort();
+		this.port = await this.resolveSerialPort(serial);
 		await this.port.open({
 			baudRate: 9600,
 			dataBits: 8,
@@ -176,6 +176,18 @@ export class Rd300WebSerialReader {
 		this.reader = this.port.readable.getReader();
 		this.writer = this.port.writable.getWriter();
 		this.report('RD300 serial port is connected.');
+	}
+
+	private async resolveSerialPort(serial: NonNullable<SerialNavigatorLike['serial']>): Promise<SerialPortLike> {
+		const grantedPorts = (await serial.getPorts?.().catch(() => [])) || [];
+		const grantedPort = grantedPorts[0];
+		if (grantedPort) {
+			this.report('Reusing the previously selected RD300 serial port.');
+			return grantedPort;
+		}
+
+		this.report('Select the RD300 serial port.');
+		return await serial.requestPort();
 	}
 
 	private async tryDetectTagOnce(): Promise<Rd300DetectedTag | null> {
