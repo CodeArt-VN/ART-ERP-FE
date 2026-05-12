@@ -355,3 +355,50 @@ ion-button {
 	font-weight: 600;
 }
 
+::ng-deep app-data-table.voucher-used-table.responsive {
+	.row:not(.header) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto 32px;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 12px 12px 16px;
+		margin: 8px 0;
+	}
+
+	.row:not(.header) .cell {
+		min-width: 0 !important;
+		max-width: none !important;
+		padding: 0 !important;
+	}
+
+	.row:not(.header) .col-name {
+		order: unset;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap !important;
+	}
+
+	.row:not(.header) .col-number {
+		position: static;
+		order: unset;
+		right: unset;
+		min-width: fit-content !important;
+		max-width: fit-content !important;
+		margin-top: 0;
+		font-size: 100%;
+		font-weight: 600;
+		justify-content: flex-end;
+		text-align: right;
+	}
+
+	.row:not(.header) .col-icon {
+		position: static;
+		order: unset;
+		right: unset;
+		top: unset;
+		min-width: 32px !important;
+		max-width: 32px !important;
+		justify-content: center;
+	}
+}
+
