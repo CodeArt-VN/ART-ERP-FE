@@ -265,7 +265,7 @@
 
 						<!-- List voucher đã sử dụng -->
 						<div class="c-control" *ngIf="listVoucherUsed?.length > 0">
-							<app-data-table class="box-shadow responsive" [rows]="listVoucherUsed" [trackBy]="'Id'">
+							<app-data-table class="box-shadow responsive voucher-used-table" [rows]="listVoucherUsed" [trackBy]="'Id'">
 								<datatable-column class="col-name" name="Voucher code" property="code"></datatable-column>
 								<datatable-column class="col-number" name="Value" format="1.0-0" property="amount"></datatable-column>
 								<datatable-column class="col-icon" name="" property="value">
