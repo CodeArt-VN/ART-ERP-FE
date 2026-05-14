@@ -26,6 +26,7 @@ export class FormControlComponent implements OnInit {
 		if (f.type) this.type = f.type;
 		if (f.id) this.id = f.id;
 		if (f.label) this.label = f.label;
+		if (f.remark) this.remark = f.remark;
 		this._field = f;
 	}
 
@@ -42,6 +43,8 @@ export class FormControlComponent implements OnInit {
 	@Input() id: string;
 
 	@Input() label: string;
+
+	@Input() remark: string;
 
 	@Input() inline: boolean = false;
 

@@ -11,6 +11,7 @@
 
 	&:last-child {
 		border-bottom: none;
+
 		&.border {
 			border-bottom: 1px dashed var(--menu-right-border-color);
 		}
@@ -57,6 +58,7 @@
 
 	&.inline-control {
 		text-align: left;
+
 		.c-label {
 			white-space: nowrap;
 			position: absolute;
@@ -66,11 +68,12 @@
 			border: solid transparent;
 			//font-size: calc(10/16 * 1.3rem);
 		}
+
 		.c-input {
 			text-align: right;
 		}
 
-		.ng-select .ng-select-container .ng-value-container{
+		.ng-select .ng-select-container .ng-value-container {
 			justify-content: flex-end;
 		}
 	}
@@ -106,6 +109,7 @@
 		&.ng-invalid {
 			border: 1px solid var(--ion-color-danger) !important;
 		}
+
 		&[readonly],
 		&[disabled],
 		&.disable,
@@ -122,8 +126,10 @@
 				inset 0 0 0 1px rgba(0, 0, 0, 0.1),
 				inset 0 1px 2px rgba(0, 0, 0, 0.2);
 		}
+
 		&.ng-select {
 			padding: 0;
+
 			&.ng-select-multiple {
 				min-height: calc(10 / 16 * 3.8rem);
 				height: auto !important;
@@ -139,12 +145,14 @@
 			&.staff-select.ng-select-single {
 				.ng-value-container {
 					overflow: visible;
+
 					ion-chip {
 						--background: transparent;
 					}
 				}
 			}
 		}
+
 		&.breadcrumbs {
 			padding: 0;
 			display: flex;
@@ -160,12 +168,14 @@
 				}
 			}
 		}
+
 		&.btns {
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
 
 			padding-left: 7px;
+
 			.button-clear {
 				--padding-start: 5px;
 				--padding-end: 5px;
@@ -234,6 +244,7 @@
 	.c-dropdown {
 		padding-right: 3.2rem !important;
 	}
+
 	.date {
 		padding-right: 1rem !important;
 	}
@@ -274,10 +285,25 @@
 		}
 	}
 
+	.c-remark {
+		color: var(--ion-color-medium);
+		opacity: 0.8;
+		margin-right: 1px;
+		margin-bottom: calc(10 / 16 * 0.8rem);
+		//font-size: calc(10/16 * 1.2rem);
+		display: inline-block;
+		width: calc(100% - 0px);
+		text-align: left;
+		vertical-align: top;
+		white-space: normal;
+	}
+
 	ion-item {
 		--min-height: auto;
+
 		ion-label {
 			margin: 0;
+
 			p {
 				margin-bottom: 0.8rem !important;
 			}

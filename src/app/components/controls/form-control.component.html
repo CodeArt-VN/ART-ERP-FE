@@ -6,6 +6,9 @@
 			>(*<ng-content select="[message]"></ng-content>)</ion-text
 		>
 	</label>
+	<label class="c-remark" [attr.for]="id" *ngIf="type != 'checkbox' && type != 'radio' && remark">
+		{{ remark | translate }}
+	</label>
 	<app-input-control
 		*ngIf="field"
 		[field]="field"
