@@ -46,6 +46,32 @@ interface NfcPlugin {
 	onError: (listener: (error: NfcPluginError) => void) => () => void;
 }
 
+interface BrowserNdefRecord {
+	recordType: string;
+	mediaType?: string;
+	id?: string;
+	encoding?: string;
+	lang?: string;
+	data?: DataView;
+}
+
+interface BrowserNdefReadingEvent extends Event {
+	serialNumber?: string;
+	message: {
+		records: BrowserNdefRecord[];
+	};
+}
+
+interface BrowserNdefReader extends EventTarget {
+	onreading: ((event: BrowserNdefReadingEvent) => void) | null;
+	onreadingerror: ((event: Event) => void) | null;
+	scan: (options?: { signal?: AbortSignal }) => Promise<void>;
+}
+
+interface BrowserNdefReaderConstructor {
+	new (): BrowserNdefReader;
+}
+
 @Component({
 	selector: 'app-nfc-qrcode-scanner-modal',
 	templateUrl: './nfc-qrcode-scanner-modal.component.html',
@@ -72,6 +98,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	private removeNfcReadListener?: () => void;
 	private removeNfcErrorListener?: () => void;
 	private rd300Reader?: Rd300WebSerialReader;
+	private webNfcAbortController?: AbortController;
 
 	constructor(
 		private modalController: ModalController,
@@ -256,6 +283,63 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		await this.stopReadNfc();
 		if (!this.isActionActive(token)) return;
 
+		if (this.isBrowserNfcAvailable()) {
+			await this.startReadBrowserNfc(token);
+			return;
+		}
+
+		await this.startReadRd300Nfc(token);
+	}
+
+	private async startReadBrowserNfc(token: number): Promise<void> {
+		this.isLoading = true;
+		this.statusMessage = 'Hold the NFC card near the phone to read data.';
+
+		try {
+			const NdefReader = (window as any).NDEFReader as BrowserNdefReaderConstructor;
+			const reader = new NdefReader();
+			this.webNfcAbortController = new AbortController();
+
+			reader.onreading = (event) => {
+				if (!this.isActionActive(token)) return;
+
+				const output = this.normalizeBrowserNfcResult(event);
+				this.result = output;
+				this.isLoading = false;
+				this.statusMessage = 'NFC data read successfully.';
+
+				void this.modalController.dismiss(output, 'confirm');
+			};
+
+			reader.onreadingerror = () => {
+				if (!this.isActionActive(token)) return;
+
+				this.isLoading = false;
+				this.errorMessage = 'Unable to read NFC. Keep the card steady and try again.';
+			};
+
+			await reader.scan({ signal: this.webNfcAbortController.signal });
+			if (!this.isActionActive(token)) return;
+			this.statusMessage = 'Hold the NFC card near the phone to read data.';
+		} catch (error) {
+			if (!this.isActionActive(token)) return;
+
+			this.isLoading = false;
+			if (this.isCancelError(error)) {
+				this.wasCancelled = true;
+				this.statusMessage = 'The NFC session was canceled. Press "Retry" to read again.';
+				return;
+			}
+
+			if (this.isUnsupportedBrowserNfcError(error)) {
+				this.isSupported = false;
+			}
+
+			this.errorMessage = this.resolveErrorMessage(error, 'Unable to start the browser NFC reading session.');
+		}
+	}
+
+	private async startReadRd300Nfc(token: number): Promise<void> {
 		this.isLoading = true;
 		this.statusMessage = 'Select the RD300 serial port.';
 
@@ -290,6 +374,9 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 
 	private async stopReadNfc(): Promise<void> {
 		try {
+			this.webNfcAbortController?.abort();
+			this.webNfcAbortController = undefined;
+
 			this.removeNfcReadListener?.();
 			this.removeNfcReadListener = undefined;
 			this.removeNfcErrorListener?.();
@@ -329,6 +416,57 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			},
 			tagInfo: stringView?.tagInfo,
 		};
+	}
+
+	private normalizeBrowserNfcResult(event: BrowserNdefReadingEvent): ScannerModalResult {
+		const firstRecord = event?.message?.records?.[0];
+		const rawValue = this.readBrowserNfcRecordPayload(firstRecord);
+		const tagInfo = {
+			uid: event?.serialNumber || '',
+			type: 'web-nfc',
+			reader: 'Browser NFC',
+		};
+
+		if (rawValue) {
+			return {
+				mode: 'NFC',
+				value: this.parsePossibleJson(rawValue),
+				rawValue,
+				tagInfo,
+			};
+		}
+
+		return {
+			mode: 'NFC',
+			value: {
+				messages: [
+					{
+						records: event?.message?.records || [],
+					},
+				],
+				tagInfo,
+			},
+			tagInfo,
+		};
+	}
+
+	private readBrowserNfcRecordPayload(record?: BrowserNdefRecord): string {
+		if (!record?.data) return '';
+
+		const bytes = new Uint8Array(record.data.buffer, record.data.byteOffset, record.data.byteLength);
+		if (record.recordType === 'text') {
+			return new TextDecoder(record.encoding || 'utf-8').decode(bytes);
+		}
+
+		if (record.recordType === 'mime' && record.mediaType?.toLowerCase().includes('json')) {
+			return new TextDecoder().decode(bytes);
+		}
+
+		if (record.recordType === 'url' || record.recordType === 'absolute-url') {
+			return new TextDecoder().decode(bytes);
+		}
+
+		return '';
 	}
 
 	private normalizeRd300Result(data: Rd300NdefReadResult): ScannerModalResult {
@@ -411,6 +549,15 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	private isUnsupportedSerialError(error: any): boolean {
 		const message = `${error?.error || error?.message || error || ''}`.toLowerCase();
 		return message.includes('web serial is not supported');
+	}
+
+	private isUnsupportedBrowserNfcError(error: any): boolean {
+		const message = `${error?.error || error?.message || error || ''}`.toLowerCase();
+		return error?.name === 'NotSupportedError' || message.includes('web nfc is not supported') || message.includes('nfc is not supported');
+	}
+
+	private isBrowserNfcAvailable(): boolean {
+		return typeof window !== 'undefined' && 'NDEFReader' in window;
 	}
 
 	private isActionActive(token: number): boolean {
