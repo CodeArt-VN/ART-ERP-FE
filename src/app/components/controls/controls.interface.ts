@@ -37,7 +37,6 @@ export interface InputControlField {
 	secondaryId?: string;
 
 	label?: string;
-	remark?: string;
 	color?: string;
 
 	placeholder?: string;
