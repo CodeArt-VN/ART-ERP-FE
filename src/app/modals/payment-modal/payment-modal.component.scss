@@ -156,6 +156,14 @@ ion-button {
 	font-weight: bold;
 }
 
+.loyalty-point-conversion-note {
+	display: block;
+	margin-top: 4px;
+	text-align: right;
+	color: var(--ion-color-medium);
+	font-size: 1.2rem;
+}
+
 ::ng-deep {
 	ion-toolbar::part(container) {
 		padding-inline-start: 0 !important;
