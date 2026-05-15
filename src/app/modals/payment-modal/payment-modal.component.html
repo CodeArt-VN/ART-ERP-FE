@@ -286,6 +286,9 @@
 							<small class="loyalty-point-conversion-note" *ngIf="item.PointConversionRate !== null && item.PointConversionRate !== undefined && item.PointConversionRate !== ''">
 								{{ 'POINT_CONVERSION_RATE' | translate: { value: item.PointConversionRate } }}
 							</small>
+							<small class="loyalty-point-conversion-note" *ngIf="item.LoyaltyPointUsage">
+								{{ 'Remaining loyalty point payment limit' | translate }}: {{ item.LoyaltyPointUsage.remainingCapAmount | number: '1.0-0' }} đ
+							</small>
 						</div>
 
 						<!-- Tiền thừa -->

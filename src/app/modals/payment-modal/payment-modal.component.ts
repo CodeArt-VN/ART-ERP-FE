@@ -78,6 +78,7 @@ export class PaymentModalComponent implements OnInit {
 		PointConversionRate: '',
 		MaxPointUsagePercent: 0,
 		DefaultBusinessPartnerId: null,
+		LoyaltyPointUsage: null,
 	};
 	// ----- Các biến binding cho view -----
 	btnAmounts: number[] = [];
@@ -182,6 +183,7 @@ export class PaymentModalComponent implements OnInit {
 							this.env.showMessage('Payment success', 'success');
 							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
 								this.item.DebtAmount -= value.Amount;
+								if (value.Type == 'LoyaltyPoint') this.applyLoyaltyPointPaymentToUsage(value.Amount);
 								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
@@ -297,6 +299,33 @@ export class PaymentModalComponent implements OnInit {
 		return Math.floor(Number(this.formGroup.get('InputPoint').value) || 0);
 	}
 
+	private getLoyaltyPointUsage() {
+		return this.item?.LoyaltyPointUsage || null;
+	}
+
+	private getMaxLoyaltyPointPaymentAmount() {
+		const payableAmount = this.getPayableAmount();
+		const usage = this.getLoyaltyPointUsage();
+
+		if (usage && usage.remainingCapAmount !== undefined && usage.remainingCapAmount !== null) {
+			return Math.min(payableAmount, Math.max(0, Math.floor(Number(usage.remainingCapAmount) || 0)));
+		}
+
+		const maxPointUsagePercent = Number(this.item.MaxPointUsagePercent) || 0;
+		return Math.floor((payableAmount * maxPointUsagePercent) / 100);
+	}
+
+	private applyLoyaltyPointPaymentToUsage(amount: number) {
+		const usage = this.getLoyaltyPointUsage();
+		if (!usage) return;
+
+		const paidAmount = Math.max(0, Math.floor(Number(amount) || 0));
+		usage.usedAmount = Math.max(0, (Number(usage.usedAmount) || 0) + paidAmount);
+		usage.remainingCapAmount = Math.max(0, (Number(usage.capAmount) || 0) - usage.usedAmount);
+		usage.exceededAmount = Math.max(0, usage.usedAmount - (Number(usage.capAmount) || 0));
+		usage.isExceeded = usage.exceededAmount > 0;
+	}
+
 	loyaltyPointChange() {
 		const inputPoint = this.getInputPoint();
 		const pointConversionRate = Number(this.item.PointConversionRate) || 0;
@@ -316,7 +345,8 @@ export class PaymentModalComponent implements OnInit {
 
 	canUseLoyaltyPointPayment() {
 		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
-		return !defaultBusinessPartnerId || Number(this.item.IDCustomer) !== defaultBusinessPartnerId;
+		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
+		return !isDefaultCustomer && this.getMaxLoyaltyPointPaymentAmount() > 0;
 	}
 
 	private validatePaymentAmount(type: string) {
@@ -341,8 +371,7 @@ export class PaymentModalComponent implements OnInit {
 		const payableAmount = this.getPayableAmount();
 		const customerPoint = Number(this.item.Point) || 0;
 		const pointConversionRate = Number(this.item.PointConversionRate) || 0;
-		const maxPointUsagePercent = this.item.MaxPointUsagePercent || 0;
-		const maxAmount = Math.floor((payableAmount * maxPointUsagePercent) / 100);
+		const maxAmount = this.getMaxLoyaltyPointPaymentAmount();
 		const maxPointByAmount = pointConversionRate > 0 ? Math.floor(maxAmount / pointConversionRate) : 0;
 		const customerId = Number(this.item.IDCustomer) || 0;
 		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
@@ -367,6 +396,11 @@ export class PaymentModalComponent implements OnInit {
 
 		if (customerPoint <= 0 || pointConversionRate <= 0) {
 			this.env.showMessage('Customer loyalty point is not enough', 'warning');
+			return false;
+		}
+
+		if (maxAmount <= 0) {
+			this.env.showMessage('Loyalty point payment has reached allowed limit', 'warning');
 			return false;
 		}
 
