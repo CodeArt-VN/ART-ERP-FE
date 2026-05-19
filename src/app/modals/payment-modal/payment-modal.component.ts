@@ -73,6 +73,12 @@ export class PaymentModalComponent implements OnInit {
 		Timestamp: '',
 		CreatedBy: '',
 		IsRefundTransaction: false,
+		Point: '',
+		PolLevelName: '',
+		PointConversionRate: '',
+		MaxPointUsagePercent: 0,
+		DefaultBusinessPartnerId: null,
+		LoyaltyPointUsage: null,
 	};
 	// ----- Các biến binding cho view -----
 	btnAmounts: number[] = [];
@@ -96,6 +102,7 @@ export class PaymentModalComponent implements OnInit {
 			Code: [''],
 			IDSaleOrder: [''],
 			DebtAmount: [''],
+			InputPoint: [0],
 			InputAmount: [''],
 			Amount: [0],
 			Type: ['Cash'],
@@ -124,12 +131,12 @@ export class PaymentModalComponent implements OnInit {
 			this.formGroup.get('VoucherCode').setValue('');
 		}
 		this.formGroup.get('InputAmount').enable();
+		this.formGroup.get('InputPoint').setValue(0);
 	}
 	ngAfterViewInit() {
 		if (!this.billElement?.nativeElement) return;
 
 		const observer = new MutationObserver((mutations) => {
-			// console.log('DOM changed', mutations);
 
 			const qr = this.billElement.nativeElement.querySelector('.qr-section');
 			if (qr) {
@@ -141,6 +148,7 @@ export class PaymentModalComponent implements OnInit {
 			childList: true,
 			subtree: true,
 		});
+
 	}
 	async ngOnInit() {
 		if (!this.subPromotion) {
@@ -175,6 +183,7 @@ export class PaymentModalComponent implements OnInit {
 							this.env.showMessage('Payment success', 'success');
 							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
 								this.item.DebtAmount -= value.Amount;
+								if (value.Type == 'LoyaltyPoint') this.applyLoyaltyPointPaymentToUsage(value.Amount);
 								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
@@ -286,12 +295,58 @@ export class PaymentModalComponent implements OnInit {
 		return Number(this.formGroup.get('InputAmount').value) || 0;
 	}
 
+	private getInputPoint() {
+		return Math.floor(Number(this.formGroup.get('InputPoint').value) || 0);
+	}
+
+	private getLoyaltyPointUsage() {
+		return this.item?.LoyaltyPointUsage || null;
+	}
+
+	private getMaxLoyaltyPointPaymentAmount() {
+		const payableAmount = this.getPayableAmount();
+		const usage = this.getLoyaltyPointUsage();
+
+		if (usage && usage.remainingCapAmount !== undefined && usage.remainingCapAmount !== null) {
+			return Math.min(payableAmount, Math.max(0, Math.floor(Number(usage.remainingCapAmount) || 0)));
+		}
+
+		const maxPointUsagePercent = Number(this.item.MaxPointUsagePercent) || 0;
+		return Math.floor((payableAmount * maxPointUsagePercent) / 100);
+	}
+
+	private applyLoyaltyPointPaymentToUsage(amount: number) {
+		const usage = this.getLoyaltyPointUsage();
+		if (!usage) return;
+
+		const paidAmount = Math.max(0, Math.floor(Number(amount) || 0));
+		usage.usedAmount = Math.max(0, (Number(usage.usedAmount) || 0) + paidAmount);
+		usage.remainingCapAmount = Math.max(0, (Number(usage.capAmount) || 0) - usage.usedAmount);
+		usage.exceededAmount = Math.max(0, usage.usedAmount - (Number(usage.capAmount) || 0));
+		usage.isExceeded = usage.exceededAmount > 0;
+	}
+
+	loyaltyPointChange() {
+		const inputPoint = this.getInputPoint();
+		const pointConversionRate = Number(this.item.PointConversionRate) || 0;
+		const amount = Math.floor(inputPoint * pointConversionRate);
+		this.formGroup.get('InputPoint').setValue(inputPoint, { emitEvent: false });
+		this.formGroup.get('InputAmount').setValue(amount, { emitEvent: false });
+		this.formGroup.get('InputAmount').markAsDirty();
+	}
+
 	private canOverpay(type: string) {
 		return !this.item.IsRefundTransaction && type == 'Cash';
 	}
 
 	private isGotitPayment(type: string) {
 		return type == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit';
+	}
+
+	canUseLoyaltyPointPayment() {
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
+		return !isDefaultCustomer && this.getMaxLoyaltyPointPaymentAmount() > 0;
 	}
 
 	private validatePaymentAmount(type: string) {
@@ -305,6 +360,66 @@ export class PaymentModalComponent implements OnInit {
 
 		if (amount > payableAmount && !this.canOverpay(type) && !this.isGotitPayment(type)) {
 			this.env.showMessage('Payment amount cannot be greater than payment required', 'warning');
+			return false;
+		}
+
+		return true;
+	}
+
+	private async validatePointLoyaltyPayment() {
+		let inputPoint = this.getInputPoint();
+		const payableAmount = this.getPayableAmount();
+		const customerPoint = Number(this.item.Point) || 0;
+		const pointConversionRate = Number(this.item.PointConversionRate) || 0;
+		const maxAmount = this.getMaxLoyaltyPointPaymentAmount();
+		const maxPointByAmount = pointConversionRate > 0 ? Math.floor(maxAmount / pointConversionRate) : 0;
+		const customerId = Number(this.item.IDCustomer) || 0;
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		const confirmLimit = (limitPoint: number) => {
+			const message = `Payment point cannot exceed: {{value}}`;
+
+			return this.env
+				.showPrompt({ code: message, value: limitPoint })
+				.then(() => {
+					this.formGroup.get('InputPoint').setValue(limitPoint);
+					this.loyaltyPointChange();
+					inputPoint = limitPoint;
+					return true;
+				})
+				.catch(() => false);
+		};
+
+		if (defaultBusinessPartnerId && customerId == defaultBusinessPartnerId) {
+			this.env.showMessage('Default customer cannot use loyalty point payment', 'warning');
+			return false;
+		}
+
+		if (customerPoint <= 0 || pointConversionRate <= 0) {
+			this.env.showMessage('Customer loyalty point is not enough', 'warning');
+			return false;
+		}
+
+		if (maxAmount <= 0) {
+			this.env.showMessage('Loyalty point payment has reached allowed limit', 'warning');
+			return false;
+		}
+
+		if (!inputPoint || inputPoint <= 0) {
+			this.env.showMessage('Please input valid loyalty point', 'warning');
+			return false;
+		}
+
+		if (inputPoint > customerPoint) {
+			if (!(await confirmLimit(customerPoint))) return false;
+		}
+
+		if (inputPoint > maxPointByAmount) {
+			if (!(await confirmLimit(maxPointByAmount))) return false;
+		}
+
+		const amount = this.getInputAmount();
+		if (!amount || amount <= 0) {
+			this.env.showMessage('Please input valid amount', 'warning');
 			return false;
 		}
 
@@ -340,6 +455,8 @@ export class PaymentModalComponent implements OnInit {
 		}
 		if (subType) this.formGroup.get('SubType').setValue(subType);
 		this.formGroup.get('InputAmount').setValue(Math.abs(this.item.DebtAmount));
+		this.formGroup.get('InputAmount').enable();
+		this.formGroup.get('InputPoint').setValue(0);
 		this.next();
 		if (type == 'VietQR') {
 			this.grabPayError = '';
@@ -360,6 +477,9 @@ export class PaymentModalComponent implements OnInit {
 			this.formGroup.get('InputAmount').disable();
 			let total = this.paymentList.reduce((sum, p) => sum + (p.Type == 'PromotionIntegration' && p.SubType == 'Gotit' ? p.Amount : 0), 0);
 			this.formGroup.get('InputAmount').setValue(total);
+		} else if (type == 'LoyaltyPoint') {
+			this.formGroup.get('InputAmount').markAsPristine();
+			this.formGroup.get('InputAmount').setValue(0);
 		}
 	}
 	changeEDCC(e) {
@@ -381,7 +501,13 @@ export class PaymentModalComponent implements OnInit {
 			this.env.showMessage('Please choose payment method', 'warning');
 			return;
 		}
-		if (!this.validatePaymentAmount(this.formGroup.get('Type').value)) return;
+
+		if (this.formGroup.get('Type').value === 'LoyaltyPoint') {
+			const isValidLoyaltyPoint = await this.validatePointLoyaltyPayment();
+			if (!isValidLoyaltyPoint) return;
+		} else if (!this.validatePaymentAmount(this.formGroup.get('Type').value)) {
+			return;
+		}
 
 		this.submitAttempt = true;
 
@@ -399,6 +525,7 @@ export class PaymentModalComponent implements OnInit {
 			obj.Type == 'BOD' ||
 			obj.Type == 'Transfer' ||
 			obj.Type == 'CashVoucher' ||
+			obj.Type == 'LoyaltyPoint' ||
 			(obj.Type == 'Card' && this.payment?.Id)
 		) {
 			obj.Status = 'Success';
@@ -429,6 +556,9 @@ export class PaymentModalComponent implements OnInit {
 			obj['Remark'] = this.program.Id + '-' + this.formGroup.get('VoucherCode').value;
 		}
 		obj.Amount = obj.InputAmount;
+		if (obj.Type == 'LoyaltyPoint') {
+			obj.Point = obj.InputPoint;
+		}
 		if (obj.Type == 'PaymentProposal') {
 			const requestId = await this.createPaymentProposalRequest(obj.Amount);
 			if (!requestId) {
@@ -457,7 +587,8 @@ export class PaymentModalComponent implements OnInit {
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (this.canOverpay(obj.Type) && obj.Amount > this.getPayableAmount()) obj.Amount = this.getPayableAmount();
 
-		this.incomingPaymentProvider.save(obj)
+		this.incomingPaymentProvider
+			.save(obj)
 			.then(async (res: any) => {
 				this.payment = res;
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
@@ -836,7 +967,7 @@ export class PaymentModalComponent implements OnInit {
 					this.formGroup.get('SubType').markAsDirty();
 					this.gotItUseResult = null;
 					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, amount: amount });
-					this.env.showMessage(voucher[0].ErrorMesage,'success');
+					this.env.showMessage(voucher[0].ErrorMesage, 'success');
 				} else {
 					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
 				}
@@ -1107,7 +1238,6 @@ export class PaymentModalComponent implements OnInit {
 		}
 		return null;
 	}
-
 
 	private async resolveGrabQrHtml(response: any): Promise<string> {
 		const qrCandidate = this.findGrabQrCandidate(response);
