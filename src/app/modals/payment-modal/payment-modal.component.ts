@@ -125,6 +125,9 @@ export class PaymentModalComponent implements OnInit {
 	}
 
 	async back() {
+		if(this.formGroup.get('Type').value == 'Card' && this._defaultREFID) {
+			return this.step = 1;
+		}
 		if (!(await this.releasePendingGotitVouchers())) return;
 		this.step--;
 		if (this.formGroup.get('VoucherCode').value) {
@@ -457,6 +460,10 @@ export class PaymentModalComponent implements OnInit {
 		this.formGroup.get('InputAmount').setValue(Math.abs(this.item.DebtAmount));
 		this.formGroup.get('InputAmount').enable();
 		this.formGroup.get('InputPoint').setValue(0);
+		if(type == 'Card' && this._defaultREFID && this.edccList.length > 0) {
+			let e = this.edccList.find((d) => d.REF_ID == this._defaultREFID);
+			return this.changeEDCC(e);
+		}
 		this.next();
 		if (type == 'VietQR') {
 			this.grabPayError = '';
@@ -769,7 +776,8 @@ export class PaymentModalComponent implements OnInit {
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
 				//this.next();
 				this.submitAttempt = false;
-				this.next();
+				if(this.step == 2) this.next();
+				else this.step = 3;
 			})
 			.catch((err) => (this.submitAttempt = false));
 	}
@@ -819,7 +827,6 @@ export class PaymentModalComponent implements OnInit {
 	showConfirmButton() {
 		let type = this.formGroup.get('Type').value;
 		if (!['Card', 'ZalopayApp', 'VietQR'].includes(type) && this.step == 2) return true;
-		else if (type == 'Card' && this.step == 3) return true;
 	}
 
 	// (formGroup.get('Type').value == 'Card' && (step == 3 ||(edccList.length==0 && step == 2)))
