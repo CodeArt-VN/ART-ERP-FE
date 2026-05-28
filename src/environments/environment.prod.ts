@@ -49,7 +49,8 @@ export const environment = {
 		forceVersion: null,     // Force specific version behavior (for testing)
 		skipMigration: false,   // Skip migration completely (for testing)
 		enableDetailedLogs: false // Enable verbose migration logs
-	}
+	},
+	sessionTimeout: 0, // In minutes
 };
 
 // dog = dev log;

@@ -36,7 +36,7 @@ export class AuthenticationService {
 		private commonService: CommonService,
 		private env: EnvService,
 		public cache: CacheManagementService,
-		private router: Router,
+		private router: Router
 	) {
 		this.cache.tracking().subscribe((tracking) => {
 			if (tracking) {
@@ -111,8 +111,8 @@ export class AuthenticationService {
 							isAuthenticated: false,
 						});
 						return throwError(() => error);
-					}),
-				),
+					})
+				)
 			);
 
 			if (!response) {
@@ -136,7 +136,7 @@ export class AuthenticationService {
 			return await this.processLoginResponse(response);
 		} catch (error) {
 			dogF && console.error('🚨 [AuthService] Login failed with error:', error);
-			
+
 			const errorMessage = error?.message || 'Authentication failed';
 			dogF && console.log('📝 [AuthService] Setting error state:', errorMessage);
 
@@ -145,7 +145,7 @@ export class AuthenticationService {
 				error: errorMessage,
 				isAuthenticated: false,
 			});
-			
+
 			throw error;
 		}
 	}
@@ -235,10 +235,10 @@ export class AuthenticationService {
 								await this.logout();
 								this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED, data: error });
 								throw error;
-							})(),
+							})()
 						);
-					}),
-				),
+					})
+				)
 			);
 
 			if (newToken) {
@@ -502,13 +502,16 @@ export class AuthenticationService {
 	 * Setup session monitoring for automatic logout
 	 */
 	private setupSessionMonitoring(): void {
+		const sessionTimeout = this.getSessionTimeout();
+
+		if (sessionTimeout == 0) return;
+
 		setInterval(() => {
 			void (async () => {
 				if (!this.isAuthenticated()) {
 					return;
 				}
 				const lastActivity = this.getLastActivity();
-				const sessionTimeout = this.getSessionTimeout();
 
 				if (Date.now() - lastActivity > sessionTimeout) {
 					this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED });
@@ -579,13 +582,7 @@ export class AuthenticationService {
 			return 'skipped';
 		}
 		try {
-			const response = await firstValueFrom(
-				this.commonService.connect(
-					'GET',
-					APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping',
-					{ token },
-				),
-			);
+			const response = await firstValueFrom(this.commonService.connect('GET', APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping', { token }));
 			if (response == null) {
 				return 'invalid_session';
 			}
@@ -615,7 +612,7 @@ export class AuthenticationService {
 	 * Get session timeout in milliseconds (default: 8 hours)
 	 */
 	private getSessionTimeout(): number {
-		return 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+		return environment.sessionTimeout * 60 * 1000; // 8 hours in milliseconds
 	}
 
 	/**
@@ -672,9 +669,7 @@ export class AuthenticationService {
 	 */
 	private async getMFAChallenge(credentials: LoginCredentials): Promise<any> {
 		try {
-			return await firstValueFrom(
-				this.commonService.connect('POST', APIList.ACCOUNT.mfaChallenge?.url || 'auth/mfa/challenge', credentials),
-			);
+			return await firstValueFrom(this.commonService.connect('POST', APIList.ACCOUNT.mfaChallenge?.url || 'auth/mfa/challenge', credentials));
 		} catch (error) {
 			dogF && console.error('Error getting MFA challenge:', error);
 			throw error;
@@ -690,7 +685,7 @@ export class AuthenticationService {
 				this.commonService.connect('POST', APIList.ACCOUNT.mfaVerify?.url || 'auth/mfa/verify', {
 					challengeId: mfaChallenge.id,
 					code: mfaCode,
-				}),
+				})
 			);
 
 			if ((response as any).requiresMFA) {
