@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, firstValueFrom, from, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Device } from '@capacitor/device';
 import { Capacitor } from '@capacitor/core';
@@ -34,7 +35,8 @@ export class AuthenticationService {
 		private userContextService: UserContextService,
 		private commonService: CommonService,
 		private env: EnvService,
-		public cache: CacheManagementService
+		public cache: CacheManagementService,
+		private router: Router,
 	) {
 		this.cache.tracking().subscribe((tracking) => {
 			if (tracking) {
@@ -60,6 +62,9 @@ export class AuthenticationService {
 				isLoading: false,
 			});
 			this.setupTokenRefresh(token);
+		} else if (token?.access_token) {
+			dogF && console.warn('[AuthService] Stored token invalid or expired; clearing cache');
+			await this.clearToken();
 		}
 	}
 
@@ -93,9 +98,8 @@ export class AuthenticationService {
 					method: 'Login',
 				});
 
-			const response = await this.commonService
-				.connect('Login', APIList.ACCOUNT.token.url, loginData)
-				.pipe(
+			const response = await firstValueFrom(
+				this.commonService.connect('Login', APIList.ACCOUNT.token.url, loginData).pipe(
 					tap((response) => {
 						dogF && console.log('✅ [AuthService] Login API response received:', response);
 					}),
@@ -106,10 +110,10 @@ export class AuthenticationService {
 							error: error.message || 'Login failed',
 							isAuthenticated: false,
 						});
-						return throwError(error);
-					})
-				)
-				.toPromise();
+						return throwError(() => error);
+					}),
+				),
+			);
 
 			if (!response) {
 				dogF && console.error('❌ [AuthService] No response from login API');
@@ -157,10 +161,8 @@ export class AuthenticationService {
 				this.tokenRefreshTimer = undefined;
 			}
 
-			// Clear stored token
-			this.clearToken();
+			await this.clearToken();
 
-			// Update auth state
 			this.updateAuthState({
 				isAuthenticated: false,
 				isLoading: false,
@@ -169,10 +171,9 @@ export class AuthenticationService {
 				error: undefined,
 			});
 
-			await this.userContextService.clearUserContext();
+			await this.navigateToLoginPage();
 		} catch (error) {
 			dogF && console.error('Logout error:', error);
-			// Even if logout fails, clear local state
 			this.updateAuthState({
 				isAuthenticated: false,
 				isLoading: false,
@@ -180,6 +181,26 @@ export class AuthenticationService {
 				token: undefined,
 				error: 'Logout completed with warnings',
 			});
+			await this.navigateToLoginPage();
+		}
+	}
+
+	/**
+	 * Điều hướng về /login bằng UrlTree — dùng chung cho logout, LOGGED_OUT_REMOTE, v.v.
+	 */
+	async navigateToLoginPage(returnUrl?: string): Promise<void> {
+		try {
+			const path = this.router.url.split('?')[0].split('#')[0];
+			if (path === '/login' || path.endsWith('/login')) {
+				return;
+			}
+			const back = returnUrl ?? this.router.url;
+			const loginTree = this.router.createUrlTree(['/login'], {
+				queryParams: { returnUrl: back },
+			});
+			await this.router.navigateByUrl(loginTree, { replaceUrl: true });
+		} catch (e) {
+			dogF && console.error('[AuthService] navigateToLoginPage failed:', e);
 		}
 	}
 
@@ -205,19 +226,20 @@ export class AuthenticationService {
 				grant_type: 'refresh_token',
 			};
 
-			const newToken = await this.commonService
-				.connect('POST', APIList.ACCOUNT.token.url, refreshData)
-				.pipe(
+			const newToken = await firstValueFrom(
+				this.commonService.connect('POST', APIList.ACCOUNT.token.url, refreshData).pipe(
 					catchError((error) => {
 						dogF && console.error('Token refresh error:', error);
-						// If refresh fails, logout user
-						this.logout();
-						// Publish session expired event
-						this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED, data: error });
-						return throwError(error);
-					})
-				)
-				.toPromise();
+						return from(
+							(async () => {
+								await this.logout();
+								this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED, data: error });
+								throw error;
+							})(),
+						);
+					}),
+				),
+			);
 
 			if (newToken) {
 				const tokenResponse = newToken as unknown as TokenResponse;
@@ -236,43 +258,36 @@ export class AuthenticationService {
 		} catch (error) {
 			dogF && console.error('Token refresh error:', error);
 			await this.logout();
-			// Publish session expired event
 			this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED, data: error });
 			throw error;
 		}
 	}
 
 	/**
-	 * Validate JWT token
+	 * Validate JWT / token string (exp, legacy .expires, or opaque token without claims).
 	 */
 	validateToken(token: string): boolean {
-		return true;
-		// if (!token || token === 'no token') {
-		// 	return false;
-		// }
-
-		// try {
-		// 	const tokenData = this.parseToken(token);
-		// 	if (!tokenData) {
-		// 		return false;
-		// 	}
-
-		// 	// Check expiration
-		// 	if (tokenData['.expires']) {
-		// 		const expires = new Date(tokenData['.expires']);
-		// 		const now = new Date();
-		// 		const buffer = new Date();
-		// 		buffer.setDate(buffer.getDate() + 2); // 2 day buffer as per original code
-
-		// 		return expires > buffer;
-		// 	}
-
-		// 	// If no expiration info, consider it valid for now
-		// 	return true;
-		// } catch (error) {
-		// 	dog && console.error('Token validation error:', error);
-		// 	return false;
-		// }
+		if (!token || token === 'no token') {
+			return false;
+		}
+		try {
+			const payload = this.parseToken(token);
+			if (!payload || typeof payload !== 'object') {
+				return true;
+			}
+			if (typeof payload.exp === 'number') {
+				const skewSec = 60;
+				return payload.exp > Date.now() / 1000 + skewSec;
+			}
+			if (payload['.expires']) {
+				const expires = new Date(payload['.expires']);
+				return expires.getTime() > Date.now() + 60_000;
+			}
+			return true;
+		} catch (error) {
+			dogF && console.error('Token validation error:', error);
+			return false;
+		}
 	}
 
 	/**
@@ -487,18 +502,20 @@ export class AuthenticationService {
 	 * Setup session monitoring for automatic logout
 	 */
 	private setupSessionMonitoring(): void {
-		// Monitor session activity every minute
 		setInterval(() => {
-			if (this.isAuthenticated()) {
+			void (async () => {
+				if (!this.isAuthenticated()) {
+					return;
+				}
 				const lastActivity = this.getLastActivity();
 				const sessionTimeout = this.getSessionTimeout();
 
 				if (Date.now() - lastActivity > sessionTimeout) {
 					this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED });
-					this.logout();
+					await this.logout();
 				}
-			}
-		}, 60000); // Check every minute
+			})();
+		}, 60000);
 	}
 
 	/**
@@ -522,19 +539,16 @@ export class AuthenticationService {
 	 * Setup remote logout detection
 	 */
 	private setupRemoteLogoutDetection(): void {
-		// Check for remote logout on token validation every 30 seconds
 		setInterval(async () => {
-			if (this.isAuthenticated()) {
-				try {
-					await this.validateTokenWithServer();
-				} catch (error: any) {
-					if (error.status === 401) {
-						this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGGED_OUT_REMOTE });
-						this.logout();
-					}
-				}
+			if (!this.isAuthenticated()) {
+				return;
 			}
-		}, 900000); // Check every 15 minutes
+			const result = await this.validateTokenWithServer();
+			if (result === 'unauthorized' || result === 'invalid_session') {
+				this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGGED_OUT_REMOTE });
+				await this.logout();
+			}
+		}, 900000); // 15 minutes
 	}
 
 	/**
@@ -557,22 +571,35 @@ export class AuthenticationService {
 	}
 
 	/**
-	 * Validate token with server
+	 * Server-side session check. Does not logout on transport errors.
 	 */
-	private async validateTokenWithServer(): Promise<boolean> {
+	private async validateTokenWithServer(): Promise<'ok' | 'unauthorized' | 'invalid_session' | 'skipped'> {
+		const token = this.getCurrentToken();
+		if (!token) {
+			return 'skipped';
+		}
 		try {
-			const token = this.getCurrentToken();
-			if (!token) {
-				return false;
+			const response = await firstValueFrom(
+				this.commonService.connect(
+					'GET',
+					APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping',
+					{ token },
+				),
+			);
+			if (response == null) {
+				return 'invalid_session';
 			}
-
-			// Call validation endpoint
-			const response = await this.commonService.connect('GET', APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping', { token }).toPromise();
-
-			return response && (response as any).valid === true;
-		} catch (error) {
+			const r = response as { valid?: boolean };
+			if (typeof r.valid === 'boolean') {
+				return r.valid ? 'ok' : 'invalid_session';
+			}
+			return 'ok';
+		} catch (error: any) {
+			if (error?.status === 401) {
+				return 'unauthorized';
+			}
 			dogF && console.error('Token validation with tenant failed:', error);
-			return false;
+			return 'skipped';
 		}
 	}
 
@@ -610,6 +637,7 @@ export class AuthenticationService {
 		// Specific error handling
 		if (error.status === 401) {
 			this.env.publishEvent({ Code: EVENT_TYPE.USER.SESSION_EXPIRED });
+			void this.logout();
 		} else if (error.status === 403) {
 			this.env.publishEvent({ Code: EVENT_TYPE.USER.ACCESS_DENIED });
 		} else if (error.status === 429) {
@@ -644,9 +672,9 @@ export class AuthenticationService {
 	 */
 	private async getMFAChallenge(credentials: LoginCredentials): Promise<any> {
 		try {
-			const response = await this.commonService.connect('POST', APIList.ACCOUNT.mfaChallenge?.url || 'auth/mfa/challenge', credentials).toPromise();
-
-			return response;
+			return await firstValueFrom(
+				this.commonService.connect('POST', APIList.ACCOUNT.mfaChallenge?.url || 'auth/mfa/challenge', credentials),
+			);
 		} catch (error) {
 			dogF && console.error('Error getting MFA challenge:', error);
 			throw error;
@@ -658,12 +686,12 @@ export class AuthenticationService {
 	 */
 	private async verifyMFACode(mfaChallenge: any, mfaCode: string): Promise<AuthResult> {
 		try {
-			const response = await this.commonService
-				.connect('POST', APIList.ACCOUNT.mfaVerify?.url || 'auth/mfa/verify', {
+			const response = await firstValueFrom(
+				this.commonService.connect('POST', APIList.ACCOUNT.mfaVerify?.url || 'auth/mfa/verify', {
 					challengeId: mfaChallenge.id,
 					code: mfaCode,
-				})
-				.toPromise();
+				}),
+			);
 
 			if ((response as any).requiresMFA) {
 				return { success: false, requiresMfa: true, error: 'MFA required' };

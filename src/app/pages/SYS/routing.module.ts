@@ -1,41 +1,38 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from 'src/app/guards/app.guard';
+import { authGuard } from 'src/app/guards/app.guard';
 
 export const SYSRoutes: Routes = [
-    
-    { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule) },
-    { path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutPageModule) },
-    { path: 'not-found', loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundPageModule), canActivate: [AuthGuard] },
-    { path: 'setting', loadChildren: () => import('./setting/setting.module').then(m => m.SettingPageModule), canActivate: [AuthGuard] },
-    { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule), canActivate: [AuthGuard] },
-	{ path: 'user-card', loadChildren: () => import('./user-card/user-card.module').then(m => m.UserCardPageModule), canActivate: [AuthGuard] },
-	{ path: 'user-card/:id', loadChildren: () => import('./user-card-detail/user-card-detail.module').then(m => m.UserCardDetailPageModule), canActivate: [AuthGuard] },
-	{ path: 'user-card-viewer', loadChildren: () => import('./user-card-viewer/user-card-viewer.module').then(m => m.UserCardViewerPageModule), canActivate: [AuthGuard] },
-    { path: 'default', loadChildren: () => import('./default/default.module').then(m => m.DefaultPageModule), canActivate: [AuthGuard] },
-    
-    { path: 'system-status', loadChildren: () => import('./system-status/system-status.module').then(m => m.SystemStatusPageModule), canActivate: [AuthGuard] },
-    { path: 'system-status/:id', loadChildren: () => import('./system-status-detail/system-status-detail.module').then(m => m.SystemStatusDetailPageModule), canActivate: [AuthGuard] },
-    
-    { path: 'system-type', loadChildren: () => import('./system-type/system-type.module').then(m => m.SystemTypePageModule), canActivate: [AuthGuard] },
-    { path: 'system-type/:id', loadChildren: () => import('./system-type-detail/system-type-detail.module').then(m => m.SystemTypeDetailPageModule), canActivate: [AuthGuard] },
+	{ path: 'login', loadChildren: () => import('./login/login.module').then((m) => m.LoginPageModule) },
+	{ path: 'about', loadChildren: () => import('./about/about.module').then((m) => m.AboutPageModule) },
+	{ path: 'not-found', loadChildren: () => import('./not-found/not-found.module').then((m) => m.NotFoundPageModule), canActivate: [authGuard] },
+	{ path: 'setting', loadChildren: () => import('./setting/setting.module').then((m) => m.SettingPageModule), canActivate: [authGuard] },
+	{ path: 'profile', loadChildren: () => import('./profile/profile.module').then((m) => m.ProfilePageModule), canActivate: [authGuard] },
+	{ path: 'user-card', loadChildren: () => import('./user-card/user-card.module').then((m) => m.UserCardPageModule), canActivate: [authGuard] },
+	{ path: 'user-card/:id', loadChildren: () => import('./user-card-detail/user-card-detail.module').then((m) => m.UserCardDetailPageModule), canActivate: [authGuard] },
+	{ path: 'user-card-viewer', loadChildren: () => import('./user-card-viewer/user-card-viewer.module').then((m) => m.UserCardViewerPageModule), canActivate: [authGuard] },
+	{ path: 'default', loadChildren: () => import('./default/default.module').then((m) => m.DefaultPageModule), canActivate: [authGuard] },
 
-       
-    { path: 'system-log', loadChildren: () => import('./system-log/system-log.module').then(m => m.SystemLogPageModule), canActivate: [AuthGuard] },
-    { path: 'system-log/:id', loadChildren: () => import('./system-log-detail/system-log-detail.module').then(m => m.SystemLogDetailPageModule), canActivate: [AuthGuard] },
+	{ path: 'system-status', loadChildren: () => import('./system-status/system-status.module').then((m) => m.SystemStatusPageModule), canActivate: [authGuard] },
+	{ path: 'system-status/:id', loadChildren: () => import('./system-status-detail/system-status-detail.module').then((m) => m.SystemStatusDetailPageModule), canActivate: [authGuard] },
 
-    { path: 'schema', loadChildren: () => import('./schema/schema.module').then(m => m.SchemaPageModule), canActivate: [AuthGuard] },
-    { path: 'schema/:id', loadChildren: () => import('./schema-detail/schema-detail.module').then(m => m.SchemaDetailPageModule), canActivate: [AuthGuard] },
-   
-    { path: 'api-collection', loadChildren: () => import('./api-collection/api-collection.module').then(m => m.APICollectionPageModule) , canActivate: [AuthGuard]},
-    { path: 'api-collection/:id', loadChildren: () => import('./api-collection-detail/api-collection-detail.module').then(m => m.APICollectionDetailPageModule), canActivate: [AuthGuard]},
- 
-    { path: 'integration-action', loadChildren: () => import('./integration-action/integration-action.module').then(m => m.IntegrationActionPageModule) , canActivate: [AuthGuard]},
-    { path: 'integration-action/:id', loadChildren: () => import('./integration-action-detail/integration-action-detail.module').then(m => m.IntegrationActionDetailPageModule), canActivate: [AuthGuard]},
+	{ path: 'system-type', loadChildren: () => import('./system-type/system-type.module').then((m) => m.SystemTypePageModule), canActivate: [authGuard] },
+	{ path: 'system-type/:id', loadChildren: () => import('./system-type-detail/system-type-detail.module').then((m) => m.SystemTypeDetailPageModule), canActivate: [authGuard] },
 
-    { path: 'integration-provider', loadChildren: () => import('./integration-provider/integration-provider.module').then(m => m.IntegrationProviderPageModule), canActivate: [AuthGuard] },
-    { path: 'integration-provider/:id', loadChildren: () => import('./integration-provider-detail/integration-provider-detail.module').then(m => m.IntegrationProviderDetailPageModule), canActivate: [AuthGuard] },
-    
-    { path: 'integration-trigger', loadChildren: () => import('./integration-trigger/integration-trigger.module').then(m => m.IntegrationTriggerPageModule), canActivate: [AuthGuard] },
-    { path: 'integration-trigger/:id', loadChildren: () => import('./integration-trigger-detail/integration-trigger-detail.module').then(m => m.IntegrationTriggerDetailPageModule), canActivate: [AuthGuard] },
+	{ path: 'system-log', loadChildren: () => import('./system-log/system-log.module').then((m) => m.SystemLogPageModule), canActivate: [authGuard] },
+	{ path: 'system-log/:id', loadChildren: () => import('./system-log-detail/system-log-detail.module').then((m) => m.SystemLogDetailPageModule), canActivate: [authGuard] },
 
+	{ path: 'schema', loadChildren: () => import('./schema/schema.module').then((m) => m.SchemaPageModule), canActivate: [authGuard] },
+	{ path: 'schema/:id', loadChildren: () => import('./schema-detail/schema-detail.module').then((m) => m.SchemaDetailPageModule), canActivate: [authGuard] },
+
+	{ path: 'api-collection', loadChildren: () => import('./api-collection/api-collection.module').then((m) => m.APICollectionPageModule), canActivate: [authGuard] },
+	{ path: 'api-collection/:id', loadChildren: () => import('./api-collection-detail/api-collection-detail.module').then((m) => m.APICollectionDetailPageModule), canActivate: [authGuard] },
+
+	{ path: 'integration-action', loadChildren: () => import('./integration-action/integration-action.module').then((m) => m.IntegrationActionPageModule), canActivate: [authGuard] },
+	{ path: 'integration-action/:id', loadChildren: () => import('./integration-action-detail/integration-action-detail.module').then((m) => m.IntegrationActionDetailPageModule), canActivate: [authGuard] },
+
+	{ path: 'integration-provider', loadChildren: () => import('./integration-provider/integration-provider.module').then((m) => m.IntegrationProviderPageModule), canActivate: [authGuard] },
+	{ path: 'integration-provider/:id', loadChildren: () => import('./integration-provider-detail/integration-provider-detail.module').then((m) => m.IntegrationProviderDetailPageModule), canActivate: [authGuard] },
+
+	{ path: 'integration-trigger', loadChildren: () => import('./integration-trigger/integration-trigger.module').then((m) => m.IntegrationTriggerPageModule), canActivate: [authGuard] },
+	{ path: 'integration-trigger/:id', loadChildren: () => import('./integration-trigger-detail/integration-trigger-detail.module').then((m) => m.IntegrationTriggerDetailPageModule), canActivate: [authGuard] },
 ];

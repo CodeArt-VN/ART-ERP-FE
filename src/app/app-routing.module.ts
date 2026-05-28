@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { NoPreloading, PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/app.guard';
+import { NoPreloading, RouterModule, Routes } from '@angular/router';
+import { authGuard } from './guards/app.guard';
 
 import { ACCOUNTTANTRoutes } from './pages/ACCOUNTANT/routing.module';
 import { ADMINRoutes } from './pages/ADMIN/routing.module';
@@ -25,37 +25,35 @@ const routes: Routes = [
   // {
   //   path: '',
   //   loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
-  //   canActivate: [AuthGuard]
+  //   canActivate: [authGuard],
   // },
 
-  
   { path: 'default', loadChildren: () => import('./pages/SYS/default/default.module').then(m => m.DefaultPageModule) },
-  
-  { path: 'flat', loadChildren: () => import('./pages/_template/flat/flat.module').then(m => m.FlatPageModule), canActivate: [AuthGuard] },
-  { path: 'flat/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [AuthGuard] },
-    
-  { path: 'flat-tree', loadChildren: () => import('./pages/_template/tree/tree.module').then(m => m.TreePageModule), canActivate: [AuthGuard] },
-  { path: 'flat-tree/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [AuthGuard] },
-    
 
-  //BI
-  { path: 'ar-invoice-report', loadChildren: () => import('./pages/BI/ar-invoice-report/ar-invoice-report.module').then(m => m.ARInvoiceReportPageModule), canActivate: [AuthGuard] },
-  { path: 'price-report', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
-  { path: 'price-report/:segment/:id', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [AuthGuard] },
+  { path: 'flat', loadChildren: () => import('./pages/_template/flat/flat.module').then(m => m.FlatPageModule), canActivate: [authGuard] },
+  { path: 'flat/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [authGuard] },
 
-  //BI/SALE
-  { path: 'sales-reports', loadChildren: () => import('./pages/BI/SALE/sales-reports/sales-reports.module').then(m => m.SalesReportsPageModule), canActivate: [AuthGuard] },
-  { path: 'sales-reports-mobile', loadChildren: () => import('./pages/BI/SALE/sale-summary-mobile/sale-summary-mobile.module').then(m => m.SaleSummaryMobilePageModule), canActivate: [AuthGuard] },
+  { path: 'flat-tree', loadChildren: () => import('./pages/_template/tree/tree.module').then(m => m.TreePageModule), canActivate: [authGuard] },
+  { path: 'flat-tree/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [authGuard] },
 
-  //BI/PURCHASE
-  { path: 'purchase-reports', loadChildren: () => import('./pages/BI/PURCHASE/purchase-reports/purchase-reports.module').then(m => m.PurchaseReportsPageModule), canActivate: [AuthGuard] },
+  // BI
+  { path: 'ar-invoice-report', loadChildren: () => import('./pages/BI/ar-invoice-report/ar-invoice-report.module').then(m => m.ARInvoiceReportPageModule), canActivate: [authGuard] },
+  { path: 'price-report', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [authGuard] },
+  { path: 'price-report/:segment/:id', loadChildren: () => import('./pages/BI/price-report/price-report.module').then(m => m.PriceReportPageModule), canActivate: [authGuard] },
+
+  // BI/SALE
+  { path: 'sales-reports', loadChildren: () => import('./pages/BI/SALE/sales-reports/sales-reports.module').then(m => m.SalesReportsPageModule), canActivate: [authGuard] },
+  { path: 'sales-reports-mobile', loadChildren: () => import('./pages/BI/SALE/sale-summary-mobile/sale-summary-mobile.module').then(m => m.SaleSummaryMobilePageModule), canActivate: [authGuard] },
+
+  // BI/PURCHASE
+  { path: 'purchase-reports', loadChildren: () => import('./pages/BI/PURCHASE/purchase-reports/purchase-reports.module').then(m => m.PurchaseReportsPageModule), canActivate: [authGuard] },
 
   { path: '', redirectTo: '/default', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found' },
 
 ];
 
-let allRoutes = [
+const allRoutes = [
   ...ACCOUNTTANTRoutes,
   ...ADMINRoutes,
   ...APPROVALRoutes,
@@ -80,7 +78,7 @@ let allRoutes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(allRoutes, { preloadingStrategy: NoPreloading , useHash: true })
+    RouterModule.forRoot(allRoutes, { preloadingStrategy: NoPreloading, useHash: true }),
   ],
   exports: [RouterModule]
 })
