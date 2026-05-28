@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	appVersion: '0.21.59',
+	appVersion: '0.21.60',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
@@ -43,7 +43,8 @@ export const environment = {
 		forceVersion: null,     // Force specific version behavior (for testing)
 		skipMigration: false,   // Skip migration completely (for testing)
 		enableDetailedLogs: false // Enable verbose migration logs
-	}
+	},
+	sessionTimeout: 0, // In minutes
 };
 
 // dog = dev log;
