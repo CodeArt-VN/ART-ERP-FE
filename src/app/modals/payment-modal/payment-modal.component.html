@@ -12,7 +12,7 @@
 			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
 				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
 			</ion-button> -->
-			<ion-button *ngIf="step != 1 && !item.IsRefundTransaction" title="{{ 'Back' | translate }}" color="primary" (click)="back()">
+			<ion-button *ngIf="step != 1 && !item.IsRefundTransaction" title="{{ 'Back' | translate }}" color="primary" [disabled]="submitAttempt" (click)="back()">
 				<ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
@@ -22,7 +22,7 @@
 			<!-- <ion-button title="{{ 'Refresh' | translate }}" color="primary" (click)="refresh()">
 				<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
 			</ion-button> -->
-			<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="closeModal()">
+			<ion-button title="{{ 'Close' | translate }}" color="secondary" [disabled]="submitAttempt" (click)="closeModal()">
 				<ion-icon slot="icon-only" name="close"></ion-icon>
 			</ion-button>
 		</ion-buttons>
@@ -47,6 +47,11 @@
 					<ion-item button (click)="changeType('Debt')">
 						<ion-icon name="cash-outline" slot="start"></ion-icon>
 						<ion-label>{{ 'Debt' | translate }}</ion-label>
+					</ion-item>
+
+					<ion-item [disabled]="!canUseLoyaltyPointPayment()" button (click)="changeType('LoyaltyPoint')"> 
+						<ion-icon name="wallet-outline" slot="start"></ion-icon>
+						<ion-label>{{ 'Loyalty point' | translate }}</ion-label>
 					</ion-item>
 
 					<!-- ========== BOD ========== -->
@@ -136,15 +141,15 @@
 					</ion-item>
 
 					<!-- ========== Gotit ========== -->
-					<ion-item button (click)="changeType('Gotit')">
+					<ion-item button (click)="changeType('PromotionIntegration', 'Gotit')">
 						<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
 						<ion-label>Gotit</ion-label>
 					</ion-item>
 
-					<!-- <ion-item button (click)="changeType('GrabPay')">
-						<img src="/assets/logos/banks/gotit.png" style="width: 1.6em" slot="start" />
+					<ion-item button (click)="changeType('GrabPay')">
+						<img src="/assets/logos/banks/grab.png" style="width: 1.6em" slot="start" />
 						<ion-label>Grab</ion-label>
-					</ion-item> -->
+					</ion-item>
 				</ion-list>
 				<!-- ========== Cash voucher ========== -->
 
@@ -207,6 +212,7 @@
 						<div class="c-control inline-control" *ngIf="listVoucherType.includes(formGroup.get('Type').value)">
 							<label class="c-label" for="currency-thechange">
 								{{ 'Voucher code' | translate }}
+								<ion-spinner *ngIf="isVoucherChecking" name="crescent" style="width: 14px; height: 14px; margin-left: 8px; vertical-align: middle"></ion-spinner>
 							</label>
 							<app-input-control
 								[field]="{
@@ -215,13 +221,30 @@
 									type: 'text',
 									form: formGroup,
 								}"
-								(change)="voucherCodeChange()"
+								(inputChange)="voucherCodeChange()"
 							>
 							</app-input-control>
 						</div>
 
-						<!-- Ô nhập số tiền -->
-						<div class="c-control inline-control">
+						<!-- Ô nhập số điểm -->
+						<div class="c-control inline-control" *ngIf="formGroup.get('Type').value === 'LoyaltyPoint'">
+							<label class="c-label" for="InputPoint">
+								{{ 'Loyalty points used' | translate }}
+							</label>
+							<app-input-control
+								[field]="{
+									id: 'InputPoint',
+									label: 'Loyalty points used',
+									type: 'number',
+									form: formGroup,
+								}"
+								(inputChange)="loyaltyPointChange()"
+								(change)="loyaltyPointChange()"
+							>
+							</app-input-control>
+						</div>
+
+						<div class="c-control inline-control" *ngIf="formGroup.get('Type').value !== 'LoyaltyPoint'">
 							<label class="c-label" for="currency-thechange">
 								{{ item.IsRefundTransaction ? 'Refund amount' : ('Payment amount' | translate) }}
 							</label>
@@ -254,8 +277,29 @@
 						/> -->
 						</div>
 
+						<!-- Điểm tích luỹ-->
+						<div class="c-control inline-control" id="form-thechange" *ngIf="formGroup.get('Type').value === 'LoyaltyPoint'">
+							<label class="c-label" for="currency-thechange">
+								{{ 'Total loyalty points' | translate }}
+							</label>
+							<input readonly id="currency-thechange" class="c-input input-money" [value]="item.Point | number: '1.0-0'" />
+							<small class="loyalty-point-conversion-note" *ngIf="item.PointConversionRate !== null && item.PointConversionRate !== undefined && item.PointConversionRate !== ''">
+								{{ 'POINT_CONVERSION_RATE' | translate: { value: item.PointConversionRate } }}
+							</small>
+							<small class="loyalty-point-conversion-note" *ngIf="item.LoyaltyPointUsage">
+								{{ 'Remaining loyalty point payment limit' | translate }}: {{ item.LoyaltyPointUsage.remainingCapAmount | number: '1.0-0' }} đ
+							</small>
+						</div>
+
 						<!-- Tiền thừa -->
-						<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction && !listVoucherType.includes(formGroup.get('Type').value)">
+						<div class="c-control inline-control" *ngIf="formGroup.get('Type').value === 'LoyaltyPoint'">
+							<label class="c-label" for="InputAmount">
+								{{ 'Payment amount' | translate }}
+							</label>
+							<input readonly id="InputAmount" class="c-input input-money" [value]="formGroup.get('InputAmount').value | number: '1.0-0'" />
+						</div>
+
+						<div class="c-control inline-control" id="form-thechange" *ngIf="!item.IsRefundTransaction && !listVoucherType.includes(formGroup.get('Type').value) && formGroup.get('Type').value != 'LoyaltyPoint'">
 							<label class="c-label" for="currency-thechange">
 								{{ 'Excess amount' | translate }}
 							</label>
@@ -264,9 +308,9 @@
 
 						<!-- List voucher đã sử dụng -->
 						<div class="c-control" *ngIf="listVoucherUsed?.length > 0">
-							<app-data-table class="box-shadow responsive" [rows]="listVoucherUsed" [trackBy]="'Id'">
+							<app-data-table class="box-shadow responsive voucher-used-table" [rows]="listVoucherUsed" [trackBy]="'Id'">
 								<datatable-column class="col-name" name="Voucher code" property="code"></datatable-column>
-								<datatable-column class="col-number" name="Value" format="1.0-0" property="value"></datatable-column>
+								<datatable-column class="col-number" name="Value" format="1.0-0" property="amount"></datatable-column>
 								<datatable-column class="col-icon" name="" property="value">
 									<ng-template let-idx="idx" datatable-cell-template>
 										<ion-icon color="danger" class="min-btn clickable" name="trash-outline" (click)="removeGotitVoucher(idx)"></ion-icon>
@@ -459,7 +503,7 @@
 
 <ion-footer [translucent]="true" collapse="fade">
 	<div class="box ion-padding text-center" *ngIf="formGroup.get('Type')?.value == 'ZalopayApp' && step == 2">
-		<ion-button (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
+		<ion-button [disabled]="submitAttempt" (click)="confirmPayment()"> {{ 'Open Zalopay gateway' | translate }}<ion-icon name="open-outline"></ion-icon> </ion-button>
 	</div>
 	<div class="box">
 		<div class="box-content">
@@ -517,10 +561,21 @@
 		</ion-grid>
 		@if (showConfirmButton()) {
 			<div slot="end">
-				<ion-button fill="solid" [disabled]="submitAttempt || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)" (click)="confirmPayment()">
+				<ion-button
+					fill="solid"
+					[disabled]="submitAttempt || isGrabPaymentWaiting() || (formGroup.get('Type').value == 'Transfer' && !formGroup.get('SubType').value)"
+					(click)="confirmPayment()"
+				>
 					{{ item.IsRefundTransaction ? 'Refund' : ('Received' | translate) }}
 				</ion-button>
 			</div>
 		}
 	</ion-toolbar>
 </ion-footer>
+
+<div class="payment-processing-overlay" *ngIf="submitAttempt">
+	<div class="payment-processing-panel">
+		<ion-spinner name="crescent"></ion-spinner>
+		<span>Processing payment...</span>
+	</div>
+</div>

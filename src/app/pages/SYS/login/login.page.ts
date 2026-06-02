@@ -6,13 +6,14 @@ import { AuthenticationService } from '../../../services/auth/authentication.ser
 import { UserProfileService } from '../../../services/auth/user-profile.service';
 import { ExternalAuthService } from '../../../services/auth/external-auth.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
 import { CommonService } from 'src/app/services/core/common.service';
 import { CustomService } from 'src/app/services/custom/custom.service';
 import { environment, dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { APIList } from 'src/app/services/static/global-variable';
+import { firstValueFrom } from 'rxjs';
 
 var URLSearchParams: any;
 
@@ -44,7 +45,8 @@ export class LoginPage extends PageBase {
 		public formBuilder: FormBuilder,
 		public loadingCtrl: LoadingController,
 		public route: ActivatedRoute,
-		public commonService: CommonService
+		public commonService: CommonService,
+		private router: Router,
 	) {
 		super();
 
@@ -67,12 +69,24 @@ export class LoginPage extends PageBase {
 		}
 	}
 
+	/**
+	 * Post-login / resume session: navigate with UrlTree (same pattern as auth guards).
+	 */
+	private navigateAfterLogin(target: string): void {
+		const raw = (target ?? 'default').trim();
+		const tree =
+			!raw || raw === 'default'
+				? this.router.createUrlTree(['/default'])
+				: this.router.parseUrl(raw.startsWith('/') ? raw : `/${raw}`);
+		void this.router.navigateByUrl(tree, { replaceUrl: true });
+	}
+
 	preLoadData() {
 		// get return url from route parameters or default to '/'
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'default';
 
 		if (this.env.user && this.env.user.Id) {
-			this.nav(this.returnUrl, 'back');
+			this.navigateAfterLogin(this.returnUrl);
 		} else {
 			this.env.getStorage('Username')?.then((v) => {
 				this.formGroup.controls.UserName.setValue(v);
@@ -81,8 +95,7 @@ export class LoginPage extends PageBase {
 	}
 
 	goBack() {
-		this.nav(this.returnUrl, 'back');
-		//this.navCtrl.back();
+		this.navigateAfterLogin(this.returnUrl);
 	}
 
 	login() {
@@ -227,7 +240,9 @@ export class LoginPage extends PageBase {
 					method: APIList.ACCOUNT.forgotPassword.method,
 				});
 
-			const response = await this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data).toPromise();
+			const response = await firstValueFrom(
+				this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data),
+			);
 
 			dogF && console.log('✅ [LoginPage] Password reset request successful:', response);
 

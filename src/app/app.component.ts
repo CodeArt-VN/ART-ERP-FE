@@ -333,8 +333,12 @@ export class AppComponent implements OnInit {
 			dogF && console.log('🌲 [AppComponent] Event:', data);
 			switch (data.Code) {
 				case EVENT_TYPE.USER.LOGGED_OUT_REMOTE:
-					this.router.navigateByUrl('/login');
+					void this.authenticationService.navigateToLoginPage();
 					this.env.showMessage('You have log out of the system', 'danger');
+					break;
+
+				case EVENT_TYPE.USER.SESSION_EXPIRED:
+					this.env.showMessage('Your session has expired. Please log in again.', 'warning');
 					break;
 
 				case EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP:

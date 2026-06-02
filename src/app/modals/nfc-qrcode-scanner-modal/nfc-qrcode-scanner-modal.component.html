@@ -1,0 +1,57 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>{{ title | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button fill="clear" color="danger" (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme>
+	<div class="scanner-layout">
+		<div class="scanner-label-wrap">
+			<ion-text class="scanner-label">{{ label | translate }}</ion-text>
+		</div>
+
+		<div class="scanner-stage">
+			<div class="scanner-status-card" [class.is-error]="!!errorMessage" [class.is-loading]="isLoading" [class.is-success]="!!result">
+				<div class="scanner-icon-wrap">
+					<ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+					<ion-icon *ngIf="!isLoading" [name]="statusIcon"></ion-icon>
+				</div>
+
+				<div class="scanner-copy">
+					<h2>{{ statusTitle | translate }}</h2>
+					<p>{{ activeDescription | translate }}</p>
+				</div>
+			</div>
+
+			<ion-card *ngIf="result?.tagInfo" class="scanner-tag-info">
+				<ion-card-header>
+					<ion-card-title>{{ 'Tag Info' | translate }}</ion-card-title>
+				</ion-card-header>
+				<ion-card-content>
+					<div class="tag-line" *ngIf="result?.tagInfo?.uid">
+						<ion-text color="medium">{{ 'UID' | translate }}</ion-text>
+						<strong>{{ result?.tagInfo?.uid }}</strong>
+					</div>
+					<div class="tag-line" *ngIf="result?.tagInfo?.type">
+						<ion-text color="medium">{{ 'Type' | translate }}</ion-text>
+						<strong>{{ result?.tagInfo?.type }}</strong>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+	</div>
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<div class="mode-switcher" [class.single-mode]="!canShowQrButton">
+			<ion-button *ngIf="canShowQrButton" [fill]="isMode('QR') ? 'solid' : 'outline'" [color]="isMode('QR') ? 'dark' : 'medium'" (click)="changeMode('QR')"> QR </ion-button>
+			<ion-button [fill]="isMode('NFC') ? 'solid' : 'outline'" [color]="isMode('NFC') ? 'dark' : 'medium'" (click)="changeMode('NFC')"> NFC </ion-button>
+		</div>
+	</ion-toolbar>
+</ion-footer>
