@@ -11,6 +11,7 @@ import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
 import { dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
+import { hasValidUserId } from '../interfaces/auth.interfaces';
 
 type AuthGuardContext = {
 	router: Router;
@@ -57,7 +58,7 @@ async function runAuthGuard(
 		return true;
 	}
 
-	if (env.user && env.user.Id) {
+	if (hasValidUserId(env.user?.Id)) {
 		const isValidForm = (m: { Type?: number; Code?: string }) => {
 			if (!(m.Type == 0 || m.Type == 1 || m.Type == 2)) {
 				return false;
@@ -99,6 +100,11 @@ async function runAuthGuard(
 		}
 
 		env.showMessage('You are not authorized to access here, please contact Admin to get authorisation', 'warning');
+		// Keep token — empty Forms often means profile not loaded yet (GUID host user, etc.)
+		const hasToken = !!env.storage?.app?.token?.access_token;
+		if (hasToken) {
+			return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+		}
 		env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
 		return false;
 	}

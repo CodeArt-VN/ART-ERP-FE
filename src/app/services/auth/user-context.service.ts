@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { lib } from '../static/global-functions';
 import { dogF, environment } from 'src/environments/environment';
 import { CacheManagementService } from '../core/cache-management.service';
-import { Role, Tenant, UserProfile, UserSession } from '../../interfaces/auth.interfaces';
+import { Role, Tenant, UserProfile, UserSession, hasValidUserId } from '../../interfaces/auth.interfaces';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,30 +19,24 @@ export class UserContextService {
 	private currentSession$ = new BehaviorSubject<UserSession | null>(null);
 	private userRoles$ = new BehaviorSubject<Role[]>([]);
 
-	nullUser: UserProfile = {
-		Id: 0,
-		Email: '',
-		FirstName: '',
-		LastName: '',
-		Avatar: '',
-		UserName: '',
-		FullName: '',
-		IsDisabled: false,
-	};
-
 	constructor(public cache: CacheManagementService) {
 		this.cache.tracking().subscribe((tracking) => {
 			if (tracking) {
 				dogF && console.log('🔧 [UserContextService] Cache ready', cache.app);
 				this.switchTenant(cache.app.tenant || environment.appDomain);
-				this.setCurrentUser(cache.app.userProfile || this.nullUser, false);
+				const profile = cache.app.userProfile;
+				if (hasValidUserId(profile?.Id)) {
+					void this.setCurrentUser(profile, false);
+				} else {
+					this.currentUser$.next(null);
+				}
 			}
 		});
 	}
 
 	public async clearUserContext(): Promise<void> {
 		dogF && console.log('🧹 [UserContextService] Clearing user context...');
-		this.currentUser$.next(this.nullUser);
+		this.currentUser$.next(null);
 		this.currentTenant$.next(null);
 		this.currentSession$.next(null);
 		this.userRoles$.next([]);
@@ -106,10 +100,12 @@ export class UserContextService {
 
 		try {
 			// Validate user object
-			if (!user || !user.Id) {
+			if (!hasValidUserId(user?.Id)) {
 				dogF && console.warn('[UserContextService] Invalid user payload. Clearing current user context');
 				if (isSave) {
 					await this.clearInvalidUserState();
+				} else {
+					this.currentUser$.next(null);
 				}
 				return;
 			}
@@ -161,7 +157,7 @@ export class UserContextService {
 			await this.cache.remove(`SelectedBranch(${previousUserId})`, 'auto', null);
 		}
 
-		this.currentUser$.next(this.nullUser);
+		this.currentUser$.next(null);
 		this.currentSession$.next(null);
 		this.userRoles$.next([]);
 	}

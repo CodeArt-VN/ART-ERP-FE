@@ -629,8 +629,11 @@ export class CommonService {
 			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP });
 		} else if (err.status == 401) {
-			this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
-			this.env.showMessage('Your session has expired, please log in again.');
+			const hasToken = !!this.env.storage?.app?.token?.access_token;
+			if (hasToken) {
+				this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGOUT_REQUESTED });
+				this.env.showMessage('Your session has expired, please log in again.');
+			}
 		} else if (err.status == 0 && err.message.indexOf('failure response') > -1) {
 			this.env.showMessage('Cannot connect to server, please try again.', 'danger');
 			this.env.publishEvent({ Code: EVENT_TYPE.APP.CONNECT_FAIL });

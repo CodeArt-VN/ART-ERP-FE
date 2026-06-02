@@ -28,8 +28,6 @@ const routes: Routes = [
   //   canActivate: [authGuard],
   // },
 
-  { path: 'default', loadChildren: () => import('./pages/SYS/default/default.module').then(m => m.DefaultPageModule) },
-
   { path: 'flat', loadChildren: () => import('./pages/_template/flat/flat.module').then(m => m.FlatPageModule), canActivate: [authGuard] },
   { path: 'flat/:id', loadChildren: () => import('./pages/_template/flat-detail/flat-detail.module').then(m => m.FlatDetailPageModule), canActivate: [authGuard] },
 

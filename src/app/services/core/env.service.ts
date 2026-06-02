@@ -10,7 +10,7 @@ import { lib } from '../static/global-functions';
 import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
 import { CacheManagementService } from './cache-management.service';
 import { EVENT_TYPE } from '../static/event-type';
-import { UserProfile } from '../../interfaces/auth.interfaces';
+import { UserProfile, hasValidUserId } from '../../interfaces/auth.interfaces';
 import { UserContextService } from '../auth/user-context.service';
 import { CacheConfig } from '../static/search-config';
 import { NavigationEnd, Router } from '@angular/router';
@@ -54,6 +54,9 @@ export class EnvService {
 
 	/** Get current logged in user */
 	public user: UserProfile | any = null;
+
+	/** Last real user id (numeric or GUID) — avoid false remote logout on placeholder. */
+	private lastKnownUserId: string | number | null = null;
 
 	constructor(
 		public storage: CacheManagementService,
@@ -582,7 +585,7 @@ export class EnvService {
 	checkFormPermission(functionCode) {
 		return new Promise<boolean>((resolve) => {
 			//Chưa đăng nhập
-			if (!this.user || !this.user.Id) {
+			if (!this.user || !hasValidUserId(this.user.Id)) {
 				resolve(false);
 			} else {
 				if (functionCode == '/default') {
@@ -768,21 +771,26 @@ export class EnvService {
 
 			//Track user context
 			this.userContext.getCurrentUser().subscribe(async (user) => {
-				if (user) {
-					dogF && console.log('👤 [EnvService] User context subscribe:', user);
-					if (user.Id) {
-						that.user = user;
-						that.loadBranch();
-					} else {
-						that.user = null;
-						that.pv.rawBranchList = [];
-						that.branchList = [];
-						that.jobTitleList = [];
-
+				if (!hasValidUserId(user?.Id)) {
+					const hadSession = !!that.lastKnownUserId;
+					const hasToken = !!that.storage.app.token?.access_token;
+					that.user = null;
+					that.pv.rawBranchList = [];
+					that.branchList = [];
+					that.jobTitleList = [];
+					that.lastKnownUserId = null;
+					// Only treat as remote logout after a real user session ends (not startup placeholder)
+					if (hadSession && !hasToken) {
 						that.publishEvent({ Code: EVENT_TYPE.USER.LOGGED_OUT_REMOTE });
 					}
 					that.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED });
+					return;
 				}
+				dogF && console.log('👤 [EnvService] User context subscribe:', user);
+				that.lastKnownUserId = user.Id;
+				that.user = user;
+				that.loadBranch();
+				that.publishEvent({ Code: EVENT_TYPE.USER.CONTEXT_UPDATED });
 			});
 		} catch (error) {
 			dogF && console.error('Error initializing context:', error);
