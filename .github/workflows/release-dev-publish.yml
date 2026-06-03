@@ -1,11 +1,9 @@
 # Publish web release khi push nhánh Releases/dev và commit message có "release".
-# Artifacts: V{version}.zip + version.json (từ pnpm run build-web)
-# Deploy: SCP qua SSH → giải nén trên Windows Server (PowerShell).
-# Cần commit pnpm-lock.yaml trên nhánh Releases/dev.
+# Stack: Node 24 + pnpm 11 (packageManager trong package.json)
 #
 # Secrets:
 #   SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY
-#   SSH_REMOTE_DIR  - vd: C:/inetpub/wwwroot/erp  (Windows path)
+#   SSH_REMOTE_DIR  - vd: C:/inetpub/wwwroot/erp
 #   SSH_PORT        - (tùy chọn) mặc định 22
 
 name: Releases/dev publish
@@ -15,11 +13,14 @@ on:
     branches:
       - Releases/dev
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     if: contains(github.event.head_commit.message, 'release') || contains(github.event.head_commit.message, 'Release') || contains(github.event.head_commit.message, 'RELEASE')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout (submodule theo SHA đã pin trong parent)
@@ -39,29 +40,36 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
 
-      - name: Install dependencies (pnpm)
+      - name: Install dependencies
         run: |
-          pnpm --version
+          set -euxo pipefail
           node --version
+          pnpm --version
+          test -f pnpm-lock.yaml
           pnpm install --frozen-lockfile
-          pnpm add -g @ionic/cli
+          npm install -g @ionic/cli
           test -d node_modules/@angular/core
           pnpm exec ng version
           ionic --version
 
       - name: Build web (zip + version.json)
-        run: pnpm run build-web
+        run: |
+          set -euxo pipefail
+          pnpm run build-web
+          test -f version.json
+          ls -la V*.zip
 
       - name: Chuẩn bị artifact deploy
         id: artifacts
         run: |
+          set -euxo pipefail
           VERSION=$(node -p "require('./package.json').version")
           ZIP="V${VERSION}.zip"
-          test -f "$ZIP" || (echo "Không tìm thấy $ZIP" && ls -la V*.zip 2>/dev/null; exit 1)
-          test -f version.json || (echo "Không tìm thấy version.json" && exit 1)
+          test -f "$ZIP"
+          test -f version.json
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
           mkdir -p deploy-upload
@@ -73,6 +81,7 @@ jobs:
         env:
           SSH_REMOTE_DIR: ${{ secrets.SSH_REMOTE_DIR }}
         run: |
+          set -euxo pipefail
           RAW=$(echo "$SSH_REMOTE_DIR" | sed 's|\\|/|g' | sed 's|/*$||')
           if [[ "$RAW" == /* ]]; then
             SCP_TARGET="${RAW}/"
@@ -102,7 +111,7 @@ jobs:
           target: ${{ steps.paths.outputs.scp_target }}
           strip_components: 1
 
-      - name: Kiểm tra upload + giải nén (PowerShell)
+      - name: Giải nén trên Windows Server (PowerShell)
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
