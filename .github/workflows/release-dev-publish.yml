@@ -137,18 +137,19 @@ jobs:
             powershell.exe -NoProfile -Command "Write-Host 'SSH OK'; if (-not (Test-Path -LiteralPath '${{ steps.paths.outputs.win_dir }}')) { New-Item -ItemType Directory -Path '${{ steps.paths.outputs.win_dir }}' -Force | Out-Null }; Get-ChildItem -LiteralPath '${{ steps.paths.outputs.win_dir }}' -ErrorAction SilentlyContinue | Select-Object -First 5 Name"
 
       - name: Upload zip + version.json (SCP)
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          use_insecure_cipher: true
-          tar_dereference: true
-          overwrite: true
-          source: deploy-upload/*
-          target: ${{ steps.paths.outputs.scp_target }}
-          strip_components: 1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          set -euxo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          scp -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            -o BatchMode=yes \
+            deploy-upload/* \
+            "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ steps.paths.outputs.scp_target }}"
+          rm -f ~/.ssh/deploy_key
 
       - name: Giải nén trên Windows Server (PowerShell)
         uses: appleboy/ssh-action@v1.2.0
