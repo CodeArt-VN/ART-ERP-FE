@@ -590,7 +590,7 @@ export class EnvService {
 			} else {
 				if (functionCode == '/default') {
 					resolve(false);
-				} else if (functionCode == '/not-found') {
+				} else if (functionCode == '/not-found' || functionCode == '/unauthorized') {
 					resolve(true);
 				} else {
 					functionCode = functionCode + '/';
