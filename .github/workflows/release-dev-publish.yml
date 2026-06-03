@@ -98,19 +98,28 @@ jobs:
           echo "Windows path: $WIN_DIR"
           echo "SCP target:   $SCP_TARGET"
 
-      - name: Upload zip + version.json (SCP → Windows)
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          debug: true
-          tar_dereference: true
-          overwrite: true
-          source: deploy-upload/*
-          target: ${{ steps.paths.outputs.scp_target }}
-          strip_components: 1
+      - name: Upload zip + version.json (SCP native → Windows)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          WIN_DIR: ${{ steps.paths.outputs.win_dir }}
+        run: |
+          set -euxo pipefail
+          test -n "$SSH_HOST"
+          test -n "$SSH_USERNAME"
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$WIN_DIR"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          REMOTE="${SSH_USERNAME}@${SSH_HOST}:${WIN_DIR}/"
+          scp -i ~/.ssh/deploy_key -P "$SSH_PORT" -o StrictHostKeyChecking=accept-new \
+            deploy-upload/* "$REMOTE"
+          rm -f ~/.ssh/deploy_key
+          echo "Uploaded to $REMOTE"
 
       - name: Giải nén trên Windows Server (PowerShell)
         uses: appleboy/ssh-action@v1.2.0
