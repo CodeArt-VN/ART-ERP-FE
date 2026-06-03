@@ -1,10 +1,11 @@
 # Publish web release khi push nhánh Releases/dev và commit message có "release".
-# Cần commit pnpm-lock.yaml + pnpm-workspace.yaml (allowBuilds cho pnpm 11)
+# Job build: pnpm + build-web (không cần SSH secrets)
+# Job deploy: upload zip + version.json qua SSH (cần secrets)
 #
-# Secrets:
-#   SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY
-#   SSH_REMOTE_DIR  - vd: C:/inetpub/wwwroot/erp
-#   SSH_PORT        - (tùy chọn) mặc định 22
+# Secrets: SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY, SSH_REMOTE_DIR
+# SSH_PRIVATE_KEY: PEM OpenSSH đầy đủ (-----BEGIN ... END-----)
+# SSH_REMOTE_DIR: vd C:/inetpub/wwwroot/erp
+# SSH_PORT: (tùy chọn) mặc định 22
 
 name: Releases/dev publish
 
@@ -17,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  publish:
+  build:
     if: contains(github.event.head_commit.message, 'release') || contains(github.event.head_commit.message, 'Release') || contains(github.event.head_commit.message, 'RELEASE')
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -77,7 +78,38 @@ jobs:
           cp "$ZIP" version.json deploy-upload/
           ls -la deploy-upload/
 
-      - name: Chuẩn bị đường dẫn Windows cho SCP
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-upload
+          path: deploy-upload/
+          retention-days: 3
+
+  deploy:
+    needs: build
+    if: contains(github.event.head_commit.message, 'release') || contains(github.event.head_commit.message, 'Release') || contains(github.event.head_commit.message, 'RELEASE')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-upload
+          path: deploy-upload
+
+      - name: Lấy tên zip từ version.json
+        id: artifacts
+        run: |
+          set -euxo pipefail
+          VERSION=$(node -p "require('./deploy-upload/version.json').latestVersion")
+          ZIP="V${VERSION}.zip"
+          test -f "deploy-upload/$ZIP"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          ls -la deploy-upload/
+
+      - name: Chuẩn bị đường dẫn Windows
         id: paths
         env:
           SSH_REMOTE_DIR: ${{ secrets.SSH_REMOTE_DIR }}
@@ -85,54 +117,42 @@ jobs:
           set -euxo pipefail
           RAW=$(echo "$SSH_REMOTE_DIR" | sed 's|\\|/|g' | sed 's|/*$||')
           if [[ "$RAW" == /* ]]; then
-            SCP_TARGET="${RAW}/"
             WIN_DIR="$RAW"
           else
-            DRIVE=$(echo "$RAW" | cut -c1 | tr 'A-Z' 'a-z')
-            REST=$(echo "$RAW" | cut -c3-)
-            SCP_TARGET="/${DRIVE}${REST}/"
             WIN_DIR="$RAW"
           fi
+          DRIVE=$(echo "$WIN_DIR" | cut -c1 | tr 'A-Z' 'a-z')
+          REST=$(echo "$WIN_DIR" | cut -c3-)
+          SCP_TARGET="/${DRIVE}${REST}/"
           echo "win_dir=$WIN_DIR" >> "$GITHUB_OUTPUT"
           echo "scp_target=$SCP_TARGET" >> "$GITHUB_OUTPUT"
           echo "Windows path: $WIN_DIR"
           echo "SCP target:   $SCP_TARGET"
 
-      - name: Upload zip + version.json (SFTP → Windows)
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
-          WIN_DIR: ${{ steps.paths.outputs.win_dir }}
-          ZIP_FILE: ${{ steps.artifacts.outputs.zip }}
-        run: |
-          set -euxo pipefail
-          test -n "$SSH_HOST"
-          test -n "$SSH_USERNAME"
-          test -n "$SSH_PRIVATE_KEY"
-          test -n "$WIN_DIR"
-          test -n "$ZIP_FILE"
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
-          SSH_OPTS="-i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
+      - name: Kiểm tra SSH (appleboy)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          command_timeout: 2m
+          script: |
+            powershell.exe -NoProfile -Command "Write-Host 'SSH connection OK'; New-Item -ItemType Directory -Path '${{ steps.paths.outputs.win_dir }}' -Force | Out-Null"
 
-          echo "Test SSH..."
-          ssh $SSH_OPTS "${SSH_USERNAME}@${SSH_HOST}" "powershell.exe -NoProfile -Command \"Write-Host 'SSH OK'; New-Item -ItemType Directory -Path '$WIN_DIR' -Force | Out-Null\""
-
-          echo "Upload via SFTP..."
-          sftp $SSH_OPTS -b - "${SSH_USERNAME}@${SSH_HOST}" <<EOF
-          cd ${WIN_DIR}
-          put deploy-upload/${ZIP_FILE}
-          put deploy-upload/version.json
-          ls -la
-          bye
-          EOF
-
-          rm -f ~/.ssh/deploy_key
-          echo "Uploaded ${ZIP_FILE} + version.json to ${WIN_DIR}"
+      - name: Upload zip + version.json (SCP)
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          use_insecure_cipher: true
+          tar_dereference: true
+          overwrite: true
+          source: deploy-upload/*
+          target: ${{ steps.paths.outputs.scp_target }}
+          strip_components: 1
 
       - name: Giải nén trên Windows Server (PowerShell)
         uses: appleboy/ssh-action@v1.2.0
@@ -140,7 +160,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          port: 22
           command_timeout: 10m
           script: |
             powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "& {
@@ -151,9 +171,6 @@ jobs:
               $zipPath = Join-Path $webDir $zipFile
 
               Write-Host \"Deploy dir: $webDir\"
-              if (-not (Test-Path -LiteralPath $webDir)) {
-                New-Item -ItemType Directory -Path $webDir -Force | Out-Null
-              }
               Write-Host 'Files before unzip:'
               Get-ChildItem -LiteralPath $webDir -Force | Select-Object Name, Length | Format-Table -AutoSize
 
