@@ -98,28 +98,41 @@ jobs:
           echo "Windows path: $WIN_DIR"
           echo "SCP target:   $SCP_TARGET"
 
-      - name: Upload zip + version.json (SCP native → Windows)
+      - name: Upload zip + version.json (SFTP → Windows)
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
           WIN_DIR: ${{ steps.paths.outputs.win_dir }}
+          ZIP_FILE: ${{ steps.artifacts.outputs.zip }}
         run: |
           set -euxo pipefail
           test -n "$SSH_HOST"
           test -n "$SSH_USERNAME"
           test -n "$SSH_PRIVATE_KEY"
           test -n "$WIN_DIR"
+          test -n "$ZIP_FILE"
           mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
-          REMOTE="${SSH_USERNAME}@${SSH_HOST}:${WIN_DIR}/"
-          scp -i ~/.ssh/deploy_key -P "$SSH_PORT" -o StrictHostKeyChecking=accept-new \
-            deploy-upload/* "$REMOTE"
+          SSH_OPTS="-i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
+
+          echo "Test SSH..."
+          ssh $SSH_OPTS "${SSH_USERNAME}@${SSH_HOST}" "powershell.exe -NoProfile -Command \"Write-Host 'SSH OK'; New-Item -ItemType Directory -Path '$WIN_DIR' -Force | Out-Null\""
+
+          echo "Upload via SFTP..."
+          sftp $SSH_OPTS -b - "${SSH_USERNAME}@${SSH_HOST}" <<EOF
+          cd ${WIN_DIR}
+          put deploy-upload/${ZIP_FILE}
+          put deploy-upload/version.json
+          ls -la
+          bye
+          EOF
+
           rm -f ~/.ssh/deploy_key
-          echo "Uploaded to $REMOTE"
+          echo "Uploaded ${ZIP_FILE} + version.json to ${WIN_DIR}"
 
       - name: Giải nén trên Windows Server (PowerShell)
         uses: appleboy/ssh-action@v1.2.0
