@@ -1,18 +1,25 @@
-# Giải nén bản web sau khi đã upload SCP (chạy trên Windows Server).
-# Env: ZIP_FILE, SSH_REMOTE_DIR, APP_VERSION (optional)
+# Giải nén bản web trên Windows Server (chạy tay hoặc qua CI).
+# Tham số:
+#   -WebDir  C:/Data/HostingSpaces/CA/erp.dev.appcenter.vn
+#   -ZipFile V0.21.64.zip
+
+param(
+	[Parameter(Mandatory = $true)]
+	[string]$WebDir,
+	[Parameter(Mandatory = $true)]
+	[string]$ZipFile
+)
 
 $ErrorActionPreference = 'Stop'
 
-if (-not $env:ZIP_FILE) { throw 'ZIP_FILE is required' }
-if (-not $env:SSH_REMOTE_DIR) { throw 'SSH_REMOTE_DIR is required' }
+$webDir = $WebDir.TrimEnd('\', '/')
+$zipPath = Join-Path $webDir $ZipFile
 
-$webDir = $env:SSH_REMOTE_DIR.TrimEnd('\', '/')
-$zipFile = $env:ZIP_FILE
-$zipPath = Join-Path $webDir $zipFile
+Write-Host "Deploy dir: $webDir"
+Write-Host "Zip file: $zipPath"
 
 if (-not (Test-Path -LiteralPath $zipPath)) {
 	Write-Error "Khong thay file zip: $zipPath"
-	Get-ChildItem -LiteralPath $webDir -ErrorAction SilentlyContinue
 	exit 1
 }
 
@@ -22,5 +29,5 @@ if (-not (Test-Path -LiteralPath $webDir)) {
 
 Expand-Archive -LiteralPath $zipPath -DestinationPath $webDir -Force
 Remove-Item -LiteralPath $zipPath -Force
-$versionSuffix = if ($env:APP_VERSION) { " (version $($env:APP_VERSION))" } else { '' }
-Write-Host "Deployed $zipFile -> $webDir$versionSuffix"
+Write-Host "Deployed $ZipFile -> $webDir"
+Get-ChildItem -LiteralPath $webDir | Select-Object -First 15 Name

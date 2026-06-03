@@ -125,18 +125,7 @@ jobs:
           echo "Windows path: $WIN_DIR"
           echo "SCP target:   $SCP_TARGET"
 
-      - name: Kiểm tra SSH (appleboy)
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          command_timeout: 2m
-          script: |
-            powershell.exe -NoProfile -Command "Write-Host 'SSH OK'; if (-not (Test-Path -LiteralPath '${{ steps.paths.outputs.win_dir }}')) { New-Item -ItemType Directory -Path '${{ steps.paths.outputs.win_dir }}' -Force | Out-Null }; Get-ChildItem -LiteralPath '${{ steps.paths.outputs.win_dir }}' -ErrorAction SilentlyContinue | Select-Object -First 5 Name"
-
-      - name: Upload zip + version.json (SCP)
+      - name: Deploy SCP + giải nén (SSH native)
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -144,41 +133,39 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
-            -o BatchMode=yes \
-            deploy-upload/* \
-            "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ steps.paths.outputs.scp_target }}"
-          rm -f ~/.ssh/deploy_key
+          SSH_OPTS=(-i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o BatchMode=yes)
+          TARGET="${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}"
+          WEB_DIR='${{ steps.paths.outputs.win_dir }}'
+          SCP_TARGET='${{ steps.paths.outputs.scp_target }}'
+          ZIP='${{ steps.artifacts.outputs.zip }}'
+          VER='${{ steps.artifacts.outputs.version }}'
+          REMOTE_PS="${WEB_DIR}/_ci-deploy-run.ps1"
 
-      - name: Giải nén trên Windows Server (PowerShell)
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          command_timeout: 10m
-          script: |
-            powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "& {
-              $ErrorActionPreference = 'Stop'
-              $webDir = '${{ steps.paths.outputs.win_dir }}'
-              $zipFile = '${{ steps.artifacts.outputs.zip }}'
-              $appVersion = '${{ steps.artifacts.outputs.version }}'
-              $zipPath = Join-Path $webDir $zipFile
+          echo "SSH test..."
+          ssh "${SSH_OPTS[@]}" "$TARGET" "powershell.exe -NoProfile -Command \"Write-Host 'SSH OK'; New-Item -ItemType Directory -Path '${WEB_DIR}' -Force | Out-Null\""
 
-              Write-Host \"Deploy dir: $webDir\"
-              Write-Host 'Files before unzip:'
-              Get-ChildItem -LiteralPath $webDir -Force | Select-Object Name, Length | Format-Table -AutoSize
+          echo "Upload zip + version.json -> ${SCP_TARGET}"
+          scp "${SSH_OPTS[@]}" deploy-upload/* "${TARGET}:${SCP_TARGET}"
 
-              if (-not (Test-Path -LiteralPath $zipPath)) {
-                Write-Error \"Khong thay file zip: $zipPath\"
-                exit 1
-              }
+          echo "Upload + run deploy script..."
+          cat > /tmp/deploy-run.ps1 <<EOF
+          \$ErrorActionPreference = 'Stop'
+          \$webDir = '${WEB_DIR}'
+          \$zipFile = '${ZIP}'
+          \$zipPath = Join-Path \$webDir \$zipFile
+          Write-Host "Deploy dir: \$webDir"
+          Write-Host "Zip file: \$zipPath"
+          if (-not (Test-Path -LiteralPath \$zipPath)) {
+            throw "Zip not found: \$zipPath"
+          }
+          Expand-Archive -LiteralPath \$zipPath -DestinationPath \$webDir -Force
+          Remove-Item -LiteralPath \$zipPath -Force
+          Write-Host "Deployed \$zipFile (version ${VER})"
+          Get-ChildItem -LiteralPath \$webDir | Select-Object -First 15 Name
+          EOF
 
-              Expand-Archive -LiteralPath $zipPath -DestinationPath $webDir -Force
-              Remove-Item -LiteralPath $zipPath -Force
-              Write-Host \"Deployed $zipFile -> $webDir (version $appVersion)\"
-              Write-Host 'Files after unzip:'
-              Get-ChildItem -LiteralPath $webDir -Force | Select-Object Name, Length | Format-Table -AutoSize
-            }"
+          scp "${SSH_OPTS[@]}" /tmp/deploy-run.ps1 "${TARGET}:${REMOTE_PS}"
+          ssh "${SSH_OPTS[@]}" "$TARGET" "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${REMOTE_PS}\""
+          ssh "${SSH_OPTS[@]}" "$TARGET" "powershell.exe -NoProfile -Command \"Remove-Item -LiteralPath '${REMOTE_PS}' -Force -ErrorAction SilentlyContinue\"" || true
+
+          rm -f ~/.ssh/deploy_key /tmp/deploy-run.ps1
