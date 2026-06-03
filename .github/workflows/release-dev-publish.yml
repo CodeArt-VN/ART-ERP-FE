@@ -2,14 +2,10 @@
 # Artifacts: V{version}.zip + version.json (từ npm run build-web)
 # Deploy: SCP qua SSH → giải nén trên Windows Server (PowerShell).
 #
-# Secrets (Settings → Secrets and variables → Actions):
-#   SSH_HOST
-#   SSH_USERNAME
-#   SSH_PRIVATE_KEY     - private key PEM (OpenSSH)
-#   SSH_REMOTE_DIR      - thư mục web IIS (vd: C:/inetpub/wwwroot/erp)
-#
-# Tùy chọn:
-#   SSH_PORT            - mặc định 22
+# Secrets:
+#   SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY
+#   SSH_REMOTE_DIR  - vd: C:/inetpub/wwwroot/erp  (Windows path)
+#   SSH_PORT        - (tùy chọn) mặc định 22
 
 name: Releases/dev publish
 
@@ -62,47 +58,73 @@ jobs:
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
           mkdir -p deploy-upload
           cp "$ZIP" version.json deploy-upload/
+          ls -la deploy-upload/
 
-      - name: Upload zip + version.json (SCP/SSH)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          source: deploy-upload/*
-          target: ${{ secrets.SSH_REMOTE_DIR }}
-
-      - name: Giải nén trên Windows Server (SSH + PowerShell)
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Chuẩn bị đường dẫn Windows cho SCP
+        id: paths
         env:
-          ZIP_FILE: ${{ steps.artifacts.outputs.zip }}
-          APP_VERSION: ${{ steps.artifacts.outputs.version }}
           SSH_REMOTE_DIR: ${{ secrets.SSH_REMOTE_DIR }}
+        run: |
+          RAW=$(echo "$SSH_REMOTE_DIR" | sed 's|\\|/|g' | sed 's|/*$||')
+          if [[ "$RAW" == /* ]]; then
+            SCP_TARGET="${RAW}/"
+            WIN_DIR="$RAW"
+          else
+            DRIVE=$(echo "$RAW" | cut -c1 | tr 'A-Z' 'a-z')
+            REST=$(echo "$RAW" | cut -c3-)
+            SCP_TARGET="/${DRIVE}${REST}/"
+            WIN_DIR="$RAW"
+          fi
+          echo "win_dir=$WIN_DIR" >> "$GITHUB_OUTPUT"
+          echo "scp_target=$SCP_TARGET" >> "$GITHUB_OUTPUT"
+          echo "Windows path: $WIN_DIR"
+          echo "SCP target:   $SCP_TARGET"
+
+      - name: Upload zip + version.json (SCP → Windows)
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-          envs: ZIP_FILE,APP_VERSION,SSH_REMOTE_DIR
+          debug: true
+          tar_dereference: true
+          overwrite: true
+          source: deploy-upload/*
+          target: ${{ steps.paths.outputs.scp_target }}
+          strip_components: 1
+
+      - name: Kiểm tra upload + giải nén (PowerShell)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          command_timeout: 10m
           script: |
             powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "& {
               $ErrorActionPreference = 'Stop'
-              $webDir = $env:SSH_REMOTE_DIR.TrimEnd('\','/')
-              $zipFile = $env:ZIP_FILE
+              $webDir = '${{ steps.paths.outputs.win_dir }}'
+              $zipFile = '${{ steps.artifacts.outputs.zip }}'
+              $appVersion = '${{ steps.artifacts.outputs.version }}'
               $zipPath = Join-Path $webDir $zipFile
+
+              Write-Host \"Deploy dir: $webDir\"
+              if (-not (Test-Path -LiteralPath $webDir)) {
+                New-Item -ItemType Directory -Path $webDir -Force | Out-Null
+              }
+              Write-Host 'Files before unzip:'
+              Get-ChildItem -LiteralPath $webDir -Force | Select-Object Name, Length | Format-Table -AutoSize
 
               if (-not (Test-Path -LiteralPath $zipPath)) {
                 Write-Error \"Khong thay file zip: $zipPath\"
-                Get-ChildItem -LiteralPath $webDir -ErrorAction SilentlyContinue
                 exit 1
-              }
-
-              if (-not (Test-Path -LiteralPath $webDir)) {
-                New-Item -ItemType Directory -Path $webDir -Force | Out-Null
               }
 
               Expand-Archive -LiteralPath $zipPath -DestinationPath $webDir -Force
               Remove-Item -LiteralPath $zipPath -Force
-              Write-Host \"Deployed $zipFile -> $webDir (version $($env:APP_VERSION))\"
+              Write-Host \"Deployed $zipFile -> $webDir (version $appVersion)\"
+              Write-Host 'Files after unzip:'
+              Get-ChildItem -LiteralPath $webDir -Force | Select-Object Name, Length | Format-Table -AutoSize
             }"
