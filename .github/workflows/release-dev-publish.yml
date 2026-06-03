@@ -20,7 +20,7 @@ on:
 
 jobs:
   publish:
-    if: contains(toLower(github.event.head_commit.message), 'release')
+    if: contains(github.event.head_commit.message, 'release') || contains(github.event.head_commit.message, 'Release') || contains(github.event.head_commit.message, 'RELEASE')
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
