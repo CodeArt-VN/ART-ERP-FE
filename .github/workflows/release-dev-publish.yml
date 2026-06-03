@@ -1,5 +1,5 @@
 # Publish web release khi push nhánh Releases/dev và commit message có "release".
-# Stack: Node 24 + pnpm 11 (packageManager trong package.json)
+# Cần commit pnpm-lock.yaml + pnpm-workspace.yaml (allowBuilds cho pnpm 11)
 #
 # Secrets:
 #   SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY
@@ -49,6 +49,7 @@ jobs:
           node --version
           pnpm --version
           test -f pnpm-lock.yaml
+          test -f pnpm-workspace.yaml
           pnpm install --frozen-lockfile
           npm install -g @ionic/cli
           test -d node_modules/@angular/core
