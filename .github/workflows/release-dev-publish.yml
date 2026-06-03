@@ -2,10 +2,12 @@
 # Job build: pnpm + build-web (không cần SSH secrets)
 # Job deploy: upload zip + version.json qua SSH (cần secrets)
 #
-# Secrets: SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY, SSH_REMOTE_DIR
-# SSH_PRIVATE_KEY: PEM OpenSSH đầy đủ (-----BEGIN ... END-----)
-# SSH_REMOTE_DIR: vd C:/inetpub/wwwroot/erp
-# SSH_PORT: (tùy chọn) mặc định 22
+# Secrets (GitHub → Settings → Secrets):
+#   SSH_HOST          erp.dev.appcenter.vn
+#   SSH_USERNAME      codeart
+#   SSH_PRIVATE_KEY   PEM deploy key (không commit scripts/deploy_github)
+#   SSH_REMOTE_DIR    C:/Data/HostingSpaces/CA/erp.dev.appcenter.vn
+#   SSH_PORT          (tùy chọn) 22
 
 name: Releases/dev publish
 
@@ -115,15 +117,9 @@ jobs:
           SSH_REMOTE_DIR: ${{ secrets.SSH_REMOTE_DIR }}
         run: |
           set -euxo pipefail
-          RAW=$(echo "$SSH_REMOTE_DIR" | sed 's|\\|/|g' | sed 's|/*$||')
-          if [[ "$RAW" == /* ]]; then
-            WIN_DIR="$RAW"
-          else
-            WIN_DIR="$RAW"
-          fi
-          DRIVE=$(echo "$WIN_DIR" | cut -c1 | tr 'A-Z' 'a-z')
-          REST=$(echo "$WIN_DIR" | cut -c3-)
-          SCP_TARGET="/${DRIVE}${REST}/"
+          WIN_DIR=$(echo "$SSH_REMOTE_DIR" | sed 's|\\|/|g' | sed 's|/*$||')
+          # Server Win2019 + OpenSSH: SCP target dùng C:/... (không dùng /c/...)
+          SCP_TARGET="${WIN_DIR}/"
           echo "win_dir=$WIN_DIR" >> "$GITHUB_OUTPUT"
           echo "scp_target=$SCP_TARGET" >> "$GITHUB_OUTPUT"
           echo "Windows path: $WIN_DIR"
@@ -135,10 +131,10 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+          port: ${{ secrets.SSH_PORT || 22 }}
           command_timeout: 2m
           script: |
-            powershell.exe -NoProfile -Command "Write-Host 'SSH connection OK'; New-Item -ItemType Directory -Path '${{ steps.paths.outputs.win_dir }}' -Force | Out-Null"
+            powershell.exe -NoProfile -Command "Write-Host 'SSH OK'; if (-not (Test-Path -LiteralPath '${{ steps.paths.outputs.win_dir }}')) { New-Item -ItemType Directory -Path '${{ steps.paths.outputs.win_dir }}' -Force | Out-Null }; Get-ChildItem -LiteralPath '${{ steps.paths.outputs.win_dir }}' -ErrorAction SilentlyContinue | Select-Object -First 5 Name"
 
       - name: Upload zip + version.json (SCP)
         uses: appleboy/scp-action@v1.0.0
@@ -146,7 +142,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+          port: ${{ secrets.SSH_PORT || 22 }}
           use_insecure_cipher: true
           tar_dereference: true
           overwrite: true
@@ -160,7 +156,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+          port: ${{ secrets.SSH_PORT || 22 }}
           command_timeout: 10m
           script: |
             powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "& {
