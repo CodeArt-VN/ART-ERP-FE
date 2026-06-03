@@ -1,4 +1,4 @@
-# Publish web release khi push nhánh Release/dev và commit message có "release".
+# Publish web release khi push nhánh Releases/dev và commit message có "release".
 # Artifacts: V{version}.zip + version.json (từ npm run build-web)
 # Deploy: SCP qua SSH → giải nén trên Windows Server (PowerShell).
 #
@@ -11,12 +11,12 @@
 # Tùy chọn:
 #   SSH_PORT            - mặc định 22
 
-name: Release/dev publish
+name: Releases/dev publish
 
 on:
   push:
     branches:
-      - Release/dev
+      - Releases/dev
 
 jobs:
   publish:
