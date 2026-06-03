@@ -1,0 +1,108 @@
+# Publish web release khi push nhánh Release/dev và commit message có "release".
+# Artifacts: V{version}.zip + version.json (từ npm run build-web)
+# Deploy: SCP qua SSH → giải nén trên Windows Server (PowerShell).
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   SSH_HOST
+#   SSH_USERNAME
+#   SSH_PRIVATE_KEY     - private key PEM (OpenSSH)
+#   SSH_REMOTE_DIR      - thư mục web IIS (vd: C:/inetpub/wwwroot/erp)
+#
+# Tùy chọn:
+#   SSH_PORT            - mặc định 22
+
+name: Release/dev publish
+
+on:
+  push:
+    branches:
+      - Release/dev
+
+jobs:
+  publish:
+    if: contains(toLower(github.event.head_commit.message), 'release')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout (submodule theo SHA đã pin trong parent)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ github.token }}
+
+      - name: Xác nhận submodule không drift
+        run: |
+          git submodule status
+          test -z "$(git diff --submodule=short)" || (echo "Submodule lệch so với parent index" && exit 1)
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies (npm)
+        run: npm install
+
+      - name: Install Ionic CLI
+        run: npm install -g @ionic/cli
+
+      - name: Build web (zip + version.json)
+        run: npm run build-web
+
+      - name: Chuẩn bị artifact deploy
+        id: artifacts
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          ZIP="V${VERSION}.zip"
+          test -f "$ZIP" || (echo "Không tìm thấy $ZIP" && ls -la V*.zip 2>/dev/null; exit 1)
+          test -f version.json || (echo "Không tìm thấy version.json" && exit 1)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          mkdir -p deploy-upload
+          cp "$ZIP" version.json deploy-upload/
+
+      - name: Upload zip + version.json (SCP/SSH)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: deploy-upload/*
+          target: ${{ secrets.SSH_REMOTE_DIR }}
+
+      - name: Giải nén trên Windows Server (SSH + PowerShell)
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          ZIP_FILE: ${{ steps.artifacts.outputs.zip }}
+          APP_VERSION: ${{ steps.artifacts.outputs.version }}
+          SSH_REMOTE_DIR: ${{ secrets.SSH_REMOTE_DIR }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          envs: ZIP_FILE,APP_VERSION,SSH_REMOTE_DIR
+          script: |
+            powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "& {
+              $ErrorActionPreference = 'Stop'
+              $webDir = $env:SSH_REMOTE_DIR.TrimEnd('\','/')
+              $zipFile = $env:ZIP_FILE
+              $zipPath = Join-Path $webDir $zipFile
+
+              if (-not (Test-Path -LiteralPath $zipPath)) {
+                Write-Error \"Khong thay file zip: $zipPath\"
+                Get-ChildItem -LiteralPath $webDir -ErrorAction SilentlyContinue
+                exit 1
+              }
+
+              if (-not (Test-Path -LiteralPath $webDir)) {
+                New-Item -ItemType Directory -Path $webDir -Force | Out-Null
+              }
+
+              Expand-Archive -LiteralPath $zipPath -DestinationPath $webDir -Force
+              Remove-Item -LiteralPath $zipPath -Force
+              Write-Host \"Deployed $zipFile -> $webDir (version $($env:APP_VERSION))\"
+            }"
