@@ -426,6 +426,7 @@ export class PaymentModalComponent implements OnInit {
 			return false;
 		}
 
+		this.item.Point = customerPoint - inputPoint;
 		return true;
 	}
 
