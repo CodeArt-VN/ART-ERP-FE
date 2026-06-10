@@ -1,3 +1,9 @@
+ion-app.guest-customer-mode {
+	ion-menu,
+	ion-split-pane::part(side) {
+		display: none !important;
+	}
+}
 
 #app-menu {
 	border-right: none;

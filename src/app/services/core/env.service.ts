@@ -58,6 +58,8 @@ export class EnvService {
 	/** Last real user id (numeric or GUID) — avoid false remote logout on placeholder. */
 	private lastKnownUserId: string | number | null = null;
 
+	private signalRInitialized = false;
+
 	constructor(
 		public storage: CacheManagementService,
 		public userContext: UserContextService,
@@ -824,18 +826,31 @@ export class EnvService {
 			// Notify UI that environment is ready
 			this.publishEvent({ Code: EVENT_TYPE.APP.ENVIRONMENT_READY, Value: null });
 
-			// Setup analytics after environment is ready
-			this.setupAnalytics();
+			if (!this.isGuestCustomerRoute()) {
+				this.setupAnalytics();
+			}
 		} catch (error) {
 			dogF && console.error('❌ [EnvService] Environment initialization failed:', error);
 			throw error;
 		}
 	}
 
+	isGuestCustomerRoute(path?: string): boolean {
+		const p = path ?? this.router.url ?? window.location.hash ?? '';
+		return /\/(pos-welcome|pos-customer-order)(\/|$)/.test(p);
+	}
+
+	/** Connect SignalR on demand (guest order page defers until loaded). */
+	ensureSignalR(): void {
+		this.setupSignalR();
+	}
+
 	private async setupDataStreams(): Promise<void> {
 		dogF && console.log('🌊 [EnvService] Setting up data streams...');
 		try {
-			this.setupSignalR();
+			if (!this.isGuestCustomerRoute()) {
+				this.setupSignalR();
+			}
 			// // Setup real-time data streams
 			// await this.setupRealTimeStreams();
 
@@ -875,6 +890,11 @@ export class EnvService {
 	 * Setup SignalR (moved from init)
 	 */
 	private setupSignalR(): void {
+		if (this.signalRInitialized) {
+			return;
+		}
+		this.signalRInitialized = true;
+
 		const signalRConnection = new signalR.HubConnectionBuilder()
 			.configureLogging(signalR.LogLevel.Information)
 			.withUrl(environment.signalRServiceDomain + 'notify')
