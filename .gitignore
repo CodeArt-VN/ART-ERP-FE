@@ -107,5 +107,3 @@ resources/android/**/*
 .cursorrules
 .cursorignore
 .cursor
-scripts/deploy_github
-scripts/deploy_github.pub

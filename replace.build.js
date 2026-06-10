@@ -236,38 +236,28 @@ async function updateWebResouces() {
 		console.log(`Created zip archive: ${zipFileName}`);
 	} catch (err) {
 		console.error('Error creating zip archive:', err);
-		throw err;
 	}
 }
 
-function execAsync(command) {
+function bumpVersion(callback) {
 	const { exec } = require('child_process');
-	return new Promise((resolve, reject) => {
-		exec(command, { maxBuffer: 1024 * 1024 * 20 }, (error, stdout, stderr) => {
-			if (stdout) console.log(stdout);
-			if (stderr) console.error(stderr);
-			if (error) reject(error);
-			else resolve({ stdout, stderr });
-		});
-	});
-}
-
-function bumpVersionAsync() {
-	return execAsync('npm version patch --no-git-tag-version').then(({ stdout }) => {
-		const match = stdout.match(/v(\d+\.\d+\.\d+)/);
-		getVersion(match ? match[1] : null);
+	exec('npm version patch --no-git-tag-version', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`Error: ${error.message}`);
+			if (callback) callback(error);
+			return;
+		}
+		if (stderr) {
+			console.error(`stderr: ${stderr}`);
+		}
+		console.log(`stdout: ${stdout}`);
 		console.log('✅ version updated');
+		// Extract new version from stdout
+		const match = stdout.match(/v(\d+\.\d+\.\d+)/);
+		const newVersion = match ? match[1] : null;
+		getVersion(newVersion);
+		if (callback) callback(null);
 	});
-}
-
-async function buildWeb() {
-	await bumpVersionAsync();
-	const replace = await import('replace-in-file');
-	await updateEnvironmentPROD(replace);
-	updateAngularBaseHref(BASE_HREF);
-	await execAsync('ionic build --prod');
-	await updateWebResouces();
-	console.log('✅ Web build & resources updated!');
 }
 
 function runFullProcess() {
@@ -343,7 +333,30 @@ async function runSpecificCommand(command, subCommand) {
 		}
 		else if (command === 'build') {
 			if (subCommand === 'web') {
-				await buildWeb();
+				// Bump version > update environment > update baseHref > build prod > update web resources
+				bumpVersion(async (error) => {
+					if (error) return;
+					const replace = await import('replace-in-file');
+					await updateEnvironmentPROD(replace);
+					
+					updateAngularBaseHref(BASE_HREF);
+					// Build web bằng ionic build --prod
+					const { exec } = require('child_process');
+					//exec('ionic --version', async (err, stdout, stderr) => {
+					exec('ionic build --prod', async (err, stdout, stderr) => {
+						if (err) {
+							console.error(`Error: ${err.message}`);
+							return;
+						}
+						if (stderr) {
+							console.error(`stderr: ${stderr}`);
+						}
+						console.log(`stdout: ${stdout}`);
+						// Cập nhật resource web
+						await updateWebResouces();
+						console.log('✅ Web build & resources updated!');
+					});
+				});
 			} else if (subCommand === 'app') {
 				// Build app: tăng version cho Android/iOS và cập nhật environment.prod.ts
 				const replace = await import('replace-in-file');
@@ -393,17 +406,13 @@ async function runSpecificCommand(command, subCommand) {
 		}
 	} catch (error) {
 		console.error('❌ Error:', error.message);
-		throw error;
 	}
 }
 
 getVersion();
 
 if (command) {
-	runSpecificCommand(command, args[1]).catch((error) => {
-		console.error('❌ Error:', error.message || error);
-		process.exit(1);
-	});
+	runSpecificCommand(command, args[1]);
 } else {
 	runSpecificCommand(null, null);
 }
