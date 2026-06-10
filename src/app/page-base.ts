@@ -110,6 +110,14 @@ export abstract class PageBase implements OnInit {
 		this.items = [];
 	}
 
+	/** Last page when API returns fewer rows than requested page size (or none). */
+	markEndOfDataIfLastPage(resultLength: number) {
+		const pageSize = Number(this.query?.Take) || 100;
+		if (resultLength === 0 || resultLength < pageSize) {
+			this.pageConfig.isEndOfData = true;
+		}
+	}
+
 	loadData(event = null, forceReload = false) {
 		if (this.pageConfig.isDetailPage) {
 			this.loadAnItem(event);
@@ -119,9 +127,7 @@ export abstract class PageBase implements OnInit {
 			if (this.pageProvider && !this.pageConfig.isEndOfData) {
 				if (event == 'search') {
 					this.pageProvider.read(this.query, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
-						if (result.data.length == 0) {
-							this.pageConfig.isEndOfData = true;
-						}
+						this.markEndOfDataIfLastPage(result.data.length);
 						this.items = result.data;
 						this.loadedData(null);
 					});
@@ -130,11 +136,9 @@ export abstract class PageBase implements OnInit {
 					this.pageProvider
 						.read(this.query, this.pageConfig.forceLoadData)
 						.then((result: any) => {
-							if (result.data.length == 0) {
-								this.pageConfig.isEndOfData = true;
-							}
+							this.markEndOfDataIfLastPage(result.data.length);
 							if (result.data.length > 0) {
-								this.items = this.dataManagementService.mergeItems(this.items, result.data);
+								this.items = this.dataManagementService.appendPaginatedItems(this.items, result.data);
 							}
 
 							this.loadedData(event);
@@ -917,10 +921,6 @@ export abstract class PageBase implements OnInit {
 			this.env.getEvents().subscribe((data) => {
 				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.preLoadData(null);
-				} else if (data.Code == 'app:loadedLocalData') {
-					this.env.checkFormPermission(this.navCtrl.router.routerState.snapshot.url).then((result: Boolean) => {
-						if (!result) this.nav('/default');
-					});
 				} else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
 					this.refresh(null);
 				} else {

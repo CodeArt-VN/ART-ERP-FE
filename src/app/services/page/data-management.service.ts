@@ -18,21 +18,26 @@ export class PageDataManagementService {
 	}
 
 
-	mergeItems(currentSet: any[], newSet: any[]) {
-		//Merge currentSet and newSet đảm bảm không có Id bị trùng
-		const mergedMap = new Map<string, any>();
+	/**
+	 * Nối trang dữ liệu tiếp theo vào danh sách đang hiển thị.
+	 * Khi có bản ghi mới (sort Id desc), đuôi trang trước có thể trùng đầu trang sau —
+	 * bỏ các dòng trùng Id ở loadedItems rồi append nextPageItems.
+	 */
+	appendPaginatedItems(loadedItems: any[], nextPageItems: any[]) {
+		if (!nextPageItems?.length) {
+			return loadedItems ?? [];
+		}
+		if (!loadedItems?.length) {
+			return [...nextPageItems];
+		}
 
-		// Add currentSet first
-		currentSet.forEach(item => {
-			mergedMap.set(item.Id, item);
-		});
+		const overlappingIds = new Set(
+			nextPageItems.map((item) => item?.Id).filter((id) => id != null && id !== '')
+		);
 
-		// Add newSet, replacing duplicates
-		newSet.forEach(item => {
-			mergedMap.set(item.Id, item);
-		});
+		const keptLoaded = loadedItems.filter((item) => !overlappingIds.has(item?.Id));
 
-		return Array.from(mergedMap.values());
+		return [...keptLoaded, ...nextPageItems];
 	}
 
 

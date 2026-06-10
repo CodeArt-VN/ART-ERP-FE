@@ -426,6 +426,7 @@ export class PaymentModalComponent implements OnInit {
 			return false;
 		}
 
+		this.item.Point = customerPoint - inputPoint;
 		return true;
 	}
 
@@ -958,13 +959,18 @@ export class PaymentModalComponent implements OnInit {
 				Type: 'PromotionIntegration',
 				SubType: 'Gotit',
 				VoucherCodeList: [normalizedCode],
+				ExistingVouchers: this.listVoucherUsed.map((voucher) => ({
+					Code: voucher.code,
+					Amount: voucher.amount,
+				})),
 				SaleOrder: this.getVoucherSaleOrderPayload(),
 			};
 			const voucher: any = await this.commonService.connect('POST', 'PR/Program/CheckVoucher', postDTO).toPromise();
 			if (voucher && voucher.length > 0) {
 				if (voucher[0].CanUse) {
-					let toltal = this.formGroup.get('InputAmount').value || 0;
+					const voucherCode = voucher[0].VoucherCode;
 					let amount = voucher[0].Program.Value;
+					let toltal = this.formGroup.get('InputAmount').value || 0;
 
 					this.formGroup.get('InputAmount').setValue(toltal + amount);
 					this.formGroup.get('InputAmount').markAsDirty();
@@ -973,7 +979,7 @@ export class PaymentModalComponent implements OnInit {
 					this.formGroup.get('SubType').setValue('Gotit');
 					this.formGroup.get('SubType').markAsDirty();
 					this.gotItUseResult = null;
-					this.listVoucherUsed.push({ code: voucher[0].VoucherCode, amount: amount });
+					this.listVoucherUsed.push({ code: voucherCode, amount: amount });
 					this.env.showMessage(voucher[0].ErrorMesage, 'success');
 				} else {
 					this.env.showMessage(voucher[0].ErrorMesage, 'danger');
@@ -1027,18 +1033,25 @@ export class PaymentModalComponent implements OnInit {
 		}
 		const voucher = this.listVoucherUsed[idx];
 		if (!voucher) return;
+		if (!(await this.releaseGotitVoucherCodes([voucher.code]))) return;
+		this.listVoucherUsed.splice(idx, 1);
+		this.refreshGotitAmount();
+	}
+
+	private async releaseGotitVoucherCodes(voucherCodes: string[]) {
+		if (!voucherCodes?.length) return true;
+
 		try {
-			await this.promotionService.releaseIntegrationVouchers(this.getVoucherSaleOrderPayload(), [voucher.code], {
+			await this.promotionService.releaseIntegrationVouchers(this.getVoucherSaleOrderPayload(), voucherCodes, {
 				type: 'PromotionIntegration',
 				subType: 'Gotit',
 				providerCode: 'Gotit',
 			});
+			return true;
 		} catch (err) {
 			this.env.showErrorMessage(err);
-			return;
+			return false;
 		}
-		this.listVoucherUsed.splice(idx, 1);
-		this.refreshGotitAmount();
 	}
 	//endregion
 

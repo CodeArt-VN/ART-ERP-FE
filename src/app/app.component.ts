@@ -17,6 +17,7 @@ import { OSM_NotificationService } from './services/custom/notifications.service
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
+import { recheckCurrentRoutePermission } from './guards/app.guard';
 import { UserCardPage } from './pages/SYS/user-card/user-card.page';
 
 register();
@@ -373,6 +374,7 @@ export class AppComponent implements OnInit {
 
 				case EVENT_TYPE.USER.CONTEXT_UPDATED:
 					this.renderUI();
+					void recheckCurrentRoutePermission(this.router, this.env, this.userProfileService);
 					break;
 
 				default:

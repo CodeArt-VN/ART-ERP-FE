@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
-import { authGuard } from 'src/app/guards/app.guard';
+import { authGuard, authenticatedGuard } from 'src/app/guards/app.guard';
 
 export const SYSRoutes: Routes = [
 	{ path: 'login', loadChildren: () => import('./login/login.module').then((m) => m.LoginPageModule) },
+	{
+		path: 'unauthorized',
+		loadChildren: () => import('./unauthorized/unauthorized.module').then((m) => m.UnauthorizedPageModule),
+		canActivate: [authenticatedGuard],
+	},
 	{ path: 'about', loadChildren: () => import('./about/about.module').then((m) => m.AboutPageModule) },
 	{ path: 'not-found', loadChildren: () => import('./not-found/not-found.module').then((m) => m.NotFoundPageModule), canActivate: [authGuard] },
 	{ path: 'setting', loadChildren: () => import('./setting/setting.module').then((m) => m.SettingPageModule), canActivate: [authGuard] },

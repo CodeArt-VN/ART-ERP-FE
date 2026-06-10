@@ -21,6 +21,9 @@ import { CacheManagementService } from '../core/cache-management.service';
 	providedIn: 'root',
 })
 export class AuthenticationService {
+	/** setTimeout delay is a 32-bit signed int; larger values fire immediately (~1ms). */
+	private static readonly MAX_SET_TIMEOUT_MS = 2_147_483_647 - 60_000;
+
 	private authState$ = new BehaviorSubject<AuthState>({
 		isAuthenticated: false,
 		isLoading: false,
@@ -30,6 +33,7 @@ export class AuthenticationService {
 	});
 
 	private tokenRefreshTimer?: any;
+	private authMonitoringStarted = false;
 
 	constructor(
 		private userContextService: UserContextService,
@@ -39,14 +43,15 @@ export class AuthenticationService {
 		private router: Router
 	) {
 		this.cache.tracking().subscribe((tracking) => {
-			if (tracking) {
-				dogF && console.log('🔑 [AuthService] AuthenticationService constructor');
-				this.initializeAuthState();
-				this.setupSessionMonitoring();
-				this.setupMultiTabSync();
-				this.setupRemoteLogoutDetection();
-				this.setupEventListeners();
+			if (!tracking || this.authMonitoringStarted) {
+				return;
 			}
+			this.authMonitoringStarted = true;
+			dogF && console.log('🔑 [AuthService] AuthenticationService constructor');
+			void this.initializeAuthState();
+			this.setupSessionMonitoring();
+			this.setupMultiTabSync();
+			this.setupEventListeners();
 		});
 	}
 
@@ -275,9 +280,13 @@ export class AuthenticationService {
 			if (!payload || typeof payload !== 'object') {
 				return true;
 			}
-			if (typeof payload.exp === 'number') {
+			// JWT exp only when payload looks like a real JWT claim set (not opaque token object)
+			if (typeof payload.exp === 'number' && (payload.iat != null || payload.sub != null || payload.iss != null)) {
 				const skewSec = 60;
 				return payload.exp > Date.now() / 1000 + skewSec;
+			}
+			if (payload.expires_in && payload._issuedAt) {
+				return payload._issuedAt + payload.expires_in * 1000 > Date.now() + 60_000;
 			}
 			if (payload['.expires']) {
 				const expires = new Date(payload['.expires']);
@@ -390,9 +399,15 @@ export class AuthenticationService {
 			// For JWT tokens, decode the payload
 			const parts = token.split('.');
 			if (parts.length === 3) {
-				const payload = parts[1];
-				const decoded = atob(payload);
-				return JSON.parse(decoded);
+				try {
+					const decoded = atob(parts[1]);
+					const claims = JSON.parse(decoded);
+					if (typeof claims === 'object' && claims !== null) {
+						return claims;
+					}
+				} catch {
+					// Opaque token that happens to contain dots — use stored token metadata
+				}
 			}
 
 			// For custom token format, return the token itself
@@ -404,25 +419,51 @@ export class AuthenticationService {
 	}
 
 	/**
-	 * Setup automatic token refresh
+	 * Setup automatic token refresh (only when refresh_token exists).
+	 * Long expires_in (e.g. 31535999) must be chunked: delay > 2^31-1 ms makes setTimeout fire immediately.
 	 */
 	private setupTokenRefresh(token: TokenResponse): void {
 		if (this.tokenRefreshTimer) {
 			clearTimeout(this.tokenRefreshTimer);
+			this.tokenRefreshTimer = undefined;
 		}
 
-		// Refresh token 5 minutes before expiration
-		const refreshTime = (token.expires_in - 300) * 1000; // Convert to milliseconds
+		if (!token.refresh_token) {
+			dogF && console.log('[AuthService] No refresh_token; skip scheduled token refresh');
+			return;
+		}
 
-		if (refreshTime > 0) {
-			this.tokenRefreshTimer = setTimeout(async () => {
-				try {
-					await this.refreshToken();
-				} catch (error) {
-					dogF && console.error('Automatic token refresh failed:', error);
-					await this.logout();
-				}
-			}, refreshTime);
+		const expiresInSec = token.expires_in;
+		if (!expiresInSec || expiresInSec <= 300) {
+			return;
+		}
+
+		const refreshAtMs = Date.now() + (expiresInSec - 300) * 1000;
+		this.scheduleTokenRefreshAt(refreshAtMs);
+	}
+
+	private scheduleTokenRefreshAt(refreshAtMs: number): void {
+		const delay = refreshAtMs - Date.now();
+		if (delay <= 0) {
+			void this.runTokenRefreshOrReschedule(refreshAtMs);
+			return;
+		}
+		const wait = Math.min(delay, AuthenticationService.MAX_SET_TIMEOUT_MS);
+		this.tokenRefreshTimer = setTimeout(() => {
+			void this.runTokenRefreshOrReschedule(refreshAtMs);
+		}, wait);
+	}
+
+	private async runTokenRefreshOrReschedule(refreshAtMs: number): Promise<void> {
+		if (Date.now() < refreshAtMs - 60_000) {
+			this.scheduleTokenRefreshAt(refreshAtMs);
+			return;
+		}
+		try {
+			await this.refreshToken();
+		} catch (error) {
+			dogF && console.error('Automatic token refresh failed:', error);
+			await this.logout();
 		}
 	}
 
@@ -539,22 +580,6 @@ export class AuthenticationService {
 	}
 
 	/**
-	 * Setup remote logout detection
-	 */
-	private setupRemoteLogoutDetection(): void {
-		setInterval(async () => {
-			if (!this.isAuthenticated()) {
-				return;
-			}
-			const result = await this.validateTokenWithServer();
-			if (result === 'unauthorized' || result === 'invalid_session') {
-				this.env.publishEvent({ Code: EVENT_TYPE.USER.LOGGED_OUT_REMOTE });
-				await this.logout();
-			}
-		}, 900000); // 15 minutes
-	}
-
-	/**
 	 * Setup event listeners for authentication events
 	 */
 	private setupEventListeners(): void {
@@ -583,8 +608,9 @@ export class AuthenticationService {
 		}
 		try {
 			const response = await firstValueFrom(this.commonService.connect('GET', APIList.ACCOUNT.validateToken?.url || environment.appDomain + 'api/JOBS/Ping', { token }));
+			// Ping / empty 200 is OK; only explicit { valid: false } invalidates session
 			if (response == null) {
-				return 'invalid_session';
+				return 'ok';
 			}
 			const r = response as { valid?: boolean };
 			if (typeof r.valid === 'boolean') {
@@ -752,7 +778,8 @@ export class AuthenticationService {
 
 		try {
 			if (token != null) {
-				this.cache.app.token = token;
+				const stored = { ...token, _issuedAt: token._issuedAt ?? Date.now() };
+				this.cache.app.token = stored;
 				await this.cache.set('Token', this.cache.app.token, { timeToLive: 365 * 24 * 60, enable: true }, 'auto', null);
 				dogF && console.log('✅ [AuthenticationService] Token saved to storage');
 			} else {
