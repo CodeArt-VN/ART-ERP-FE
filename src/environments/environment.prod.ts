@@ -4,16 +4,18 @@ export const environment = {
 	appLocation: '/', // VirtualDirectory
 	versionLocation: '', // 'V{{REPLACE_VERSION}}/',
 	appServers: [
-		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'warning', Icon: 'cube-outline'},
-		{ Code: 'https://artlogistics.vn/', Name: 'ART server', Color: 'warning', Icon: 'cube-outline' },
-		{ Code: 'https://app.inholdings.vn/', Name: 'IN server', Color: 'warning', Icon: 'cube-outline' },
-		
-		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
-		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'success', Icon: 'airplane' },
+		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'warning', Icon: 'airplane' },
 
-		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
+		{ Code: 'https://artlogistics.vn/', Name: 'ART server', Color: 'danger', Icon: 'cube-outline' },
+		{ Code: 'https://app.inholdings.vn/', Name: 'IN server', Color: 'danger', Icon: 'cube-outline' },
+		{ Code: 'https://beta.inholdings.vn/', Name: 'IN beta server', Color: 'danger', Icon: 'cube-outline' },
+		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'danger', Icon: 'cube-outline' },
+		
+		{ Code: 'http://local.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
+		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'rocket' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
+		{ Code: 'http://192.168.1.99:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
 	appDomain: 'https://erp.codeart.vn/',
 	staffAvatarsServer: 'https://erp.codeart.vn/Uploads/HRM/Staffs/Avatars/',
