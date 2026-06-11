@@ -69,6 +69,8 @@ export interface ComponentUI {
 	standalone: false,
 })
 export class AppComponent implements OnInit {
+	isGuestCustomer = false;
+
 	ui: ComponentUI = {
 		// App state
 		appTheme: 'default-theme',
@@ -304,11 +306,22 @@ export class AppComponent implements OnInit {
 		this.ui.branchFormGroup = this.formBuilder.group({
 			IDBranch: [''],
 		});
+
+		this.updateGuestCustomerMode();
 	}
 
 	ngOnInit() {
 		dogF && console.log('🌲 [AppComponent] OnInit');
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) {
+				this.updateGuestCustomerMode();
+			}
+		});
 		this.initializeApp();
+	}
+
+	private updateGuestCustomerMode(): void {
+		this.isGuestCustomer = this.env.isGuestCustomerRoute();
 	}
 
 	async initializeApp() {
@@ -316,6 +329,7 @@ export class AppComponent implements OnInit {
 		await this.env.ready;
 		dogF && console.log('🌲 [AppComponent] Environment ready');
 
+		this.updateGuestCustomerMode();
 		this.ui.isReady = true;
 		this.updateStatusbar();
 		this.eventHandler();
@@ -324,9 +338,11 @@ export class AppComponent implements OnInit {
 		this.initNotification();
 		this.serviceWorkerRegister();
 
-		setTimeout(() => {
-			this.userProfileService.getProfile();
-		}, 0);
+		if (!this.isGuestCustomer) {
+			setTimeout(() => {
+				this.userProfileService.getProfile();
+			}, 0);
+		}
 	}
 
 	eventHandler() {
