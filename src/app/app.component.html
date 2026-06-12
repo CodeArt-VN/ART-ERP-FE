@@ -372,7 +372,7 @@
 
 	<div class="app-footer">
 		<div class="flex-center">
-			<span id="change-app-server" class="text" *ngIf="!env.user?.Id">
+			<span id="change-app-server" class="text" *ngIf="!env.user?.Id && !isGuestCustomer">
 				<ng-container *ngFor="let s of env.app.tenant.list">
 					<ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name" *ngIf="env.app.tenant.current == s.Code"></ion-icon>
 				</ng-container>
