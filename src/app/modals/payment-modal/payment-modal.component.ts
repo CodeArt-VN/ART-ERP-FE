@@ -173,7 +173,7 @@ export class PaymentModalComponent implements OnInit {
 					case 'signalR:POSOrderPaymentUpdate':
 						if (value.IDSaleOrder != this.item.IDSaleOrder) return;
 						if (this.payment && value.Id == this.payment.Id) {
-							this.payment.Status == value.Status;
+							this.payment.Status = value.Status;
 							this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
 							if (value.Status == 'Fail') {
 								this.payment = null;
@@ -580,14 +580,29 @@ export class PaymentModalComponent implements OnInit {
 				this.submitAttempt = false;
 				return;
 			}
-			const gotitCodes = new Set((gotitRes.data || []).map((v) => v.code));
+			const usedVouchers = new Map<string, any>(
+				(gotitRes.data || []).map((voucher): [string, any] => [String(voucher.code || '').trim(), voucher])
+			);
 
 			obj['PaymentDetails'] = (this.listVoucherUsed || [])
-				.filter((v) => gotitCodes.has(v.code))
-				.map((v) => ({
-					Code: v.code,
-					Amount: v.amount,
-				}));
+				.filter((voucher) => usedVouchers.has(voucher.code))
+				.map((voucher) => {
+					const usedVoucher = usedVouchers.get(voucher.code);
+					return {
+						Code: usedVoucher.code,
+						Amount: usedVoucher.value,
+						IDProgram: usedVoucher.idProgram,
+					};
+				});
+
+			const hasInvalidPaymentDetail =
+				obj.PaymentDetails.length !== this.listVoucherUsed.length ||
+				obj.PaymentDetails.some((detail) => !detail.Code || !detail.IDProgram || Number(detail.Amount) <= 0);
+			if (hasInvalidPaymentDetail) {
+				this.env.showMessage('GotIt voucher payment data is incomplete', 'danger');
+				this.submitAttempt = false;
+				return;
+			}
 		}
 		let str = window.btoa(JSON.stringify(payment));
 		let code = this.convertUrl(str);
@@ -616,6 +631,11 @@ export class PaymentModalComponent implements OnInit {
 				//this.next();
 				if (this.payment.Status == 'Success') {
 					this.env.showMessage('Payment success', 'success');
+					if (obj.Type == 'PromotionIntegration' && obj.SubType == 'Gotit') {
+						this.listVoucherUsed = [];
+						this.gotItUseResult = null;
+						this.formGroup.get('VoucherCode').setValue('');
+					}
 					// this.env.publishEvent({
 					// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
 					// 	value: JSON.stringify({
@@ -1151,8 +1171,8 @@ export class PaymentModalComponent implements OnInit {
 			IDCustomer: saleOrder.IDCustomer ?? this.item?.IDCustomer,
 			IDContact: saleOrder.IDContact ?? saleOrder.IDCustomer ?? this.item?.IDCustomer,
 			OrderDate: saleOrder.OrderDate,
-			Debt: Number(saleOrder.Debt ?? this.item?.DebtAmount ?? 0),
-			DebtAmount: Number(saleOrder.DebtAmount ?? this.item?.DebtAmount ?? 0),
+			Debt: Number(this.item?.DebtAmount ?? saleOrder.Debt ?? 0),
+			DebtAmount: Number(this.item?.DebtAmount ?? saleOrder.DebtAmount ?? 0),
 			OriginalTotalBeforeDiscount: Number(saleOrder.OriginalTotalBeforeDiscount ?? saleOrder.TotalBeforeDiscount ?? 0),
 			CalcTotalOriginal: Number(saleOrder.CalcTotalOriginal ?? saleOrder.TotalAfterTax ?? 0),
 			TotalAfterTax: Number(saleOrder.TotalAfterTax ?? saleOrder.CalcTotalOriginal ?? 0),
