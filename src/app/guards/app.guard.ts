@@ -151,6 +151,11 @@ export async function recheckCurrentRoutePermission(
 		return;
 	}
 
+	// Guest QR routes are public — no ERP form permission (refresh must not redirect to login).
+	if (env.isGuestCustomerRoute(path)) {
+		return;
+	}
+
 	if (hasAccessToken(env) && !hasValidUserId(env.user?.Id) && profileService) {
 		try {
 			await profileService.getProfile();

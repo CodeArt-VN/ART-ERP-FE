@@ -586,6 +586,12 @@ export class EnvService {
 	 */
 	checkFormPermission(functionCode) {
 		return new Promise<boolean>((resolve) => {
+			const path = (functionCode || '').split('?')[0];
+			if (this.isGuestCustomerRoute(path)) {
+				resolve(true);
+				return;
+			}
+
 			//Chưa đăng nhập
 			if (!this.user || !hasValidUserId(this.user.Id)) {
 				resolve(false);
