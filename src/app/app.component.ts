@@ -380,6 +380,9 @@ export class AppComponent implements OnInit {
 				case EVENT_TYPE.APP.CHANGE_THEME:
 					this.updateStatusbar();
 					break;
+				case EVENT_TYPE.APP.RESTORE_STATUS_BAR:
+					this.updateStatusbar(true);
+					break;
 				case EVENT_TYPE.APP.NOTIFICATION:
 					this.loadNotifications();
 					break;
@@ -455,7 +458,12 @@ export class AppComponent implements OnInit {
 		this.ui.pinnedForms = this.env.user.Forms.filter((d) => d.isPinned);
 	}
 
-	updateStatusbar() {
+	updateStatusbar(statusBarOnly = false) {
+		if (statusBarOnly) {
+			this.applyStatusBarStyle(lib.getCssVariableValue('--ion-color-primary'));
+			return;
+		}
+
 		let title = 'ERP';
 		let relIcon = 'assets/icons/icon-512.webp';
 
@@ -501,27 +509,26 @@ export class AppComponent implements OnInit {
 		setTimeout(() => {
 			let themeColor = lib.getCssVariableValue('--ion-color-primary');
 			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
-
-			if (Capacitor.isPluginAvailable('StatusBar')) {
-				StatusBar.setBackgroundColor({
-					color: this.env?.user?.UserSetting?.Theme?.Value ? themeColor : '#ffffff',
-				});
-				StatusBar.setStyle({
-					style: this.env.user.UserSetting.Theme.Value,
-				});
-			}
+			this.applyStatusBarStyle(themeColor);
 		}, 100);
 
-		if (Capacitor.isPluginAvailable('StatusBar')) {
-			StatusBar.setBackgroundColor({
-				color: this.env?.user?.UserSetting?.Theme?.Value ? '#5a5c5e' : '#ffffff',
-			});
-			StatusBar.setStyle({
-				style: this.env?.user?.UserSetting?.Theme?.Value,
-			});
-			//StatusBar.setBackgroundColor({ color: (this.env?.user?.UserSetting?.Theme?.Value) ? '#5a5c5e' : '#ffffff' });
-			StatusBar.setOverlaysWebView({ overlay: false });
+		this.applyStatusBarStyle();
+	}
+
+	private applyStatusBarStyle(themeColor?: string) {
+		if (!Capacitor.isPluginAvailable('StatusBar')) {
+			return;
 		}
+
+		const userTheme = this.env?.user?.UserSetting?.Theme?.Value;
+
+		StatusBar.setBackgroundColor({
+			color: themeColor ?? (userTheme ? '#5a5c5e' : '#ffffff'),
+		});
+		StatusBar.setStyle({
+			style: userTheme ?? 'Light',
+		});
+		StatusBar.setOverlaysWebView({ overlay: false });
 	}
 
 	loadNotifications() {
