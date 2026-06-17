@@ -335,34 +335,45 @@ ion-app.guest-customer-mode {
 	}
 }
 
+ion-app {
+	--app-footer-safe-area-bottom: calc(var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)) / 2);
+}
+
 ion-split-pane {
-	bottom: calc(10 / 16 * 2rem);
+	bottom: calc(10 / 16 * 2rem + var(--app-footer-safe-area-bottom, 0px));
 
 	@media print {
 	}
 }
 
-.app-footer {
-	padding-right: 8px;
-	padding-left: 8px;
-	padding-bottom: var(--ion-safe-area-bottom);
+ion-footer.app-footer {
+	--ion-safe-area-bottom: var(--app-footer-safe-area-bottom);
 
-	min-height: calc(10 / 16 * 2rem);
-	right: 0;
+	position: fixed;
 	bottom: 0;
-	position: absolute;
-	font-size: calc(10 / 16 * 1.2rem);
+	left: 0;
+	right: 0;
+	z-index: 10;
 	width: 100%;
-
-	border-top: solid 1px var(--menu-right-border-color);
-	background: var(--menu-background-bottom);
-
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 
 	@media print {
 		display: none;
+	}
+
+	ion-toolbar {
+		--background: var(--menu-background-bottom);
+		--border-width: 0;
+		--min-height: calc(10 / 16 * 2rem);
+		--padding-start: 8px;
+		--padding-end: 8px;
+		font-size: calc(10 / 16 * 1.2rem);
+		border-top: solid 1px var(--menu-right-border-color);
+	}
+
+	.flex-center {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
 	}
 
 	.text {
