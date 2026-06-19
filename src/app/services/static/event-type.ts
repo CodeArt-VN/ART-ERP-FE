@@ -43,6 +43,7 @@ export const EVENT_TYPE = {
 		CLOSE_POP_LIST_TOOLBAR: 'app:closePopListToolBar',
 		NETWORK_STATUS_CHANGE: 'app:networkStatusChange',
 		CHANGE_THEME: 'app:ChangeTheme',
+		RESTORE_STATUS_BAR: 'app:restoreStatusBar',
 	},
 
 	// ===== SYSTEM EVENTS =====
