@@ -228,6 +228,48 @@ export class PaymentModalComponent implements OnInit {
 		this.generateAmountButtons();
 	}
 
+
+	private async loadPoint(contactId): Promise<boolean> {
+		this.item.Point = 0;
+		this.item.PolLevelName = '';
+		this.item.PointConversionRate = 0;
+
+		if (!this.canUseLoyaltyPointPayment()) return false;
+
+		try {
+			const contact: any = await this.contactProvider.getAnItem(Number(contactId));
+			if (!contact) {
+				this.env.showMessage('Contact not found!', 'danger');
+				return false;
+			}
+
+			const memberships = contact._MembershipLoyalty || [];
+			const loyalty = memberships.find((m) => m._PolLevel?.IDBranch == this.item.IDBranch) || memberships[0];
+			if (!loyalty) {
+				this.env.showMessage('Customer loyalty membership not found', 'warning');
+				return false;
+			}
+
+			this.item.Point = Number(loyalty.Point) || 0;
+			this.item.PolLevelName = loyalty._PolLevel?.Name || '';
+			this.item.PointConversionRate = Number(loyalty.PointConversionRate) || 0;
+
+			if (this.item.Point <= 0) {
+				this.env.showMessage('Customer loyalty point is not enough', 'warning');
+				return false;
+			}
+			if (this.item.PointConversionRate <= 0) {
+				this.env.showMessage('Active loyalty point conversion policy not found', 'warning');
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			this.env.showMessage('Failed to get contact point!', 'danger');
+			return false;
+		}
+	}
+
 	private initApproverDataSource() {
 		if (this.approverDataSource) return;
 		this.approverDataSource = this.formManagementService.createSelectDataSource((term) => {
@@ -447,6 +489,9 @@ export class PaymentModalComponent implements OnInit {
 		if (currentType == 'PromotionIntegration' && type != 'PromotionIntegration') {
 			if (!(await this.releasePendingGotitVouchers())) return;
 		}
+		if (type == 'LoyaltyPoint') {
+			if (!(await this.loadPoint(this.item.IDCustomer))) return;
+		}
 
 		if (type === 'PaymentProposal') {
 			const ok = await this.ensureRequesterStaff();
@@ -538,13 +583,6 @@ export class PaymentModalComponent implements OnInit {
 			(obj.Type == 'Card' && this.payment?.Id)
 		) {
 			obj.Status = 'Success';
-		}
-		// Manual "Received" for Grab only updates the pending IncomingPayment when
-		// the webhook is missing/late. The button is disabled while Grab is still
-		// waiting for customer confirmation.
-		if (obj.Type == 'GrabPay' && this.payment?.Id) {
-			obj.Status = 'Success';
-			obj.SubType = 'Grab';
 		}
 		let payment = {
 			IDBranch: this.item.IDBranch,
