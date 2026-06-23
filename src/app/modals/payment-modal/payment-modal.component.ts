@@ -186,8 +186,12 @@ export class PaymentModalComponent implements OnInit {
 						if (value.Status == 'Success') {
 							this.env.showMessage('Payment success', 'success');
 							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
-								this.item.DebtAmount -= value.Amount;
-								if (value.Type == 'LoyaltyPoint') this.applyLoyaltyPointPaymentToUsage(value.Amount);
+								if (value.Type == 'LoyaltyPoint') {
+									this.applyLoyaltyPointPaymentToUsage(value.Amount);
+									this.item.DebtAmount = value._Order.CalcTotalOriginal - value._Order.OriginalDiscountFromSalesman;
+								} else {
+									this.item.DebtAmount -= value.Amount;
+								}
 								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
