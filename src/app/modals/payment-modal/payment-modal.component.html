@@ -44,7 +44,7 @@
 						<ion-label>{{ 'Bank transfer' | translate }}</ion-label>
 					</ion-item>
 					<!-- ========== CÔNG NỢ ========== -->
-					<ion-item button (click)="changeType('Debt')">
+					<ion-item *ngIf="!isDefaultCustomer" button (click)="changeType('Debt')">
 						<ion-icon name="cash-outline" slot="start"></ion-icon>
 						<ion-label>{{ 'Debt' | translate }}</ion-label>
 					</ion-item>
