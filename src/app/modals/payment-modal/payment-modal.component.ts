@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
-import { BANK_IncomingPaymentProvider, CRM_ContactProvider, SALE_OrderProvider } from 'src/app/services/static/services.service';
+import { BANK_IncomingPaymentProvider, CRM_ContactProvider, SALE_OrderDeductionProvider, SALE_OrderProvider } from 'src/app/services/static/services.service';
 import { PaymentService } from './paymentService';
 import { POSVoucherModalPage } from 'src/app/pages/POS/pos-voucher-modal/pos-voucher-modal.page';
 import { PromotionService } from 'src/app/services/custom/promotion.service';
@@ -36,6 +36,7 @@ export class PaymentModalComponent implements OnInit {
 	qrCodeHtml = '';
 	isGrabPayLoading = false;
 	grabPayError = '';
+	isDefaultCustomer = false;
 	program: any;
 	@Input() billElement: ElementRef;
 	@Input() calcFunction: Function;
@@ -89,6 +90,7 @@ export class PaymentModalComponent implements OnInit {
 		private promotionService: PromotionService,
 		private formBuilder: FormBuilder,
 		private incomingPaymentProvider: BANK_IncomingPaymentProvider,
+		private saleOrderDeductionProvider: SALE_OrderDeductionProvider,
 		private saleOrderProvider: SALE_OrderProvider,
 		private contactProvider: CRM_ContactProvider,
 		private commonService: CommonService,
@@ -125,7 +127,7 @@ export class PaymentModalComponent implements OnInit {
 	}
 
 	async back() {
-		if(this.formGroup.get('Type').value == 'Card' && this._defaultREFID) {
+		if (this.formGroup.get('Type').value == 'Card' && this._defaultREFID) {
 			return this.step = 1;
 		}
 		if (!(await this.releasePendingGotitVouchers())) return;
@@ -185,8 +187,12 @@ export class PaymentModalComponent implements OnInit {
 						if (value.Status == 'Success') {
 							this.env.showMessage('Payment success', 'success');
 							if (!this.item.IsRefundTransaction && value.Amount < this.item.DebtAmount) {
-								this.item.DebtAmount -= value.Amount;
-								if (value.Type == 'LoyaltyPoint') this.applyLoyaltyPointPaymentToUsage(value.Amount);
+								if (value.Type == 'LoyaltyPoint') {
+									this.applyLoyaltyPointPaymentToUsage(value.Amount);
+									this.item.DebtAmount = value._Order.CalcTotalOriginal - value._Order.OriginalDiscountFromSalesman;
+								} else {
+									this.item.DebtAmount -= value.Amount;
+								}
 								this.invalidateVoucherSaleOrderPayload();
 								this.formGroup.patchValue(this.item);
 								this.generateAmountButtons();
@@ -225,6 +231,51 @@ export class PaymentModalComponent implements OnInit {
 			this.step = 2;
 		}
 		this.generateAmountButtons();
+
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		this.isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
+	}
+
+
+	private async loadPoint(contactId): Promise<boolean> {
+		this.item.Point = 0;
+		this.item.PolLevelName = '';
+		this.item.PointConversionRate = 0;
+
+		if (!this.canUseLoyaltyPointPayment()) return false;
+
+		try {
+			const contact: any = await this.contactProvider.getAnItem(Number(contactId));
+			if (!contact) {
+				this.env.showMessage('Contact not found!', 'danger');
+				return false;
+			}
+
+			const memberships = contact._MembershipLoyalty || [];
+			const loyalty = memberships.find((m) => m._PolLevel?.IDBranch == this.item.IDBranch) || memberships[0];
+			if (!loyalty) {
+				this.env.showMessage('Customer loyalty membership not found', 'warning');
+				return false;
+			}
+
+			this.item.Point = Number(loyalty.Point) || 0;
+			this.item.PolLevelName = loyalty._PolLevel?.Name || '';
+			this.item.PointConversionRate = Number(loyalty.PointConversionRate) || 0;
+
+			if (this.item.Point <= 0) {
+				this.env.showMessage('Customer loyalty point is not enough', 'warning');
+				return false;
+			}
+			if (this.item.PointConversionRate <= 0) {
+				this.env.showMessage('Active loyalty point conversion policy not found', 'warning');
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			this.env.showMessage('Failed to get contact point!', 'danger');
+			return false;
+		}
 	}
 
 	private initApproverDataSource() {
@@ -346,6 +397,15 @@ export class PaymentModalComponent implements OnInit {
 		return type == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit';
 	}
 
+	checkCustomerRequirements() {
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
+		if (isDefaultCustomer) {
+			return false;
+		}
+		return true;
+	}
+
 	canUseLoyaltyPointPayment() {
 		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
 		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
@@ -446,6 +506,9 @@ export class PaymentModalComponent implements OnInit {
 		if (currentType == 'PromotionIntegration' && type != 'PromotionIntegration') {
 			if (!(await this.releasePendingGotitVouchers())) return;
 		}
+		if (type == 'LoyaltyPoint') {
+			if (!(await this.loadPoint(this.item.IDCustomer))) return;
+		}
 
 		if (type === 'PaymentProposal') {
 			const ok = await this.ensureRequesterStaff();
@@ -461,7 +524,7 @@ export class PaymentModalComponent implements OnInit {
 		this.formGroup.get('InputAmount').setValue(Math.abs(this.item.DebtAmount));
 		this.formGroup.get('InputAmount').enable();
 		this.formGroup.get('InputPoint').setValue(0);
-		if(type == 'Card' && this._defaultREFID && this.edccList.length > 0) {
+		if (type == 'Card' && this._defaultREFID && this.edccList.length > 0) {
 			let e = this.edccList.find((d) => d.REF_ID == this._defaultREFID);
 			return this.changeEDCC(e);
 		}
@@ -538,13 +601,6 @@ export class PaymentModalComponent implements OnInit {
 		) {
 			obj.Status = 'Success';
 		}
-		// Manual "Received" for Grab only updates the pending IncomingPayment when
-		// the webhook is missing/late. The button is disabled while Grab is still
-		// waiting for customer confirmation.
-		if (obj.Type == 'GrabPay' && this.payment?.Id) {
-			obj.Status = 'Success';
-			obj.SubType = 'Grab';
-		}
 		let payment = {
 			IDBranch: this.item.IDBranch,
 			IDStaff: this.env.user.StaffID,
@@ -610,58 +666,73 @@ export class PaymentModalComponent implements OnInit {
 		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (this.canOverpay(obj.Type) && obj.Amount > this.getPayableAmount()) obj.Amount = this.getPayableAmount();
 
-		this.incomingPaymentProvider
-			.save(obj)
-			.then(async (res: any) => {
-				this.payment = res;
-				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
-				if (this.item.IsRefundTransaction) {
-					const paymentUpdate = {
-						IDSaleOrder: this.item.IDSaleOrder,
-						IDBranch: this.item.IDBranch,
-						IDTable: this.item.IDTable,
-						Status: this.payment.Status,
-						Amount: this.payment.Amount,
-						Type: this.payment.Type || obj.Type,
-						IsRefundTransaction: this.item.IsRefundTransaction,
-						Id: this.payment.Id,
-					};
-					this.env.publishEvent({ code: EVENT_TYPE.POS.ORDER_PAYMENT_UPDATE, value: JSON.stringify(paymentUpdate) });
-				}
-				//this.next();
-				if (this.payment.Status == 'Success') {
-					this.env.showMessage('Payment success', 'success');
-					if (obj.Type == 'PromotionIntegration' && obj.SubType == 'Gotit') {
-						this.listVoucherUsed = [];
-						this.gotItUseResult = null;
-						this.formGroup.get('VoucherCode').setValue('');
-					}
-					// this.env.publishEvent({
-					// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
-					// 	value: JSON.stringify({
-					// 		IDSaleOrder: this.item.IDSaleOrder,
-					// 		TableName: this.item.TableName,
-					// 		Amount: this.payment.Amount,
-					// 		IDBranch: this.item.IDBranch,
-					// 		IDTable: this.item.IDTable,
-					// 		Status: this.payment.Status,
-					// 		Id: this.payment.Id,
-					// 	}),
-					// });
-					this.submitAttempt = false;
-				} else if (obj.Type == 'ZalopayApp') {
-					if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
-					this.next();
-					this.submitAttempt = false;
-					// this.closeModal();
-				} else {
-					this.submitAttempt = false;
-				}
-			})
-			.catch((err) => {
-				this.env.showMessage(err?.error?.Message ?? err, 'danger');
+		if (obj.Type == 'LoyaltyPoint') {
+			let deduction = {
+				IDBranch: this.item.IDBranch,
+				IDCustomer: this.item.IDCustomer,
+				IDOrder: this.item.IDSaleOrder,
+				Type: 'LoyaltyPoint',
+				OriginalAmount: obj.Point,
+				Amount: obj.Point,
+			}
+			this.saleOrderDeductionProvider.save(deduction).then(async (res: any) => {
 				this.submitAttempt = false;
 			});
+		}
+		else {
+			this.incomingPaymentProvider
+				.save(obj)
+				.then(async (res: any) => {
+					this.payment = res;
+					this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
+					if (this.item.IsRefundTransaction) {
+						const paymentUpdate = {
+							IDSaleOrder: this.item.IDSaleOrder,
+							IDBranch: this.item.IDBranch,
+							IDTable: this.item.IDTable,
+							Status: this.payment.Status,
+							Amount: this.payment.Amount,
+							Type: this.payment.Type || obj.Type,
+							IsRefundTransaction: this.item.IsRefundTransaction,
+							Id: this.payment.Id,
+						};
+						this.env.publishEvent({ code: EVENT_TYPE.POS.ORDER_PAYMENT_UPDATE, value: JSON.stringify(paymentUpdate) });
+					}
+					//this.next();
+					if (this.payment.Status == 'Success') {
+						this.env.showMessage('Payment success', 'success');
+						if (obj.Type == 'PromotionIntegration' && obj.SubType == 'Gotit') {
+							this.listVoucherUsed = [];
+							this.gotItUseResult = null;
+							this.formGroup.get('VoucherCode').setValue('');
+						}
+						// this.env.publishEvent({
+						// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
+						// 	value: JSON.stringify({
+						// 		IDSaleOrder: this.item.IDSaleOrder,
+						// 		TableName: this.item.TableName,
+						// 		Amount: this.payment.Amount,
+						// 		IDBranch: this.item.IDBranch,
+						// 		IDTable: this.item.IDTable,
+						// 		Status: this.payment.Status,
+						// 		Id: this.payment.Id,
+						// 	}),
+						// });
+						this.submitAttempt = false;
+					} else if (obj.Type == 'ZalopayApp') {
+						if (this.payment.Status == 'Processing') window.open(this.payment.PaymentURL, '_blank');
+						this.next();
+						this.submitAttempt = false;
+						// this.closeModal();
+					} else {
+						this.submitAttempt = false;
+					}
+				})
+				.catch((err) => {
+					this.env.showMessage(err?.error?.Message ?? err, 'danger');
+					this.submitAttempt = false;
+				});
+		}
 	}
 
 	//#endregion
@@ -797,7 +868,7 @@ export class PaymentModalComponent implements OnInit {
 				this.payment._Status = this.paymentStatusList.find((d) => d.Code == this.payment.Status);
 				//this.next();
 				this.submitAttempt = false;
-				if(this.step == 2) this.next();
+				if (this.step == 2) this.next();
 				else this.step = 3;
 			})
 			.catch((err) => (this.submitAttempt = false));
