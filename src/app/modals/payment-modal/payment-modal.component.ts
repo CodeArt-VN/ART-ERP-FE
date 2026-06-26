@@ -397,6 +397,15 @@ export class PaymentModalComponent implements OnInit {
 		return type == 'PromotionIntegration' && this.formGroup.get('SubType').value == 'Gotit';
 	}
 
+	checkCustomerRequirements() {
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
+		if (isDefaultCustomer) {
+			return false;
+		}
+		return true;
+	}
+
 	canUseLoyaltyPointPayment() {
 		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
 		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
