@@ -36,6 +36,7 @@ export class PaymentModalComponent implements OnInit {
 	qrCodeHtml = '';
 	isGrabPayLoading = false;
 	grabPayError = '';
+	isDefaultCustomer = false;
 	program: any;
 	@Input() billElement: ElementRef;
 	@Input() calcFunction: Function;
@@ -230,6 +231,9 @@ export class PaymentModalComponent implements OnInit {
 			this.step = 2;
 		}
 		this.generateAmountButtons();
+
+		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
+		this.isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
 	}
 
 
@@ -490,11 +494,6 @@ export class PaymentModalComponent implements OnInit {
 	}
 	async changeType(type, subType = null) {
 		const currentType = this.formGroup.get('Type').value;
-		if (type == 'Debt') {
-			if (!(await this.checkCustomerRequirements())) {
-				return;
-			}
-		}
 		if (currentType == 'PromotionIntegration' && type != 'PromotionIntegration') {
 			if (!(await this.releasePendingGotitVouchers())) return;
 		}
@@ -1153,21 +1152,6 @@ export class PaymentModalComponent implements OnInit {
 		if (total > this.item.DebtAmount) total = this.item.DebtAmount;
 		this.formGroup.get('InputAmount').setValue(total);
 		this.formGroup.get('InputAmount').markAsDirty();
-	}
-
-	private async checkCustomerRequirements() {
-		if (!this.item?.IDCustomer) {
-			this.env.showMessage('Customer information is required', 'danger');
-			return false;
-		}
-
-		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
-		const isDefaultCustomer = defaultBusinessPartnerId && Number(this.item.IDCustomer) === defaultBusinessPartnerId;
-		if (isDefaultCustomer) {
-			this.env.showMessage('Customer is not a default business partner', 'danger');
-			return false;
-		}
-		return true;
 	}
 
 	private async releasePendingGotitVouchers(showError = true) {
