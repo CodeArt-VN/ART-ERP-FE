@@ -524,8 +524,9 @@ export class PaymentModalComponent implements OnInit {
 		this.formGroup.get('InputAmount').setValue(Math.abs(this.item.DebtAmount));
 		this.formGroup.get('InputAmount').enable();
 		this.formGroup.get('InputPoint').setValue(0);
-		if (type == 'Card' && this._defaultREFID && this.edccList.length > 0) {
-			let e = this.edccList.find((d) => d.REF_ID == this._defaultREFID);
+		if (type == 'Card' && this._defaultREFID) {
+			let e = this.edccList.find((d) => String(d.REF_ID) == String(this._defaultREFID));
+			if(!e) return this.env.showMessage('Payment terminal is not connected', 'warning');
 			return this.changeEDCC(e);
 		}
 		this.next();
