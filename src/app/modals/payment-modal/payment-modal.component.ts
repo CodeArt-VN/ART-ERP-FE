@@ -664,8 +664,7 @@ export class PaymentModalComponent implements OnInit {
 		let str = window.btoa(JSON.stringify(payment));
 		let code = this.convertUrl(str);
 		obj.Code = code;
-		const isGotitPayment = obj.Type == 'PromotionIntegration' && obj.SubType == 'Gotit';
-		if (!isGotitPayment && this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
+		if (this.payment && this.payment.Type == this.formGroup.get('Type').value) obj.Id = this.payment.Id;
 		if (this.canOverpay(obj.Type) && obj.Amount > this.getPayableAmount()) obj.Amount = this.getPayableAmount();
 
 		if (obj.Type == 'LoyaltyPoint') {
@@ -707,7 +706,6 @@ export class PaymentModalComponent implements OnInit {
 							this.listVoucherUsed = [];
 							this.gotItUseResult = null;
 							this.formGroup.get('VoucherCode').setValue('');
-							this.payment = null;
 						}
 						// this.env.publishEvent({
 						// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
