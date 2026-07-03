@@ -706,6 +706,7 @@ export class PaymentModalComponent implements OnInit {
 							this.listVoucherUsed = [];
 							this.gotItUseResult = null;
 							this.formGroup.get('VoucherCode').setValue('');
+							this.payment = null;
 						}
 						// this.env.publishEvent({
 						// 	code: 'signalR:POSOrderPaymentUpdate', // giống code trong switch case
