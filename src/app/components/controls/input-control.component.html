@@ -602,8 +602,8 @@
 
 		<ion-modal [isOpen]="isOpenPicker" (willDismiss)="isOpenPicker = false" [initialBreakpoint]="0.75" [breakpoints]="[0.5, 0.75]">
 			<ng-template>
-				<app-color-picker (selected)="onSelectColor($event, form.controls[secondaryId])" [color]="form.controls[secondaryId].value || 'dark'"></app-color-picker>
 				<ion-content appScrollbarTheme [fullscreen]="true">
+					<app-color-picker (selected)="onSelectColor($event, form.controls[secondaryId])" [color]="form.controls[secondaryId].value || 'dark'"></app-color-picker>
 					<app-icon-picker
 						(selected)="onSelectIcon($event, form.controls[id])"
 						[color]="form.controls[secondaryId].value || color"
