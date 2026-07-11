@@ -12,8 +12,8 @@ export const environment = {
 		{ Code: 'https://beta.inholdings.vn/', Name: 'IN beta server', Color: 'danger', Icon: 'cube-outline' },
 		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'danger', Icon: 'cube-outline' },
 		
-		{ Code: 'http://local.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
-		{ Code: 'http://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'rocket' },
+		{ Code: 'https://local.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
+		{ Code: 'https://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'rocket' },
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 		{ Code: 'http://192.168.1.99:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
