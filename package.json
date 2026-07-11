@@ -5,7 +5,7 @@
 	"author": "Hùng Vũ",
 	"homepage": "https://codeart.vn/",
 	"scripts": {
-		"postinstall": "node ./scripts/fix-exxili-capacitor-nfc.js",
+		"postinstall": "node ./scripts/fix-exxili-capacitor-nfc.js && node ./scripts/fix-capacitor-status-bar.js",
 		"build-web": "node ./replace.build.js build web",
 		"ng": "ng",
 		"start": "ng serve",

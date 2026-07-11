@@ -17,6 +17,7 @@ import { OSM_NotificationService } from './services/custom/notifications.service
 import { EVENT_TYPE } from './services/static/event-type';
 import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
+import { recheckCurrentRoutePermission } from './guards/app.guard';
 import { UserCardPage } from './pages/SYS/user-card/user-card.page';
 
 register();
@@ -68,6 +69,8 @@ export interface ComponentUI {
 	standalone: false,
 })
 export class AppComponent implements OnInit {
+	isGuestCustomer = false;
+
 	ui: ComponentUI = {
 		// App state
 		appTheme: 'artdistribution-theme',
@@ -303,11 +306,22 @@ export class AppComponent implements OnInit {
 		this.ui.branchFormGroup = this.formBuilder.group({
 			IDBranch: [''],
 		});
+
+		this.updateGuestCustomerMode();
 	}
 
 	ngOnInit() {
 		dogF && console.log('🌲 [AppComponent] OnInit');
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) {
+				this.updateGuestCustomerMode();
+			}
+		});
 		this.initializeApp();
+	}
+
+	private updateGuestCustomerMode(): void {
+		this.isGuestCustomer = this.env.isGuestCustomerRoute();
 	}
 
 	async initializeApp() {
@@ -315,6 +329,7 @@ export class AppComponent implements OnInit {
 		await this.env.ready;
 		dogF && console.log('🌲 [AppComponent] Environment ready');
 
+		this.updateGuestCustomerMode();
 		this.ui.isReady = true;
 		this.updateStatusbar();
 		this.eventHandler();
@@ -323,9 +338,11 @@ export class AppComponent implements OnInit {
 		this.initNotification();
 		this.serviceWorkerRegister();
 
-		setTimeout(() => {
-			this.userProfileService.getProfile();
-		}, 0);
+		if (!this.isGuestCustomer) {
+			setTimeout(() => {
+				this.userProfileService.getProfile();
+			}, 0);
+		}
 	}
 
 	eventHandler() {
@@ -363,6 +380,9 @@ export class AppComponent implements OnInit {
 				case EVENT_TYPE.APP.CHANGE_THEME:
 					this.updateStatusbar();
 					break;
+				case EVENT_TYPE.APP.RESTORE_STATUS_BAR:
+					this.updateStatusbar(true);
+					break;
 				case EVENT_TYPE.APP.NOTIFICATION:
 					this.loadNotifications();
 					break;
@@ -373,6 +393,7 @@ export class AppComponent implements OnInit {
 
 				case EVENT_TYPE.USER.CONTEXT_UPDATED:
 					this.renderUI();
+					void recheckCurrentRoutePermission(this.router, this.env, this.userProfileService);
 					break;
 
 				default:
@@ -437,7 +458,12 @@ export class AppComponent implements OnInit {
 		this.ui.pinnedForms = this.env.user.Forms.filter((d) => d.isPinned);
 	}
 
-	updateStatusbar() {
+	updateStatusbar(statusBarOnly = false) {
+		if (statusBarOnly) {
+			this.applyStatusBarStyle(lib.getCssVariableValue('--ion-color-primary'));
+			return;
+		}
+
 		let title = 'ERP';
 		let relIcon = 'assets/icons/icon-512.webp';
 
@@ -467,27 +493,26 @@ export class AppComponent implements OnInit {
 		setTimeout(() => {
 			let themeColor = lib.getCssVariableValue('--ion-color-primary');
 			document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
-
-			if (Capacitor.isPluginAvailable('StatusBar')) {
-				StatusBar.setBackgroundColor({
-					color: this.env?.user?.UserSetting?.Theme?.Value ? themeColor : '#ffffff',
-				});
-				StatusBar.setStyle({
-					style: this.env.user.UserSetting.Theme.Value,
-				});
-			}
+			this.applyStatusBarStyle(themeColor);
 		}, 100);
 
-		if (Capacitor.isPluginAvailable('StatusBar')) {
-			StatusBar.setBackgroundColor({
-				color: this.env?.user?.UserSetting?.Theme?.Value ? '#5a5c5e' : '#ffffff',
-			});
-			StatusBar.setStyle({
-				style: this.env?.user?.UserSetting?.Theme?.Value,
-			});
-			//StatusBar.setBackgroundColor({ color: (this.env?.user?.UserSetting?.Theme?.Value) ? '#5a5c5e' : '#ffffff' });
-			StatusBar.setOverlaysWebView({ overlay: false });
+		this.applyStatusBarStyle();
+	}
+
+	private applyStatusBarStyle(themeColor?: string) {
+		if (!Capacitor.isPluginAvailable('StatusBar')) {
+			return;
 		}
+
+		const userTheme = this.env?.user?.UserSetting?.Theme?.Value;
+
+		StatusBar.setBackgroundColor({
+			color: themeColor ?? (userTheme ? '#5a5c5e' : '#ffffff'),
+		});
+		StatusBar.setStyle({
+			style: userTheme ?? 'Light',
+		});
+		StatusBar.setOverlaysWebView({ overlay: false });
 	}
 
 	loadNotifications() {

@@ -44,11 +44,12 @@
 						<ion-label>{{ 'Bank transfer' | translate }}</ion-label>
 					</ion-item>
 					<!-- ========== CÔNG NỢ ========== -->
-					<ion-item button (click)="changeType('Debt')">
+					<ion-item [disabled]="!checkCustomerRequirements()" button (click)="changeType('Debt')">
 						<ion-icon name="cash-outline" slot="start"></ion-icon>
 						<ion-label>{{ 'Debt' | translate }}</ion-label>
 					</ion-item>
 
+					<!-- ========== Point ========== -->
 					<ion-item [disabled]="!canUseLoyaltyPointPayment()" button (click)="changeType('LoyaltyPoint')"> 
 						<ion-icon name="wallet-outline" slot="start"></ion-icon>
 						<ion-label>{{ 'Loyalty point' | translate }}</ion-label>

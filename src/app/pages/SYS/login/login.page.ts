@@ -14,6 +14,8 @@ import { environment, dogF } from 'src/environments/environment';
 import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { APIList } from 'src/app/services/static/global-variable';
 import { firstValueFrom } from 'rxjs';
+import { hasValidUserId } from 'src/app/interfaces/auth.interfaces';
+import { getFirstAllowedFormUrlTree, UNAUTHORIZED_PATH } from 'src/app/guards/app.guard';
 
 var URLSearchParams: any;
 
@@ -28,10 +30,11 @@ export class LoginPage extends PageBase {
 	email = '';
 	formGroup: FormGroup;
 	submitAttempt = false;
-	returnUrl: string;
+	returnUrl: string | undefined;
 	showForgotPassword = false;
 	partnerList = [];
 	randomImg = '';
+	private resumeAttempted = false;
 
 	constructor(
 		public pageProvider: CustomService,
@@ -69,25 +72,62 @@ export class LoginPage extends PageBase {
 		}
 	}
 
-	/**
-	 * Post-login / resume session: navigate with UrlTree (same pattern as auth guards).
-	 */
-	private navigateAfterLogin(target: string): void {
-		const raw = (target ?? 'default').trim();
-		const tree =
-			!raw || raw === 'default'
-				? this.router.createUrlTree(['/default'])
-				: this.router.parseUrl(raw.startsWith('/') ? raw : `/${raw}`);
-		void this.router.navigateByUrl(tree, { replaceUrl: true });
+	private async navigateAfterAuth(): Promise<void> {
+		const rawReturn = (this.returnUrl ?? '').trim();
+		if (rawReturn && rawReturn !== 'default') {
+			const path = rawReturn.startsWith('/') ? rawReturn : `/${rawReturn}`;
+			const allowed = await this.env.checkFormPermission(path);
+			if (allowed) {
+				await this.router.navigateByUrl(this.router.parseUrl(path), { replaceUrl: true });
+				return;
+			}
+		}
+
+		const firstAllowed = getFirstAllowedFormUrlTree(this.router, this.env);
+		if (firstAllowed) {
+			await this.router.navigateByUrl(firstAllowed, { replaceUrl: true });
+			return;
+		}
+
+		if (hasValidUserId(this.env.user?.Id)) {
+			await this.router.navigateByUrl(this.router.createUrlTree([UNAUTHORIZED_PATH]), { replaceUrl: true });
+			return;
+		}
+
+		await this.router.navigateByUrl(this.router.createUrlTree(['/default']), { replaceUrl: true });
+	}
+
+	/** Resume khi có token + user từ cache (tránh kẹt login sau redirect nhầm). */
+	private async tryResumeSession(): Promise<void> {
+		if (this.resumeAttempted) {
+			return;
+		}
+		this.resumeAttempted = true;
+
+		const hasToken = !!this.env.storage?.app?.token?.access_token;
+		if (!hasToken) {
+			return;
+		}
+
+		if (!hasValidUserId(this.env.user?.Id)) {
+			try {
+				await this.profileService.getProfile();
+			} catch {
+				return;
+			}
+		}
+
+		if (hasValidUserId(this.env.user?.Id)) {
+			await this.navigateAfterAuth();
+		}
 	}
 
 	preLoadData() {
-		// get return url from route parameters or default to '/'
-		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'default';
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] ?? undefined;
 
-		if (this.env.user && this.env.user.Id) {
-			this.navigateAfterLogin(this.returnUrl);
-		} else {
+		void this.tryResumeSession();
+
+		if (!this.env.user?.Id) {
 			this.env.getStorage('Username')?.then((v) => {
 				this.formGroup.controls.UserName.setValue(v);
 			});
@@ -95,7 +135,7 @@ export class LoginPage extends PageBase {
 	}
 
 	goBack() {
-		this.navigateAfterLogin(this.returnUrl);
+		void this.navigateAfterAuth();
 	}
 
 	login() {
@@ -113,9 +153,9 @@ export class LoginPage extends PageBase {
 			.showLoading('Please wait for a few moments', async () => {
 				await this.authService.login({ username: account.UserName, password: account.Password });
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
-				await this.profileService.getProfile(); // Force reload fresh data
+				await this.profileService.getProfile();
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
-				this.goBack();
+				await this.navigateAfterAuth();
 			})
 			.catch((err) => {
 				if (err.error && typeof err.error.loaded == 'number' && err.error.loaded == 0) {
@@ -141,12 +181,11 @@ export class LoginPage extends PageBase {
 				this.externalAuthService
 					.handleOAuthCallback(provider, externalAccessToken)
 					.then(async (data) => {
-						// Load user data after successful external login
 						dogF && console.log('🔑 [LoginPage] External login successful, loading user data...');
-						await this.profileService.getProfile(); // Force reload fresh data
+						await this.profileService.getProfile();
 						dogF && console.log('✅ [LoginPage] User data loaded, navigating back...');
 						loading.dismiss();
-						this.goBack();
+						await this.navigateAfterAuth();
 					})
 					.catch((err) => {
 						loading.dismiss();
@@ -156,14 +195,6 @@ export class LoginPage extends PageBase {
 	}
 
 	facebooklogin() {
-		//TODO: facebook login
-		//http://bitoftech.net/2014/08/11/asp-net-web-api-2-external-logins-social-logins-facebook-google-angularjs-app/
-		//https://stackoverflow.com/questions/21065648/asp-net-web-api-2-how-to-login-with-external-authentication-services
-		//1. GET /api/Account/ExternalLogins?returnUrl=%2F&generateState=true
-		// => call Facebook provider URL
-		//2. Redirected to http://hungvq-w10.local:54009/BOOKING/login#external_access_token=ggg&provider=Facebook&haslocalaccount=True&external_user_name=Hùng%20Vũ
-		// => gọi ObtainLocalAccessToken => lấy token.
-
 		this.loadingCtrl
 			.create({
 				message: 'Please wait for a few moments',
@@ -178,11 +209,8 @@ export class LoginPage extends PageBase {
 						if (it.length) {
 							let ExternalLoginURL = environment.appDomain + it[0].Url;
 							window.location.replace(ExternalLoginURL);
-							//Sau khi pass chalenge lấy fragment từ URL redirect về và gọi ObtainLocalAccessToken(string provider, string externalAccessToken) để lấy token.
-							//xem tiếp preLoadData()
 						}
 						loading.dismiss();
-						// this.goBack();
 					})
 					.catch((err) => {
 						loading.dismiss();
@@ -206,11 +234,8 @@ export class LoginPage extends PageBase {
 						if (it.length) {
 							let ExternalLoginURL = environment.appDomain + it[0].Url;
 							window.location.replace(ExternalLoginURL);
-							//Sau khi pass chalenge lấy fragment từ URL redirect về và gọi ObtainLocalAccessToken(string provider, string externalAccessToken) để lấy token.
-							//xem tiếp preLoadData()
 						}
 						loading.dismiss();
-						// this.goBack();
 					})
 					.catch((err) => {
 						loading.dismiss();
@@ -221,30 +246,20 @@ export class LoginPage extends PageBase {
 
 	ionViewWillEnter() {
 		super.ionViewWillEnter();
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] ?? undefined;
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: false });
+		void this.tryResumeSession();
 	}
 
-	/**
-	 * Request password reset
-	 * Migrated from AccountService.forgotPassword()
-	 */
 	async forgotPassword(email: string = null): Promise<any> {
 		dogF && console.log('🔐 [LoginPage] Requesting password reset...', { email });
 
 		try {
 			const data = { Email: email };
 
-			dogF &&
-				console.log('🌐 [LoginPage] Calling forgot password API...', {
-					url: APIList.ACCOUNT.forgotPassword.url,
-					method: APIList.ACCOUNT.forgotPassword.method,
-				});
-
 			const response = await firstValueFrom(
 				this.commonService.connect(APIList.ACCOUNT.forgotPassword.method, APIList.ACCOUNT.forgotPassword.url, data),
 			);
-
-			dogF && console.log('✅ [LoginPage] Password reset request successful:', response);
 
 			return response;
 		} catch (error) {

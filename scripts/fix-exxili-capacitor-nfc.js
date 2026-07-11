@@ -55,9 +55,37 @@ const files = {
 	androidPlugin: path.join(root, 'node_modules', '@exxili', 'capacitor-nfc', 'android', 'src', 'main', 'kotlin', 'com', 'exxili', 'capacitornfc', 'NFCPlugin.kt'),
 	iosPlugin: path.join(root, 'node_modules', '@exxili', 'capacitor-nfc', 'ios', 'Sources', 'NFCPlugin', 'NFCPlugin.swift'),
 	iosWriter: path.join(root, 'node_modules', '@exxili', 'capacitor-nfc', 'ios', 'Sources', 'NFCPlugin', 'NFCWriter.swift'),
+	packageSwift: path.join(root, 'node_modules', '@exxili', 'capacitor-nfc', 'Package.swift'),
 };
 
 let changedCount = 0;
+
+if (
+	replaceInFile(files.packageSwift, [
+		{
+			label: 'spm-package-name',
+			from: 'name: "CapacitorNfc"',
+			to: 'name: "ExxiliCapacitorNfc"',
+		},
+		{
+			label: 'spm-product-name',
+			from: 'name: "CapacitorNfc",\n            targets: ["NFCPlugin"]',
+			to: 'name: "ExxiliCapacitorNfc",\n            targets: ["NFCPlugin"]',
+		},
+		{
+			label: 'spm-capacitor-swift-pm-version',
+			from: '.package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", branch: "main")',
+			to: '.package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.0.0")',
+		},
+		{
+			label: 'spm-ios-platform',
+			from: 'platforms: [.iOS(.v13)]',
+			to: 'platforms: [.iOS(.v15)]',
+		},
+	])
+) {
+	changedCount++;
+}
 
 if (
 	replaceInFile(files.gradle, [

@@ -201,7 +201,7 @@ export class DataTableComponent implements OnInit {
 		this._rows = val;
 		if (this._isTreeList && this.isQueryLocalOnly) {
 			this.onSort([]);
-		} else if (this._rows && this._rows.length && this._isTreeList) {
+		} else if (this._rows?.length && this._isTreeList && this._rows[0]?.levelSort == null) {
 			lib.buildFlatTree(this._rows, []).then((resp: any) => {
 				this._rows = [...resp];
 			});

@@ -16,7 +16,7 @@ export class NumberInputModalComponent implements OnInit {
 	set value(v: string) {
 		this._value = v ?? '';
 		this.updateDisplayedValue(this._value);
-		this.triggerNativeChange();
+		this.syncNativeValue();
 	}
 	get value() {
 		return this._value;
@@ -26,7 +26,7 @@ export class NumberInputModalComponent implements OnInit {
 	@Input()
 	set isValid(v: boolean) {
 		this._isValid = !!v;
-		this.triggerNativeChange();
+		this.syncNativeValue();
 	}
 	get isValid() {
 		return this._isValid;
@@ -36,7 +36,7 @@ export class NumberInputModalComponent implements OnInit {
 	@Input()
 	set message(v: string) {
 		this._message = v ?? '';
-		this.triggerNativeChange();
+		this.syncNativeValue();
 	}
 	get message() {
 		return this._message;
@@ -46,14 +46,14 @@ export class NumberInputModalComponent implements OnInit {
 	@Input()
 	set autoEmit(v: boolean) {
 		this._autoEmit = v ?? false;
-		this.triggerNativeChange();
+		this.syncNativeValue();
 	}
 
 	private _POSAllowDecimalQuantity = false;
 	@Input()
 	set POSAllowDecimalQuantity(v: boolean) {
 		this._POSAllowDecimalQuantity = v ?? false;
-		this.triggerNativeChange();
+		this.syncNativeValue();
 	}
 	get POSAllowDecimalQuantity() {
 		return this._POSAllowDecimalQuantity;
@@ -83,28 +83,14 @@ export class NumberInputModalComponent implements OnInit {
 	// Called when user types in the input field
 	onUserInput(ev: Event) {
 		const input = ev.target as HTMLInputElement;
-		this._value = input.value;
-		if (this.POSAllowDecimalQuantity) {
-			// Chỉ cho: số + 1 dấu .
-			this._value = this._value.replace(/[^0-9.]/g, '');
-
-			const dotIndex = this._value.indexOf('.');
-			if (dotIndex !== -1) {
-				// chỉ giữ 1 dấu .
-				this._value = this._value.substring(0, dotIndex + 1) + this._value.substring(dotIndex + 1).replace(/\./g, '');
-			}
-		} else {
-			// Chỉ cho số nguyên
-			this._value = this._value.replace(/\D/g, '');
-		}
+		const filtered = this.filterInputValue(input.value, input.selectionStart ?? input.value.length);
+		this._value = filtered.value;
 
 		// Ensure the native input element shows the filtered value immediately
 		try {
 			input.value = this._value ?? '';
-			// keep caret at end
-			const pos = (this._value || '').length;
 			if (typeof input.setSelectionRange === 'function') {
-				input.setSelectionRange(pos, pos);
+				input.setSelectionRange(filtered.caret, filtered.caret);
 			}
 		} catch (err) {
 			// ignore
@@ -112,6 +98,36 @@ export class NumberInputModalComponent implements OnInit {
 
 		this.updateDisplayedValue(this._value);
 		this.emitChange();
+	}
+
+	private filterInputValue(rawValue: string, caret: number) {
+		let value = '';
+		let nextCaret = 0;
+		let hasDot = false;
+
+		for (let i = 0; i < rawValue.length; i++) {
+			let ch = rawValue[i];
+			let keep = false;
+
+			if (this.POSAllowDecimalQuantity) {
+				if (ch === ',') ch = '.';
+				if (ch >= '0' && ch <= '9') {
+					keep = true;
+				} else if (ch === '.' && !hasDot) {
+					hasDot = true;
+					keep = true;
+				}
+			} else if (ch >= '0' && ch <= '9') {
+				keep = true;
+			}
+
+			if (keep) {
+				value += ch;
+				if (i < caret) nextCaret++;
+			}
+		}
+
+		return { value, caret: nextCaret };
 	}
 
 	// Called when keypad buttons pressed
@@ -129,6 +145,9 @@ export class NumberInputModalComponent implements OnInit {
 				console.warn('dismiss error', err);
 			}
 			return;
+		} else if (key === '.' && this.POSAllowDecimalQuantity) {
+			if (this._value.includes('.')) return;
+			this._value = this._value + key;
 		} else {
 			this._value = this._value + key;
 		}
@@ -146,20 +165,15 @@ export class NumberInputModalComponent implements OnInit {
 		}
 	}
 
-	// When outside pushes inputs, ensure native input elements receive change/input events
-	private triggerNativeChange() {
-		// update native input value and dispatch events
+	// Keep the native input in sync when inputs are pushed from outside.
+	private syncNativeValue() {
 		try {
 			if (this.textInput && this.textInput.nativeElement) {
 				const el = this.textInput.nativeElement;
 				el.value = this._value ?? '';
-				const inputEvent = new Event('input', { bubbles: true });
-				el.dispatchEvent(inputEvent);
-				const changeEvent = new Event('change', { bubbles: true });
-				el.dispatchEvent(changeEvent);
 			}
 		} catch (err) {
-			console.warn('triggerNativeChange failed', err);
+			console.warn('syncNativeValue failed', err);
 		}
 	}
 

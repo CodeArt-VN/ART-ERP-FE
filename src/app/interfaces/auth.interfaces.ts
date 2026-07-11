@@ -35,9 +35,11 @@ export interface TokenResponse {
   access_token: string;
   token_type: string;
   expires_in: number;
-  refresh_token: string;
+  refresh_token?: string;
   '.expires'?: string;
   scope?: string;
+  /** Set on client when token is stored (ms since epoch). */
+  _issuedAt?: number;
 }
 
 export interface LoginCredentials {
@@ -63,8 +65,16 @@ export interface DeviceInfo {
 
 // ===== USER PROFILE INTERFACES =====
 
+/** True for real user ids (numeric or GUID). False for placeholder 0 / empty. */
+export function hasValidUserId(id: unknown): id is string | number {
+	if (id == null || id === false) return false;
+	if (id === 0 || id === '0') return false;
+	if (typeof id === 'string' && id.trim() === '') return false;
+	return true;
+}
+
 export interface UserProfile {
-  Id: number;
+  Id: string | number;
   UserName: string;
   Email: string;
   FullName: string;

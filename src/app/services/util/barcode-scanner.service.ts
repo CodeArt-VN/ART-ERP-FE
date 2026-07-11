@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerOptions, CapacitorBarcodeScannerScanResult } from '@capacitor/barcode-scanner';
 import { Capacitor } from '@capacitor/core';
 import { EnvService } from '../core/env.service';
+import { EVENT_TYPE } from '../static/event-type';
 import { lib } from '../static/global-functions';
-import { Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,35 +23,39 @@ export class BarcodeScannerService {
 	 * @param options - Optional custom options for the barcode scanner.
 	 * @returns A promise that resolves with the scan result as a string.
 	 */
-	scan(type: string = null, scanInstructions: string = null): Promise<string> {
-		debugger;
-		return new Promise((resolve, reject) => {
-			if (Capacitor.getPlatform() == 'web') {
-				this.env.showMessage('Barcode scanner is not available on this platform.', 'warning');
-				reject('Barcode scanner is not available on this platform.');
-				return;
-			}
+	async scan(type: string = null, scanInstructions: string = null): Promise<string> {
+		if (Capacitor.getPlatform() == 'web') {
+			this.env.showMessage('Barcode scanner is not available on this platform.', 'warning');
+			throw new Error('Barcode scanner is not available on this platform.');
+		}
 
-			//if (scanInstructions) this.options.scanInstructions = await this.env.translate.get(scanInstructions);
+		//if (scanInstructions) this.options.scanInstructions = await this.env.translate.get(scanInstructions);
 
-			// Start the barcode scanning process
-			CapacitorBarcodeScanner.scanBarcode(this.options)
-				.then((result: CapacitorBarcodeScannerScanResult) => {
-					if (type) {
-						// Handle the barcode scan result
-						this.handleBarcodeScanResult(type, result)
-							.then((processedResult) => resolve(processedResult))
-							.catch((e) => {
-								this.handleError(e);
-								reject(e);
-							});
-					} else resolve(result.ScanResult);
-				})
-				.catch((e) => {
-					this.handleError(e);
-					reject(e);
-				});
-		});
+		let result: CapacitorBarcodeScannerScanResult;
+		try {
+			result = await CapacitorBarcodeScanner.scanBarcode(this.options);
+		} catch (error) {
+			this.handleError(error);
+			throw error;
+		} finally {
+			this.scheduleStatusBarRestore();
+		}
+
+		if (type) {
+			return this.handleBarcodeScanResult(type, result, scanInstructions);
+		}
+
+		return result.ScanResult;
+	}
+
+	private scheduleStatusBarRestore(): void {
+		if (!Capacitor.isPluginAvailable('StatusBar')) {
+			return;
+		}
+
+		window.setTimeout(() => {
+			this.env.publishEvent({ Code: EVENT_TYPE.APP.RESTORE_STATUS_BAR });
+		}, 150);
 	}
 
 	/**

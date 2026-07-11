@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-title>{{ 'Unauthorized' | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme>
+	<div class="empty-message ion-padding">
+		<div class="icon">
+			<img class="svgcolor" appSvgImage src="./assets/undraw_no_data_qbuo.svg" />
+		</div>
+		<div class="message ion-text-center">
+			<div class="title">{{ 'No authorised forms' | translate }}</div>
+			<div class="detail ion-margin-top">
+				<ion-text>
+					{{ 'Your account is signed in but has no menu permissions. Please contact Admin or try reloading your profile.' | translate }}
+				</ion-text>
+			</div>
+			<ion-button class="ion-margin-top" expand="block" (click)="retryProfile()" [disabled]="loading">
+				<ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+				<span *ngIf="!loading">{{ 'Retry' | translate }}</span>
+			</ion-button>
+			<ion-button class="ion-margin-top" expand="block" fill="outline" color="medium" (click)="logout()">
+				{{ 'Log out' | translate }}
+			</ion-button>
+		</div>
+	</div>
+</ion-content>

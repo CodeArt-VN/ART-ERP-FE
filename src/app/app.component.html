@@ -1,4 +1,4 @@
-<ion-app class="default-palette">
+<ion-app class="default-palette" [class.guest-customer-mode]="isGuestCustomer">
 	<div id="ng-select-holder" style="position: absolute; z-index: 30005"></div>
 	<ion-split-pane contentId="main-content">
 		<ion-menu
@@ -370,9 +370,10 @@
 		</ion-menu>
 	</ion-split-pane>
 
-	<div class="app-footer">
-		<div class="flex-center">
-			<span id="change-app-server" class="text" *ngIf="!env.user?.Id">
+	<ion-footer class="app-footer">
+		<ion-toolbar>
+			<div class="flex-center" slot="start">
+			<span id="change-app-server" class="text" *ngIf="!env.user?.Id && !isGuestCustomer">
 				<ng-container *ngFor="let s of env.app.tenant.list">
 					<ion-icon [color]="s.Color" [name]="s.Icon" [title]="s.Name" *ngIf="env.app.tenant.current == s.Code"></ion-icon>
 				</ng-container>
@@ -410,8 +411,8 @@
 				env.user.UserName
 			}}</a>
 			<a class="text" href=".">{{ env.app.version }} </a>
-		</div>
-		<div class="flex-center">
+			</div>
+			<div class="flex-center" slot="end">
 			<span class="text" *ngFor="let m of ui.appMessages">
 				<ion-icon [ngClass]="{ blink: m.IsBlink }" [color]="m.Color" [name]="m.Icon"></ion-icon>
 				<span>{{ m.Message }}</span>
@@ -432,6 +433,7 @@
 			<span class="text" *ngIf="!env.app.isOnline">
 				<ion-icon [color]="env.app.isOnline ? 'success' : 'danger'" name="wifi"></ion-icon>
 			</span>
-		</div>
-	</div>
+			</div>
+		</ion-toolbar>
+	</ion-footer>
 </ion-app>

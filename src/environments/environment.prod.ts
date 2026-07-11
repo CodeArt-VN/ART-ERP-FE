@@ -9,6 +9,8 @@ export const environment = {
 		
 		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
 		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
+		{ Code: 'https://local.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
+
 	],
 	appDomain: 'https://artlogistics.vn/',
 	staffAvatarsServer: 'https://artlogistics.vn/Uploads/HRM/Staffs/Avatars/',
