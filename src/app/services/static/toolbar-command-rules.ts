@@ -40,17 +40,17 @@ export var toolbarCommandRules = {
 	],
 
 	PURCHASE_Quotation: [
-		['Btns',			'ChangeBranch',		'Merge',		'Split',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive',		'Confirm',		'SendQuotationRequest',		'CopyToPurchaseRequest',		'CopyToPurchaseOrder',		'CopyToPriceListVersion'],
-		['Draft',			1,					1,				1,				1,				0,					1,				1,				1,				1,				0,				1,								0,								0,				0],
-		['Splitted',		0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,								0,								0,				0],
-		['Merged',			0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,								0,								0,				0],
-		['Canceled',		0,					0,				0,				0,				0,					0,				0,				1,				1,				0,				0,								0,								0,				0],
-		['Open',			0,					0,				0,				1,				0,					1,				1,				0,				1,				1,				0,								0,								0,				0],
-		['Confirmed',		0,					0,				0,				1,				0,					1,				1,				0,				1,				0,				1,								0,								0,				0],
-		['Submitted',		0,					0,				0,				0,				1,					1,				0,				0,				0,				0,				0,								0,								0,				0],
-		['Unapproved',		1,					1,				1,				1,				0,					1,				1,				1,				1,				0,				1,								0,								0,				0],
-		['Approved',		0,					0,				0,				0,				1,					0,				1,				0,				1,				0,				0,								1,								1,				1],
-		['Closed',			0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,								0,								0,				1],
+		['Btns',			'ChangeBranch',		'Merge',		'Split',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive',		'Confirm',		'SendQuotationRequest',		'CopyToPurchaseRequest',		'CopyToPurchaseOrder',		'CopyToPriceListVersion', 		'CreateFromVendor'],
+		['Draft',			1,					1,				1,				1,				0,					1,				1,				1,				1,				0,				1,							0,								0,							0,								0],
+		['Splitted',		0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,							0,								0,							0,								0],
+		['Merged',			0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,							0,								0,							0,								0],
+		['Canceled',		0,					0,				0,				0,				0,					0,				0,				1,				1,				0,				0,							0,								0,							0,								0],
+		['Open',			0,					0,				0,				1,				0,					1,				1,				0,				1,				1,				0,							0,								0,							0,								1],
+		['Confirmed',		0,					0,				0,				1,				0,					1,				1,				0,				1,				0,				1,							0,								0,							0,								0],
+		['Submitted',		0,					0,				0,				0,				1,					1,				0,				0,				0,				0,				0,							0,								0,							0,								0],
+		['Unapproved',		1,					1,				1,				1,				0,					1,				1,				1,				1,				0,				1,							0,								0,							0,								0],
+		['Approved',		0,					0,				0,				0,				1,					0,				1,				0,				1,				0,				0,							1,								1,							1,								0],
+		['Closed',			0,					0,				0,				0,				0,					0,				0,				0,				1,				0,				0,							0,								0,							1,								0],
 	],
 
 	PURCHASE_Order: [

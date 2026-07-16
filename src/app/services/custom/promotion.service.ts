@@ -64,10 +64,9 @@ export class PromotionService {
 
 	autoApplyVoucher(so: any, voucherCodes: string[], isCheckOnly = false) {
 		if (!so?.Id) return Promise.resolve(null);
-		if (!voucherCodes || voucherCodes.length === 0) return Promise.resolve(null);
 		return new Promise((resolve) => {
 			this.commonService
-				.connect('POST', 'PR/Program/UseVoucher/', {
+				.connect('POST', 'PR/Program/UseVoucherAutoApply/', {
 					VoucherCodeList: voucherCodes,
 					SaleOrder: so,
 					IsCheckOnly: isCheckOnly,
