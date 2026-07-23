@@ -4,39 +4,65 @@
 	</ng-container>
 </app-page-message>
 
-<!-- [style.height]="calculateContainerHeight()" autosize -->
-<div *ngIf="rows.length && !showSpinner">
-	<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)">
-		<ng-container *ngIf="row._dividers?.length">
-			<div class="row divider" *ngFor="let line of row._dividers">
-				<div class="cell">{{line|translate}}</div>
+@if (rows.length && !showSpinner) {
+	@if (!virtualScroll) {
+		<ng-container *ngFor="let row of rows; let idx = index; trackBy: rowTrackingFn">
+			<ng-container *ngIf="row._dividers?.length">
+				<div class="row divider" *ngFor="let line of row._dividers">
+					<div class="cell">{{ line | translate }}</div>
+				</div>
+			</ng-container>
+			<div class="row divider" *ngIf="!row._dividers?.length && row._divider">
+				<div class="cell">{{ row._divider | translate }}</div>
 			</div>
+			<datatable-body-row
+				class="row"
+				[ngClass]="{ selected: row.checked, bold: row.HasChild }"
+				[columns]="columns"
+				[row]="row"
+				[isSelected]="row.checked"
+				[rowIndex]="idx"
+				(activate)="changeSelection(row, $event)"
+				*ngIf="row.show != false"
+			></datatable-body-row>
 		</ng-container>
-		<div class="row divider" *ngIf="!row._dividers?.length && row._divider">
-			<div class="cell">{{row._divider|translate}}</div>
-		</div>
-		<datatable-body-row
-			class="row"
-			[ngClass]="{ selected: row.checked, bold: row.HasChild }"
-			[columns]="columns"
-			[row]="row"
-			[isSelected]="row.checked"
-			[rowIndex]="idx"
-			(activate)="changeSelection(row, $event)"
-			*ngIf="row.show != false"
-		></datatable-body-row>
-	</ng-container>
-
-	<!-- <cdk-virtual-scroll-viewport  [id]="elId" itemSize="31"  minBufferPx="2000" maxBufferPx="2000" #scrollViewport> 
-    <datatable-body-row 
-    class="row"
-    [ngClass]="{ selected: row.checked, 'bold': row.HasChild }"
-    [columns]="columns"
-    [row]="row"
-    [isSelected]="row.checked"
-    [rowIndex]="idx"
-    (activate)="changeSelection(row, $event)"
-    *ngIf="row.show != false"
-    *cdkVirtualFor="let row of rows; let idx = index; trackBy: rowTrackingFn.bind(this)"></datatable-body-row>
-</cdk-virtual-scroll-viewport> -->
-</div>
+	} @else {
+		<app-virtual-viewport
+			#vp="virtualViewport"
+			[items]="virtualItems"
+			[mode]="virtualScrollMode"
+			[minBufferPx]="virtualScrollMinBufferPx"
+			[maxBufferPx]="virtualScrollMaxBufferPx"
+			[defaultItemSize]="virtualScrollDefaultItemSize"
+			[style.height]="virtualScrollMode === 'container' ? virtualScrollHeight : null"
+			[class.page-mode]="virtualScrollMode === 'page'"
+			[class.container-mode]="virtualScrollMode === 'container'"
+			(scrollProgress)="onVirtualScrollProgress($event)"
+		>
+			<div
+				*ngFor="let item of vp.renderedItems; trackBy: virtualTrackBy"
+				class="datatable-virtual-item"
+				[class.divider-item]="item.kind === 'divider'"
+				[virtualItemMeasure]="item.id"
+				[measureGeneration]="vp.measureGeneration"
+				(heightMeasured)="vp.onItemMeasured(item.id, $event)"
+			>
+				@if (item.kind === 'divider') {
+					<div class="row divider">
+						<div class="cell">{{ item.text | translate }}</div>
+					</div>
+				} @else {
+					<datatable-body-row
+						class="row"
+						[ngClass]="{ selected: item.row.checked, bold: item.row.HasChild }"
+						[columns]="columns"
+						[row]="item.row"
+						[isSelected]="item.row.checked"
+						[rowIndex]="item.rowIndex"
+						(activate)="changeSelection(item.row, $event)"
+					></datatable-body-row>
+				}
+			</div>
+		</app-virtual-viewport>
+	}
+}

@@ -12,6 +12,16 @@ import { dog } from 'src/environments/environment';
 	templateUrl: './data-table.component.html',
 	styleUrls: ['./data-table.component.scss'],
 	standalone: false,
+	host: {
+		'[class.virtual-scroll]': 'virtualScroll',
+		'[class.virtual-scroll-page]': 'virtualScroll && virtualScrollMode === "page"',
+		'[class.virtual-scroll-container]': 'virtualScroll && virtualScrollMode === "container"',
+		'[class.is-empty]': 'isEmpty',
+		// Only apply minHeight when empty/loading. With data, inline min-height:100% replaces
+		// flex min-height:auto and lets ion-content.scrollx shrink the host below content —
+		// table background then stops at viewport while rows overflow below it.
+		'[style.min-height]': 'hostMinHeight',
+	},
 })
 export class DataTableComponent implements OnInit {
 	_allColumns: TableColumn[];
@@ -45,7 +55,11 @@ export class DataTableComponent implements OnInit {
 
 	_query: any = {};
 	@Input() set query(val: any) {
+		const prevSkip = this._query?.Skip;
 		this._query = val ?? {};
+		if (val?.Skip === 0 && prevSkip > 0) {
+			this.resetInfiniteScrollState();
+		}
 		if (this.formGroup) {
 			this.formGroup.patchValue(this._query, { emitEvent: false });
 			dog && console.log(this._query);
@@ -198,7 +212,9 @@ export class DataTableComponent implements OnInit {
 	 * Rows that are displayed in the table.
 	 */
 	@Input() set rows(val: any) {
+		this.syncEndOfDataFromRows(val);
 		this._rows = val;
+		this.showInfinitespinner = false;
 		if (this._isTreeList && this.isQueryLocalOnly) {
 			this.onSort([]);
 		} else if (this._rows?.length && this._isTreeList && this._rows[0]?.levelSort == null) {
@@ -212,7 +228,6 @@ export class DataTableComponent implements OnInit {
 	 * Gets the data.
 	 */
 	get rows(): any {
-		this.showInfinitespinner = false;
 		return this._rows;
 	}
 
@@ -226,9 +241,115 @@ export class DataTableComponent implements OnInit {
 
 	@Input() trackBy: string;
 
-	@Input() showSpinner: boolean;
 	@Input() showFilter: boolean;
 	@Input() isQueryLocalOnly: boolean;
+
+	private _showSpinner = false;
+	@Input() set showSpinner(val: boolean) {
+		if (val && !this._showSpinner) {
+			this.resetInfiniteScrollState();
+		}
+		this._showSpinner = !!val;
+		if (!val) {
+			this.syncEndOfDataFromRows(this._rows);
+		}
+	}
+	get showSpinner(): boolean {
+		return this._showSpinner;
+	}
+
+	private _isEndOfData = false;
+	private _pendingInfiniteLoad = false;
+	private _rowsAtInfiniteRequest = 0;
+
+	/** Derived from query.Take + row growth — pages must not pass a disable flag. */
+	get isInfiniteScrollDisabled(): boolean {
+		if (this.isQueryLocalOnly || !this.virtualScroll) {
+			return true;
+		}
+		const take = this.getPageSize();
+		if (!take) {
+			return true;
+		}
+		return this._isEndOfData;
+	}
+
+	private getPageSize(): number {
+		const take = Number(this._query?.Take);
+		return take > 0 ? take : 0;
+	}
+
+	private resetInfiniteScrollState() {
+		this._isEndOfData = false;
+		this._pendingInfiniteLoad = false;
+		this._rowsAtInfiniteRequest = 0;
+	}
+
+	private syncEndOfDataFromRows(val: any[]) {
+		const newLen = val?.length ?? 0;
+		const take = this.getPageSize();
+
+		if (this._pendingInfiniteLoad && take > 0) {
+			const added = newLen - this._rowsAtInfiniteRequest;
+			if (added <= 0 || added < take) {
+				this._isEndOfData = true;
+			}
+			this._pendingInfiniteLoad = false;
+			return;
+		}
+
+		if (!take || this.showSpinner) {
+			return;
+		}
+
+		if (newLen === 0) {
+			this._isEndOfData = true;
+		} else if (newLen < take) {
+			this._isEndOfData = true;
+		}
+	}
+
+	/**
+	 * Minimum height of the whole table (host). Default '100%' — fills the parent's height
+	 * (parent must establish a definite height, e.g. flex/grid/fixed; otherwise this is a
+	 * no-op, same as normal CSS `min-height:100%` behavior). Accepts any CSS length: '50%',
+	 * '200px', '90vh'...
+	 *
+	 * Container-mode virtual scroll tables that rely on `min-height:0` to shrink inside a
+	 * bounded flex ancestor should pass `[minHeight]="'0'"` to opt out of this default.
+	 */
+	@Input() minHeight = '100%';
+
+	/**
+	 * Drives the `.is-empty` host class (see data-table.scss) so the built-in empty message
+	 * (page-message) stretches to fill `minHeight` instead of floating with dead space below it.
+	 */
+	get isEmpty(): boolean {
+		return !!this.showSpinner || !this._rows?.length;
+	}
+
+	/** Host style binding — see host `[style.min-height]` comment. */
+	get hostMinHeight(): string | null {
+		if (!this.isEmpty && (this.minHeight === '100%' || this.minHeight == null || this.minHeight === '')) {
+			return null;
+		}
+		return this.minHeight;
+	}
+
+	/** Virtual scroll for large lists. Default on — pass `[virtualScroll]="false"` to use legacy *ngFor. */
+	@Input() virtualScroll = true;
+	/** page = ion-content scroll (~90% list pages); container = scroll inside table (modal/picker). */
+	@Input() virtualScrollMode: 'page' | 'container' = 'page';
+	@Input() virtualScrollHeight = '100%';
+	@Input() virtualScrollMinBufferPx = 300;
+	@Input() virtualScrollMaxBufferPx = 600;
+	/** Seed for the autosize averager — set close to the real row height to minimize drift. */
+	@Input() virtualScrollDefaultItemSize = 51;
+	/**
+	 * CDK recycled views break ReactiveForms + ngx-mask (detached FormControl).
+	 * Keep 0 when cells bind formControlName / app-input-control.
+	 */
+	@Input() virtualScrollTemplateCacheSize = 0;
 
 	@Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -252,6 +373,11 @@ export class DataTableComponent implements OnInit {
 
 	showInfinitespinner = false;
 	onDataInfinite(event) {
+		if (this.isInfiniteScrollDisabled) {
+			return;
+		}
+		this._pendingInfiniteLoad = true;
+		this._rowsAtInfiniteRequest = this._rows?.length ?? 0;
 		this.showInfinitespinner = true;
 		this.dataInfinite.emit(event);
 	}

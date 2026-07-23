@@ -29,7 +29,17 @@ export class DataTableBodyCellComponent {
 		return this._row;
 	}
 
-	@Input() rowIndex: number;
+	_rowIndex: number;
+	@Input() set rowIndex(val: number) {
+		this._rowIndex = val;
+		// CDK virtual scroll recycles views — rowIndex often updates after row; must recompute "#"
+		this.checkValueUpdates();
+		this.cd.markForCheck();
+	}
+
+	get rowIndex(): number {
+		return this._rowIndex;
+	}
 
 	_isSelected: boolean;
 	@Input() set isSelected(val: boolean) {
@@ -79,21 +89,19 @@ export class DataTableBodyCellComponent {
 			}
 
 			if (this.column.property == '#') {
-				value = this.rowIndex + 1;
+				value = (this.rowIndex ?? 0) + 1;
 			} else {
 				// Support nested property access (e.g., '_SaleOrder.DailyBillNo')
 				value = lib.getNestedProperty(this.row, this.column.property);
 			}
 		}
 
-		if (this.value !== value) {
-			this.value = value;
-			this.cellContext.column = this.column;
-			this.cellContext.row = this.row;
-			this.cellContext.value = value;
-		}
-
+		this.value = value;
+		this.cellContext.column = this.column;
+		this.cellContext.row = this.row;
+		this.cellContext.value = value;
 		this.cellContext.idx = this.rowIndex;
+		this.cd.markForCheck();
 	}
 
 	@Output() activate: EventEmitter<any> = new EventEmitter();

@@ -11,7 +11,12 @@ export class DataTableEmptyMessageDirective {
 	@Input() subMessage: string;
 	@Input() imgSrc: string;
 	@Input() showImg: boolean = true;
-	@Input() minHeight: string = '50vh';
+	/**
+	 * No default here on purpose: leaving it unset lets data-table.scss's `.is-empty` flex-fill
+	 * (governed by the table's own `[minHeight]`) size the empty message. Set an explicit value
+	 * (e.g. '125px') only when you want to override that.
+	 */
+	@Input() minHeight: string;
 	@Input('emptyMessageTemplate') _emptyMessageTemplateInput: TemplateRef<any>;
 
 	@ContentChild(DataTableEmptyMessageTemplateDirective, {

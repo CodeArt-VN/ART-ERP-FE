@@ -553,6 +553,10 @@ export class EnvService {
 				selected = this.branchList.find((d) => d.Id == this.user.IDBranch);
 			}
 
+			if (!selected) {
+				selected = this.branchList.find((d) => d.disabled == false);
+			}
+
 			if (selected) {
 				this.changeBranch(selected.Id);
 			} else {
