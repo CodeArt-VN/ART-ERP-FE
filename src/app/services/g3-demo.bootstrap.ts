@@ -15,8 +15,7 @@ const CRM_G3_FORMS: Array<{ Code: string; Name: string; Icon?: string }> = [
 	{ Code: 'price-book', Name: 'Price book', Icon: 'pricetag' },
 	{ Code: 'segment', Name: 'Segment', Icon: 'git-branch' },
 	{ Code: 'sales-process', Name: 'Sales process', Icon: 'git-network' },
-	{ Code: 'checklist-template', Name: 'Checklist template', Icon: 'checkbox' },
-	{ Code: 'payment-rule', Name: 'Payment rule', Icon: 'cash' },
+	// checklist-template + payment-rule gộp vào sales-process (route redirect vẫn giữ)
 	{ Code: 'lead', Name: 'Lead', Icon: 'flash' },
 	{ Code: 'opportunity', Name: 'Opportunity', Icon: 'briefcase' },
 	{ Code: 'activity', Name: 'Activity', Icon: 'calendar' },
