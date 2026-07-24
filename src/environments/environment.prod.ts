@@ -1,5 +1,6 @@
 export const environment = {
 	production: true,
+	g3Demo: false,
 	appVersion: '0.20.94',
 	appLocation: '/', // VirtualDirectory
 	versionLocation: '', // 'V{{REPLACE_VERSION}}/',
