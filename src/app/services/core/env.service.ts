@@ -175,8 +175,11 @@ export class EnvService {
 	 * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
 	 */
 	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
-		if ((environment as any).g3Demo && color === 'danger' && String(message || '').toLowerCase().includes('http')) {
-			return;
+		if ((environment as any).g3Demo && color === 'danger') {
+			const m = String(message || '').toLowerCase();
+			if (m.includes('http') || m.includes('connect') || m.includes('kết nối') || m.includes('server')) {
+				return;
+			}
 		}
 		if (typeof value === 'string') value = { value: value };
 		Promise.all([
