@@ -1,6 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Capacitor } from '@capacitor/core';
+import { App, type AppState } from '@capacitor/app';
+import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { NFC } from '@exxili/capacitor-nfc';
 import { BarcodeScannerService } from 'src/app/services/util/barcode-scanner.service';
 import { Rd300NdefReadResult, Rd300WebSerialReader } from 'src/app/services/util/rd300-web-serial-reader';
@@ -13,6 +14,18 @@ interface ScannerModalResult {
 	rawValue?: string;
 	tagInfo?: any;
 }
+
+export interface NfcScanResolveResult {
+	ok: boolean;
+	message?: string;
+	/** Extra detail for UI (Id, Name từ API, IDBP trên thẻ, ...) */
+	detail?: string;
+	foundContact?: { Id?: number | string; Code?: string; Name?: string };
+	cardIdbp?: string | number;
+	memberCardCode?: string;
+}
+
+export type NfcScanResolver = (data: ScannerModalResult) => Promise<NfcScanResolveResult>;
 
 interface NfcReadMessage<T = string> {
 	records: Array<{
@@ -83,14 +96,21 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	@Input() label = 'Label';
 	@Input() mode: ScannerMode = 'NFC';
 	@Input() showQrCodeButton = false;
+	@Input() resolveNfcScan?: NfcScanResolver;
 
 	currentMode: ScannerMode = 'NFC';
 	isLoading = false;
 	isSupported = true;
 	errorMessage = '';
+	errorDetail = '';
 	statusMessage = '';
+	scanPreview = '';
+	parsedIdbp = '';
+	lastTagUid = '';
+	foundContactPreview = '';
 	result: ScannerModalResult | null = null;
 	wasCancelled = false;
+	private processingNfcRead = false;
 
 	private isDestroyed = false;
 	private actionToken = 0;
@@ -99,10 +119,16 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	private removeNfcErrorListener?: () => void;
 	private rd300Reader?: Rd300WebSerialReader;
 	private webNfcAbortController?: AbortController;
+	private appStateListener?: PluginListenerHandle;
+	private nfcSystemUiPresented = false;
+	private nfcListeningForCancel = false;
+	private suppressCancelUi = false;
+	private cancelDetectTimer?: ReturnType<typeof setTimeout>;
 
 	constructor(
 		private modalController: ModalController,
-		private barcodeScannerService: BarcodeScannerService
+		private barcodeScannerService: BarcodeScannerService,
+		private ngZone: NgZone
 	) {}
 
 	async ngOnInit(): Promise<void> {
@@ -117,21 +143,16 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	}
 
 	get statusTitle(): string {
-		if (this.errorMessage) return 'Unable to continue';
+		if (this.errorMessage) return 'Scan failed';
 		if (this.result) return 'Read successful';
+		if (this.wasCancelled) return 'Scan stopped';
 		if (this.currentMode === 'QR') return 'Scanning QR Code';
-		return 'Waiting for NFC';
-	}
-
-	get activeDescription(): string {
-		if (this.errorMessage) return this.errorMessage;
-		if (this.statusMessage) return this.statusMessage;
-		if (this.currentMode === 'QR') return 'Place the QR Code inside the camera frame to scan.';
-		return 'Hold the NFC card or device near the phone.';
+		return 'Bring your membership card close';
 	}
 
 	get statusIcon(): string {
 		if (this.errorMessage) return 'alert-circle-outline';
+		if (this.wasCancelled) return 'pause-circle-outline';
 		if (this.currentMode === 'QR') return 'qr-code-outline';
 		return 'radio-outline';
 	}
@@ -140,7 +161,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		return this.showQrCodeButton || this.currentMode === 'QR';
 	}
 
-	get canRetry(): boolean {
+	get canRestartCurrentMode(): boolean {
 		if (this.isLoading || !this.isSupported) return false;
 		return this.wasCancelled || !!this.errorMessage;
 	}
@@ -155,13 +176,9 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		await this.modalController.dismiss(null, 'cancel');
 	}
 
-	async retryCurrentMode(): Promise<void> {
-		await this.startCurrentMode();
-	}
-
 	async changeMode(mode: ScannerMode): Promise<void> {
 		const nextMode = this.normalizeMode(mode);
-		if (nextMode === this.currentMode && !this.canRetry) return;
+		if (nextMode === this.currentMode && !this.canRestartCurrentMode) return;
 
 		this.currentMode = nextMode;
 		await this.startCurrentMode();
@@ -203,7 +220,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			this.isLoading = false;
 			if (this.isCancelError(error)) {
 				this.wasCancelled = true;
-				this.statusMessage = 'You canceled the QR scan. Press "Retry" to scan again.';
+				this.statusMessage = 'You canceled the QR scan. Tap "Scan QR code" to scan again.';
 				return;
 			}
 
@@ -243,40 +260,52 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				return;
 			}
 
-			this.removeNfcReadListener = plugin.onRead((data) => {
-				if (!this.isActionActive(token)) return;
+			this.attachNfcListeners(plugin, token);
 
-				const output = this.normalizeNfcResult(data);
-				this.result = output;
-				this.isLoading = false;
-				this.statusMessage = 'NFC data read successfully.';
-
-				void this.modalController.dismiss(output, 'confirm');
-			});
-
-			this.removeNfcErrorListener = plugin.onError((error) => {
-				if (!this.isActionActive(token)) return;
-
-				this.isLoading = false;
-				if (this.isCancelError(error)) {
-					this.wasCancelled = true;
-					this.statusMessage = 'The NFC session was canceled. Press "Retry" to read again.';
-					return;
-				}
-
-				this.errorMessage = this.resolveErrorMessage(error, 'Unable to read NFC.');
-			});
-
-			this.statusMessage = 'Hold the NFC card near the device to read data.';
+			this.statusMessage = 'Please bring your membership card close to the device to read it.';
+			// 'ndef' (legacy NDEFReaderSession) không trả tag UID trên iOS.
+			// MemberCard.Code = UID → cần tag session (auto/full) giống lúc ghi thẻ.
 			if (Capacitor.getPlatform() !== 'android') {
 				await plugin.startScan({ mode: 'auto' });
+				await this.attachIosNfcCancelWatcher(token);
 			}
+			this.isLoading = false;
 		} catch (error) {
 			if (!this.isActionActive(token)) return;
 
 			this.isLoading = false;
+			if (this.isCancelError(error)) {
+				this.markNfcScanCanceled();
+				return;
+			}
 			this.errorMessage = this.resolveErrorMessage(error, 'Unable to start the NFC reading session.');
 		}
+	}
+
+	private attachNfcListeners(plugin: NfcPlugin, token: number): void {
+		this.removeNfcReadListener = plugin.onRead((data) => {
+			if (!this.isActionActive(token)) return;
+
+			const output = this.normalizeNfcResult(data);
+			if (output.tagInfo?.fallback === true) return;
+
+			void this.handleNfcReadOutput(output, token);
+		});
+
+		this.removeNfcErrorListener = plugin.onError((error) => {
+			if (!this.isActionActive(token)) return;
+			if (this.processingNfcRead || this.suppressCancelUi) return;
+
+			this.isLoading = false;
+			if (this.isCancelError(error)) {
+				this.markNfcScanCanceled();
+				return;
+			}
+
+			if (this.isBenignNfcSessionError(error)) return;
+
+			this.errorMessage = this.resolveErrorMessage(error, 'Unable to read NFC.');
+		});
 	}
 
 	private async startReadWebNfc(token: number): Promise<void> {
@@ -293,7 +322,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 
 	private async startReadBrowserNfc(token: number): Promise<void> {
 		this.isLoading = true;
-		this.statusMessage = 'Hold the NFC card near the phone to read data.';
+		this.statusMessage = 'Please bring your membership card close to the device to read it.';
 
 		try {
 			const NdefReader = (window as any).NDEFReader as BrowserNdefReaderConstructor;
@@ -304,30 +333,25 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				if (!this.isActionActive(token)) return;
 
 				const output = this.normalizeBrowserNfcResult(event);
-				this.result = output;
-				this.isLoading = false;
-				this.statusMessage = 'NFC data read successfully.';
-
-				void this.modalController.dismiss(output, 'confirm');
+				void this.handleNfcReadOutput(output, token);
 			};
 
 			reader.onreadingerror = () => {
 				if (!this.isActionActive(token)) return;
 
 				this.isLoading = false;
-				this.errorMessage = 'Unable to read NFC. Keep the card steady and try again.';
+				this.errorMessage = 'Unable to read the membership card. Keep it steady and try again.';
 			};
 
 			await reader.scan({ signal: this.webNfcAbortController.signal });
 			if (!this.isActionActive(token)) return;
-			this.statusMessage = 'Hold the NFC card near the phone to read data.';
+			this.statusMessage = 'Please bring your membership card close to the device to read it.';
 		} catch (error) {
 			if (!this.isActionActive(token)) return;
 
 			this.isLoading = false;
 			if (this.isCancelError(error)) {
-				this.wasCancelled = true;
-				this.statusMessage = 'The NFC session was canceled. Press "Retry" to read again.';
+				this.markNfcScanCanceled();
 				return;
 			}
 
@@ -349,18 +373,13 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			if (!this.isActionActive(token)) return;
 
 			const output = this.normalizeRd300Result(result);
-			this.result = output;
-			this.isLoading = false;
-			this.statusMessage = 'NFC data read successfully.';
-
-			await this.modalController.dismiss(output, 'confirm');
+			await this.handleNfcReadOutput(output, token);
 		} catch (error) {
 			if (!this.isActionActive(token)) return;
 
 			this.isLoading = false;
 			if (this.isCancelError(error)) {
-				this.wasCancelled = true;
-				this.statusMessage = 'The RD300 NFC session was canceled. Press "Retry" to read again.';
+				this.markNfcScanCanceled();
 				return;
 			}
 
@@ -374,6 +393,8 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 
 	private async stopReadNfc(): Promise<void> {
 		try {
+			await this.detachIosNfcCancelWatcher();
+
 			this.webNfcAbortController?.abort();
 			this.webNfcAbortController = undefined;
 
@@ -397,13 +418,15 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		const stringView = data?.string?.();
 		const numberView = data?.numberArray?.();
 		const firstPayload = stringView?.messages?.[0]?.records?.[0]?.payload;
+		// Giống write-nfc-modal: UID nằm ở tagInfo.uid (Capacitor native / RD300)
+		const tagInfo = this.normalizeTagInfo(stringView?.tagInfo || numberView?.tagInfo || (data as any)?.tagInfo);
 
 		if (firstPayload && typeof firstPayload === 'string') {
 			return {
 				mode: 'NFC',
 				value: this.parsePossibleJson(firstPayload),
 				rawValue: firstPayload,
-				tagInfo: stringView?.tagInfo,
+				tagInfo,
 			};
 		}
 
@@ -411,10 +434,27 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 			mode: 'NFC',
 			value: {
 				messages: stringView?.messages || [],
-				tagInfo: stringView?.tagInfo,
+				tagInfo,
 				rawMessages: numberView?.messages || [],
 			},
-			tagInfo: stringView?.tagInfo,
+			tagInfo,
+		};
+	}
+
+	/** Chuẩn hóa tagInfo về { uid } — khớp Code lưu khi ghi thẻ */
+	private normalizeTagInfo(tagInfo: any): any {
+		if (!tagInfo || typeof tagInfo !== 'object') return tagInfo || {};
+		const uid =
+			tagInfo.uid ||
+			tagInfo.UID ||
+			tagInfo.serialNumber ||
+			tagInfo.id ||
+			tagInfo.Id ||
+			(Array.isArray(tagInfo.identifier) ? tagInfo.identifier.map((b: number) => Number(b).toString(16).padStart(2, '0')).join('') : '') ||
+			'';
+		return {
+			...tagInfo,
+			uid: `${uid || ''}`.trim(),
 		};
 	}
 
@@ -503,6 +543,174 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		};
 	}
 
+	private async handleNfcReadOutput(output: ScannerModalResult, token: number): Promise<void> {
+		if (output.mode !== 'NFC') {
+			await this.completeNfcRead(output);
+			return;
+		}
+
+		console.log('[POS-NFC][Modal] 0. NFC read raw output', {
+			mode: output.mode,
+			rawValue: output.rawValue,
+			value: output.value,
+			tagInfo: output.tagInfo,
+			hasResolveNfcScan: !!this.resolveNfcScan,
+		});
+
+		this.processingNfcRead = true;
+		this.isLoading = true;
+		this.errorMessage = '';
+		this.applyScannedContentPreview(output);
+
+		try {
+			if (this.resolveNfcScan) {
+				try {
+					console.log('[POS-NFC][Modal] → call resolveNfcScan');
+					const resolved = await this.resolveNfcScan(output);
+					console.log('[POS-NFC][Modal] ← resolveNfcScan result', resolved);
+					if (!this.isActionActive(token)) return;
+
+					if (!resolved.ok) {
+						const msg = resolved.message || 'No customer found for scanned code';
+						console.warn('[POS-NFC][Modal] SHOW ERROR', msg, resolved);
+						this.isLoading = false;
+						this.setScanFailure(msg, output, resolved);
+						await this.pauseNfcAfterScanFailure();
+						return;
+					}
+					console.log('[POS-NFC][Modal] resolve OK → completeNfcRead');
+				} catch (err) {
+					console.error('[POS-NFC][Modal] resolveNfcScan threw', err);
+					if (!this.isActionActive(token)) return;
+					this.isLoading = false;
+					this.setScanFailure('Unable to verify scanned card', output);
+					await this.pauseNfcAfterScanFailure();
+					return;
+				}
+			} else {
+				const idbp = this.extractBusinessPartnerIdFromOutput(output);
+				console.log('[POS-NFC][Modal] no resolveNfcScan, extract IDBP', idbp);
+				if (idbp == null) {
+					console.warn('[POS-NFC][Modal] SHOW ERROR Invalid NFC content');
+					this.isLoading = false;
+					this.setScanFailure('Invalid NFC content', output);
+					await this.pauseNfcAfterScanFailure();
+					return;
+				}
+			}
+
+			await this.completeNfcRead(output);
+		} finally {
+			this.processingNfcRead = false;
+		}
+	}
+
+	private async pauseNfcAfterScanFailure(): Promise<void> {
+		this.suppressCancelUi = true;
+		this.wasCancelled = true;
+		this.statusMessage = 'Tap "Scan card" to try again.';
+		await this.stopReadNfc();
+	}
+
+	private markNfcScanCanceled(): void {
+		this.isLoading = false;
+		this.nfcListeningForCancel = false;
+		void this.detachIosNfcCancelWatcher();
+
+		// Keep the previous scan failure visible (e.g. customer not found).
+		if (this.suppressCancelUi || this.errorMessage || this.result) {
+			this.wasCancelled = true;
+			return;
+		}
+
+		this.wasCancelled = true;
+		this.errorMessage = '';
+		this.statusMessage =
+			'The system scan screen was closed. Scanning is paused. Tap "Scan card" to start again.';
+		void this.nfcPlugin?.cancelScan().catch(() => undefined);
+	}
+
+	private async attachIosNfcCancelWatcher(token: number): Promise<void> {
+		if (Capacitor.getPlatform() !== 'ios') return;
+
+		await this.detachIosNfcCancelWatcher();
+		this.nfcListeningForCancel = true;
+		this.nfcSystemUiPresented = false;
+
+		this.appStateListener = await App.addListener('appStateChange', (state: AppState) => {
+			this.ngZone.run(() => {
+				if (!this.isActionActive(token) || !this.nfcListeningForCancel || this.wasCancelled) return;
+				if (this.suppressCancelUi || this.errorMessage || this.result || this.processingNfcRead) return;
+
+				if (!state.isActive) {
+					this.nfcSystemUiPresented = true;
+					return;
+				}
+
+				if (!this.nfcSystemUiPresented) return;
+
+				if (this.cancelDetectTimer) clearTimeout(this.cancelDetectTimer);
+				this.cancelDetectTimer = setTimeout(() => {
+					if (!this.isActionActive(token) || !this.nfcListeningForCancel) return;
+					if (this.suppressCancelUi || this.processingNfcRead || this.result || this.wasCancelled || this.errorMessage) {
+						return;
+					}
+					this.markNfcScanCanceled();
+				}, 350);
+			});
+		});
+	}
+
+	private async detachIosNfcCancelWatcher(): Promise<void> {
+		this.nfcListeningForCancel = false;
+		this.nfcSystemUiPresented = false;
+		if (this.cancelDetectTimer) {
+			clearTimeout(this.cancelDetectTimer);
+			this.cancelDetectTimer = undefined;
+		}
+		await this.appStateListener?.remove().catch(() => undefined);
+		this.appStateListener = undefined;
+	}
+
+	private async completeNfcRead(output: ScannerModalResult): Promise<void> {
+		await this.stopReadNfc();
+		this.result = output;
+		this.isLoading = false;
+		this.statusMessage = 'NFC data read successfully.';
+		await this.modalController.dismiss(output, 'confirm');
+	}
+
+	private extractBusinessPartnerIdFromOutput(output: ScannerModalResult): string | number | null {
+		const rawValue = typeof output.rawValue === 'string' ? output.rawValue.trim() : '';
+		if (rawValue) {
+			const bpMatch = /^\s*BP-(\d+)\s*$/i.exec(rawValue);
+			if (bpMatch) return parseInt(bpMatch[1], 10);
+			if (/^\d+$/.test(rawValue)) return parseInt(rawValue, 10);
+		}
+
+		let value: string | object = output.value;
+		if (typeof value === 'string') {
+			value = this.parsePossibleJson(value);
+		}
+
+		if (value && typeof value === 'object' && !Array.isArray(value)) {
+			const record = value as Record<string, unknown>;
+			const id = record.IDBP ?? record.Id ?? record.id;
+			if (id != null && id !== '') return id as string | number;
+		}
+
+		if (rawValue) {
+			const parsed = this.parsePossibleJson(rawValue);
+			if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+				const record = parsed as Record<string, unknown>;
+				const id = record.IDBP ?? record.Id ?? record.id;
+				if (id != null && id !== '') return id as string | number;
+			}
+		}
+
+		return null;
+	}
+
 	private parsePossibleJson(value: string): string | object {
 		const rawValue = (value || '').trim();
 		if (!rawValue) return value;
@@ -522,9 +730,77 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		this.isLoading = false;
 		this.isSupported = true;
 		this.errorMessage = '';
+		this.errorDetail = '';
 		this.statusMessage = '';
+		this.scanPreview = '';
+		this.parsedIdbp = '';
+		this.lastTagUid = '';
+		this.foundContactPreview = '';
 		this.result = null;
 		this.wasCancelled = false;
+		this.suppressCancelUi = false;
+	}
+
+	private setScanFailure(messageKey: string, output: ScannerModalResult, resolved?: NfcScanResolveResult): void {
+		this.errorMessage = messageKey;
+		this.errorDetail = resolved?.detail || '';
+		this.suppressCancelUi = true;
+		this.applyScannedContentPreview(output);
+
+		if (resolved?.foundContact) {
+			const c = resolved.foundContact;
+			this.foundContactPreview = `#${c.Id ?? '-'} · ${c.Name || c.Code || '-'}`;
+		} else {
+			this.foundContactPreview = '';
+		}
+		if (resolved?.cardIdbp != null && resolved.cardIdbp !== '') {
+			this.parsedIdbp = String(resolved.cardIdbp);
+		}
+		if (resolved?.memberCardCode) {
+			this.lastTagUid = resolved.memberCardCode;
+		}
+	}
+
+	private applyScannedContentPreview(output: ScannerModalResult): void {
+		this.scanPreview = this.buildScanPreview(output);
+		this.parsedIdbp = this.formatParsedIdbp(this.extractBusinessPartnerIdFromOutput(output));
+		const tagInfo = output.tagInfo || {};
+		this.lastTagUid = `${tagInfo.uid || tagInfo.serialNumber || tagInfo.id || ''}`.trim();
+	}
+
+	private formatParsedIdbp(idbp: string | number | null): string {
+		if (idbp == null) return '';
+		return String(idbp);
+	}
+
+	private buildScanPreview(output: ScannerModalResult): string {
+		if (output.rawValue?.trim()) return output.rawValue.trim();
+
+		if (typeof output.value === 'string' && output.value.trim()) return output.value.trim();
+
+		if (output.value && typeof output.value === 'object') {
+			const value = output.value as {
+				messages?: Array<{ records?: Array<{ payload?: unknown }> }>;
+			};
+			const firstPayload = value.messages?.[0]?.records?.[0]?.payload;
+			if (typeof firstPayload === 'string' && firstPayload.trim()) return firstPayload.trim();
+			if (Array.isArray(firstPayload) && firstPayload.length) {
+				try {
+					return new TextDecoder().decode(Uint8Array.from(firstPayload as number[]));
+				} catch {
+					return JSON.stringify(firstPayload);
+				}
+			}
+
+			try {
+				return JSON.stringify(output.value, null, 2);
+			} catch {
+				return '';
+			}
+		}
+
+		if (output.tagInfo?.uid) return output.tagInfo.uid;
+		return '';
 	}
 
 	private normalizeMode(mode: ScannerMode | string): ScannerMode {
@@ -535,15 +811,42 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		const message = `${error?.error || error?.message || error || fallback}`.trim();
 
 		if (!message) return fallback;
+		if (this.isBenignNfcSessionError(error)) return fallback;
 		if (/permission/i.test(message)) return 'Required permissions have not been granted.';
 		if (/cancelled|canceled/i.test(message)) return fallback;
 		if (/not support|unsupported/i.test(message)) return 'This device does not support this feature.';
+		if (/timeout/i.test(message)) return 'Scan timed out. Bring your membership card close to the device and try again.';
+		if (/tag/i.test(message) && /not found|lost|removed/i.test(message)) {
+			return 'Unable to read the membership card. Keep it steady near the device and try again.';
+		}
 		return message;
+	}
+
+	private isBenignNfcSessionError(error: any): boolean {
+		if (this.isCancelError(error)) return false;
+
+		const message = `${error?.error || error?.message || error || ''}`.toLowerCase();
+		return (
+			message.includes('invalidated unexpectedly') ||
+			message.includes('first ndef tag') ||
+			message.includes('readersessioninvalidationerrorfirstndeftagread') ||
+			(message.includes('session invalidated') && !message.includes('user'))
+		);
 	}
 
 	private isCancelError(error: any): boolean {
 		const message = `${error?.error || error?.message || error || ''}`.toLowerCase();
-		return message.includes('cancelled') || message.includes('canceled') || message.includes('cancel') || error?.name === 'NotFoundError';
+		return (
+			message.includes('cancelled') ||
+			message.includes('canceled') ||
+			message.includes('usercanceled') ||
+			message.includes('user canceled') ||
+			message.includes('user cancelled') ||
+			message.includes('invalidationerrorusercanceled') ||
+			message.includes('session invalidated by user') ||
+			(message.includes('cancel') && !message.includes('unable to cancel')) ||
+			error?.name === 'NotFoundError'
+		);
 	}
 
 	private isUnsupportedSerialError(error: any): boolean {

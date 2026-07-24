@@ -1,57 +1,83 @@
-<ion-header>
+<ion-header [translucent]="true" collapse="fade">
 	<ion-toolbar>
 		<ion-title>{{ title | translate }}</ion-title>
 		<ion-buttons slot="end">
-			<ion-button fill="clear" color="danger" (click)="closeModal()">
+			<ion-button (click)="closeModal()" fill="clear">
 				<ion-icon slot="icon-only" name="close"></ion-icon>
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme>
-	<div class="scanner-layout">
-		<div class="scanner-label-wrap">
-			<ion-text class="scanner-label">{{ label | translate }}</ion-text>
-		</div>
+<div class="scanner-body">
+	<div class="scanner-shell">
+		<p class="scanner-hint">{{ label | translate }}</p>
 
-		<div class="scanner-stage">
-			<div class="scanner-status-card" [class.is-error]="!!errorMessage" [class.is-loading]="isLoading" [class.is-success]="!!result">
-				<div class="scanner-icon-wrap">
+		<div
+			class="scan-panel"
+			[class.is-error]="!!errorMessage"
+			[class.is-loading]="isLoading"
+			[class.is-success]="!!result"
+			[class.is-waiting]="!errorMessage && !result && !isLoading && !wasCancelled"
+		>
+			<div class="scan-visual">
+				<div class="scan-ring" [class.is-active]="!errorMessage && !result && !wasCancelled"></div>
+				<div class="scan-icon">
 					<ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
 					<ion-icon *ngIf="!isLoading" [name]="statusIcon"></ion-icon>
 				</div>
-
-				<div class="scanner-copy">
-					<h2>{{ statusTitle | translate }}</h2>
-					<p>{{ activeDescription | translate }}</p>
-				</div>
 			</div>
 
-			<ion-card *ngIf="result?.tagInfo" class="scanner-tag-info">
-				<ion-card-header>
-					<ion-card-title>{{ 'Tag Info' | translate }}</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<div class="tag-line" *ngIf="result?.tagInfo?.uid">
-						<ion-text color="medium">{{ 'UID' | translate }}</ion-text>
-						<strong>{{ result?.tagInfo?.uid }}</strong>
-					</div>
-					<div class="tag-line" *ngIf="result?.tagInfo?.type">
-						<ion-text color="medium">{{ 'Type' | translate }}</ion-text>
-						<strong>{{ result?.tagInfo?.type }}</strong>
-					</div>
-				</ion-card-content>
-			</ion-card>
+			<div class="scan-copy">
+				<h2>{{ statusTitle | translate }}</h2>
+				<p *ngIf="errorMessage" class="scan-message error">{{ errorMessage | translate }}</p>
+				<p *ngIf="errorDetail" class="scan-message error detail">{{ errorDetail }}</p>
+				<p *ngIf="!errorMessage && statusMessage" class="scan-message">{{ statusMessage | translate }}</p>
+			</div>
+
+			<div class="scan-preview" *ngIf="scanPreview">
+				<span class="preview-label">{{ 'Card content' | translate }}</span>
+				<code>{{ scanPreview }}</code>
+			</div>
+
+			<div class="scan-preview secondary" *ngIf="parsedIdbp">
+				<span class="preview-label">{{ 'Parsed IDBP' | translate }}</span>
+				<code>{{ parsedIdbp }}</code>
+			</div>
+
+			<div class="scan-preview secondary" *ngIf="lastTagUid">
+				<span class="preview-label">{{ 'Tag UID' | translate }} / MemberCard.Code</span>
+				<code>{{ lastTagUid }}</code>
+			</div>
+
+			<div class="scan-preview secondary" *ngIf="foundContactPreview">
+				<span class="preview-label">{{ 'API contact' | translate }}</span>
+				<code>{{ foundContactPreview }}</code>
+			</div>
 		</div>
 	</div>
-</ion-content>
+</div>
 
-<ion-footer>
+<ion-footer [translucent]="true" collapse="fade">
 	<ion-toolbar>
-		<div class="mode-switcher" [class.single-mode]="!canShowQrButton">
-			<ion-button *ngIf="canShowQrButton" [fill]="isMode('QR') ? 'solid' : 'outline'" [color]="isMode('QR') ? 'dark' : 'medium'" (click)="changeMode('QR')"> QR </ion-button>
-			<ion-button [fill]="isMode('NFC') ? 'solid' : 'outline'" [color]="isMode('NFC') ? 'dark' : 'medium'" (click)="changeMode('NFC')"> NFC </ion-button>
+		<div slot="end" class="footer-actions" [class.single-mode]="!canShowQrButton">
+			<ion-button
+				[fill]="isMode('NFC') ? 'solid' : 'outline'"
+				[strong]="isMode('NFC')"
+				color="primary"
+				(click)="changeMode('NFC')"
+			>
+				{{ 'Scan card' | translate }}
+			</ion-button>
+			<ion-button
+				*ngIf="canShowQrButton"
+				[fill]="isMode('QR') ? 'solid' : 'outline'"
+				[strong]="isMode('QR')"
+				color="primary"
+				(click)="changeMode('QR')"
+			>
+				{{ 'Scan QR code' | translate }}
+			</ion-button>
 		</div>
 	</ion-toolbar>
 </ion-footer>

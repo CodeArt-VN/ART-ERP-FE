@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -22,9 +21,19 @@ import { PageMessageComponent } from '../page-message/page-message.component';
 import { SvgImageDirective } from 'src/app/directives/svg-image.directive';
 import { DataTableFilterCellComponent } from './components/1.header/datatable-filter-cell.component';
 import { ShareInputControlsModule } from '../controls/share-input-controls.modules';
+import { ShareVirtualScrollModule } from '../virtual-scroll/share-virtual-scroll.module';
 
 @NgModule({
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, ScrollingModule, IonicModule, TranslateModule, ShareInputControlsModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		IonicModule,
+		TranslateModule,
+		ShareInputControlsModule,
+		ShareVirtualScrollModule,
+	],
 	providers: [ColumnChangesService, EmptyMessageChangesService],
 	declarations: [
 		SvgImageDirective,
@@ -60,6 +69,7 @@ import { ShareInputControlsModule } from '../controls/share-input-controls.modul
 		DataTablBodyComponent,
 		DataTablBodyRowComponent,
 		DataTableBodyCellComponent,
+		ShareVirtualScrollModule,
 	],
 })
 export class ShareDataTableModule {}
