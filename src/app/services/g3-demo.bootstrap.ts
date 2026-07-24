@@ -8,31 +8,29 @@ import { UserContextService } from './auth/user-context.service';
 import { EVENT_TYPE } from './static/event-type';
 
 const CRM_G3_FORMS: Array<{ Code: string; Name: string; Icon?: string }> = [
-	{ Code: 'sale-team', Name: 'Sale Team', Icon: 'people' },
-	{ Code: 'sale-quota', Name: 'Sale Quota', Icon: 'stats-chart' },
-	{ Code: 'event-hall', Name: 'Event Hall', Icon: 'business' },
-	{ Code: 'event-package', Name: 'Event Package', Icon: 'gift' },
-	{ Code: 'price-book', Name: 'Price Book', Icon: 'pricetag' },
+	{ Code: 'sale-team', Name: 'Sale team', Icon: 'people' },
+	{ Code: 'sale-quota', Name: 'Sale quota', Icon: 'stats-chart' },
+	{ Code: 'event-hall', Name: 'Event hall', Icon: 'business' },
+	{ Code: 'event-package', Name: 'Event package', Icon: 'gift' },
+	{ Code: 'price-book', Name: 'Price book', Icon: 'pricetag' },
 	{ Code: 'segment', Name: 'Segment', Icon: 'git-branch' },
-	{ Code: 'sales-process', Name: 'Sales Process', Icon: 'git-network' },
-	{ Code: 'checklist-template', Name: 'Checklist Template', Icon: 'checkbox' },
-	{ Code: 'payment-rule', Name: 'Payment Rule', Icon: 'cash' },
-	{ Code: 'kpi-config', Name: 'KPI Config', Icon: 'settings' },
+	{ Code: 'sales-process', Name: 'Sales process', Icon: 'git-network' },
+	{ Code: 'checklist-template', Name: 'Checklist template', Icon: 'checkbox' },
+	{ Code: 'payment-rule', Name: 'Payment rule', Icon: 'cash' },
 	{ Code: 'lead', Name: 'Lead', Icon: 'flash' },
 	{ Code: 'opportunity', Name: 'Opportunity', Icon: 'briefcase' },
 	{ Code: 'activity', Name: 'Activity', Icon: 'calendar' },
-	{ Code: 'tour-booking', Name: 'Tour / Tasting', Icon: 'walk' },
-	{ Code: 'sale-quotation', Name: 'Sale Quotation', Icon: 'document-text' },
-	{ Code: 'event-hold', Name: 'Event Hold', Icon: 'lock-closed' },
-	{ Code: 'hall-calendar', Name: 'Hall Calendar', Icon: 'calendar-number' },
+	{ Code: 'tour-booking', Name: 'Tour / tasting', Icon: 'walk' },
+	{ Code: 'sale-quotation', Name: 'Sale quotation', Icon: 'document-text' },
+	{ Code: 'event-hold', Name: 'Event hold', Icon: 'lock-closed' },
+	{ Code: 'hall-calendar', Name: 'Hall calendar', Icon: 'calendar-number' },
 	{ Code: 'contract', Name: 'Contract', Icon: 'document' },
-	{ Code: 'contract-payment', Name: 'Contract Payment', Icon: 'wallet' },
+	{ Code: 'contract-payment', Name: 'Contract payment', Icon: 'wallet' },
 	{ Code: 'beo', Name: 'BEO', Icon: 'restaurant' },
-	{ Code: 'attendance-booking', Name: 'Attendance Booking', Icon: 'people-circle' },
-	{ Code: 'ai-inbox', Name: 'AI Inbox', Icon: 'chatbubbles' },
+	{ Code: 'attendance-booking', Name: 'Attendance booking', Icon: 'people-circle' },
+	{ Code: 'ai-inbox', Name: 'AI inbox', Icon: 'chatbubbles' },
 	{ Code: 'campaign', Name: 'Campaign', Icon: 'megaphone' },
 	{ Code: 'customer', Name: 'Customer', Icon: 'person' },
-	{ Code: 'kpi-board', Name: 'KPI Board', Icon: 'speedometer' },
 ];
 
 export async function bootstrapG3Demo(env: EnvService, userContext: UserContextService): Promise<void> {
@@ -45,7 +43,7 @@ export async function bootstrapG3Demo(env: EnvService, userContext: UserContextS
 		{
 			Id: moduleId,
 			Code: 'CRM-WEDDING',
-			Name: 'CRM Wedding (G3 Demo)',
+			Name: 'Crm wedding (G3 demo)',
 			Type: 10,
 			IDParent: null,
 			Icon: 'heart',
@@ -57,7 +55,7 @@ export async function bootstrapG3Demo(env: EnvService, userContext: UserContextS
 		{
 			Id: moduleId + 1,
 			Code: 'CRM-WEDDING-MENU',
-			Name: 'Wedding CRM',
+			Name: 'Wedding crm',
 			Type: 11,
 			IDParent: moduleId,
 			Icon: 'heart',
@@ -102,7 +100,7 @@ export async function bootstrapG3Demo(env: EnvService, userContext: UserContextS
 	const branch = {
 		Id: 1,
 		Code: 'DEMO',
-		Name: 'Demo Venue',
+		Name: 'Demo venue',
 		IDParent: null,
 		IsDisabled: false,
 	};
@@ -112,7 +110,7 @@ export async function bootstrapG3Demo(env: EnvService, userContext: UserContextS
 			Id: 900001,
 			UserName: 'g3.demo',
 			Email: 'g3.demo@local',
-			FullName: 'G3 Demo User',
+			FullName: 'G3 demo user',
 			IsDisabled: false,
 			IDBranch: 1,
 			SysRoles: ['Admin'],
@@ -139,5 +137,5 @@ export async function bootstrapG3Demo(env: EnvService, userContext: UserContextS
 	}
 
 	env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_MENU, Value: true });
-	console.log('[G3 Demo] Seeded mock user + CRM Wedding forms');
+	console.log('[G3 demo] Seeded mock user + crm wedding forms');
 }
