@@ -18,11 +18,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
   <script type="text/javascript">
-	if (window.location.host.indexOf('localhost') == -1 && window.location.host.indexOf('192.168') == -1){
-		if (window.location.protocol != 'https:')
-			location.href = location.href.replace("http://", "https://");
-		document.write("<base href='" + window.location.origin + 'REPLACE_BASE_HREF' + "' />");  // REPLACE_VERSION
-	}
+	// G3 demo / local: không ép HTTPS trên localhost, 127.0.0.1, LAN, cloud VM
+	(function () {
+		var h = window.location.host || '';
+		var skipHttps =
+			h.indexOf('localhost') !== -1 ||
+			h.indexOf('127.0.0.1') !== -1 ||
+			h.indexOf('192.168') !== -1 ||
+			h.indexOf('10.') === 0 ||
+			h.indexOf('172.') === 0;
+		if (!skipHttps) {
+			if (window.location.protocol != 'https:')
+				location.href = location.href.replace("http://", "https://");
+			document.write("<base href='" + window.location.origin + 'REPLACE_BASE_HREF' + "' />");  // REPLACE_VERSION
+		}
+	})();
 
     var browser = (function () {
       var test = function (regexpOrCss) {

@@ -10,7 +10,7 @@ import {
 import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
 import { UserProfileService } from '../services/auth/user-profile.service';
-import { dogF } from 'src/environments/environment';
+import { dogF, environment } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
 import { hasValidUserId } from '../interfaces/auth.interfaces';
 
@@ -190,6 +190,11 @@ async function runAuthGuard(
 	ctx: AuthGuardContext,
 ): Promise<boolean | UrlTree> {
 	const { router, env } = ctx;
+
+	// G3 local demo — cho phép xem UI source CRM không cần BE login
+	if ((environment as any).g3Demo) {
+		return true;
+	}
 
 	try {
 		if (env.ready) {

@@ -19,6 +19,8 @@ import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
 import { recheckCurrentRoutePermission } from './guards/app.guard';
 import { UserCardPage } from './pages/SYS/user-card/user-card.page';
+import { UserContextService } from './services/auth/user-context.service';
+import { bootstrapG3Demo } from './services/g3-demo.bootstrap';
 
 register();
 
@@ -282,6 +284,7 @@ export class AppComponent implements OnInit {
 	constructor(
 		private userProfileService: UserProfileService,
 		private authenticationService: AuthenticationService,
+		private userContextService: UserContextService,
 		private router: Router,
 		private navCtrl: NavController,
 		public menu: MenuController,
@@ -329,19 +332,34 @@ export class AppComponent implements OnInit {
 		await this.env.ready;
 		dogF && console.log('🌲 [AppComponent] Environment ready');
 
+		if (environment.g3Demo) {
+			await bootstrapG3Demo(this.env, this.userContextService);
+		}
+
 		this.updateGuestCustomerMode();
 		this.ui.isReady = true;
 		this.updateStatusbar();
 		this.eventHandler();
 		this.renderUI();
 
-		this.initNotification();
-		this.serviceWorkerRegister();
+		if (!environment.g3Demo) {
+			this.initNotification();
+			this.serviceWorkerRegister();
+		}
 
-		if (!this.isGuestCustomer) {
+		if (!this.isGuestCustomer && !environment.g3Demo) {
 			setTimeout(() => {
 				this.userProfileService.getProfile();
 			}, 0);
+		}
+
+		if (environment.g3Demo) {
+			this.ui.showAppMenu = true;
+			const raw = (this.router.url || '/').split('?')[0];
+			const path = raw.includes('#') ? raw.split('#').pop() || '/' : raw;
+			if (path === '/' || path === '/login' || path === '/default' || path === '') {
+				this.navCtrl.navigateRoot(['/opportunity']);
+			}
 		}
 	}
 
@@ -359,11 +377,13 @@ export class AppComponent implements OnInit {
 					break;
 
 				case EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP:
-					this.ui.isConnectFail = true;
-					this.openAppStore();
+					if (!environment.g3Demo) {
+						this.ui.isConnectFail = true;
+						this.openAppStore();
+					}
 					break;
 				case EVENT_TYPE.APP.CONNECT_FAIL:
-					this.ui.isConnectFail = true;
+					if (!environment.g3Demo) this.ui.isConnectFail = true;
 					break;
 				case EVENT_TYPE.APP.SHOW_APP_MESSAGE:
 					this.appMessageManage(data);

@@ -1,5 +1,7 @@
 export let environment = {
 	production: false,
+	/** G3: chạy source CRM Wedding không login API — tắt trước khi merge prod */
+	g3Demo: true,
 	appVersion: '9dev',
 	appLocation: '/',
 	versionLocation: '',

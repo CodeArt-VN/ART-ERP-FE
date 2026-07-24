@@ -590,6 +590,10 @@ export class EnvService {
 	 */
 	checkFormPermission(functionCode) {
 		return new Promise<boolean>((resolve) => {
+			if ((environment as any).g3Demo) {
+				resolve(true);
+				return;
+			}
 			const path = (functionCode || '').split('?')[0];
 			if (this.isGuestCustomerRoute(path)) {
 				resolve(true);
