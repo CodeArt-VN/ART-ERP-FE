@@ -1,10 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SecurityContext, ViewChildren } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { lib } from 'src/app/services/static/global-functions';
 import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime } from 'rxjs';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var Quill: any;
 @Component({
@@ -29,7 +30,8 @@ export class QuillEditorComponent implements OnInit {
 	dataSourceGrouped: any = [];
 	constructor(
 		private modalCtrl: ModalController,
-		private dynamicScriptLoaderService: DynamicScriptLoaderService
+		private dynamicScriptLoaderService: DynamicScriptLoaderService,
+		private sanitizer: DomSanitizer
 	) {}
 	ngOnInit() {
 		this.keyword$
@@ -82,7 +84,7 @@ export class QuillEditorComponent implements OnInit {
 		const isHtmlMode = /&lt;|&gt;|&amp;|&quot;|&#39;/.test(editorContent.innerHTML);
 		if (isHtmlMode) {
 			const htmlContent = editorContent.textContent || '';
-			this.quillEditor.root.innerHTML = htmlContent;
+			this.quillEditor.root.innerHTML = this.sanitizeHtml(htmlContent);
 		} else {
 			const richTextContent = this.quillEditor.root.innerHTML;
 			this.quillEditor.root.textContent = richTextContent;
@@ -154,7 +156,7 @@ export class QuillEditorComponent implements OnInit {
 
 			// Set initial value
 			if (this.form.get(this.id)?.value) {
-				this.quillEditor.root.innerHTML = this.form.get(this.id).value;
+				this.quillEditor.root.innerHTML = this.sanitizeHtml(this.form.get(this.id).value);
 			}
 
 			this.quillEditor.on('text-change', (delta, oldDelta, source) => {
@@ -197,6 +199,13 @@ export class QuillEditorComponent implements OnInit {
 
 			if (this.dataSource?.length) this.renderGroups();
 		}
+	}
+
+	private sanitizeHtml(value: any) {
+		if (!value) {
+			return '';
+		}
+		return this.sanitizer.sanitize(SecurityContext.HTML, String(value)) || '';
 	}
 
 	async renderGroups(keyword = '', codeList = null) {
