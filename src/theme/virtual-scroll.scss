@@ -1,0 +1,45 @@
+// Shared variable-height virtual scroll — host: app-virtual-viewport
+// DOM contract: viewport (position:relative) > .vs-content (absolute) > .vs-spacer (flow height)
+
+app-virtual-viewport {
+	display: block;
+	position: relative;
+	width: 100%;
+
+	.vs-content {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100% !important;
+		max-width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
+	}
+
+	.vs-spacer {
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	&.page-mode {
+		display: block;
+		width: 100%;
+		height: auto;
+		// Scroll is ion-content; overflow:visible keeps spacer in page flow
+		overflow: visible;
+		contain: none;
+		transform: none;
+	}
+
+	&.container-mode {
+		flex: 1 1 auto;
+		min-height: 0;
+		width: 100%;
+		overflow: auto;
+		// Official CDK fix for virtual-scroll jumping (angular/components#32715, PR #33439)
+		overflow-anchor: none;
+		scroll-behavior: auto;
+	}
+}

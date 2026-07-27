@@ -45,7 +45,7 @@ export abstract class PageBase implements OnInit {
 
 	query: any = {
 		Keyword: '',
-		Take: 100,
+		Take: 200,
 		Skip: 0,
 	};
 	maskConfig = { thousandSeparator: ',' };

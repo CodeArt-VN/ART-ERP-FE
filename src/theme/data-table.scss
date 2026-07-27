@@ -660,12 +660,57 @@ app-data-table,
 			background-color: transparent;
 			box-shadow: none;
 			//min-width: unset !important; //Fix no data message on responsive
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			padding-inline: 16px;
+			box-sizing: border-box;
+			max-width: 100%;
+			min-width: 0;
 
 			.show-small-inline {
 				display: inline;
 			}
 			.hide-small {
 				display: none;
+			}
+
+			// Gap only on in-flow body (*ngFor). Do NOT put gap on
+			// .vs-content — it is position:absolute; gap
+			// inflates painted height past the spacer so rows stick out of datatable-body.
+			datatable-body {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				width: 100%;
+				max-width: 100%;
+				min-width: 0;
+				height: auto;
+				flex: none;
+				box-sizing: border-box;
+				// Old row margin:16px gave outer inset; gap has no after-last spacing.
+				// Absolute .money/.col-status can paint past the last row without this.
+				padding-bottom: 16px;
+			}
+
+			// Bake spacing into each virtual item so autosize measures it correctly
+			.datatable-virtual-item:not(:last-child) {
+				padding-bottom: 16px;
+				box-sizing: border-box;
+			}
+
+			@media screen and (max-width: calc(425px)) {
+				gap: 0;
+				padding-inline: 0;
+
+				datatable-body {
+					gap: 0;
+					padding-bottom: 0;
+				}
+
+				.datatable-virtual-item:not(:last-child) {
+					padding-bottom: 0;
+				}
 			}
 
 			header,
@@ -738,14 +783,16 @@ app-data-table,
 			.row {
 				flex-wrap: wrap;
 				padding: 16px 16px 16px 35px;
-				margin: 16px;
+				margin: 0;
 				border-radius: 10px;
 				background-color: var(--table-row-background);
 				line-height: calc(10 / 16 * 1.8rem);
-				min-width: auto;
+				min-width: 0;
+				max-width: 100%;
+				width: 100%;
+				box-sizing: border-box;
 
 				@media screen and (max-width: calc(425px)) {
-					margin: 0px;
 					border-radius: 0px;
 				}
 
@@ -1189,4 +1236,146 @@ app-data-table,
 		-webkit-line-clamp: unset;
 		-webkit-box-orient: unset;
 	}
+}
+
+// Data-table-specific virtual scroll layout (generic viewport CSS: theme/virtual-scroll.scss)
+app-data-table.virtual-scroll {
+	// Header outside viewport must share the same 100% track as virtual body rows
+	> .row.header,
+	> form > .row.header {
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	datatable-body {
+		display: block;
+		width: 100%;
+	}
+
+	// Keep header + body on the same horizontal flex track
+	.vs-content {
+		left: 0;
+		right: 0;
+		width: 100% !important;
+		max-width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
+	}
+
+	.datatable-virtual-item {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		height: auto;
+		overflow: visible;
+
+		datatable-body-row.row,
+		> .row {
+			display: flex;
+			width: 100%;
+			max-width: 100%;
+			min-width: 0;
+			height: auto;
+			box-sizing: border-box;
+			margin: 0;
+		}
+	}
+}
+
+app-data-table.virtual-scroll-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+
+	datatable-body {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+}
+
+// [minHeight] input (default '100%') sets a floor height for the whole table (host).
+// Table stays display:block while it has rows — no layout change, no regression risk for
+// horizontal scroll (min-width:min-content) on wide tables.
+// While empty (no rows, or showSpinner) the host switches to flex column so the built-in
+// empty message (page-message) stretches to fill that height instead of floating with dead
+// space below it.
+app-data-table.is-empty {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+
+	> datatable-body {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+
+		// display:flex (not height:100%) on purpose — a flex item's flex-stretched height
+		// isn't a valid containing block for a percentage-height *child* (it stays 0 here),
+		// so we chain flex-grow all the way down instead of relying on height:100%.
+		> app-page-message {
+			flex: 1 1 auto;
+			min-height: 0;
+			display: flex;
+			flex-direction: column;
+
+			// Overrides common.scss .message-container{min-height:50vh} — inside a table,
+			// flex-grow above (governed by the table's own [minHeight]) is the floor we want.
+			.message-container {
+				flex: 1 1 auto;
+				min-height: 0;
+				height: auto;
+			}
+		}
+	}
+}
+
+// Shared fill layout for list pages — applied via ion-content.scrollx.
+@mixin ion-content-table-fill {
+	&::part(scroll) {
+		display: flex;
+		flex-direction: column;
+		min-height: 100%;
+	}
+
+	> app-page-title {
+		flex-shrink: 0;
+	}
+
+	// Has rows: restore min-height:auto (inline min-height:100% replaces the flex default
+	// and lets flex-shrink collapse the host to viewport height → table background shorter
+	// than virtual-scroll / body rows that overflow below it).
+	> .safe-max-width:has(> app-data-table:not(.is-empty)),
+	> app-data-table:not(.is-empty),
+	app-data-table:not(.is-empty) {
+		flex-shrink: 0;
+		min-height: auto !important;
+		height: auto;
+	}
+
+	// Chỉ stretch khi empty/loading — khi có rows, table giữ display:block và grow tự nhiên
+	> .safe-max-width:has(> app-data-table.is-empty) {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+
+	> app-data-table.is-empty,
+	app-data-table.is-empty {
+		flex: 1 1 auto;
+		min-height: 0 !important;
+	}
+}
+
+// Phase 1 — pilot (AR Invoice). Phase 2: move @include to ion-content.scrollx and remove .test-fill.
+ion-content.scrollx {
+	@include ion-content-table-fill;
 }

@@ -13,6 +13,7 @@ import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { ShareDataTableModule } from './data-table/share-data-table.module';
+import { ShareVirtualScrollModule } from './virtual-scroll/share-virtual-scroll.module';
 
 //import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ShareInputControlsModule } from './controls/share-input-controls.modules';
@@ -40,6 +41,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		NgOptionHighlightDirective,
 		//
 		ShareInputControlsModule,
+		ShareVirtualScrollModule,
 		ShareDataTableModule,
 		ShareVisualizationsModule,
 		SharePrintingModule,
@@ -64,6 +66,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		PageTitleComponent,
 		QueryFilterComponent,
 		ShareInputControlsModule,
+		ShareVirtualScrollModule,
 		ShareDataTableModule,
 		ShareVisualizationsModule,
 		SharePrintingModule,

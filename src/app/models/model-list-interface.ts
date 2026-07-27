@@ -7325,8 +7325,10 @@ export interface SALE_Forecast
     Multiply?: number;
     Filter?: string;
     Config?: string;
-    NumberOfNextPeriod?: number;
+	NumberOfNextPeriod?: number;
     NumberOfPrePeriod?: number;
+    PrePeriodType?: string;
+    IDPriceList?: number;
     
 }
 

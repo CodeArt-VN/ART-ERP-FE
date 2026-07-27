@@ -245,22 +245,23 @@ export class PaymentModalComponent implements OnInit {
 		if (!this.canUseLoyaltyPointPayment()) return false;
 
 		try {
-			const contact: any = await this.contactProvider.getAnItem(Number(contactId));
-			if (!contact) {
+			const data: any = await this.commonService
+				.connect('GET', 'CRM/Contact/LoyaltyPoint', { IDContact: contactId })
+				.toPromise();
+
+			if (!data) {
 				this.env.showMessage('Contact not found!', 'danger');
 				return false;
 			}
 
-			const memberships = contact._MembershipLoyalty || [];
-			const loyalty = memberships.find((m) => m._PolLevel?.IDBranch == this.item.IDBranch) || memberships[0];
-			if (!loyalty) {
+			this.item.Point = Number(data.Point) || 0;
+			this.item.PolLevelName = data.PolLevelName || '';
+			this.item.PointConversionRate = Number(data.PointConversionRate) || 0;
+
+			if (!this.item.PolLevelName && this.item.Point <= 0 && this.item.PointConversionRate <= 0) {
 				this.env.showMessage('Customer loyalty membership not found', 'warning');
 				return false;
 			}
-
-			this.item.Point = Number(loyalty.Point) || 0;
-			this.item.PolLevelName = loyalty._PolLevel?.Name || '';
-			this.item.PointConversionRate = Number(loyalty.PointConversionRate) || 0;
 
 			if (this.item.Point <= 0) {
 				this.env.showMessage('Customer loyalty point is not enough', 'warning');
