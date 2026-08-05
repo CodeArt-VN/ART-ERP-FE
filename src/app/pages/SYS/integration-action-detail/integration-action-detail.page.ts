@@ -205,8 +205,8 @@ export class IntegrationActionDetailPage extends PageBase {
 		let detailLength = this.Runners.controls.length;
 		if (detailLength > 0) {
 			this.env
-				.showPrompt('Thay đổi provider sẽ xoá hết API Collection, bạn có tiếp tục?', null, {
-					code: 'Xóa {{value}} dòng?',
+				.showPrompt('Changing Provider will be deleting API Collection,do you want to continue?', null, {
+					code: 'Delete {{value}} row',
 					value: { value: length },
 				})
 				.then((_) => {
@@ -270,8 +270,8 @@ export class IntegrationActionDetailPage extends PageBase {
 		if (this.pageConfig.canDelete) {
 			let length = this.Runners.controls.length;
 			this.env
-				.showPrompt('Bạn có chắc muốn xóa Runners đang chọn?', null, {
-					code: 'Xóa {{value}} đang chọn?',
+				.showPrompt('Are you sure you want to delete the selected runners?', null, {
+					code: 'Delete selected {{value}}?',
 					value: length,
 				})
 				.then((_) => {
@@ -287,7 +287,7 @@ export class IntegrationActionDetailPage extends PageBase {
 		let itemToDelete = fg.getRawValue();
 		if (!itemToDelete.Id) this.Runners.removeAt(j);
 		else {
-			this.env.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa 1 dòng').then((_) => {
+			this.env.showPrompt('Are you sure you want to delete?', null, 'Delete 1 row').then((_) => {
 				this.actionAPIRunnerProvider.delete(itemToDelete).then((result) => {
 					this.Runners.removeAt(j);
 					this.convertRunnerConfig();

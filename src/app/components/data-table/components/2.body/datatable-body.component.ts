@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import {
 	ScrollProgressEvent,
 	VirtualScrollMode,
 	VirtualViewportComponent,
 } from 'src/app/components/virtual-scroll/virtual-viewport.component';
 import { buildVirtualItems, DatatableVirtualItem, virtualItemTrackBy } from './virtual-items.util';
+import { DataTableActiveFilter } from '../../interfaces/table-column.interface';
 
 export type DatatableVirtualScrollMode = VirtualScrollMode;
 
@@ -13,10 +14,22 @@ export type DatatableVirtualScrollMode = VirtualScrollMode;
 	templateUrl: './datatable-body.component.html',
 	standalone: false,
 })
-export class DataTablBodyComponent implements OnInit, OnDestroy {
+export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 	@ViewChild(VirtualViewportComponent) private vp?: VirtualViewportComponent<DatatableVirtualItem>;
 
 	@Input() emptyMessage: any;
+	@Input() activeFilters: DataTableActiveFilter[] = [];
+
+	@Output() clearFilter: EventEmitter<string> = new EventEmitter();
+	@Output() clearAllFilters: EventEmitter<void> = new EventEmitter();
+
+	onClearFilter(property: string) {
+		this.clearFilter.emit(property);
+	}
+
+	onClearAllFilters() {
+		this.clearAllFilters.emit();
+	}
 
 	_columns: any[];
 	@Input() set columns(val: any[]) {
@@ -42,7 +55,19 @@ export class DataTablBodyComponent implements OnInit, OnDestroy {
 		return this._rows;
 	}
 
-	@Input() trackBy: string;
+	_trackBy: string;
+	@Input() set trackBy(val: string) {
+		if (val === this._trackBy) {
+			return;
+		}
+		this._trackBy = val;
+		// trackBy can arrive after rows — rebuild so item ids stop falling back to the row index.
+		this.rebuildVirtualItems();
+	}
+
+	get trackBy(): string {
+		return this._trackBy;
+	}
 
 	@Input() set virtualScroll(val: boolean) {
 		this._virtualScroll = !!val;
@@ -107,6 +132,14 @@ export class DataTablBodyComponent implements OnInit, OnDestroy {
 	private mediaListener?: (e: MediaQueryListEvent) => void;
 	private readonly infiniteThresholdPx = 320;
 
+	// Rows are often mutated in place (FormArray push/splice, tree show flags), which never triggers
+	// the `rows` setter. These fields let ngDoCheck notice that with an O(1) length compare, falling
+	// back to an O(n) scan only for tables that actually hide rows or render dividers.
+	private lastRowsLength = -1;
+	private lastVisibleCount = -1;
+	private lastDividerCount = -1;
+	private watchVisibility = false;
+
 	constructor(private readonly ngZone: NgZone) {}
 
 	ngOnInit() {
@@ -122,6 +155,29 @@ export class DataTablBodyComponent implements OnInit, OnDestroy {
 		this.mediaQuery.addEventListener('change', this.mediaListener);
 	}
 
+	ngDoCheck(): void {
+		if (!this._virtualScroll) {
+			return;
+		}
+
+		const rows = this._rows;
+		const len = rows?.length ?? 0;
+
+		if (len !== this.lastRowsLength) {
+			this.isWaitingNewData = false;
+			this.rebuildVirtualItems();
+			return;
+		}
+
+		if (!this.watchVisibility || !len) {
+			return;
+		}
+
+		if (this.refreshVisibilityState(rows)) {
+			this.rebuildVirtualItems();
+		}
+	}
+
 	ngOnDestroy() {
 		if (this.mediaQuery && this.mediaListener) {
 			this.mediaQuery.removeEventListener('change', this.mediaListener);
@@ -129,7 +185,49 @@ export class DataTablBodyComponent implements OnInit, OnDestroy {
 	}
 
 	private rebuildVirtualItems() {
-		this.virtualItems = this._virtualScroll ? buildVirtualItems(this._rows, this.trackBy) : [];
+		this.virtualItems = this._virtualScroll ? buildVirtualItems(this._rows, this._trackBy) : [];
+		this.lastRowsLength = this._rows?.length ?? 0;
+
+		if (this._virtualScroll && this.lastRowsLength) {
+			this.refreshVisibilityState(this._rows);
+		} else {
+			this.watchVisibility = false;
+			this.lastVisibleCount = -1;
+			this.lastDividerCount = -1;
+		}
+	}
+
+	/**
+	 * Counts what `buildVirtualItems` would emit (visible rows + divider lines) and returns whether
+	 * that differs from the last scan. Also decides if further scans are worth it: only tree tables
+	 * (rows carrying a `show` flag) and grouped tables (dividers) can change without a length change.
+	 */
+	private refreshVisibilityState(rows: any[]): boolean {
+		let visible = 0;
+		let dividers = 0;
+		let hasShowFlag = false;
+
+		for (let i = 0; i < rows.length; i++) {
+			const row = rows[i];
+			if (row?.show !== undefined) {
+				hasShowFlag = true;
+				if (row.show === false) {
+					continue;
+				}
+			}
+			visible++;
+			if (row?._dividers?.length) {
+				dividers += row._dividers.length;
+			} else if (row?._divider) {
+				dividers++;
+			}
+		}
+
+		const changed = visible !== this.lastVisibleCount || dividers !== this.lastDividerCount;
+		this.lastVisibleCount = visible;
+		this.lastDividerCount = dividers;
+		this.watchVisibility = hasShowFlag || dividers > 0;
+		return changed;
 	}
 
 	onVirtualScrollProgress(event: ScrollProgressEvent) {

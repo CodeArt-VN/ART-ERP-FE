@@ -4,6 +4,7 @@ import { DataTableColumnFilterDirective } from './data-table-filter-template-dir
 import { DataTableColumnHeaderDirective } from './data-table-header-template-directive';
 import { Subject, Observable } from 'rxjs';
 import { InputControlField } from '../../controls/controls.interface';
+import { ColumnWidth } from '../column-width.util';
 
 @Directive({
 	selector: 'datatable-column',
@@ -47,9 +48,11 @@ export class DataTableColumnDirective implements OnChanges {
 
 	@Input() canSort: boolean = true;
 
-	@Input() minWidth: number;
-	@Input() width: number;
-	@Input() maxWidth: number;
+	/** Number = px, string = any CSS length. Unset keeps the column class default. */
+	@Input() minWidth: ColumnWidth;
+	/** Shorthand pinning both minWidth and maxWidth. */
+	@Input() width: ColumnWidth;
+	@Input() maxWidth: ColumnWidth;
 
 	@Input() navLink: string;
 

@@ -179,6 +179,22 @@
 	color: var(--ion-text-color, #101828);
 }
 
+.preview-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 0.5rem;
+}
+
+.preview-actions ion-button {
+	margin: 0;
+	--padding-start: 0.65rem;
+	--padding-end: 0.75rem;
+	height: 28px;
+	font-size: 0.78rem;
+	font-weight: 600;
+	text-transform: none;
+}
+
 .footer-actions {
 	display: flex;
 	flex-wrap: wrap;

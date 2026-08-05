@@ -706,7 +706,7 @@ export class AppComponent implements OnInit {
 				this.env.NotifyToken = token;
 				onMessage(messaging, (payload) => {
 					console.log('Foreground notification:', payload);
-					const title = payload.data?.title ?? 'Thông báo';
+					const title = payload.data?.title ?? 'Announcement';
 					const body = payload.data?.body ?? '';
 
 					this.env.showMessage(body, null, null, null, false, title);

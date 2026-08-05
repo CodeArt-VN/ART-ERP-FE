@@ -442,8 +442,8 @@ export class APICollectionDetailPage extends PageBase {
 		if (this.pageConfig.canDelete) {
 			let length = groups.getRawValue().length;
 			this.env
-				.showPrompt({ code: 'Bạn có chắc muốn xóa {{value}} đang chọn?', value: { value: controlName } }, null, {
-					code: 'Xóa {{value1}} đang chọn?',
+				.showPrompt({ code: 'Are you sure you want to delete the selected {{value}}?', value: { value: controlName } }, null, {
+					code: 'Delete selected {{{value1}}?',
 					value: { value1: length },
 				})
 				.then((_) => {

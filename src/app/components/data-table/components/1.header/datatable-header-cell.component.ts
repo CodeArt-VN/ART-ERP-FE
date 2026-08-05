@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
 import { SortConfig } from 'src/app/interfaces/options-interface';
+import { columnMaxWidth, columnMinWidth } from '../../column-width.util';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,19 +50,14 @@ export class DataTableHeaderCellComponent {
 		return this.column.headerTemplate === undefined ? this.column.name : undefined;
 	}
 
-	@HostBinding('style.minWidth.px')
-	get minWidth(): number {
-		return this.column.minWidth;
+	@HostBinding('style.min-width')
+	get minWidth(): string | null {
+		return columnMinWidth(this.column);
 	}
 
-	@HostBinding('style.maxWidth.px')
-	get maxWidth(): number {
-		return this.column.maxWidth;
-	}
-
-	@HostBinding('style.width.px')
-	get width(): number {
-		return this.column.width;
+	@HostBinding('style.max-width')
+	get maxWidth(): string | null {
+		return columnMaxWidth(this.column);
 	}
 
 	constructor(private cd: ChangeDetectorRef) {}

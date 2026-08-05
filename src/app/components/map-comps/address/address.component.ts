@@ -181,7 +181,7 @@ export class AddressComponent extends PageBase {
 	@Output() onDelete = new EventEmitter();
 	removeAddress() {
 		this.env
-			.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa địa chỉ')
+			.showPrompt('Are you sure you want to delete?', null, 'Delete address')
 			.then((_) => {
 				this.onDelete.emit(this.formGroup.getRawValue());
 			})

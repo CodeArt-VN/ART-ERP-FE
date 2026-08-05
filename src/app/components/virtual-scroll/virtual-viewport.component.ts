@@ -46,15 +46,25 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 
 	@Input() set items(val: T[] | null | undefined) {
 		const next = val || [];
-		const idsChanged = !this.sameItemIds(next, this.itemsArr);
+		const prev = this.itemsArr;
+		const idsChanged = !this.sameItemIds(next, prev);
+		const refsChanged = !this.sameItemRefs(next, prev);
 		this.itemsArr = next;
 		// Skip engine rebuild when the id sequence is unchanged — important for consumers that
 		// bind a getter returning a fresh array each CD (e.g. `.filter(...)` in write-NFC).
 		if (idsChanged) {
 			this.syncEngineItems();
-			if (this.scrollEl) {
+			if (this.isScrollMetricsUsable()) {
 				this.recompute();
+			} else {
+				// List page often patches while still under a detail (display:none). Recomputing
+				// then mis-measures offset → empty mid-list until the user scrolls.
+				this.pendingRelayout = true;
+				this.rebindRenderedItemRefs();
 			}
+		} else if (refsChanged) {
+			// Same ids, new object refs (list patch after save) — re-slice without height rebuild.
+			this.refreshRenderedSlice();
 		}
 	}
 
@@ -76,6 +86,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	private pendingMeasurements: Array<{ id: string | number; height: number }> = [];
 	private flushScheduled = false;
 	private renderStart = 0;
+	/** True when items changed while the page/scroll metrics were unusable (hidden ion-page). */
+	private pendingRelayout = false;
+	private visibilityObserver?: IntersectionObserver;
+	private readonly onPageRelayout = () => this.relayout();
 
 	constructor(
 		private readonly el: ElementRef<HTMLElement>,
@@ -87,8 +101,12 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	ngOnInit(): void {
 		this.ngZone.runOutsideAngular(() => {
 			this.setupResizeObserver();
+			this.setupVisibilityObserver();
 			this.resolveScrollElement();
 		});
+		if (typeof document !== 'undefined') {
+			document.addEventListener('app:virtual-viewport-relayout', this.onPageRelayout);
+		}
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -112,6 +130,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	ngOnDestroy(): void {
 		this.scrollSub?.unsubscribe();
 		this.resizeObserver?.disconnect();
+		this.visibilityObserver?.disconnect();
+		if (typeof document !== 'undefined') {
+			document.removeEventListener('app:virtual-viewport-relayout', this.onPageRelayout);
+		}
 	}
 
 	/**
@@ -132,6 +154,19 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	invalidateHeights(): void {
 		this.engine.invalidateAll();
 		this.measureGeneration++;
+		this.recompute();
+	}
+
+	/**
+	 * Re-run layout after the host page becomes visible again (Ionic back from detail).
+	 * Safe to call anytime — no-ops if scroll metrics are still unusable.
+	 */
+	relayout(): void {
+		if (!this.isScrollMetricsUsable()) {
+			this.pendingRelayout = true;
+			return;
+		}
+		this.pendingRelayout = false;
 		this.recompute();
 	}
 
@@ -159,6 +194,71 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			if (this.resolveItemId(a[i], i) !== this.resolveItemId(b[i], i)) {
 				return false;
 			}
+		}
+		return true;
+	}
+
+	/** Pointer identity per index — true when every slot is the same object instance. */
+	private sameItemRefs(a: T[], b: T[]): boolean {
+		if (a === b) {
+			return true;
+		}
+		if (a.length !== b.length) {
+			return false;
+		}
+		for (let i = 0; i < a.length; i++) {
+			if (a[i] !== b[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Rebind renderedItems from the current itemsArr using the last visible range.
+	 * Does not touch the height engine (ids unchanged).
+	 */
+	private refreshRenderedSlice(): void {
+		if (!this.isScrollMetricsUsable()) {
+			this.pendingRelayout = true;
+			this.rebindRenderedItemRefs();
+			return;
+		}
+		this.recompute();
+	}
+
+	/**
+	 * Swap object refs in the current render window without moving renderStart.
+	 * Used when the list patches data while the ion-page is still display:none.
+	 */
+	private rebindRenderedItemRefs(): void {
+		if (!this.itemsArr.length) {
+			this.renderedItems = [];
+			return;
+		}
+		if (!this.renderedItems.length) {
+			return;
+		}
+		const start = this.renderStart;
+		const end = Math.min(start + this.renderedItems.length, this.itemsArr.length);
+		if (start >= this.itemsArr.length) {
+			return;
+		}
+		this.renderedItems = this.itemsArr.slice(start, end);
+	}
+
+	private isScrollMetricsUsable(): boolean {
+		if (!this.scrollEl) {
+			return false;
+		}
+		if (this.scrollEl.clientHeight < 1) {
+			return false;
+		}
+		const rect = this.el.nativeElement.getBoundingClientRect();
+		// Hidden ion-page (display:none) reports 0×0 — measuring offset then collapses
+		// virtualProgress to 0 while scrollTop is still mid-list.
+		if (rect.width < 1 && rect.height < 1) {
+			return false;
 		}
 		return true;
 	}
@@ -213,6 +313,26 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			this.ngZone.run(() => this.invalidateHeights());
 		});
 		this.resizeObserver.observe(this.el.nativeElement);
+	}
+
+	private setupVisibilityObserver(): void {
+		if (typeof IntersectionObserver === 'undefined') {
+			return;
+		}
+		this.visibilityObserver = new IntersectionObserver(
+			(entries) => {
+				const visible = entries.some((e) => e.isIntersecting && e.intersectionRatio > 0);
+				if (!visible) {
+					return;
+				}
+				if (!this.pendingRelayout && this.isScrollMetricsUsable()) {
+					return;
+				}
+				this.ngZone.run(() => this.relayout());
+			},
+			{ threshold: 0 }
+		);
+		this.visibilityObserver.observe(this.el.nativeElement);
 	}
 
 	private resolveScrollElement(): void {
@@ -282,6 +402,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		if (!this.scrollEl) {
 			return;
 		}
+		if (!this.isScrollMetricsUsable()) {
+			this.pendingRelayout = true;
+			return;
+		}
 		const scrollTop = this.scrollEl.scrollTop;
 		const clientHeight = this.scrollEl.clientHeight;
 		const viewportOffset = this.measureViewportOffset();
@@ -292,6 +416,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		this.renderedItems = range.end >= range.start ? this.itemsArr.slice(range.start, range.end + 1) : [];
 		this.contentTransform = `translateY(${this.engine.getOffset(range.start)}px)`;
 		this.totalHeight = this.engine.getTotalHeight();
+		this.pendingRelayout = false;
 
 		this.scrollProgress.emit({ distanceToEndPx: this.totalHeight - virtualProgress - clientHeight });
 	}

@@ -42,6 +42,7 @@
 		"@capacitor/android": "8.1.0",
 		"@capacitor/app": "^8.0.0",
 		"@capacitor/barcode-scanner": "^3.0.0",
+		"@capacitor/clipboard": "^8.0.1",
 		"@capacitor/core": "^8.0.0",
 		"@capacitor/device": "^8.0.0",
 		"@capacitor/geolocation": "^8.0.0",
