@@ -165,7 +165,7 @@ export class SchemaDetailPage extends PageBase {
 
 	removeField(g, index) {
 		this.env
-			.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa Schema Detail')
+			.showPrompt('Are you sure you want to delete?', null, 'Delete Schema detail')
 			.then((_) => {
 				let groups = <FormArray>this.formGroup.controls.Fields;
 				//groups.controls[index].get('IsDeleted').setValue(true);

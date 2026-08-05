@@ -63,25 +63,28 @@ export interface TableColumn {
 	property?: string;
 
 	/**
-	 * Min width of the column
+	 * Min width of the column. Number = px, string = any CSS length ('20%', '10rem').
+	 * Unset leaves whatever the column's CSS class defines.
 	 *
 	 * @memberOf TableColumn
 	 */
-	minWidth?: number;
+	minWidth?: number | string;
 
 	/**
-	 * Max width of the column
+	 * Max width of the column. Number = px, string = any CSS length ('20%', '10rem').
+	 * Unset leaves whatever the column's CSS class defines.
 	 *
 	 * @memberOf TableColumn
 	 */
-	maxWidth?: number;
+	maxWidth?: number | string;
 
 	/**
-	 * The default width of the column, in pixels
+	 * Fixed width — shorthand that pins both minWidth and maxWidth (see column-width.util).
+	 * Number = px, string = any CSS length.
 	 *
 	 * @memberOf TableColumn
 	 */
-	width?: number;
+	width?: number | string;
 
 	/**
 	 * Header checkbox enabled
@@ -97,9 +100,22 @@ export interface TableColumn {
 	format?: string;
 
 	filterControlType?: string;
+	filterDataSource?: any[];
+	filterBindValue?: string;
+	filterBindLabel?: string;
 
 	canFilter?: boolean;
 	canSort?: boolean;
 
 	navLink?: string;
+}
+
+/** Active column filter shown in empty-state list. */
+export interface DataTableActiveFilter {
+	property: string;
+	label: string;
+	controlType: string;
+	displayValue?: string;
+	displayFrom?: string;
+	displayTo?: string;
 }

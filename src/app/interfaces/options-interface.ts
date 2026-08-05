@@ -37,6 +37,8 @@ export interface ReportDataConfig {
 	Interval?: SchemaDetail;
 	CompareBy: SchemaDetail[];
 	MeasureBy: SchemaDetail[];
+	/** Default sort for query result / table view. Method: asc | desc */
+	OrderBy?: SchemaDetail[];
 }
 
 export interface ReportGlobalOptions {

@@ -1,7 +1,59 @@
-<app-page-message [itemsLength]="rows.length" [showSpinner]="showSpinner" [message]="emptyMessage?.message" [subMessage]="emptyMessage?.subMessage" [imgSrc]="emptyMessage?.imgSrc" [minHeight]="emptyMessage?.minHeight" [showImg]="emptyMessage?.showImg">
+<app-page-message
+	[itemsLength]="rows.length"
+	[showSpinner]="showSpinner"
+	[message]="emptyMessage?.message"
+	[subMessage]="
+		activeFilters?.length === 1
+			? 'Try clearing the filter below'
+			: activeFilters?.length
+				? 'Try clearing the filters below'
+				: emptyMessage?.subMessage
+	"
+	[imgSrc]="emptyMessage?.imgSrc"
+	[minHeight]="emptyMessage?.minHeight"
+	[showImg]="emptyMessage?.showImg"
+>
 	<ng-container *ngIf="emptyMessage">
 		<ng-template [ngTemplateOutlet]="emptyMessage.emptyMessageTemplate" [ngTemplateOutletContext]="{}"></ng-template>
 	</ng-container>
+	<div class="active-filters" *ngIf="!rows.length && !showSpinner && activeFilters?.length">
+		<div class="active-filters-header">
+			<span class="active-filters-kicker">
+				{{ (activeFilters.length === 1 ? 'Active filter' : 'Active filters') | translate }}
+			</span>
+			<span class="active-filters-count" aria-hidden="true">{{ activeFilters.length }}</span>
+		</div>
+
+		<ul class="active-filter-list">
+			<li class="active-filter-chip" *ngFor="let f of activeFilters">
+				<div class="chip-body">
+					<span class="chip-label">{{ f.label | translate }}</span>
+					<span class="chip-value">
+						<ng-container *ngIf="f.controlType === 'time-frame'; else plainValue">
+							{{ f.displayFrom | translate }}
+							<span class="chip-range" *ngIf="f.displayTo">→ {{ f.displayTo | translate }}</span>
+						</ng-container>
+						<ng-template #plainValue>{{ f.displayValue | translate }}</ng-template>
+					</span>
+				</div>
+				<ion-button
+					class="chip-clear"
+					size="small"
+					fill="clear"
+					[attr.aria-label]="('Clear' | translate) + ' ' + (f.label | translate)"
+					(click)="onClearFilter(f.property)"
+				>
+					<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+				</ion-button>
+			</li>
+		</ul>
+
+		<div class="active-filters-footer" *ngIf="activeFilters.length > 1">
+			<button type="button" class="clear-all-link" (click)="onClearAllFilters()">
+				{{ 'Clear all filters' | translate }}
+			</button>
+		</div>
+	</div>
 </app-page-message>
 
 @if (rows.length && !showSpinner) {

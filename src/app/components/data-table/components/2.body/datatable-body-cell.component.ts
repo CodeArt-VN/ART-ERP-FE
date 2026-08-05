@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { TableColumn } from '../../interfaces/table-column.interface';
 import { lib } from 'src/app/services/static/global-functions';
+import { columnMaxWidth, columnMinWidth } from '../../column-width.util';
 
 @Component({
 	selector: 'datatable-body-cell',
@@ -60,6 +61,16 @@ export class DataTableBodyCellComponent {
 		if (this.format?.indexOf('1') > -1) return 'number';
 		if (this.format?.indexOf('yy') > -1 || this.format?.indexOf('HH') > -1) return 'date';
 		return 'string';
+	}
+
+	@HostBinding('style.min-width')
+	get minWidth(): string | null {
+		return columnMinWidth(this.column);
+	}
+
+	@HostBinding('style.max-width')
+	get maxWidth(): string | null {
+		return columnMaxWidth(this.column);
 	}
 
 	cellContext: any = {};

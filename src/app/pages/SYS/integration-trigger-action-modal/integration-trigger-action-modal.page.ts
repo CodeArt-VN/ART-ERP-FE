@@ -140,8 +140,8 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 		let detailLength = ids.length;
 		if (detailLength > 0) {
 			this.env
-				.showPrompt('Thay đổi Provider sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
-					code: 'Xóa {{value}} dòng',
+				.showPrompt('Changing Provider will be deleting all the current mapping,do you want to continue?', null, {
+					code: 'Delete {{value}} line(s)',
 					value: { value: detailLength },
 				})
 				.then((_) => {
@@ -243,8 +243,8 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 		let detailLength = ids.length;
 		if (detailLength > 0) {
 			this.env
-				.showPrompt('Thay đổi Action sẽ xoá hết các mapping hiện tại, bạn có tiếp tục?', null, {
-					code: 'Xóa {{value}} dòng',
+				.showPrompt('Changing Action will be deleting all the current mapping,do you want to continue?', null, {
+					code: 'Delete {{value}} line(s)',
 					value: { value: detailLength },
 				})
 				.then((_) => {

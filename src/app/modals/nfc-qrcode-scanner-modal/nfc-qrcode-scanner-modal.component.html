@@ -36,8 +36,14 @@
 			</div>
 
 			<div class="scan-preview" *ngIf="scanPreview">
-				<span class="preview-label">{{ 'Card content' | translate }}</span>
+				<span class="preview-label">{{ (isMode('QR') ? 'Scanned content' : 'Card content') | translate }}</span>
 				<code>{{ scanPreview }}</code>
+				<div class="preview-actions">
+					<ion-button size="small" fill="outline" color="medium" (click)="copyScannedContent()">
+						<ion-icon slot="start" name="copy-outline"></ion-icon>
+						{{ 'Copy' | translate }}
+					</ion-button>
+				</div>
 			</div>
 
 			<div class="scan-preview secondary" *ngIf="parsedIdbp">

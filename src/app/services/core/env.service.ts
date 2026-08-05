@@ -213,7 +213,7 @@ export class EnvService {
 						message: translatedMessage,
 						buttons: [
 							{
-								text: 'OK',
+								text: 'Ok',
 								cssClass: 'danger-btn',
 								handler: () => {},
 							},

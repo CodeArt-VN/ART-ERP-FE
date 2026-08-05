@@ -125,16 +125,18 @@ export abstract class PageBase implements OnInit {
 			this.parseSort();
 
 			if (this.pageProvider && !this.pageConfig.isEndOfData) {
+				const apiQuery = this.getApiQuery();
 				if (event == 'search') {
-					this.pageProvider.read(this.query, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
+					this.pageProvider.read(apiQuery, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
 						this.markEndOfDataIfLastPage(result.data.length);
 						this.items = result.data;
 						this.loadedData(null);
 					});
 				} else {
 					this.query.Skip = this.items.length;
+					apiQuery.Skip = this.query.Skip;
 					this.pageProvider
-						.read(this.query, this.pageConfig.forceLoadData)
+						.read(apiQuery, this.pageConfig.forceLoadData)
 						.then((result: any) => {
 							this.markEndOfDataIfLastPage(result.data.length);
 							if (result.data.length > 0) {
@@ -157,6 +159,29 @@ export abstract class PageBase implements OnInit {
 				this.loadedData(event);
 			}
 		}
+	}
+
+	/** Drop UI-only *TimeFrame objects; map Relative/Absolute Values → *From/*To for API. */
+	getApiQuery(query = this.query) {
+		const q = { ...(query || {}) };
+		Object.keys(q).forEach((key) => {
+			if (!(key.endsWith('TimeFrame') && q[key] && typeof q[key] === 'object' && !Array.isArray(q[key]))) {
+				return;
+			}
+			const prop = key.slice(0, -'TimeFrame'.length);
+			const tf = q[key];
+			if (tf.From && tf.From.IsNull !== true) {
+				q[prop + 'From'] =
+					tf.From.Value ??
+					(tf.From.Type === 'Relative' ? lib.dateFormat(lib.calcTimeValue(tf.From, false), 'yyyy-mm-ddThh:MM:ss') : null);
+			}
+			if (tf.To && tf.To.IsNull !== true) {
+				q[prop + 'To'] =
+					tf.To.Value ?? (tf.To.Type === 'Relative' ? lib.dateFormat(lib.calcTimeValue(tf.To, true), 'yyyy-mm-ddThh:MM:ss') : null);
+			}
+			delete q[key];
+		});
+		return q;
 	}
 
 	DefaultItem = { Id: 0, IsDisabled: false };
@@ -428,6 +453,299 @@ export abstract class PageBase implements OnInit {
 		this.selectedItems = [];
 	}
 
+	/** Latest-wins in-flight fetch-by-Id for create shape fallback. */
+	private listFetchSeqById = new Map<string | number, number>();
+
+	/**
+	 * Detail → list sync after save/delete. Prefer in-memory patch; full refresh only as legacy fallback.
+	 */
+	applyListEvent(data: any) {
+		if (!data) {
+			this.refresh(null);
+			return;
+		}
+
+		if (data.Action === 'delete') {
+			const ids = (data.Ids?.length ? data.Ids : data.Id != null ? [data.Id] : []).filter((id) => id != null && id !== '');
+			if (ids.length) {
+				this.removeListItemsByIds(ids);
+			} else {
+				this.refresh(null);
+			}
+			return;
+		}
+
+		const id = data.Id ?? data.Data?.Id;
+		const idx = id != null && id !== '' ? this.items.findIndex((x) => x?.Id == id) : -1;
+
+		// Existing row by Id → always patch in place (do not remove via filter match)
+		if (idx >= 0) {
+			const row = this.mergeListRow(this.items[idx], data.Data);
+			this.upsertListItemAt(idx, row);
+			return;
+		}
+
+		// Create / insert — only then gate by current list filters
+		if (!data.Data || typeof data.Data !== 'object') {
+			this.refresh(null);
+			return;
+		}
+
+		const tryInsert = (row: any) => {
+			if (!row || !this.matchesListQuery(row)) {
+				return;
+			}
+			this.insertListItemSorted(row);
+		};
+
+		const sample = this.items[0];
+		if (sample && this.hasEnoughListShape(data.Data, sample)) {
+			tryInsert(data.Data);
+		} else if (id != null && id !== '') {
+			this.fetchAndUpsertListItem(id).then((row) => row && tryInsert(row));
+		} else {
+			this.refresh(null);
+		}
+	}
+
+	publishListUpsert(publishEventCode: string, wasCreate: boolean, savedItem: any = null, form = this.formGroup) {
+		if (!publishEventCode) {
+			return;
+		}
+
+		if (wasCreate) {
+			if (savedItem && typeof savedItem === 'object' && savedItem.Id != null && savedItem.Id !== '' && savedItem.Id !== 0) {
+				this.env.publishEvent({
+					Code: publishEventCode,
+					Action: 'upsert',
+					Id: savedItem.Id,
+					Data: savedItem,
+				});
+			} else {
+				// Create without returned object — cannot patch safely
+				this.env.publishEvent({ Code: publishEventCode });
+			}
+			return;
+		}
+
+		const data = this.buildListEventData(form, savedItem);
+		const id = data?.Id ?? this.id ?? form?.controls?.Id?.value;
+		this.env.publishEvent({
+			Code: publishEventCode,
+			Action: 'upsert',
+			Id: id,
+			Data: data,
+		});
+	}
+
+	/** Snapshot for list patch after edit — UI form/item, not relying on save body. */
+	buildListEventData(form = this.formGroup, savedItem: any = null) {
+		const raw = form?.getRawValue?.() ?? form?.value ?? {};
+		const data = { ...(this.item || {}), ...raw };
+		if (savedItem && typeof savedItem === 'object') {
+			Object.assign(data, savedItem);
+		}
+		if ((data.Id == null || data.Id === '' || data.Id === 0) && this.id) {
+			data.Id = this.id;
+		}
+		return data;
+	}
+
+	mergeListRow(existing: any, patch: any) {
+		if (!patch || typeof patch !== 'object') {
+			return this.enrichListItem({ ...existing });
+		}
+		return this.enrichListItem({ ...existing, ...patch });
+	}
+
+	enrichListItem(row: any) {
+		return row;
+	}
+
+	/** Hook after local list mutation (aggregates, etc.). */
+	onListItemsPatched() {}
+
+	listRowShapeKeys(sample: any): string[] {
+		if (!sample || typeof sample !== 'object') {
+			return [];
+		}
+		const clientOnly = new Set(['StatusText', 'StatusColor', 'TypeOfPartyText', 'checked', 'show']);
+		return Object.keys(sample).filter((k) => !k.startsWith('_') && !clientOnly.has(k));
+	}
+
+	hasEnoughListShape(data: any, sample: any): boolean {
+		if (!data || !sample) {
+			return false;
+		}
+		const keys = this.listRowShapeKeys(sample);
+		if (!keys.length) {
+			return true;
+		}
+		return keys.every((k) => Object.prototype.hasOwnProperty.call(data, k));
+	}
+
+	matchesListQuery(row: any): boolean {
+		if (!row) {
+			return false;
+		}
+		const skip = new Set(['Skip', 'Take', 'SortBy', 'Sort']);
+		// Normalize UI *TimeFrame → *From/*To (same as API query)
+		const q = this.getApiQuery(this.query);
+		for (const [key, qv] of Object.entries(q || {})) {
+			if (skip.has(key) || key.startsWith('_')) {
+				continue;
+			}
+			if (qv == null || qv === '') {
+				continue;
+			}
+			// Defensive: never match raw objects against a row field
+			if (typeof qv === 'object' && !Array.isArray(qv)) {
+				continue;
+			}
+			if (key === 'Keyword') {
+				if (!this.rowMatchesKeyword(row, String(qv))) {
+					return false;
+				}
+				continue;
+			}
+			// Date/range filters: PartyDateFrom / PartyDateTo → row.PartyDate
+			if (key.endsWith('From') && key.length > 4) {
+				const prop = key.slice(0, -4);
+				if (prop in (row || {})) {
+					if (!this.rowMatchesRangeBound(row[prop], qv, 'from')) {
+						return false;
+					}
+				}
+				continue;
+			}
+			if (key.endsWith('To') && key.length > 2) {
+				const prop = key.slice(0, -2);
+				if (prop in (row || {})) {
+					if (!this.rowMatchesRangeBound(row[prop], qv, 'to')) {
+						return false;
+					}
+				}
+				continue;
+			}
+			if (!this.queryValueMatches(row[key], qv, key)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	rowMatchesKeyword(row: any, keyword: string): boolean {
+		const term = keyword.toLowerCase();
+		const fields = ['Name', 'Code', 'CustomerName', 'Remark', 'Phone', 'Email', 'Title'];
+		return fields.some((f) => {
+			const v = row?.[f];
+			return v != null && String(v).toLowerCase().includes(term);
+		});
+	}
+
+	/** Compare row date/value against query *From / *To bound. */
+	rowMatchesRangeBound(rv: any, qv: any, bound: 'from' | 'to'): boolean {
+		if (rv == null || rv === '') {
+			return false;
+		}
+		const rowTime = new Date(rv).getTime();
+		const boundTime = new Date(qv).getTime();
+		if (!isNaN(rowTime) && !isNaN(boundTime)) {
+			return bound === 'from' ? rowTime >= boundTime : rowTime <= boundTime;
+		}
+		const rs = String(rv);
+		const qs = String(qv);
+		return bound === 'from' ? rs >= qs : rs <= qs;
+	}
+
+	queryValueMatches(rv: any, qv: any, _key?: string): boolean {
+		if (Array.isArray(qv)) {
+			return qv.map(String).includes(String(rv));
+		}
+		if (typeof qv === 'string' && /^\d{4}-\d{2}-\d{2}/.test(qv)) {
+			return String(rv ?? '').substring(0, 10) === String(qv).substring(0, 10);
+		}
+		return String(rv ?? '') === String(qv);
+	}
+
+	compareListRows(a: any, b: any, sort = this.pageConfig?.sort): number {
+		const terms = sort?.length ? sort : [{ Dimension: 'Id', Order: 'DESC' }];
+		for (const t of terms) {
+			const av = a?.[t.Dimension];
+			const bv = b?.[t.Dimension];
+			if (av == bv) {
+				continue;
+			}
+			if (av == null) {
+				return t.Order === 'DESC' ? 1 : -1;
+			}
+			if (bv == null) {
+				return t.Order === 'DESC' ? -1 : 1;
+			}
+			const cmp = av > bv ? 1 : -1;
+			return t.Order === 'DESC' ? -cmp : cmp;
+		}
+		return 0;
+	}
+
+	getListInsertIndex(row: any): number {
+		let index = this.items.findIndex((it) => this.compareListRows(row, it) < 0);
+		return index < 0 ? this.items.length : index;
+	}
+
+	upsertListItemAt(index: number, row: any) {
+		const enriched = this.enrichListItem({ ...row });
+		const next = this.items.slice();
+		next[index] = enriched;
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	insertListItemSorted(row: any) {
+		const enriched = this.enrichListItem({ ...row });
+		const id = enriched?.Id;
+		if (id != null && this.items.some((x) => x?.Id == id)) {
+			const idx = this.items.findIndex((x) => x?.Id == id);
+			this.upsertListItemAt(idx, enriched);
+			return;
+		}
+		const index = this.getListInsertIndex(enriched);
+		const next = this.items.slice();
+		next.splice(index, 0, enriched);
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	removeListItemsByIds(ids: any[]) {
+		const idSet = new Set(ids.map(String));
+		const next = this.items.filter((x) => !idSet.has(String(x?.Id)));
+		if (next.length === this.items.length) {
+			return;
+		}
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	fetchAndUpsertListItem(id: any): Promise<any | null> {
+		const seq = (this.listFetchSeqById.get(id) || 0) + 1;
+		this.listFetchSeqById.set(id, seq);
+		const q = { Id: id };
+		return this.pageProvider
+			.read(q, true)
+			.then((result: any) => {
+				if (this.listFetchSeqById.get(id) !== seq) {
+					return null;
+				}
+				const row = result?.data?.[0];
+				if (!row) {
+					this.removeListItemsByIds([id]);
+					return null;
+				}
+				return row;
+			})
+			.catch(() => null);
+	}
+
 	print() {
 		window.print();
 	}
@@ -454,11 +772,11 @@ export abstract class PageBase implements OnInit {
 					this.env
 						.showPrompt(
 							{
-								code: 'Có {{value}} lỗi khi import: {{value1}}',
+								code: '{{value}} error(s) during import: {{value1}}',
 								value: { value: resp.ErrorList.length, value1: message },
 							},
-							'Bạn có muốn xem lại các mục bị lỗi?',
-							'Có lỗi import dữ liệu'
+							'Do you want to review the items with errors?',
+							'Data import error'
 						)
 						.then((_) => {
 							this.downloadURLContent(resp.FileUrl);
@@ -482,7 +800,7 @@ export abstract class PageBase implements OnInit {
 		if (this.submitAttempt) return;
 		this.submitAttempt = true;
 		this.env
-			.showLoading('Please wait for a few moments', this.pageProvider.export(this.query))
+			.showLoading('Please wait for a few moments', this.pageProvider.export(this.getApiQuery()))
 			.then((response: any) => {
 				this.downloadURLContent(response);
 				this.submitAttempt = false;
@@ -588,12 +906,8 @@ export abstract class PageBase implements OnInit {
 				this.pageProvider
 					.save(this.item, this.pageConfig.isForceCreate)
 					.then((savedItem: any) => {
-						if (publishEventCode) {
-							this.env.publishEvent({ Code: publishEventCode });
-							console.log('saveChange', publishEventCode);
-						}
-
-						if (this.item.Id != savedItem.Id) {
+						const wasCreate = !this.id || this.id == 0;
+						if (this.item.Id != savedItem?.Id && savedItem?.Id) {
 							this.item.Id = savedItem.Id;
 							this.id = savedItem.Id;
 							this.loadedData();
@@ -607,9 +921,12 @@ export abstract class PageBase implements OnInit {
 						this.env.showMessage('Saving completed!', 'success');
 						this.formGroup.markAsPristine();
 						this.cdr.detectChanges();
-						resolve(savedItem.Id);
+						resolve(savedItem?.Id ?? this.id);
 						this.submitAttempt = false;
 						this.savedChange(savedItem);
+						if (publishEventCode) {
+							this.publishListUpsert(publishEventCode, wasCreate, savedItem);
+						}
 					})
 					.catch((err) => {
 						// if (loading) loading.dismiss();
@@ -637,13 +954,16 @@ export abstract class PageBase implements OnInit {
 			} else if (this.submitAttempt == false) {
 				this.submitAttempt = true;
 				let submitItem = this.getDirtyValues(form);
+				const wasCreate = !this.id || this.id == 0 || form?.controls?.Id?.value == 0;
 
 				provider
 					.save(submitItem, this.pageConfig.isForceCreate)
 					.then((savedItem: any) => {
-						resolve(savedItem);
 						this.savedChange(savedItem, form);
-						if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
+						if (publishEventCode) {
+							this.publishListUpsert(publishEventCode, wasCreate, savedItem, form);
+						}
+						resolve(savedItem);
 					})
 					.catch((err) => {
 						this.env.showMessage('Cannot save, please try again', 'danger');
@@ -790,7 +1110,17 @@ export abstract class PageBase implements OnInit {
 				)
 				.then((_) => {
 					this.env.showMessage('DELETE_RESULT_SUCCESS', 'success');
-					this.env.publishEvent({ Code: publishEventCode });
+					const ids = this.pageConfig.isDetailPage
+						? this.item?.Id != null
+							? [this.item.Id]
+							: []
+						: (this.selectedItems || []).map((i) => i.Id).filter((id) => id != null);
+					this.env.publishEvent({
+						Code: publishEventCode,
+						Action: 'delete',
+						Id: ids[0],
+						Ids: ids,
+					});
 
 					if (this.pageConfig.isDetailPage) {
 						this.goBack();
@@ -868,6 +1198,9 @@ export abstract class PageBase implements OnInit {
 
 	ionViewDidEnter() {
 		this.pageConfig.didEnter = true;
+		// Virtual viewport may have patched items while this page was display:none; force
+		// a correct mid-list recompute now that scroll metrics are usable again.
+		this.relayoutVirtualViewports();
 	}
 
 	ionViewWillLeave() {
@@ -875,6 +1208,17 @@ export abstract class PageBase implements OnInit {
 	}
 
 	ionViewDidLeave() {}
+
+	/** Ask every app-virtual-viewport to recompute after this page becomes visible again. */
+	relayoutVirtualViewports() {
+		if (typeof document === 'undefined') {
+			return;
+		}
+		// Defer one frame so Ionic has applied display/size before viewports measure.
+		requestAnimationFrame(() => {
+			document.dispatchEvent(new CustomEvent('app:virtual-viewport-relayout'));
+		});
+	}
 
 	events(e) {}
 
@@ -922,7 +1266,7 @@ export abstract class PageBase implements OnInit {
 				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.preLoadData(null);
 				} else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
-					this.refresh(null);
+					this.applyListEvent(data);
 				} else {
 					this.events(data);
 				}
@@ -1204,7 +1548,7 @@ export abstract class PageBase implements OnInit {
 			if (data.isApplyFilter) this.query._AdvanceConfig = data?.data;
 			if (data.schema) this.schemaPage = data?.schema;
 			if (data.data) {
-				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.query)).then((resp) => {
+				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.getApiQuery())).then((resp) => {
 					if (resp && resp.data) {
 						if (callback) callback(resp['data']);
 						else {

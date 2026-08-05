@@ -1,6 +1,6 @@
 <div class="ion-padding">
 	<div>
-		<div class="title">{{ 'Group by / Nhóm theo' | translate }}</div>
+		<div class="title">{{ 'Group by' | translate }}</div>
 		<ng-container *ngFor="let f of rpt.rptGlobal.frequency">
 			<ion-button [fill]="rpt.rptGlobal.query.frequency == f.Id ? 'solid' : 'outline'" size="small" (click)="changeFrequency(f)">
 				{{ f.Name }}

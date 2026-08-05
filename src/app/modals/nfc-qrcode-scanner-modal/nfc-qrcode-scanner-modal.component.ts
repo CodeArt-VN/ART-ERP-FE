@@ -5,8 +5,29 @@ import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { NFC } from '@exxili/capacitor-nfc';
 import { BarcodeScannerService } from 'src/app/services/util/barcode-scanner.service';
 import { Rd300NdefReadResult, Rd300WebSerialReader } from 'src/app/services/util/rd300-web-serial-reader';
+import { EnvService } from 'src/app/services/core/env.service';
 
 type ScannerMode = 'NFC' | 'QR';
+
+const LAST_SCAN_MODE_STORAGE_KEY = 'nfc-qrcode-scanner:last-mode';
+
+function loadLastScannerMode(): ScannerMode | null {
+	try {
+		const value = localStorage.getItem(LAST_SCAN_MODE_STORAGE_KEY);
+		if (value === 'NFC' || value === 'QR') return value;
+	} catch {
+		// ignore storage errors (private mode, etc.)
+	}
+	return null;
+}
+
+function saveLastScannerMode(mode: ScannerMode): void {
+	try {
+		localStorage.setItem(LAST_SCAN_MODE_STORAGE_KEY, mode);
+	} catch {
+		// ignore storage errors
+	}
+}
 
 interface ScannerModalResult {
 	mode: ScannerMode;
@@ -97,6 +118,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	@Input() mode: ScannerMode = 'NFC';
 	@Input() showQrCodeButton = false;
 	@Input() resolveNfcScan?: NfcScanResolver;
+	@Input() resolveQrScan?: NfcScanResolver;
 
 	currentMode: ScannerMode = 'NFC';
 	isLoading = false;
@@ -128,11 +150,13 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 	constructor(
 		private modalController: ModalController,
 		private barcodeScannerService: BarcodeScannerService,
-		private ngZone: NgZone
+		private ngZone: NgZone,
+		private env: EnvService
 	) {}
 
 	async ngOnInit(): Promise<void> {
-		this.currentMode = this.normalizeMode(this.mode);
+		const savedMode = loadLastScannerMode();
+		this.currentMode = this.normalizeMode(savedMode ?? this.mode);
 		await this.startCurrentMode();
 	}
 
@@ -176,11 +200,93 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		await this.modalController.dismiss(null, 'cancel');
 	}
 
+	async copyScannedContent(): Promise<void> {
+		const content = (this.scanPreview || '').trim();
+		if (!content) {
+			this.env.showMessage('No content to copy', 'warning');
+			return;
+		}
+
+		const copied = await this.copyTextToClipboard(content);
+		if (copied) {
+			this.env.showMessage('Copied', 'success');
+			return;
+		}
+
+		this.env.showMessage('Cannot copy', 'danger');
+	}
+
+	private async copyTextToClipboard(text: string): Promise<boolean> {
+		if (Capacitor.isNativePlatform() && Capacitor.isPluginAvailable('Clipboard')) {
+			try {
+				const { Clipboard } = await import('@capacitor/clipboard');
+				await Clipboard.write({ string: text });
+				return true;
+			} catch {
+				// fall through to web fallbacks
+			}
+		}
+
+		if (navigator.clipboard?.writeText) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch {
+				// iOS / Capacitor WebView often blocks Clipboard API — fallback below.
+			}
+		}
+
+		return this.copyTextWithExecCommand(text);
+	}
+
+	private copyTextWithExecCommand(text: string): boolean {
+		const textarea = document.createElement('textarea');
+		textarea.value = text;
+		textarea.setAttribute('readonly', 'false');
+		textarea.readOnly = false;
+		textarea.contentEditable = 'true';
+		textarea.style.position = 'fixed';
+		textarea.style.top = '0';
+		textarea.style.left = '0';
+		textarea.style.width = '1px';
+		textarea.style.height = '1px';
+		textarea.style.padding = '0';
+		textarea.style.border = 'none';
+		textarea.style.outline = 'none';
+		textarea.style.boxShadow = 'none';
+		textarea.style.background = 'transparent';
+		textarea.style.opacity = '0';
+		textarea.style.zIndex = '-1';
+
+		document.body.appendChild(textarea);
+		textarea.focus();
+		textarea.select();
+
+		const selection = window.getSelection();
+		const range = document.createRange();
+		range.selectNodeContents(textarea);
+		selection?.removeAllRanges();
+		selection?.addRange(range);
+		textarea.setSelectionRange(0, text.length);
+
+		let copied = false;
+		try {
+			copied = document.execCommand('copy');
+		} catch {
+			copied = false;
+		}
+
+		selection?.removeAllRanges();
+		document.body.removeChild(textarea);
+		return copied;
+	}
+
 	async changeMode(mode: ScannerMode): Promise<void> {
 		const nextMode = this.normalizeMode(mode);
 		if (nextMode === this.currentMode && !this.canRestartCurrentMode) return;
 
 		this.currentMode = nextMode;
+		saveLastScannerMode(nextMode);
 		await this.startCurrentMode();
 	}
 
@@ -199,11 +305,20 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 
 	private async scanQrCode(token: number): Promise<void> {
 		this.isLoading = true;
+		this.errorMessage = '';
+		this.errorDetail = '';
 		this.statusMessage = 'The camera will open to scan the QR Code.';
 
 		try {
 			const rawValue = await this.barcodeScannerService.scan();
-			if (!this.isActionActive(token) || !rawValue) return;
+			if (!this.isActionActive(token) || !rawValue) {
+				this.isLoading = false;
+				if (!rawValue) {
+					this.wasCancelled = true;
+					this.statusMessage = 'No QR content was scanned. Tap "Scan QR code" to try again.';
+				}
+				return;
+			}
 
 			const output: ScannerModalResult = {
 				mode: 'QR',
@@ -211,8 +326,37 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 				rawValue,
 			};
 
+			this.applyScannedContentPreview(output);
+
+			if (this.resolveQrScan) {
+				try {
+					const resolved = await this.resolveQrScan(output);
+					if (!this.isActionActive(token)) return;
+
+					if (!resolved.ok) {
+						this.isLoading = false;
+						this.setScanFailure(resolved.message || 'Invalid QR code', output, resolved);
+						this.wasCancelled = true;
+						this.statusMessage = 'Tap "Scan QR code" to try again.';
+						return;
+					}
+
+					await this.completeNfcRead(output);
+					return;
+				} catch (err) {
+					console.error('[POS-QR][Modal] resolveQrScan threw', err);
+					if (!this.isActionActive(token)) return;
+					this.isLoading = false;
+					this.setScanFailure('Unable to verify scanned card', output);
+					this.wasCancelled = true;
+					this.statusMessage = 'Tap "Scan QR code" to try again.';
+					return;
+				}
+			}
+
 			this.result = output;
 			this.isLoading = false;
+			saveLastScannerMode('QR');
 			await this.modalController.dismiss(output, 'confirm');
 		} catch (error) {
 			if (!this.isActionActive(token)) return;
@@ -677,6 +821,7 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		this.result = output;
 		this.isLoading = false;
 		this.statusMessage = 'NFC data read successfully.';
+		saveLastScannerMode(output.mode);
 		await this.modalController.dismiss(output, 'confirm');
 	}
 
@@ -753,9 +898,15 @@ export class NfcQrcodeScannerModalComponent implements OnInit, OnDestroy {
 		} else {
 			this.foundContactPreview = '';
 		}
-		if (resolved?.cardIdbp != null && resolved.cardIdbp !== '') {
+
+		// QR expired / invalid: không hiện Parsed IDBP (chỉ NFC mới cần so khớp IDBP).
+		if (output.mode === 'QR') {
+			this.parsedIdbp = '';
+			this.lastTagUid = '';
+		} else if (resolved?.cardIdbp != null && resolved.cardIdbp !== '') {
 			this.parsedIdbp = String(resolved.cardIdbp);
 		}
+
 		if (resolved?.memberCardCode) {
 			this.lastTagUid = resolved.memberCardCode;
 		}

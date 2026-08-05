@@ -94,7 +94,7 @@ export class APICollectionPage extends PageBase {
 						this.pageProvider.read(queryPostMan, false).then((result: any) => {
 							if (result.data.length > 0) {
 								this.env
-									.showPrompt('Collection đã tồn tại, Bạn có muốn import copy?', null, null, 'Ok', 'Update')
+									.showPrompt('Collection already exists. Do you want to import a copy?', null, null, 'Ok', 'Update')
 									.then((_) => {
 										this.env
 											.showLoading('Please wait for a few moments', this.commonService.connect('POST', 'SYS/APICollection/ImportJson/', obj).toPromise())

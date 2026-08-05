@@ -21,6 +21,7 @@
 <datatable-body
 	[columns]="_allColumns"
 	[emptyMessage]="emptyMessageTemplate"
+	[activeFilters]="activeFilters"
 	[rows]="_rows"
 	[trackBy]="trackBy"
 	[(selectedRows)]="selectedRows"
@@ -35,6 +36,8 @@
 	[infiniteScrollDisabled]="isInfiniteScrollDisabled"
 	(activate)="onSelectedRowsChange($event)"
 	(dataInfinite)="onDataInfinite($event)"
+	(clearFilter)="clearFilter($event)"
+	(clearAllFilters)="clearAllFilters()"
 ></datatable-body>
 <div *ngIf="showInfinitespinner" style="text-align: center">
 	<ion-spinner name="dots"></ion-spinner>
