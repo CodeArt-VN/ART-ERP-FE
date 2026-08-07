@@ -243,6 +243,34 @@
 								</ion-col>
 							</ion-row>
 						</form>
+						<ion-row class="hr-group" *ngIf="biometricSupported">
+							<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+								<ion-list lines="none">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{ biometricLabel }}</ion-label>
+									</ion-list-header>
+									<ion-item class="ion-no-padding">
+										<ion-label color="medium" class="ion-text-wrap">
+											{{'Sign in with Face ID / Touch ID on this phone' | translate}}
+										</ion-label>
+									</ion-item>
+								</ion-list>
+							</ion-col>
+							<ion-col size="12" size-sm size-md="8" size-xl="6">
+								<div class="c-control" *ngIf="!biometricEnabled">
+									<p>{{'Not enabled on this device' | translate}}</p>
+									<ion-button size="small" color="primary" (click)="enableBiometricLogin()">
+										{{'Enable' | translate}} {{ biometricLabel }}
+									</ion-button>
+								</div>
+								<div class="c-control" *ngIf="biometricEnabled">
+									<p>{{'Enabled on this device' | translate}}</p>
+									<ion-button size="small" color="danger" fill="outline" (click)="disableBiometricLogin()">
+										{{'Disable' | translate}} {{ biometricLabel }}
+									</ion-button>
+								</div>
+							</ion-col>
+						</ion-row>
 						<ion-row class="hr-group">
 							<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
 								<ion-list lines="none">

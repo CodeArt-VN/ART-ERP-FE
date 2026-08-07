@@ -10,6 +10,7 @@ import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { lib } from 'src/app/services/static/global-functions';
 import { HRM_StaffProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider } from 'src/app/services/static/services.service';
 import { CompareValidator } from 'src/app/services/util/validators';
+import { BiometricAuthService } from 'src/app/services/auth/biometric-auth.service';
 
 interface ProfileUI {
 	avatarURL: string;
@@ -46,6 +47,10 @@ export class ProfilePage extends PageBase {
 		user: null,
 	};
 
+	biometricSupported = false;
+	biometricEnabled = false;
+	biometricLabel = 'Face ID';
+
 	@ViewChild('importfile') importfile: any;
 
 	hasBaseDropZoneOver = false;
@@ -62,7 +67,8 @@ export class ProfilePage extends PageBase {
 		public cdr: ChangeDetectorRef,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
-		public commonService: CommonService
+		public commonService: CommonService,
+		private biometricAuth: BiometricAuthService,
 	) {
 		super();
 
@@ -126,6 +132,7 @@ export class ProfilePage extends PageBase {
 			this.ui.user = this.env.user;
 		}
 		super.loadedData(event);
+		void this.refreshBiometricStatus();
 	}
 
 	async changePassword() {
@@ -194,6 +201,83 @@ export class ProfilePage extends PageBase {
 
 	changeTheme() {
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_THEME });
+	}
+
+	async refreshBiometricStatus() {
+		try {
+			this.biometricSupported = await this.biometricAuth.isAvailable();
+			this.biometricEnabled = this.biometricSupported && (await this.biometricAuth.hasSavedCredentials());
+			this.biometricLabel = await this.biometricAuth.biometryLabel();
+		} catch {
+			this.biometricSupported = false;
+			this.biometricEnabled = false;
+		}
+		this.cdr.detectChanges();
+	}
+
+	async enableBiometricLogin() {
+		const label = this.biometricLabel;
+		let password: string;
+		try {
+			const data: any = await this.env.showPrompt(
+				'Enter your password to enable Face ID on this device',
+				null,
+				label,
+				'Enable',
+				'Cancel',
+				[
+					{
+						name: 'password',
+						type: 'password',
+						placeholder: 'Password',
+					},
+				],
+			);
+			password = (data?.password || '').trim();
+		} catch {
+			return;
+		}
+
+		if (!password) {
+			this.env.showMessage('Please enter password', 'warning');
+			return;
+		}
+
+		const username = (this.env.user?.Email || this.env.user?.UserName || '').trim();
+		if (!username) {
+			this.env.showMessage('Unable to enable Face ID', 'danger');
+			return;
+		}
+
+		try {
+			await this.env.showLoading('Please wait for a few moments', async () => {
+				const ok = await this.biometricAuth.enable(username, password);
+				if (!ok) {
+					throw new Error('enable-failed');
+				}
+			});
+			await this.refreshBiometricStatus();
+			this.env.showMessage(`${label} enabled`, 'success');
+		} catch {
+			this.env.showMessage(`Unable to enable ${label}`, 'danger');
+		}
+	}
+
+	async disableBiometricLogin() {
+		try {
+			await this.env.showPrompt(
+				'Disable Face ID / biometric sign-in on this device?',
+				null,
+				this.biometricLabel,
+				'Disable',
+				'Cancel',
+			);
+		} catch {
+			return;
+		}
+		await this.biometricAuth.clearCredentials();
+		await this.refreshBiometricStatus();
+		this.env.showMessage('Biometric sign-in disabled', 'success');
 	}
 
 	segmentChanged(ev: any) {

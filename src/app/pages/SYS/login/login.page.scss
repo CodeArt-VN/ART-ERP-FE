@@ -31,6 +31,14 @@ ion-content {
 			}
 		}
 	}
+
+	.divider {
+		text-align: center;
+		color: var(--ion-color-light);
+		opacity: 0.85;
+		margin: 14px 0;
+	}
+
 }
 
 .c-control {
