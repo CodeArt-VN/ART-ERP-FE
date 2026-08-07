@@ -172,6 +172,36 @@ export class LoginPage extends PageBase {
 			});
 	}
 
+	/** Hỏi bật Face ID ngay sau login password (chỉ native + máy hỗ trợ). */
+	private async offerEnableBiometric(username: string, password: string): Promise<void> {
+		try {
+			if (!(await this.biometricAuth.isAvailable())) {
+				return;
+			}
+			if (await this.biometricAuth.hasSavedCredentials()) {
+				return;
+			}
+
+			const label = await this.biometricAuth.biometryLabel();
+			await this.env.showPrompt(
+				`Enable ${label} for faster sign-in next time?`,
+				null,
+				label,
+				'Enable',
+				'Not now',
+			);
+
+			const ok = await this.biometricAuth.enable(username, password);
+			if (ok) {
+				this.env.showMessage(`${label} enabled`, 'success');
+			} else {
+				this.env.showMessage(`Unable to enable ${label}`, 'warning');
+			}
+		} catch {
+			// User cancelled prompt or Face ID failed — skip quietly
+		}
+	}
+
 	login() {
 		if (this.formGroup.controls.UserName.value.indexOf('@') == -1) {
 			this.formGroup.controls.UserName.setValue(this.formGroup.controls.UserName.value + '' + environment.loginEmail);
@@ -188,8 +218,10 @@ export class LoginPage extends PageBase {
 				await this.authService.login({ username: account.UserName, password: account.Password });
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
 				await this.profileService.getProfile();
-				await this.biometricAuth.saveCredentials(account.UserName, account.Password);
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
+			})
+			.then(async () => {
+				await this.offerEnableBiometric(account.UserName, account.Password);
 				await this.navigateAfterAuth();
 			})
 			.catch((err) => {

@@ -16,9 +16,13 @@ function biometricServer(): string {
 	providedIn: 'root',
 })
 export class BiometricAuthService {
-	/** Native only — web không có Face ID thật. */
+	/** Native only — browser / ionic serve không có Face ID. */
 	get isNative(): boolean {
 		return Capacitor.isNativePlatform();
+	}
+
+	get platform(): string {
+		return Capacitor.getPlatform();
 	}
 
 	async isAvailable(): Promise<boolean> {
@@ -26,7 +30,7 @@ export class BiometricAuthService {
 			return false;
 		}
 		try {
-			const result = await NativeBiometric.isAvailable({ useFallback: false });
+			const result = await NativeBiometric.isAvailable({ useFallback: true });
 			return !!result.isAvailable;
 		} catch {
 			return false;
@@ -45,17 +49,17 @@ export class BiometricAuthService {
 		}
 	}
 
-	/** Hiện nút Face ID khi máy hỗ trợ + đã lưu tài khoản sau lần login trước. */
+	/** Hiện nút Face ID trên màn login khi máy hỗ trợ + đã bật. */
 	async canUseBiometricLogin(): Promise<boolean> {
 		return (await this.isAvailable()) && (await this.hasSavedCredentials());
 	}
 
 	async biometryLabel(): Promise<string> {
 		if (!this.isNative) {
-			return 'Biometric';
+			return 'Face ID';
 		}
 		try {
-			const result = await NativeBiometric.isAvailable({ useFallback: false });
+			const result = await NativeBiometric.isAvailable({ useFallback: true });
 			switch (result.biometryType) {
 				case BiometryType.FACE_ID:
 					return 'Face ID';
@@ -66,10 +70,10 @@ export class BiometricAuthService {
 				case BiometryType.FACE_AUTHENTICATION:
 					return 'Face unlock';
 				default:
-					return 'Biometric';
+					return this.platform === 'ios' ? 'Face ID' : 'Biometric';
 			}
 		} catch {
-			return 'Biometric';
+			return this.platform === 'ios' ? 'Face ID' : 'Biometric';
 		}
 	}
 
@@ -94,16 +98,41 @@ export class BiometricAuthService {
 		return { username: credentials.username, password: credentials.password };
 	}
 
-	/** Lưu tài khoản sau login password thành công (Keychain iOS / Keystore Android). */
-	async saveCredentials(username: string, password: string): Promise<void> {
-		if (!this.isNative || !(await this.isAvailable())) {
-			return;
+	/**
+	 * Xác nhận Face ID rồi lưu tài khoản vào Keychain.
+	 * @returns true nếu lưu thành công
+	 */
+	async enable(username: string, password: string): Promise<boolean> {
+		if (!username || !password) {
+			return false;
 		}
+		if (!this.isNative) {
+			return false;
+		}
+		if (!(await this.isAvailable())) {
+			return false;
+		}
+
+		await NativeBiometric.verifyIdentity({
+			reason: 'Enable Face ID for ART-ERP',
+			title: 'ART-ERP',
+			subtitle: await this.biometryLabel(),
+			description: 'Confirm it is you to enable quick sign-in',
+			useFallback: true,
+		});
+
 		await NativeBiometric.setCredentials({
 			username,
 			password,
 			server: biometricServer(),
 		});
+
+		return await this.hasSavedCredentials();
+	}
+
+	/** @deprecated dùng enable() — giữ để tương thích tạm */
+	async saveCredentials(username: string, password: string): Promise<void> {
+		await this.enable(username, password);
 	}
 
 	async clearCredentials(): Promise<void> {

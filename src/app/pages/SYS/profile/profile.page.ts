@@ -47,6 +47,7 @@ export class ProfilePage extends PageBase {
 		user: null,
 	};
 
+	biometricSupported = false;
 	biometricEnabled = false;
 	biometricLabel = 'Face ID';
 
@@ -204,12 +205,62 @@ export class ProfilePage extends PageBase {
 
 	async refreshBiometricStatus() {
 		try {
-			this.biometricEnabled = await this.biometricAuth.canUseBiometricLogin();
+			this.biometricSupported = await this.biometricAuth.isAvailable();
+			this.biometricEnabled = this.biometricSupported && (await this.biometricAuth.hasSavedCredentials());
 			this.biometricLabel = await this.biometricAuth.biometryLabel();
 		} catch {
+			this.biometricSupported = false;
 			this.biometricEnabled = false;
 		}
 		this.cdr.detectChanges();
+	}
+
+	async enableBiometricLogin() {
+		const label = this.biometricLabel;
+		let password: string;
+		try {
+			const data: any = await this.env.showPrompt(
+				'Enter your password to enable Face ID on this device',
+				null,
+				label,
+				'Enable',
+				'Cancel',
+				[
+					{
+						name: 'password',
+						type: 'password',
+						placeholder: 'Password',
+					},
+				],
+			);
+			password = (data?.password || '').trim();
+		} catch {
+			return;
+		}
+
+		if (!password) {
+			this.env.showMessage('Please enter password', 'warning');
+			return;
+		}
+
+		const username = (this.env.user?.Email || this.env.user?.UserName || '').trim();
+		if (!username) {
+			this.env.showMessage('Unable to enable Face ID', 'danger');
+			return;
+		}
+
+		try {
+			await this.env.showLoading('Please wait for a few moments', async () => {
+				const ok = await this.biometricAuth.enable(username, password);
+				if (!ok) {
+					throw new Error('enable-failed');
+				}
+			});
+			await this.refreshBiometricStatus();
+			this.env.showMessage(`${label} enabled`, 'success');
+		} catch {
+			this.env.showMessage(`Unable to enable ${label}`, 'danger');
+		}
 	}
 
 	async disableBiometricLogin() {
