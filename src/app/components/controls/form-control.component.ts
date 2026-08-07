@@ -1,7 +1,8 @@
-import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, ContentChild, EventEmitter, inject, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { InputControlField } from './controls.interface';
 import { FormGroup } from '@angular/forms';
 import { InputControlTempateDirective } from './input-control-template.directive';
+import { HistoryService } from 'src/app/services/custom/history.service';
 
 @Component({
 	selector: 'app-form-control',
@@ -9,6 +10,8 @@ import { InputControlTempateDirective } from './input-control-template.directive
 	standalone: false,
 })
 export class FormControlComponent implements OnInit {
+	historyService = inject(HistoryService);
+
 	@Input('inputControlTemplate') _inputControlTemplateInput: TemplateRef<any>;
 
 	@ContentChild(InputControlTempateDirective, {

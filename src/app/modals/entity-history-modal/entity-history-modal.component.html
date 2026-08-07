@@ -1,0 +1,87 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>{{ 'History' | translate }}{{ entityTitle ? ' — ' + entityTitle : '' }}</ion-title>
+		<ion-buttons slot="start">
+			<ion-button (click)="selectPrev()" [disabled]="!selected || items.indexOf(selected) >= items.length - 1" title="{{ 'Older' | translate }}">
+				<ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+			</ion-button>
+			<ion-button (click)="selectNext()" [disabled]="!selected || items.indexOf(selected) <= 0" title="{{ 'Newer' | translate }}">
+				<ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="entity-history">
+	<div class="eh-layout" *ngIf="!showSpinner">
+		<!-- Snapshot panel (left) — Field | Before | After -->
+		<section class="eh-panel" *ngIf="selected">
+			<header class="eh-panel-head">
+				<strong>{{ selected._label | translate }}</strong>
+				<span>{{ selected.LoggedBy }} · {{ selected._time | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+			</header>
+
+			<div class="eh-summary" *ngIf="summaryLines?.length">
+				<div *ngFor="let line of summaryLines">{{ line }}</div>
+			</div>
+
+			<table class="eh-diff" *ngIf="panelMode === 'diff' && diffRows?.length">
+				<thead>
+					<tr>
+						<th>{{ 'Field' | translate }}</th>
+						<th>{{ 'Before' | translate }}</th>
+						<th>{{ 'After' | translate }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let row of diffRows">
+						<td>{{ row.label | translate }}</td>
+						<td [class.eh-muted]="row.before === '—'">{{ row.before }}</td>
+						<td [class.eh-changed]="row.before !== row.after">{{ row.after }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p class="eh-hint" *ngIf="panelMode === 'diff'">
+				{{ 'Compared with the previous history step' | translate }}
+			</p>
+		</section>
+
+		<section class="eh-panel eh-empty-panel" *ngIf="!selected && items?.length">
+			{{ 'Select a history entry' | translate }}
+		</section>
+
+		<section class="eh-panel eh-empty-panel" *ngIf="!items?.length">
+			{{ 'No history' | translate }}
+		</section>
+
+		<!-- Timeline rail (right) — Time Machine style -->
+		<aside class="eh-rail">
+			<button
+				type="button"
+				class="eh-rail-item"
+				*ngFor="let it of items"
+				[class.active]="selected?.Id === it.Id"
+				(click)="select(it)"
+			>
+				<span class="eh-tick" [attr.data-badge]="it._badge"></span>
+				<span class="eh-rail-body">
+					<span class="eh-badge" [attr.data-badge]="it._badge">{{ it._label | translate }}</span>
+					<span class="eh-meta">
+						<span class="eh-user">{{ it.LoggedBy }}</span>
+						<span class="eh-time" *ngIf="it._time">{{ it._time | date: 'dd/MM/yyyy HH:mm' }}</span>
+					</span>
+				</span>
+			</button>
+		</aside>
+	</div>
+
+	<div class="eh-loading" *ngIf="showSpinner">
+		<ion-spinner name="crescent"></ion-spinner>
+	</div>
+</ion-content>

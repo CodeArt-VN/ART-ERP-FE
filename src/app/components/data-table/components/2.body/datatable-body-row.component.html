@@ -6,6 +6,8 @@
 	[row]="row"
 	[rowIndex]="rowIndex"
 	[isSelected]="isSelected"
+	[editable]="editable"
 	(activate)="onActivate($event, idx)"
+	(cellChange)="onCellChange($event)"
 	*ngFor="let column of columns; let idx = index"
 ></datatable-body-cell>

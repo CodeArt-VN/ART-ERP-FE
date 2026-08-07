@@ -69,12 +69,14 @@
 			</div>
 			<datatable-body-row
 				class="row"
-				[ngClass]="{ selected: row.checked, bold: row.HasChild }"
+				[ngClass]="{ selected: row.checked, bold: row.HasChild, 'history-changed-row': isHistoryRowChanged(row), 'history-removed-row': isHistoryRowRemoved(row) }"
 				[columns]="columns"
 				[row]="row"
 				[isSelected]="row.checked"
 				[rowIndex]="idx"
+				[editable]="editable"
 				(activate)="changeSelection(row, $event)"
+				(cellChange)="onCellChange($event)"
 				*ngIf="row.show != false"
 			></datatable-body-row>
 		</ng-container>
@@ -106,12 +108,14 @@
 				} @else {
 					<datatable-body-row
 						class="row"
-						[ngClass]="{ selected: item.row.checked, bold: item.row.HasChild }"
+						[ngClass]="{ selected: item.row.checked, bold: item.row.HasChild, 'history-changed-row': isHistoryRowChanged(item.row), 'history-removed-row': isHistoryRowRemoved(item.row) }"
 						[columns]="columns"
 						[row]="item.row"
 						[isSelected]="item.row.checked"
 						[rowIndex]="item.rowIndex"
+						[editable]="editable"
 						(activate)="changeSelection(item.row, $event)"
+						(cellChange)="onCellChange($event)"
 					></datatable-body-row>
 				}
 			</div>

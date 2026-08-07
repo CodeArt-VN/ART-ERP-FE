@@ -2,22 +2,61 @@ export type DatatableVirtualItem =
 	| { kind: 'divider'; text: string; id: string }
 	| { kind: 'row'; row: any; rowIndex: number; id: string | number };
 
-function rowTrackKey(row: any, rowIndex: number, trackByProp?: string): string | number {
-	if (!trackByProp || row == null) {
-		return rowIndex;
+/** Stable identity for object rows (FormGroup / plain row) so delete/reorder does not collide on index. */
+const rowIdentityKeys = new WeakMap<object, number>();
+let nextRowIdentity = 1;
+
+function stableObjectKey(row: object): number {
+	let id = rowIdentityKeys.get(row);
+	if (id == null) {
+		id = nextRowIdentity++;
+		rowIdentityKeys.set(row, id);
 	}
+	return id;
+}
+
+/** True for values safe as trackBy keys — excludes new-line Id = 0 and empty strings. */
+function isStableTrackValue(v: unknown): boolean {
+	if (v == null || v === '') {
+		return false;
+	}
+	if (typeof v === 'number' && v === 0) {
+		return false;
+	}
+	return true;
+}
+
+function readTrackByValue(row: any, trackByProp: string): unknown {
 	if (typeof row.get === 'function') {
 		const ctrl = row.get(trackByProp);
 		const v = ctrl?.value;
-		if (v != null && v !== '') {
+		if (isStableTrackValue(v)) {
 			return v;
 		}
 	}
-	if (row[trackByProp] != null && row[trackByProp] !== '') {
+	if (isStableTrackValue(row[trackByProp])) {
 		return row[trackByProp];
 	}
-	if (row.value?.[trackByProp] != null && row.value[trackByProp] !== '') {
+	if (isStableTrackValue(row.value?.[trackByProp])) {
 		return row.value[trackByProp];
+	}
+	return undefined;
+}
+
+/**
+ * Identity for a table row used by virtual-scroll *ngFor trackBy (and non-VS rowTrackingFn).
+ * Prefer an explicit trackBy property when its value is stable; otherwise stamp the object itself
+ * so removeAt/splice mid-list does not reuse the deleted row's view for the next FormGroup.
+ */
+export function rowTrackKey(row: any, rowIndex: number, trackByProp?: string): string | number {
+	if (row != null && typeof row === 'object') {
+		if (trackByProp) {
+			const v = readTrackByValue(row, trackByProp);
+			if (isStableTrackValue(v)) {
+				return v as string | number;
+			}
+		}
+		return `r:${stableObjectKey(row)}`;
 	}
 	return rowIndex;
 }

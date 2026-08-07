@@ -3,6 +3,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AdvanceFilterModalComponent } from 'src/app/modals/advance-filter-modal/advance-filter-modal.component';
 import { EnvService } from 'src/app/services/core/env.service';
+import { HistoryLogPopoverComponent } from './history-log-popover.component';
 
 @Component({
 	selector: 'app-toolbar',
@@ -44,6 +45,7 @@ export class ToolbarComponent implements OnInit {
 	@Input() ShowDelete = true;
 
 	@Input() ShowHelp = true;
+	@Input() ShowHistory = true;
 	@Input() ShowFeature = false;
 
 	@Input() AcceptFile = '.xlsx';
@@ -51,7 +53,8 @@ export class ToolbarComponent implements OnInit {
 	constructor(
 		public translate: TranslateService,
 		public env: EnvService,
-		public modalController: ModalController
+		public modalController: ModalController,
+		public popoverController: PopoverController
 	) {
 		this.env.getEvents().subscribe((data) => {
 			if (data.Code == 'app:closePopListToolBar') {
@@ -105,6 +108,22 @@ export class ToolbarComponent implements OnInit {
 	presentToolBarPopover(e: Event) {
 		this.toolBarPopover.event = e;
 		this.isToolBarPopoverOpen = true;
+	}
+
+	async openHistoryLogPicker(ev: Event) {
+		if (!this.page?.historyItems?.length) return;
+		const popover = await this.popoverController.create({
+			component: HistoryLogPopoverComponent,
+			componentProps: {
+				items: this.page.historyItems,
+				selectedIndex: this.page.historyIndex,
+				onSelect: (index: number) => this.page.selectHistoryIndex(index),
+			},
+			event: ev,
+			cssClass: 'history-log-popover',
+			dismissOnSelect: false,
+		});
+		await popover.present();
 	}
 
 	async export() {

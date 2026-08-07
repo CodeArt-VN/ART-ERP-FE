@@ -1,6 +1,6 @@
 {
 	"name": "vn.codeart.erp",
-	"version": "0.22.25",
+	"version": "0.22.28",
 	"description": "ERP",
 	"author": "Hùng Vũ",
 	"homepage": "https://codeart.vn/",
@@ -12,6 +12,7 @@
 		"build": "ng build",
 		"watch": "ng build --watch --configuration development",
 		"test": "ng test",
+		"test:history": "node scripts/history-service-test.mjs",
 		"lint": "ng lint",
 		"run-ios": "ionic capacitor run ios -l --external",
 		"updateBuild": "node ./replace.build.js",
@@ -102,6 +103,7 @@
 		"@types/jasmine": "~5.1.0",
 		"@typescript-eslint/eslint-plugin": "^8.18.0",
 		"@typescript-eslint/parser": "^8.18.0",
+		"esbuild": "0.25.0",
 		"eslint": "^9.16.0",
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-jsdoc": "^60.5.0",

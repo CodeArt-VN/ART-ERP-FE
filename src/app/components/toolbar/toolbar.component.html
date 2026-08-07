@@ -1,7 +1,7 @@
 <ion-toolbar [ngClass]="{ 'toolbar-no-border': NoBorder }" *ngIf="page">
 	
 	<!-- left-tool-bar -->
-	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }">
+	<ion-buttons slot="start" [collapse]="true" [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }" *ngIf="!page.pageConfig.isHistoryView">
 		<ion-back-button *ngIf="!page.pageConfig.isDetailPage"></ion-back-button>
 
 		<ion-back-button
@@ -17,7 +17,12 @@
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">
 			{{ 'SELECTED_ITEMS' | translate: { COUNT: page.selectedItems?.length } }}
 		</ion-button>
-		<ng-content *ngIf="!page.selectedItems?.length" select="[startTitle]"></ng-content>
+		<ng-content *ngIf="!page.selectedItems?.length && !page.pageConfig.isHistoryView" select="[startTitle]"></ng-content>
+	</ion-buttons>
+
+	<!-- History: form title + center title — desktop only -->
+	<ion-buttons slot="start" [collapse]="true" class="ion-hide-md-down" *ngIf="page.pageConfig.isHistoryView">
+		<ion-button color="dark">{{ 'CHANGE_LOGS' | translate }}</ion-button>
 	</ion-buttons>
 
 	<!-- fake back -->
@@ -30,14 +35,56 @@
 
 	<ng-content select="[segment]"></ng-content>
 
-	<!-- center-tool-bar -->
-	<ion-title [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }" *ngIf="page.pageConfig.isDetailPage && CenterTitle">
+	<ion-title class="history-view-center-title ion-hide-md-down" *ngIf="page.pageConfig.isHistoryView">
+		<div class="history-toolbar-title">{{ page.historyViewTitle }}</div>
+		<div class="history-toolbar-subtitle" *ngIf="page.historyViewSubtitle">{{ page.historyViewSubtitle }}</div>
+	</ion-title>
+
+	<ion-title [ngClass]="{ 'ion-hide-md-down': page.pageConfig.isSubActive }" *ngIf="page.pageConfig.isDetailPage && CenterTitle && !page.pageConfig.isHistoryView">
 		{{ CenterTitle }}
 		<ng-content select="[centerTitle]"></ng-content>
 	</ion-title>
 
 	<!-- slot-end -->
 	<ion-buttons slot="end" [collapse]="true">
+		<ng-container *ngIf="page.pageConfig.isHistoryView">
+			<ion-button
+				title="{{ 'HISTORY_OLDEST' | translate }}"
+				(click)="page.historyFirst()"
+				[disabled]="!page.historyItems?.length || page.historyIndex >= page.historyItems.length - 1"
+			>
+				<ion-icon slot="icon-only" name="play-skip-back-outline"></ion-icon>
+			</ion-button>
+			<ion-button
+				title="{{ 'HISTORY_OLDER' | translate }}"
+				(click)="page.historyPrev()"
+				[disabled]="!page.historyItems?.length || page.historyIndex >= page.historyItems.length - 1"
+			>
+				<ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+			</ion-button>
+			<ion-button class="history-pos-btn" title="{{ 'SELECT_HISTORY_ENTRY' | translate }}" (click)="openHistoryLogPicker($event)">
+				{{ page.historyViewPosition }}
+			</ion-button>
+			<ion-button
+				title="{{ 'HISTORY_NEWER' | translate }}"
+				(click)="page.historyNext()"
+				[disabled]="!page.historyItems?.length || page.historyIndex <= 0"
+			>
+				<ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+			</ion-button>
+			<ion-button
+				title="{{ 'HISTORY_NEWEST' | translate }}"
+				(click)="page.historyLast()"
+				[disabled]="!page.historyItems?.length || page.historyIndex <= 0"
+			>
+				<ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
+			</ion-button>
+			<ion-button title="{{ 'EXIT_HISTORY_VIEW' | translate }}" (click)="page.exitHistoryView()">
+				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+			</ion-button>
+		</ng-container>
+
+		<ng-container *ngIf="!page.pageConfig.isHistoryView">
 		<ng-content *ngIf="!page.selectedItems?.length"></ng-content>
 
 		<!-- Add -->
@@ -222,6 +269,23 @@
 			title="{{ 'View archived items' | translate }}"
 		>
 			<ion-icon slot="icon-only" [name]="page.query.IsDisabled ? 'archive' : 'archive-outline'"></ion-icon>
+		</ion-button>
+
+		<!-- History / Time Machine -->
+		<ion-button
+			class="ion-hide-md-down"
+			title="{{ 'History' | translate }}"
+			*ngIf="
+				ShowHistory &&
+				page.pageConfig.ShowHistory &&
+				page.pageConfig.isDetailPage &&
+				page.item?.Id &&
+				!page.selectedItems?.length &&
+				!page.pageConfig.isHistoryView
+			"
+			(click)="page.enterHistoryView()"
+		>
+			<ion-icon slot="icon-only" name="time-outline"></ion-icon>
 		</ion-button>
 
 		<!-- Help -->
@@ -489,6 +553,25 @@
 								<ion-label> {{ 'View archived items' | translate }}</ion-label>
 							</ion-item>
 
+							<!-- History -->
+							<ion-item
+								title="{{ 'History' | translate }}"
+								[button]="true"
+								[detail]="false"
+								*ngIf="
+									ShowHistory &&
+									page.pageConfig.ShowHistory &&
+									page.pageConfig.isDetailPage &&
+									page.item?.Id &&
+									!page.selectedItems?.length &&
+									!page.pageConfig.isHistoryView
+								"
+								(click)="isToolBarPopoverOpen = false; page.enterHistoryView()"
+							>
+								<ion-icon slot="start" name="time-outline"></ion-icon>
+								<ion-label> {{ 'History' | translate }}</ion-label>
+							</ion-item>
+
 							<!-- Help -->
 							<ion-item
 								title="{{ 'Help' | translate }}"
@@ -541,7 +624,8 @@
 			</ion-popover>
 		</ion-button>
 
-	<ng-content select="[endSlot]"></ng-content>
+		<ng-content select="[endSlot]"></ng-content>
+		</ng-container>
 
 	</ion-buttons>
 	<!-- <ion-progress-bar type="indeterminate" *ngIf="page.pageConfig.showSpinner"></ion-progress-bar> -->

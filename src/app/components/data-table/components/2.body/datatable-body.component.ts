@@ -1,11 +1,12 @@
-import { Component, DoCheck, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, DoCheck, EventEmitter, inject, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import {
 	ScrollProgressEvent,
 	VirtualScrollMode,
 	VirtualViewportComponent,
 } from 'src/app/components/virtual-scroll/virtual-viewport.component';
-import { buildVirtualItems, DatatableVirtualItem, virtualItemTrackBy } from './virtual-items.util';
+import { buildVirtualItems, DatatableVirtualItem, rowTrackKey, virtualItemTrackBy } from './virtual-items.util';
 import { DataTableActiveFilter } from '../../interfaces/table-column.interface';
+import { HistoryService } from 'src/app/services/custom/history.service';
 
 export type DatatableVirtualScrollMode = VirtualScrollMode;
 
@@ -15,6 +16,8 @@ export type DatatableVirtualScrollMode = VirtualScrollMode;
 	standalone: false,
 })
 export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
+	historyService = inject(HistoryService);
+
 	@ViewChild(VirtualViewportComponent) private vp?: VirtualViewportComponent<DatatableVirtualItem>;
 
 	@Input() emptyMessage: any;
@@ -29,6 +32,15 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 
 	onClearAllFilters() {
 		this.clearAllFilters.emit();
+	}
+
+	isHistoryRowChanged(row: any): boolean {
+		if (this.historyService.isHistoryRemovedLine(row)) return false;
+		return this.historyService.isWholeLineChange(row);
+	}
+
+	isHistoryRowRemoved(row: any): boolean {
+		return this.historyService.isHistoryRemovedLine(row);
 	}
 
 	_columns: any[];
@@ -90,20 +102,7 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 	/** Set by app-data-table from query.Take + row growth — not for page templates. */
 	@Input() infiniteScrollDisabled = false;
 
-	rowTrackingFn = (index: number, row: any) => {
-		if (this.trackBy) {
-			if (typeof row?.get === 'function') {
-				const v = row.get(this.trackBy)?.value;
-				if (v != null && v !== '') {
-					return v;
-				}
-			}
-			if (row?.[this.trackBy] != null) {
-				return row[this.trackBy];
-			}
-		}
-		return this._rows?.indexOf(row) ?? index;
-	};
+	rowTrackingFn = (index: number, row: any) => rowTrackKey(row, index, this._trackBy);
 
 	virtualTrackBy = (_index: number, item: DatatableVirtualItem) => virtualItemTrackBy(_index, item);
 
@@ -122,9 +121,24 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 
 	@Input() showSpinner: boolean;
 
+	/** Passed from app-data-table — only 'always' is implemented in body-cell. */
+	@Input() editable: false | 'always' | 'inline' | 'incell' | 'external' = false;
+
 	@Output() activate: EventEmitter<any> = new EventEmitter();
 
 	@Output() dataInfinite: EventEmitter<any> = new EventEmitter();
+
+	@Output() cellChange = new EventEmitter<{
+		row: any;
+		rowIndex: number;
+		property: string;
+		column: any;
+		event?: any;
+	}>();
+
+	onCellChange(event: any) {
+		this.cellChange.emit(event);
+	}
 
 	isWaitingNewData = false;
 

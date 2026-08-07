@@ -351,3 +351,9 @@ ion-item {
 		margin-top: 16px;
 	}
 }
+
+.history-changed {
+	.c-input {
+		box-shadow: 0 0 0 1px rgba(var(--ion-color-warning-rgb), 1) !important;
+	}
+}
