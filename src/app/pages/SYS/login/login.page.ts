@@ -5,6 +5,7 @@ import { LoadingController, NavController } from '@ionic/angular';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { UserProfileService } from '../../../services/auth/user-profile.service';
 import { ExternalAuthService } from '../../../services/auth/external-auth.service';
+import { BiometricAuthService } from '../../../services/auth/biometric-auth.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BRA_BranchProvider } from 'src/app/services/static/services.service';
@@ -32,6 +33,8 @@ export class LoginPage extends PageBase {
 	submitAttempt = false;
 	returnUrl: string | undefined;
 	showForgotPassword = false;
+	biometricAvailable = false;
+	biometricLabel = 'Face ID';
 	partnerList = [];
 	randomImg = '';
 	private resumeAttempted = false;
@@ -50,6 +53,7 @@ export class LoginPage extends PageBase {
 		public route: ActivatedRoute,
 		public commonService: CommonService,
 		private router: Router,
+		private biometricAuth: BiometricAuthService,
 	) {
 		super();
 
@@ -126,6 +130,7 @@ export class LoginPage extends PageBase {
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] ?? undefined;
 
 		void this.tryResumeSession();
+		void this.refreshBiometricOption();
 
 		if (!this.env.user?.Id) {
 			this.env.getStorage('Username')?.then((v) => {
@@ -136,6 +141,35 @@ export class LoginPage extends PageBase {
 
 	goBack() {
 		void this.navigateAfterAuth();
+	}
+
+
+	async refreshBiometricOption() {
+		try {
+			this.biometricAvailable = await this.biometricAuth.canUseBiometricLogin();
+			this.biometricLabel = await this.biometricAuth.biometryLabel();
+		} catch {
+			this.biometricAvailable = false;
+		}
+	}
+
+	loginWithBiometric() {
+		this.env
+			.showLoading('Please wait for a few moments', async () => {
+				const creds = await this.biometricAuth.unlockCredentials();
+				if (!creds) {
+					throw new Error('biometric-cancelled');
+				}
+				await this.authService.login({ username: creds.username, password: creds.password });
+				await this.profileService.getProfile();
+				await this.navigateAfterAuth();
+			})
+			.catch((err) => {
+				if (err?.message === 'biometric-cancelled') {
+					return;
+				}
+				this.env.showMessage('Unable to log in, please try again', 'danger');
+			});
 	}
 
 	login() {
@@ -154,6 +188,7 @@ export class LoginPage extends PageBase {
 				await this.authService.login({ username: account.UserName, password: account.Password });
 				dogF && console.log('🔑 [LoginPage] Login successful, getting profile data...');
 				await this.profileService.getProfile();
+				await this.biometricAuth.saveCredentials(account.UserName, account.Password);
 				dogF && console.log('✅ [LoginPage] Profile data loaded, navigating back...');
 				await this.navigateAfterAuth();
 			})

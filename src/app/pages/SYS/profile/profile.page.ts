@@ -10,6 +10,7 @@ import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { lib } from 'src/app/services/static/global-functions';
 import { HRM_StaffProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider } from 'src/app/services/static/services.service';
 import { CompareValidator } from 'src/app/services/util/validators';
+import { BiometricAuthService } from 'src/app/services/auth/biometric-auth.service';
 
 interface ProfileUI {
 	avatarURL: string;
@@ -46,6 +47,9 @@ export class ProfilePage extends PageBase {
 		user: null,
 	};
 
+	biometricEnabled = false;
+	biometricLabel = 'Face ID';
+
 	@ViewChild('importfile') importfile: any;
 
 	hasBaseDropZoneOver = false;
@@ -62,7 +66,8 @@ export class ProfilePage extends PageBase {
 		public cdr: ChangeDetectorRef,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
-		public commonService: CommonService
+		public commonService: CommonService,
+		private biometricAuth: BiometricAuthService,
 	) {
 		super();
 
@@ -126,6 +131,7 @@ export class ProfilePage extends PageBase {
 			this.ui.user = this.env.user;
 		}
 		super.loadedData(event);
+		void this.refreshBiometricStatus();
 	}
 
 	async changePassword() {
@@ -194,6 +200,33 @@ export class ProfilePage extends PageBase {
 
 	changeTheme() {
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_THEME });
+	}
+
+	async refreshBiometricStatus() {
+		try {
+			this.biometricEnabled = await this.biometricAuth.canUseBiometricLogin();
+			this.biometricLabel = await this.biometricAuth.biometryLabel();
+		} catch {
+			this.biometricEnabled = false;
+		}
+		this.cdr.detectChanges();
+	}
+
+	async disableBiometricLogin() {
+		try {
+			await this.env.showPrompt(
+				'Disable Face ID / biometric sign-in on this device?',
+				null,
+				this.biometricLabel,
+				'Disable',
+				'Cancel',
+			);
+		} catch {
+			return;
+		}
+		await this.biometricAuth.clearCredentials();
+		await this.refreshBiometricStatus();
+		this.env.showMessage('Biometric sign-in disabled', 'success');
 	}
 
 	segmentChanged(ev: any) {

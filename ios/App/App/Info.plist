@@ -4,6 +4,8 @@
 <dict>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.business</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Dùng Face ID để đăng nhập nhanh vào ART-ERP</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Chụp hình checkin và quét QR code</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
