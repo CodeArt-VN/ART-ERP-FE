@@ -184,7 +184,7 @@ export class LoginPage extends PageBase {
 
 			const label = await this.biometricAuth.biometryLabel();
 			await this.env.showPrompt(
-				`Enable ${label} for faster sign-in next time?`,
+				{ code: 'Enable {type} for faster sign-in next time?', type: label },
 				null,
 				label,
 				'Enable',
@@ -193,9 +193,9 @@ export class LoginPage extends PageBase {
 
 			const ok = await this.biometricAuth.enable(username, password);
 			if (ok) {
-				this.env.showMessage(`${label} enabled`, 'success');
+				this.env.showMessage('{type} enabled', 'success', { type: label });
 			} else {
-				this.env.showMessage(`Unable to enable ${label}`, 'warning');
+				this.env.showMessage('Unable to enable {type}', 'warning', { type: label });
 			}
 		} catch {
 			// User cancelled prompt or Face ID failed — skip quietly

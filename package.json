@@ -18,6 +18,7 @@
 		"updateBuild": "node ./replace.build.js",
 		"build-prod": "npm version patch --no-git-tag-version && node ./replace.build.js && ionic cap sync --prod",
 		"live-android": "ionic cap run android -l --external --target R58RC47AGEW",
+		"live-ios": "ionic cap run ios -l --external --target=00008120-001A682E2EEB401E --port=8100 --host=192.168.1.8",
 		"dev": "ionic serve --external --no-open --ssl",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",

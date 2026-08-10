@@ -14,7 +14,6 @@ import { BiometricAuthService } from 'src/app/services/auth/biometric-auth.servi
 
 interface ProfileUI {
 	avatarURL: string;
-	segmentView: string;
 	passwordViewType: string;
 	minDOB: string;
 	maxDOB: string;
@@ -35,7 +34,6 @@ interface ProfileUI {
 export class ProfilePage extends PageBase {
 	ui: ProfileUI = {
 		avatarURL: 'assets/imgs/avartar-empty.jpg',
-		segmentView: 's1',
 		passwordViewType: 'password',
 		minDOB: '',
 		maxDOB: '',
@@ -47,9 +45,12 @@ export class ProfilePage extends PageBase {
 		user: null,
 	};
 
+	showBiometricSection = false;
 	biometricSupported = false;
 	biometricEnabled = false;
 	biometricLabel = 'Face ID';
+	biometricStatusMessage = '';
+	biometricStatusParams: Record<string, string> = {};
 
 	@ViewChild('importfile') importfile: any;
 
@@ -103,6 +104,7 @@ export class ProfilePage extends PageBase {
 			IssuedBy: new FormControl(),
 			BackgroundColor: new FormControl(),
 		});
+		this.formGroup = this.ui.formGroup;
 
 		this.ui.changePasswordForm = formBuilder.group({
 			// Email: ['', Validators.required],
@@ -120,17 +122,24 @@ export class ProfilePage extends PageBase {
 	preLoadData() {
 		this.id = this.env.user.StaffID;
 		super.preLoadData();
+		void this.refreshBiometricStatus();
+	}
+
+	ionViewWillEnter() {
+		super.ionViewWillEnter();
+		void this.refreshBiometricStatus();
 	}
 
 	loadedData(event) {
 		if (this.item) {
 			this.ui.item = this.item;
 			this.ui.item.DateOfIssueID = lib.dateFormat(this.ui.item.DateOfIssueID, 'yyyy-mm-dd');
+		}
+		if (this.env.user?.UserSetting) {
 			this.ui.userSetting = this.env.user.UserSetting;
 			this.ui.userSetting.isLoaded = true;
-			// Update ui.user to ensure it's current
-			this.ui.user = this.env.user;
 		}
+		this.ui.user = this.env.user;
 		super.loadedData(event);
 		void this.refreshBiometricStatus();
 	}
@@ -204,14 +213,36 @@ export class ProfilePage extends PageBase {
 	}
 
 	async refreshBiometricStatus() {
-		try {
-			this.biometricSupported = await this.biometricAuth.isAvailable();
-			this.biometricEnabled = this.biometricSupported && (await this.biometricAuth.hasSavedCredentials());
-			this.biometricLabel = await this.biometricAuth.biometryLabel();
-		} catch {
+		this.showBiometricSection = this.biometricAuth.showUi;
+		this.biometricLabel = 'Face ID';
+		this.biometricStatusMessage = '';
+		this.biometricStatusParams = {};
+
+		if (!this.showBiometricSection) {
 			this.biometricSupported = false;
 			this.biometricEnabled = false;
+			this.cdr.detectChanges();
+			return;
 		}
+
+		const probe = await this.biometricAuth.probe();
+		this.biometricLabel = probe.label;
+		this.biometricSupported = probe.available;
+		this.biometricEnabled = probe.enabled;
+
+		if (!probe.available) {
+			if (probe.error === 'biometry-unavailable') {
+				this.biometricStatusMessage = 'Biometry unavailable on this build';
+				this.biometricStatusParams = {};
+			} else {
+				this.biometricStatusMessage = 'Unable to check biometry ({platform}/{error})';
+				this.biometricStatusParams = {
+					platform: probe.platform || '',
+					error: probe.error || 'unknown',
+				};
+			}
+		}
+
 		this.cdr.detectChanges();
 	}
 
@@ -220,7 +251,7 @@ export class ProfilePage extends PageBase {
 		let password: string;
 		try {
 			const data: any = await this.env.showPrompt(
-				'Enter your password to enable Face ID on this device',
+				{ code: 'Enter your password to enable {type} on this device', type: label },
 				null,
 				label,
 				'Enable',
@@ -245,7 +276,7 @@ export class ProfilePage extends PageBase {
 
 		const username = (this.env.user?.Email || this.env.user?.UserName || '').trim();
 		if (!username) {
-			this.env.showMessage('Unable to enable Face ID', 'danger');
+			this.env.showMessage('Unable to enable {type}', 'danger', { type: label });
 			return;
 		}
 
@@ -257,16 +288,16 @@ export class ProfilePage extends PageBase {
 				}
 			});
 			await this.refreshBiometricStatus();
-			this.env.showMessage(`${label} enabled`, 'success');
+			this.env.showMessage('{type} enabled', 'success', { type: label });
 		} catch {
-			this.env.showMessage(`Unable to enable ${label}`, 'danger');
+			this.env.showMessage('Unable to enable {type}', 'danger', { type: label });
 		}
 	}
 
 	async disableBiometricLogin() {
 		try {
 			await this.env.showPrompt(
-				'Disable Face ID / biometric sign-in on this device?',
+				{ code: 'Disable {type} sign-in on this device?', type: this.biometricLabel },
 				null,
 				this.biometricLabel,
 				'Disable',
@@ -278,10 +309,6 @@ export class ProfilePage extends PageBase {
 		await this.biometricAuth.clearCredentials();
 		await this.refreshBiometricStatus();
 		this.env.showMessage('Biometric sign-in disabled', 'success');
-	}
-
-	segmentChanged(ev: any) {
-		this.ui.segmentView = ev.detail.value;
 	}
 
 	logout() {

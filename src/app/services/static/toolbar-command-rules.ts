@@ -139,9 +139,9 @@ export var toolbarCommandRules = {
 	CRM_Contact: [
 		['Btns',			'ChangeBranch',		'Merge',		'Split',		'Submit',		'Disapprove',		'Approve',		'Cancel',		'Delete',		'Archive',		'RequestDataCorrection'],
 		['New',				1,					1,				1,				1,				1,					1,				1,				1,				1,				0],
-		['Submitted',		0,					0,				0,				0,				1,					1,				0,				0,				0,				0],
+		['Submitted',		0,					1,				0,				0,				1,					1,				0,				0,				0,				0],
 		['Unapproved',		1,					1,				1,				1,				0,					1,				1,				1,				1,				0],
-		['Approved',		0,					0,				0,				0,				1,					0,				1,				0,				1,				1],
+		['Approved',		0,					1,				0,				0,				1,					0,				1,				0,				1,				1],
 	],
 
 	HRM_StaffPolEmployeeDecision: [
