@@ -1,3 +1,5 @@
+import { InputControlField } from '../../controls/controls.interface';
+
 /**
  * Column Type
  */
@@ -27,7 +29,7 @@ export interface TableColumn {
 	class?: string | ((data: any) => string | any);
 
 	/**
-	 * CSS Classes for the cell
+	 * CSS classes for the cell (legacy alias)
 	 * @memberOf TableColumn
 	 */
 	cellClass?: string | ((data: any) => string | any);
@@ -43,6 +45,21 @@ export interface TableColumn {
 	 * @memberOf TableColumn
 	 */
 	headerClass?: string | ((data: any) => string | any);
+
+	/**
+	 * When table editable='always', false keeps display-only for this column.
+	 */
+	editable?: boolean;
+
+	/**
+	 * app-input-control type when table editable='always' and no cellTemplate.
+	 */
+	editor?: InputControlField['type'];
+
+	/**
+	 * Extra InputControlField props (except id/type/form). Object or (row) => partial.
+	 */
+	editorField?: Partial<InputControlField> | ((row: any) => Partial<InputControlField>);
 
 	/**
 	 * Column name or label
@@ -108,6 +125,8 @@ export interface TableColumn {
 	canSort?: boolean;
 
 	navLink?: string;
+
+	dataType?: string;
 }
 
 /** Active column filter shown in empty-state list. */

@@ -527,6 +527,20 @@ export class DataTableComponent implements OnInit {
 	 */
 	@Input() virtualScrollTemplateCacheSize = 0;
 
+	/**
+	 * Editing mode. 'always' renders app-input-control for columns with editor / no cellTemplate.
+	 * inline | incell | external reserved for later.
+	 */
+	@Input() editable: false | 'always' | 'inline' | 'incell' | 'external' = false;
+
+	@Output() cellChange = new EventEmitter<{
+		row: any;
+		rowIndex: number;
+		property: string;
+		column: TableColumn;
+		event?: any;
+	}>();
+
 	@Output() activate: EventEmitter<any> = new EventEmitter();
 
 	@Output() dataInfinite: EventEmitter<any> = new EventEmitter();

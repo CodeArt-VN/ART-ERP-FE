@@ -76,7 +76,7 @@ if (
 		{
 			label: 'spm-capacitor-swift-pm-version',
 			from: '.package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", branch: "main")',
-			to: '.package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.0.0")',
+			to: '.package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.1.0")',
 		},
 		{
 			label: 'spm-ios-platform',

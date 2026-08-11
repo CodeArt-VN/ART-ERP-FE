@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap, from } from 'rxjs';
 
@@ -7,6 +7,7 @@ import { InputControlComponent } from './components/controls/input-control.compo
 import { PageConfig } from './interfaces/base-page-interface';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { PopoverPage } from './pages/SYS/popover/popover.page';
+import { EnrichedLog, HistoryService, SnapshotAtStep } from './services/custom/history.service';
 import { EVENT_TYPE } from './services/static/event-type';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
@@ -20,6 +21,8 @@ import { FormManagementService } from './services/page/form-management.service';
 	standalone: false,
 })
 export abstract class PageBase implements OnInit {
+	historyService = inject(HistoryService);
+
 	dataManagementService: PageDataManagementService;
 	formManagementService = new FormManagementService();
 	env;
@@ -40,6 +43,18 @@ export abstract class PageBase implements OnInit {
 	item = null;
 	items: any = [];
 	selectedItems: any = [];
+
+	/** History view mode (inline Time Machine) */
+	historyItems: EnrichedLog[] = [];
+	historySnapshots: SnapshotAtStep[] = [];
+	historyIndex = 0;
+	/** Bumps on every snapshot apply so child grids always rebuild. */
+	historyRevision = 0;
+	historyViewTitle = '';
+	historyViewSubtitle = '';
+	historyViewPosition = '';
+	historySnapshotBefore: any = null;
+	historySavedCanEdit = false;
 
 	localQuery: any = {};
 
@@ -81,6 +96,7 @@ export abstract class PageBase implements OnInit {
 		ShowExport: true,
 		ShowImport: true,
 		ShowHelp: true,
+		ShowHistory: false,
 		ShowFeature: false,
 
 		ShowCopy: true,
@@ -1344,6 +1360,203 @@ export abstract class PageBase implements OnInit {
 	help() {
 		let code = 'help' + this.navCtrl.router.routerState.snapshot.url;
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_HELP, Value: code });
+	}
+
+	/** Derive Segment3/Segment4 from pageProvider API path (e.g. PURCHASE/Order) or serviceName. */
+	resolveHistorySegments(): { segment3: string; segment4: string } | null {
+		if (this.pageConfig?.historySegment3 && this.pageConfig?.historySegment4) {
+			return { segment3: this.pageConfig.historySegment3, segment4: this.pageConfig.historySegment4 };
+		}
+		try {
+			const urlFn = this.pageProvider?.apiPath?.getItem?.url;
+			if (typeof urlFn === 'function') {
+				const path = String(urlFn(0) || '');
+				const parts = path.split('/').filter((p) => p && !/^\d+$/.test(p));
+				if (parts.length >= 2) {
+					return { segment3: parts[0], segment4: parts[1] };
+				}
+			}
+		} catch {
+			/* ignore */
+		}
+		const name = this.pageProvider?.serviceName || '';
+		const idx = name.indexOf('_');
+		if (idx > 0) {
+			return { segment3: name.substring(0, idx), segment4: name.substring(idx + 1) };
+		}
+		return null;
+	}
+
+	showEditHistory() {
+		this.enterHistoryView();
+	}
+
+	async enterHistoryView() {
+		if (!this.pageConfig?.isDetailPage || !this.id || this.id == 0) {
+			return;
+		}
+		const segments = this.resolveHistorySegments();
+		if (!segments) {
+			this.env.showMessage('Cannot resolve history for this form', 'warning');
+			return;
+		}
+
+		try {
+			const itemsAsc = await this.historyService.loadHistory(segments.segment3, segments.segment4, this.id);
+			this.historySnapshots = this.historyService.buildCumulativeSnapshots(itemsAsc);
+			this.historyItems = this.historyService.toNewestFirst(itemsAsc);
+
+			if (!this.historyItems.length) {
+				this.env.showMessage('No history logs found', 'warning');
+				return;
+			}
+
+			this.historySnapshotBefore = lib.cloneObject(this.item);
+			this.historySavedCanEdit = this.pageConfig.canEdit ?? false;
+			this.pageConfig.isHistoryView = true;
+			this.pageConfig.canEdit = false;
+			this.historyService.active = true;
+			this.formGroup?.disable({ emitEvent: false });
+
+			// Detail pages may preload ng-select sources for lines that only appear in older logs
+			// (e.g. deleted OrderLines whose IDItem is not in live _Items).
+			await this.onHistoryDataReady();
+
+			this.selectHistoryIndex(0);
+		} catch (err: any) {
+			this.env.showMessage(err?.message || 'Cannot load history', 'danger');
+		}
+	}
+
+	/**
+	 * Hook after history snapshots are built and historySnapshotBefore is cloned.
+	 * Override to enrich helpers (e.g. _Items) so deleted-line ng-selects can render.
+	 */
+	protected async onHistoryDataReady(): Promise<void> {}
+
+	exitHistoryView() {
+		if (!this.pageConfig.isHistoryView) return;
+
+		this.pageConfig.isHistoryView = false;
+		this.historyService.active = false;
+		this.historyService.clearHighlight();
+
+		if (this.historySnapshotBefore) {
+			this.item = lib.cloneObject(this.historySnapshotBefore);
+			this.formGroup?.patchValue(this.item, { emitEvent: false });
+		}
+
+		this.pageConfig.canEdit = this.historySavedCanEdit;
+		if (this.formGroup) {
+			this.formGroup.enable({ emitEvent: false });
+			if (!this.pageConfig.canEdit) {
+				this.formGroup.disable({ emitEvent: false });
+			}
+		}
+
+		this.historyItems = [];
+		this.historySnapshots = [];
+		this.historyIndex = 0;
+		this.historyRevision++;
+		this.historyViewTitle = '';
+		this.historyViewSubtitle = '';
+		this.historyViewPosition = '';
+		this.historySnapshotBefore = null;
+		this.cdr?.detectChanges();
+	}
+
+	historyPrev() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		if (this.historyIndex < this.historyItems.length - 1) {
+			this.selectHistoryIndex(this.historyIndex + 1);
+		}
+	}
+
+	historyNext() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		if (this.historyIndex > 0) {
+			this.selectHistoryIndex(this.historyIndex - 1);
+		}
+	}
+
+	historyFirst() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		this.selectHistoryIndex(this.historyItems.length - 1);
+	}
+
+	historyLast() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		this.selectHistoryIndex(0);
+	}
+
+	selectHistoryIndex(index: number) {
+		if (!this.historyItems.length) return;
+		const i = Math.max(0, Math.min(index, this.historyItems.length - 1));
+		this.historyIndex = i;
+		const entry = this.historyItems[i];
+		this.historyViewTitle = this.historyService.formatViewTitle(entry, i, this.historyItems.length);
+		this.historyViewPosition = this.historyService.formatViewPosition(i, this.historyItems.length);
+		this.historyViewSubtitle = this.historyService.formatViewSubtitle(entry) || '';
+		this.applyHistorySnapshotAt(i);
+		this.cdr?.detectChanges();
+	}
+
+	/**
+	 * Apply history step at newest-first index.
+	 * Snapshot list is chronological (asc): step N = merge(log1..logN).
+	 * Viewing step 3 → clear form, patchValue(1+2+3).
+	 * Viewing step 2 → clear form, patchValue(1+2) — nothing from log 3 remains.
+	 */
+	applyHistorySnapshotAt(newestFirstIndex: number) {
+		const ascIndex = this.historySnapshots.length - 1 - newestFirstIndex;
+		if (ascIndex < 0 || ascIndex >= this.historySnapshots.length) return;
+
+		const currStep = this.historySnapshots[ascIndex];
+		const prevStep = ascIndex > 0 ? this.historySnapshots[ascIndex - 1] : null;
+		const currSnapshot = currStep.snapshot || {};
+		const prevSnapshot = prevStep?.snapshot || {};
+		const entry = currStep.entry;
+
+		const linesKey =
+			this.historyService.findLinesKeyInSnapshot(currSnapshot) ||
+			this.historyService.findLinesKeyInSnapshot(prevSnapshot) ||
+			'OrderLines';
+		// Keep deleted lines visible (danger + strikethrough) only on DELETE steps.
+		// Id-promote PUTs (0→real Id) change identity — must not look like a delete.
+		const includeRemoved = (entry.Method || '').toUpperCase() === 'DELETE' || entry._badge === 'delete';
+		const lines = this.historyService.buildViewLinesWithRemoved(
+			prevSnapshot,
+			currSnapshot,
+			linesKey,
+			includeRemoved
+		);
+
+		// Keep display helpers (_Vendor, _Items, …) from live item — snapshot has business fields only.
+		// Wiping them breaks ng-select dataSource.selected / line item pickers.
+		const helpers: Record<string, any> = {};
+		const helperSource = this.historySnapshotBefore || this.item || {};
+		Object.keys(helperSource).forEach((k) => {
+			if (k.startsWith('_')) helpers[k] = helperSource[k];
+		});
+
+		// item = helpers + cumulative 1..N (never merge live business fields)
+		this.item = lib.cloneObject({
+			...helpers,
+			Id: this.id,
+			...currSnapshot,
+			[linesKey]: lines,
+		});
+
+		if (this.formGroup) {
+			this.historyService.applyCumulativeSnapshotToForm(this.formGroup, currSnapshot, this.id, linesKey);
+		}
+
+		const isCreate = entry._badge === 'create';
+		const headerChanged = this.historyService.diffHeaderFields(prevSnapshot, currSnapshot, isCreate);
+		const lineDiff = this.historyService.diffLineChanges(prevSnapshot, currSnapshot);
+		const expanded = this.historyService.expandLineHighlight(lineDiff, currSnapshot, linesKey);
+		this.historyService.applyHighlight(headerChanged, expanded.lineIds, expanded.lineFields);
+		this.historyRevision++;
 	}
 
 	async changeBranch(ev: any) {

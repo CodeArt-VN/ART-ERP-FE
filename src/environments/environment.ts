@@ -14,7 +14,7 @@ export let environment = {
 		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 		{ Code: 'http://192.168.1.99:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
-	appDomain: 'http://10.211.55.3:54009/',
+	appDomain: 'http://192.168.1.99:54009/',
 	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
 	posImagesServer: 'https://app.inholdings.vn/',
 	apiVersion: 'api/v1/',

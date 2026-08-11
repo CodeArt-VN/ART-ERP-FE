@@ -56,6 +56,18 @@ export class DataTableColumnDirective implements OnChanges {
 
 	@Input() navLink: string;
 
+	/** When table editable='always', false keeps this column display-only. Default true. */
+	@Input() editable = true;
+
+	/** app-input-control type — same union as InputControlField['type']. */
+	@Input() editor: InputControlField['type'];
+
+	/**
+	 * Extra InputControlField props (except id/type/form which the table sets).
+	 * Object or (row) => partial — for ng-select* dataSource/bindValue/appendTo, etc.
+	 */
+	@Input() editorField: Partial<InputControlField> | ((row: any) => Partial<InputControlField>);
+
 	@Input('headerTemplate') _headerTemplateInput: TemplateRef<any>;
 
 	@ContentChild(DataTableColumnHeaderDirective, {

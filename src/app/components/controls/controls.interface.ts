@@ -41,6 +41,9 @@ export interface InputControlField {
 
 	placeholder?: string;
 
+	/** When false, form-control hides app-input-control. Default true. */
+	showInput?: boolean;
+
 	dataSource?: any[] | any;
 
 	bindValue?: string;

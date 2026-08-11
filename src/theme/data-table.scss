@@ -1543,3 +1543,35 @@ app-data-table.is-empty {
 ion-content.scrollx {
 	@include ion-content-table-fill;
 }
+
+.history-changed-row {
+	background-color: rgba(var(--ion-color-warning-rgb), 0.12) !important;
+}
+
+.history-changed-cell {
+	.c-input {
+		box-shadow: 0 0 0 1px rgba(var(--ion-color-warning-rgb), 1) !important;
+	}
+}
+
+.history-removed-row {
+	background-color: rgba(var(--ion-color-danger-rgb), 0.1) !important;
+	color: var(--ion-color-danger);
+
+	.cell,
+	.c-input,
+	.ng-select,
+	.ng-value,
+	.ng-value-label,
+	ion-text,
+	span,
+	a {
+		color: var(--ion-color-danger) !important;
+		text-decoration: line-through !important;
+	}
+
+	.c-input {
+		box-shadow: 0 0 0 1px rgba(var(--ion-color-danger-rgb), 0.55) !important;
+		opacity: 0.9;
+	}
+}

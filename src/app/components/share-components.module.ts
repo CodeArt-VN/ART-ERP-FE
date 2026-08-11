@@ -20,6 +20,7 @@ import { ShareInputControlsModule } from './controls/share-input-controls.module
 import { ShareVisualizationsModule } from './visualizations/share-visualizations.modules';
 import { SharePrintingModule } from './printing/share-printing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { HistoryLogJsonModalComponent, HistoryLogPopoverComponent } from './toolbar/history-log-popover.component';
 import { HelpDetailComponent } from '../pages/SYS/help-detail/help-detail.page';
 import { PipesModule } from '../pipes/pipes.module';
 import { ReorderComponent } from './reorder/reorder.component';
@@ -27,6 +28,7 @@ import { JsonViewerComponent } from './json-viewer/json-viewer.component';
 import { FormatQuantityComponent } from './format-quantity/format-quantity.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { PageNotificationComponent } from './page-notification/page-notification.component';
+import { EntityHistoryModalComponent } from '../modals/entity-history-modal/entity-history-modal.component';
 
 @NgModule({
 	imports: [
@@ -51,6 +53,8 @@ import { PageNotificationComponent } from './page-notification/page-notification
 
 	declarations: [
 		ToolbarComponent,
+		HistoryLogPopoverComponent,
+		HistoryLogJsonModalComponent,
 		PageTitleComponent,
 		QueryFilterComponent,
 		HelpDetailComponent,
@@ -59,6 +63,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		FormatQuantityComponent,
 		NotificationsComponent,
 		PageNotificationComponent,
+		EntityHistoryModalComponent,
 	],
 	exports: [
 		HelpDetailComponent,
@@ -79,6 +84,7 @@ import { PageNotificationComponent } from './page-notification/page-notification
 		FormatQuantityComponent,
 		NotificationsComponent,
 		PageNotificationComponent,
+		EntityHistoryModalComponent,
 		//NgxMaskDirective,  NgxMaskPipe,
 		TranslateModule,
 		NgSelectModule,

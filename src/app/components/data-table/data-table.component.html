@@ -26,6 +26,7 @@
 	[trackBy]="trackBy"
 	[(selectedRows)]="selectedRows"
 	[showSpinner]="showSpinner"
+	[editable]="editable"
 	[virtualScroll]="virtualScroll"
 	[virtualScrollMode]="virtualScrollMode"
 	[virtualScrollHeight]="virtualScrollHeight"
@@ -36,6 +37,7 @@
 	[infiniteScrollDisabled]="isInfiniteScrollDisabled"
 	(activate)="onSelectedRowsChange($event)"
 	(dataInfinite)="onDataInfinite($event)"
+	(cellChange)="cellChange.emit($event)"
 	(clearFilter)="clearFilter($event)"
 	(clearAllFilters)="clearAllFilters()"
 ></datatable-body>

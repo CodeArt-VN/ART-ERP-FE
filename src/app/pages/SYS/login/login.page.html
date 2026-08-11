@@ -4,13 +4,6 @@
 	</div>
 
 	<form [formGroup]="formGroup" (ngSubmit)="login()" *ngIf="!showForgotPassword">
-		<!-- <div class="removeAutoComplete">
-            <input tabindex="-1" id="UserName" type="email">
-            <input tabindex="-1" type="password">
-            <input tabindex="-1" type="text">
-            <input tabindex="-1" type="text">
-        </div> -->
-
 		<div class="ion-padding">
 			<app-form-control [field]="{ id: 'UserName', type: 'email', label: 'UserName', placeholder: 'Account - email', form: formGroup }"></app-form-control>
 
@@ -18,42 +11,42 @@
 		</div>
 
 		<div class="ion-padding-horizontal">
-			<button type="submit" style="visibility: hidden; position: absolute">{{'Login' | translate}}</button>
+			<button type="submit" style="visibility: hidden; position: absolute">{{ 'Login' | translate }}</button>
 
-			<ion-button class="shadow" color="primary" expand="block" (click)="login()">{{'Login' | translate}}</ion-button>
-			<!-- <ion-button (click)="nav('/casual-labour-register', 'forward')" ion-padding-vertical color="primary" fill="clear" expand="block">{{'CL Registration' | translate}}</ion-button> -->
+			<ion-button class="shadow" color="primary" expand="block" (click)="login()">{{ 'Login' | translate }}</ion-button>
 
+			<ion-button
+				*ngIf="biometricAvailable"
+				class="ion-margin-top"
+				expand="block"
+				fill="solid"
+				color="light"
+				(click)="loginWithBiometric()"
+			>
+				<ion-icon name="scan-outline" slot="start" aria-hidden="true"></ion-icon>
+				{{ 'Login with {type}' | translate: { type: (biometricLabel | translate) } }}
+			</ion-button>
 			<ion-button href="https://inholdings.vn" ion-padding-vertical color="primary" fill="clear" expand="block">{{'Return to home page' | translate}}</ion-button>
 		</div>
 	</form>
+
 	<form (ngSubmit)="forgotPassword()" *ngIf="showForgotPassword">
 		<ion-item lines="none">
 			<ion-label color="white" position="stacked">
-				{{'Username (email)' | translate}}
+				{{ 'Username (email)' | translate }}
 				<ion-text color="danger">(*)</ion-text>
 			</ion-label>
-			<ion-input autocomplete="nope" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" color="white" placeholder="{{'email@domain.com' | translate}}"></ion-input>
+			<ion-input autocomplete="nope" [(ngModel)]="email" [ngModelOptions]="{ standalone: true }" color="white" placeholder="{{ 'email@domain.com' | translate }}"></ion-input>
 		</ion-item>
 
-		<div class="text-right ion-padding-horizontal">
-			<!-- <ion-button (click)="nav('/forgot-password', 'forward')" slot="end" color="light" size="small" fill="clear" >Quên mật khẩu?</ion-button> -->
-		</div>
-
 		<div class="ion-padding">
-			<button type="submit" style="visibility: hidden; position: absolute">{{'Login' | translate}}</button>
+			<button type="submit" style="visibility: hidden; position: absolute">{{ 'Login' | translate }}</button>
 
-			<ion-button color="warning" expand="block" (click)="forgotPassword()">{{'Request to change password' | translate}}</ion-button>
-			<p class="divider">{{'Or' | translate}}</p>
-			<ion-button expand="block" (click)="showForgotPassword=false;">{{'Login' | translate}}</ion-button>
+			<ion-button color="warning" expand="block" (click)="forgotPassword()">{{ 'Request to change password' | translate }}</ion-button>
+			<p class="divider">{{ 'Or' | translate }}</p>
+			<ion-button expand="block" (click)="showForgotPassword = false">{{ 'Login' | translate }}</ion-button>
 
-			<ion-button (click)="nav('/register', 'forward')" ion-padding-vertical color="light" fill="clear" size="small" expand="block">{{'Register' | translate}}</ion-button>
+			<ion-button (click)="nav('/register', 'forward')" ion-padding-vertical color="light" fill="clear" size="small" expand="block">{{ 'Register' | translate }}</ion-button>
 		</div>
 	</form>
 </ion-content>
-<!-- <ion-footer>
-    <ion-toolbar color="primary" text-center>
-        <ion-text small color="light">
-            © GEM Operation - {{env.version}}
-        </ion-text>
-    </ion-toolbar>
-</ion-footer> -->
