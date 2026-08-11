@@ -29,6 +29,7 @@ export class FormControlComponent implements OnInit {
 		if (f.type) this.type = f.type;
 		if (f.id) this.id = f.id;
 		if (f.label) this.label = f.label;
+		if (f.showInput !== undefined && f.showInput !== null) this.showInput = !!f.showInput;
 		this._field = f;
 	}
 
@@ -51,6 +52,9 @@ export class FormControlComponent implements OnInit {
 	@Input() clearable: boolean;
 
 	@Input() virtualScroll: boolean;
+
+	/** When false, hide app-input-control (label + projected [control] content still render). */
+	@Input() showInput: boolean = true;
 
 	get isValid() {
 		return this.field.form.controls[this.field.id].valid;
