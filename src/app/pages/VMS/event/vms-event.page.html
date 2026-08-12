@@ -1,0 +1,38 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+		<ion-title>VMS Events</ion-title>
+	</ion-toolbar>
+	<ion-toolbar>
+		<ion-segment [(ngModel)]="filterType" (ionChange)="reload()">
+			<ion-segment-button value=""><ion-label>All</ion-label></ion-segment-button>
+			<ion-segment-button value="attendance.check_in"><ion-label>Check-in</ion-label></ion-segment-button>
+			<ion-segment-button value="attendance.check_out"><ion-label>Check-out</ion-label></ion-segment-button>
+			<ion-segment-button value="attendance.pending_review"><ion-label>Pending</ion-label></ion-segment-button>
+			<ion-segment-button value="guest.identity_matched"><ion-label>Guest</ion-label></ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	<ion-list>
+		<ion-item *ngFor="let e of items">
+			<ion-thumbnail slot="start" *ngIf="e.FramePath">
+				<img [src]="e.FramePath" alt="frame" />
+			</ion-thumbnail>
+			<ion-label>
+				<h2>{{ e.EventType }}</h2>
+				<p>{{ e.OccurredAt | date:'short' }} · cam {{ e.CameraId }} · {{ e.PersonId || e.EmployeeCode }}</p>
+				<p>Status: {{ e.Status }} · conf {{ e.Confidence }}</p>
+			</ion-label>
+			<ion-buttons slot="end" *ngIf="e.Status === 'PendingReview'">
+				<ion-button color="success" (click)="review(e, true)">OK</ion-button>
+				<ion-button color="danger" (click)="review(e, false)">X</ion-button>
+			</ion-buttons>
+		</ion-item>
+		<ion-item *ngIf="!items?.length"><ion-label color="medium">No events</ion-label></ion-item>
+	</ion-list>
+</ion-content>

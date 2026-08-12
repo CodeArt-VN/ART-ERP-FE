@@ -1,0 +1,24 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+		<ion-title>Camera ACL</ion-title>
+		<ion-buttons slot="end"><ion-button (click)="add()">Grant</ion-button></ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-item>
+		<ion-select label="Camera" [(ngModel)]="idCamera" (ionChange)="onCameraChange()" interface="popover">
+			<ion-select-option *ngFor="let c of cameras" [value]="c.Id">{{ c.Name }}</ion-select-option>
+		</ion-select>
+	</ion-item>
+	<ion-list>
+		<ion-item *ngFor="let p of permissions">
+			<ion-label>
+				<h2>{{ p.SubjectType }} · {{ p.SubjectId }}</h2>
+				<p>View {{ p.CanView }} · Manage {{ p.CanManage }}</p>
+			</ion-label>
+		</ion-item>
+		<ion-item *ngIf="!permissions?.length"><ion-label color="medium">No ACL rows</ion-label></ion-item>
+	</ion-list>
+</ion-content>

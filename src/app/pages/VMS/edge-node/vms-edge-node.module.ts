@@ -1,0 +1,12 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+import { VmsEdgeNodePage } from './vms-edge-node.page';
+
+@NgModule({
+	imports: [IonicModule, CommonModule, FormsModule, RouterModule.forChild([{ path: '', component: VmsEdgeNodePage }])],
+	declarations: [VmsEdgeNodePage],
+})
+export class VmsEdgeNodePageModule {}

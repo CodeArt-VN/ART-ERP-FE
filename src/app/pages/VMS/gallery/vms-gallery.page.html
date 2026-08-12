@@ -1,0 +1,32 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+		<ion-title>Face Gallery (corp)</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="enroll()">Enroll</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar>
+		<ion-segment [(ngModel)]="personType" (ionChange)="reload()">
+			<ion-segment-button value=""><ion-label>All</ion-label></ion-segment-button>
+			<ion-segment-button value="staff"><ion-label>Staff</ion-label></ion-segment-button>
+			<ion-segment-button value="guest"><ion-label>Guest</ion-label></ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	<ion-list>
+		<ion-item *ngFor="let i of items">
+			<ion-label>
+				<h2>{{ i.DisplayName || i.PersonId }}</h2>
+				<p>{{ i.PersonType }} · {{ i.EmployeeCode }} · {{ i.PersonId }}</p>
+			</ion-label>
+			<ion-button slot="end" fill="clear" color="danger" (click)="disable(i)" *ngIf="!i.IsDisabled">Disable</ion-button>
+			<ion-badge slot="end" color="medium" *ngIf="i.IsDisabled">Off</ion-badge>
+		</ion-item>
+	</ion-list>
+</ion-content>

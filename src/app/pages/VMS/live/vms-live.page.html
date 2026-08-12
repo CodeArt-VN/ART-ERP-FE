@@ -1,0 +1,40 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+		<ion-title>VMS Live (Phase 2 placeholder)</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<ion-card>
+		<ion-card-header>
+			<ion-card-title>Live streaming — Phase 2</ion-card-title>
+			<ion-card-subtitle>Browser will not connect RTSP/NVR directly. Edge proxy snapshot/HLS comes later.</ion-card-subtitle>
+		</ion-card-header>
+		<ion-card-content>
+			Open recent event frames below for cameras you are allowed to view.
+		</ion-card-content>
+	</ion-card>
+
+	<ion-list-header>Your cameras</ion-list-header>
+	<ion-list>
+		<ion-item *ngFor="let c of cameras">
+			<ion-label>{{ c.Name }} · {{ c.CameraCode }}</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<ion-list-header>Recent frames / events</ion-list-header>
+	<ion-list>
+		<ion-item *ngFor="let e of recent" [routerLink]="['/vms-event']">
+			<ion-thumbnail slot="start" *ngIf="e.FramePath"><img [src]="e.FramePath" /></ion-thumbnail>
+			<ion-label>
+				<h2>{{ e.EventType }}</h2>
+				<p>{{ e.OccurredAt | date:'short' }} · {{ e.CameraId }}</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+</ion-content>

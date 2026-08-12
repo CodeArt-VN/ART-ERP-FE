@@ -20,6 +20,7 @@ import { SHIPRoutes } from './pages/SHIP/routing.module';
 import { SYSRoutes } from './pages/SYS/routing.module';
 import { WMSRoutes } from './pages/WMS/routing.module';
 import { OSMRoutes } from './pages/OSM/routing.module';
+import { VMSRoutes } from './pages/VMS/routing.module';
 
 const routes: Routes = [
   // {
@@ -70,6 +71,7 @@ const allRoutes = [
   ...SYSRoutes,
   ...WMSRoutes,
   ...OSMRoutes,
+  ...VMSRoutes,
   ...routes
 ];
 
