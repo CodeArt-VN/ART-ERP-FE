@@ -67,10 +67,16 @@ export class CommonService {
 			URL = pmethod != 'Login' ? ApiSetting.apiDomain(URL) : ApiSetting.appDomain(URL);
 		}
 
-		if (((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch')) || !data) && URL.indexOf('IDBranch') == -1 && this.env.selectedBranch) {
+		if (
+			pmethod != 'Login' &&
+			((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch')) || !data) &&
+			URL.indexOf('IDBranch') == -1 &&
+			this.env.selectedBranch
+		) {
 			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'IDBranch=' + this.env.selectedBranchAndChildren + '';
 		}
 		if (
+			pmethod != 'Login' &&
 			((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('SelectedBranch')) || !data) &&
 			URL.indexOf('SelectedBranch') == -1 &&
 			this.env.selectedBranch

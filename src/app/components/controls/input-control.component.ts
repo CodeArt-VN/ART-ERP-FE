@@ -37,6 +37,8 @@ export class InputControlComponent implements OnInit {
 		if (f.multiple) this.multiple = f.multiple;
 		if (f.clearable) this.clearable = f.clearable;
 		if (f.noCheckDirty) this.noCheckDirty = f.noCheckDirty;
+		this.mask = f.mask != null && f.mask !== '' ? f.mask : 'separator.2';
+		this.thousandSeparator = f.thousandSeparator !== undefined ? f.thousandSeparator : ',';
 		if (f.color) this.color = f.color;
 		if (f.appendTo !== undefined) this.appendTo = f.appendTo;
 		if (f.virtualScroll !== undefined) this.virtualScroll = f.virtualScroll;
@@ -113,6 +115,9 @@ export class InputControlComponent implements OnInit {
 	@Input() clearable: boolean = false;
 
 	@Input() noCheckDirty: boolean = false;
+
+	@Input() mask: string = 'separator.2';
+	@Input() thousandSeparator: string = ',';
 
 	@Input() inputControlTemplate: any;
 

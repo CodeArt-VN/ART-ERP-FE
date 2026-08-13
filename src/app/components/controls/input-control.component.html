@@ -64,8 +64,8 @@
 	<!-- number -->
 	<input
 		*ngSwitchCase="'number'"
-		mask="separator.2"
-		thousandSeparator=","
+		[mask]="mask"
+		[thousandSeparator]="thousandSeparator"
 		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
 		class="c-input"
 		[id]="id"

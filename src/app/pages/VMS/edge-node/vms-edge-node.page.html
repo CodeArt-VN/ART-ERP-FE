@@ -1,23 +1,68 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
-		<ion-title>ERP-Edge nodes</ion-title>
-	</ion-toolbar>
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
 		<ion-refresher-content></ion-refresher-content>
 	</ion-refresher>
-	<ion-list>
-		<ion-item *ngFor="let n of items">
-			<ion-icon slot="start" [name]="isOnline(n) ? 'checkmark-circle' : 'warning'" [color]="isOnline(n) ? 'success' : 'warning'"></ion-icon>
-			<ion-label>
-				<h2>{{ n.Name || n.EdgeNodeId }}</h2>
-				<p>HB {{ n.LastHeartbeat | date:'short' }} · outbox {{ n.OutboxPending }}</p>
-				<p>config {{ n.ConfigVersion }} · gallery {{ n.GalleryVersion }}</p>
-			</ion-label>
-		</ion-item>
-		<ion-item *ngIf="!items?.length"><ion-label color="medium">No edge heartbeats yet</ion-label></ion-item>
-	</ion-list>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id"></datatable-column>
+			<datatable-column class="col-code" name="Edge node" property="EdgeNodeId">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="bold">{{i.EdgeNodeId}}</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name"></datatable-column>
+			<datatable-column class="col-name flex-break" name="Branch" property="BranchName">
+				<ng-template let-i="row" datatable-cell-template>
+					<div>{{i.BranchName}}</div>
+					<small *ngIf="i.BranchCode">{{i.BranchCode}}</small>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-heartbeat" name="Heartbeat" property="LastHeartbeat">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="hb">
+						<span class="dot" [class.on]="isOnline(i)" [class.off]="!isOnline(i)"></span>
+						<span class="ts" *ngIf="i.LastHeartbeat">{{ i.LastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+						<span class="ts" *ngIf="!i.LastHeartbeat">—</span>
+					</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-number" name="Outbox" property="OutboxPending"></datatable-column>
+			<datatable-column class="col-action" name="" property="IsDisabled">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-button
+						fill="clear"
+						size="small"
+						type="button"
+						class="use-btn"
+						[color]="inUse(i) ? 'success' : 'medium'"
+						[disabled]="pageConfig.canEdit === false"
+						[attr.title]="(inUse(i) ? 'In use' : 'Not in use') | translate"
+						(click)="$event.stopPropagation(); toggleInUse(i, $event)"
+					>
+						<ion-icon slot="icon-only" [name]="inUse(i) ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
+					</ion-button>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
 </ion-content>

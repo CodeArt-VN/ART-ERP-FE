@@ -175,7 +175,7 @@ export class EnvService {
 	 * @param showCloseButton Show a close button instead of turning itself off (use alert instead of toast)
 	 */
 	showMessage(message, color = '', value = null, duration = 5000, showCloseButton = false, subHeader = '', header = '') {
-		if (typeof value === 'string') value = { value: value };
+		if (value != null && typeof value !== 'object') value = { value: value };
 		Promise.all([
 			this.translateResource(value ? { ...value, code: message } : message),
 			this.translateResource(value ? { ...value, code: subHeader } : subHeader),

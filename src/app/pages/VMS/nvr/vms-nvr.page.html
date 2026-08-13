@@ -13,7 +13,7 @@
 		<app-data-table
 			class="box-shadow responsive"
 			[rows]="items"
-			[trackBy]="'PersonId'"
+			[trackBy]="'Id'"
 			[(selectedRows)]="selectedItems"
 			[showSpinner]="pageConfig.showSpinner"
 			[showFilter]="pageConfig.isShowSearch"
@@ -21,16 +21,23 @@
 			(dataInfinite)="loadData($event)"
 			(filter)="onDatatableFilter($event)"
 			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
 		>
-			<datatable-column class="col-code" name="Person" property="PersonId"></datatable-column>
-			<datatable-column class="col-name flex-break" name="Name" property="DisplayName"></datatable-column>
-			<datatable-column class="col-code" name="Type" property="PersonType" filterControlType="ng-select" [filterDataSource]="personTypeList"></datatable-column>
-			<datatable-column class="col-code" name="Employee" property="EmployeeCode"></datatable-column>
-			<datatable-column class="col-status" name="" property="PersonId">
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
+			<datatable-column class="col-code" name="Code" property="Code"></datatable-column>
+			<datatable-column class="col-name flex-break" name="Name" property="Name">
 				<ng-template let-i="row" datatable-cell-template>
-					<ion-button size="small" fill="clear" color="danger" (click)="disable(i)">{{'Disable' | translate}}</ion-button>
+					<div [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{ i.Name }}</ion-text>
+						</a>
+						<small>{{ i.Host }}:{{ i.Port }}</small>
+					</div>
 				</ng-template>
 			</datatable-column>
+			<datatable-column class="col-name" name="Vendor" property="Vendor"></datatable-column>
+			<datatable-column class="col-name" name="Branch" property="BranchName"></datatable-column>
 		</app-data-table>
 	</div>
 </ion-content>

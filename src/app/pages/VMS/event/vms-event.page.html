@@ -1,38 +1,43 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
-		<ion-title>VMS Events</ion-title>
-	</ion-toolbar>
-	<ion-toolbar>
-		<ion-segment [(ngModel)]="filterType" (ionChange)="reload()">
-			<ion-segment-button value=""><ion-label>All</ion-label></ion-segment-button>
-			<ion-segment-button value="attendance.check_in"><ion-label>Check-in</ion-label></ion-segment-button>
-			<ion-segment-button value="attendance.check_out"><ion-label>Check-out</ion-label></ion-segment-button>
-			<ion-segment-button value="attendance.pending_review"><ion-label>Pending</ion-label></ion-segment-button>
-			<ion-segment-button value="guest.identity_matched"><ion-label>Guest</ion-label></ion-segment-button>
-		</ion-segment>
-	</ion-toolbar>
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
 		<ion-refresher-content></ion-refresher-content>
 	</ion-refresher>
-	<ion-list>
-		<ion-item *ngFor="let e of items">
-			<ion-thumbnail slot="start" *ngIf="e.FramePath">
-				<img [src]="e.FramePath" alt="frame" />
-			</ion-thumbnail>
-			<ion-label>
-				<h2>{{ e.EventType }}</h2>
-				<p>{{ e.OccurredAt | date:'short' }} · cam {{ e.CameraId }} · {{ e.PersonId || e.EmployeeCode }}</p>
-				<p>Status: {{ e.Status }} · conf {{ e.Confidence }}</p>
-			</ion-label>
-			<ion-buttons slot="end" *ngIf="e.Status === 'PendingReview'">
-				<ion-button color="success" (click)="review(e, true)">OK</ion-button>
-				<ion-button color="danger" (click)="review(e, false)">X</ion-button>
-			</ion-buttons>
-		</ion-item>
-		<ion-item *ngIf="!items?.length"><ion-label color="medium">No events</ion-label></ion-item>
-	</ion-list>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive"
+			[rows]="items"
+			[trackBy]="'EventId'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+		>
+			<datatable-column class="col-date" format="yyyy-MM-dd HH:mm:ss" name="Time" property="OccurredAt" filterControlType="date"></datatable-column>
+			<datatable-column class="col-code" name="Type" property="EventType" filterControlType="ng-select" [filterDataSource]="eventTypeList"></datatable-column>
+			<datatable-column class="col-name" name="Camera" property="CameraId"></datatable-column>
+			<datatable-column class="col-name flex-break" name="Person" property="DisplayName">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="bold">{{i.DisplayName || i.PersonId}}</div>
+					<small *ngIf="i.EmployeeCode">{{i.EmployeeCode}}</small>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-status" name="Status" property="Status">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-badge color="medium">{{i.Status}}</ion-badge>
+					<ion-button *ngIf="i.Status==='PendingReview'" size="small" fill="clear" (click)="review(i, true)">{{ 'OK' | translate }}</ion-button>
+					<ion-button *ngIf="i.Status==='PendingReview'" size="small" fill="clear" color="danger" (click)="review(i, false)">{{ 'X' | translate }}</ion-button>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
 </ion-content>

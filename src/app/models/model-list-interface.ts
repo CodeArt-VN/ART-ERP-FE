@@ -1,10 +1,35 @@
-﻿//------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------
 // 
 //    www.codeart.vn
 //    hungvq@live.com
 //    (+84)908.061.119
 // 
 //------------------------------------------------------------------------------
+
+
 
 
 export interface AC_APInvoice
@@ -61,7 +86,9 @@ export interface AC_APInvoice
     BuyerTaxCode?: string;
     BuyerAddress?: string;
     
+
 }
+
 
 export interface AC_APInvoiceDetail
 {
@@ -92,7 +119,9 @@ export interface AC_APInvoiceDetail
     CalcTax?: number;
     CalcTotalAfterTax?: number;
     
+
 }
+
 
 export interface AC_ARInvoice
 {
@@ -147,7 +176,9 @@ export interface AC_ARInvoice
     TotalAfterTax?: number;
     InvoiceNote?: string;
     
+
 }
+
 
 export interface AC_ARInvoiceContent
 {
@@ -176,7 +207,9 @@ export interface AC_ARInvoiceContent
     CalcTax?: number;
     CalcTotalAfterTax?: number;
     
+
 }
+
 
 export interface AC_ARInvoiceDetail
 {
@@ -213,7 +246,9 @@ export interface AC_ARInvoiceDetail
     TotalAfterTax?: number;
     UserDefineDetails?: string;
     
+
 }
+
 
 export interface AC_ARInvoiceSODetail
 {
@@ -253,7 +288,9 @@ export interface AC_ARInvoiceSODetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface AC_Case
 {
@@ -278,7 +315,9 @@ export interface AC_Case
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface AC_JournalEntry
 {
@@ -311,7 +350,9 @@ export interface AC_JournalEntry
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface AC_JournalEntryRow
 {
@@ -355,7 +396,9 @@ export interface AC_JournalEntryRow
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface AC_PeriodCategory
 {
@@ -384,7 +427,9 @@ export interface AC_PeriodCategory
     DocumentDateFrom?: Date;
     DocumentDateTo?: Date;
     
+
 }
+
 
 export interface AC_PostingPeriod
 {
@@ -412,7 +457,9 @@ export interface AC_PostingPeriod
     DocumentDateTo?: Date;
     SubPeriod?: number;
     
+
 }
+
 
 export interface APPROVAL_ApprovalRule
 {
@@ -434,7 +481,9 @@ export interface APPROVAL_ApprovalRule
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface APPROVAL_ApprovalRuleApprover
 {
@@ -454,7 +503,9 @@ export interface APPROVAL_ApprovalRuleApprover
     ApprovalMode?: string;
     ApproverList?: string;
     
+
 }
+
 
 export interface APPROVAL_Changelog
 {
@@ -471,7 +522,9 @@ export interface APPROVAL_Changelog
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface APPROVAL_Comment
 {
@@ -489,7 +542,9 @@ export interface APPROVAL_Comment
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface APPROVAL_Notification
 {
@@ -513,7 +568,9 @@ export interface APPROVAL_Notification
     Action?: string;
     SendTo?: string;
     
+
 }
+
 
 export interface APPROVAL_Request
 {
@@ -561,7 +618,9 @@ export interface APPROVAL_Request
     UDF21?: number;
     UDF22?: number;
     
+
 }
+
 
 export interface APPROVAL_RequestApprover
 {
@@ -579,7 +638,9 @@ export interface APPROVAL_RequestApprover
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface APPROVAL_Template
 {
@@ -674,7 +735,9 @@ export interface APPROVAL_Template
     UDFMapping21?: string;
     UDFMapping22?: string;
     
+
 }
+
 
 export interface BANK_Account
 {
@@ -724,7 +787,9 @@ export interface BANK_Account
     TotalOutstandingLoans?: number;
     PrincipalPaid?: number;
     
+
 }
+
 
 export interface BANK_IncomingPayment
 {
@@ -765,7 +830,9 @@ export interface BANK_IncomingPayment
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BANK_IncomingPaymentDetail
 {
@@ -790,7 +857,9 @@ export interface BANK_IncomingPaymentDetail
     ModifiedDate?: Date;
     Amount?: number;
     
+
 }
+
 
 export interface BANK_OutgoingPayment
 {
@@ -829,7 +898,9 @@ export interface BANK_OutgoingPayment
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BANK_OutgoingPaymentDetail
 {
@@ -848,7 +919,9 @@ export interface BANK_OutgoingPaymentDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     
+
 }
+
 
 export interface BANK_PaymentTerm
 {
@@ -874,7 +947,9 @@ export interface BANK_PaymentTerm
     OpenIncomingPayment?: string;
     IDPriceList?: number;
     
+
 }
+
 
 export interface BANK_StatementMatchingCriteria
 {
@@ -893,7 +968,9 @@ export interface BANK_StatementMatchingCriteria
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BANK_Transaction
 {
@@ -916,7 +993,9 @@ export interface BANK_Transaction
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BC_RevenueExpenditureComponent
 {
@@ -942,7 +1021,9 @@ export interface BC_RevenueExpenditureComponent
     AccountCode?: string;
     CostCenter?: string;
     
+
 }
+
 
 export interface BC_RevenueExpenditureRefCode
 {
@@ -958,14 +1039,18 @@ export interface BC_RevenueExpenditureRefCode
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_CSVData
 {
     Id?: number;
     Data?: string;
     
+
 }
+
 
 export interface BI_Daily_Balance
 {
@@ -987,7 +1072,9 @@ export interface BI_Daily_Balance
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Daily_Debt
 {
@@ -1004,7 +1091,9 @@ export interface BI_Daily_Debt
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Daily_General
 {
@@ -1025,7 +1114,9 @@ export interface BI_Daily_General
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Daily_Revenue
 {
@@ -1044,7 +1135,9 @@ export interface BI_Daily_Revenue
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Daily_RevenueExpenditure1
 {
@@ -1061,7 +1154,9 @@ export interface BI_Daily_RevenueExpenditure1
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Daily_RevenueExpenditure2
 {
@@ -1078,7 +1173,9 @@ export interface BI_Daily_RevenueExpenditure2
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Dashboard
 {
@@ -1102,7 +1199,9 @@ export interface BI_Dashboard
     MaxRows?: number;
     Config?: string;
     
+
 }
+
 
 export interface BI_DashboardDetail
 {
@@ -1122,7 +1221,9 @@ export interface BI_DashboardDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Finance_BalanceSheetCategory
 {
@@ -1147,7 +1248,9 @@ export interface BI_Finance_BalanceSheetCategory
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Finance_BalanceSheets
 {
@@ -1165,7 +1268,9 @@ export interface BI_Finance_BalanceSheets
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Finance_CashFlow
 {
@@ -1183,7 +1288,9 @@ export interface BI_Finance_CashFlow
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Finance_IncomeStatement
 {
@@ -1201,7 +1308,9 @@ export interface BI_Finance_IncomeStatement
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Finance_Management
 {
@@ -1220,7 +1329,9 @@ export interface BI_Finance_Management
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_HRM_PayrollPerBranch
 {
@@ -1241,7 +1352,9 @@ export interface BI_HRM_PayrollPerBranch
     DataType?: string;
     Value?: number;
     
+
 }
+
 
 export interface BI_Operating_MarketResearch
 {
@@ -1263,7 +1376,9 @@ export interface BI_Operating_MarketResearch
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Oppotunity
 {
@@ -1283,7 +1398,9 @@ export interface BI_Oppotunity
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_Report
 {
@@ -1308,7 +1425,9 @@ export interface BI_Report
     ChartScript?: string;
     MockDataAPI?: string;
     
+
 }
+
 
 export interface BI_ReportTemplate
 {
@@ -1327,7 +1446,9 @@ export interface BI_ReportTemplate
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BI_ReportTemplateDetail
 {
@@ -1356,7 +1477,9 @@ export interface BI_ReportTemplateDetail
     ModifiedDate?: Date;
     Formula?: string;
     
+
 }
+
 
 export interface BP_Partner
 {
@@ -1375,7 +1498,9 @@ export interface BP_Partner
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface BRA_Branch
 {
@@ -1420,7 +1545,9 @@ export interface BRA_Branch
     CanViewDataIn?: string;
     SaveDataTo?: number;
     
+
 }
+
 
 export interface BSC_RevenueTarget
 {
@@ -1441,7 +1568,9 @@ export interface BSC_RevenueTarget
     Month?: number;
     IDSalesTeam?: number;
     
+
 }
+
 
 export interface CRM_Activity
 {
@@ -1464,7 +1593,9 @@ export interface CRM_Activity
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_Attendance
 {
@@ -1502,7 +1633,9 @@ export interface CRM_Attendance
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_Brand
 {
@@ -1522,7 +1655,9 @@ export interface CRM_Brand
     Avatar?: string;
     Logo?: string;
     
+
 }
+
 
 export interface CRM_BusinessPartnerGroup
 {
@@ -1543,7 +1678,9 @@ export interface CRM_BusinessPartnerGroup
     IDPriceList?: number;
     IDEffectiveDiscount?: number;
     
+
 }
+
 
 export interface CRM_Campaign
 {
@@ -1592,7 +1729,9 @@ export interface CRM_Campaign
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_CampaignMember
 {
@@ -1612,7 +1751,9 @@ export interface CRM_CampaignMember
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_Config
 {
@@ -1633,7 +1774,9 @@ export interface CRM_Config
     Value?: string;
     IsDefault?: boolean;
     
+
 }
+
 
 export interface CRM_Contact
 {
@@ -1710,7 +1853,9 @@ export interface CRM_Contact
     LotableDate14?: Date;
     SearchIndex?: string;
     
+
 }
+
 
 export interface CRM_ContactReference
 {
@@ -1728,7 +1873,9 @@ export interface CRM_ContactReference
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_ContactUDF
 {
@@ -1844,7 +1991,9 @@ export interface CRM_ContactUDF
     UDF98?: string;
     UDF99?: string;
     
+
 }
+
 
 export interface CRM_Contract
 {
@@ -1870,7 +2019,9 @@ export interface CRM_Contract
     EndDate?: Date;
     Amount?: number;
     
+
 }
+
 
 export interface CRM_Customer
 {
@@ -1888,7 +2039,9 @@ export interface CRM_Customer
     ModifiedDate?: Date;
     IsWholeSale?: boolean;
     
+
 }
+
 
 export interface CRM_Lead
 {
@@ -1934,7 +2087,9 @@ export interface CRM_Lead
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_MemberCard
 {
@@ -1958,7 +2113,9 @@ export interface CRM_MemberCard
     Quota?: number;
     DailyLimit?: number;
     
+
 }
+
 
 export interface CRM_MembershipLoyalty
 {
@@ -1977,7 +2134,9 @@ export interface CRM_MembershipLoyalty
     ModifiedDate?: Date;
     Point?: number;
     
+
 }
+
 
 export interface CRM_MembershipLoyaltyHistory
 {
@@ -1999,7 +2158,9 @@ export interface CRM_MembershipLoyaltyHistory
     Point?: number;
     PointDate?: Date;
     
+
 }
+
 
 export interface CRM_Opportunity
 {
@@ -2039,7 +2200,9 @@ export interface CRM_Opportunity
     RefOwnerID?: number;
     RefAccountCode?: string;
     
+
 }
+
 
 export interface CRM_Outlets
 {
@@ -2061,7 +2224,9 @@ export interface CRM_Outlets
     ModifiedDate?: Date;
     Name?: string;
     
+
 }
+
 
 export interface CRM_PartnerAddress
 {
@@ -2089,7 +2254,9 @@ export interface CRM_PartnerAddress
     ModifiedDate?: Date;
     Name?: string;
     
+
 }
+
 
 export interface CRM_PartnerBankAccount
 {
@@ -2109,7 +2276,9 @@ export interface CRM_PartnerBankAccount
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_PartnerTaxInfo
 {
@@ -2133,7 +2302,9 @@ export interface CRM_PartnerTaxInfo
     IdentityCardNumber?: string;
     IsDefault?: boolean;
     
+
 }
+
 
 export interface CRM_PersonInfo
 {
@@ -2166,7 +2337,9 @@ export interface CRM_PersonInfo
     ModifiedDate?: Date;
     Name?: string;
     
+
 }
+
 
 export interface CRM_PolBenefit
 {
@@ -2182,7 +2355,9 @@ export interface CRM_PolBenefit
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_PolLevel
 {
@@ -2209,7 +2384,9 @@ export interface CRM_PolLevel
     EvalPeriod?: number;
     RetainThresholdAmount?: number;
     
+
 }
+
 
 export interface CRM_PolLevelBenefit
 {
@@ -2227,7 +2404,9 @@ export interface CRM_PolLevelBenefit
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_PolLevelGroup
 {
@@ -2243,7 +2422,9 @@ export interface CRM_PolLevelGroup
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_PolLevelGroupBrand
 {
@@ -2261,7 +2442,9 @@ export interface CRM_PolLevelGroupBrand
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_PolLoyalty
 {
@@ -2284,9 +2467,12 @@ export interface CRM_PolLoyalty
     CalculationMethod?: string;
     CalculationBy?: string;
     ConversionRate?: number;
+    PointConversionRate?: number;
     Value?: number;
     
+
 }
+
 
 export interface CRM_Quotation
 {
@@ -2305,7 +2491,9 @@ export interface CRM_Quotation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_Reward
 {
@@ -2332,7 +2520,9 @@ export interface CRM_Reward
     Logo?: string;
     Content?: string;
     
+
 }
+
 
 export interface CRM_RewardCategory
 {
@@ -2351,7 +2541,9 @@ export interface CRM_RewardCategory
     Icon?: string;
     Color?: string;
     
+
 }
+
 
 export interface CRM_Route
 {
@@ -2379,7 +2571,9 @@ export interface CRM_Route
     EndDate?: Date;
     Type?: string;
     
+
 }
+
 
 export interface CRM_RouteDetail
 {
@@ -2409,7 +2603,9 @@ export interface CRM_RouteDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface CRM_Voucher
 {
@@ -2430,7 +2626,9 @@ export interface CRM_Voucher
     CreditCard?: number;
     CreditAccount?: string;
     
+
 }
+
 
 export interface DCM_Collection
 {
@@ -2451,7 +2649,9 @@ export interface DCM_Collection
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_CollectionData
 {
@@ -2467,7 +2667,9 @@ export interface DCM_CollectionData
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_CollectionDataComment
 {
@@ -2486,7 +2688,9 @@ export interface DCM_CollectionDataComment
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_CollectionDataLog
 {
@@ -2504,7 +2708,9 @@ export interface DCM_CollectionDataLog
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_Comment
 {
@@ -2522,7 +2728,9 @@ export interface DCM_Comment
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_DataDictionary
 {
@@ -2555,7 +2763,9 @@ export interface DCM_DataDictionary
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_DataType
 {
@@ -2574,7 +2784,9 @@ export interface DCM_DataType
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_Page
 {
@@ -2594,7 +2806,9 @@ export interface DCM_Page
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_Project
 {
@@ -2613,7 +2827,9 @@ export interface DCM_Project
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DCM_ProjectPerson
 {
@@ -2632,7 +2848,9 @@ export interface DCM_ProjectPerson
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface DM_PR_ProgramItem
 {
@@ -2651,7 +2869,9 @@ export interface DM_PR_ProgramItem
     ModifiedDate?: Date;
     IDItemUoM?: number;
     
+
 }
+
 
 export interface FINANCE_CostCenter
 {
@@ -2673,7 +2893,9 @@ export interface FINANCE_CostCenter
     ModifiedDate?: Date;
     Type?: string;
     
+
 }
+
 
 export interface FINANCE_GeneralLedger
 {
@@ -2706,7 +2928,9 @@ export interface FINANCE_GeneralLedger
     ModifiedDate?: Date;
     IsCapitalAccount?: boolean;
     
+
 }
+
 
 export interface FINANCE_TaxDefinition
 {
@@ -2730,7 +2954,9 @@ export interface FINANCE_TaxDefinition
     DeferredTaxAccount?: string;
     NonDeductAccount?: string;
     
+
 }
+
 
 export interface HRM_ContractTemplate
 {
@@ -2754,7 +2980,9 @@ export interface HRM_ContractTemplate
     Config?: string;
     Template?: string;
     
+
 }
+
 
 export interface HRM_DataDictionary
 {
@@ -2781,7 +3009,9 @@ export interface HRM_DataDictionary
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_DeductionOnSalary
 {
@@ -2804,7 +3034,9 @@ export interface HRM_DeductionOnSalary
     IsExecuted?: boolean;
     IsAutomatedDeductionOnSalary?: boolean;
     
+
 }
+
 
 export interface HRM_LeaveType
 {
@@ -2833,7 +3065,9 @@ export interface HRM_LeaveType
     Color?: string;
     Icon?: string;
     
+
 }
+
 
 export interface HRM_OpenSchedule
 {
@@ -2857,7 +3091,9 @@ export interface HRM_OpenSchedule
     IsPublished?: boolean;
     IDOffice?: number;
     
+
 }
+
 
 export interface HRM_PayrollElement
 {
@@ -2876,7 +3112,9 @@ export interface HRM_PayrollElement
     IDElementOfSalary?: number;
     ValueOfElement?: number;
     
+
 }
+
 
 export interface HRM_PayrollPaySheetMaster
 {
@@ -2895,7 +3133,9 @@ export interface HRM_PayrollPaySheetMaster
     IDPayPeriod?: number;
     TotalOfIncome?: number;
     
+
 }
+
 
 export interface HRM_PayrollPaySheetMasterSalaryDecision
 {
@@ -2913,7 +3153,9 @@ export interface HRM_PayrollPaySheetMasterSalaryDecision
     IDPaySheetMaster?: number;
     IDSalaryDecision?: number;
     
+
 }
+
 
 export interface HRM_PayrollTemplate
 {
@@ -2932,7 +3174,9 @@ export interface HRM_PayrollTemplate
     ModifiedDate?: Date;
     SalaryCalculationMethod?: string;
     
+
 }
+
 
 export interface HRM_PayrollTemplateDetail
 {
@@ -2954,7 +3198,9 @@ export interface HRM_PayrollTemplateDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_PersonalIncomePaymentProcess
 {
@@ -2981,7 +3227,9 @@ export interface HRM_PersonalIncomePaymentProcess
     AssessableIncome?: number;
     PersonalIncomeTax?: number;
     
+
 }
+
 
 export interface HRM_PolBenefit
 {
@@ -2999,7 +3247,9 @@ export interface HRM_PolBenefit
     ModifiedDate?: Date;
     Status?: string;
     
+
 }
+
 
 export interface HRM_PolBenefitDetail
 {
@@ -3025,7 +3275,9 @@ export interface HRM_PolBenefitDetail
     IsManagerCanCreateBenefit?: boolean;
     Value?: string;
     
+
 }
+
 
 export interface HRM_PolEmployee
 {
@@ -3051,7 +3303,9 @@ export interface HRM_PolEmployee
     UDFList?: string;
     IDPolBenefit?: number;
     
+
 }
+
 
 export interface HRM_PolicyHoliday
 {
@@ -3070,7 +3324,9 @@ export interface HRM_PolicyHoliday
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_PolicyPaidTimeOff
 {
@@ -3097,7 +3353,9 @@ export interface HRM_PolicyPaidTimeOff
     ConfigRunMonthlyMethod?: string;
     ConfigRunMonthlySelectedMonth?: number;
     
+
 }
+
 
 export interface HRM_PolicyPaidTimeOffGrantsByLengthOfServices
 {
@@ -3116,7 +3374,9 @@ export interface HRM_PolicyPaidTimeOffGrantsByLengthOfServices
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_PolInsurance
 {
@@ -3136,7 +3396,9 @@ export interface HRM_PolInsurance
     DateOfExpiry?: Date;
     Status?: string;
     
+
 }
+
 
 export interface HRM_PolInsuranceDetail
 {
@@ -3158,7 +3420,9 @@ export interface HRM_PolInsuranceDetail
     RateEm?: number;
     IsManagerCanCreateInsurance?: boolean;
     
+
 }
+
 
 export interface HRM_PolOvertime
 {
@@ -3183,7 +3447,9 @@ export interface HRM_PolOvertime
     Factor?: number;
     ConvertToPTO?: boolean;
     
+
 }
+
 
 export interface HRM_PolOvertimeRate
 {
@@ -3200,7 +3466,9 @@ export interface HRM_PolOvertimeRate
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_PolOverTimeRateApplyForBranch
 {
@@ -3215,7 +3483,9 @@ export interface HRM_PolOverTimeRateApplyForBranch
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_PolSalary
 {
@@ -3234,7 +3504,9 @@ export interface HRM_PolSalary
     ModifiedDate?: Date;
     UDFList?: string;
     
+
 }
+
 
 export interface HRM_PolTax
 {
@@ -3253,7 +3525,9 @@ export interface HRM_PolTax
     ContributionRate?: number;
     Status?: string;
     
+
 }
+
 
 export interface HRM_Shift
 {
@@ -3292,7 +3566,9 @@ export interface HRM_Shift
     IsDefaultBookLunch?: boolean;
     IsDefaultBookDinner?: boolean;
     
+
 }
+
 
 export interface HRM_ShiftInTimesheet
 {
@@ -3310,7 +3586,9 @@ export interface HRM_ShiftInTimesheet
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_Staff
 {
@@ -3376,7 +3654,9 @@ export interface HRM_Staff
     SocialInsuranceRate?: number;
     SearchIndex?: string;
     
+
 }
+
 
 export interface HRM_Staff_CLApproval
 {
@@ -3397,7 +3677,9 @@ export interface HRM_Staff_CLApproval
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_Staff_ConcurrentPosition
 {
@@ -3416,7 +3698,9 @@ export interface HRM_Staff_ConcurrentPosition
     IDDepartment?: number;
     IDJobTitle?: number;
     
+
 }
+
 
 export interface HRM_StaffAcademicLevel
 {
@@ -3436,7 +3720,9 @@ export interface HRM_StaffAcademicLevel
     Degree?: string;
     Type?: string;
     
+
 }
+
 
 export interface HRM_StaffAddress
 {
@@ -3464,7 +3750,9 @@ export interface HRM_StaffAddress
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffAgreement
 {
@@ -3484,7 +3772,9 @@ export interface HRM_StaffAgreement
     EffectiveTo?: Date;
     Status?: string;
     
+
 }
+
 
 export interface HRM_StaffAgreementDetail
 {
@@ -3509,7 +3799,9 @@ export interface HRM_StaffAgreementDetail
     CoOldValue?: string;
     CoNewValue?: string;
     
+
 }
+
 
 export interface HRM_StaffAllowance
 {
@@ -3540,7 +3832,9 @@ export interface HRM_StaffAllowance
     IsIncomePerYear?: boolean;
     IsHasRunSalary?: boolean;
     
+
 }
+
 
 export interface HRM_StaffAnotherSkill
 {
@@ -3558,7 +3852,9 @@ export interface HRM_StaffAnotherSkill
     ModifiedDate?: Date;
     Type?: string;
     
+
 }
+
 
 export interface HRM_StaffBank
 {
@@ -3579,7 +3875,9 @@ export interface HRM_StaffBank
     AccountNumber?: string;
     IsPayrollAccount?: boolean;
     
+
 }
+
 
 export interface HRM_StaffBasicInfo
 {
@@ -3602,7 +3900,9 @@ export interface HRM_StaffBasicInfo
     IsDeleted?: boolean;
     Nationality?: string;
     
+
 }
+
 
 export interface HRM_StaffBounusOnSalary
 {
@@ -3625,7 +3925,9 @@ export interface HRM_StaffBounusOnSalary
     IsExecuted?: boolean;
     IsAutomatedAddedToSalary?: boolean;
     
+
 }
+
 
 export interface HRM_StaffCompulsoryInsurance
 {
@@ -3675,7 +3977,9 @@ export interface HRM_StaffCompulsoryInsurance
     TotalOfRateOfEm?: number;
     IsDeleted?: boolean;
     
+
 }
+
 
 export interface HRM_StaffConcurrentPosition
 {
@@ -3688,7 +3992,9 @@ export interface HRM_StaffConcurrentPosition
     IDDepartment?: number;
     IDAppointDecision?: number;
     
+
 }
+
 
 export interface HRM_StaffConcurrentProbationryPosition
 {
@@ -3707,7 +4013,9 @@ export interface HRM_StaffConcurrentProbationryPosition
     IDConcurrentProbationryJobTitle?: number;
     IDConcurrentProbationryDepartment?: number;
     
+
 }
+
 
 export interface HRM_StaffContract
 {
@@ -3735,7 +4043,9 @@ export interface HRM_StaffContract
     IsCustomTemplate?: boolean;
     Template?: string;
     
+
 }
+
 
 export interface HRM_StaffCurrentWorking
 {
@@ -3761,7 +4071,9 @@ export interface HRM_StaffCurrentWorking
     StoredPlace?: string;
     IsDeleted?: boolean;
     
+
 }
+
 
 export interface HRM_StaffDeductionOnSalary
 {
@@ -3784,7 +4096,9 @@ export interface HRM_StaffDeductionOnSalary
     IsExecuted?: boolean;
     IsAutomatedAddedToSalary?: boolean;
     
+
 }
+
 
 export interface HRM_StaffEnrollment
 {
@@ -3811,7 +4125,9 @@ export interface HRM_StaffEnrollment
     ConsultedPerson?: string;
     ProbationPeriod?: number;
     
+
 }
+
 
 export interface HRM_StaffEnrollmentDetail
 {
@@ -3829,7 +4145,9 @@ export interface HRM_StaffEnrollmentDetail
     ModifiedBy?: string;
     CreatedDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffFamily
 {
@@ -3871,7 +4189,9 @@ export interface HRM_StaffFamily
     Job?: string;
     DependentConfirmationDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffForeignLanguage
 {
@@ -3898,7 +4218,9 @@ export interface HRM_StaffForeignLanguage
     CertificateType?: string;
     ForeignLanguage?: string;
     
+
 }
+
 
 export interface HRM_StaffIdentityCardAndPIT
 {
@@ -3921,7 +4243,9 @@ export interface HRM_StaffIdentityCardAndPIT
     IDStaff?: number;
     Type?: string;
     
+
 }
+
 
 export interface HRM_StaffInsurancePaymentProcess
 {
@@ -3952,7 +4276,9 @@ export interface HRM_StaffInsurancePaymentProcess
     TotalAmountTUFByEm?: number;
     TotalAmountPaidByEm?: number;
     
+
 }
+
 
 export interface HRM_StaffInternetAccount
 {
@@ -3973,7 +4299,9 @@ export interface HRM_StaffInternetAccount
     URL?: string;
     IsBelongToCompany?: boolean;
     
+
 }
+
 
 export interface HRM_StaffLaborContract
 {
@@ -4002,7 +4330,9 @@ export interface HRM_StaffLaborContract
     IDContractTemplate?: number;
     ContentOfContract?: string;
     
+
 }
+
 
 export interface HRM_StaffLearningProcess
 {
@@ -4025,7 +4355,9 @@ export interface HRM_StaffLearningProcess
     Result?: string;
     Certificate?: string;
     
+
 }
+
 
 export interface HRM_StaffLeaveBalanceHistory
 {
@@ -4045,7 +4377,9 @@ export interface HRM_StaffLeaveBalanceHistory
     BalanceAfter?: number;
     Reason?: string;
     
+
 }
+
 
 export interface HRM_StaffOvertimeRequest
 {
@@ -4065,7 +4399,9 @@ export interface HRM_StaffOvertimeRequest
     ModifiedDate?: Date;
     Config?: string;
     
+
 }
+
 
 export interface HRM_StaffPayroll
 {
@@ -4086,7 +4422,9 @@ export interface HRM_StaffPayroll
     ModifiedDate?: Date;
     Status?: string;
     
+
 }
+
 
 export interface HRM_StaffPayrollConfig
 {
@@ -4108,7 +4446,9 @@ export interface HRM_StaffPayrollConfig
     IsHidden?: boolean;
     IsLocked?: boolean;
     
+
 }
+
 
 export interface HRM_StaffPhone
 {
@@ -4128,7 +4468,9 @@ export interface HRM_StaffPhone
     PhoneNumber?: string;
     IsBelongToCompany?: boolean;
     
+
 }
+
 
 export interface HRM_StaffPolBenefitEnrollment
 {
@@ -4152,7 +4494,9 @@ export interface HRM_StaffPolBenefitEnrollment
     ApplyType?: string;
     Status?: string;
     
+
 }
+
 
 export interface HRM_StaffPolBenefitEnrollmentDetail
 {
@@ -4180,7 +4524,9 @@ export interface HRM_StaffPolBenefitEnrollmentDetail
     IsCurrency?: boolean;
     IsManagerCanCreateBenefit?: boolean;
     
+
 }
+
 
 export interface HRM_StaffPolEmployeeDecision
 {
@@ -4207,7 +4553,9 @@ export interface HRM_StaffPolEmployeeDecision
     ProbationPeriod?: number;
     ApplyType?: string;
     
+
 }
+
 
 export interface HRM_StaffPolEmployeeDecisionDetail
 {
@@ -4227,7 +4575,9 @@ export interface HRM_StaffPolEmployeeDecisionDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffPolInsuranceEnrollment
 {
@@ -4251,7 +4601,9 @@ export interface HRM_StaffPolInsuranceEnrollment
     ApplyType?: string;
     Status?: string;
     
+
 }
+
 
 export interface HRM_StaffPolInsuranceEnrollmentDetail
 {
@@ -4270,7 +4622,9 @@ export interface HRM_StaffPolInsuranceEnrollmentDetail
     ModifiedDate?: Date;
     InsuranceSalary?: number;
     
+
 }
+
 
 export interface HRM_StaffPTOEnrollment
 {
@@ -4295,7 +4649,9 @@ export interface HRM_StaffPTOEnrollment
     PTOCompensatoryLeave?: number;
     StartWorkingDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffRecordOvertime
 {
@@ -4321,7 +4677,9 @@ export interface HRM_StaffRecordOvertime
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffRecordPayroll
 {
@@ -4458,7 +4816,9 @@ export interface HRM_StaffRecordPayroll
     UDF98?: string;
     UDF99?: string;
     
+
 }
+
 
 export interface HRM_StaffRecruitmentInfo
 {
@@ -4484,7 +4844,9 @@ export interface HRM_StaffRecruitmentInfo
     IDMainProbationryJobTitle?: number;
     IsDeleted?: boolean;
     
+
 }
+
 
 export interface HRM_StaffResignationInfo
 {
@@ -4507,7 +4869,9 @@ export interface HRM_StaffResignationInfo
     IDDecisionSignedBy?: number;
     DecisionEffectiveDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffSalaryDecision
 {
@@ -4539,7 +4903,9 @@ export interface HRM_StaffSalaryDecision
     PositionSalaryPercent?: number;
     PositionSalaryActual?: number;
     
+
 }
+
 
 export interface HRM_StaffSchedule
 {
@@ -4572,7 +4938,9 @@ export interface HRM_StaffSchedule
     IsDinnerChecked?: boolean;
     IDOTPolicy?: number;
     
+
 }
+
 
 export interface HRM_StaffSpecializedField
 {
@@ -4590,7 +4958,9 @@ export interface HRM_StaffSpecializedField
     ModifiedDate?: Date;
     Type?: string;
     
+
 }
+
 
 export interface HRM_StaffSpecializedSkill
 {
@@ -4613,7 +4983,9 @@ export interface HRM_StaffSpecializedSkill
     DateOfExpiry?: Date;
     Type?: string;
     
+
 }
+
 
 export interface HRM_StaffStaffAndFamilyJob
 {
@@ -4633,7 +5005,9 @@ export interface HRM_StaffStaffAndFamilyJob
     IDFamily?: number;
     IDJob?: number;
     
+
 }
+
 
 export interface HRM_StaffTimeOff
 {
@@ -4650,7 +5024,9 @@ export interface HRM_StaffTimeOff
     Start?: Date;
     End?: Date;
     
+
 }
+
 
 export interface HRM_StaffTimeOffRequest
 {
@@ -4678,7 +5054,9 @@ export interface HRM_StaffTimeOffRequest
     AttachmentDescription?: string;
     Status?: string;
     
+
 }
+
 
 export interface HRM_StaffTimesheetEnrollment
 {
@@ -4698,7 +5076,9 @@ export interface HRM_StaffTimesheetEnrollment
     StartDate?: Date;
     EndDate?: Date;
     
+
 }
+
 
 export interface HRM_StaffTrainingProcess
 {
@@ -4721,7 +5101,9 @@ export interface HRM_StaffTrainingProcess
     TrainingProgram?: string;
     TrainingContent?: string;
     
+
 }
+
 
 export interface HRM_StaffTrainingProcessSkill
 {
@@ -4739,7 +5121,9 @@ export interface HRM_StaffTrainingProcessSkill
     IDTrainingProcess?: number;
     IDSkill?: number;
     
+
 }
+
 
 export interface HRM_StaffUDF
 {
@@ -4855,7 +5239,9 @@ export interface HRM_StaffUDF
     UDF98?: string;
     UDF99?: string;
     
+
 }
+
 
 export interface HRM_StaffWelfare
 {
@@ -4884,7 +5270,9 @@ export interface HRM_StaffWelfare
     IsHasRunSalary?: boolean;
     IDPOLWelfareApplyFor?: number;
     
+
 }
+
 
 export interface HRM_StaffWorkExperience
 {
@@ -4906,7 +5294,9 @@ export interface HRM_StaffWorkExperience
     Field?: string;
     JobTitle?: string;
     
+
 }
+
 
 export interface HRM_StaffWorkingDiary
 {
@@ -4930,7 +5320,9 @@ export interface HRM_StaffWorkingDiary
     StartTime?: Date;
     EndTime?: Date;
     
+
 }
+
 
 export interface HRM_StaffWorkRuleViolation
 {
@@ -4954,7 +5346,9 @@ export interface HRM_StaffWorkRuleViolation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_Timesheet
 {
@@ -4983,7 +5377,9 @@ export interface HRM_Timesheet
     IsRequiredApproveToSwitch?: boolean;
     Option?: string;
     
+
 }
+
 
 export interface HRM_TimesheetAndHoliday
 {
@@ -5001,7 +5397,9 @@ export interface HRM_TimesheetAndHoliday
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_TimesheetCheckInCode
 {
@@ -5019,7 +5417,9 @@ export interface HRM_TimesheetCheckInCode
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_TimesheetCycle
 {
@@ -5038,7 +5438,9 @@ export interface HRM_TimesheetCycle
     Start?: Date;
     End?: Date;
     
+
 }
+
 
 export interface HRM_TimesheetCycleDetail
 {
@@ -5057,7 +5459,9 @@ export interface HRM_TimesheetCycleDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_TimesheetFormula
 {
@@ -5075,7 +5479,9 @@ export interface HRM_TimesheetFormula
     ModifiedDate?: Date;
     Formua?: string;
     
+
 }
+
 
 export interface HRM_TimesheetLog
 {
@@ -5103,7 +5509,9 @@ export interface HRM_TimesheetLog
     IsMockLocation?: boolean;
     SeftClaim?: boolean;
     
+
 }
+
 
 export interface HRM_TimesheetRecord
 {
@@ -5258,7 +5666,9 @@ export interface HRM_TimesheetRecord
     UDF98?: string;
     UDF99?: string;
     
+
 }
+
 
 export interface HRM_TimesheetTemplate
 {
@@ -5284,7 +5694,9 @@ export interface HRM_TimesheetTemplate
     IsRequiredApproveToTransfer?: boolean;
     IsRequiredApproveToSwitch?: boolean;
     
+
 }
+
 
 export interface HRM_TimesheetTemplateDetail
 {
@@ -5309,7 +5721,9 @@ export interface HRM_TimesheetTemplateDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_UDF
 {
@@ -5332,7 +5746,9 @@ export interface HRM_UDF
     DefaultValue?: string;
     IsSystem?: boolean;
     
+
 }
+
 
 export interface HRM_WorkRule
 {
@@ -5364,7 +5780,9 @@ export interface HRM_WorkRule
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface HRM_WorkRuleGroup
 {
@@ -5381,7 +5799,9 @@ export interface HRM_WorkRuleGroup
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface LIST_AddressSubdivision
 {
@@ -5408,7 +5828,9 @@ export interface LIST_AddressSubdivision
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface LIST_Bank
 {
@@ -5432,7 +5854,9 @@ export interface LIST_Bank
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface LIST_ContractTemplate
 {
@@ -5449,7 +5873,9 @@ export interface LIST_ContractTemplate
     ModifiedDate?: Date;
     ContentOfContract?: string;
     
+
 }
+
 
 export interface LIST_Country
 {
@@ -5477,7 +5903,9 @@ export interface LIST_Country
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface LIST_ElementOfSalary
 {
@@ -5494,7 +5922,9 @@ export interface LIST_ElementOfSalary
     ModifiedDate?: Date;
     Recipe?: string;
     
+
 }
+
 
 export interface LIST_General
 {
@@ -5517,7 +5947,9 @@ export interface LIST_General
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface LIST_PayPeriod
 {
@@ -5535,7 +5967,9 @@ export interface LIST_PayPeriod
     StartDay?: Date;
     EndDay?: Date;
     
+
 }
+
 
 export interface MR_CompetiorOrder
 {
@@ -5557,7 +5991,9 @@ export interface MR_CompetiorOrder
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface MR_TrackingCompetitor
 {
@@ -5577,7 +6013,9 @@ export interface MR_TrackingCompetitor
     AveragePrice?: number;
     FromDate?: Date;
     
+
 }
+
 
 export interface OSM_Category
 {
@@ -5600,7 +6038,9 @@ export interface OSM_Category
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OSM_Channel
 {
@@ -5616,7 +6056,9 @@ export interface OSM_Channel
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OSM_Notification
 {
@@ -5646,7 +6088,9 @@ export interface OSM_Notification
     Group?: string;
     Form?: string;
     
+
 }
+
 
 export interface OSM_NotificationReceiver
 {
@@ -5667,7 +6111,9 @@ export interface OSM_NotificationReceiver
     ReceivedDate?: Date;
     ReadDate?: Date;
     
+
 }
+
 
 export interface OSM_NotificationReceiverDevice
 {
@@ -5687,7 +6133,9 @@ export interface OSM_NotificationReceiverDevice
     Status?: string;
     ReadDate?: Date;
     
+
 }
+
 
 export interface OSM_Template
 {
@@ -5708,7 +6156,9 @@ export interface OSM_Template
     Subject?: string;
     Body?: string;
     
+
 }
+
 
 export interface OSM_UserSubcription
 {
@@ -5727,7 +6177,9 @@ export interface OSM_UserSubcription
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OSM_UserSubcriptionDetail
 {
@@ -5747,7 +6199,9 @@ export interface OSM_UserSubcriptionDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OST_FunctionalMatrix
 {
@@ -5766,7 +6220,9 @@ export interface OST_FunctionalMatrix
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OST_Office
 {
@@ -5785,7 +6241,9 @@ export interface OST_Office
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface OST_OfficeGate
 {
@@ -5818,7 +6276,9 @@ export interface OST_OfficeGate
     DinnerStart?: Date;
     DinnerEnd?: Date;
     
+
 }
+
 
 export interface OST_ValueChain
 {
@@ -5837,7 +6297,9 @@ export interface OST_ValueChain
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PM_ProjectPeople
 {
@@ -5861,7 +6323,9 @@ export interface PM_ProjectPeople
     Role?: string;
     Rate?: number;
     
+
 }
+
 
 export interface PM_Space
 {
@@ -5883,7 +6347,9 @@ export interface PM_Space
     ModifiedDate?: Date;
     ViewConfig?: string;
     
+
 }
+
 
 export interface PM_SpaceStatus
 {
@@ -5904,7 +6370,9 @@ export interface PM_SpaceStatus
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PM_Task
 {
@@ -5949,7 +6417,9 @@ export interface PM_Task
     IDLinkedDocument?: number;
     DocumentType?: string;
     
+
 }
+
 
 export interface PM_TaskAssignment
 {
@@ -5968,7 +6438,9 @@ export interface PM_TaskAssignment
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PM_TaskLink
 {
@@ -5987,7 +6459,9 @@ export interface PM_TaskLink
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PM_View
 {
@@ -6009,7 +6483,9 @@ export interface PM_View
     ModifiedDate?: Date;
     ViewConfig?: string;
     
+
 }
+
 
 export interface PM_Workspace
 {
@@ -6028,7 +6504,9 @@ export interface PM_Workspace
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_BillTable
 {
@@ -6046,7 +6524,9 @@ export interface POS_BillTable
     ModifiedDate?: Date;
     IDTable?: number;
     
+
 }
+
 
 export interface POS_Cash
 {
@@ -6063,7 +6543,9 @@ export interface POS_Cash
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_CashHandover
 {
@@ -6083,7 +6565,9 @@ export interface POS_CashHandover
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_Kitchen
 {
@@ -6103,7 +6587,9 @@ export interface POS_Kitchen
     ModifiedDate?: Date;
     IDPrinter?: number;
     
+
 }
+
 
 export interface POS_LogWorkOrder
 {
@@ -6124,7 +6610,9 @@ export interface POS_LogWorkOrder
     Status?: string;
     SavedTime?: Date;
     
+
 }
+
 
 export interface POS_MemberCardPromotion
 {
@@ -6148,7 +6636,9 @@ export interface POS_MemberCardPromotion
     OtherDiscount?: number;
     GemLoungeDiscount?: number;
     
+
 }
+
 
 export interface POS_Memo
 {
@@ -6166,7 +6656,9 @@ export interface POS_Memo
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_Menu
 {
@@ -6185,7 +6677,9 @@ export interface POS_Menu
     Image?: string;
     PDF?: string;
     
+
 }
+
 
 export interface POS_MenuDetail
 {
@@ -6206,7 +6700,9 @@ export interface POS_MenuDetail
     ModifiedDate?: Date;
     Image?: string;
     
+
 }
+
 
 export interface POS_Shift
 {
@@ -6232,7 +6728,9 @@ export interface POS_Shift
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_ShiftOrder
 {
@@ -6250,7 +6748,9 @@ export interface POS_ShiftOrder
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_ShiftReport
 {
@@ -6269,7 +6769,9 @@ export interface POS_ShiftReport
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_Table
 {
@@ -6305,7 +6807,9 @@ export interface POS_Table
     IsAllowMultipleOrder?: boolean;
     IsAllowCustomerOrder?: boolean;
     
+
 }
+
 
 export interface POS_TableGroup
 {
@@ -6327,7 +6831,9 @@ export interface POS_TableGroup
     Height?: number;
     IDPrinter?: number;
     
+
 }
+
 
 export interface POS_TableGroupStaff
 {
@@ -6345,7 +6851,9 @@ export interface POS_TableGroupStaff
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_Terminal
 {
@@ -6367,7 +6875,9 @@ export interface POS_Terminal
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface POS_WorkOrderCoordinate
 {
@@ -6386,7 +6896,9 @@ export interface POS_WorkOrderCoordinate
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PR_Deal
 {
@@ -6418,7 +6930,9 @@ export interface PR_Deal
     MaxPerOrder?: number;
     NumberOfUsed?: number;
     
+
 }
+
 
 export interface PR_Program
 {
@@ -6475,8 +6989,11 @@ export interface PR_Program
     VoucherBreakChar?: string;
     VoucherRadix?: number;
     CalculatedDate?: Date;
+    MaxGeneratePerCustomer?: number;
     
+
 }
+
 
 export interface PR_ProgramCondition
 {
@@ -6500,7 +7017,9 @@ export interface PR_ProgramCondition
     Amount?: number;
     Value?: string;
     
+
 }
+
 
 export interface PR_ProgramItem
 {
@@ -6519,7 +7038,9 @@ export interface PR_ProgramItem
     ModifiedDate?: Date;
     IDItemUoM?: number;
     
+
 }
+
 
 export interface PR_ProgramPartner
 {
@@ -6537,7 +7058,9 @@ export interface PR_ProgramPartner
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PR_ProgramReward
 {
@@ -6562,7 +7085,9 @@ export interface PR_ProgramReward
     IsRewardByOrder?: boolean;
     MaxAmount?: number;
     
+
 }
+
 
 export interface PR_ProgramVoucher
 {
@@ -6580,8 +7105,11 @@ export interface PR_ProgramVoucher
     CreatedDate?: Date;
     ModifiedDate?: Date;
     IsUsed?: boolean;
+    NumberOfUsed?: number;
     
+
 }
+
 
 export interface PR_PromotionTracking
 {
@@ -6604,7 +7132,9 @@ export interface PR_PromotionTracking
     TongLe?: number;
     ChietKhau?: number;
     
+
 }
+
 
 export interface PROD_ApplyItemsReplacement
 {
@@ -6622,7 +7152,9 @@ export interface PROD_ApplyItemsReplacement
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_BillOfMaterials
 {
@@ -6643,7 +7175,9 @@ export interface PROD_BillOfMaterials
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_BillOfMaterialsDetail
 {
@@ -6673,7 +7207,9 @@ export interface PROD_BillOfMaterialsDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_ItemInVendor
 {
@@ -6690,7 +7226,9 @@ export interface PROD_ItemInVendor
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_ItemReplacement
 {
@@ -6709,7 +7247,9 @@ export interface PROD_ItemReplacement
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_ItemReplacementGroup
 {
@@ -6725,7 +7265,9 @@ export interface PROD_ItemReplacementGroup
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_ItemVendorInBranch
 {
@@ -6744,7 +7286,9 @@ export interface PROD_ItemVendorInBranch
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_MRPItem
 {
@@ -6762,7 +7306,9 @@ export interface PROD_MRPItem
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_MRPPegging
 {
@@ -6791,7 +7337,9 @@ export interface PROD_MRPPegging
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_MRPPreventDocument
 {
@@ -6812,7 +7360,9 @@ export interface PROD_MRPPreventDocument
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_MRPRecommendation
 {
@@ -6848,7 +7398,9 @@ export interface PROD_MRPRecommendation
     Status?: string;
     IDBranch?: number;
     
+
 }
+
 
 export interface PROD_MRPResult
 {
@@ -6874,7 +7426,9 @@ export interface PROD_MRPResult
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_MRPScenario
 {
@@ -6931,7 +7485,9 @@ export interface PROD_MRPScenario
     IsExpandedTransferRequest?: boolean;
     IsDisplaySelectedItemOnly?: boolean;
     
+
 }
+
 
 export interface PROD_MRPWarehouse
 {
@@ -6949,7 +7505,9 @@ export interface PROD_MRPWarehouse
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PROD_Order
 {
@@ -6999,7 +7557,9 @@ export interface PROD_Order
     RoutingDateCalculation?: string;
     DataSource?: string;
     
+
 }
+
 
 export interface PROD_OrderDetail
 {
@@ -7039,7 +7599,9 @@ export interface PROD_OrderDetail
     RequiredDays?: number;
     Status?: string;
     
+
 }
+
 
 export interface PROD_SubstitutionGroupRule
 {
@@ -7057,7 +7619,9 @@ export interface PROD_SubstitutionGroupRule
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PURCHASE_ItemPlanningData
 {
@@ -7080,7 +7644,9 @@ export interface PURCHASE_ItemPlanningData
     LeadTime?: number;
     ToleranceDays?: number;
     
+
 }
+
 
 export interface PURCHASE_Order
 {
@@ -7111,7 +7677,9 @@ export interface PURCHASE_Order
     Type?: string;
     RefId?: string;
     
+
 }
+
 
 export interface PURCHASE_OrderDetail
 {
@@ -7147,7 +7715,9 @@ export interface PURCHASE_OrderDetail
     ModifiedDate?: Date;
     SuggestedQuantity?: number;
     
+
 }
+
 
 export interface PURCHASE_OrderInterval
 {
@@ -7172,7 +7742,9 @@ export interface PURCHASE_OrderInterval
     MonthlyWeeks?: string;
     MonthlyWeekDays?: string;
     
+
 }
+
 
 export interface PURCHASE_Quotation
 {
@@ -7201,7 +7773,9 @@ export interface PURCHASE_Quotation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PURCHASE_QuotationDetail
 {
@@ -7241,7 +7815,9 @@ export interface PURCHASE_QuotationDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PURCHASE_Request
 {
@@ -7268,7 +7844,9 @@ export interface PURCHASE_Request
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface PURCHASE_RequestDetail
 {
@@ -7302,7 +7880,9 @@ export interface PURCHASE_RequestDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SALE_Forecast
 {
@@ -7325,12 +7905,14 @@ export interface SALE_Forecast
     Multiply?: number;
     Filter?: string;
     Config?: string;
-	NumberOfNextPeriod?: number;
+    NumberOfNextPeriod?: number;
     NumberOfPrePeriod?: number;
     PrePeriodType?: string;
     IDPriceList?: number;
     
+
 }
+
 
 export interface SALE_ForecastDetail
 {
@@ -7352,7 +7934,9 @@ export interface SALE_ForecastDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SALE_Order
 {
@@ -7456,7 +8040,9 @@ export interface SALE_Order
     TaxCode?: string;
     DailyBillNo?: number;
     
+
 }
+
 
 export interface SALE_OrderAddition
 {
@@ -7483,7 +8069,9 @@ export interface SALE_OrderAddition
     CalcTotalAfterTax?: number;
     CalcOriginalTotalAfterTax?: number;
     
+
 }
+
 
 export interface SALE_OrderDeduction
 {
@@ -7508,7 +8096,9 @@ export interface SALE_OrderDeduction
     OriginalAmount?: number;
     Amount?: number;
     
+
 }
+
 
 export interface SALE_OrderDetail
 {
@@ -7584,7 +8174,9 @@ export interface SALE_OrderDetail
     CancellationReason?: string;
     Code?: string;
     
+
 }
+
 
 export interface SALE_Quotation
 {
@@ -7613,7 +8205,9 @@ export interface SALE_Quotation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SALE_QuotationDetail
 {
@@ -7652,7 +8246,9 @@ export interface SALE_QuotationDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SHIFT_TimeSheet
 {
@@ -7675,7 +8271,9 @@ export interface SHIFT_TimeSheet
     EventGroup?: number;
     Type?: number;
     
+
 }
+
 
 export interface SHIP_Shipment
 {
@@ -7705,7 +8303,9 @@ export interface SHIP_Shipment
     LostAmount?: number;
     LostRemark?: string;
     
+
 }
+
 
 export interface SHIP_ShipmentDebt
 {
@@ -7726,7 +8326,9 @@ export interface SHIP_ShipmentDebt
     Debt?: number;
     Received?: number;
     
+
 }
+
 
 export interface SHIP_ShipmentDetail
 {
@@ -7749,7 +8351,9 @@ export interface SHIP_ShipmentDetail
     Received?: number;
     ShippedDate?: Date;
     
+
 }
+
 
 export interface SHIP_Vehicle
 {
@@ -7784,7 +8388,9 @@ export interface SHIP_Vehicle
     IsForWholeSale?: boolean;
     RefShipper?: string;
     
+
 }
+
 
 export interface SYS_AccountGroup
 {
@@ -7801,7 +8407,9 @@ export interface SYS_AccountGroup
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Action
 {
@@ -7825,7 +8433,9 @@ export interface SYS_Action
     IsTriggerable?: boolean;
     RunnerConfig?: string;
     
+
 }
+
 
 export interface SYS_ActionAPIRunner
 {
@@ -7844,7 +8454,9 @@ export interface SYS_ActionAPIRunner
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_APICollection
 {
@@ -7873,7 +8485,9 @@ export interface SYS_APICollection
     Setting?: string;
     Varibles?: string;
     
+
 }
+
 
 export interface SYS_APIController
 {
@@ -7882,7 +8496,9 @@ export interface SYS_APIController
     Name?: string;
     Remark?: string;
     
+
 }
+
 
 export interface SYS_AppleAppRedemption
 {
@@ -7897,7 +8513,9 @@ export interface SYS_AppleAppRedemption
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Apps
 {
@@ -7918,7 +8536,9 @@ export interface SYS_Apps
     RequireConsent?: boolean;
     AppColor?: string;
     
+
 }
+
 
 export interface SYS_BranchInGroup
 {
@@ -7936,7 +8556,9 @@ export interface SYS_BranchInGroup
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Config
 {
@@ -7954,7 +8576,9 @@ export interface SYS_Config
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_ConfigOption
 {
@@ -7984,7 +8608,9 @@ export interface SYS_ConfigOption
     ModifiedDate?: Date;
     IsProtected?: boolean;
     
+
 }
+
 
 export interface SYS_Currency
 {
@@ -8016,7 +8642,9 @@ export interface SYS_Currency
     ReadEn4?: string;
     ReadEn5?: string;
     
+
 }
+
 
 export interface SYS_DataPermissionList
 {
@@ -8036,7 +8664,9 @@ export interface SYS_DataPermissionList
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_ExchangeRate
 {
@@ -8053,7 +8683,9 @@ export interface SYS_ExchangeRate
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Form
 {
@@ -8075,7 +8707,9 @@ export interface SYS_Form
     Icon?: string;
     BadgeColor?: string;
     
+
 }
+
 
 export interface SYS_FormGroup
 {
@@ -8095,7 +8729,9 @@ export interface SYS_FormGroup
     Icon?: string;
     ClassName?: string;
     
+
 }
+
 
 export interface SYS_GlobalConfig
 {
@@ -8114,7 +8750,9 @@ export interface SYS_GlobalConfig
     Value?: string;
     IsLocalHost?: boolean;
     
+
 }
+
 
 export interface SYS_IntegrationProvider
 {
@@ -8133,7 +8771,9 @@ export interface SYS_IntegrationProvider
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_IntegrationReferenceIdentity
 {
@@ -8162,7 +8802,9 @@ export interface SYS_IntegrationReferenceIdentity
     RefChar3?: string;
     RefChar4?: string;
     
+
 }
+
 
 export interface SYS_Log
 {
@@ -8193,7 +8835,9 @@ export interface SYS_Log
     Segment8?: string;
     Segment9?: string;
     
+
 }
+
 
 export interface SYS_MessageTemplate
 {
@@ -8214,7 +8858,9 @@ export interface SYS_MessageTemplate
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_PermissionList
 {
@@ -8235,7 +8881,9 @@ export interface SYS_PermissionList
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Printer
 {
@@ -8261,7 +8909,9 @@ export interface SYS_Printer
     PageSize?: string;
     Scale?: number;
     
+
 }
+
 
 export interface SYS_RuningNo
 {
@@ -8281,7 +8931,9 @@ export interface SYS_RuningNo
     BaseRadixType?: number;
     Value?: string;
     
+
 }
+
 
 export interface SYS_SAP_Databases
 {
@@ -8292,7 +8944,9 @@ export interface SYS_SAP_Databases
     Password?: string;
     APIBaseUrl?: string;
     
+
 }
+
 
 export interface SYS_Schema
 {
@@ -8311,7 +8965,9 @@ export interface SYS_Schema
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_SchemaDetail
 {
@@ -8349,7 +9005,9 @@ export interface SYS_SchemaDetail
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Segment
 {
@@ -8368,7 +9026,9 @@ export interface SYS_Segment
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Status
 {
@@ -8391,7 +9051,9 @@ export interface SYS_Status
     ModifiedDate?: Date;
     Icon?: string;
     
+
 }
+
 
 export interface SYS_SyncJob
 {
@@ -8424,8 +9086,14 @@ export interface SYS_SyncJob
     CreatedDate?: Date;
     CreatedBy?: string;
     Priority?: number;
+    Request?: string;
+    Response?: string;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_SyncJobIdentityReference
 {
@@ -8439,7 +9107,9 @@ export interface SYS_SyncJobIdentityReference
     CreatedBy?: string;
     CreatedDate?: Date;
     
+
 }
+
 
 export interface SYS_Translate
 {
@@ -8464,7 +9134,9 @@ export interface SYS_Translate
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_Trigger
 {
@@ -8488,7 +9160,9 @@ export interface SYS_Trigger
     TriggerWhen?: string;
     Frequency?: string;
     
+
 }
+
 
 export interface SYS_TriggerAction
 {
@@ -8506,7 +9180,9 @@ export interface SYS_TriggerAction
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_TriggerActionConfig
 {
@@ -8525,7 +9201,9 @@ export interface SYS_TriggerActionConfig
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_TriggerActionDataMapping
 {
@@ -8546,7 +9224,9 @@ export interface SYS_TriggerActionDataMapping
     DataType?: string;
     Format?: string;
     
+
 }
+
 
 export interface SYS_Type
 {
@@ -8571,7 +9251,9 @@ export interface SYS_Type
     Type?: string;
     Icon?: string;
     
+
 }
+
 
 export interface SYS_UserDevice
 {
@@ -8605,7 +9287,9 @@ export interface SYS_UserDevice
     IsAllowCheckIn?: boolean;
     NotifyToken?: string;
     
+
 }
+
 
 export interface SYS_UserInGroup
 {
@@ -8623,7 +9307,9 @@ export interface SYS_UserInGroup
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_UserSetting
 {
@@ -8643,7 +9329,9 @@ export interface SYS_UserSetting
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface SYS_UserVoice
 {
@@ -8661,7 +9349,9 @@ export interface SYS_UserVoice
     ModifiedDate?: Date;
     Stars?: number;
     
+
 }
+
 
 export interface SYS_VeifyPhoneNumber
 {
@@ -8681,7 +9371,9 @@ export interface SYS_VeifyPhoneNumber
     IsVerified?: boolean;
     VerifiedDate?: Date;
     
+
 }
+
 
 export interface TRACK_Link
 {
@@ -8704,7 +9396,9 @@ export interface TRACK_Link
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface TRACK_LinkLog
 {
@@ -8765,7 +9459,9 @@ export interface TRACK_LinkLog
     TotalOfEventsperVisit?: string;
     IsFirstVisit?: string;
     
+
 }
+
 
 export interface Version
 {
@@ -8783,7 +9479,217 @@ export interface Version
     ModifiedDate?: Date;
     VersionDate?: Date;
     
+
 }
+
+
+export interface VMS_Camera
+{
+    Id?: number;
+    IDBranch?: number;
+    IDNvr?: number;
+    Code?: string;
+    Name?: string;
+    ChannelNo?: number;
+    RtspMain?: string;
+    RtspSub?: string;
+    Role?: string;
+    RoiJson?: string;
+    AiEnabled?: boolean;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Remark?: string;
+    
+
+}
+
+
+export interface VMS_CameraPermission
+{
+    Id?: number;
+    IDCamera?: number;
+    SubjectType?: string;
+    SubjectId?: string;
+    CanView?: boolean;
+    CanManage?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    IDBranch?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+
+}
+
+
+export interface VMS_EdgeNode
+{
+    Id?: number;
+    IDBranch?: number;
+    EdgeNodeId?: string;
+    Name?: string;
+    LastHeartbeat?: Date;
+    ConfigVersion?: string;
+    GalleryVersion?: string;
+    OutboxPending?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    Code?: string;
+    Remark?: string;
+    Sort?: number;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    
+
+}
+
+
+export interface VMS_Event
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    EventId?: string;
+    EventType?: string;
+    EdgeNodeId?: string;
+    CameraId?: string;
+    PersonId?: string;
+    EmployeeCode?: string;
+    OccurredAt?: Date;
+    Confidence?: number;
+    PayloadJson?: string;
+    FramePath?: string;
+    Status?: string;
+    
+
+}
+
+
+export interface VMS_FaceEmbedding
+{
+    Id?: number;
+    PersonId?: string;
+    ModelName?: string;
+    Dim?: number;
+    EmbeddingJson?: string;
+    Version?: string;
+    IsDisabled?: boolean;
+    CreatedDate?: Date;
+    IDBranch?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    
+
+}
+
+
+export interface VMS_FaceIdentity
+{
+    Id?: number;
+    PersonId?: string;
+    PersonType?: string;
+    DisplayName?: string;
+    EmployeeCode?: string;
+    IDStaff?: number;
+    IDContact?: number;
+    FirstSeenBranch?: number;
+    LastSeenBranch?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IDBranch?: number;
+    
+
+}
+
+
+export interface VMS_GuestVisit
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    PersonId?: string;
+    IDContact?: number;
+    IDPolLevel?: number;
+    TierName?: string;
+    Notified?: boolean;
+    NotifyChannel?: string;
+    ServicePeriod?: string;
+    OccurredAt?: Date;
+    EventId?: string | null;
+    
+
+}
+
+
+export interface VMS_NvrDevice
+{
+    Id?: number;
+    IDBranch?: number;
+    Code?: string;
+    Name?: string;
+    Host?: string;
+    Port?: number;
+    Vendor?: string;
+    Username?: string;
+    PasswordEnc?: string;
+    Protocol?: string;
+    Remark?: string;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Sort?: number;
+    
+
+}
+
 
 export interface WEB_Category
 {
@@ -8808,7 +9714,9 @@ export interface WEB_Category
     SEO2?: string;
     IsBuildIn?: boolean;
     
+
 }
+
 
 export interface WEB_Content
 {
@@ -8848,7 +9756,9 @@ export interface WEB_Content
     Home?: boolean;
     HomePos?: number;
     
+
 }
+
 
 export interface WEB_Content_Tag
 {
@@ -8863,7 +9773,9 @@ export interface WEB_Content_Tag
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WEB_ContentInCategory
 {
@@ -8879,7 +9791,9 @@ export interface WEB_ContentInCategory
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WEB_Tag
 {
@@ -8895,7 +9809,9 @@ export interface WEB_Tag
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_Adjustment
 {
@@ -8913,7 +9829,9 @@ export interface WMS_Adjustment
     ModifiedBy?: string;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_AdjustmentDetail
 {
@@ -8934,7 +9852,9 @@ export interface WMS_AdjustmentDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_AllocationStrategy
 {
@@ -8965,7 +9885,9 @@ export interface WMS_AllocationStrategy
     SortPriority5?: string;
     LPNQuantityRule?: string;
     
+
 }
+
 
 export interface WMS_Carrier
 {
@@ -8980,7 +9902,9 @@ export interface WMS_Carrier
     ModifiedDate?: Date;
     Name?: string;
     
+
 }
+
 
 export interface WMS_Carton
 {
@@ -9012,7 +9936,9 @@ export interface WMS_Carton
     DisplayForPacking?: boolean;
     DisplayForLoading?: boolean;
     
+
 }
+
 
 export interface WMS_CartonGroup
 {
@@ -9028,7 +9954,9 @@ export interface WMS_CartonGroup
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_CycleCount
 {
@@ -9053,7 +9981,9 @@ export interface WMS_CycleCount
     IsCountByLocation?: boolean;
     IsCountByLot?: boolean;
     
+
 }
+
 
 export interface WMS_CycleCountDetail
 {
@@ -9079,7 +10009,9 @@ export interface WMS_CycleCountDetail
     IDCycleCountTask?: number;
     Status?: string;
     
+
 }
+
 
 export interface WMS_CycleCountDetermination
 {
@@ -9102,7 +10034,9 @@ export interface WMS_CycleCountDetermination
     StartDate?: Date;
     EndDate?: Date;
     
+
 }
+
 
 export interface WMS_CycleCountDeterminationDetail
 {
@@ -9124,7 +10058,9 @@ export interface WMS_CycleCountDeterminationDetail
     Location?: number;
     IsAlert?: boolean;
     
+
 }
+
 
 export interface WMS_CycleCountTask
 {
@@ -9145,7 +10081,9 @@ export interface WMS_CycleCountTask
     CountDate?: Date;
     Status?: string;
     
+
 }
+
 
 export interface WMS_CycleCountTaskDetail
 {
@@ -9168,7 +10106,9 @@ export interface WMS_CycleCountTaskDetail
     ModifiedDate?: Date;
     CountedQuantity?: number;
     
+
 }
+
 
 export interface WMS_Item
 {
@@ -9251,7 +10191,9 @@ export interface WMS_Item
     IsLocked?: boolean;
     SearchIndex?: string;
     
+
 }
+
 
 export interface WMS_ItemBalance
 {
@@ -9263,7 +10205,9 @@ export interface WMS_ItemBalance
     OpenQuantity?: number;
     ClosedQuantity?: number;
     
+
 }
+
 
 export interface WMS_ItemGroup
 {
@@ -9324,7 +10268,9 @@ export interface WMS_ItemGroup
     General?: string;
     Accounting?: string;
     
+
 }
+
 
 export interface WMS_ItemGroupAccountInBranch
 {
@@ -9385,7 +10331,9 @@ export interface WMS_ItemGroupAccountInBranch
     General?: string;
     Accounting?: string;
     
+
 }
+
 
 export interface WMS_ItemInBranch
 {
@@ -9436,7 +10384,9 @@ export interface WMS_ItemInBranch
     InventoryLevelMinimum?: number;
     InventoryLevelMaximum?: number;
     
+
 }
+
 
 export interface WMS_ItemInLocation
 {
@@ -9457,7 +10407,9 @@ export interface WMS_ItemInLocation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_ItemInWarehouseConfig
 {
@@ -9486,7 +10438,9 @@ export interface WMS_ItemInWarehouseConfig
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_ItemUoM
 {
@@ -9518,7 +10472,9 @@ export interface WMS_ItemUoM
     Image?: string;
     IDUoM?: number;
     
+
 }
+
 
 export interface WMS_LicencePlateNumber
 {
@@ -9537,7 +10493,9 @@ export interface WMS_LicencePlateNumber
     Code?: string;
     IDReceipPalletization?: number;
     
+
 }
+
 
 export interface WMS_Location
 {
@@ -9577,7 +10535,9 @@ export interface WMS_Location
     ZCoordinate?: number;
     Orientation?: number;
     
+
 }
+
 
 export interface WMS_Lot
 {
@@ -9611,7 +10571,9 @@ export interface WMS_Lot
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_LotAttribute
 {
@@ -9629,7 +10591,9 @@ export interface WMS_LotAttribute
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_LotLPNLocation
 {
@@ -9654,7 +10618,9 @@ export interface WMS_LotLPNLocation
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_OutboundOrder
 {
@@ -9678,7 +10644,9 @@ export interface WMS_OutboundOrder
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_OutboundOrderDetail
 {
@@ -9704,7 +10672,9 @@ export interface WMS_OutboundOrderDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_OutboundTag
 {
@@ -9727,7 +10697,9 @@ export interface WMS_OutboundTag
     Line1?: string;
     Line2?: string;
     
+
 }
+
 
 export interface WMS_Packing
 {
@@ -9748,7 +10720,9 @@ export interface WMS_Packing
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PackingDetail
 {
@@ -9776,7 +10750,9 @@ export interface WMS_PackingDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_Picking
 {
@@ -9796,7 +10772,9 @@ export interface WMS_Picking
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PickingDetail
 {
@@ -9822,7 +10800,9 @@ export interface WMS_PickingDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PriceList
 {
@@ -9849,7 +10829,9 @@ export interface WMS_PriceList
     IsPriceListForVendor?: boolean;
     IsTaxIncluded?: boolean;
     
+
 }
+
 
 export interface WMS_PriceListDetail
 {
@@ -9872,7 +10854,9 @@ export interface WMS_PriceListDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PriceListVersion
 {
@@ -9898,7 +10882,9 @@ export interface WMS_PriceListVersion
     PrimaryDefaultCurrency2?: string;
     AppliedDate?: Date;
     
+
 }
+
 
 export interface WMS_PriceListVersionDetail
 {
@@ -9921,7 +10907,9 @@ export interface WMS_PriceListVersionDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PutawayStrategy
 {
@@ -9938,7 +10926,9 @@ export interface WMS_PutawayStrategy
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_PutawayStrategyDetail
 {
@@ -9965,7 +10955,9 @@ export interface WMS_PutawayStrategyDetail
     LocationSortType?: string;
     AreaTypeRestrictions?: string;
     
+
 }
+
 
 export interface WMS_Receipt
 {
@@ -9996,7 +10988,9 @@ export interface WMS_Receipt
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_ReceiptDetail
 {
@@ -10037,7 +11031,9 @@ export interface WMS_ReceiptDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_ReceiptPalletization
 {
@@ -10067,7 +11063,9 @@ export interface WMS_ReceiptPalletization
     IsFullPallet?: boolean;
     Remark?: string;
     
+
 }
+
 
 export interface WMS_Shipping
 {
@@ -10091,7 +11089,9 @@ export interface WMS_Shipping
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_ShippingDetail
 {
@@ -10118,7 +11118,9 @@ export interface WMS_ShippingDetail
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_Storer
 {
@@ -10133,7 +11135,9 @@ export interface WMS_Storer
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_StorerConfig
 {
@@ -10168,7 +11172,9 @@ export interface WMS_StorerConfig
     StandardCarrierAlphaCode?: string;
     CreditLimit?: number;
     
+
 }
+
 
 export interface WMS_TaskDispatchStrategy
 {
@@ -10186,7 +11192,9 @@ export interface WMS_TaskDispatchStrategy
     ModifiedDate?: Date;
     InterleaveTasks?: boolean;
     
+
 }
+
 
 export interface WMS_TaskDispatchStrategyDetail
 {
@@ -10205,7 +11213,9 @@ export interface WMS_TaskDispatchStrategyDetail
     TaskType?: number;
     ProximityInterleaving?: boolean;
     
+
 }
+
 
 export interface WMS_Transaction
 {
@@ -10237,7 +11247,9 @@ export interface WMS_Transaction
     IDTransaction?: number;
     TransactionDate?: Date;
     
+
 }
+
 
 export interface WMS_UoM
 {
@@ -10255,7 +11267,9 @@ export interface WMS_UoM
     ModifiedDate?: Date;
     Type?: string;
     
+
 }
+
 
 export interface WMS_UoMGroup
 {
@@ -10274,7 +11288,9 @@ export interface WMS_UoMGroup
     General?: string;
     Accounting?: string;
     
+
 }
+
 
 export interface WMS_Vendor
 {
@@ -10289,7 +11305,9 @@ export interface WMS_Vendor
     ModifiedDate?: Date;
     Name?: string;
     
+
 }
+
 
 export interface WMS_WarehouseInfo
 {
@@ -10356,7 +11374,9 @@ export interface WMS_WarehouseInfo
     FreeOfChargeSalesAccount?: number;
     FreeOfChargePurchaseAccount?: number;
     
+
 }
+
 
 export interface WMS_WavePlanning
 {
@@ -10375,7 +11395,9 @@ export interface WMS_WavePlanning
     CreatedDate?: Date;
     ModifiedDate?: Date;
     
+
 }
+
 
 export interface WMS_Zone
 {
@@ -10406,7 +11428,9 @@ export interface WMS_Zone
     MaxWeight?: number;
     IDEquipmentProfile?: number;
     
+
 }
+
 
 export interface vw_SYS_Log
 {
@@ -10429,7 +11453,9 @@ export interface vw_SYS_Log
     Segment9?: string;
     Bars?: string;
     
+
 }
+
 
 export interface vw_SYS_LogDetail
 {
@@ -10459,7 +11485,9 @@ export interface vw_SYS_LogDetail
     Segment8?: string;
     Segment9?: string;
     
+
 }
+
 
 export interface vw_SYS_SyncJob
 {
@@ -10476,7 +11504,9 @@ export interface vw_SYS_SyncJob
     ErrorMessage?: string;
     Priority?: number;
     
+
 }
+
 
 export interface vw_SYS_Tracking
 {
@@ -10492,7 +11522,9 @@ export interface vw_SYS_Tracking
     CreatedDate?: Date;
     IsScheduled?: boolean;
     
+
 }
+
 
 export interface vw_WMS_LotLocLPN
 {
@@ -10534,6 +11566,8 @@ export interface vw_WMS_LotLocLPN
     QuantityPendingMoveIn?: number;
     Id?: number;
     
+
 }
+
 
 

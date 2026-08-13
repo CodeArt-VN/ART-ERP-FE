@@ -1,41 +1,51 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>VMS Cameras / NVR</ion-title>
-		<ion-buttons slot="end">
-			<ion-button (click)="addNvr()">NVR</ion-button>
-			<ion-button (click)="addCamera()">Camera</ion-button>
-		</ion-buttons>
-	</ion-toolbar>
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content>
-	<ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
 		<ion-refresher-content></ion-refresher-content>
 	</ion-refresher>
 
-	<ion-list-header>NVR</ion-list-header>
-	<ion-list>
-		<ion-item *ngFor="let n of nvrs">
-			<ion-label>
-				<h2>{{ n.Name }}</h2>
-				<p>{{ n.Host }}:{{ n.Port }} · {{ n.Vendor }}</p>
-			</ion-label>
-		</ion-item>
-		<ion-item *ngIf="!nvrs?.length"><ion-label color="medium">No NVR</ion-label></ion-item>
-	</ion-list>
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
-	<ion-list-header>Cameras</ion-list-header>
-	<ion-list>
-		<ion-item *ngFor="let c of cameras" [routerLink]="['/vms-permission']" [queryParams]="{ id: c.Id }">
-			<ion-label>
-				<h2>{{ c.Name }} ({{ c.CameraCode }})</h2>
-				<p>Role {{ c.Role }} · AI {{ c.AiEnabled ? 'ON' : 'OFF' }}</p>
-			</ion-label>
-			<ion-badge slot="end" color="primary">{{ c.Role }}</ion-badge>
-		</ion-item>
-		<ion-item *ngIf="!cameras?.length"><ion-label color="medium">No cameras (ACL may hide all)</ion-label></ion-item>
-	</ion-list>
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive padding-number-right"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-name flex-break" name="Name" property="Name">
+				<ng-template let-i="row" datatable-cell-template>
+					<div [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{ i.Name }}</ion-text>
+						</a>
+						<div class="cam-meta">#{{ i.Id }} · {{ i.Code }}</div>
+						<div class="cam-meta">{{ i.BranchName }}</div>
+						<small *ngIf="fromNvr(i)" class="nvr-tag">{{ 'NVR' | translate }}</small>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-role" name="Role" property="Role" filterControlType="ng-select" [filterDataSource]="roleList">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="role-cell">
+						<ion-badge color="primary">{{ i.Role }}</ion-badge>
+						<ion-text [color]="i.AiEnabled ? 'success' : 'medium'">{{ (i.AiEnabled ? 'AI ON' : 'AI OFF') | translate }}</ion-text>
+					</div>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
+
+	<div class="ion-padding"></div>
 </ion-content>

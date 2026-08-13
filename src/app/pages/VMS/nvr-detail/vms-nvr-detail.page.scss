@@ -1,0 +1,67 @@
+:host {
+	display: block;
+}
+
+label.c-label a,
+:host ::ng-deep label.c-label a {
+	display: inline;
+	margin-left: 6px;
+	cursor: pointer;
+	vertical-align: baseline;
+	line-height: 1;
+}
+
+label.c-label a ion-icon,
+:host ::ng-deep label.c-label a ion-icon {
+	font-size: 14px;
+	vertical-align: -2px;
+}
+
+:host ::ng-deep app-data-table {
+	.col-ch {
+		min-width: 56px;
+		max-width: 72px;
+	}
+
+	.col-status {
+		min-width: 96px;
+		max-width: 120px;
+	}
+
+	.col-icon {
+		min-width: 40px;
+		max-width: 56px;
+		text-align: center;
+	}
+
+	.min-btn.disabled {
+		opacity: 0.45;
+		pointer-events: none;
+	}
+}
+
+.hb {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	white-space: nowrap;
+}
+
+.dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.dot.on {
+	background: var(--ion-color-success);
+}
+
+.dot.off {
+	background: var(--ion-color-danger);
+}
+
+.table-actions {
+	margin-top: 4px;
+}

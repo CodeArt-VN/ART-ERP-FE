@@ -29,6 +29,12 @@ export class VmsApiService {
 	saveNvr(item: any): Observable<any> {
 		return this.post('VMS/Nvr', item);
 	}
+	deleteNvr(id: number): Observable<any> {
+		return this.post(`VMS/Nvr/${id}/Delete`, {});
+	}
+	getNvrPassword(id: number): Observable<any> {
+		return this.get(`VMS/Nvr/${id}/Password`, null);
+	}
 	listCamera(): Observable<any> {
 		return this.get('VMS/Camera', this.branchQuery());
 	}
@@ -37,6 +43,18 @@ export class VmsApiService {
 	}
 	importChannels(idNvr: number, channels: any[]): Observable<any> {
 		return this.post(`VMS/Nvr/${idNvr}/ImportChannels`, channels);
+	}
+	listNvrCameras(idNvr: number): Observable<any> {
+		return this.get(`VMS/Nvr/${idNvr}/Cameras`, null);
+	}
+	scanNvr(idNvr: number): Observable<any> {
+		return this.post(`VMS/Nvr/${idNvr}/Scan`, {});
+	}
+	setCameraInUse(id: number, inUse: boolean): Observable<any> {
+		return this.post(`VMS/Camera/${id}/InUse`, { inUse });
+	}
+	deleteCamera(id: number): Observable<any> {
+		return this.post(`VMS/Camera/${id}/Delete`, {});
 	}
 	listPermissions(idCamera: number): Observable<any> {
 		return this.get(`VMS/Camera/${idCamera}/Permissions`, null);
@@ -52,6 +70,15 @@ export class VmsApiService {
 	}
 	listEdgeNodes(): Observable<any> {
 		return this.get('VMS/EdgeNodes', this.branchQuery());
+	}
+	approveEdgeNode(id: number): Observable<any> {
+		return this.post(`VMS/EdgeNodes/${id}/Approve`, {});
+	}
+	setEdgeInUse(id: number, inUse: boolean): Observable<any> {
+		return this.post(`VMS/EdgeNodes/${id}/InUse`, { inUse });
+	}
+	deleteEdgeNode(id: number): Observable<any> {
+		return this.post(`VMS/EdgeNodes/${id}/Delete`, {});
 	}
 	listGallery(personType?: string): Observable<any> {
 		return this.get('VMS/Gallery', { personType });

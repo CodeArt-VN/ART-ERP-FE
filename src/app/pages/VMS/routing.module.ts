@@ -8,6 +8,21 @@ export const VMSRoutes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'vms-camera/:id',
+		loadChildren: () => import('./camera-detail/vms-camera-detail.module').then((m) => m.VmsCameraDetailPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'vms-nvr',
+		loadChildren: () => import('./nvr/vms-nvr.module').then((m) => m.VmsNvrPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'vms-nvr/:id',
+		loadChildren: () => import('./nvr-detail/vms-nvr-detail.module').then((m) => m.VmsNvrDetailPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'vms-edge-node',
 		loadChildren: () => import('./edge-node/vms-edge-node.module').then((m) => m.VmsEdgeNodePageModule),
 		canActivate: [AuthGuard],
@@ -25,11 +40,6 @@ export const VMSRoutes: Routes = [
 	{
 		path: 'vms-live',
 		loadChildren: () => import('./live/vms-live.module').then((m) => m.VmsLivePageModule),
-		canActivate: [AuthGuard],
-	},
-	{
-		path: 'vms-permission',
-		loadChildren: () => import('./permission/vms-permission.module').then((m) => m.VmsPermissionPageModule),
 		canActivate: [AuthGuard],
 	},
 ];

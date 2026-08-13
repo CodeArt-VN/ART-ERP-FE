@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ShareModule } from 'src/app/share.module';
-import { VmsGalleryPage } from './vms-gallery.page';
+import { VmsNvrPage } from './vms-nvr.page';
 
 @NgModule({
-	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: VmsGalleryPage }])],
-	declarations: [VmsGalleryPage],
+	imports: [IonicModule, CommonModule, FormsModule, ShareModule, RouterModule.forChild([{ path: '', component: VmsNvrPage }])],
+	declarations: [VmsNvrPage],
 })
-export class VmsGalleryPageModule {}
+export class VmsNvrPageModule {}

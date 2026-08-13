@@ -6,23 +6,17 @@ import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_CameraProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_NvrProvider } from 'src/app/services/vms/vms.providers';
 
 @Component({
-	selector: 'app-vms-camera',
-	templateUrl: 'vms-camera.page.html',
-	styleUrls: ['vms-camera.page.scss'],
+	selector: 'app-vms-nvr',
+	templateUrl: 'vms-nvr.page.html',
+	styleUrls: ['vms-nvr.page.scss'],
 	standalone: false,
 })
-export class VmsCameraPage extends PageBase {
-	roleList = [
-		{ Code: 'IN', Name: 'IN' },
-		{ Code: 'OUT', Name: 'OUT' },
-		{ Code: 'BOTH', Name: 'BOTH' },
-	];
-
+export class VmsNvrPage extends PageBase {
 	constructor(
-		public pageProvider: VMS_CameraProvider,
+		public pageProvider: VMS_NvrProvider,
 		public vmsApi: VmsApiService,
 		public modalController: ModalController,
 		public popoverCtrl: PopoverController,
@@ -36,7 +30,7 @@ export class VmsCameraPage extends PageBase {
 	}
 
 	preLoadData(event?: any): void {
-		this.pageConfig.pageIcon = 'videocam-outline';
+		this.pageConfig.pageIcon = 'server-outline';
 		this.pageConfig.sort = [{ Dimension: 'Id', Order: 'DESC' } as SortConfig];
 		this.query.IgnoredBranch = true;
 		super.preLoadData(event);
@@ -50,21 +44,14 @@ export class VmsCameraPage extends PageBase {
 		super.loadedData(event, ignoredFromGroup);
 	}
 
-	fromNvr(row: any) {
-		return !!row?.IDNvr;
-	}
-
 	delete(publishEventCode = this.pageConfig.pageName) {
 		if (!this.pageConfig.ShowDelete) return;
-		const targets = this.selectedItems || [];
+		const targets = this.pageConfig.isDetailPage ? [this.item] : this.selectedItems || [];
 		this.env
 			.actionConfirm('delete', targets.length, targets[0]?.Name, this.pageConfig.pageTitle, async () => {
-				const independent = targets.filter((c) => !c.IDNvr);
-				const linked = targets.filter((c) => c.IDNvr);
-				for (const cam of linked) {
-					await firstValueFrom(this.vmsApi.setCameraInUse(cam.Id, false));
+				for (const nvr of targets) {
+					if (nvr?.Id) await firstValueFrom(this.vmsApi.deleteNvr(nvr.Id));
 				}
-				if (independent.length) await this.pageProvider.delete(independent);
 			})
 			.then(() => {
 				this.env.showMessage('DELETE_RESULT_SUCCESS', 'success');

@@ -1,1 +1,51 @@
-:host { display: block; }
+:host {
+	display: block;
+}
+
+:host ::ng-deep app-data-table {
+	.col-heartbeat {
+		min-width: 220px;
+		max-width: 240px;
+		white-space: nowrap;
+	}
+
+	.col-action {
+		min-width: 44px;
+		max-width: 56px;
+		text-align: center;
+	}
+}
+
+.hb {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+.dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.dot.on {
+	background: var(--ion-color-success);
+}
+
+.dot.off {
+	background: var(--ion-color-danger);
+}
+
+.ts {
+	white-space: nowrap;
+}
+
+.use-btn {
+	margin: 0;
+	height: 28px;
+	--padding-start: 4px;
+	--padding-end: 4px;
+}

@@ -1,10 +1,34 @@
-﻿//------------------------------------------------------------------------------
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------
 // 
 //    www.codeart.vn
 //    hungvq@live.com
 //    (+84)908.061.119
 // 
 //------------------------------------------------------------------------------
+
 
 import { environment } from 'src/environments/environment';
 import { ApiSetting } from './api-setting';
@@ -44,6 +68,7 @@ export var APIListBase = {
             url: "Account/ObtainLocalAccessToken"
         },
     },
+
 
 
 
@@ -96,6 +121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	AC_APInvoiceDetail:{
         getSearchList:{
             method: "GET",
@@ -144,6 +170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	AC_ARInvoice:{
         getSearchList:{
@@ -194,6 +221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	AC_ARInvoiceContent:{
         getSearchList:{
             method: "GET",
@@ -242,6 +270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	AC_ARInvoiceDetail:{
         getSearchList:{
@@ -292,6 +321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	AC_ARInvoiceSODetail:{
         getSearchList:{
             method: "GET",
@@ -340,6 +370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	AC_Case:{
         getSearchList:{
@@ -390,6 +421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	AC_JournalEntry:{
         getSearchList:{
             method: "GET",
@@ -438,6 +470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	AC_JournalEntryRow:{
         getSearchList:{
@@ -488,6 +521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	AC_PeriodCategory:{
         getSearchList:{
             method: "GET",
@@ -536,6 +570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	AC_PostingPeriod:{
         getSearchList:{
@@ -586,6 +621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	APPROVAL_ApprovalRule:{
         getSearchList:{
             method: "GET",
@@ -634,6 +670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	APPROVAL_ApprovalRuleApprover:{
         getSearchList:{
@@ -684,6 +721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	APPROVAL_Changelog:{
         getSearchList:{
             method: "GET",
@@ -732,6 +770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	APPROVAL_Comment:{
         getSearchList:{
@@ -782,6 +821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	APPROVAL_Notification:{
         getSearchList:{
             method: "GET",
@@ -830,6 +870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	APPROVAL_Request:{
         getSearchList:{
@@ -880,6 +921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	APPROVAL_RequestApprover:{
         getSearchList:{
             method: "GET",
@@ -928,6 +970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	APPROVAL_Template:{
         getSearchList:{
@@ -978,6 +1021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BANK_Account:{
         getSearchList:{
             method: "GET",
@@ -1026,6 +1070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BANK_IncomingPayment:{
         getSearchList:{
@@ -1076,6 +1121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BANK_IncomingPaymentDetail:{
         getSearchList:{
             method: "GET",
@@ -1124,6 +1170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BANK_OutgoingPayment:{
         getSearchList:{
@@ -1174,6 +1221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BANK_OutgoingPaymentDetail:{
         getSearchList:{
             method: "GET",
@@ -1222,6 +1270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BANK_PaymentTerm:{
         getSearchList:{
@@ -1272,6 +1321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BANK_StatementMatchingCriteria:{
         getSearchList:{
             method: "GET",
@@ -1320,6 +1370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BANK_Transaction:{
         getSearchList:{
@@ -1370,6 +1421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BC_RevenueExpenditureComponent:{
         getSearchList:{
             method: "GET",
@@ -1418,6 +1470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BC_RevenueExpenditureRefCode:{
         getSearchList:{
@@ -1468,6 +1521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_CSVData:{
         getSearchList:{
             method: "GET",
@@ -1516,6 +1570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Daily_Balance:{
         getSearchList:{
@@ -1566,6 +1621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Daily_Debt:{
         getSearchList:{
             method: "GET",
@@ -1614,6 +1670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Daily_General:{
         getSearchList:{
@@ -1664,6 +1721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Daily_Revenue:{
         getSearchList:{
             method: "GET",
@@ -1712,6 +1770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Daily_RevenueExpenditure1:{
         getSearchList:{
@@ -1762,6 +1821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Daily_RevenueExpenditure2:{
         getSearchList:{
             method: "GET",
@@ -1810,6 +1870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Dashboard:{
         getSearchList:{
@@ -1860,6 +1921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_DashboardDetail:{
         getSearchList:{
             method: "GET",
@@ -1908,6 +1970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Finance_BalanceSheetCategory:{
         getSearchList:{
@@ -1958,6 +2021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Finance_BalanceSheets:{
         getSearchList:{
             method: "GET",
@@ -2006,6 +2070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Finance_CashFlow:{
         getSearchList:{
@@ -2056,6 +2121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Finance_IncomeStatement:{
         getSearchList:{
             method: "GET",
@@ -2104,6 +2170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Finance_Management:{
         getSearchList:{
@@ -2154,6 +2221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_HRM_PayrollPerBranch:{
         getSearchList:{
             method: "GET",
@@ -2202,6 +2270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Operating_MarketResearch:{
         getSearchList:{
@@ -2252,6 +2321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_Oppotunity:{
         getSearchList:{
             method: "GET",
@@ -2300,6 +2370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_Report:{
         getSearchList:{
@@ -2350,6 +2421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BI_ReportTemplate:{
         getSearchList:{
             method: "GET",
@@ -2398,6 +2470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BI_ReportTemplateDetail:{
         getSearchList:{
@@ -2448,6 +2521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BP_Partner:{
         getSearchList:{
             method: "GET",
@@ -2496,6 +2570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	BRA_Branch:{
         getSearchList:{
@@ -2546,6 +2621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	BSC_RevenueTarget:{
         getSearchList:{
             method: "GET",
@@ -2594,6 +2670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Activity:{
         getSearchList:{
@@ -2644,6 +2721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Attendance:{
         getSearchList:{
             method: "GET",
@@ -2692,6 +2770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Brand:{
         getSearchList:{
@@ -2742,6 +2821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_BusinessPartnerGroup:{
         getSearchList:{
             method: "GET",
@@ -2790,6 +2870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Campaign:{
         getSearchList:{
@@ -2840,6 +2921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_CampaignMember:{
         getSearchList:{
             method: "GET",
@@ -2888,6 +2970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Config:{
         getSearchList:{
@@ -2938,6 +3021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Contact:{
         getSearchList:{
             method: "GET",
@@ -2986,6 +3070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_ContactReference:{
         getSearchList:{
@@ -3036,6 +3121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_ContactUDF:{
         getSearchList:{
             method: "GET",
@@ -3084,6 +3170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Contract:{
         getSearchList:{
@@ -3134,6 +3221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Customer:{
         getSearchList:{
             method: "GET",
@@ -3182,6 +3270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Lead:{
         getSearchList:{
@@ -3232,6 +3321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_MemberCard:{
         getSearchList:{
             method: "GET",
@@ -3280,6 +3370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_MembershipLoyalty:{
         getSearchList:{
@@ -3330,6 +3421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_MembershipLoyaltyHistory:{
         getSearchList:{
             method: "GET",
@@ -3378,6 +3470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Opportunity:{
         getSearchList:{
@@ -3428,6 +3521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Outlets:{
         getSearchList:{
             method: "GET",
@@ -3476,6 +3570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_PartnerAddress:{
         getSearchList:{
@@ -3526,6 +3621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_PartnerBankAccount:{
         getSearchList:{
             method: "GET",
@@ -3574,6 +3670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_PartnerTaxInfo:{
         getSearchList:{
@@ -3624,6 +3721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_PersonInfo:{
         getSearchList:{
             method: "GET",
@@ -3672,6 +3770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_PolBenefit:{
         getSearchList:{
@@ -3722,6 +3821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_PolLevel:{
         getSearchList:{
             method: "GET",
@@ -3770,6 +3870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_PolLevelBenefit:{
         getSearchList:{
@@ -3820,6 +3921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_PolLevelGroup:{
         getSearchList:{
             method: "GET",
@@ -3868,6 +3970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_PolLevelGroupBrand:{
         getSearchList:{
@@ -3918,6 +4021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_PolLoyalty:{
         getSearchList:{
             method: "GET",
@@ -3966,6 +4070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_Quotation:{
         getSearchList:{
@@ -4016,6 +4121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Reward:{
         getSearchList:{
             method: "GET",
@@ -4064,6 +4170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_RewardCategory:{
         getSearchList:{
@@ -4114,6 +4221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Route:{
         getSearchList:{
             method: "GET",
@@ -4162,6 +4270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	CRM_RouteDetail:{
         getSearchList:{
@@ -4212,6 +4321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	CRM_Voucher:{
         getSearchList:{
             method: "GET",
@@ -4260,6 +4370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DCM_Collection:{
         getSearchList:{
@@ -4310,6 +4421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	DCM_CollectionData:{
         getSearchList:{
             method: "GET",
@@ -4358,6 +4470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DCM_CollectionDataComment:{
         getSearchList:{
@@ -4408,6 +4521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	DCM_CollectionDataLog:{
         getSearchList:{
             method: "GET",
@@ -4456,6 +4570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DCM_Comment:{
         getSearchList:{
@@ -4506,6 +4621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	DCM_DataDictionary:{
         getSearchList:{
             method: "GET",
@@ -4554,6 +4670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DCM_DataType:{
         getSearchList:{
@@ -4604,6 +4721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	DCM_Page:{
         getSearchList:{
             method: "GET",
@@ -4652,6 +4770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DCM_Project:{
         getSearchList:{
@@ -4702,6 +4821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	DCM_ProjectPerson:{
         getSearchList:{
             method: "GET",
@@ -4750,6 +4870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	DM_PR_ProgramItem:{
         getSearchList:{
@@ -4800,6 +4921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	FINANCE_CostCenter:{
         getSearchList:{
             method: "GET",
@@ -4848,6 +4970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	FINANCE_GeneralLedger:{
         getSearchList:{
@@ -4898,6 +5021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	FINANCE_TaxDefinition:{
         getSearchList:{
             method: "GET",
@@ -4946,6 +5070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_ContractTemplate:{
         getSearchList:{
@@ -4996,6 +5121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_DataDictionary:{
         getSearchList:{
             method: "GET",
@@ -5044,6 +5170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_DeductionOnSalary:{
         getSearchList:{
@@ -5094,6 +5221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_LeaveType:{
         getSearchList:{
             method: "GET",
@@ -5142,6 +5270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_OpenSchedule:{
         getSearchList:{
@@ -5192,6 +5321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PayrollElement:{
         getSearchList:{
             method: "GET",
@@ -5240,6 +5370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PayrollPaySheetMaster:{
         getSearchList:{
@@ -5290,6 +5421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PayrollPaySheetMasterSalaryDecision:{
         getSearchList:{
             method: "GET",
@@ -5338,6 +5470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PayrollTemplate:{
         getSearchList:{
@@ -5388,6 +5521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PayrollTemplateDetail:{
         getSearchList:{
             method: "GET",
@@ -5436,6 +5570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PersonalIncomePaymentProcess:{
         getSearchList:{
@@ -5486,6 +5621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolBenefit:{
         getSearchList:{
             method: "GET",
@@ -5534,6 +5670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolBenefitDetail:{
         getSearchList:{
@@ -5584,6 +5721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolEmployee:{
         getSearchList:{
             method: "GET",
@@ -5632,6 +5770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolicyHoliday:{
         getSearchList:{
@@ -5682,6 +5821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolicyPaidTimeOff:{
         getSearchList:{
             method: "GET",
@@ -5730,6 +5870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolicyPaidTimeOffGrantsByLengthOfServices:{
         getSearchList:{
@@ -5780,6 +5921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolInsurance:{
         getSearchList:{
             method: "GET",
@@ -5828,6 +5970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolInsuranceDetail:{
         getSearchList:{
@@ -5878,6 +6021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolOvertime:{
         getSearchList:{
             method: "GET",
@@ -5926,6 +6070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolOvertimeRate:{
         getSearchList:{
@@ -5976,6 +6121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolOverTimeRateApplyForBranch:{
         getSearchList:{
             method: "GET",
@@ -6024,6 +6170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_PolSalary:{
         getSearchList:{
@@ -6074,6 +6221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_PolTax:{
         getSearchList:{
             method: "GET",
@@ -6122,6 +6270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_Shift:{
         getSearchList:{
@@ -6172,6 +6321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_ShiftInTimesheet:{
         getSearchList:{
             method: "GET",
@@ -6220,6 +6370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_Staff:{
         getSearchList:{
@@ -6270,6 +6421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_Staff_CLApproval:{
         getSearchList:{
             method: "GET",
@@ -6318,6 +6470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_Staff_ConcurrentPosition:{
         getSearchList:{
@@ -6368,6 +6521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffAcademicLevel:{
         getSearchList:{
             method: "GET",
@@ -6416,6 +6570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffAddress:{
         getSearchList:{
@@ -6466,6 +6621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffAgreement:{
         getSearchList:{
             method: "GET",
@@ -6514,6 +6670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffAgreementDetail:{
         getSearchList:{
@@ -6564,6 +6721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffAllowance:{
         getSearchList:{
             method: "GET",
@@ -6612,6 +6770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffAnotherSkill:{
         getSearchList:{
@@ -6662,6 +6821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffBank:{
         getSearchList:{
             method: "GET",
@@ -6710,6 +6870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffBasicInfo:{
         getSearchList:{
@@ -6760,6 +6921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffBounusOnSalary:{
         getSearchList:{
             method: "GET",
@@ -6808,6 +6970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffCompulsoryInsurance:{
         getSearchList:{
@@ -6858,6 +7021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffConcurrentPosition:{
         getSearchList:{
             method: "GET",
@@ -6906,6 +7070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffConcurrentProbationryPosition:{
         getSearchList:{
@@ -6956,6 +7121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffContract:{
         getSearchList:{
             method: "GET",
@@ -7004,6 +7170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffCurrentWorking:{
         getSearchList:{
@@ -7054,6 +7221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffDeductionOnSalary:{
         getSearchList:{
             method: "GET",
@@ -7102,6 +7270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffEnrollment:{
         getSearchList:{
@@ -7152,6 +7321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffEnrollmentDetail:{
         getSearchList:{
             method: "GET",
@@ -7200,6 +7370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffFamily:{
         getSearchList:{
@@ -7250,6 +7421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffForeignLanguage:{
         getSearchList:{
             method: "GET",
@@ -7298,6 +7470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffIdentityCardAndPIT:{
         getSearchList:{
@@ -7348,6 +7521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffInsurancePaymentProcess:{
         getSearchList:{
             method: "GET",
@@ -7396,6 +7570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffInternetAccount:{
         getSearchList:{
@@ -7446,6 +7621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffLaborContract:{
         getSearchList:{
             method: "GET",
@@ -7494,6 +7670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffLearningProcess:{
         getSearchList:{
@@ -7544,6 +7721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffLeaveBalanceHistory:{
         getSearchList:{
             method: "GET",
@@ -7592,6 +7770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffOvertimeRequest:{
         getSearchList:{
@@ -7642,6 +7821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffPayroll:{
         getSearchList:{
             method: "GET",
@@ -7690,6 +7870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffPayrollConfig:{
         getSearchList:{
@@ -7740,6 +7921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffPhone:{
         getSearchList:{
             method: "GET",
@@ -7788,6 +7970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffPolBenefitEnrollment:{
         getSearchList:{
@@ -7838,6 +8021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffPolBenefitEnrollmentDetail:{
         getSearchList:{
             method: "GET",
@@ -7886,6 +8070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffPolEmployeeDecision:{
         getSearchList:{
@@ -7936,6 +8121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffPolEmployeeDecisionDetail:{
         getSearchList:{
             method: "GET",
@@ -7984,6 +8170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffPolInsuranceEnrollment:{
         getSearchList:{
@@ -8034,6 +8221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffPolInsuranceEnrollmentDetail:{
         getSearchList:{
             method: "GET",
@@ -8082,6 +8270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffPTOEnrollment:{
         getSearchList:{
@@ -8132,6 +8321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffRecordOvertime:{
         getSearchList:{
             method: "GET",
@@ -8180,6 +8370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffRecordPayroll:{
         getSearchList:{
@@ -8230,6 +8421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffRecruitmentInfo:{
         getSearchList:{
             method: "GET",
@@ -8278,6 +8470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffResignationInfo:{
         getSearchList:{
@@ -8328,6 +8521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffSalaryDecision:{
         getSearchList:{
             method: "GET",
@@ -8376,6 +8570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffSchedule:{
         getSearchList:{
@@ -8426,6 +8621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffSpecializedField:{
         getSearchList:{
             method: "GET",
@@ -8474,6 +8670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffSpecializedSkill:{
         getSearchList:{
@@ -8524,6 +8721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffStaffAndFamilyJob:{
         getSearchList:{
             method: "GET",
@@ -8572,6 +8770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffTimeOff:{
         getSearchList:{
@@ -8622,6 +8821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffTimeOffRequest:{
         getSearchList:{
             method: "GET",
@@ -8670,6 +8870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffTimesheetEnrollment:{
         getSearchList:{
@@ -8720,6 +8921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffTrainingProcess:{
         getSearchList:{
             method: "GET",
@@ -8768,6 +8970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffTrainingProcessSkill:{
         getSearchList:{
@@ -8818,6 +9021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffUDF:{
         getSearchList:{
             method: "GET",
@@ -8866,6 +9070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffWelfare:{
         getSearchList:{
@@ -8916,6 +9121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffWorkExperience:{
         getSearchList:{
             method: "GET",
@@ -8964,6 +9170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_StaffWorkingDiary:{
         getSearchList:{
@@ -9014,6 +9221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_StaffWorkRuleViolation:{
         getSearchList:{
             method: "GET",
@@ -9062,6 +9270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_Timesheet:{
         getSearchList:{
@@ -9112,6 +9321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_TimesheetAndHoliday:{
         getSearchList:{
             method: "GET",
@@ -9160,6 +9370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_TimesheetCheckInCode:{
         getSearchList:{
@@ -9210,6 +9421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_TimesheetCycle:{
         getSearchList:{
             method: "GET",
@@ -9258,6 +9470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_TimesheetCycleDetail:{
         getSearchList:{
@@ -9308,6 +9521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_TimesheetFormula:{
         getSearchList:{
             method: "GET",
@@ -9356,6 +9570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_TimesheetLog:{
         getSearchList:{
@@ -9406,6 +9621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_TimesheetRecord:{
         getSearchList:{
             method: "GET",
@@ -9454,6 +9670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_TimesheetTemplate:{
         getSearchList:{
@@ -9504,6 +9721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_TimesheetTemplateDetail:{
         getSearchList:{
             method: "GET",
@@ -9552,6 +9770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_UDF:{
         getSearchList:{
@@ -9602,6 +9821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	HRM_WorkRule:{
         getSearchList:{
             method: "GET",
@@ -9650,6 +9870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	HRM_WorkRuleGroup:{
         getSearchList:{
@@ -9700,6 +9921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	LIST_AddressSubdivision:{
         getSearchList:{
             method: "GET",
@@ -9748,6 +9970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	LIST_Bank:{
         getSearchList:{
@@ -9798,6 +10021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	LIST_ContractTemplate:{
         getSearchList:{
             method: "GET",
@@ -9846,6 +10070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	LIST_Country:{
         getSearchList:{
@@ -9896,6 +10121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	LIST_ElementOfSalary:{
         getSearchList:{
             method: "GET",
@@ -9944,6 +10170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	LIST_General:{
         getSearchList:{
@@ -9994,6 +10221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	LIST_PayPeriod:{
         getSearchList:{
             method: "GET",
@@ -10042,6 +10270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	MR_CompetiorOrder:{
         getSearchList:{
@@ -10092,6 +10321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	MR_TrackingCompetitor:{
         getSearchList:{
             method: "GET",
@@ -10140,6 +10370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OSM_Category:{
         getSearchList:{
@@ -10190,6 +10421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OSM_Channel:{
         getSearchList:{
             method: "GET",
@@ -10238,6 +10470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OSM_Notification:{
         getSearchList:{
@@ -10288,6 +10521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OSM_NotificationReceiver:{
         getSearchList:{
             method: "GET",
@@ -10336,6 +10570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OSM_NotificationReceiverDevice:{
         getSearchList:{
@@ -10386,6 +10621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OSM_Template:{
         getSearchList:{
             method: "GET",
@@ -10434,6 +10670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OSM_UserSubcription:{
         getSearchList:{
@@ -10484,6 +10721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OSM_UserSubcriptionDetail:{
         getSearchList:{
             method: "GET",
@@ -10532,6 +10770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OST_FunctionalMatrix:{
         getSearchList:{
@@ -10582,6 +10821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OST_Office:{
         getSearchList:{
             method: "GET",
@@ -10630,6 +10870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	OST_OfficeGate:{
         getSearchList:{
@@ -10680,6 +10921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	OST_ValueChain:{
         getSearchList:{
             method: "GET",
@@ -10728,6 +10970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PM_ProjectPeople:{
         getSearchList:{
@@ -10778,6 +11021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PM_Space:{
         getSearchList:{
             method: "GET",
@@ -10826,6 +11070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PM_SpaceStatus:{
         getSearchList:{
@@ -10876,6 +11121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PM_Task:{
         getSearchList:{
             method: "GET",
@@ -10924,6 +11170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PM_TaskAssignment:{
         getSearchList:{
@@ -10974,6 +11221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PM_TaskLink:{
         getSearchList:{
             method: "GET",
@@ -11022,6 +11270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PM_View:{
         getSearchList:{
@@ -11072,6 +11321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PM_Workspace:{
         getSearchList:{
             method: "GET",
@@ -11120,6 +11370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_BillTable:{
         getSearchList:{
@@ -11170,6 +11421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_Cash:{
         getSearchList:{
             method: "GET",
@@ -11218,6 +11470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_CashHandover:{
         getSearchList:{
@@ -11268,6 +11521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_Kitchen:{
         getSearchList:{
             method: "GET",
@@ -11316,6 +11570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_LogWorkOrder:{
         getSearchList:{
@@ -11366,6 +11621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_MemberCardPromotion:{
         getSearchList:{
             method: "GET",
@@ -11414,6 +11670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_Memo:{
         getSearchList:{
@@ -11464,6 +11721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_Menu:{
         getSearchList:{
             method: "GET",
@@ -11512,6 +11770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_MenuDetail:{
         getSearchList:{
@@ -11562,6 +11821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_Shift:{
         getSearchList:{
             method: "GET",
@@ -11610,6 +11870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_ShiftOrder:{
         getSearchList:{
@@ -11660,6 +11921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_ShiftReport:{
         getSearchList:{
             method: "GET",
@@ -11708,6 +11970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_Table:{
         getSearchList:{
@@ -11758,6 +12021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_TableGroup:{
         getSearchList:{
             method: "GET",
@@ -11806,6 +12070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_TableGroupStaff:{
         getSearchList:{
@@ -11856,6 +12121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	POS_Terminal:{
         getSearchList:{
             method: "GET",
@@ -11904,6 +12170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	POS_WorkOrderCoordinate:{
         getSearchList:{
@@ -11954,6 +12221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PR_Deal:{
         getSearchList:{
             method: "GET",
@@ -12002,6 +12270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PR_Program:{
         getSearchList:{
@@ -12052,6 +12321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PR_ProgramCondition:{
         getSearchList:{
             method: "GET",
@@ -12100,6 +12370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PR_ProgramItem:{
         getSearchList:{
@@ -12150,6 +12421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PR_ProgramPartner:{
         getSearchList:{
             method: "GET",
@@ -12198,6 +12470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PR_ProgramReward:{
         getSearchList:{
@@ -12248,6 +12521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PR_ProgramVoucher:{
         getSearchList:{
             method: "GET",
@@ -12296,6 +12570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PR_PromotionTracking:{
         getSearchList:{
@@ -12346,6 +12621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_ApplyItemsReplacement:{
         getSearchList:{
             method: "GET",
@@ -12394,6 +12670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_BillOfMaterials:{
         getSearchList:{
@@ -12444,6 +12721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_BillOfMaterialsDetail:{
         getSearchList:{
             method: "GET",
@@ -12492,6 +12770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_ItemInVendor:{
         getSearchList:{
@@ -12542,6 +12821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_ItemReplacement:{
         getSearchList:{
             method: "GET",
@@ -12590,6 +12870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_ItemReplacementGroup:{
         getSearchList:{
@@ -12640,6 +12921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_ItemVendorInBranch:{
         getSearchList:{
             method: "GET",
@@ -12688,6 +12970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_MRPItem:{
         getSearchList:{
@@ -12738,6 +13021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_MRPPegging:{
         getSearchList:{
             method: "GET",
@@ -12786,6 +13070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_MRPPreventDocument:{
         getSearchList:{
@@ -12836,6 +13121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_MRPRecommendation:{
         getSearchList:{
             method: "GET",
@@ -12884,6 +13170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_MRPResult:{
         getSearchList:{
@@ -12934,6 +13221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_MRPScenario:{
         getSearchList:{
             method: "GET",
@@ -12982,6 +13270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_MRPWarehouse:{
         getSearchList:{
@@ -13032,6 +13321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_Order:{
         getSearchList:{
             method: "GET",
@@ -13080,6 +13370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PROD_OrderDetail:{
         getSearchList:{
@@ -13130,6 +13421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PROD_SubstitutionGroupRule:{
         getSearchList:{
             method: "GET",
@@ -13178,6 +13470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PURCHASE_ItemPlanningData:{
         getSearchList:{
@@ -13228,6 +13521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PURCHASE_Order:{
         getSearchList:{
             method: "GET",
@@ -13276,6 +13570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PURCHASE_OrderDetail:{
         getSearchList:{
@@ -13326,6 +13621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PURCHASE_OrderInterval:{
         getSearchList:{
             method: "GET",
@@ -13374,6 +13670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PURCHASE_Quotation:{
         getSearchList:{
@@ -13424,6 +13721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PURCHASE_QuotationDetail:{
         getSearchList:{
             method: "GET",
@@ -13472,6 +13770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	PURCHASE_Request:{
         getSearchList:{
@@ -13522,6 +13821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	PURCHASE_RequestDetail:{
         getSearchList:{
             method: "GET",
@@ -13570,6 +13870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SALE_Forecast:{
         getSearchList:{
@@ -13620,6 +13921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SALE_ForecastDetail:{
         getSearchList:{
             method: "GET",
@@ -13668,6 +13970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SALE_Order:{
         getSearchList:{
@@ -13718,6 +14021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SALE_OrderAddition:{
         getSearchList:{
             method: "GET",
@@ -13766,6 +14070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SALE_OrderDeduction:{
         getSearchList:{
@@ -13816,6 +14121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SALE_OrderDetail:{
         getSearchList:{
             method: "GET",
@@ -13864,6 +14170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SALE_Quotation:{
         getSearchList:{
@@ -13914,6 +14221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SALE_QuotationDetail:{
         getSearchList:{
             method: "GET",
@@ -13962,6 +14270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SHIFT_TimeSheet:{
         getSearchList:{
@@ -14012,6 +14321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SHIP_Shipment:{
         getSearchList:{
             method: "GET",
@@ -14060,6 +14370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SHIP_ShipmentDebt:{
         getSearchList:{
@@ -14110,6 +14421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SHIP_ShipmentDetail:{
         getSearchList:{
             method: "GET",
@@ -14158,6 +14470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SHIP_Vehicle:{
         getSearchList:{
@@ -14208,6 +14521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_AccountGroup:{
         getSearchList:{
             method: "GET",
@@ -14256,6 +14570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Action:{
         getSearchList:{
@@ -14306,6 +14621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_ActionAPIRunner:{
         getSearchList:{
             method: "GET",
@@ -14354,6 +14670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_APICollection:{
         getSearchList:{
@@ -14404,6 +14721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_APIController:{
         getSearchList:{
             method: "GET",
@@ -14452,6 +14770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_AppleAppRedemption:{
         getSearchList:{
@@ -14502,6 +14821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Apps:{
         getSearchList:{
             method: "GET",
@@ -14550,6 +14870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_BranchInGroup:{
         getSearchList:{
@@ -14600,6 +14921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Config:{
         getSearchList:{
             method: "GET",
@@ -14648,6 +14970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_ConfigOption:{
         getSearchList:{
@@ -14698,6 +15021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Currency:{
         getSearchList:{
             method: "GET",
@@ -14746,6 +15070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_DataPermissionList:{
         getSearchList:{
@@ -14796,6 +15121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_ExchangeRate:{
         getSearchList:{
             method: "GET",
@@ -14844,6 +15170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Form:{
         getSearchList:{
@@ -14894,6 +15221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_FormGroup:{
         getSearchList:{
             method: "GET",
@@ -14942,6 +15270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_GlobalConfig:{
         getSearchList:{
@@ -14992,6 +15321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_IntegrationProvider:{
         getSearchList:{
             method: "GET",
@@ -15040,6 +15370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_IntegrationReferenceIdentity:{
         getSearchList:{
@@ -15090,6 +15421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Log:{
         getSearchList:{
             method: "GET",
@@ -15138,6 +15470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_MessageTemplate:{
         getSearchList:{
@@ -15188,6 +15521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_PermissionList:{
         getSearchList:{
             method: "GET",
@@ -15236,6 +15570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Printer:{
         getSearchList:{
@@ -15286,6 +15621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_RuningNo:{
         getSearchList:{
             method: "GET",
@@ -15334,6 +15670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_SAP_Databases:{
         getSearchList:{
@@ -15384,6 +15721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Schema:{
         getSearchList:{
             method: "GET",
@@ -15432,6 +15770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_SchemaDetail:{
         getSearchList:{
@@ -15482,6 +15821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Segment:{
         getSearchList:{
             method: "GET",
@@ -15530,6 +15870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Status:{
         getSearchList:{
@@ -15580,6 +15921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_SyncJob:{
         getSearchList:{
             method: "GET",
@@ -15628,6 +15970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_SyncJobIdentityReference:{
         getSearchList:{
@@ -15678,6 +16021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_Translate:{
         getSearchList:{
             method: "GET",
@@ -15726,6 +16070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Trigger:{
         getSearchList:{
@@ -15776,6 +16121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_TriggerAction:{
         getSearchList:{
             method: "GET",
@@ -15824,6 +16170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_TriggerActionConfig:{
         getSearchList:{
@@ -15874,6 +16221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_TriggerActionDataMapping:{
         getSearchList:{
             method: "GET",
@@ -15922,6 +16270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_Type:{
         getSearchList:{
@@ -15972,6 +16321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_UserDevice:{
         getSearchList:{
             method: "GET",
@@ -16020,6 +16370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_UserInGroup:{
         getSearchList:{
@@ -16070,6 +16421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_UserSetting:{
         getSearchList:{
             method: "GET",
@@ -16118,6 +16470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	SYS_UserVoice:{
         getSearchList:{
@@ -16168,6 +16521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	SYS_VeifyPhoneNumber:{
         getSearchList:{
             method: "GET",
@@ -16216,6 +16570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	TRACK_Link:{
         getSearchList:{
@@ -16266,6 +16621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	TRACK_LinkLog:{
         getSearchList:{
             method: "GET",
@@ -16314,6 +16670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	Version:{
         getSearchList:{
@@ -16364,6 +16721,407 @@ export var APIListBase = {
 		
 	},
 
+
+	VMS_Camera:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/Camera/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/Camera"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/Camera/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/Camera/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/Camera/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Camera/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Camera/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Camera/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/Camera"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/Camera/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/Camera/" + id} 
+        }
+		
+	},
+
+
+	VMS_CameraPermission:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/CameraPermission/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/CameraPermission"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/CameraPermission/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/CameraPermission/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/CameraPermission/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/CameraPermission/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/CameraPermission/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/CameraPermission/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/CameraPermission"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/CameraPermission/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/CameraPermission/" + id} 
+        }
+		
+	},
+
+
+	VMS_EdgeNode:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/EdgeNode/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/EdgeNode"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/EdgeNode/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/EdgeNode/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/EdgeNode/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/EdgeNode/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/EdgeNode/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/EdgeNode/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/EdgeNode"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/EdgeNode/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/EdgeNode/" + id} 
+        }
+		
+	},
+
+
+	VMS_Event:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/Event/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/Event"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/Event/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/Event/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/Event/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Event/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Event/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Event/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/Event"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/Event/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/Event/" + id} 
+        }
+		
+	},
+
+
+	VMS_FaceEmbedding:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/FaceEmbedding/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/FaceEmbedding"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/FaceEmbedding/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/FaceEmbedding/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/FaceEmbedding/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceEmbedding/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceEmbedding/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceEmbedding/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/FaceEmbedding"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/FaceEmbedding/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/FaceEmbedding/" + id} 
+        }
+		
+	},
+
+
+	VMS_FaceIdentity:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/FaceIdentity/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/FaceIdentity"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/FaceIdentity/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/FaceIdentity/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/FaceIdentity/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceIdentity/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceIdentity/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/FaceIdentity/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/FaceIdentity"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/FaceIdentity/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/FaceIdentity/" + id} 
+        }
+		
+	},
+
+
+	VMS_GuestVisit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/GuestVisit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/GuestVisit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/GuestVisit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/GuestVisit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/GuestVisit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/GuestVisit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/GuestVisit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/GuestVisit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/GuestVisit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/GuestVisit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/GuestVisit/" + id} 
+        }
+		
+	},
+
+
+	VMS_NvrDevice:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/NvrDevice/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/NvrDevice"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/NvrDevice/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/NvrDevice/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/NvrDevice/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/NvrDevice/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/NvrDevice/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/NvrDevice/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/NvrDevice"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/NvrDevice/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/NvrDevice/" + id} 
+        }
+		
+	},
+
+
 	WEB_Category:{
         getSearchList:{
             method: "GET",
@@ -16412,6 +17170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WEB_Content:{
         getSearchList:{
@@ -16462,6 +17221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WEB_Content_Tag:{
         getSearchList:{
             method: "GET",
@@ -16510,6 +17270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WEB_ContentInCategory:{
         getSearchList:{
@@ -16560,6 +17321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WEB_Tag:{
         getSearchList:{
             method: "GET",
@@ -16608,6 +17370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Adjustment:{
         getSearchList:{
@@ -16658,6 +17421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_AdjustmentDetail:{
         getSearchList:{
             method: "GET",
@@ -16706,6 +17470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_AllocationStrategy:{
         getSearchList:{
@@ -16756,6 +17521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Carrier:{
         getSearchList:{
             method: "GET",
@@ -16804,6 +17570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Carton:{
         getSearchList:{
@@ -16854,6 +17621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_CartonGroup:{
         getSearchList:{
             method: "GET",
@@ -16902,6 +17670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_CycleCount:{
         getSearchList:{
@@ -16952,6 +17721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_CycleCountDetail:{
         getSearchList:{
             method: "GET",
@@ -17000,6 +17770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_CycleCountDetermination:{
         getSearchList:{
@@ -17050,6 +17821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_CycleCountDeterminationDetail:{
         getSearchList:{
             method: "GET",
@@ -17098,6 +17870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_CycleCountTask:{
         getSearchList:{
@@ -17148,6 +17921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_CycleCountTaskDetail:{
         getSearchList:{
             method: "GET",
@@ -17196,6 +17970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Item:{
         getSearchList:{
@@ -17246,6 +18021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_ItemBalance:{
         getSearchList:{
             method: "GET",
@@ -17294,6 +18070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_ItemGroup:{
         getSearchList:{
@@ -17344,6 +18121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_ItemGroupAccountInBranch:{
         getSearchList:{
             method: "GET",
@@ -17392,6 +18170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_ItemInBranch:{
         getSearchList:{
@@ -17442,6 +18221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_ItemInLocation:{
         getSearchList:{
             method: "GET",
@@ -17490,6 +18270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_ItemInWarehouseConfig:{
         getSearchList:{
@@ -17540,6 +18321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_ItemUoM:{
         getSearchList:{
             method: "GET",
@@ -17588,6 +18370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_LicencePlateNumber:{
         getSearchList:{
@@ -17638,6 +18421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Location:{
         getSearchList:{
             method: "GET",
@@ -17686,6 +18470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Lot:{
         getSearchList:{
@@ -17736,6 +18521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_LotAttribute:{
         getSearchList:{
             method: "GET",
@@ -17784,6 +18570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_LotLPNLocation:{
         getSearchList:{
@@ -17834,6 +18621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_OutboundOrder:{
         getSearchList:{
             method: "GET",
@@ -17882,6 +18670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_OutboundOrderDetail:{
         getSearchList:{
@@ -17932,6 +18721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_OutboundTag:{
         getSearchList:{
             method: "GET",
@@ -17980,6 +18770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Packing:{
         getSearchList:{
@@ -18030,6 +18821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_PackingDetail:{
         getSearchList:{
             method: "GET",
@@ -18078,6 +18870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Picking:{
         getSearchList:{
@@ -18128,6 +18921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_PickingDetail:{
         getSearchList:{
             method: "GET",
@@ -18176,6 +18970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_PriceList:{
         getSearchList:{
@@ -18226,6 +19021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_PriceListDetail:{
         getSearchList:{
             method: "GET",
@@ -18274,6 +19070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_PriceListVersion:{
         getSearchList:{
@@ -18324,6 +19121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_PriceListVersionDetail:{
         getSearchList:{
             method: "GET",
@@ -18372,6 +19170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_PutawayStrategy:{
         getSearchList:{
@@ -18422,6 +19221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_PutawayStrategyDetail:{
         getSearchList:{
             method: "GET",
@@ -18470,6 +19270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Receipt:{
         getSearchList:{
@@ -18520,6 +19321,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_ReceiptDetail:{
         getSearchList:{
             method: "GET",
@@ -18568,6 +19370,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_ReceiptPalletization:{
         getSearchList:{
@@ -18618,6 +19421,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Shipping:{
         getSearchList:{
             method: "GET",
@@ -18666,6 +19470,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_ShippingDetail:{
         getSearchList:{
@@ -18716,6 +19521,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Storer:{
         getSearchList:{
             method: "GET",
@@ -18764,6 +19570,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_StorerConfig:{
         getSearchList:{
@@ -18814,6 +19621,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_TaskDispatchStrategy:{
         getSearchList:{
             method: "GET",
@@ -18862,6 +19670,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_TaskDispatchStrategyDetail:{
         getSearchList:{
@@ -18912,6 +19721,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Transaction:{
         getSearchList:{
             method: "GET",
@@ -18960,6 +19770,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_UoM:{
         getSearchList:{
@@ -19010,6 +19821,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_UoMGroup:{
         getSearchList:{
             method: "GET",
@@ -19058,6 +19870,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_Vendor:{
         getSearchList:{
@@ -19108,6 +19921,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_WarehouseInfo:{
         getSearchList:{
             method: "GET",
@@ -19156,6 +19970,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	WMS_WavePlanning:{
         getSearchList:{
@@ -19206,6 +20021,7 @@ export var APIListBase = {
 		
 	},
 
+
 	WMS_Zone:{
         getSearchList:{
             method: "GET",
@@ -19254,6 +20070,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	vw_SYS_Log:{
         getSearchList:{
@@ -19304,6 +20121,7 @@ export var APIListBase = {
 		
 	},
 
+
 	vw_SYS_LogDetail:{
         getSearchList:{
             method: "GET",
@@ -19352,6 +20170,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	vw_SYS_SyncJob:{
         getSearchList:{
@@ -19402,6 +20221,7 @@ export var APIListBase = {
 		
 	},
 
+
 	vw_SYS_Tracking:{
         getSearchList:{
             method: "GET",
@@ -19450,6 +20270,7 @@ export var APIListBase = {
         }
 		
 	},
+
 
 	vw_WMS_LotLocLPN:{
         getSearchList:{
@@ -19501,6 +20322,8 @@ export var APIListBase = {
 	},
 
 
+
 };
+
 
 
