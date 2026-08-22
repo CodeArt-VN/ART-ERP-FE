@@ -19,6 +19,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ShareDirectivesModule } from 'src/app/directives/share-directives.module';
 import { InputControlTempateDirective } from './input-control-template.directive';
 import { QuillEditorComponent } from './quill-editor.component';
+import { ShareVirtualScrollModule } from '../virtual-scroll/share-virtual-scroll.module';
 
 @NgModule({
 	imports: [
@@ -27,6 +28,7 @@ import { QuillEditorComponent } from './quill-editor.component';
 		FormsModule,
 		ReactiveFormsModule,
 		IonicModule,
+		ShareVirtualScrollModule,
 		NgxMaskDirective,
 		NgxMaskPipe,
 		TranslateModule,

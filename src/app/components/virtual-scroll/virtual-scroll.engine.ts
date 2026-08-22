@@ -42,6 +42,7 @@ export class VirtualScrollEngine<T extends VirtualEngineItem = VirtualEngineItem
 	setDefaultItemSize(size: number): void {
 		if (size > 0) {
 			this.defaultItemSize = size;
+			this.rebuildOffsetsFrom(0);
 		}
 	}
 

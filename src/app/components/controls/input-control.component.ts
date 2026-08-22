@@ -11,6 +11,7 @@ import { MonacoEditorLoaderService, DynamicScriptLoaderService } from 'src/app/s
 import { FormulaExpandModalComponent } from './formula-expand-modal';
 import { Subject } from 'rxjs';
 import { InputControlTempateDirective } from './input-control-template.directive';
+import { BranchTreeView, buildBranchTreeConfigKey } from './branch-tree.util';
 
 @Component({
 	selector: 'app-input-control',
@@ -41,22 +42,24 @@ export class InputControlComponent implements OnInit {
 		this.thousandSeparator = f.thousandSeparator !== undefined ? f.thousandSeparator : ',';
 		if (f.color) this.color = f.color;
 		if (f.appendTo !== undefined) this.appendTo = f.appendTo;
-		if (f.virtualScroll !== undefined) this.virtualScroll = f.virtualScroll;
+		if (f.virtualScroll !== undefined && f.virtualScroll !== null) this.virtualScroll = f.virtualScroll;
 		if (f.branchConfig) {
 			if (f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
 			if (f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
 			if (f.branchConfig.showingDisable != undefined) this.showingDisable = f.branchConfig.showingDisable;
 			if (f.branchConfig.showingMode) this.showingMode = f.branchConfig.showingMode;
 		}
-		if (this.type == 'ng-select-branch') this.configBranch();
-		if (f.treeConfig) {
+		if (this.type == 'ng-select-branch') {
+			if (f.virtualScroll === undefined) this.virtualScroll = true;
+			this.syncBranchTreeView(f);
+		} else if (f.treeConfig) {
 			if (f.treeConfig.isTree != undefined) this.isTree = f.treeConfig.isTree;
 			if (f.treeConfig.searchFnDefault) this.searchFn = this.searchShowAllChildren;
 			if (f.treeConfig.searchFn) this.searchFn = f.treeConfig.searchFn;
 			if (f.treeConfig.isCollapsed != undefined) this.isCollapsed = f.treeConfig.isCollapsed;
 			if (f.treeConfig.rootCollapsed != undefined) this.rootCollapsed = f.treeConfig.rootCollapsed;
 		}
-		if (this.isTree) {
+		if (this.isTree && this.type != 'ng-select-branch') {
 			if (this.isCollapsed == undefined) this.isCollapsed = false;
 
 			//showing current value in tree
@@ -93,7 +96,19 @@ export class InputControlComponent implements OnInit {
 	@Input() type: string = 'text';
 	@Input() appendTo: string = '#ng-select-holder';
 
-	@Input() virtualScroll: boolean = false;
+	private _virtualScroll = false;
+	@Input()
+	set virtualScroll(v: boolean | undefined | null) {
+		// form-control binds `virtualScroll ?? field?.virtualScroll`, which is undefined for
+		// ng-select-branch. Ignore that so the field-setter default (true) is not overwritten.
+		if (v === undefined || v === null) {
+			return;
+		}
+		this._virtualScroll = !!v;
+	}
+	get virtualScroll(): boolean {
+		return this._virtualScroll;
+	}
 
 	@Input() id: string;
 	@Input() secondaryId: string;
@@ -134,6 +149,16 @@ export class InputControlComponent implements OnInit {
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
 
+	branchTreeView: BranchTreeView | null = null;
+	branchVisibleItems: any[] = [];
+	branchLabelItems: any[] = [];
+	branchScrollToId: string | number | null = null;
+	branchScrollTick = 0;
+	branchScrollAlign: 'center' | 'start' = 'center';
+	private branchTreeSourceRef: any[] | null = null;
+	private branchTreeConfigKey = '';
+	private branchSearchTimer: ReturnType<typeof setTimeout> | null = null;
+
 	@ViewChildren('quillEditor') quillElement: QueryList<ElementRef>;
 
 	// reference to the internal ng-select instance when used
@@ -163,6 +188,7 @@ export class InputControlComponent implements OnInit {
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
+		this.branchPureSearchFn = this.branchPureSearchFn.bind(this);
 	}
 
 	ngOnInit() {
@@ -175,6 +201,9 @@ export class InputControlComponent implements OnInit {
 	}
 	ngOnDestroy() {
 		this.dismissDatePicker();
+		if (this.branchSearchTimer) {
+			clearTimeout(this.branchSearchTimer);
+		}
 	}
 
 	disposableCompletionItemProvider: any = null;
@@ -469,8 +498,31 @@ export class InputControlComponent implements OnInit {
 	}
 
 	onSearch(data) {
-		// back to collapsed state
 		this.searchTerm = data.term;
+		if (this.type == 'ng-select-branch' && this.branchTreeView) {
+			if (this.branchSearchTimer) {
+				clearTimeout(this.branchSearchTimer);
+			}
+			this.branchSearchTimer = setTimeout(() => {
+				if (!this.branchTreeView) {
+					return;
+				}
+				if (data.term) {
+					this.branchTreeView.search(data.term);
+					this.refreshBranchVisibleItems();
+					this.branchScrollAlign = 'start';
+					this.branchScrollToId = this.branchTreeView.firstSearchHitId();
+				} else {
+					this.branchTreeView.clearSearch();
+					this.refreshBranchVisibleItems();
+					this.branchScrollAlign = 'center';
+					this.branchScrollToId = this.firstSelectedBranchId();
+				}
+				this.branchScrollTick++;
+				this.ngSelect?.detectChanges();
+			}, 150);
+			return;
+		}
 		if (this.searchFn == this.searchShowAllChildren) {
 			if (!data.term) {
 				this.dataSource
@@ -482,6 +534,194 @@ export class InputControlComponent implements OnInit {
 					});
 			}
 		}
+	}
+
+	branchPureSearchFn(term: string, item: any): boolean {
+		if (!this.branchTreeView) {
+			return true;
+		}
+		return this.branchTreeView.matchesSearch(term, item);
+	}
+
+	onBranchNgSelectOpen(): void {
+		if (!this.branchTreeView) {
+			return;
+		}
+		const selectedValue = this.form?.get(this.id)?.value;
+		this.branchTreeView.resetPanelState(selectedValue);
+		this.branchTreeView.expandPathToSelected(selectedValue);
+		this.refreshBranchVisibleItems();
+		this.branchScrollAlign = 'center';
+		this.branchScrollToId = this.firstSelectedBranchId();
+		this.branchScrollTick++;
+		this.ngSelect?.detectChanges();
+		// ng-select appends/positions the panel after this tick — re-assert scroll target.
+		setTimeout(() => {
+			this.branchScrollTick++;
+			this.ngSelect?.detectChanges();
+		}, 50);
+	}
+
+	onBranchNgSelectClose(): void {
+		if (!this.virtualScroll || !this.branchTreeView) {
+			return;
+		}
+		this.branchScrollToId = null;
+		this.branchTreeView.resetPanelState(this.form?.get(this.id)?.value);
+		this.refreshBranchVisibleItems();
+	}
+
+	isBranchItemSelected(item: any): boolean {
+		if (!item) {
+			return false;
+		}
+		const value = this.form?.get(this.id)?.value;
+		const itemVal = item[this.bindValue || 'Id'];
+		if (this.multiple && Array.isArray(value)) {
+			return value.some((v) => v == itemVal);
+		}
+		return value != null && value !== '' && value == itemVal;
+	}
+
+	private firstSelectedBranchId(): string | number | null {
+		const value = this.form?.get(this.id)?.value;
+		if (this.multiple && Array.isArray(value)) {
+			return value.length ? value[0] : null;
+		}
+		return value != null && value !== '' ? value : null;
+	}
+
+	onBranchTreeToggle(event: Event, item: any): void {
+		event.stopPropagation();
+		event.preventDefault();
+		if (!this.branchTreeView) {
+			return;
+		}
+		this.branchTreeView.toggle(item.Id);
+		this.refreshBranchVisibleItems();
+		this.ngSelect?.detectChanges();
+	}
+
+	onBranchTreeSelect(item: any): void {
+		if (item?.disabled) {
+			return;
+		}
+		const control = this.form?.get(this.id);
+		if (!control) {
+			return;
+		}
+		const value = item[this.bindValue || 'Id'];
+		if (this.multiple) {
+			const current = Array.isArray(control.value) ? [...control.value] : control.value != null ? [control.value] : [];
+			const idx = current.findIndex((v) => v == value);
+			if (idx > -1) {
+				current.splice(idx, 1);
+			} else {
+				current.push(value);
+			}
+			control.setValue(current.length ? current : null);
+		} else {
+			control.setValue(value);
+		}
+		control.markAsDirty();
+		this.syncBranchLabelItems();
+		this.onInputChange(value);
+		if (!this.multiple) {
+			this.ngSelect?.close();
+		}
+	}
+
+	branchTreeTrackBy(_index: number, item: any): number {
+		return item?.Id ?? _index;
+	}
+
+	private syncBranchTreeView(f: InputControlField): void {
+		const source = f.dataSource || this.dataSource;
+		const selectedValue = f.form?.get(f.id)?.value;
+		const configKey = buildBranchTreeConfigKey(source, {
+			selectedBranch: this.selectedBranch,
+			showingType: this.showingType,
+			showingDisable: this.showingDisable,
+			showingMode: this.showingMode,
+			isCollapsed: this.isCollapsed ?? true,
+			rootCollapsed: this.rootCollapsed,
+			selectedValue,
+			bindValue: this.bindValue || 'Id',
+		});
+
+		if (this.branchTreeView && this.branchTreeSourceRef === source && configKey === this.branchTreeConfigKey) {
+			this.syncBranchLabelItems();
+			return;
+		}
+
+		this.branchTreeSourceRef = source;
+		this.branchTreeConfigKey = configKey;
+		this.branchTreeView = new BranchTreeView(source, {
+			selectedBranch: this.selectedBranch,
+			showingType: this.showingType,
+			showingDisable: this.showingDisable,
+			showingMode: this.showingMode,
+			isCollapsed: this.isCollapsed ?? true,
+			rootCollapsed: this.rootCollapsed,
+			selectedValue,
+			bindValue: this.bindValue || 'Id',
+		});
+
+		this.isTree = true;
+		if (!this.virtualScroll) {
+			this.dataSource = this.branchTreeView.workingItems;
+			this.searchFn = this.branchPureSearchFn;
+		}
+
+		this.refreshBranchVisibleItems();
+		this.syncBranchLabelItems();
+	}
+
+	private refreshBranchVisibleItems(): void {
+		if (!this.branchTreeView) {
+			this.branchVisibleItems = [];
+			return;
+		}
+		this.branchVisibleItems = [...this.branchTreeView.visibleItems];
+	}
+
+	private syncBranchLabelItems(): void {
+		if (!this.branchTreeView) {
+			this.branchLabelItems = [];
+			return;
+		}
+		const bindValue = this.bindValue || 'Id';
+		const value = this.form?.get(this.id)?.value;
+		let next = this.branchTreeView.getLabelItems(value, bindValue, this.multiple);
+		if (!next.length && value != null && value !== '') {
+			const source = this.branchTreeSourceRef || this.dataSource || [];
+			if (this.multiple && Array.isArray(value)) {
+				next = source.filter((i) => value.some((v) => i?.[bindValue] == v));
+			} else {
+				next = source.filter((i) => i?.[bindValue] == value);
+			}
+		}
+		if (this.sameBranchLabelItems(next)) {
+			return;
+		}
+		this.branchLabelItems = next;
+	}
+
+	private sameBranchLabelItems(next: any[]): boolean {
+		const current = this.branchLabelItems;
+		if (current === next) {
+			return true;
+		}
+		if (current.length !== next.length) {
+			return false;
+		}
+		const key = this.bindValue || 'Id';
+		for (let i = 0; i < current.length; i++) {
+			if (current[i]?.[key] != next[i]?.[key]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	searchResultIdList = { term: '', ids: [] };
@@ -504,78 +744,6 @@ export class InputControlComponent implements OnInit {
 
 		return this.searchResultIdList.ids.indexOf(item.Id) > -1;
 	}
-	// #region private
-	private configBranch() {
-		if (!this.dataSource || this.dataSource?.length == 0) return;
-		let parentList;
-		// this.dataSource = lib.cloneObject(this.dataSource);
-		let it = this.dataSource.find((d) => d.Id == this.selectedBranch);
-		if (it) {
-			if (!this.showingMode) this.showingMode = '';
-			switch (this.showingMode) {
-				case 'showAll':
-					break;
-				case 'showSelectedAndChildren':
-					this.dataSource = [it, ...this.getAllNestedChildren(this.selectedBranch)];
-					break;
-				default:
-					parentList = this.getParent(it?.IDParent);
-					let selectedBranchAndChildren = this.getAllNestedChildren(this.selectedBranch);
-					this.dataSource = [...parentList, it, ...selectedBranchAndChildren];
-					break;
-			}
-		}
-		//show type , input : 'Warehouse' || '[Warehouse,TitlePosition]' || 'ne_Warehouse' || 'ne_[Warehouse,TitlePosition]'
-		if (this.showingType) {
-			let showingTypeDraft = this.showingType;
-			if (showingTypeDraft.startsWith('ne_')) {
-				showingTypeDraft = showingTypeDraft.substring(showingTypeDraft.indexOf('ne_') + 3);
-				if (showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')) {
-					let listTypeNE = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
-					this.dataSource.forEach((d) => {
-						if (listTypeNE.includes(d.Type)) d.disabled = true;
-					});
-				} else
-					this.dataSource.forEach((d) => {
-						if (d.Type == showingTypeDraft) d.disabled = true;
-					});
-			} else {
-				if (showingTypeDraft.startsWith('[') && showingTypeDraft.endsWith(']')) {
-					let listType = showingTypeDraft.replace(/[\[\]]/g, '').split(',');
-					this.dataSource.forEach((d) => {
-						if (!listType.includes(d.Type)) d.disabled = true;
-					});
-				} else
-					this.dataSource.forEach((d) => {
-						if (d.Type != showingTypeDraft) d.disabled = true;
-					});
-			}
-		}
-		if (!this.showingDisable) {
-			// Only show: parent of current Branch, current Selected Branch, parent of valid branch with disabled state.
-			let parentDisabledList = new Set();
-			this.dataSource
-				.filter((d) => !d.disabled)
-				.forEach((i) => {
-					parentDisabledList = new Set([...parentDisabledList, ...this.getParent(i.IDParent).map((s) => s.Id)]);
-				});
-			this.dataSource.forEach((d) => {
-				if (d.Id != it?.Id && !parentList?.some((p) => p.Id == d.Id) && d.disabled && !parentDisabledList?.has(d.Id)) {
-					d.blockedShow = true; // still in dataSource for collapsed children purpose but not render in UI
-				}
-			});
-		}
-		if (!this.searchFn) {
-			this.searchFn = this.searchShowAllChildren;
-		}
-		if (!this.isTree) {
-			this.isTree = true;
-			if (this.isCollapsed == undefined) this.isCollapsed = true;
-			if (this.isCollapsed) {
-				if (this.rootCollapsed || this.rootCollapsed == undefined) this.rootCollapsed = false;
-			}
-		}
-	}
 
 	private expandRoot() {
 		const roots = this.dataSource.filter((d) => !this.dataSource.some((ds) => d.IDParent === ds.Id));
@@ -586,6 +754,12 @@ export class InputControlComponent implements OnInit {
 	}
 
 	toggleRow(row) {
+		if (this.type == 'ng-select-branch' && this.branchTreeView) {
+			this.branchTreeView.toggle(row.Id);
+			this.refreshBranchVisibleItems();
+			this.ngSelect?.detectChanges();
+			return;
+		}
 		if (!row.hasChildInSearchBox) {
 			return;
 		}

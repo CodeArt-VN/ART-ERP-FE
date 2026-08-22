@@ -89,4 +89,95 @@ describe('VirtualViewportComponent item identity', () => {
 		expect((vp as any).pendingRelayout).toBeFalse();
 		expect(vp.renderedItems.length).toBeGreaterThan(0);
 	});
+
+	it('scrolls the selected id into view', () => {
+		const vp = makeViewport();
+		vp.mode = 'container';
+		vp.defaultItemSize = 36;
+		const scrollEl = { scrollTop: 0, clientHeight: 280, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).scrollEl = scrollEl;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 100, height: 280 });
+
+		const rows = Array.from({ length: 40 }, (_, i) => ({ id: i + 1 }));
+		vp.items = rows;
+		(vp as any).syncEngineItems();
+		(vp as any).recompute();
+
+		vp.scrollToId = 20;
+		expect(scrollEl.scrollTop).toBeGreaterThan(0);
+		expect(vp.renderedItems.some((r: any) => r.id === 20)).toBeTrue();
+	});
+
+	it('scrollAlign start places the row at the top of the viewport', () => {
+		const vp = makeViewport();
+		vp.mode = 'container';
+		vp.defaultItemSize = 36;
+		vp.scrollAlign = 'start';
+		(vp as any).engine.setDefaultItemSize(36);
+		const scrollEl = { scrollTop: 0, clientHeight: 280, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).scrollEl = scrollEl;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 200, height: 280 });
+
+		vp.items = Array.from({ length: 40 }, (_, i) => ({ id: i + 1 }));
+		(vp as any).syncEngineItems();
+		(vp as any).recompute();
+		vp.scrollToId = 20;
+		expect(scrollEl.scrollTop).toBe(19 * 36);
+	});
+
+	it('retries scroll once the dropdown viewport has height', () => {
+		const vp = makeViewport();
+		vp.mode = 'container';
+		vp.defaultItemSize = 36;
+		const scrollEl = { scrollTop: 0, clientHeight: 0, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).scrollEl = scrollEl;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 0, height: 0 });
+
+		const rows = Array.from({ length: 40 }, (_, i) => ({ Id: i + 1 }));
+		vp.idKey = 'Id';
+		vp.items = rows;
+		(vp as any).syncEngineItems();
+		vp.scrollToId = '20';
+		expect(scrollEl.scrollTop).toBe(0);
+
+		scrollEl.clientHeight = 280;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 200, height: 280 });
+		(vp as any).tryScrollToId();
+		expect(scrollEl.scrollTop).toBeGreaterThan(0);
+		expect(vp.renderedItems.some((r: any) => r.Id === 20)).toBeTrue();
+	});
+
+	it('scrollToTick re-attempts a pending scroll after panel positioning', () => {
+		const vp = makeViewport();
+		vp.mode = 'container';
+		vp.defaultItemSize = 36;
+		const scrollEl = { scrollTop: 0, clientHeight: 280, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).scrollEl = scrollEl;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 200, height: 280 });
+
+		vp.idKey = 'Id';
+		vp.items = Array.from({ length: 40 }, (_, i) => ({ Id: i + 1 }));
+		(vp as any).syncEngineItems();
+		(vp as any).recompute();
+		vp.scrollToId = 20;
+		scrollEl.scrollTop = 0;
+		(vp as any).pendingScrollToId = 20;
+		vp.scrollToTick = 2;
+		expect(scrollEl.scrollTop).toBeGreaterThan(0);
+	});
+
+	it('seeds renderedItems when items arrive before the viewport has height (ng-select dropdown)', () => {
+		const vp = makeViewport();
+		vp.mode = 'container';
+		(vp as any).scrollEl = { scrollTop: 0, clientHeight: 0, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 0, height: 0 });
+
+		vp.items = [
+			{ id: 1, Name: 'ART' },
+			{ id: 2, Name: 'Kho A' },
+		];
+
+		expect(vp.renderedItems.length).toBe(2);
+		expect((vp.renderedItems[0] as any).Name).toBe('ART');
+	});
 });

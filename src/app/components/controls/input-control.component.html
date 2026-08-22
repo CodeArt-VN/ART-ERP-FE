@@ -46,6 +46,57 @@
 	.quill-editor-container .ql-toolbar {
 		border-bottom: 1px solid #ccc;
 	}
+	.branch-tree-viewport {
+		height: 280px;
+		max-height: 280px;
+	}
+
+	.branch-tree-row {
+		width: 100%;
+		min-height: 36px;
+		padding: 6px 12px;
+		box-sizing: border-box;
+		align-items: center;
+	}
+
+	.branch-tree-row:hover {
+		background-color: var(--menu-background-item-active);
+	}
+
+	.branch-tree-row-selected {
+		background-color: var(--menu-background-item-active);
+		border-left: solid 3px var(--ion-color-primary);
+		padding-left: 9px;
+	}
+
+	.branch-tree-row-disabled ion-text {
+		opacity: 0.45;
+	}
+
+	.branch-tree-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		margin: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+
+		ion-icon {
+			pointer-events: none;
+		}
+	}
+
+	.branch-tree-icon {
+		pointer-events: none;
+	}
+
+	.branch-tree-spacer {
+		display: inline-block;
+		width: 18px;
+		min-width: 18px;
+	}
 </style>
 <ng-container [ngSwitch]="type" [formGroup]="form">
 	<!-- default -->
@@ -187,30 +238,82 @@
 
 	<!-- ng-select-branch -->
 	<ng-select
-		[virtualScroll]="virtualScroll"
+		[virtualScroll]="false"
 		typeToSearchText="{{ 'Type to search...' | translate }}"
 		*ngSwitchCase="'ng-select-branch'"
-		[ngClass]="{ 'no-check-dirty': noCheckDirty }"
+		[class.no-check-dirty]="noCheckDirty"
 		class="c-input"
 		[formControlName]="id"
 		[labelForId]="id"
-		[items]="dataSource"
+		[items]="virtualScroll ? branchLabelItems : dataSource"
 		[bindValue]="bindValue"
 		[bindLabel]="bindLabel"
 		[multiple]="multiple"
 		[clearable]="clearable"
-		[searchFn]="searchFn"
+		[searchFn]="virtualScroll ? null : searchFn"
+		[notFoundText]="virtualScroll ? '' : null"
 		(search)="onSearch($event)"
+		(open)="onBranchNgSelectOpen()"
+		(close)="onBranchNgSelectClose()"
 		(change)="onInputChange($event)"
+		[closeOnSelect]="false"
 		[appendTo]="appendTo"
 	>
 		<ng-template ng-label-tmp let-i="item" let-clear="clear">
-			<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
-			<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+			<ng-container *ngIf="i">
+				<ion-text [color]="i.Color">{{ i[bindLabel ? bindLabel : 'Name'] | translate }}</ion-text>
+				<ion-icon *ngIf="multiple && !form.get(id)?.disabled" (click)="clear(i)" name="close-circle-outline"></ion-icon>
+			</ng-container>
 		</ng-template>
-		<ng-template ng-option-tmp let-item="item" *ngIf="isTree">
-			<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item }"></ng-container>
+		<ng-template ng-header-tmp>
+			<app-virtual-viewport
+				*ngIf="virtualScroll && branchTreeView"
+				#branchVp="virtualViewport"
+				mode="container"
+				class="container-mode branch-tree-viewport"
+				[items]="branchVisibleItems"
+				idKey="Id"
+				[defaultItemSize]="36"
+				[scrollAlign]="branchScrollAlign"
+				[scrollToId]="branchScrollToId"
+				[scrollToTick]="branchScrollTick"
+			>
+				<div
+					class="branch-tree-row flex-left clickable"
+					*ngFor="let item of branchVp.renderedItems; trackBy: branchTreeTrackBy"
+					[class.branch-tree-row-disabled]="item.disabled"
+					[class.branch-tree-row-selected]="isBranchItemSelected(item)"
+					[virtualItemMeasure]="item.Id"
+					[measureGeneration]="branchVp.measureGeneration"
+					(heightMeasured)="branchVp.onItemMeasured(item.Id, $event)"
+					(click)="onBranchTreeSelect(item)"
+				>
+					<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing" *ngIf="k > 0"></span></ng-container>
+					<button
+						type="button"
+						*ngIf="item.hasChildInSearchBox"
+						class="min-btn clickable branch-tree-toggle"
+						(click)="onBranchTreeToggle($event, item)"
+					>
+						<ion-icon
+							[name]="branchTreeView.isExpanded(item.Id) ? 'chevron-down-outline' : 'chevron-forward-outline'"
+						></ion-icon>
+					</button>
+					<span class="branch-tree-spacer" *ngIf="!item.hasChildInSearchBox"></span>
+					<ion-icon *ngIf="item.Icon" class="branch-tree-icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
+					<ion-text class="text-warp" [class.bold]="item.hasChildInSearchBox" [color]="item.Type == 'Company' ? 'primary' : item.Color || 'dark'">
+						{{ item[bindLabel ? bindLabel : 'Name'] | translate }}
+					</ion-text>
+				</div>
+			</app-virtual-viewport>
 		</ng-template>
+		<ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+			<span class="hide-all" *ngIf="virtualScroll"></span>
+			<ng-container *ngIf="!virtualScroll">
+				<ng-container *ngTemplateOutlet="treeConfigTemplate; context: { item: item, searchTerm: search }"></ng-container>
+			</ng-container>
+		</ng-template>
+		<ng-template ng-notfound-tmp *ngIf="virtualScroll"></ng-template>
 	</ng-select>
 
 	<!-- ng-select-level -->
@@ -720,15 +823,15 @@
 		<span class="hide-all" *ngIf="!item.show"></span>
 		<div class="flex-left" *ngIf="item.show" style="width: 100%; position: relative" [ngClass]="{ 'hide-all': !item.show || item.blockedShow }">
 			<ng-container *ngFor="let w of item.levels; let k = index"><span class="spacing" *ngIf="k > 0"></span></ng-container>
-			<ion-icon *ngIf="!virtualScroll"
+			<button
+				type="button"
+				*ngIf="item.hasChildInSearchBox"
+				class="min-btn clickable branch-tree-toggle"
 				(click)="$event.stopPropagation(); toggleRow(item)"
-				class="min-btn clickable"
-				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
-			></ion-icon>
-			<ion-icon *ngIf="virtualScroll"
-				class="min-btn clickable"
-				[name]="item.hasChildInSearchBox ? (!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline') : ''"
-			></ion-icon>
+			>
+				<ion-icon [name]="!item.showdetail ? 'chevron-forward-outline' : 'chevron-down-outline'"></ion-icon>
+			</button>
+			<span class="branch-tree-spacer" *ngIf="!item.hasChildInSearchBox"></span>
 
 			<ion-icon *ngIf="item.Icon" [name]="item.Icon" [color]="item.Color" slot="start"></ion-icon>
 			<ion-text

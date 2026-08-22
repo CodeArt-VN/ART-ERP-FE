@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription, fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 import { VirtualEngineItem, VirtualScrollEngine } from './virtual-scroll.engine';
@@ -36,7 +36,7 @@ type IonContentEl = HTMLElement & { getScrollElement?: () => Promise<HTMLElement
 	templateUrl: './virtual-viewport.component.html',
 	standalone: false,
 })
-export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnDestroy {
+export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 	@Input() mode: VirtualScrollMode = 'page';
 	@Input() minBufferPx = 300;
 	@Input() maxBufferPx = 600;
@@ -66,6 +66,31 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			// Same ids, new object refs (list patch after save) — re-slice without height rebuild.
 			this.refreshRenderedSlice();
 		}
+		this.tryScrollToId();
+	}
+
+	/** Align the target row: center (default) or start (top of viewport, e.g. first search hit). */
+	@Input() scrollAlign: 'center' | 'start' = 'center';
+
+	/** Scroll so the item with this id is in view (center). Queues until layout is ready. */
+	@Input() set scrollToId(id: string | number | null | undefined) {
+		if (id == null || id === '') {
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+			return;
+		}
+		this.pendingScrollToId = id;
+		this.scrollRetryCount = 0;
+		this.tryScrollToId();
+	}
+
+	/** Bump to re-attempt scroll after a dropdown/panel finishes positioning. */
+	@Input() set scrollToTick(tick: number | null | undefined) {
+		if (tick == null) {
+			return;
+		}
+		this.scrollRetryCount = 0;
+		this.tryScrollToId();
 	}
 
 	@Output() scrollProgress = new EventEmitter<ScrollProgressEvent>();
@@ -82,6 +107,11 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	private scrollSub?: Subscription;
 	private resizeObserver?: ResizeObserver;
 	private lastWidth = 0;
+	private lastHeight = 0;
+	private pendingScrollToId: string | number | null = null;
+	private scrollRetryCount = 0;
+	private scrollRetryTimer: ReturnType<typeof setTimeout> | null = null;
+	private static readonly MAX_SCROLL_RETRIES = 12;
 
 	private pendingMeasurements: Array<{ id: string | number; height: number }> = [];
 	private flushScheduled = false;
@@ -99,6 +129,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	}
 
 	ngOnInit(): void {
+		this.engine.setDefaultItemSize(this.defaultItemSize);
 		this.ngZone.runOutsideAngular(() => {
 			this.setupResizeObserver();
 			this.setupVisibilityObserver();
@@ -109,15 +140,22 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		}
 	}
 
+	ngAfterViewInit(): void {
+		this.scheduleScrollRetry();
+		this.scrollRetryTimer = setTimeout(() => this.ngZone.run(() => this.tryScrollToId()), 50);
+	}
+
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['defaultItemSize'] && !changes['defaultItemSize'].firstChange) {
+		if (changes['defaultItemSize']) {
 			this.engine.setDefaultItemSize(this.defaultItemSize);
+			this.syncEngineItems();
 		}
 		if (changes['idKey'] && !changes['idKey'].firstChange) {
 			this.syncEngineItems();
 			if (this.scrollEl) {
 				this.recompute();
 			}
+			this.tryScrollToId();
 		}
 		if (changes['mode'] && !changes['mode'].firstChange) {
 			this.scrollSub?.unsubscribe();
@@ -131,6 +169,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		this.scrollSub?.unsubscribe();
 		this.resizeObserver?.disconnect();
 		this.visibilityObserver?.disconnect();
+		if (this.scrollRetryTimer != null) {
+			clearTimeout(this.scrollRetryTimer);
+			this.scrollRetryTimer = null;
+		}
 		if (typeof document !== 'undefined') {
 			document.removeEventListener('app:virtual-viewport-relayout', this.onPageRelayout);
 		}
@@ -164,10 +206,12 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	relayout(): void {
 		if (!this.isScrollMetricsUsable()) {
 			this.pendingRelayout = true;
+			this.scheduleScrollRetry();
 			return;
 		}
 		this.pendingRelayout = false;
 		this.recompute();
+		this.tryScrollToId();
 	}
 
 	resolveItemId(item: T, index = 0): string | number {
@@ -181,6 +225,65 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			return fromId as string | number;
 		}
 		return index;
+	}
+
+	private tryScrollToId(): void {
+		if (this.pendingScrollToId == null) {
+			return;
+		}
+		if (!this.scrollEl || !this.isScrollMetricsUsable()) {
+			this.scheduleScrollRetry();
+			return;
+		}
+		const id = this.pendingScrollToId;
+		const idx = this.itemsArr.findIndex((item, i) => this.resolveItemId(item, i) == id);
+		if (idx < 0) {
+			this.scheduleScrollRetry();
+			return;
+		}
+		const offset = this.engine.getOffset(idx);
+		const viewportH = this.scrollEl.clientHeight;
+		const rowH = this.defaultItemSize;
+		const alignOffset = this.scrollAlign === 'start' ? 0 : Math.max(0, (viewportH - rowH) / 2);
+		const target = Math.max(0, offset - alignOffset);
+		this.scrollEl.scrollTop = target;
+		this.recompute();
+		this.verifyScrollToId(target);
+	}
+
+	private verifyScrollToId(target: number): void {
+		this.queueFrame(() => {
+			if (!this.scrollEl || this.pendingScrollToId == null) {
+				return;
+			}
+			if (Math.abs(this.scrollEl.scrollTop - target) > 4) {
+				this.scrollEl.scrollTop = target;
+				this.ngZone.run(() => this.recompute());
+				this.scheduleScrollRetry();
+				return;
+			}
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+		});
+	}
+
+	private scheduleScrollRetry(): void {
+		if (this.pendingScrollToId == null) {
+			return;
+		}
+		if (this.scrollRetryCount >= VirtualViewportComponent.MAX_SCROLL_RETRIES) {
+			return;
+		}
+		this.scrollRetryCount++;
+		this.queueFrame(() => this.ngZone.run(() => this.tryScrollToId()));
+	}
+
+	private queueFrame(fn: () => void): void {
+		if (typeof requestAnimationFrame === 'function') {
+			requestAnimationFrame(fn);
+			return;
+		}
+		setTimeout(fn, 0);
 	}
 
 	private sameItemIds(a: T[], b: T[]): boolean {
@@ -237,6 +340,8 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			return;
 		}
 		if (!this.renderedItems.length) {
+			this.renderStart = 0;
+			this.renderedItems = this.itemsArr.slice(0, Math.min(30, this.itemsArr.length));
 			return;
 		}
 		const start = this.renderStart;
@@ -305,12 +410,24 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 
 	private setupResizeObserver(): void {
 		this.resizeObserver = new ResizeObserver((entries) => {
-			const width = entries[0]?.contentRect?.width ?? 0;
-			if (!width || Math.abs(width - this.lastWidth) < 1) {
+			const rect = entries[0]?.contentRect;
+			const width = rect?.width ?? 0;
+			const height = rect?.height ?? 0;
+			const widthChanged = !!width && Math.abs(width - this.lastWidth) >= 1;
+			const heightChanged = !!height && Math.abs(height - this.lastHeight) >= 1;
+			if (!widthChanged && !heightChanged) {
 				return;
 			}
 			this.lastWidth = width;
-			this.ngZone.run(() => this.invalidateHeights());
+			this.lastHeight = height;
+			this.ngZone.run(() => {
+				if (widthChanged) {
+					this.invalidateHeights();
+					this.tryScrollToId();
+					return;
+				}
+				this.relayout();
+			});
 		});
 		this.resizeObserver.observe(this.el.nativeElement);
 	}
@@ -323,9 +440,6 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			(entries) => {
 				const visible = entries.some((e) => e.isIntersecting && e.intersectionRatio > 0);
 				if (!visible) {
-					return;
-				}
-				if (!this.pendingRelayout && this.isScrollMetricsUsable()) {
 					return;
 				}
 				this.ngZone.run(() => this.relayout());
@@ -381,7 +495,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			.pipe(auditTime(80))
 			.subscribe(() => this.ngZone.run(() => this.recompute()));
 
-		this.ngZone.run(() => this.recompute());
+		this.ngZone.run(() => {
+			this.recompute();
+			this.tryScrollToId();
+		});
 	}
 
 	/**
