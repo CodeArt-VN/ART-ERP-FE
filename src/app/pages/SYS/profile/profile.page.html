@@ -37,13 +37,13 @@
 							<div class="c-control" *ngIf="biometricSupported && !biometricEnabled">
 								<p>{{ 'Not enabled on this device' | translate }}</p>
 								<ion-button size="small" color="primary" (click)="enableBiometricLogin()">
-									{{ 'Enable {type}' | translate: { type: (biometricLabel | translate) } }}
+									{{ 'Enable {{type}}' | translate: { type: (biometricLabel | translate) } }}
 								</ion-button>
 							</div>
 							<div class="c-control" *ngIf="biometricSupported && biometricEnabled">
 								<p>{{ 'Enabled on this device' | translate }}</p>
 								<ion-button size="small" color="danger" fill="outline" (click)="disableBiometricLogin()">
-									{{ 'Disable {type}' | translate: { type: (biometricLabel | translate) } }}
+									{{ 'Disable {{type}}' | translate: { type: (biometricLabel | translate) } }}
 								</ion-button>
 							</div>
 							<div class="c-control" *ngIf="!biometricSupported">

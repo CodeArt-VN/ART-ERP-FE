@@ -2,26 +2,68 @@
 	display: block;
 }
 
-.cam-meta {
-	font-size: 12px;
-	color: var(--ion-color-medium);
-	line-height: 1.35;
-}
-
-.nvr-tag {
-	color: var(--ion-color-tertiary);
-}
-
-:host ::ng-deep app-data-table {
-	.col-role {
-		min-width: 120px;
-		max-width: 160px;
-	}
-}
-
-.role-cell {
+.cam-person {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	min-width: 0;
 	gap: 4px;
+}
+
+.cam-branch {
+	display: block;
+	width: 100%;
+	margin-top: 2px;
+	font-size: 12px;
+	line-height: 1.35;
+	color: var(--ion-color-medium);
+}
+
+:host ::ng-deep app-data-table.cam-camera-table {
+	.col-status {
+		min-width: 125px;
+		max-width: 180px;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+	}
+
+	@media screen and (max-width: 1164px) {
+		.row:not(.header):not(.filter):not(.divider) {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: flex-start;
+			position: relative;
+
+			.cell {
+				min-width: 0;
+			}
+
+			.col-id,
+			.col-code {
+				align-self: center;
+				padding-top: 0 !important;
+				padding-bottom: 0 !important;
+			}
+
+			.col-name {
+				order: 7;
+				flex: 1 1 100%;
+				flex-basis: 100% !important;
+				min-width: 0;
+				max-width: none;
+				padding-right: 108px !important;
+			}
+
+			.col-status {
+				justify-content: flex-end;
+				align-items: flex-end;
+				flex-direction: column;
+				gap: 4px;
+				min-width: 0;
+				max-width: none;
+				z-index: 1;
+			}
+		}
+	}
 }

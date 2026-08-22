@@ -1,2 +1,125 @@
-:host { display: block; }
-ion-thumbnail { --size: 56px; }
+:host {
+	display: block;
+}
+
+.ev-person {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 0;
+	gap: 4px;
+}
+
+.ev-when {
+	display: none;
+	line-height: 1.35;
+}
+
+.ev-val {
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+}
+
+.ev-day {
+	margin-left: 6px;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--ion-color-medium);
+	font-variant-numeric: tabular-nums;
+}
+
+.ev-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+.ev-tags ion-badge {
+	font-weight: 600;
+	text-transform: none;
+}
+
+.ev-thumb {
+	display: block;
+	width: 56px;
+	height: 56px;
+	object-fit: cover;
+	border-radius: 8px;
+	background: #eef0f3;
+}
+
+.ev-thumb.is-empty {
+	border: 1px solid rgba(var(--ion-color-medium-rgb, 152, 154, 162), 0.22);
+}
+
+:host ::ng-deep app-data-table.ev-event-table {
+	.col-photo {
+		min-width: 64px;
+		max-width: 72px;
+	}
+
+	.col-status {
+		min-width: 108px;
+		max-width: 220px;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.col-date {
+		min-width: 96px;
+		max-width: 140px;
+		white-space: nowrap;
+	}
+
+	@media screen and (max-width: 1164px) {
+		.row:not(.header):not(.filter):not(.divider) {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: flex-start;
+			column-gap: 8px;
+			row-gap: 8px;
+			position: relative;
+
+			.cell {
+				min-width: 0;
+			}
+
+			.col-photo {
+				order: 0;
+				flex: 0 0 auto;
+				min-width: 0;
+				max-width: none;
+				padding-right: 0 !important;
+			}
+
+			.col-name {
+				order: 1;
+				flex: 1 1 calc(100% - 72px);
+				flex-basis: calc(100% - 72px) !important;
+				min-width: 0;
+				max-width: none;
+				padding-right: 108px !important;
+
+				.ev-when {
+					display: block;
+				}
+			}
+
+			.col-status {
+				justify-content: flex-end;
+				align-items: flex-end;
+				flex-direction: column;
+				gap: 4px;
+				min-width: 0;
+				max-width: none;
+				z-index: 1;
+			}
+
+			.col-date {
+				display: none;
+			}
+		}
+	}
+}

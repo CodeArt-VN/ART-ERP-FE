@@ -60,27 +60,10 @@ export class CacheManagementService {
 
 			this.app.version = await this.getRoot('AppVersion');
 			const currentTenant = await this.getRoot('Tenant');
-			// Dev/local: never let a saved remote tenant override environment.appDomain
-			const isLocalDevDomain =
-				!environment.production &&
-				/^(https?:\/\/)?(localhost|127\.0\.0\.1|192\.168\.|10\.|local\.appcenter)/i.test(
-					String(environment.appDomain || '')
-				);
 			if (currentTenant && this.app.tenant !== currentTenant) {
-				if (isLocalDevDomain && currentTenant !== environment.appDomain) {
-					dogF &&
-						console.log(
-							'🔧 [CacheManagementService] Keep local appDomain, ignore saved tenant',
-							environment.appDomain,
-							currentTenant
-						);
-					this.app.tenant = environment.appDomain;
-					await this.setRoot('Tenant', environment.appDomain);
-				} else {
-					dogF && console.log('🔧 [CacheManagementService] Set tenant', environment.appDomain, currentTenant);
-					this.app.tenant = currentTenant;
-					environment.appDomain = currentTenant;
-				}
+				dogF && console.log('🔧 [CacheManagementService] Set tenant', environment.appDomain, currentTenant);
+				this.app.tenant = currentTenant;
+				environment.appDomain = currentTenant;
 			}
 			
 			dogF && console.log('🔧 [CacheManagementService] Loaded saved environment', this.app);

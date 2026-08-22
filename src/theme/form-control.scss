@@ -149,14 +149,29 @@
 			padding: 0;
 			display: flex;
 			overflow: hidden;
+			max-width: 100%;
 
 			ion-breadcrumbs {
 				display: flex;
 				flex-wrap: nowrap;
+				min-width: 0;
+				max-width: 100%;
 
 				ion-breadcrumb {
 					font-size: calc(10 / 16 * 1.3rem);
 					line-height: 1;
+
+					&.breadcrumb-active {
+						min-width: 0;
+						max-width: 100%;
+
+						&::part(native) {
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							max-width: 100%;
+						}
+					}
 				}
 			}
 		}

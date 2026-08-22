@@ -11,7 +11,7 @@
 
 	<div class="safe-max-width">
 		<app-data-table
-			class="box-shadow responsive padding-number-right"
+			class="box-shadow responsive cam-camera-table"
 			[rows]="items"
 			[trackBy]="'Id'"
 			[(selectedRows)]="selectedItems"
@@ -24,24 +24,32 @@
 			(selectedRowsChange)="showCommandBySelectedRows($event)"
 		>
 			<datatable-column [checkbox]="true" name=""></datatable-column>
-			<datatable-column class="col-name flex-break" name="Name" property="Name">
+			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name">
 				<ng-template let-i="row" datatable-cell-template>
-					<div [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+					<div class="cam-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
 						<a class="bold">
 							<ion-text color="dark">{{ i.Name }}</ion-text>
 						</a>
-						<div class="cam-meta">#{{ i.Id }} · {{ i.Code }}</div>
-						<div class="cam-meta">{{ i.BranchName }}</div>
-						<small *ngIf="fromNvr(i)" class="nvr-tag">{{ 'NVR' | translate }}</small>
+						<app-branch-breadcrumbs
+							class="cam-branch"
+							*ngIf="i.IDBranch"
+							[autoFit]="true"
+							[Id]="i.IDBranch"
+							[Items]="env.branchList"
+						></app-branch-breadcrumbs>
 					</div>
 				</ng-template>
 			</datatable-column>
-			<datatable-column class="col-role" name="Role" property="Role" filterControlType="ng-select" [filterDataSource]="roleList">
+			<datatable-column class="col-status" name="Role" property="Role" filterControlType="ng-select" [filterDataSource]="roleList">
 				<ng-template let-i="row" datatable-cell-template>
-					<div class="role-cell">
-						<ion-badge color="primary">{{ i.Role }}</ion-badge>
-						<ion-text [color]="i.AiEnabled ? 'success' : 'medium'">{{ (i.AiEnabled ? 'AI ON' : 'AI OFF') | translate }}</ion-text>
-					</div>
+					<ion-badge [color]="roleColor(i)">{{ i.Role || '—' }}</ion-badge>
+					<ion-badge [color]="aiColor(i)">{{ aiLabel(i) | translate }}</ion-badge>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-code" name="Code" property="Code">
+				<ng-template let-i="row" datatable-cell-template>
+					<span *ngIf="i.Code">{{ i.Code }}</span>
 				</ng-template>
 			</datatable-column>
 		</app-data-table>

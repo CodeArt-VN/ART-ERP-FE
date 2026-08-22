@@ -28,13 +28,23 @@ export const VMSRoutes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'vms-edge-node/:id',
+		loadChildren: () => import('./edge-node-detail/vms-edge-node-detail.module').then((m) => m.VmsEdgeNodeDetailPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'vms-event',
 		loadChildren: () => import('./event/vms-event.module').then((m) => m.VmsEventPageModule),
 		canActivate: [AuthGuard],
 	},
 	{
-		path: 'vms-gallery',
-		loadChildren: () => import('./gallery/vms-gallery.module').then((m) => m.VmsGalleryPageModule),
+		path: 'vms-person',
+		loadChildren: () => import('./person/vms-person.module').then((m) => m.VmsPersonPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'vms-person/:id',
+		loadChildren: () => import('./person-detail/vms-person-detail.module').then((m) => m.VmsPersonDetailPageModule),
 		canActivate: [AuthGuard],
 	},
 	{

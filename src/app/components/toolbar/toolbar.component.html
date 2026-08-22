@@ -211,7 +211,7 @@
 		<ion-button
 			class="ion-hide-md-down"
 			title="{{ 'Split' | translate }}"
-			*ngIf="page.selectedItems?.length == 1 && !page.query.IsDisabled && page.pageConfig.canSplit && page.pageConfig.ShowSplit"
+			*ngIf="page.selectedItems?.length && (page.selectedItems?.length == 1 || page.pageConfig.AllowSplitMany) && !page.query.IsDisabled && page.pageConfig.canSplit && page.pageConfig.ShowSplit"
 			(click)="page.split()"
 		>
 			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
@@ -476,7 +476,7 @@
 								title="{{ 'Split' | translate }}"
 								[button]="true"
 								[detail]="false"
-								*ngIf="page.selectedItems?.length == 1 && !page.query.IsDisabled && !page.pageConfig.isDetailPage && page.pageConfig.canSplit && ShowSplit"
+								*ngIf="page.selectedItems?.length && (page.selectedItems?.length == 1 || page.pageConfig.AllowSplitMany) && !page.query.IsDisabled && !page.pageConfig.isDetailPage && page.pageConfig.canSplit && ShowSplit"
 								(click)="isToolBarPopoverOpen = false; page.split()"
 							>
 								<ion-icon color="warning" slot="start" name="git-branch"></ion-icon>

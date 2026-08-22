@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { VMS_CameraProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_CameraProvider } from 'src/app/services/static/services.service';
 
 /** ACL list — grant/manage on camera detail → Permissions segment. */
 @Component({

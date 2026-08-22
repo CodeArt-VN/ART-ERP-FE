@@ -1,8 +1,28 @@
 <ion-header [translucent]="true">
-	<app-toolbar [page]="this"></app-toolbar>
+	<app-toolbar [page]="this">
+		<ion-button
+			*ngIf="item?.Id && pageConfig.canEdit !== false"
+			title="{{ 'Scan cameras' | translate }}"
+			(click)="scanChannels()"
+		>
+			<ion-icon slot="icon-only" name="scan-outline"></ion-icon>
+		</ion-button>
+		<ion-button
+			*ngIf="pageConfig.canEdit !== false && selectedCameras.length"
+			title="{{ (bulkNextInUse() ? 'In use' : 'Stop using') | translate }}"
+			(click)="bulkToggleInUse($event)"
+		>
+			<ion-icon
+				slot="icon-only"
+				[color]="bulkNextInUse() ? 'medium' : 'success'"
+				[name]="bulkNextInUse() ? 'ellipse-outline' : 'checkmark-circle'"
+			></ion-icon>
+		</ion-button>
+	</app-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+	<div id="vms-nvr-detail-page" style="position: absolute; z-index: 30005"></div>
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner == false">
 		<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
@@ -16,9 +36,24 @@
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control [field]="{ id: 'Id', label: 'Id', type: 'number', form: formGroup }"></app-form-control>
+						<app-form-control
+							[field]="{
+								id: 'IDBranch',
+								label: 'Branch',
+								type: 'ng-select-branch',
+								dataSource: branchList,
+								bindLabel: 'Name',
+								bindValue: 'Id',
+								form: formGroup,
+								appendTo: '#vms-nvr-detail-page',
+								branchConfig: { selectedBranch: env.selectedBranch }
+							}"
+							(change)="saveChange()"
+						></app-form-control>
 						<app-form-control [field]="{ id: 'Code', label: 'Code', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control [field]="{ id: 'Name', label: 'Name', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control [field]="{ id: 'Host', label: 'Host', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
+						<app-form-control [field]="{ id: 'HostWan', label: 'Host WAN (optional)', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control
 							[field]="{ id: 'Port', label: 'Port', type: 'number', mask: '99999', thousandSeparator: '', form: formGroup }"
 							(change)="saveChange()"
@@ -36,10 +71,6 @@
 							</a>
 						</app-form-control>
 						<app-form-control [field]="{ id: 'Protocol', label: 'Protocol', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
-						<app-form-control
-							[field]="{ id: 'IDBranch', type: 'branch-breadcrumbs', label: 'Branch', form: formGroup, dataSource: env.branchList }"
-							(change)="saveChange()"
-						></app-form-control>
 					</ion-col>
 				</ion-row>
 
@@ -50,12 +81,30 @@
 						</ion-list-header>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="8">
-						<app-data-table class="box-shadow responsive" [rows]="cameras" [trackBy]="'Id'" [showSpinner]="false" [isQueryLocalOnly]="true">
+						<app-data-table
+							class="box-shadow responsive"
+							[rows]="cameras"
+							[trackBy]="'_rowKey'"
+							[(selectedRows)]="selectedCameras"
+							[showSpinner]="false"
+							[isQueryLocalOnly]="true"
+						>
 							<datatable-empty-message>
 								<ng-template datatable-empty-message-template>
 									{{ 'No cameras on this NVR' | translate }}
 								</ng-template>
 							</datatable-empty-message>
+							<datatable-column [checkbox]="true" name="" [canSort]="false" [canFilter]="false">
+								<ng-template datatable-header-template>
+									<input
+										class="c-checkbox"
+										type="checkbox"
+										[checked]="allCamerasSelected()"
+										[attr.title]="(allCamerasSelected() ? 'Unselect all' : 'Select all') | translate"
+										(change)="toggleSelectAllCameras($event)"
+									/>
+								</ng-template>
+							</datatable-column>
 							<datatable-column class="col-number col-ch" name="Channel" property="ChannelNo">
 								<ng-template let-i="row" datatable-cell-template>
 									<span *ngIf="i.ChannelNo != null">CH{{ i.ChannelNo }}</span>
@@ -63,7 +112,6 @@
 								</ng-template>
 							</datatable-column>
 							<datatable-column class="col-name flex-break" name="Name" property="Name"></datatable-column>
-							<datatable-column class="col-code" name="Code" property="Code"></datatable-column>
 							<datatable-column class="col-status" name="Status" property="online">
 								<ng-template let-i="row" datatable-cell-template>
 									<span class="hb">
@@ -72,7 +120,7 @@
 									</span>
 								</ng-template>
 							</datatable-column>
-							<datatable-column class="col-icon" name="In use" property="IsDisabled" [canSort]="false" [canFilter]="false">
+							<datatable-column class="col-icon" name="" property="IsDisabled" [canSort]="false" [canFilter]="false">
 								<ng-template let-i="row" datatable-cell-template>
 									<ion-icon
 										class="min-btn clickable"
@@ -87,7 +135,7 @@
 							<datatable-column class="col-icon" name="" property="Id" [canSort]="false" [canFilter]="false">
 								<ng-template let-i="row" datatable-cell-template>
 									<ion-icon
-										*ngIf="pageConfig.canEdit !== false"
+										*ngIf="pageConfig.canEdit !== false && savedInDb(i)"
 										color="danger"
 										class="min-btn clickable"
 										name="trash-outline"
@@ -97,12 +145,6 @@
 								</ng-template>
 							</datatable-column>
 						</app-data-table>
-						<div class="table-actions" *ngIf="pageConfig.canEdit !== false">
-							<ion-button fill="clear" size="small" type="button" (click)="scanChannels()">
-								<ion-icon slot="start" name="scan-outline"></ion-icon>
-								{{ 'Scan cameras' | translate }}
-							</ion-button>
-						</div>
 					</ion-col>
 				</ion-row>
 
@@ -119,6 +161,9 @@
 						<app-form-control [field]="{ id: 'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control
+							[field]="{ id: 'IDBranch', type: 'branch-breadcrumbs', label: 'Branch', form: formGroup, dataSource: env.branchList }"
+						></app-form-control>
 						<app-form-control [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
 					</ion-col>
 				</ion-row>

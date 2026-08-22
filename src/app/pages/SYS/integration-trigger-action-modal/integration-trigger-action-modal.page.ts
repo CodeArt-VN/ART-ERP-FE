@@ -141,7 +141,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 		if (detailLength > 0) {
 			this.env
 				.showPrompt('Changing Provider will be deleting all the current mapping,do you want to continue?', null, {
-					code: 'Delete {{value}} line(s)',
+					code: 'Delete {value} line(s)',
 					value: { value: detailLength },
 				})
 				.then((_) => {
@@ -244,7 +244,7 @@ export class IntegrationTriggerActionModalPage extends PageBase {
 		if (detailLength > 0) {
 			this.env
 				.showPrompt('Changing Action will be deleting all the current mapping,do you want to continue?', null, {
-					code: 'Delete {{value}} line(s)',
+					code: 'Delete {value} line(s)',
 					value: { value: detailLength },
 				})
 				.then((_) => {

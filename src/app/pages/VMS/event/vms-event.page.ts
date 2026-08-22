@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
-import { firstValueFrom } from 'rxjs';
 import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
-import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_EventProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_EventProvider } from 'src/app/services/static/services.service';
+import { environment } from 'src/environments/environment';
+import {
+	eventPersonLabel,
+	eventPhotoPath,
+	eventStatusBadgeColor,
+	eventStatusLabel,
+	eventStatusVisible,
+	eventTypeBadgeColor,
+	eventTypeLabel,
+} from './event-display.util';
+
 
 @Component({
 	selector: 'app-vms-event',
@@ -17,14 +26,13 @@ import { VMS_EventProvider } from 'src/app/services/vms/vms.providers';
 export class VmsEventPage extends PageBase {
 	eventTypeList = [
 		{ Code: '', Name: 'All' },
+		{ Code: 'face.seen', Name: 'Face seen' },
 		{ Code: 'attendance', Name: 'Attendance' },
 		{ Code: 'guest', Name: 'Guest' },
-		{ Code: 'pending_review', Name: 'Pending review' },
 	];
 
 	constructor(
 		public pageProvider: VMS_EventProvider,
-		public vmsApi: VmsApiService,
 		public modalController: ModalController,
 		public popoverCtrl: PopoverController,
 		public alertCtrl: AlertController,
@@ -36,22 +44,50 @@ export class VmsEventPage extends PageBase {
 		super();
 		this.pageConfig.canAdd = false;
 		this.pageConfig.canDelete = false;
+		this.pageConfig.ShowChangeBranch = false;
 	}
 
 	preLoadData(event?: any): void {
 		this.pageConfig.pageIcon = 'pulse-outline';
 		this.pageConfig.sort = [{ Dimension: 'OccurredAt', Order: 'DESC' } as SortConfig];
-		this.query.IgnoredBranch = true;
 		super.preLoadData(event);
 	}
 
-	async review(ev: any, approve: boolean) {
-		try {
-			await firstValueFrom(this.vmsApi.reviewEvent(ev.EventId, approve));
-			this.env.showMessage(approve ? 'Approved' : 'Rejected', 'success');
-			this.refresh();
-		} catch (e: any) {
-			this.env.showMessage(e?.message || 'Error', 'danger');
-		}
+	frameUrl(path: string): string {
+		if (!path) return '';
+		if (path.indexOf('http') === 0) return path;
+		return environment.appDomain.replace(/\/?$/, '/') + path.replace(/^\//, '');
+	}
+
+	photoSrc(row: { FramePath?: string; PhotoPath?: string }): string {
+		return this.frameUrl(eventPhotoPath(row));
+	}
+
+	personLabel(row: { DisplayName?: string; PersonId?: string }): string {
+		return eventPersonLabel(row);
+	}
+
+	typeLabel(row: { EventType?: string }): string {
+		return eventTypeLabel(row?.EventType);
+	}
+
+	typeColor(row: { EventType?: string }): string {
+		return eventTypeBadgeColor(row?.EventType);
+	}
+
+	statusVisible(row: { EventType?: string }): boolean {
+		return eventStatusVisible(row?.EventType);
+	}
+
+	statusColor(row: { Status?: string }): string {
+		return eventStatusBadgeColor(row?.Status);
+	}
+
+	statusLabel(row: { Status?: string }): string {
+		return eventStatusLabel(row?.Status);
+	}
+
+	openPeople() {
+		this.nav('/vms-person', 'forward');
 	}
 }

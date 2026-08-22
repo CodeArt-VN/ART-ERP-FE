@@ -16922,156 +16922,6 @@ export var APIListBase = {
 	},
 
 
-	VMS_FaceEmbedding:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "VMS/FaceEmbedding/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "VMS/FaceEmbedding"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "VMS/FaceEmbedding/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "VMS/FaceEmbedding/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "VMS/FaceEmbedding/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceEmbedding/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceEmbedding/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceEmbedding/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "VMS/FaceEmbedding"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "VMS/FaceEmbedding/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "VMS/FaceEmbedding/" + id} 
-        }
-		
-	},
-
-
-	VMS_FaceIdentity:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "VMS/FaceIdentity/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "VMS/FaceIdentity"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "VMS/FaceIdentity/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "VMS/FaceIdentity/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "VMS/FaceIdentity/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceIdentity/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceIdentity/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/FaceIdentity/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "VMS/FaceIdentity"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "VMS/FaceIdentity/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "VMS/FaceIdentity/" + id} 
-        }
-		
-	},
-
-
-	VMS_GuestVisit:{
-        getSearchList:{
-            method: "GET",
-            url: function(){return "VMS/GuestVisit/Search"}  
-        },
-        getList:{
-            method: "GET",
-            url: function(){return "VMS/GuestVisit"}  
-        },
-        getExport:{
-            method: "DOWNLOAD",
-            url: function(){return "VMS/GuestVisit/Export"}  
-        },
-        postImport:{
-            method: "UPLOAD",
-            url: function(){return "VMS/GuestVisit/Import"}  
-        },
-        getItem:{
-            method: "GET",
-            url: function(id){return "VMS/GuestVisit/" + id} 
-        },
-        putItem:{
-            method: "PUT",
-            url: function(id){return "VMS/GuestVisit/" + id} 
-        },
-        disableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/GuestVisit/Disable/" + id} 
-        },
-        enableItem:{
-            method: "PUT",
-            url: function(id){return "VMS/GuestVisit/Enable/" + id} 
-        },
-        
-        postItem:{
-            method: "POST",
-            url: function(){return "VMS/GuestVisit"}
-        },
-        changeBranch:{
-            method: "POST",
-            url: function(){return "VMS/GuestVisit/ChangeBranch"} 
-        },
-        delItem:{
-            method: "DELETE",
-            url: function(id){return "VMS/GuestVisit/" + id} 
-        }
-		
-	},
-
-
 	VMS_NvrDevice:{
         getSearchList:{
             method: "GET",
@@ -17117,6 +16967,206 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "VMS/NvrDevice/" + id} 
+        }
+		
+	},
+
+
+	VMS_Person:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/Person/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/Person"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/Person/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/Person/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/Person/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Person/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Person/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/Person/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/Person"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/Person/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/Person/" + id} 
+        }
+		
+	},
+
+
+	VMS_PersonFaceVector:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/PersonFaceVector/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/PersonFaceVector"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/PersonFaceVector/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/PersonFaceVector/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/PersonFaceVector/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonFaceVector/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonFaceVector/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonFaceVector/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/PersonFaceVector"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/PersonFaceVector/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/PersonFaceVector/" + id} 
+        }
+		
+	},
+
+
+	VMS_PersonPhoto:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/PersonPhoto/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/PersonPhoto"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/PersonPhoto/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/PersonPhoto/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/PersonPhoto/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonPhoto/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonPhoto/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonPhoto/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/PersonPhoto"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/PersonPhoto/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/PersonPhoto/" + id} 
+        }
+		
+	},
+
+
+	VMS_PersonVisit:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "VMS/PersonVisit/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "VMS/PersonVisit"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "VMS/PersonVisit/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "VMS/PersonVisit/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "VMS/PersonVisit/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonVisit/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonVisit/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "VMS/PersonVisit/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "VMS/PersonVisit"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "VMS/PersonVisit/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "VMS/PersonVisit/" + id} 
         }
 		
 	},

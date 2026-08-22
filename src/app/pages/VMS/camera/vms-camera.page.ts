@@ -6,7 +6,8 @@ import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_CameraProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_CameraProvider } from 'src/app/services/static/services.service';
+import { cameraAiBadgeColor, cameraAiLabel, cameraRoleBadgeColor } from './vms-camera.util';
 
 @Component({
 	selector: 'app-vms-camera',
@@ -38,20 +39,19 @@ export class VmsCameraPage extends PageBase {
 	preLoadData(event?: any): void {
 		this.pageConfig.pageIcon = 'videocam-outline';
 		this.pageConfig.sort = [{ Dimension: 'Id', Order: 'DESC' } as SortConfig];
-		this.query.IgnoredBranch = true;
 		super.preLoadData(event);
 	}
 
-	loadedData(event?: any, ignoredFromGroup?: boolean): void {
-		this.items.forEach((item) => {
-			const b = this.env.branchList?.find((x) => x.Id == item.IDBranch);
-			item.BranchName = b ? b.Name || b.Code : item.IDBranch ? '#' + item.IDBranch : '—';
-		});
-		super.loadedData(event, ignoredFromGroup);
+	roleColor(row: { Role?: string }) {
+		return cameraRoleBadgeColor(row?.Role);
 	}
 
-	fromNvr(row: any) {
-		return !!row?.IDNvr;
+	aiColor(row: { AiEnabled?: unknown }) {
+		return cameraAiBadgeColor(row?.AiEnabled);
+	}
+
+	aiLabel(row: { AiEnabled?: unknown }) {
+		return cameraAiLabel(row?.AiEnabled);
 	}
 
 	delete(publishEventCode = this.pageConfig.pageName) {

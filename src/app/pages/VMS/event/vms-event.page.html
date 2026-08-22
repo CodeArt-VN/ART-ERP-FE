@@ -10,8 +10,9 @@
 	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
 	<div class="safe-max-width">
+		<ion-button fill="outline" size="small" class="ion-margin-bottom" (click)="openPeople()">{{ 'Assign faces in Person' | translate }}</ion-button>
 		<app-data-table
-			class="box-shadow responsive"
+			class="box-shadow responsive ev-event-table"
 			[rows]="items"
 			[trackBy]="'EventId'"
 			[(selectedRows)]="selectedItems"
@@ -22,20 +23,38 @@
 			(filter)="onDatatableFilter($event)"
 			(sort)="onSort($event)"
 		>
-			<datatable-column class="col-date" format="yyyy-MM-dd HH:mm:ss" name="Time" property="OccurredAt" filterControlType="date"></datatable-column>
-			<datatable-column class="col-code" name="Type" property="EventType" filterControlType="ng-select" [filterDataSource]="eventTypeList"></datatable-column>
-			<datatable-column class="col-name" name="Camera" property="CameraId"></datatable-column>
-			<datatable-column class="col-name flex-break" name="Person" property="DisplayName">
+			<datatable-column class="col-photo" name="Photo" property="FramePath" [canSort]="false" [canFilter]="false">
 				<ng-template let-i="row" datatable-cell-template>
-					<div class="bold">{{i.DisplayName || i.PersonId}}</div>
-					<small *ngIf="i.EmployeeCode">{{i.EmployeeCode}}</small>
+					<img *ngIf="photoSrc(i)" class="ev-thumb" [src]="photoSrc(i)" alt="" />
+					<span *ngIf="!photoSrc(i)" class="ev-thumb is-empty" aria-hidden="true"></span>
 				</ng-template>
 			</datatable-column>
-			<datatable-column class="col-status" name="Status" property="Status">
+			<datatable-column class="col-name" name="Person" property="DisplayName">
 				<ng-template let-i="row" datatable-cell-template>
-					<ion-badge color="medium">{{i.Status}}</ion-badge>
-					<ion-button *ngIf="i.Status==='PendingReview'" size="small" fill="clear" (click)="review(i, true)">{{ 'OK' | translate }}</ion-button>
-					<ion-button *ngIf="i.Status==='PendingReview'" size="small" fill="clear" color="danger" (click)="review(i, false)">{{ 'X' | translate }}</ion-button>
+					<div class="ev-person">
+						<div class="bold">{{ personLabel(i) }}</div>
+						<div class="ev-when" *ngIf="i.OccurredAt">
+							<span class="ev-val">{{ i.OccurredAt | date:'HH:mm:ss' }}</span>
+							<span class="ev-day">{{ i.OccurredAt | date:'dd/MM' }}</span>
+						</div>
+						<div class="ev-tags" *ngIf="i.CameraId || i.EdgeNodeId">
+							<ion-badge *ngIf="i.CameraId" color="medium">{{ i.CameraId }}</ion-badge>
+							<ion-badge *ngIf="i.EdgeNodeId" color="tertiary">{{ i.EdgeNodeId }}</ion-badge>
+						</div>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-status" name="Type" property="EventType" filterControlType="ng-select" [filterDataSource]="eventTypeList">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-badge [color]="typeColor(i)">{{ typeLabel(i) | translate }}</ion-badge>
+					<ion-badge *ngIf="statusVisible(i)" [color]="statusColor(i)">{{ statusLabel(i) | translate }}</ion-badge>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-date" name="Time" property="OccurredAt" filterControlType="date">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="ev-val" *ngIf="i.OccurredAt">{{ i.OccurredAt | date:'HH:mm:ss' }}</span>
+					<span class="ev-day" *ngIf="i.OccurredAt">{{ i.OccurredAt | date:'dd/MM' }}</span>
+					<span *ngIf="!i.OccurredAt">—</span>
 				</ng-template>
 			</datatable-column>
 		</app-data-table>
