@@ -62,7 +62,7 @@ export class RegisterPage extends PageBase {
 					.catch((err) => {
 						loading.dismiss();
 						if (err.error && err.error.ModelState[''] && err.error.ModelState[''].toString().indexOf('already taken')) {
-							this.env.showMessage('Email {{value}} has been registered. Please log in or register with another email.', '', this.item.EmailAddress);
+							this.env.showMessage('Email {value} has been registered. Please log in or register with another email.', '', this.item.EmailAddress);
 						} else {
 							this.env.showMessage('Registration failed. Please try again.');
 						}

@@ -632,7 +632,7 @@ export class CommonService {
 
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
-			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
+			this.env.showMessage('Please update the software ( to min version {value}).', 'danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP });
 		} else if (err.status == 401) {
 			const hasToken = !!this.env.storage?.app?.token?.access_token;

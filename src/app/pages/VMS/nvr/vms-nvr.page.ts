@@ -6,7 +6,8 @@ import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_NvrProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_CameraProvider, VMS_NvrDeviceProvider } from 'src/app/services/static/services.service';
+import { nvrApplyCameraCounts, nvrCameraCount, nvrCameraInUse, nvrNeedsCameraCounts } from './vms-nvr.util';
 
 @Component({
 	selector: 'app-vms-nvr',
@@ -16,7 +17,8 @@ import { VMS_NvrProvider } from 'src/app/services/vms/vms.providers';
 })
 export class VmsNvrPage extends PageBase {
 	constructor(
-		public pageProvider: VMS_NvrProvider,
+		public pageProvider: VMS_NvrDeviceProvider,
+		public cameraProvider: VMS_CameraProvider,
 		public vmsApi: VmsApiService,
 		public modalController: ModalController,
 		public popoverCtrl: PopoverController,
@@ -32,16 +34,29 @@ export class VmsNvrPage extends PageBase {
 	preLoadData(event?: any): void {
 		this.pageConfig.pageIcon = 'server-outline';
 		this.pageConfig.sort = [{ Dimension: 'Id', Order: 'DESC' } as SortConfig];
-		this.query.IgnoredBranch = true;
 		super.preLoadData(event);
 	}
 
 	loadedData(event?: any, ignoredFromGroup?: boolean): void {
-		this.items.forEach((item) => {
-			const b = this.env.branchList?.find((x) => x.Id == item.IDBranch);
-			item.BranchName = b ? b.Name || b.Code : item.IDBranch ? '#' + item.IDBranch : '—';
-		});
-		super.loadedData(event, ignoredFromGroup);
+		if (!nvrNeedsCameraCounts(this.items)) {
+			super.loadedData(event, ignoredFromGroup);
+			return;
+		}
+		this.cameraProvider
+			.readServer({})
+			.then((res: any) => {
+				nvrApplyCameraCounts(this.items, res?.data || []);
+				super.loadedData(event, ignoredFromGroup);
+			})
+			.catch(() => super.loadedData(event, ignoredFromGroup));
+	}
+
+	cameraInUse(row: { CameraInUse?: number; CameraCount?: number }) {
+		return nvrCameraInUse(row);
+	}
+
+	cameraCount(row: { CameraInUse?: number; CameraCount?: number }) {
+		return nvrCameraCount(row);
 	}
 
 	delete(publishEventCode = this.pageConfig.pageName) {

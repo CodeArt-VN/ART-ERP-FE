@@ -389,6 +389,129 @@ app-data-table,
 			}
 		}
 
+		// Full path can wrap after each ">"; each crumb stays on one line (no mid-item wrap)
+		app-branch-breadcrumbs {
+			display: block;
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+			white-space: pre-wrap;
+			line-height: 1.35;
+			font-size: inherit;
+			color: inherit;
+			vertical-align: baseline;
+
+			ion-breadcrumbs {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				padding: 0 !important;
+				margin: 0 !important;
+				min-height: 0 !important;
+				max-width: 100%;
+				white-space: pre-wrap;
+				--background: transparent;
+				--color: inherit;
+				--padding-top: 0;
+				--padding-bottom: 0;
+				--padding-start: 0;
+				--padding-end: 0;
+
+				ion-breadcrumb {
+					margin: 0 !important;
+					padding: 0 !important;
+					min-height: 0 !important;
+					font-size: inherit;
+					font-weight: inherit;
+					line-height: inherit;
+					white-space: nowrap; // keep one crumb on one line
+					flex: 0 0 auto;
+					max-width: 100%; // only caps item longer than the whole cell
+					--color: inherit;
+					--color-active: inherit;
+					--color-hover: var(--ion-color-primary);
+					--color-focused: var(--ion-color-primary);
+
+					&:not(.breadcrumb-collapsed),
+					&.breadcrumb-active {
+						display: inline-flex !important;
+						align-items: center !important;
+						vertical-align: middle !important;
+					}
+
+					&::part(native) {
+						display: inline-block !important;
+						padding: 0 !important;
+						margin: 0 !important;
+						min-height: 0 !important;
+						height: auto !important;
+						max-width: 100%;
+						background: transparent !important;
+						border: none !important;
+						border-radius: 0 !important;
+						box-shadow: none !important;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						vertical-align: middle;
+						line-height: 1.35;
+					}
+
+					&::part(separator) {
+						display: inline-flex !important;
+						align-items: center !important;
+						flex-shrink: 0;
+						margin: 0 6px !important;
+						padding: 0 !important;
+						min-width: 0 !important;
+						opacity: 0.5;
+						vertical-align: middle;
+						font-size: 12px;
+					}
+
+					&.breadcrumb-collapsed {
+						&:not(:first-child) {
+							display: none !important;
+						}
+
+						&:first-child {
+							display: inline-flex !important;
+							align-items: center !important;
+							vertical-align: middle !important;
+							margin-right: 6px !important;
+
+							&::part(native) {
+								display: none !important;
+							}
+
+							&::part(separator) {
+								display: none !important;
+							}
+
+							&::part(collapsed-indicator) {
+								display: inline-flex !important;
+								align-items: center;
+								justify-content: center;
+								margin: 0 !important;
+								padding: 0 !important;
+								min-width: 0 !important;
+								min-height: 0 !important;
+								height: 1em !important;
+								line-height: 1 !important;
+								background: transparent !important;
+								border: none !important;
+								border-radius: 0 !important;
+								box-shadow: none !important;
+								opacity: 0.75;
+								cursor: pointer;
+								vertical-align: middle;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		.c-checkbox {
 			display: inline-block;
 			margin: 0;

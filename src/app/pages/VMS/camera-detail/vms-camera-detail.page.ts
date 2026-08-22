@@ -7,7 +7,7 @@ import { PageBase } from 'src/app/page-base';
 import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_CameraProvider, VMS_NvrProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_CameraProvider, VMS_NvrDeviceProvider } from 'src/app/services/static/services.service';
 
 @Component({
 	selector: 'app-vms-camera-detail',
@@ -16,7 +16,8 @@ import { VMS_CameraProvider, VMS_NvrProvider } from 'src/app/services/vms/vms.pr
 	standalone: false,
 })
 export class VmsCameraDetailPage extends PageBase {
-	nvrName = '';
+	nvrList: any[] = [];
+	branchList: any[] = [];
 	roleList = [
 		{ Code: 'IN', Name: 'IN' },
 		{ Code: 'OUT', Name: 'OUT' },
@@ -27,7 +28,7 @@ export class VmsCameraDetailPage extends PageBase {
 
 	constructor(
 		public pageProvider: VMS_CameraProvider,
-		public nvrProvider: VMS_NvrProvider,
+		public nvrProvider: VMS_NvrDeviceProvider,
 		public vmsApi: VmsApiService,
 		public env: EnvService,
 		public navCtrl: NavController,
@@ -69,26 +70,37 @@ export class VmsCameraDetailPage extends PageBase {
 	}
 
 	preLoadData(event?: any): void {
-		this.query.IgnoredBranch = true;
-		super.preLoadData(event);
+		this.branchList = [...(this.env.branchList || [])];
+		this.nvrProvider
+			.read({ Take: 500 })
+			.then((rs: any) => {
+				this.nvrList = rs?.data || [];
+				super.preLoadData(event);
+			})
+			.catch(() => {
+				this.nvrList = [];
+				super.preLoadData(event);
+			});
 	}
 
 	loadedData(event?: any, ignoredFromGroup?: boolean): void {
 		super.loadedData(event, ignoredFromGroup);
-		this.nvrName = '';
 		this.canManagePermission = this.pageConfig.canEdit !== false;
+		if (!this.item?.Id) {
+			this.formGroup.patchValue(
+				{
+					IDBranch: this.env.selectedBranch,
+					Role: 'BOTH',
+					AiEnabled: true,
+				},
+				{ emitEvent: false }
+			);
+			['IDBranch', 'Role', 'AiEnabled'].forEach((k) => this.formGroup.get(k)?.markAsDirty());
+		}
 		if (this.fromNvr) {
-			this.formGroup.disable({ emitEvent: false });
-			this.pageConfig.canEdit = false;
-			this.pageConfig.ShowSave = false;
-			this.nvrProvider
-				.getAnItem(this.item.IDNvr)
-				.then((nvr: any) => {
-					this.nvrName = nvr?.Name || nvr?.Code || '#' + this.item.IDNvr;
-				})
-				.catch(() => {
-					this.nvrName = '#' + this.item.IDNvr;
-				});
+			['IDNvr', 'IDBranch', 'ChannelNo', 'RtspMain', 'RtspSub'].forEach((k) =>
+				this.formGroup.get(k)?.disable({ emitEvent: false })
+			);
 		}
 		if (this.item?.Id) this.loadPermissions();
 	}
@@ -140,7 +152,6 @@ export class VmsCameraDetailPage extends PageBase {
 	}
 
 	async saveChange() {
-		if (this.fromNvr) return;
 		super.saveChange2();
 	}
 

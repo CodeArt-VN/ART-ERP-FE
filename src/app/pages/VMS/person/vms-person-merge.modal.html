@@ -1,0 +1,78 @@
+<div id="vms-person-merge-modal" style="position: absolute; z-index: 30005"></div>
+
+<ion-header>
+	<ion-toolbar>
+		<ion-title>{{ 'Merge' | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="cancel()">{{ 'Cancel' | translate }}</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<p class="gp-merge-hint" *ngIf="mappedCount === 1 && !advancedContact?.Id">
+		{{ 'Merging unassigned persons into the highlighted assigned person.' | translate }}
+	</p>
+	<p class="gp-merge-hint" *ngIf="mappedCount > 1 && !advancedContact?.Id">
+		{{ 'Select one assigned person as the merge target.' | translate }}
+	</p>
+	<p class="gp-merge-hint" *ngIf="mappedCount === 0 && !advancedContact?.Id">
+		{{ 'No assigned person — pick a target below.' | translate }}
+	</p>
+	<p class="gp-merge-target" *ngIf="targetName">{{ 'Target' | translate }}: {{ targetName }}</p>
+
+	<div class="gp-person-grid">
+		<div
+			class="gp-person"
+			*ngFor="let p of items"
+			[class.is-merge-target]="isTarget(p)"
+			[class.is-mapped]="isMapped(p)"
+		>
+			<button type="button" class="gp-face" (click)="onFaceClick(p)" [attr.aria-label]="personLabel(p)">
+				<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
+				<ion-icon *ngIf="!photoOf(p)" [name]="isMapped(p) ? (p.IsStaff || p.PersonType === 'staff' ? 'person' : 'briefcase') : 'help-circle'"></ion-icon>
+				<span class="gp-chip" *ngIf="personChipOf(p) as o">
+					<span class="gp-chip-cam" *ngIf="o.code">{{ o.code }}</span>
+					<span class="gp-chip-time" *ngIf="o.name">{{ o.name }}</span>
+				</span>
+				<span class="gp-chip" *ngIf="!personChipOf(p) && faceChipOf(p) as o">
+					<span class="gp-chip-edge" *ngIf="o.edge">{{ o.edge }}</span>
+					<span class="gp-chip-cam" *ngIf="o.camera">{{ o.camera }}</span>
+					<span class="gp-chip-time" *ngIf="o.time">{{ o.time | date: 'HH:mm dd/MM' }}</span>
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="gp-merge-advanced" *ngIf="showAdvanced || mappedCount === 0">
+		<app-form-control
+			[field]="{
+				id: 'IDContact',
+				label: 'Object',
+				type: 'ng-select-bp',
+				dataSource: _contactDataSource,
+				bindValue: 'Id',
+				bindLabel: 'Name',
+				clearable: true,
+				form: formGroup,
+				appendTo: '#vms-person-merge-modal',
+				placeholder: 'Type to search...'
+			}"
+			(change)="onAdvancedContactChange($event)"
+		></app-form-control>
+	</div>
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<div class="gp-merge-footer">
+			<button type="button" class="gp-text-action" *ngIf="mappedCount > 0" (click)="toggleAdvanced()">
+				{{ (showAdvanced ? 'Hide advanced' : 'Advanced') | translate }}
+			</button>
+			<div class="gp-merge-actions">
+				<ion-button fill="clear" (click)="cancel()">{{ 'Cancel' | translate }}</ion-button>
+				<ion-button color="primary" [disabled]="!canConfirm" (click)="confirm()">{{ 'Merge' | translate }}</ion-button>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-footer>

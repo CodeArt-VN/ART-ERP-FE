@@ -1,0 +1,126 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this">
+		<ion-button title="{{ 'Upload staff card photos' | translate }}" (click)="openBulkPhotoPicker()">
+			<ion-icon color="success" slot="icon-only" name="images-outline"></ion-icon>
+		</ion-button>
+	</app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width gp-person-page">
+		<ion-segment class="gp-tabs" [value]="view" (ionChange)="setView($event)">
+			<ion-segment-button value="all"><ion-label>{{ 'All' | translate }}</ion-label></ion-segment-button>
+			<ion-segment-button value="staff"><ion-label>{{ 'Employees' | translate }}</ion-label></ion-segment-button>
+			<ion-segment-button value="guest"><ion-label>{{ 'Partner' | translate }}</ion-label></ion-segment-button>
+			<ion-segment-button value="unnamed"><ion-label>{{ 'Unassigned' | translate }}</ion-label></ion-segment-button>
+		</ion-segment>
+
+		<div class="gp-select-bar" *ngIf="pageConfig.canDelete !== false">
+			<label class="gp-select-all">
+				<input
+					class="c-checkbox"
+					type="checkbox"
+					[checked]="allVisibleSelected()"
+					[attr.title]="(allVisibleSelected() ? 'Unselect all' : 'Select all') | translate"
+					(click)="$event.preventDefault(); toggleSelectVisible($event)"
+				/>
+				<span>{{ 'Select all' | translate }}</span>
+			</label>
+			<span class="gp-select-count" *ngIf="selectedItems.length">{{ selectedItems.length }} {{ 'selected' | translate }}</span>
+		</div>
+
+		<section *ngIf="view === 'all' || view === 'staff'">
+			<h2 class="gp-section">{{ 'Employees' | translate }}</h2>
+			<div class="gp-person-grid" *ngIf="staffPeople.length; else emptyStaff">
+				<div class="gp-person" *ngFor="let p of staffPeople" [class.is-selected]="p.checked">
+					<input
+						*ngIf="pageConfig.canDelete !== false"
+						class="c-checkbox gp-check"
+						type="checkbox"
+						[(ngModel)]="p.checked"
+						(click)="changeSelection(p, $event)"
+						[attr.aria-label]="'Select' | translate"
+					/>
+					<button type="button" class="gp-face" [class.is-off]="isDisabledPerson(p)" (click)="onFaceClick(p, $event)" [attr.aria-label]="personLabel(p)">
+						<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
+						<ion-icon *ngIf="!photoOf(p)" name="person"></ion-icon>
+						<span class="gp-ready-dot" *ngIf="!edgeReady(p)"></span>
+						<ng-container *ngTemplateOutlet="personChip; context: { $implicit: p }"></ng-container>
+					</button>
+				</div>
+			</div>
+			<ng-template #emptyStaff>
+				<p class="gp-empty" *ngIf="view === 'staff'">{{ 'No staff with IsStaff BP assigned. Open Unassigned and tap a face to map.' | translate }}</p>
+			</ng-template>
+		</section>
+
+		<section *ngIf="view === 'all' || view === 'guest'">
+			<h2 class="gp-section">{{ 'Partners / guests' | translate }}</h2>
+			<div class="gp-person-grid" *ngIf="bpPeople.length; else emptyBp">
+				<div class="gp-person" *ngFor="let p of bpPeople" [class.is-selected]="p.checked">
+					<input
+						*ngIf="pageConfig.canDelete !== false"
+						class="c-checkbox gp-check"
+						type="checkbox"
+						[(ngModel)]="p.checked"
+						(click)="changeSelection(p, $event)"
+						[attr.aria-label]="'Select' | translate"
+					/>
+					<button type="button" class="gp-face" [class.is-off]="isDisabledPerson(p)" (click)="onFaceClick(p, $event)" [attr.aria-label]="personLabel(p)">
+						<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
+						<ion-icon *ngIf="!photoOf(p)" name="briefcase"></ion-icon>
+						<span class="gp-ready-dot" *ngIf="!edgeReady(p)"></span>
+						<ng-container *ngTemplateOutlet="personChip; context: { $implicit: p }"></ng-container>
+					</button>
+				</div>
+			</div>
+			<ng-template #emptyBp>
+				<p class="gp-empty" *ngIf="view === 'guest'">{{ 'No partners assigned.' | translate }}</p>
+			</ng-template>
+		</section>
+
+		<section *ngIf="view === 'all' || view === 'unnamed'">
+			<h2 class="gp-section">{{ 'Unassigned BP' | translate }}</h2>
+			<div class="gp-person-grid" *ngIf="needsMappingFaces.length">
+				<div class="gp-person" *ngFor="let f of needsMappingFaces" [class.is-selected]="f.checked">
+					<input
+						*ngIf="pageConfig.canDelete !== false"
+						class="c-checkbox gp-check"
+						type="checkbox"
+						[(ngModel)]="f.checked"
+						(click)="changeSelection(f, $event)"
+						[attr.aria-label]="'Select' | translate"
+					/>
+					<button type="button" class="gp-face" (click)="onFaceClick(f, $event)" [attr.aria-label]="personLabel(f)">
+						<img *ngIf="photoOf(f)" [src]="photoOf(f)" alt="" />
+						<ion-icon *ngIf="!photoOf(f)" name="help-circle"></ion-icon>
+						<span class="gp-ready-dot" *ngIf="!edgeReady(f)"></span>
+						<ng-container *ngTemplateOutlet="faceChip; context: { $implicit: f }"></ng-container>
+					</button>
+				</div>
+			</div>
+			<p class="gp-empty" *ngIf="!needsMappingFaces.length && !pageConfig.showSpinner">{{ 'No unassigned faces.' | translate }}</p>
+		</section>
+	</div>
+</ion-content>
+
+<ng-template #personChip let-row>
+	<span class="gp-chip" *ngIf="personChipOf(row) as o">
+		<span class="gp-chip-cam" *ngIf="o.code">{{ o.code }}</span>
+		<span class="gp-chip-time" *ngIf="o.name">{{ o.name }}</span>
+	</span>
+</ng-template>
+
+<ng-template #faceChip let-row>
+	<span class="gp-chip" *ngIf="faceChipOf(row) as o">
+		<span class="gp-chip-edge" *ngIf="o.edge">{{ o.edge }}</span>
+		<span class="gp-chip-cam" *ngIf="o.camera">{{ o.camera }}</span>
+		<span class="gp-chip-time" *ngIf="o.time">{{ o.time | date: 'HH:mm dd/MM' }}</span>
+	</span>
+</ng-template>

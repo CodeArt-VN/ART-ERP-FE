@@ -1,0 +1,340 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content
+	[fullscreen]="true"
+	appScrollbarTheme
+	class="left"
+	[ngClass]="{ withFeature: pageConfig.isShowFeature }"
+	forceOverscroll="false"
+>
+	<div id="vms-person-detail-page" style="position: absolute; z-index: 30005"></div>
+	<ion-fab
+		[ngClass]="{ withSearch: pageConfig.isShowSearch, 'ion-hide-md-down': pageConfig.isSubActive }"
+		class="feature no-print"
+		vertical="bottom"
+		horizontal="start"
+		slot="fixed"
+	>
+		<app-page-message [itemsLength]="item ? 1 : 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+		<div *ngIf="pageConfig.showSpinner == false && item">
+			<ion-list lines="full">
+				<ion-item class="img-holder">
+					<div style="margin: 0 auto" class="avatar ion-padding">
+						<img class="ion-margin" [src]="avatarURL" (error)="img.src = 'assets/avartar-empty.jpg'" #img />
+						<div>
+							<ion-button class="change-avatar" *ngIf="isDisabledPerson(item)" color="danger" size="small">
+								{{ 'Stop recognition' | translate }}
+							</ion-button>
+						</div>
+						<ion-label>
+							<h1 class="bold">{{ displayTitle }}</h1>
+						</ion-label>
+						<ion-label class="ion-text-wrap ion-text-center" style="padding-top: 8px">
+							<ion-chip color="primary" *ngIf="item.EmployeeCode">
+								<ion-icon name="barcode-outline"></ion-icon>
+								<ion-label>{{ item.EmployeeCode }}</ion-label>
+							</ion-chip>
+							<ion-chip color="tertiary" *ngIf="item.PersonType">
+								<ion-icon name="person-outline"></ion-icon>
+								<ion-label>{{ item.PersonType }}</ion-label>
+							</ion-chip>
+						</ion-label>
+						<div class="pd-actions ion-padding-top">
+							<button
+								type="button"
+								class="gp-text-action"
+								[class.off]="!isDisabledPerson(item)"
+								(click)="isDisabledPerson(item) ? enable(item) : disable(item)"
+							>
+								{{ personActionLabel(item) | translate }}
+							</button>
+						</div>
+					</div>
+				</ion-item>
+			</ion-list>
+
+			<ion-list>
+				<ng-container *ngFor="let i of optionGroup">
+					<ion-item
+						[color]="segmentView.Page == i.Code ? 'primary' : ''"
+						button
+						detail="true"
+						class="clickable"
+						(click)="loadNode(i)"
+					>
+						<ion-icon slot="start" aria-hidden="true" [name]="i.Icon"></ion-icon>
+						<ion-label class="ion-text-wrap">
+							<h3>{{ i.Name | translate }}</h3>
+							<p>{{ i.Remark | translate }}</p>
+						</ion-label>
+					</ion-item>
+				</ng-container>
+			</ion-list>
+			<div class="ion-padding" style="padding-bottom: 0"></div>
+		</div>
+	</ion-fab>
+
+	<app-page-title
+		class="ion-padding safe-max-width"
+		[icon]="selectedOption.Icon"
+		color="primary"
+		[title]="selectedOption.Name"
+		[remark]="selectedOption.Remark"
+	></app-page-title>
+
+	<div class="safe-max-width" *ngIf="pageConfig.showSpinner == false && item">
+		<ng-container *ngIf="segmentView.Page == 'person-info'">
+			<div class="main-view">
+				<div class="row-full shadow full-screen ion-padding">
+					<ion-grid fixed>
+						<form [formGroup]="formGroup">
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{ 'Persons' | translate }}</ion-label>
+									</ion-list-header>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control [field]="{ id: 'Id', label: 'Id', type: 'number', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'DisplayName', label: 'Display name', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'EmployeeCode', label: 'Employee code', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control
+										[field]="{
+											id: 'IDContact',
+											label: 'Business partner',
+											type: 'ng-select-bp',
+											dataSource: _contactDataSource,
+											bindValue: 'Id',
+											bindLabel: 'Name',
+											clearable: true,
+											form: formGroup,
+											appendTo: '#vms-person-detail-page',
+											placeholder: 'Type to search...'
+										}"
+										(change)="onContactChange($event)"
+									></app-form-control>
+									<app-form-control [field]="{ id: 'IsDisabled', label: 'Recognition status', type: 'text', form: formGroup }"></app-form-control>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control [field]="{ id: 'PersonType', label: 'Person type', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'PersonId', label: 'UUID', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'IDStaff', label: 'ID staff', type: 'number', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'IDBranch', label: 'Branch', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'FirstSeenBranch', label: 'First seen branch', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'LastSeenBranch', label: 'Last seen branch', type: 'text', form: formGroup }"></app-form-control>
+								</ion-col>
+							</ion-row>
+
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{ 'Recognition' | translate }}</ion-label>
+									</ion-list-header>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control [field]="{ id: 'ModelName', label: 'Model', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'Dim', label: 'Dim', type: 'number', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'Version', label: 'Version', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'LastConfidence', label: 'Last confidence', type: 'number', form: formGroup }"></app-form-control>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control [field]="{ id: 'LastEdgeNodeName', label: 'Last edge', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'LastCameraId', label: 'Last camera', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'LastEventType', label: 'Last event type', type: 'text', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'LastOccurredAt', label: 'Last matched at', type: 'span-datetime', form: formGroup }"></app-form-control>
+								</ion-col>
+							</ion-row>
+
+							<ion-row class="hr-group" *ngIf="item.Id">
+								<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">{{ 'Other information' | translate }}</ion-label>
+									</ion-list-header>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control [field]="{ id: 'CreatedBy', type: 'text', label: 'Created by', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'CreatedDate', type: 'span-datetime', label: 'Created date', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'ModifiedBy', type: 'text', label: 'Last modified by', form: formGroup }"></app-form-control>
+									<app-form-control [field]="{ id: 'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"></app-form-control>
+								</ion-col>
+								<ion-col size="12" size-sm size-xl="4">
+									<app-form-control
+										[field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: formGroup }"
+										(change)="saveChange()"
+									></app-form-control>
+								</ion-col>
+							</ion-row>
+						</form>
+					</ion-grid>
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-container *ngIf="segmentView.Page == 'person-photos'">
+			<div class="main-view">
+				<div class="row-full shadow full-screen ion-padding">
+					<div class="pd-readiness" *ngIf="!tabLoading['person-photos']">
+						<p class="pd-readiness-note">{{ readiness.note | translate: readiness.noteParams }}</p>
+						<div class="pd-photo-actions">
+							<input #photoFileInput type="file" accept="image/*" hidden (change)="onPhotoFileSelected($event)" />
+							<ion-button size="small" (click)="photoFileInput.click()" [disabled]="photoUploading || photoLearning">
+								{{ photoUploading ? ('Loading...' | translate) : ('Add photo' | translate) }}
+							</ion-button>
+							<ion-button
+								size="small"
+								fill="outline"
+								*ngIf="photos.length"
+								(click)="learnAlbum()"
+								[disabled]="photoUploading || photoLearning"
+							>
+								{{ photoLearning ? ('Learning...' | translate) : ('Re-learn from album' | translate) }}
+							</ion-button>
+						</div>
+					</div>
+					<div class="gp-people-grid" *ngIf="photos.length; else emptyPhotos">
+						<div class="gp-person" *ngFor="let f of photos" [class.is-primary]="isPrimaryPhoto(f)">
+							<div class="gp-face gp-face--thumb">
+								<img [src]="frameUrl(f.FramePath)" alt="" />
+								<span class="gp-primary-badge" *ngIf="isPrimaryPhoto(f)">{{ 'Primary' | translate }}</span>
+								<button
+									type="button"
+									class="gp-set-primary"
+									*ngIf="!isPrimaryPhoto(f)"
+									(click)="setPrimaryPhoto(f, $event)"
+									[attr.aria-label]="'Set as primary photo' | translate"
+									[title]="'Set as primary photo' | translate"
+								>
+									<ion-icon name="star-outline"></ion-icon>
+								</button>
+								<button type="button" class="gp-remove" (click)="removePhoto(f, $event)" [attr.aria-label]="'Delete photo' | translate">
+									<ion-icon name="close"></ion-icon>
+								</button>
+							</div>
+						</div>
+					</div>
+					<ng-template #emptyPhotos>
+						<p class="gp-empty" *ngIf="!tabLoading['person-photos']">{{ 'No photos' | translate }}</p>
+					</ng-template>
+					<p class="gp-empty" *ngIf="tabLoading['person-photos']">{{ 'Loading...' | translate }}</p>
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-container *ngIf="segmentView.Page == 'person-visits'">
+			<div class="pd-stats">
+				<div class="pd-stat">
+					<div class="pd-stat-label">{{ 'Total visits' | translate }}</div>
+					<div class="pd-stat-value">{{ visitStats.total }}</div>
+				</div>
+				<div class="pd-stat">
+					<div class="pd-stat-label">{{ 'Branches' | translate }}</div>
+					<div class="pd-stat-value">{{ visitStats.branchCount }}</div>
+				</div>
+				<div class="pd-stat">
+					<div class="pd-stat-label">{{ 'Lunch' | translate }}</div>
+					<div class="pd-stat-value">{{ visitStats.lunch }}</div>
+				</div>
+				<div class="pd-stat">
+					<div class="pd-stat-label">{{ 'Dinner' | translate }}</div>
+					<div class="pd-stat-value">{{ visitStats.dinner }}</div>
+				</div>
+				<div class="pd-stat">
+					<div class="pd-stat-label">{{ 'Other' | translate }}</div>
+					<div class="pd-stat-value">{{ visitStats.other }}</div>
+				</div>
+			</div>
+			<app-data-table
+				class="box-shadow responsive pd-visit-table"
+				[rows]="visits"
+				[trackBy]="'Id'"
+				[showSpinner]="visitsLoading && !visits.length"
+				[showFilter]="false"
+				(dataInfinite)="onVisitsInfinite($event)"
+			>
+				<datatable-column class="col-name" name="Branch" property="IDBranch" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<span class="bold">{{ branchName(i.IDBranch) || ('N/A' | translate) }}</span>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-period" name="Period" property="ServicePeriod" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<span *ngIf="i.ServicePeriod">{{ i.ServicePeriod }}</span>
+						<span *ngIf="!i.ServicePeriod">—</span>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-tier" name="Tier" property="TierName" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<span *ngIf="i.TierName">{{ i.TierName }}</span>
+						<span *ngIf="!i.TierName">—</span>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-date" name="Time" property="OccurredAt" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<span class="pd-val" *ngIf="i.OccurredAt">{{ i.OccurredAt | date: 'HH:mm:ss' }}</span>
+						<div class="pd-day" *ngIf="i.OccurredAt">{{ i.OccurredAt | date: 'dd/MM/yyyy' }}</div>
+						<span *ngIf="!i.OccurredAt">—</span>
+					</ng-template>
+				</datatable-column>
+			</app-data-table>
+			<p class="gp-empty" *ngIf="!visitsLoading && !visits.length">{{ 'No visits' | translate }}</p>
+		</ng-container>
+
+		<ng-container *ngIf="segmentView.Page == 'person-events'">
+			<app-data-table
+				class="box-shadow responsive pd-event-table"
+				[rows]="personEvents"
+				[trackBy]="'EventId'"
+				[showSpinner]="eventsLoading && !personEvents.length"
+				[showFilter]="false"
+				(dataInfinite)="onEventsInfinite($event)"
+			>
+				<datatable-column class="col-photo" name="Photo" property="FramePath" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<img *ngIf="frameUrl(i.FramePath)" class="pd-ev-thumb" [src]="frameUrl(i.FramePath)" alt="" />
+						<span *ngIf="!frameUrl(i.FramePath)" class="pd-ev-thumb is-empty" aria-hidden="true"></span>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-name" name="Type" property="EventType" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<div class="pd-cell-main">
+							<div class="bold">{{ eventTypeLabel(i) | translate }}</div>
+							<div class="pd-when" *ngIf="i.OccurredAt">
+								<span class="pd-val">{{ i.OccurredAt | date: 'HH:mm:ss' }}</span>
+								<span class="pd-day">{{ i.OccurredAt | date: 'dd/MM' }}</span>
+							</div>
+							<div class="pd-tags">
+								<ion-badge *ngIf="eventConfidenceLabel(i) as conf" color="primary">{{ conf }}</ion-badge>
+								<ion-badge *ngIf="i.EdgeNodeName" color="tertiary">{{ i.EdgeNodeName }}</ion-badge>
+								<ion-badge *ngIf="i.CameraId" color="medium">{{ i.CameraId }}</ion-badge>
+							</div>
+						</div>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-date" name="Time" property="OccurredAt" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<span class="pd-val" *ngIf="i.OccurredAt">{{ i.OccurredAt | date: 'HH:mm:ss' }}</span>
+						<div class="pd-day" *ngIf="i.OccurredAt">{{ i.OccurredAt | date: 'dd/MM/yyyy' }}</div>
+						<span *ngIf="!i.OccurredAt">—</span>
+					</ng-template>
+				</datatable-column>
+				<datatable-column class="col-status" name="" property="EventId" [canSort]="false" [canFilter]="false">
+					<ng-template let-i="row" datatable-cell-template>
+						<ion-button
+							fill="clear"
+							color="danger"
+							size="small"
+							(click)="markEventMismatch(i, $event)"
+							[attr.aria-label]="'Mismatch' | translate"
+							[title]="'Mismatch' | translate"
+						>
+							<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+						</ion-button>
+					</ng-template>
+				</datatable-column>
+			</app-data-table>
+			<p class="gp-empty" *ngIf="!eventsLoading && !personEvents.length">{{ 'No events' | translate }}</p>
+		</ng-container>
+	</div>
+</ion-content>

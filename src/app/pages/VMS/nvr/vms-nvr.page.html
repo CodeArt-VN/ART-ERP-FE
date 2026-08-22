@@ -11,7 +11,7 @@
 
 	<div class="safe-max-width">
 		<app-data-table
-			class="box-shadow responsive"
+			class="box-shadow responsive nvr-nvr-table"
 			[rows]="items"
 			[trackBy]="'Id'"
 			[(selectedRows)]="selectedItems"
@@ -25,19 +25,27 @@
 		>
 			<datatable-column [checkbox]="true" name=""></datatable-column>
 			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
-			<datatable-column class="col-code" name="Code" property="Code"></datatable-column>
-			<datatable-column class="col-name flex-break" name="Name" property="Name">
+			<datatable-column class="col-name" name="Name" property="Name">
 				<ng-template let-i="row" datatable-cell-template>
-					<div [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+					<div class="nvr-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
 						<a class="bold">
 							<ion-text color="dark">{{ i.Name }}</ion-text>
 						</a>
-						<small>{{ i.Host }}:{{ i.Port }}</small>
+						<app-branch-breadcrumbs
+							class="nvr-branch"
+							*ngIf="i.IDBranch"
+							[autoFit]="true"
+							[Id]="i.IDBranch"
+							[Items]="env.branchList"
+						></app-branch-breadcrumbs>
 					</div>
 				</ng-template>
 			</datatable-column>
-			<datatable-column class="col-name" name="Vendor" property="Vendor"></datatable-column>
-			<datatable-column class="col-name" name="Branch" property="BranchName"></datatable-column>
+			<datatable-column class="col-number" name="Cameras" property="CameraInUse">
+				<ng-template let-i="row" datatable-cell-template>
+					{{ cameraInUse(i) }} / <small>{{ cameraCount(i) }}</small>
+				</ng-template>
+			</datatable-column>
 		</app-data-table>
 	</div>
 </ion-content>

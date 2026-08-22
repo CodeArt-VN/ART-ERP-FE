@@ -1,4 +1,4 @@
-
+﻿
 
 
 
@@ -9536,12 +9536,9 @@ export interface VMS_CameraPermission
 export interface VMS_EdgeNode
 {
     Id?: number;
-    IDBranch?: number;
-    EdgeNodeId?: string;
     Name?: string;
     LastHeartbeat?: Date;
     ConfigVersion?: string;
-    GalleryVersion?: string;
     OutboxPending?: number;
     IsDisabled?: boolean;
     IsDeleted?: boolean;
@@ -9552,6 +9549,12 @@ export interface VMS_EdgeNode
     Sort?: number;
     CreatedBy?: string;
     ModifiedBy?: string;
+    CamerasWatching?: number;
+    CamerasOnline?: number;
+    RemoteConfigJson?: string;
+    InferRuntime?: string;
+    InferDevice?: string;
+    UUID?: string;
     
 
 }
@@ -9573,94 +9576,14 @@ export interface VMS_Event
     ModifiedDate?: Date;
     EventId?: string;
     EventType?: string;
-    EdgeNodeId?: string;
     CameraId?: string;
-    PersonId?: string;
-    EmployeeCode?: string;
     OccurredAt?: Date;
     Confidence?: number;
     PayloadJson?: string;
     FramePath?: string;
     Status?: string;
-    
-
-}
-
-
-export interface VMS_FaceEmbedding
-{
-    Id?: number;
+    EdgeNodeId?: string;
     PersonId?: string;
-    ModelName?: string;
-    Dim?: number;
-    EmbeddingJson?: string;
-    Version?: string;
-    IsDisabled?: boolean;
-    CreatedDate?: Date;
-    IDBranch?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    ModifiedDate?: Date;
-    
-
-}
-
-
-export interface VMS_FaceIdentity
-{
-    Id?: number;
-    PersonId?: string;
-    PersonType?: string;
-    DisplayName?: string;
-    EmployeeCode?: string;
-    IDStaff?: number;
-    IDContact?: number;
-    FirstSeenBranch?: number;
-    LastSeenBranch?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    CreatedDate?: Date;
-    ModifiedBy?: string;
-    ModifiedDate?: Date;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IDBranch?: number;
-    
-
-}
-
-
-export interface VMS_GuestVisit
-{
-    IDBranch?: number;
-    Id?: number;
-    Code?: string;
-    Name?: string;
-    Remark?: string;
-    Sort?: number;
-    IsDisabled?: boolean;
-    IsDeleted?: boolean;
-    CreatedBy?: string;
-    ModifiedBy?: string;
-    CreatedDate?: Date;
-    ModifiedDate?: Date;
-    PersonId?: string;
-    IDContact?: number;
-    IDPolLevel?: number;
-    TierName?: string;
-    Notified?: boolean;
-    NotifyChannel?: string;
-    ServicePeriod?: string;
-    OccurredAt?: Date;
-    EventId?: string | null;
     
 
 }
@@ -9686,6 +9609,107 @@ export interface VMS_NvrDevice
     ModifiedBy?: string;
     ModifiedDate?: Date;
     Sort?: number;
+    HostWan?: string;
+    
+
+}
+
+
+export interface VMS_Person
+{
+    Id?: number;
+    PersonType?: string;
+    IDStaff?: number;
+    IDContact?: number;
+    FirstSeenBranch?: number;
+    LastSeenBranch?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IDBranch?: number;
+    PhotoPath?: string;
+    UUID?: string;
+    
+
+}
+
+
+export interface VMS_PersonFaceVector
+{
+    Id?: number;
+    ModelName?: string;
+    Dim?: number;
+    EmbeddingJson?: string;
+    Version?: string;
+    IsDisabled?: boolean;
+    CreatedDate?: Date;
+    IDBranch?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    PersonId?: string;
+    
+
+}
+
+
+export interface VMS_PersonPhoto
+{
+    Id?: number;
+    IDBranch?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    CreatedDate?: Date;
+    ModifiedBy?: string;
+    ModifiedDate?: Date;
+    PersonId?: string;
+    FramePath?: string;
+    SourceEventId?: string;
+    
+
+}
+
+
+export interface VMS_PersonVisit
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDContact?: number;
+    IDPolLevel?: number;
+    TierName?: string;
+    Notified?: boolean;
+    NotifyChannel?: string;
+    ServicePeriod?: string;
+    OccurredAt?: Date;
+    EventId?: string;
+    PersonId?: string;
     
 
 }

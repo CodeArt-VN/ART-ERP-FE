@@ -7,32 +7,93 @@
 		<ion-refresher-content></ion-refresher-content>
 	</ion-refresher>
 
-	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+	<div class="safe-max-width live-page">
+		<!-- Edge selector + stats -->
+		<div class="edge-bar">
+			<ion-select
+				class="edge-select"
+				[value]="selectedEdgeId"
+				(ionChange)="selectEdge($event.detail.value)"
+				interface="popover"
+			>
+				<ion-select-option [value]="0">{{ 'All' | translate }}</ion-select-option>
+				<ion-select-option *ngFor="let e of edgeNodes" [value]="e.Id">{{ e.Name || e.EdgeNodeId }}</ion-select-option>
+			</ion-select>
 
-	<ion-card>
-		<ion-card-header>
-			<ion-card-title>{{ 'Live streaming — Phase 2' | translate }}</ion-card-title>
-			<ion-card-subtitle>{{ 'Browser will not connect RTSP/NVR directly. Edge proxy snapshot/HLS comes later.' | translate }}</ion-card-subtitle>
-		</ion-card-header>
-		<ion-card-content>{{ 'Open recent event frames below for cameras you are allowed to view.' | translate }}</ion-card-content>
-	</ion-card>
+			<div class="edge-stats" *ngIf="selectedEdge">
+				<span class="stat">
+					<span class="dot" [class.on]="isEdgeOnline(selectedEdge)" [class.off]="!isEdgeOnline(selectedEdge)"></span>
+					{{ selectedEdge.LastHeartbeat | date:'HH:mm:ss' }}
+				</span>
+				<span class="stat" *ngIf="selectedEdge.CamerasWatching != null">
+					<ion-icon name="videocam-outline"></ion-icon>
+					{{ selectedEdge.CamerasOnline ?? 0 }}/{{ selectedEdge.CamerasWatching }}
+				</span>
+				<span class="stat" *ngIf="selectedEdge.PersonMapped != null || selectedEdge.PersonUnmapped != null">
+					<ion-icon name="people-outline"></ion-icon>
+					{{ (selectedEdge.PersonMapped ?? 0) + (selectedEdge.PersonUnmapped ?? 0) }}
+				</span>
+				<span class="stat" *ngIf="selectedEdge.OutboxPending">
+					<ion-icon name="cloud-upload-outline"></ion-icon>
+					{{ selectedEdge.OutboxPending }}
+				</span>
+			</div>
+		</div>
 
-	<ion-list-header>{{ 'Your cameras' | translate }}</ion-list-header>
-	<ion-list>
-		<ion-item *ngFor="let c of cameras" [routerLink]="['/vms-camera', c.Id]">
-			<ion-label>{{ c.Name }} · {{ c.Code }}</ion-label>
-		</ion-item>
-		<ion-item *ngIf="!cameras?.length && !pageConfig.showSpinner"><ion-label color="medium">{{ 'No cameras' | translate }}</ion-label></ion-item>
-	</ion-list>
+		<!-- Camera bubbles -->
+		<div class="cam-bubbles" *ngIf="cameras.length">
+			<button
+				type="button"
+				class="cam-bubble"
+				[class.active]="selectedCamera?.Id === c.Id"
+				*ngFor="let c of cameras"
+				(click)="selectCamera(c)"
+			>
+				<span class="bubble-icon">
+					<ion-icon [name]="c.AiEnabled ? 'eye' : 'videocam'"></ion-icon>
+				</span>
+				<span class="bubble-label">{{ c.Code || c.Name }}</span>
+			</button>
+		</div>
+		<div class="cam-bubbles empty" *ngIf="!cameras.length && !pageConfig.showSpinner">
+			<span class="muted">{{ 'No cameras.' | translate }}</span>
+		</div>
 
-	<ion-list-header>{{ 'Recent frames / events' | translate }}</ion-list-header>
-	<ion-list>
-		<ion-item *ngFor="let e of recent" [routerLink]="['/vms-event']">
-			<ion-thumbnail slot="start" *ngIf="e.FramePath"><img [src]="e.FramePath" /></ion-thumbnail>
-			<ion-label>
-				<h2>{{ e.EventType }}</h2>
-				<p>{{ e.OccurredAt | date:'short' }} · {{ e.CameraId }}</p>
-			</ion-label>
-		</ion-item>
-	</ion-list>
+		<!-- Live viewer -->
+		<div class="live-viewer" *ngIf="selectedCamera" [attr.aria-busy]="liveLoading">
+			<div class="viewer-header">
+				<strong>{{ selectedCamera.Name }}</strong>
+				<span class="viewer-sub">
+					{{ selectedCamera.NvrName }}
+					<span *ngIf="selectedCamera.ChannelNo"> · CH {{ selectedCamera.ChannelNo }}</span>
+					· {{ selectedCamera.Role }}
+				</span>
+				<span class="live-badge" *ngIf="liveStreaming">
+					<span class="live-rec"></span>
+					{{ 'LIVE' | translate }}
+				</span>
+				<div class="live-quality">
+					<button type="button" [class.active]="liveSubtype === 1" (click)="setLiveSubtype(1)">{{ 'Sub' | translate }}</button>
+					<button type="button" [class.active]="liveSubtype === 0" (click)="setLiveSubtype(0)">{{ 'Main' | translate }}</button>
+				</div>
+			</div>
+			<div class="live-frame-shell">
+				<img *ngIf="liveImageUrl" class="live-frame" [src]="liveImageUrl" alt="Live stream" (load)="onLiveFrameLoaded()" />
+				<div class="live-loading-overlay" *ngIf="liveLoading && !liveImageUrl">
+					<ion-spinner name="crescent" color="light"></ion-spinner>
+					<div>{{ 'Loading...' | translate }}</div>
+				</div>
+				<div class="live-empty" *ngIf="!liveImageUrl && !liveLoading">
+					<div>{{ (liveError || 'Waiting for live image...') | translate }}</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="live-viewer placeholder" *ngIf="!selectedCamera && cameras.length">
+			<div class="live-empty">
+				<ion-icon name="videocam-outline" class="big-icon"></ion-icon>
+				<div>{{ 'Select a camera above to view live' | translate }}</div>
+			</div>
+		</div>
+	</div>
 </ion-content>

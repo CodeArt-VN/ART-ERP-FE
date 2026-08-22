@@ -448,9 +448,9 @@ export abstract class PageBase implements OnInit {
 		} else {
 			this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
 				if (this.query.IsDisabled) {
-					this.env.showMessage('Reopened {{value}} lines!', 'success', this.selectedItems.length);
+					this.env.showMessage('Reopened {value} lines!', 'success', this.selectedItems.length);
 				} else {
-					this.env.showMessage('Archived {{value}} lines!', 'success', this.selectedItems.length);
+					this.env.showMessage('Archived {value} lines!', 'success', this.selectedItems.length);
 				}
 				this.removeSelectedItems();
 			});
@@ -788,7 +788,7 @@ export abstract class PageBase implements OnInit {
 					this.env
 						.showPrompt(
 							{
-								code: '{{value}} error(s) during import: {{value1}}',
+								code: '{value} error(s) during import: {value1}',
 								value: { value: resp.ErrorList.length, value1: message },
 							},
 							'Do you want to review the items with errors?',
@@ -892,7 +892,7 @@ export abstract class PageBase implements OnInit {
 				const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 				Promise.all(translationPromises).then((values) => {
 					invalidControls = values;
-					this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+					this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControls.join(' | '));
 					reject('form invalid');
 				});
 			} else if (this.submitAttempt == false) {
@@ -964,7 +964,7 @@ export abstract class PageBase implements OnInit {
 				const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 				Promise.all(translationPromises).then((values) => {
 					invalidControls = values;
-					this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+					this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControls.join(' | '));
 					reject('form invalid');
 				});
 			} else if (this.submitAttempt == false) {
@@ -1586,6 +1586,9 @@ export abstract class PageBase implements OnInit {
 					.then((_) => {
 						this.env.showMessage('Unit changed', 'success');
 						this.refresh();
+					})
+					.catch((err) => {
+						if (err?.message) this.env.showMessage(err.message, 'danger');
 					});
 			}
 		});

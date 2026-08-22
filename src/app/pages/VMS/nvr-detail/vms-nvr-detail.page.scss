@@ -18,9 +18,20 @@ label.c-label a ion-icon,
 }
 
 :host ::ng-deep app-data-table {
-	.col-ch {
-		min-width: 56px;
-		max-width: 72px;
+	.col-checkbox {
+		justify-content: center;
+		align-items: center;
+	}
+
+	datatable-header-cell.col-checkbox .c-checkbox {
+		margin: 0;
+	}
+	.col-number.col-ch {
+		min-width: 100px;
+		max-width: 120px;
+		white-space: nowrap;
+		overflow: visible;
+		text-overflow: clip;
 	}
 
 	.col-status {
@@ -60,8 +71,4 @@ label.c-label a ion-icon,
 
 .dot.off {
 	background: var(--ion-color-danger);
-}
-
-.table-actions {
-	margin-top: 4px;
 }

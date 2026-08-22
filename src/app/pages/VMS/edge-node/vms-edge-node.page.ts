@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavController, ModalController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { SortConfig } from 'src/app/interfaces/options-interface';
 import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
-import { VMS_EdgeNodeProvider } from 'src/app/services/vms/vms.providers';
+import { VMS_EdgeNodeProvider } from 'src/app/services/static/services.service';
+import {
+	normalizeBranchIds,
+	inferRuntimeLabel,
+	inferRuntimeColor,
+	isEdgeOnline,
+	fleetOnlineRemarkKey,
+	fleetOnlineRemarkParams,
+} from '../edge-node-detail/vms-edge-node-detail.util';
 
 @Component({
 	selector: 'app-vms-edge-node',
@@ -24,7 +33,8 @@ export class VmsEdgeNodePage extends PageBase {
 		public loadingController: LoadingController,
 		public env: EnvService,
 		public navCtrl: NavController,
-		public location: Location
+		public location: Location,
+		public translate: TranslateService
 	) {
 		super();
 		this.pageConfig.canAdd = false;
@@ -38,7 +48,6 @@ export class VmsEdgeNodePage extends PageBase {
 	preLoadData(event?: any): void {
 		this.pageConfig.pageIcon = 'hardware-chip-outline';
 		this.pageConfig.sort = [{ Dimension: 'LastHeartbeat', Order: 'DESC' } as SortConfig];
-		this.query.IgnoredBranch = true;
 		this.query.IsDisabled = 'skipped';
 		this.pageConfig.ShowAdd = false;
 		this.pageConfig.canAdd = false;
@@ -48,16 +57,15 @@ export class VmsEdgeNodePage extends PageBase {
 	}
 
 	loadedData(event?: any, ignoredFromGroup?: boolean): void {
-		this.items.forEach((item) => {
-			const b = this.env.branchList?.find((x) => x.Id == item.IDBranch);
-			item.BranchName = b ? (b.Name || b.Code) : item.IDBranch ? '#' + item.IDBranch : '—';
-			item.BranchCode = b?.Code || '';
-		});
 		super.loadedData(event, ignoredFromGroup);
 		this.pageConfig.ShowAdd = false;
 		this.pageConfig.canAdd = false;
 		this.pageConfig.ShowArchive = false;
 		this.pageConfig.canArchive = false;
+	}
+
+	get fleetLine(): string {
+		return this.translate.instant(fleetOnlineRemarkKey(), fleetOnlineRemarkParams(this.items));
 	}
 
 	inUse(n: any) {
@@ -78,19 +86,36 @@ export class VmsEdgeNodePage extends PageBase {
 	}
 
 	isOnline(n: any) {
-		if (!n?.LastHeartbeat) return false;
-		return Date.now() - new Date(n.LastHeartbeat).getTime() < 10 * 60 * 1000;
+		return isEdgeOnline(n);
+	}
+
+	cameraWarn(n: any) {
+		const watching = Number(n?.CamerasWatching);
+		if (!watching) return false;
+		return (Number(n?.CamerasOnline) || 0) < watching;
 	}
 
 	isTrusted(n: any) {
 		return n && !n.IsDisabled;
 	}
 
+	branchIds(n: any): number[] {
+		return normalizeBranchIds(n?.BranchIds);
+	}
+
+	inferLabel(n: any) {
+		return inferRuntimeLabel(n);
+	}
+
+	inferColor(n: any) {
+		return inferRuntimeColor(n);
+	}
+
 	delete(publishEventCode = this.pageConfig.pageName) {
 		if (!this.pageConfig.ShowDelete) return;
 		const targets = this.selectedItems || [];
 		this.env
-			.actionConfirm('delete', targets.length, targets[0]?.Name || targets[0]?.EdgeNodeId, this.pageConfig.pageTitle, async () => {
+			.actionConfirm('delete', targets.length, targets[0]?.Name, this.pageConfig.pageTitle, async () => {
 				for (const n of targets) {
 					if (n?.Id) await firstValueFrom(this.vmsApi.deleteEdgeNode(n.Id));
 				}

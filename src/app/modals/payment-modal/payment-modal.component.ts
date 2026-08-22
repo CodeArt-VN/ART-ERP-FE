@@ -440,7 +440,7 @@ export class PaymentModalComponent implements OnInit {
 		const customerId = Number(this.item.IDCustomer) || 0;
 		const defaultBusinessPartnerId = Number(this.item.DefaultBusinessPartnerId) || 0;
 		const confirmLimit = (limitPoint: number) => {
-			const message = `Payment point cannot exceed: {{value}}`;
+			const message = `Payment point cannot exceed: {value}`;
 
 			return this.env
 				.showPrompt({ code: message, value: limitPoint })

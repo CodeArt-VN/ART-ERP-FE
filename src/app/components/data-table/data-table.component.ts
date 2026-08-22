@@ -1,4 +1,16 @@
-import { Component, ContentChild, ContentChildren, EventEmitter, Input, OnInit, Output, QueryList, TemplateRef } from '@angular/core';
+import {
+	AfterViewChecked,
+	Component,
+	ContentChild,
+	ContentChildren,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	QueryList,
+	TemplateRef,
+} from '@angular/core';
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
 import { DataTableActiveFilter, TableColumn } from './interfaces/table-column.interface';
 import { Subscription } from 'rxjs';
@@ -23,7 +35,7 @@ import { dog } from 'src/environments/environment';
 		'[style.min-height]': 'hostMinHeight',
 	},
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, AfterViewChecked {
 	_allColumns: TableColumn[];
 	_inputColumns: TableColumn[];
 	_columnTemplates: QueryList<DataTableColumnDirective>;
@@ -547,10 +559,124 @@ export class DataTableComponent implements OnInit {
 
 	constructor(
 		private columnChangesService: ColumnChangesService,
-		public formBuilder: FormBuilder
+		public formBuilder: FormBuilder,
+		private host: ElementRef<HTMLElement>
 	) {}
 
 	ngOnInit() {}
+
+	ngAfterViewChecked() {
+		this.polishInlineBranchBreadcrumbs();
+	}
+
+	/** Ionic crumb chrome lives in shadow DOM — flatten to inline text inside table only. */
+	private polishInlineBranchBreadcrumbs() {
+		const css = `
+			:host {
+				margin: 0 !important;
+				padding: 0 !important;
+				min-height: 0 !important;
+				max-width: 100%;
+				white-space: nowrap;
+			}
+			:host(.breadcrumb-collapsed:not(:first-child)) {
+				display: none !important;
+			}
+			:host(.breadcrumb-active),
+			:host(:not(.breadcrumb-collapsed)) {
+				display: inline-flex !important;
+				align-items: center !important;
+				vertical-align: middle !important;
+				flex: 0 0 auto;
+				max-width: 100%;
+			}
+			:host(.breadcrumb-collapsed:first-child) {
+				display: inline-flex !important;
+				align-items: center !important;
+				vertical-align: middle !important;
+				margin-right: 6px !important;
+				flex: 0 0 auto;
+			}
+			.breadcrumb-native {
+				display: inline-block !important;
+				padding: 0 !important;
+				margin: 0 !important;
+				min-height: 0 !important;
+				height: auto !important;
+				max-width: 100%;
+				background: transparent !important;
+				border: none !important;
+				border-radius: 0 !important;
+				box-shadow: none !important;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				vertical-align: middle;
+				line-height: 1.35;
+			}
+			:host(.breadcrumb-collapsed:first-child) .breadcrumb-native,
+			:host(.breadcrumb-collapsed:first-child) .breadcrumb-separator {
+				display: none !important;
+			}
+			.breadcrumb-separator {
+				display: inline-flex !important;
+				align-items: center !important;
+				flex-shrink: 0;
+				margin: 0 6px !important;
+				padding: 0 !important;
+				opacity: 0.5;
+				vertical-align: middle;
+			}
+			.breadcrumb-separator ion-icon {
+				font-size: 12px !important;
+				width: 12px !important;
+				height: 12px !important;
+				margin: 0 !important;
+			}
+			.breadcrumbs-collapsed-indicator {
+				display: inline-flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				min-width: 0 !important;
+				min-height: 0 !important;
+				width: auto !important;
+				height: 1em !important;
+				line-height: 1 !important;
+				background: transparent !important;
+				border: none !important;
+				border-radius: 0 !important;
+				box-shadow: none !important;
+				opacity: 0.75;
+				cursor: pointer;
+				vertical-align: middle;
+			}
+			.breadcrumbs-collapsed-indicator ion-icon {
+				font-size: 12px !important;
+				width: 12px !important;
+				height: 12px !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				min-width: 12px !important;
+				min-height: 12px !important;
+			}
+		`;
+		const crumbs = this.host.nativeElement.querySelectorAll('app-branch-breadcrumbs ion-breadcrumb');
+		crumbs.forEach((el: any) => {
+			const root: ShadowRoot = el.shadowRoot;
+			if (!root) return;
+			let style = root.querySelector('style[data-dt-inline-bc]') as HTMLStyleElement | null;
+			if (!style) {
+				style = document.createElement('style');
+				style.setAttribute('data-dt-inline-bc', '');
+				root.appendChild(style);
+			}
+			if (style.textContent !== css) {
+				style.textContent = css;
+			}
+		});
+	}
 
 	ngAfterContentInit() {
 		this.columnTemplates.changes.subscribe((v) => this.translateColumns(v));

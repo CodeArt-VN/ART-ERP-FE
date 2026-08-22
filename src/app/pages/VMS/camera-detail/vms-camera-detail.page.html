@@ -3,6 +3,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+	<div id="vms-camera-detail-page" style="position: absolute; z-index: 30005"></div>
 	<div class="main-view" *ngIf="item && pageConfig.showSpinner == false">
 		<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
@@ -16,14 +17,37 @@
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control [field]="{ id: 'Id', label: 'Id', type: 'number', form: formGroup }"></app-form-control>
+						<app-form-control
+							*ngIf="!item?.IDNvr"
+							(change)="saveChange()"
+							[field]="{
+								branchConfig: { selectedBranch: env.selectedBranch },
+								id: 'IDBranch',
+								label: 'Branch',
+								type: 'ng-select-branch',
+								dataSource: branchList,
+								bindLabel: 'Name',
+								bindValue: 'Id',
+								form: formGroup,
+								appendTo: '#vms-camera-detail-page'
+							}"
+						></app-form-control>
 						<app-form-control [field]="{ id: 'Code', label: 'Code', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
 						<app-form-control [field]="{ id: 'Name', label: 'Name', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
-						<ion-item lines="none" *ngIf="fromNvr">
-							<ion-label>
-								<p>{{ 'NVR' | translate }}</p>
-								<h2>{{ nvrName || ('#' + item.IDNvr) }}</h2>
-							</ion-label>
-						</ion-item>
+						<app-form-control
+							[field]="{
+								id: 'IDNvr',
+								label: 'NVR',
+								type: 'ng-select',
+								dataSource: nvrList,
+								bindLabel: 'Name',
+								bindValue: 'Id',
+								clearable: !item?.IDNvr,
+								form: formGroup,
+								appendTo: '#vms-camera-detail-page'
+							}"
+							(change)="saveChange()"
+						></app-form-control>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="4">
 						<app-form-control
@@ -31,10 +55,6 @@
 							(change)="saveChange()"
 						></app-form-control>
 						<app-form-control [field]="{ id: 'AiEnabled', label: 'AI enabled', type: 'checkbox', form: formGroup }" (change)="saveChange()"></app-form-control>
-						<app-form-control
-							[field]="{ id: 'IDBranch', type: 'branch-breadcrumbs', label: 'Branch', form: formGroup, dataSource: env.branchList }"
-							(change)="saveChange()"
-						></app-form-control>
 					</ion-col>
 				</ion-row>
 
@@ -45,8 +65,9 @@
 						</ion-list-header>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="8">
-						<app-form-control [field]="{ id: 'RtspMain', label: 'RTSP main', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
-						<app-form-control [field]="{ id: 'RtspSub', label: 'RTSP sub', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
+						<app-form-control [field]="{ id: 'RtspMain', label: 'RTSP main', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
+						<app-form-control [field]="{ id: 'RtspSub', label: 'RTSP sub (LAN)', type: 'text', form: formGroup }" (change)="saveChange()"></app-form-control>
+						<p class="ion-padding-start" style="opacity: 0.7; font-size: 12px">{{ 'Edge prefers RtspSub when available, otherwise RtspMain. Web live view uses the NVR Host/Port.' | translate }}</p>
 						<app-form-control [field]="{ id: 'RoiJson', label: 'ROI JSON', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
 					</ion-col>
 				</ion-row>
@@ -55,23 +76,41 @@
 					<ion-col size="12" size-sm="12" size-md="12" size-xl="3">
 						<ion-list-header class="ion-no-padding">
 							<ion-label color="primary">{{ 'Permissions' | translate }}</ion-label>
-							<ion-button *ngIf="canManagePermission" fill="clear" size="small" type="button" (click)="addPermission()">
-								<ion-icon slot="icon-only" name="add-outline"></ion-icon>
-							</ion-button>
 						</ion-list-header>
 					</ion-col>
 					<ion-col size="12" size-sm size-xl="8">
-						<ion-list>
-							<ion-item *ngFor="let p of permissions">
-								<ion-label>
-									<h2>{{ p.SubjectType }} · {{ p.SubjectId }}</h2>
-									<p>{{ 'View' | translate }} {{ p.CanView }} · {{ 'Manage' | translate }} {{ p.CanManage }}</p>
-								</ion-label>
-							</ion-item>
-							<ion-item *ngIf="!permissions?.length" lines="none">
-								<ion-label color="medium">{{ 'No permissions' | translate }}</ion-label>
-							</ion-item>
-						</ion-list>
+						<app-data-table
+							class="box-shadow responsive"
+							[rows]="permissions"
+							[trackBy]="'Id'"
+							[showSpinner]="false"
+							[isQueryLocalOnly]="true"
+							[virtualScroll]="false"
+						>
+							<datatable-empty-message
+								message="No permissions"
+								subMessage="Please click add new to start..."
+								[showImg]="false"
+								minHeight="125px"
+							>
+								<ng-template datatable-empty-message-template>
+									<ion-button *ngIf="canManagePermission" size="small" type="button" (click)="addPermission()">
+										<ion-icon slot="start" name="add-circle-outline"></ion-icon>
+										{{ 'Add permission' | translate }}
+									</ion-button>
+								</ng-template>
+							</datatable-empty-message>
+							<datatable-column class="col-code" name="Type" property="SubjectType"></datatable-column>
+							<datatable-column class="col-name flex-break" name="Subject" property="SubjectId"></datatable-column>
+							<datatable-column class="col-status" name="View" property="CanView"></datatable-column>
+							<datatable-column class="col-status" name="Manage" property="CanManage"></datatable-column>
+						</app-data-table>
+						<div class="table-actions" *ngIf="canManagePermission && permissions?.length">
+							<ion-button fill="clear" size="small" type="button" (click)="addPermission()">
+								<ion-icon slot="start" name="add-outline"></ion-icon>
+								{{ 'Add permission' | translate }}
+							</ion-button>
+						</div>
 					</ion-col>
 				</ion-row>
 
@@ -86,6 +125,12 @@
 						<app-form-control [field]="{ id: 'CreatedDate', type: 'span-datetime', label: 'Created date', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'ModifiedBy', type: 'text', label: 'Last modified by', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'ModifiedDate', type: 'span-datetime', label: 'Last modified date', form: formGroup }"></app-form-control>
+					</ion-col>
+					<ion-col size="12" size-sm size-xl="4">
+						<app-form-control
+							[field]="{ id: 'IDBranch', type: 'branch-breadcrumbs', label: 'Branch', form: formGroup, dataSource: env.branchList }"
+						></app-form-control>
+						<app-form-control [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: formGroup }" (change)="saveChange()"></app-form-control>
 					</ion-col>
 				</ion-row>
 			</form>

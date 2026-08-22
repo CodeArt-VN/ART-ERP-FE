@@ -24,7 +24,7 @@
 				(click)="loginWithBiometric()"
 			>
 				<ion-icon name="scan-outline" slot="start" aria-hidden="true"></ion-icon>
-				{{ 'Login with {type}' | translate: { type: (biometricLabel | translate) } }}
+				{{ 'Login with {{type}}' | translate: { type: (biometricLabel | translate) } }}
 			</ion-button>
 		</div>
 	</form>
