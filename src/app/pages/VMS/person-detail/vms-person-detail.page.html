@@ -22,7 +22,7 @@
 			<ion-list lines="full">
 				<ion-item class="img-holder">
 					<div style="margin: 0 auto" class="avatar ion-padding">
-						<img class="ion-margin" [src]="avatarURL" (error)="img.src = 'assets/avartar-empty.jpg'" #img />
+						<img class="ion-margin" [src]="avatarURL" (error)="onAvatarError($event)" alt="" />
 						<div>
 							<ion-button class="change-avatar" *ngIf="isDisabledPerson(item)" color="danger" size="small">
 								{{ 'Stop recognition' | translate }}
@@ -196,7 +196,7 @@
 					<div class="gp-people-grid" *ngIf="photos.length; else emptyPhotos">
 						<div class="gp-person" *ngFor="let f of photos" [class.is-primary]="isPrimaryPhoto(f)">
 							<div class="gp-face gp-face--thumb">
-								<img [src]="frameUrl(f.FramePath)" alt="" />
+								<img [src]="frameUrl(f.FramePath) || vmsAvatarFallback" alt="" (error)="onAvatarError($event)" />
 								<span class="gp-primary-badge" *ngIf="isPrimaryPhoto(f)">{{ 'Primary' | translate }}</span>
 								<button
 									type="button"
@@ -292,8 +292,10 @@
 			>
 				<datatable-column class="col-photo" name="Photo" property="FramePath" [canSort]="false" [canFilter]="false">
 					<ng-template let-i="row" datatable-cell-template>
-						<img *ngIf="frameUrl(i.FramePath)" class="pd-ev-thumb" [src]="frameUrl(i.FramePath)" alt="" />
-						<span *ngIf="!frameUrl(i.FramePath)" class="pd-ev-thumb is-empty" aria-hidden="true"></span>
+						<img *ngIf="eventPhotoSrc(i)" class="pd-ev-thumb" [src]="eventPhotoSrc(i)" alt="" (error)="onEventThumbError($event)" />
+						<span *ngIf="!eventPhotoSrc(i)" class="pd-ev-thumb is-empty" aria-hidden="true">
+							<ion-icon name="image-outline"></ion-icon>
+						</span>
 					</ng-template>
 				</datatable-column>
 				<datatable-column class="col-name" name="Type" property="EventType" [canSort]="false" [canFilter]="false">

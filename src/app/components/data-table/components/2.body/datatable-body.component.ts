@@ -46,8 +46,8 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 	_columns: any[];
 	@Input() set columns(val: any[]) {
 		this._columns = val;
-		// Column set/order can change row height (e.g. filter row layout) — force a remeasure.
-		this.vp?.invalidateHeights();
+		// Column set/order can change row height (e.g. filter row layout) — remeasure without wiping locks.
+		this.vp?.requestRemeasure();
 	}
 
 	get columns(): any[] {
@@ -164,7 +164,7 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 		// each covers a case the other misses.
 		this.mediaQuery = window.matchMedia('(max-width: 1164px)');
 		this.mediaListener = () => {
-			this.ngZone.run(() => this.vp?.invalidateHeights());
+			this.ngZone.run(() => this.vp?.scheduleRemeasureAfterResize());
 		};
 		this.mediaQuery.addEventListener('change', this.mediaListener);
 	}

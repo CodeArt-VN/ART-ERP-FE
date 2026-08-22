@@ -111,7 +111,12 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 	private pendingScrollToId: string | number | null = null;
 	private scrollRetryCount = 0;
 	private scrollRetryTimer: ReturnType<typeof setTimeout> | null = null;
+	private resizeSettleTimer: ReturnType<typeof setTimeout> | null = null;
+	private pendingWidthRemeasure = false;
+	private pendingHeightRelayout = false;
 	private static readonly MAX_SCROLL_RETRIES = 12;
+	/** Wait for resize drag to finish before dropping locks (avoids collapse to defaultItemSize). */
+	static readonly RESIZE_SETTLE_MS = 100;
 
 	private pendingMeasurements: Array<{ id: string | number; height: number }> = [];
 	private flushScheduled = false;
@@ -169,6 +174,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 		this.scrollSub?.unsubscribe();
 		this.resizeObserver?.disconnect();
 		this.visibilityObserver?.disconnect();
+		this.clearResizeSettleTimer();
 		if (this.scrollRetryTimer != null) {
 			clearTimeout(this.scrollRetryTimer);
 			this.scrollRetryTimer = null;
@@ -192,11 +198,32 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 		}
 	}
 
-	/** Forces a full remeasure (all locked heights dropped) — e.g. on responsive breakpoint change. */
+	/**
+	 * Drops all locks — only for hard reset. Resize/breakpoint should use `requestRemeasure()` instead
+	 * so total height does not collapse to defaultItemSize placeholders.
+	 */
 	invalidateHeights(): void {
+		this.clearResizeSettleTimer();
 		this.engine.invalidateAll();
 		this.measureGeneration++;
 		this.recompute();
+	}
+
+	/**
+	 * Re-measure visible rows after layout width changes without clearing locks.
+	 * Keeps the last known height for each id until DOM reports a new value — no collapse to
+	 * defaultItemSize when resize finishes.
+	 */
+	requestRemeasure(): void {
+		this.clearResizeSettleTimer();
+		this.measureGeneration++;
+		this.recompute();
+	}
+
+	/** Debounced remeasure after resize stops — locks stay during drag and after settle. */
+	scheduleRemeasureAfterResize(delayMs = VirtualViewportComponent.RESIZE_SETTLE_MS): void {
+		this.pendingWidthRemeasure = true;
+		this.scheduleResizeSettle(delayMs);
 	}
 
 	/**
@@ -393,8 +420,8 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 			changed = true;
 			// Only items already scrolled past (before the current render window) shift the
 			// content-wrapper's translateY offset — compensate scrollTop by the same delta so the
-			// currently-visible rows don't visually jump. Because a lock can only ever happen once
-			// per row, this correction is bounded and cannot re-trigger itself (no feedback loop).
+			// currently-visible rows don't visually jump. Settle remasures on the same id are
+			// uncommon and still bounded to real DOM deltas (no running-average feedback loop).
 			if (result.index < this.renderStart) {
 				compensation += result.delta;
 			}
@@ -420,16 +447,44 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 			}
 			this.lastWidth = width;
 			this.lastHeight = height;
-			this.ngZone.run(() => {
-				if (widthChanged) {
-					this.invalidateHeights();
-					this.tryScrollToId();
-					return;
-				}
-				this.relayout();
-			});
+			if (widthChanged) {
+				this.pendingWidthRemeasure = true;
+			} else if (heightChanged) {
+				this.pendingHeightRelayout = true;
+			}
+			this.scheduleResizeSettle();
 		});
 		this.resizeObserver.observe(this.el.nativeElement);
+	}
+
+	private scheduleResizeSettle(delayMs = VirtualViewportComponent.RESIZE_SETTLE_MS): void {
+		if (this.resizeSettleTimer != null) {
+			clearTimeout(this.resizeSettleTimer);
+		}
+		this.resizeSettleTimer = setTimeout(() => {
+			this.resizeSettleTimer = null;
+			const doRemeasure = this.pendingWidthRemeasure;
+			const doRelayout = this.pendingHeightRelayout;
+			this.pendingWidthRemeasure = false;
+			this.pendingHeightRelayout = false;
+			this.ngZone.run(() => {
+				if (doRemeasure) {
+					this.requestRemeasure();
+					this.tryScrollToId();
+				} else if (doRelayout) {
+					this.relayout();
+				}
+			});
+		}, delayMs);
+	}
+
+	private clearResizeSettleTimer(): void {
+		if (this.resizeSettleTimer != null) {
+			clearTimeout(this.resizeSettleTimer);
+			this.resizeSettleTimer = null;
+		}
+		this.pendingWidthRemeasure = false;
+		this.pendingHeightRelayout = false;
 	}
 
 	private setupVisibilityObserver(): void {

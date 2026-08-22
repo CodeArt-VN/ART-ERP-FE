@@ -1,4 +1,4 @@
-import { ElementRef, NgZone } from '@angular/core';
+import { ElementRef, NgZone, fakeAsync, tick } from '@angular/core';
 import { VirtualViewportComponent } from './virtual-viewport.component';
 
 function makeViewport() {
@@ -180,4 +180,32 @@ describe('VirtualViewportComponent item identity', () => {
 		expect(vp.renderedItems.length).toBe(2);
 		expect((vp.renderedItems[0] as any).Name).toBe('ART');
 	});
+
+	it('keeps locked heights during active resize and remeasures without collapse after settle', fakeAsync(() => {
+		const vp = makeViewport();
+		(vp as any).scrollEl = { scrollTop: 0, clientHeight: 500, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 0, width: 400, height: 100 });
+
+		vp.items = [{ id: 1 }, { id: 2 }];
+		(vp as any).syncEngineItems();
+		(vp as any).engine.lockHeight(1, 80);
+		(vp as any).engine.lockHeight(2, 90);
+		(vp as any).recompute();
+
+		const genBefore = vp.measureGeneration;
+		const heightBefore = vp.totalHeight;
+		expect(heightBefore).toBe(170);
+
+		(vp as any).pendingWidthRemeasure = true;
+		(vp as any).scheduleResizeSettle(VirtualViewportComponent.RESIZE_SETTLE_MS);
+
+		tick(50);
+		expect(vp.measureGeneration).toBe(genBefore);
+		expect(vp.totalHeight).toBe(heightBefore);
+
+		tick(50);
+		expect(vp.measureGeneration).toBe(genBefore + 1);
+		expect(vp.totalHeight).toBe(heightBefore);
+		expect((vp as any).engine.getTotalHeight()).toBe(heightBefore);
+	}));
 });

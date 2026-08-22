@@ -48,8 +48,8 @@
 						[attr.aria-label]="'Select' | translate"
 					/>
 					<button type="button" class="gp-face" [class.is-off]="isDisabledPerson(p)" (click)="onFaceClick(p, $event)" [attr.aria-label]="personLabel(p)">
-						<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
-						<ion-icon *ngIf="!photoOf(p)" name="person"></ion-icon>
+						<img *ngIf="photoShow(p)" [src]="photoOf(p)" alt="" (error)="onPhotoError(p)" />
+						<ion-icon *ngIf="!photoShow(p)" name="person"></ion-icon>
 						<span class="gp-ready-dot" *ngIf="!edgeReady(p)"></span>
 						<ng-container *ngTemplateOutlet="personChip; context: { $implicit: p }"></ng-container>
 					</button>
@@ -73,8 +73,8 @@
 						[attr.aria-label]="'Select' | translate"
 					/>
 					<button type="button" class="gp-face" [class.is-off]="isDisabledPerson(p)" (click)="onFaceClick(p, $event)" [attr.aria-label]="personLabel(p)">
-						<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
-						<ion-icon *ngIf="!photoOf(p)" name="briefcase"></ion-icon>
+						<img *ngIf="photoShow(p)" [src]="photoOf(p)" alt="" (error)="onPhotoError(p)" />
+						<ion-icon *ngIf="!photoShow(p)" name="briefcase"></ion-icon>
 						<span class="gp-ready-dot" *ngIf="!edgeReady(p)"></span>
 						<ng-container *ngTemplateOutlet="personChip; context: { $implicit: p }"></ng-container>
 					</button>
@@ -98,8 +98,8 @@
 						[attr.aria-label]="'Select' | translate"
 					/>
 					<button type="button" class="gp-face" (click)="onFaceClick(f, $event)" [attr.aria-label]="personLabel(f)">
-						<img *ngIf="photoOf(f)" [src]="photoOf(f)" alt="" />
-						<ion-icon *ngIf="!photoOf(f)" name="help-circle"></ion-icon>
+						<img *ngIf="photoShow(f)" [src]="photoOf(f)" alt="" (error)="onPhotoError(f)" />
+						<ion-icon *ngIf="!photoShow(f)" name="help-circle"></ion-icon>
 						<span class="gp-ready-dot" *ngIf="!edgeReady(f)"></span>
 						<ng-container *ngTemplateOutlet="faceChip; context: { $implicit: f }"></ng-container>
 					</button>

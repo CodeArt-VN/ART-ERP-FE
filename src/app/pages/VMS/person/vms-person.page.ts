@@ -10,6 +10,7 @@ import { VmsEnrollService } from 'src/app/services/vms/vms-enroll.service';
 import { VMS_PersonProvider } from 'src/app/services/static/services.service';
 import { environment } from 'src/environments/environment';
 import { VmsPersonMergeModal } from './vms-person-merge.modal';
+import { VmsPhotoLoadState } from '../vms-image.util';
 import {
 	personAllSelected,
 	personApplyShiftSelect,
@@ -52,6 +53,7 @@ export class VmsPersonPage extends PageBase {
 	private listStale = false;
 	private merging = false;
 	private bulkInput?: HTMLInputElement;
+	private readonly photoLoad = new VmsPhotoLoadState();
 
 	constructor(
 		public pageProvider: VMS_PersonProvider,
@@ -89,6 +91,7 @@ export class VmsPersonPage extends PageBase {
 	}
 
 	async loadedData(event?: any) {
+		this.photoLoad.reset();
 		this.rebuildPersonSlices();
 		this.startPersonPolling();
 		super.loadedData(event);
@@ -441,6 +444,14 @@ export class VmsPersonPage extends PageBase {
 
 	photoOf(person: any): string {
 		return this.frameUrl(personPhotoPath(person));
+	}
+
+	photoShow(person: any): boolean {
+		return this.photoLoad.showPhoto(personItemKey(person), this.photoOf(person));
+	}
+
+	onPhotoError(person: any): void {
+		this.photoLoad.onError(personItemKey(person), this.photoOf(person));
 	}
 
 	personChipOf(person: any) {

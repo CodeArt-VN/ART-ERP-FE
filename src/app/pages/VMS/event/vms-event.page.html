@@ -25,8 +25,10 @@
 		>
 			<datatable-column class="col-photo" name="Photo" property="FramePath" [canSort]="false" [canFilter]="false">
 				<ng-template let-i="row" datatable-cell-template>
-					<img *ngIf="photoSrc(i)" class="ev-thumb" [src]="photoSrc(i)" alt="" />
-					<span *ngIf="!photoSrc(i)" class="ev-thumb is-empty" aria-hidden="true"></span>
+					<img *ngIf="photoSrc(i)" class="ev-thumb" [src]="photoSrc(i)" alt="" (error)="onEventThumbError($event)" />
+					<span *ngIf="!photoSrc(i)" class="ev-thumb is-empty" aria-hidden="true">
+						<ion-icon name="image-outline"></ion-icon>
+					</span>
 				</ng-template>
 			</datatable-column>
 			<datatable-column class="col-name" name="Person" property="DisplayName">
@@ -37,9 +39,9 @@
 							<span class="ev-val">{{ i.OccurredAt | date:'HH:mm:ss' }}</span>
 							<span class="ev-day">{{ i.OccurredAt | date:'dd/MM' }}</span>
 						</div>
-						<div class="ev-tags" *ngIf="i.CameraId || i.EdgeNodeId">
-							<ion-badge *ngIf="i.CameraId" color="medium">{{ i.CameraId }}</ion-badge>
-							<ion-badge *ngIf="i.EdgeNodeId" color="tertiary">{{ i.EdgeNodeId }}</ion-badge>
+						<div class="ev-tags" *ngIf="cameraLabel(i) || edgeLabel(i)">
+							<ion-badge *ngIf="cameraLabel(i)" color="medium">{{ cameraLabel(i) }}</ion-badge>
+							<ion-badge *ngIf="edgeLabel(i)" color="tertiary">{{ edgeLabel(i) }}</ion-badge>
 						</div>
 					</div>
 				</ng-template>
