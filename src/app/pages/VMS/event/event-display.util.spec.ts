@@ -1,6 +1,10 @@
 import {
 	eventPersonLabel,
 	eventPhotoPath,
+	eventCameraLabel,
+	eventEdgeLabel,
+	buildEdgeNameLookup,
+	isUuidLike,
 	eventStatusKind,
 	eventStatusLabel,
 	eventStatusVisible,
@@ -82,5 +86,31 @@ describe('eventPersonLabel / eventPhotoPath', () => {
 		expect(eventPhotoPath({ FramePath: '/a.jpg', PhotoPath: '/b.jpg' })).toBe('/a.jpg');
 		expect(eventPhotoPath({ PhotoPath: '/b.jpg' })).toBe('/b.jpg');
 		expect(eventPhotoPath({})).toBe('');
+	});
+});
+
+describe('eventEdgeLabel / eventCameraLabel', () => {
+	it('prefers edge name over uuid id', () => {
+		const uuid = 'a1111111-1111-4111-8111-111111111111';
+		expect(eventEdgeLabel({ EdgeNodeName: 'EDGE-NAS-16', EdgeNodeId: uuid })).toBe('EDGE-NAS-16');
+		expect(eventEdgeLabel({ EdgeNodeId: uuid }, buildEdgeNameLookup([{ UUID: uuid, Name: 'EDGE-NAS-16' }]))).toBe('EDGE-NAS-16');
+		expect(eventEdgeLabel({ EdgeNodeId: uuid }, new Map([[uuid, 'EDGE-NAS-16']]))).toBe('EDGE-NAS-16');
+		expect(eventEdgeLabel({ EdgeNodeId: uuid })).toBe('');
+		expect(isUuidLike(uuid)).toBeTrue();
+	});
+
+	it('builds lookup from edge UUID and legacy ids', () => {
+		const uuid = 'b2222222-2222-4222-8222-222222222222';
+		const map = buildEdgeNameLookup([
+			{ UUID: uuid, Name: 'EDGE-NAS-16' },
+			{ EdgeNodeId: 'legacy-edge', Name: 'Legacy Edge' },
+		]);
+		expect(map.get(uuid)).toBe('EDGE-NAS-16');
+		expect(map.get('legacy-edge')).toBe('Legacy Edge');
+	});
+
+	it('prefers camera name then camera id', () => {
+		expect(eventCameraLabel({ CameraName: 'Lobby', CameraId: 'CAM-01' })).toBe('Lobby');
+		expect(eventCameraLabel({ CameraId: 'CAM-01' })).toBe('CAM-01');
 	});
 });

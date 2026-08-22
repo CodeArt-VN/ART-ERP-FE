@@ -105,11 +105,11 @@ describe('vms-person-detail.util', () => {
 		expect(one.sampleCount).toBe(1);
 		expect(one.suggestMore).toBe(true);
 		expect(one.percent).toBe(Math.min(95, 40 + 15 + Math.round(0.8 * 20)));
-		expect(one.note).toContain('{count} sample photos');
+		expect(one.note).toContain('{{count}} sample photos');
 		expect(one.noteParams.label).toBe(one.label);
 		const three = personRecognitionReadiness(3, { hasEmbedding: true, lastConfidence: 0.9 });
 		expect(three.suggestMore).toBe(false);
 		expect(three.percent).toBeGreaterThanOrEqual(one.percent);
-		expect(three.note).toContain('{count} sample photos');
+		expect(three.note).toContain('{{count}} sample photos');
 	});
 });

@@ -29,8 +29,8 @@
 			[class.is-mapped]="isMapped(p)"
 		>
 			<button type="button" class="gp-face" (click)="onFaceClick(p)" [attr.aria-label]="personLabel(p)">
-				<img *ngIf="photoOf(p)" [src]="photoOf(p)" alt="" />
-				<ion-icon *ngIf="!photoOf(p)" [name]="isMapped(p) ? (p.IsStaff || p.PersonType === 'staff' ? 'person' : 'briefcase') : 'help-circle'"></ion-icon>
+				<img *ngIf="photoShow(p)" [src]="photoOf(p)" alt="" (error)="onPhotoError(p)" />
+				<ion-icon *ngIf="!photoShow(p)" [name]="personPhotoIcon(p)"></ion-icon>
 				<span class="gp-chip" *ngIf="personChipOf(p) as o">
 					<span class="gp-chip-cam" *ngIf="o.code">{{ o.code }}</span>
 					<span class="gp-chip-time" *ngIf="o.name">{{ o.name }}</span>

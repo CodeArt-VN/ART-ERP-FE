@@ -18,6 +18,7 @@ import {
 	personOverlay,
 	unmappedFaceOverlay,
 } from './vms-person.util';
+import { VmsPhotoLoadState, vmsPersonPhotoIcon } from '../vms-image.util';
 
 @Component({
 	selector: 'app-vms-person-merge-modal',
@@ -33,6 +34,7 @@ export class VmsPersonMergeModal extends PageBase implements OnInit {
 	showAdvanced = false;
 	advancedContact: any = null;
 	formGroup: FormGroup;
+	private readonly photoLoad = new VmsPhotoLoadState();
 
 	_contactDataSource = this.buildSelectDataSource((term) => {
 		return this.contactProvider.search({
@@ -161,6 +163,18 @@ export class VmsPersonMergeModal extends PageBase implements OnInit {
 
 	photoOf(person: any): string {
 		return this.frameUrl(personPhotoPath(person));
+	}
+
+	photoShow(person: any): boolean {
+		return this.photoLoad.showPhoto(personItemKey(person), this.photoOf(person));
+	}
+
+	onPhotoError(person: any): void {
+		this.photoLoad.onError(personItemKey(person), this.photoOf(person));
+	}
+
+	personPhotoIcon(person: any): string {
+		return vmsPersonPhotoIcon(person, !identityNeedsBpMapping(person));
 	}
 
 	personChipOf(person: any) {

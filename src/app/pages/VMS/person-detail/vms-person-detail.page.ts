@@ -22,6 +22,7 @@ import {
 	shouldLazyLoadTab,
 	visitPeriodCounts,
 } from './vms-person-detail.util';
+import { VMS_AVATAR_FALLBACK, vmsApplyAvatarFallback } from '../vms-image.util';
 
 @Component({
 	selector: 'app-vms-person-detail',
@@ -77,6 +78,7 @@ export class VmsPersonDetailPage extends PageBase {
 	photoLearning = false;
 	tabLoading: Partial<Record<PersonDetailTab, boolean>> = {};
 	private tabLoaded: Partial<Record<PersonDetailTab, boolean>> = {};
+	readonly vmsAvatarFallback = VMS_AVATAR_FALLBACK;
 	recognition = {
 		hasEmbedding: false,
 		modelName: '',
@@ -248,7 +250,11 @@ export class VmsPersonDetailPage extends PageBase {
 	}
 
 	get avatarURL(): string {
-		return this.photoOf(this.item) || 'assets/avartar-empty.jpg';
+		return this.photoOf(this.item) || VMS_AVATAR_FALLBACK;
+	}
+
+	onAvatarError(event: Event): void {
+		vmsApplyAvatarFallback(event);
 	}
 
 	get displayTitle(): string {
@@ -371,6 +377,14 @@ export class VmsPersonDetailPage extends PageBase {
 
 	photoOf(person: any): string {
 		return this.frameUrl(personPhotoPath(person));
+	}
+
+	eventPhotoSrc(row: any): string {
+		return this.frameUrl(row?.FramePath);
+	}
+
+	onEventThumbError(event: Event): void {
+		vmsApplyAvatarFallback(event);
 	}
 
 	isStaffPerson(person: any): boolean {
