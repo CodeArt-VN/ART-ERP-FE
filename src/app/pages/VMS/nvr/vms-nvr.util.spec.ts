@@ -19,7 +19,7 @@ describe('nvrCameraInUse / nvrCameraCount', () => {
 
 describe('nvrApplyCameraCounts', () => {
 	it('counts in-use vs total per NVR', () => {
-		const nvrs = [{ Id: 10 }, { Id: 11 }];
+		const nvrs: any[] = [{ Id: 10 }, { Id: 11 }];
 		nvrApplyCameraCounts(nvrs, [
 			{ IDNvr: 10, IsDisabled: false },
 			{ IDNvr: 10, IsDisabled: true },
@@ -35,7 +35,7 @@ describe('nvrApplyCameraCounts', () => {
 
 describe('nvrNeedsCameraCounts', () => {
 	it('is true when API omitted the field', () => {
-		expect(nvrNeedsCameraCounts([{ Id: 1 }])).toBe(true);
+		expect(nvrNeedsCameraCounts([{ Id: 1 } as any])).toBe(true);
 		expect(nvrNeedsCameraCounts([{ CameraCount: 0 }])).toBe(false);
 	});
 });

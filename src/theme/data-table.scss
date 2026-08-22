@@ -1624,7 +1624,15 @@ app-data-table.is-empty {
 	}
 }
 
-// Shared fill layout for list pages — applied via ion-content.scrollx.
+// With data: never let flex / leftover min-height:100% collapse the host below virtual-scroll
+// content (background shorter than rows). Applies on all list pages — not only .scrollx.
+app-data-table:not(.is-empty) {
+	flex-shrink: 0;
+	min-height: auto !important;
+	height: auto;
+}
+
+// Shared fill layout for list pages — applied via ion-content.scrollx (empty-state stretch).
 @mixin ion-content-table-fill {
 	&::part(scroll) {
 		display: flex;
@@ -1636,12 +1644,8 @@ app-data-table.is-empty {
 		flex-shrink: 0;
 	}
 
-	// Has rows: restore min-height:auto (inline min-height:100% replaces the flex default
-	// and lets flex-shrink collapse the host to viewport height → table background shorter
-	// than virtual-scroll / body rows that overflow below it).
 	> .safe-max-width:has(> app-data-table:not(.is-empty)),
-	> app-data-table:not(.is-empty),
-	app-data-table:not(.is-empty) {
+	> app-data-table:not(.is-empty) {
 		flex-shrink: 0;
 		min-height: auto !important;
 		height: auto;
@@ -1662,7 +1666,6 @@ app-data-table.is-empty {
 	}
 }
 
-// Phase 1 — pilot (AR Invoice). Phase 2: move @include to ion-content.scrollx and remove .test-fill.
 ion-content.scrollx {
 	@include ion-content-table-fill;
 }

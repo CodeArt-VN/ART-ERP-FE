@@ -78,7 +78,7 @@
 				</div>
 			</div>
 			<div class="live-frame-shell">
-				<img *ngIf="liveImageUrl" class="live-frame" [src]="liveImageUrl" alt="Live stream" (load)="onLiveFrameLoaded()" />
+				<img *ngIf="liveImageUrl" class="live-frame" [src]="liveImageUrl" alt="Live stream" (load)="onLiveFrameLoaded()" (error)="onLiveFrameError()" />
 				<div class="live-loading-overlay" *ngIf="liveLoading && !liveImageUrl">
 					<ion-spinner name="crescent" color="light"></ion-spinner>
 					<div>{{ 'Loading...' | translate }}</div>

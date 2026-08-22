@@ -186,6 +186,23 @@ export class VmsLivePage extends PageBase {
 		}
 	}
 
+	onLiveFrameError() {
+		this.zone.run(() => {
+			if (this.prevImageUrl) {
+				URL.revokeObjectURL(this.prevImageUrl);
+				this.prevImageUrl = null;
+			}
+			if (this.liveImageUrl) {
+				URL.revokeObjectURL(this.liveImageUrl);
+				this.liveImageUrl = null;
+			}
+			this.liveStreaming = false;
+			this.liveLoading = false;
+			if (!this.liveError) this.liveError = 'Cannot load live image';
+			this.cdr?.detectChanges();
+		});
+	}
+
 	private startLiveStream() {
 		if (this.snapshotTimer) {
 			clearInterval(this.snapshotTimer);

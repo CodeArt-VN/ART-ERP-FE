@@ -17,18 +17,20 @@ export interface VirtualLockResult {
 /**
  * Pure (DOM-free) engine for variable-height virtual scrolling.
  *
- * Design principle: every row's height is measured at most ONCE and then locked forever — there
- * is no running-average re-estimation step. That re-estimation loop is what made CDK's
- * `AutoSizeVirtualScrollStrategy` oscillate/jump near the tail of a list with real, varying row
- * heights (angular/components#32715): every newly-rendered row nudged the running average,
- * shrinking/growing the estimated total height, which the browser then "corrected" by
- * snapping scrollTop — worse the faster you scrolled, and never converging.
+ * Design principle: every row's height is measured from the real DOM (via ResizeObserver) and
+ * stored per id — there is no running-average re-estimation step. That re-estimation loop is
+ * what made CDK's `AutoSizeVirtualScrollStrategy` oscillate/jump near the tail of a list with
+ * real, varying row heights (angular/components#32715): every newly-rendered row nudged the
+ * running average, shrinking/growing the estimated total height, which the browser then
+ * "corrected" by snapping scrollTop — worse the faster you scrolled, and never converging.
  *
  * Here, unmeasured rows use `defaultItemSize` as a placeholder in the prefix-sum table until
- * `lockHeight()` reports their real height exactly once. Because a lock can never be undone or
- * re-applied, any scroll-position compensation triggered by a lock (see `VirtualViewportComponent`)
- * happens at most once per row for the lifetime of the cache — there is no feedback loop for it
- * to run away in.
+ * `lockHeight()` reports their real height. The same id may settle upward later (≥1px) when
+ * async content (breadcrumbs, wrap) finishes — that updates only that row's entry, not a global
+ * average. Datasource insert/delete/reorder keeps locks for stable ids and prunes removed ones.
+ *
+ * Scroll-position compensation in `VirtualViewportComponent` stays bounded because updates are
+ * driven by real measured deltas on individual rows, not by a shifting estimate of the whole list.
  */
 export class VirtualScrollEngine<T extends VirtualEngineItem = VirtualEngineItem> {
 	constructor(private defaultItemSize: number) {}
@@ -49,8 +51,18 @@ export class VirtualScrollEngine<T extends VirtualEngineItem = VirtualEngineItem
 	upsertItems(items: T[]): void {
 		this.items = items || [];
 		this.idToIndex = new Map();
+		const nextIds = new Set<string | number>();
 		for (let i = 0; i < this.items.length; i++) {
-			this.idToIndex.set(this.items[i].id, i);
+			const id = this.items[i].id;
+			this.idToIndex.set(id, i);
+			nextIds.add(id);
+		}
+		// Drop locks for removed ids so a recycled id can measure fresh; keep locks for stable ids
+		// across insert/delete/reorder so add/remove from the datasource does not wipe heights.
+		for (const id of [...this.heights.keys()]) {
+			if (!nextIds.has(id)) {
+				this.heights.delete(id);
+			}
 		}
 		this.offsets = new Array(this.items.length + 1).fill(0);
 		this.rebuildOffsetsFrom(0);
@@ -90,29 +102,38 @@ export class VirtualScrollEngine<T extends VirtualEngineItem = VirtualEngineItem
 	}
 
 	/**
-	 * Reports the real measured height for an item. First report wins and is locked forever;
-	 * subsequent reports for the same id (e.g. the row scrolled out of the rendered window and
-	 * back in, re-triggering its ResizeObserver) are silently ignored.
+	 * Reports the real measured height for an item.
 	 *
-	 * Returns null when the id is unknown, already locked, or the height is within rounding of
-	 * the placeholder it replaces (nothing to do). Otherwise returns the changed index and the
-	 * delta, so the caller can decide whether a scroll-position compensation is needed — only
-	 * required when `index` is before the currently rendered window start.
+	 * - First report replaces the `defaultItemSize` placeholder and locks the id.
+	 * - Later reports for the same id are allowed only when the delta is ≥ 1px (async settle:
+	 *   breadcrumbs, wrap, badges). Same-size re-fires from recycle/ResizeObserver are ignored.
+	 * - This is NOT a running average — only the measured row's own height changes — so it does
+	 *   not reintroduce CDK autosize oscillation.
+	 *
+	 * Returns null when the id is unknown or the height change is negligible. Otherwise returns
+	 * the changed index and delta for scroll-position compensation when `index` is before the
+	 * current render window.
 	 */
 	lockHeight(id: string | number, px: number): VirtualLockResult | null {
-		if (this.heights.has(id) || !(px > 0)) {
+		if (!(px > 0)) {
 			return null;
 		}
 		const index = this.idToIndex.get(id);
 		if (index == null) {
 			return null;
 		}
-		const old = this.heightOf(id);
-		this.heights.set(id, px);
+		const hadLock = this.heights.has(id);
+		const old = hadLock ? (this.heights.get(id) as number) : this.defaultItemSize;
 		const delta = px - old;
-		if (Math.abs(delta) < 0.5) {
+		// Settle updates need ≥1px to ignore subpixel noise; first lock still accepts ≥0.5px.
+		const minDelta = hadLock ? 1 : 0.5;
+		if (Math.abs(delta) < minDelta) {
+			if (!hadLock) {
+				this.heights.set(id, px);
+			}
 			return null;
 		}
+		this.heights.set(id, px);
 		this.rebuildOffsetsFrom(index);
 		return { index, delta };
 	}
