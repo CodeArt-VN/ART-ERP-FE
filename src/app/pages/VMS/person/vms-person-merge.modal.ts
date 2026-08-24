@@ -10,6 +10,7 @@ import {
 	personAssignEventId,
 	personItemKey,
 	personMappedSelected,
+	personMergeEffectiveTargetKey,
 	personMergeSources,
 	personMergeTargetDefault,
 	identityNeedsBpMapping,
@@ -141,15 +142,18 @@ export class VmsPersonMergeModal extends PageBase implements OnInit {
 	}
 
 	confirm() {
-		if (!this.canConfirm) return;
-		const sources = personMergeSources(this.items, this.targetKey).filter((s) => !!personAssignEventId(s));
-		const targetPerson = this.targetKey ? this.items.find((r) => personItemKey(r) === this.targetKey) : null;
+		if (!this.canConfirm || this.submitAttempt) return;
+		this.submitAttempt = true;
+		const targetKey = personMergeEffectiveTargetKey(this.items, this.targetKey, this.advancedContact);
+		const sources = personMergeSources(this.items, this.targetKey, this.advancedContact).filter((s) => !!personAssignEventId(s));
+		const targetPerson = targetKey ? this.items.find((r) => personItemKey(r) === targetKey) : null;
 		this.modalCtrl.dismiss(
 			{
+				items: this.items,
 				sources,
 				targetPerson: targetPerson || null,
 				advancedContact: this.advancedContact?.Id ? this.advancedContact : null,
-				targetKey: this.targetKey,
+				targetKey,
 			},
 			'confirm'
 		);

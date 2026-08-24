@@ -25,7 +25,7 @@ describe('vms-person util', () => {
 		expect(personHasEmbedding({})).toBeFalse();
 	});
 });
-import { canConfirmPersonMerge, faceOverlay, personAllSelected, personApplyShiftSelect, personAssignEventId, personAssignEventNumericId, personDeleteTargets, personEventGuidIds, personEventIdsToHide, personEventNumericId, personFilterByPersonIds, personIdentityNumericIds, personItemKey, personMappedGuests, personMappedSelected, personMappedStaff, personMergeIncomingItems, personMergeSources, personMergeTargetDefault, personNeedsMapping, personRebindSelection, personShiftRange, personSplitPersonIds, personToggleSelectAll, personVisibleRows, identityFaceContext, identityIsStaff, identityNeedsBpMapping, mergeNamedPersons, namedPersonsByIsStaff, personDisplayName, personFromContact, personOverlay, unmappedFaceOverlay, unnamedFaceEvents } from './vms-person.util';
+import { canConfirmPersonMerge, faceOverlay, personAllSelected, personApplyShiftSelect, personAssignEventId, personAssignEventNumericId, personDeleteTargets, personEventGuidIds, personEventIdsToHide, personEventNumericId, personFilterByPersonIds, personIdentityNumericIds, personItemKey, personMappedGuests, personMappedSelected, personMappedStaff, personMergeEffectiveTargetKey, personMergeIncomingItems, personMergeSources, personMergeTargetDefault, personNeedsMapping, personRebindSelection, personShiftRange, personSplitPersonIds, personToggleSelectAll, personVisibleRows, identityFaceContext, identityIsStaff, identityNeedsBpMapping, mergeNamedPersons, namedPersonsByIsStaff, personDisplayName, personFromContact, personOverlay, unmappedFaceOverlay, unnamedFaceEvents } from './vms-person.util';
 
 describe('vms-person.util', () => {
 	it('keeps only unnamed faces that have a frame', () => {
@@ -93,7 +93,7 @@ describe('vms-person.util', () => {
 	it('builds unmapped face overlay from latest event context', () => {
 		expect(identityFaceContext({ LatestCameraId: 'TEST-CLIP', LatestOccurredAt: '2026-08-20T10:00:00', LatestEdgeNodeName: 'EDGE-NAS-16' })).toEqual({
 			EdgeNodeName: 'EDGE-NAS-16',
-			EdgeNodeId: undefined,
+			EdgeNodeUUID: undefined,
 			CameraId: 'TEST-CLIP',
 			OccurredAt: '2026-08-20T10:00:00',
 		});
@@ -279,6 +279,16 @@ describe('vms-person.util', () => {
 		expect(canConfirmPersonMerge([mappedA, mappedB], null)).toBeFalse();
 		expect(canConfirmPersonMerge([mappedA, mappedB], 'p:m1')).toBeTrue();
 		expect(canConfirmPersonMerge([{ PersonId: 'u2', NeedsBpMapping: true }], null, { Id: 99 })).toBeFalse();
+	});
+
+	it('employee + unassigned: only unassigned is source (never re-assign survivor)', () => {
+		const unmapped = { PersonId: 'u1', NeedsBpMapping: true, LatestEventId: 'e-u1' };
+		const employee = { PersonId: 'm1', NeedsBpMapping: false, IDContact: 10, LatestEventId: 'e-m1', IsStaff: true };
+		expect(personMergeEffectiveTargetKey([unmapped, employee], null, null)).toBe('p:m1');
+		expect(personMergeSources([unmapped, employee], null, null).map((p) => p.PersonId)).toEqual(['u1']);
+		// Advanced contact matching employee — survivor must not be a source even if targetKey was cleared.
+		expect(personMergeSources([unmapped, employee], null, { Id: 10, Name: 'NV' }).map((p) => p.PersonId)).toEqual(['u1']);
+		expect(personMergeEffectiveTargetKey([unmapped, employee], null, { Id: 10 })).toBe('p:m1');
 	});
 
 	it('reads EventId guids from array or wrapped payloads', () => {

@@ -1,5 +1,9 @@
 <ion-header [translucent]="true">
-	<app-toolbar [page]="this"></app-toolbar>
+	<app-toolbar [page]="this">
+		<ion-button title="{{ 'Edge update policy' | translate }}" [routerLink]="['/vms-edge-version']">
+			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+		</ion-button>
+	</app-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
@@ -40,18 +44,14 @@
 					</div>
 				</ng-template>
 			</datatable-column>
-			<datatable-column class="col-infer" name="Infer" property="InferRuntime">
+			<datatable-column class="col-status" name="Status" property="LastHeartbeat" [minWidth]="320">
 				<ng-template let-i="row" datatable-cell-template>
-					<span class="en-runtime" [class.is-empty]="inferLabel(i) === '—'" [attr.data-kind]="inferLabel(i)">{{ inferLabel(i) }}</span>
-				</ng-template>
-			</datatable-column>
-			<datatable-column class="col-status" name="Status" property="LastHeartbeat">
-				<ng-template let-i="row" datatable-cell-template>
-					<span class="en-stt" [class.on]="isOnline(i)" [class.off]="!isOnline(i)" [attr.title]="i.LastHeartbeat | date:'HH:mm:ss'">
+					<span class="en-stt" [class.on]="isOnline(i)" [class.off]="!isOnline(i)">
 						<span class="dot"></span>
 						<strong>{{ (isOnline(i) ? 'Online' : 'Offline') | translate }}</strong>
-						<span class="en-time" *ngIf="i.LastHeartbeat">{{ i.LastHeartbeat | date:'HH:mm:ss' }}</span>
+						<span class="en-time" *ngIf="statusMeta(i)">{{ statusMeta(i) }}</span>
 					</span>
+					<span class="en-runtime" [class.is-empty]="inferLabel(i) === '—'" [attr.data-kind]="inferLabel(i)">{{ inferLabel(i) }}</span>
 				</ng-template>
 			</datatable-column>
 			<datatable-column class="col-metric col-cameras" name="Cameras" property="CamerasWatching">

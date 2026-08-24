@@ -33,6 +33,11 @@ export const VMSRoutes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'vms-edge-version',
+		loadChildren: () => import('./edge-version/vms-edge-version.module').then((m) => m.VmsEdgeVersionPageModule),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'vms-event',
 		loadChildren: () => import('./event/vms-event.module').then((m) => m.VmsEventPageModule),
 		canActivate: [AuthGuard],

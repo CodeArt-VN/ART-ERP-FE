@@ -7,6 +7,16 @@
 		>
 			<ion-icon slot="icon-only" [color]="inUse() ? 'success' : 'medium'" [name]="inUse() ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
 		</ion-button>
+		<ion-button title="{{ 'Edge update policy' | translate }}" [routerLink]="['/vms-edge-version']">
+			<ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+		</ion-button>
+		<ion-button
+			*ngIf="item?.Id && pageConfig.canEdit !== false"
+			title="{{ 'Push update' | translate }}"
+			(click)="pushUpdate()"
+		>
+			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+		</ion-button>
 		<ion-button
 			*ngIf="item?.Id && pageConfig.canEdit !== false"
 			title="{{ 'Refresh persons' | translate }}"
@@ -75,6 +85,10 @@
 						></app-form-control>
 						<app-form-control
 							[field]="{ id: 'guest_throttle_minutes', label: 'Guest throttle (minutes)', type: 'number', mask: '999', thousandSeparator: '', form: remoteForm }"
+							(change)="saveChange()"
+						></app-form-control>
+						<app-form-control
+							[field]="{ id: 'heartbeat_seconds', label: 'Heartbeat (giây)', type: 'number', mask: '9999', thousandSeparator: '', form: remoteForm, placeholder: 'Để trống = dùng cấu hình máy' }"
 							(change)="saveChange()"
 						></app-form-control>
 						<app-form-control
@@ -176,6 +190,9 @@
 						<app-form-control [field]="{ id: 'UUID', label: 'UUID', type: 'text', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'LastHeartbeat', type: 'span-datetime', label: 'Heartbeat', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'InferRuntime', label: 'Infer runtime', type: 'text', form: formGroup }"></app-form-control>
+						<app-form-control [field]="{ id: 'SoftwareVersion', label: 'Software version', type: 'text', form: formGroup }"></app-form-control>
+						<app-form-control [field]="{ id: 'SoftwarePlatform', label: 'Platform', type: 'text', form: formGroup }"></app-form-control>
+						<ion-badge [color]="softwareBadgeColor()">{{ softwareStatusLabel() }}</ion-badge>
 						<app-form-control [field]="{ id: 'InferDevice', label: 'Infer device', type: 'text', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'CamerasOnline', label: 'Cameras online', type: 'number', form: formGroup }"></app-form-control>
 						<app-form-control [field]="{ id: 'CamerasWatching', label: 'Cameras', type: 'number', form: formGroup }"></app-form-control>
