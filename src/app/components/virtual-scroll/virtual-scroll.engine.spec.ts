@@ -26,12 +26,20 @@ describe('VirtualScrollEngine', () => {
 		expect(engine.getTotalHeight()).toBe(500);
 	});
 
-	it('locks each height at most once and ignores duplicate reports', () => {
+	it('locks first height and ignores same-size duplicate reports', () => {
 		const engine = new VirtualScrollEngine<TestItem>(51);
 		engine.upsertItems(makeItems(3));
 		expect(engine.lockHeight(0, 47)).toEqual({ index: 0, delta: -4 });
-		expect(engine.lockHeight(0, 99)).toBeNull();
+		expect(engine.lockHeight(0, 47.4)).toBeNull();
 		expect(engine.getTotalHeight()).toBe(47 + 51 + 51);
+	});
+
+	it('allows settle update when locked row grows by ≥1px (dynamic content)', () => {
+		const engine = new VirtualScrollEngine<TestItem>(51);
+		engine.upsertItems(makeItems(3));
+		expect(engine.lockHeight(0, 47)).toEqual({ index: 0, delta: -4 });
+		expect(engine.lockHeight(0, 65)).toEqual({ index: 0, delta: 18 });
+		expect(engine.getTotalHeight()).toBe(65 + 51 + 51);
 	});
 
 	it('170 mixed-height rows: total height converges in one forward pass (no estimate oscillation)', () => {
@@ -79,13 +87,62 @@ describe('VirtualScrollEngine', () => {
 		expect(engine.lockHeight(0, 65)).toEqual({ index: 0, delta: 14 });
 	});
 
-	it('upsertItems preserves locked heights for stable ids', () => {
+	it('upsertItems preserves locked heights for stable ids when appending', () => {
 		const engine = new VirtualScrollEngine<TestItem>(51);
 		engine.upsertItems(makeItems(3));
 		engine.lockHeight(1, 65);
 		engine.upsertItems(makeItems(4));
 		expect(engine.getTotalHeight()).toBe(51 + 65 + 51 + 51);
-		engine.lockHeight(1, 99);
-		expect(engine.getTotalHeight()).toBe(51 + 65 + 51 + 51);
+		// Same locked height ignored; settle growth still allowed
+		expect(engine.lockHeight(1, 65)).toBeNull();
+		expect(engine.lockHeight(1, 99)).toEqual({ index: 1, delta: 34 });
+		expect(engine.getTotalHeight()).toBe(51 + 99 + 51 + 51);
+	});
+
+	it('upsertItems prunes locks for removed ids and keeps remaining', () => {
+		const engine = new VirtualScrollEngine<TestItem>(51);
+		engine.upsertItems(makeItems(4));
+		engine.lockHeight(1, 65);
+		engine.lockHeight(2, 70);
+		engine.upsertItems([
+			{ id: 0 },
+			{ id: 2 },
+			{ id: 3 },
+		]);
+		// id 1 removed → lock pruned; id 2 kept
+		expect(engine.getTotalHeight()).toBe(51 + 70 + 51);
+		// recycled id 1 measures fresh from default
+		engine.upsertItems([
+			{ id: 0 },
+			{ id: 1 },
+			{ id: 2 },
+		]);
+		expect(engine.getTotalHeight()).toBe(51 + 51 + 70);
+		expect(engine.lockHeight(1, 80)).toEqual({ index: 1, delta: 29 });
+	});
+
+	it('upsertItems rebuilds offsets after middle insert/delete without wiping other locks', () => {
+		const engine = new VirtualScrollEngine<TestItem>(51);
+		engine.upsertItems([
+			{ id: 10 },
+			{ id: 20 },
+			{ id: 30 },
+		]);
+		engine.lockHeight(10, 40);
+		engine.lockHeight(30, 60);
+		// insert in the middle
+		engine.upsertItems([
+			{ id: 10 },
+			{ id: 15 },
+			{ id: 20 },
+			{ id: 30 },
+		]);
+		expect(engine.getTotalHeight()).toBe(40 + 51 + 51 + 60);
+		// delete middle
+		engine.upsertItems([
+			{ id: 10 },
+			{ id: 30 },
+		]);
+		expect(engine.getTotalHeight()).toBe(40 + 60);
 	});
 });

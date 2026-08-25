@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription, fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 import { VirtualEngineItem, VirtualScrollEngine } from './virtual-scroll.engine';
@@ -36,7 +36,7 @@ type IonContentEl = HTMLElement & { getScrollElement?: () => Promise<HTMLElement
 	templateUrl: './virtual-viewport.component.html',
 	standalone: false,
 })
-export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnDestroy {
+export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 	@Input() mode: VirtualScrollMode = 'page';
 	@Input() minBufferPx = 300;
 	@Input() maxBufferPx = 600;
@@ -66,6 +66,31 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			// Same ids, new object refs (list patch after save) — re-slice without height rebuild.
 			this.refreshRenderedSlice();
 		}
+		this.tryScrollToId();
+	}
+
+	/** Align the target row: center (default) or start (top of viewport, e.g. first search hit). */
+	@Input() scrollAlign: 'center' | 'start' = 'center';
+
+	/** Scroll so the item with this id is in view (center). Queues until layout is ready. */
+	@Input() set scrollToId(id: string | number | null | undefined) {
+		if (id == null || id === '') {
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+			return;
+		}
+		this.pendingScrollToId = id;
+		this.scrollRetryCount = 0;
+		this.tryScrollToId();
+	}
+
+	/** Bump to re-attempt scroll after a dropdown/panel finishes positioning. */
+	@Input() set scrollToTick(tick: number | null | undefined) {
+		if (tick == null) {
+			return;
+		}
+		this.scrollRetryCount = 0;
+		this.tryScrollToId();
 	}
 
 	@Output() scrollProgress = new EventEmitter<ScrollProgressEvent>();
@@ -82,6 +107,16 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	private scrollSub?: Subscription;
 	private resizeObserver?: ResizeObserver;
 	private lastWidth = 0;
+	private lastHeight = 0;
+	private pendingScrollToId: string | number | null = null;
+	private scrollRetryCount = 0;
+	private scrollRetryTimer: ReturnType<typeof setTimeout> | null = null;
+	private resizeSettleTimer: ReturnType<typeof setTimeout> | null = null;
+	private pendingWidthRemeasure = false;
+	private pendingHeightRelayout = false;
+	private static readonly MAX_SCROLL_RETRIES = 12;
+	/** Wait for resize drag to finish before dropping locks (avoids collapse to defaultItemSize). */
+	static readonly RESIZE_SETTLE_MS = 100;
 
 	private pendingMeasurements: Array<{ id: string | number; height: number }> = [];
 	private flushScheduled = false;
@@ -99,6 +134,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	}
 
 	ngOnInit(): void {
+		this.engine.setDefaultItemSize(this.defaultItemSize);
 		this.ngZone.runOutsideAngular(() => {
 			this.setupResizeObserver();
 			this.setupVisibilityObserver();
@@ -109,15 +145,22 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		}
 	}
 
+	ngAfterViewInit(): void {
+		this.scheduleScrollRetry();
+		this.scrollRetryTimer = setTimeout(() => this.ngZone.run(() => this.tryScrollToId()), 50);
+	}
+
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['defaultItemSize'] && !changes['defaultItemSize'].firstChange) {
+		if (changes['defaultItemSize']) {
 			this.engine.setDefaultItemSize(this.defaultItemSize);
+			this.syncEngineItems();
 		}
 		if (changes['idKey'] && !changes['idKey'].firstChange) {
 			this.syncEngineItems();
 			if (this.scrollEl) {
 				this.recompute();
 			}
+			this.tryScrollToId();
 		}
 		if (changes['mode'] && !changes['mode'].firstChange) {
 			this.scrollSub?.unsubscribe();
@@ -131,6 +174,11 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		this.scrollSub?.unsubscribe();
 		this.resizeObserver?.disconnect();
 		this.visibilityObserver?.disconnect();
+		this.clearResizeSettleTimer();
+		if (this.scrollRetryTimer != null) {
+			clearTimeout(this.scrollRetryTimer);
+			this.scrollRetryTimer = null;
+		}
 		if (typeof document !== 'undefined') {
 			document.removeEventListener('app:virtual-viewport-relayout', this.onPageRelayout);
 		}
@@ -150,11 +198,32 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 		}
 	}
 
-	/** Forces a full remeasure (all locked heights dropped) — e.g. on responsive breakpoint change. */
+	/**
+	 * Drops all locks — only for hard reset. Resize/breakpoint should use `requestRemeasure()` instead
+	 * so total height does not collapse to defaultItemSize placeholders.
+	 */
 	invalidateHeights(): void {
+		this.clearResizeSettleTimer();
 		this.engine.invalidateAll();
 		this.measureGeneration++;
 		this.recompute();
+	}
+
+	/**
+	 * Re-measure visible rows after layout width changes without clearing locks.
+	 * Keeps the last known height for each id until DOM reports a new value — no collapse to
+	 * defaultItemSize when resize finishes.
+	 */
+	requestRemeasure(): void {
+		this.clearResizeSettleTimer();
+		this.measureGeneration++;
+		this.recompute();
+	}
+
+	/** Debounced remeasure after resize stops — locks stay during drag and after settle. */
+	scheduleRemeasureAfterResize(delayMs = VirtualViewportComponent.RESIZE_SETTLE_MS): void {
+		this.pendingWidthRemeasure = true;
+		this.scheduleResizeSettle(delayMs);
 	}
 
 	/**
@@ -164,10 +233,12 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 	relayout(): void {
 		if (!this.isScrollMetricsUsable()) {
 			this.pendingRelayout = true;
+			this.scheduleScrollRetry();
 			return;
 		}
 		this.pendingRelayout = false;
 		this.recompute();
+		this.tryScrollToId();
 	}
 
 	resolveItemId(item: T, index = 0): string | number {
@@ -181,6 +252,65 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			return fromId as string | number;
 		}
 		return index;
+	}
+
+	private tryScrollToId(): void {
+		if (this.pendingScrollToId == null) {
+			return;
+		}
+		if (!this.scrollEl || !this.isScrollMetricsUsable()) {
+			this.scheduleScrollRetry();
+			return;
+		}
+		const id = this.pendingScrollToId;
+		const idx = this.itemsArr.findIndex((item, i) => this.resolveItemId(item, i) == id);
+		if (idx < 0) {
+			this.scheduleScrollRetry();
+			return;
+		}
+		const offset = this.engine.getOffset(idx);
+		const viewportH = this.scrollEl.clientHeight;
+		const rowH = this.defaultItemSize;
+		const alignOffset = this.scrollAlign === 'start' ? 0 : Math.max(0, (viewportH - rowH) / 2);
+		const target = Math.max(0, offset - alignOffset);
+		this.scrollEl.scrollTop = target;
+		this.recompute();
+		this.verifyScrollToId(target);
+	}
+
+	private verifyScrollToId(target: number): void {
+		this.queueFrame(() => {
+			if (!this.scrollEl || this.pendingScrollToId == null) {
+				return;
+			}
+			if (Math.abs(this.scrollEl.scrollTop - target) > 4) {
+				this.scrollEl.scrollTop = target;
+				this.ngZone.run(() => this.recompute());
+				this.scheduleScrollRetry();
+				return;
+			}
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+		});
+	}
+
+	private scheduleScrollRetry(): void {
+		if (this.pendingScrollToId == null) {
+			return;
+		}
+		if (this.scrollRetryCount >= VirtualViewportComponent.MAX_SCROLL_RETRIES) {
+			return;
+		}
+		this.scrollRetryCount++;
+		this.queueFrame(() => this.ngZone.run(() => this.tryScrollToId()));
+	}
+
+	private queueFrame(fn: () => void): void {
+		if (typeof requestAnimationFrame === 'function') {
+			requestAnimationFrame(fn);
+			return;
+		}
+		setTimeout(fn, 0);
 	}
 
 	private sameItemIds(a: T[], b: T[]): boolean {
@@ -237,6 +367,8 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			return;
 		}
 		if (!this.renderedItems.length) {
+			this.renderStart = 0;
+			this.renderedItems = this.itemsArr.slice(0, Math.min(30, this.itemsArr.length));
 			return;
 		}
 		const start = this.renderStart;
@@ -288,8 +420,8 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			changed = true;
 			// Only items already scrolled past (before the current render window) shift the
 			// content-wrapper's translateY offset — compensate scrollTop by the same delta so the
-			// currently-visible rows don't visually jump. Because a lock can only ever happen once
-			// per row, this correction is bounded and cannot re-trigger itself (no feedback loop).
+			// currently-visible rows don't visually jump. Settle remasures on the same id are
+			// uncommon and still bounded to real DOM deltas (no running-average feedback loop).
 			if (result.index < this.renderStart) {
 				compensation += result.delta;
 			}
@@ -305,14 +437,54 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 
 	private setupResizeObserver(): void {
 		this.resizeObserver = new ResizeObserver((entries) => {
-			const width = entries[0]?.contentRect?.width ?? 0;
-			if (!width || Math.abs(width - this.lastWidth) < 1) {
+			const rect = entries[0]?.contentRect;
+			const width = rect?.width ?? 0;
+			const height = rect?.height ?? 0;
+			const widthChanged = !!width && Math.abs(width - this.lastWidth) >= 1;
+			const heightChanged = !!height && Math.abs(height - this.lastHeight) >= 1;
+			if (!widthChanged && !heightChanged) {
 				return;
 			}
 			this.lastWidth = width;
-			this.ngZone.run(() => this.invalidateHeights());
+			this.lastHeight = height;
+			if (widthChanged) {
+				this.pendingWidthRemeasure = true;
+			} else if (heightChanged) {
+				this.pendingHeightRelayout = true;
+			}
+			this.scheduleResizeSettle();
 		});
 		this.resizeObserver.observe(this.el.nativeElement);
+	}
+
+	private scheduleResizeSettle(delayMs = VirtualViewportComponent.RESIZE_SETTLE_MS): void {
+		if (this.resizeSettleTimer != null) {
+			clearTimeout(this.resizeSettleTimer);
+		}
+		this.resizeSettleTimer = setTimeout(() => {
+			this.resizeSettleTimer = null;
+			const doRemeasure = this.pendingWidthRemeasure;
+			const doRelayout = this.pendingHeightRelayout;
+			this.pendingWidthRemeasure = false;
+			this.pendingHeightRelayout = false;
+			this.ngZone.run(() => {
+				if (doRemeasure) {
+					this.requestRemeasure();
+					this.tryScrollToId();
+				} else if (doRelayout) {
+					this.relayout();
+				}
+			});
+		}, delayMs);
+	}
+
+	private clearResizeSettleTimer(): void {
+		if (this.resizeSettleTimer != null) {
+			clearTimeout(this.resizeSettleTimer);
+			this.resizeSettleTimer = null;
+		}
+		this.pendingWidthRemeasure = false;
+		this.pendingHeightRelayout = false;
 	}
 
 	private setupVisibilityObserver(): void {
@@ -323,9 +495,6 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			(entries) => {
 				const visible = entries.some((e) => e.isIntersecting && e.intersectionRatio > 0);
 				if (!visible) {
-					return;
-				}
-				if (!this.pendingRelayout && this.isScrollMetricsUsable()) {
 					return;
 				}
 				this.ngZone.run(() => this.relayout());
@@ -381,7 +550,10 @@ export class VirtualViewportComponent<T = any> implements OnInit, OnChanges, OnD
 			.pipe(auditTime(80))
 			.subscribe(() => this.ngZone.run(() => this.recompute()));
 
-		this.ngZone.run(() => this.recompute());
+		this.ngZone.run(() => {
+			this.recompute();
+			this.tryScrollToId();
+		});
 	}
 
 	/**

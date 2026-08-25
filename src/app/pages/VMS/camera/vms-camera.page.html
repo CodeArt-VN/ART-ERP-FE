@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="left scrollx" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive cam-camera-table"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="cam-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{ i.Name }}</ion-text>
+						</a>
+						<app-branch-breadcrumbs
+							class="cam-branch"
+							*ngIf="i.IDBranch"
+							[autoFit]="true"
+							[Id]="i.IDBranch"
+							[Items]="env.branchList"
+						></app-branch-breadcrumbs>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-status" name="Role" property="Role" filterControlType="ng-select" [filterDataSource]="roleList">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-badge [color]="roleColor(i)">{{ i.Role || '—' }}</ion-badge>
+					<ion-badge [color]="aiColor(i)">{{ aiLabel(i) | translate }}</ion-badge>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-code" name="Code" property="Code">
+				<ng-template let-i="row" datatable-cell-template>
+					<span *ngIf="i.Code">{{ i.Code }}</span>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
+
+	<div class="ion-padding"></div>
+</ion-content>

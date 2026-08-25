@@ -206,7 +206,7 @@ export class IntegrationActionDetailPage extends PageBase {
 		if (detailLength > 0) {
 			this.env
 				.showPrompt('Changing Provider will be deleting API Collection,do you want to continue?', null, {
-					code: 'Delete {{value}} row',
+					code: 'Delete {value} row',
 					value: { value: length },
 				})
 				.then((_) => {
@@ -271,7 +271,7 @@ export class IntegrationActionDetailPage extends PageBase {
 			let length = this.Runners.controls.length;
 			this.env
 				.showPrompt('Are you sure you want to delete the selected runners?', null, {
-					code: 'Delete selected {{value}}?',
+					code: 'Delete selected {value}?',
 					value: length,
 				})
 				.then((_) => {

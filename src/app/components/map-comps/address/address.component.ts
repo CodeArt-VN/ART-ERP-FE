@@ -173,7 +173,7 @@ export class AddressComponent extends PageBase {
 			const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 			Promise.all(translationPromises).then((values) => {
 				let invalidControlsTranslated = values;
-				this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControlsTranslated.join(' | '));
+				this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControlsTranslated.join(' | '));
 			});
 		} else this.onChange.emit(this.formGroup.value);
 	}

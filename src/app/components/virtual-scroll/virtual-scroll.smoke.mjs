@@ -125,4 +125,54 @@ function sameItemIds(a, b, idKey) {
 	console.log('OK invalidateAll');
 }
 
+// --- Dynamic settle: locked row may grow ≥1px (breadcrumbs / wrap) ---
+{
+	const engine = new VirtualScrollEngine(51);
+	engine.upsertItems([{ id: 0 }, { id: 1 }, { id: 2 }]);
+	assert(engine.lockHeight(0, 47)?.delta === -4, 'first lock');
+	assert(engine.lockHeight(0, 47.4) == null, 'subpixel ignored');
+	assert(engine.lockHeight(0, 65)?.delta === 18, 'settle growth');
+	assert(engine.getTotalHeight() === 65 + 51 + 51, 'total after settle');
+	console.log('OK dynamic settle remasure');
+}
+
+// --- Datasource add/remove/reorder keeps stable locks, prunes removed ---
+{
+	const engine = new VirtualScrollEngine(51);
+	engine.upsertItems([
+		{ id: 10 },
+		{ id: 20 },
+		{ id: 30 },
+		{ id: 40 },
+	]);
+	engine.lockHeight(20, 65);
+	engine.lockHeight(30, 70);
+	// delete 20, insert 25 in middle
+	engine.upsertItems([
+		{ id: 10 },
+		{ id: 25 },
+		{ id: 30 },
+		{ id: 40 },
+	]);
+	assert(engine.getTotalHeight() === 51 + 51 + 70 + 51, `prune+keep got ${engine.getTotalHeight()}`);
+	// append
+	engine.upsertItems([
+		{ id: 10 },
+		{ id: 25 },
+		{ id: 30 },
+		{ id: 40 },
+		{ id: 50 },
+	]);
+	assert(engine.getTotalHeight() === 51 + 51 + 70 + 51 + 51, 'append preserves locks');
+	// recycled removed id measures fresh
+	engine.upsertItems([
+		{ id: 10 },
+		{ id: 20 },
+		{ id: 30 },
+	]);
+	assert(engine.getTotalHeight() === 51 + 51 + 70, `recycled id fresh placeholder got ${engine.getTotalHeight()}`);
+	assert(engine.lockHeight(20, 80)?.delta === 29, 'recycled id can lock fresh');
+	console.log('OK datasource insert/delete/prune');
+}
+
 console.log('ALL virtual-scroll smoke tests passed');

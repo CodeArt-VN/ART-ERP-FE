@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<ion-button fill="outline" size="small" class="ion-margin-bottom" (click)="openPeople()">{{ 'Assign faces in Person' | translate }}</ion-button>
+		<app-data-table
+			class="box-shadow responsive ev-event-table"
+			[rows]="items"
+			[trackBy]="'EventId'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+		>
+			<datatable-column class="col-photo" name="Photo" property="FramePath" [canSort]="false" [canFilter]="false">
+				<ng-template let-i="row" datatable-cell-template>
+					<img *ngIf="photoSrc(i)" class="ev-thumb" [src]="photoSrc(i)" alt="" (error)="onEventThumbError($event)" />
+					<span *ngIf="!photoSrc(i)" class="ev-thumb is-empty" aria-hidden="true">
+						<ion-icon name="image-outline"></ion-icon>
+					</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-name" name="Person" property="DisplayName">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="ev-person">
+						<div class="bold">{{ personLabel(i) }}</div>
+						<div class="ev-when" *ngIf="i.OccurredAt">
+							<span class="ev-val">{{ i.OccurredAt | date:'HH:mm:ss' }}</span>
+							<span class="ev-day">{{ i.OccurredAt | date:'dd/MM' }}</span>
+						</div>
+						<div class="ev-tags" *ngIf="cameraLabel(i) || edgeLabel(i)">
+							<ion-badge *ngIf="cameraLabel(i)" color="medium">{{ cameraLabel(i) }}</ion-badge>
+							<ion-badge *ngIf="edgeLabel(i)" color="tertiary">{{ edgeLabel(i) }}</ion-badge>
+						</div>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-status" name="Type" property="EventType" filterControlType="ng-select" [filterDataSource]="eventTypeList">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-badge [color]="typeColor(i)">{{ typeLabel(i) | translate }}</ion-badge>
+					<ion-badge *ngIf="statusVisible(i)" [color]="statusColor(i)">{{ statusLabel(i) | translate }}</ion-badge>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-date" name="Time" property="OccurredAt" filterControlType="date">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="ev-val" *ngIf="i.OccurredAt">{{ i.OccurredAt | date:'HH:mm:ss' }}</span>
+					<span class="ev-day" *ngIf="i.OccurredAt">{{ i.OccurredAt | date:'dd/MM' }}</span>
+					<span *ngIf="!i.OccurredAt">—</span>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
+</ion-content>

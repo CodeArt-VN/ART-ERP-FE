@@ -56,6 +56,10 @@ export interface InputControlField {
 
 	noCheckDirty?: boolean;
 
+	/** ngx-mask for type=number. Default separator.2 (money). Port: '99999' (digits, no thousand sep). */
+	mask?: string;
+	thousandSeparator?: string;
+
 	appendTo?: string;
 
 	condition?: any;
