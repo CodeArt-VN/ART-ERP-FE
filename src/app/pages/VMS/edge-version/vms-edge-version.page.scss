@@ -1,0 +1,32 @@
+.meta-note {
+	display: block;
+	margin-bottom: 12px;
+	color: var(--ion-color-medium);
+}
+.policy-banner {
+	display: block;
+	margin-bottom: 16px;
+	padding: 10px 12px;
+	border-radius: 6px;
+	background: var(--ion-color-light);
+	color: var(--ion-color-medium-shade);
+	line-height: 1.4;
+}
+.artifact-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	margin-bottom: 16px;
+}
+.artifact-table th,
+.artifact-table td {
+	border: 1px solid var(--ion-color-light-shade);
+	padding: 6px 8px;
+	text-align: left;
+	vertical-align: top;
+}
+.artifact-table .sha {
+	font-family: monospace;
+	font-size: 11px;
+	word-break: break-all;
+}

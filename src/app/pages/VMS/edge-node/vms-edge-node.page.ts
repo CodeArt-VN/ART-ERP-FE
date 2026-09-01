@@ -8,6 +8,7 @@ import { PageBase } from 'src/app/page-base';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
 import { VMS_EdgeNodeProvider } from 'src/app/services/static/services.service';
+import { lib } from 'src/app/services/static/global-functions';
 import {
 	normalizeBranchIds,
 	inferRuntimeLabel,
@@ -15,6 +16,8 @@ import {
 	isEdgeOnline,
 	fleetOnlineRemarkKey,
 	fleetOnlineRemarkParams,
+	edgeStatusMeta,
+	mergeEdgeNodeStatusIntoItems,
 } from '../edge-node-detail/vms-edge-node-detail.util';
 
 @Component({
@@ -24,6 +27,11 @@ import {
 	standalone: false,
 })
 export class VmsEdgeNodePage extends PageBase {
+	lib = lib;
+	private statusPollTimer: ReturnType<typeof setInterval> | null = null;
+	private statusPolling = false;
+	private readonly statusPollMs = 15_000;
+
 	constructor(
 		public pageProvider: VMS_EdgeNodeProvider,
 		public vmsApi: VmsApiService,
@@ -62,10 +70,46 @@ export class VmsEdgeNodePage extends PageBase {
 		this.pageConfig.canAdd = false;
 		this.pageConfig.ShowArchive = false;
 		this.pageConfig.canArchive = false;
+		this.startStatusPolling();
+	}
+
+	private startStatusPolling() {
+		if (this.statusPollTimer) clearInterval(this.statusPollTimer);
+		this.statusPollTimer = setInterval(() => {
+			if (!this.statusPolling && !this.pageConfig.showSpinner && this.items?.length) {
+				this.pollEdgeNodeStatus();
+			}
+		}, this.statusPollMs);
+	}
+
+	/** Silent poll: patch status/metrics only — keep selection, scroll, and row object refs. */
+	private async pollEdgeNodeStatus() {
+		this.statusPolling = true;
+		try {
+			const take = Math.max(this.items.length, Number(this.query?.Take) || 100);
+			const apiQuery = { ...this.getApiQuery(), Skip: 0, Take: take };
+			const result: any = await this.pageProvider.read(apiQuery, true);
+			const incoming = Array.isArray(result?.data) ? result.data : [];
+			const changed = mergeEdgeNodeStatusIntoItems(this.items, incoming);
+			if (changed) this.items = [...this.items];
+		} catch {
+			/* ignore transient poll errors */
+		} finally {
+			this.statusPolling = false;
+		}
+	}
+
+	override ngOnDestroy() {
+		if (this.statusPollTimer) clearInterval(this.statusPollTimer);
+		super.ngOnDestroy();
 	}
 
 	get fleetLine(): string {
 		return this.translate.instant(fleetOnlineRemarkKey(), fleetOnlineRemarkParams(this.items));
+	}
+
+	statusMeta(n: any) {
+		return edgeStatusMeta(n, (d) => this.lib.dateFormatFriendly(d));
 	}
 
 	inUse(n: any) {

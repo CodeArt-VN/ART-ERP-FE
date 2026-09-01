@@ -12,12 +12,14 @@ import {
 	buildEdgeNameLookup,
 	eventPersonLabel,
 	eventPhotoPath,
-	eventStatusBadgeColor,
-	eventStatusLabel,
-	eventStatusVisible,
-	eventTypeBadgeColor,
-	eventTypeLabel,
 } from './event-display.util';
+import {
+	VMS_EDGE_EVENT_TYPE_GROUP,
+	eventTypeFilterList,
+	eventTypeColor,
+	eventTypeIcon,
+	eventTypeLabel,
+} from '../vms-edge-event-type.util';
 import { vmsApplyAvatarFallback } from '../vms-image.util';
 
 @Component({
@@ -28,13 +30,8 @@ import { vmsApplyAvatarFallback } from '../vms-image.util';
 })
 export class VmsEventPage extends PageBase {
 	private edgeNameById = new Map<string, string>();
-
-	eventTypeList = [
-		{ Code: '', Name: 'All' },
-		{ Code: 'face.seen', Name: 'Face seen' },
-		{ Code: 'attendance', Name: 'Attendance' },
-		{ Code: 'guest', Name: 'Guest' },
-	];
+	edgeEventTypeList: any[] = [];
+	eventTypeList: Array<{ Code: string; Name: string }> = [{ Code: '', Name: 'All' }];
 
 	constructor(
 		public pageProvider: VMS_EventProvider,
@@ -57,24 +54,31 @@ export class VmsEventPage extends PageBase {
 	preLoadData(event?: any): void {
 		this.pageConfig.pageIcon = 'pulse-outline';
 		this.pageConfig.sort = [{ Dimension: 'OccurredAt', Order: 'DESC' } as SortConfig];
-		void this.loadEdgeNames();
-		super.preLoadData(event);
+		Promise.all([
+			this.env.getType(VMS_EDGE_EVENT_TYPE_GROUP),
+			this.edgeNodeProvider.read({ Take: 500, Skip: 0, IgnoredBranch: true }, true),
+		]).then(([types, edgeRs]: any) => {
+			this.edgeEventTypeList = types || [];
+			this.eventTypeList = eventTypeFilterList(this.edgeEventTypeList);
+			const rows = Array.isArray(edgeRs?.data) ? edgeRs.data : Array.isArray(edgeRs) ? edgeRs : [];
+			this.edgeNameById = buildEdgeNameLookup(rows);
+			super.preLoadData(event);
+		});
 	}
 
 	async loadedData(event?: any) {
-		await this.loadEdgeNames();
-		super.loadedData(event);
-	}
-
-	private async loadEdgeNames() {
+		if (!this.edgeEventTypeList.length) {
+			this.edgeEventTypeList = (await this.env.getType(VMS_EDGE_EVENT_TYPE_GROUP)) || [];
+			this.eventTypeList = eventTypeFilterList(this.edgeEventTypeList);
+		}
 		try {
 			const rs: any = await this.edgeNodeProvider.read({ Take: 500, Skip: 0, IgnoredBranch: true }, true);
 			const rows = Array.isArray(rs?.data) ? rs.data : Array.isArray(rs) ? rs : [];
 			this.edgeNameById = buildEdgeNameLookup(rows);
-			this.cdr.detectChanges();
 		} catch {
 			/* ignore transient edge list errors */
 		}
+		super.loadedData(event);
 	}
 
 	frameUrl(path: string): string {
@@ -104,26 +108,14 @@ export class VmsEventPage extends PageBase {
 	}
 
 	typeLabel(row: { EventType?: string }): string {
-		return eventTypeLabel(row?.EventType);
+		return eventTypeLabel(row?.EventType, this.edgeEventTypeList);
 	}
 
 	typeColor(row: { EventType?: string }): string {
-		return eventTypeBadgeColor(row?.EventType);
+		return eventTypeColor(row?.EventType, this.edgeEventTypeList);
 	}
 
-	statusVisible(row: { EventType?: string }): boolean {
-		return eventStatusVisible(row?.EventType);
-	}
-
-	statusColor(row: { Status?: string }): string {
-		return eventStatusBadgeColor(row?.Status);
-	}
-
-	statusLabel(row: { Status?: string }): string {
-		return eventStatusLabel(row?.Status);
-	}
-
-	openPeople() {
-		this.nav('/vms-person', 'forward');
+	typeIcon(row: { EventType?: string }): string {
+		return eventTypeIcon(row?.EventType, this.edgeEventTypeList);
 	}
 }

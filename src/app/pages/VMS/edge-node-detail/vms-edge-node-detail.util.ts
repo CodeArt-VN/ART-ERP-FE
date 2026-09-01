@@ -21,6 +21,7 @@ export type EdgeRemoteConfig = {
 	eod_checkout_hour_local: number;
 	eod_checkout_minute_local: number;
 	pipeline: EdgeRemotePipeline;
+	heartbeat_seconds?: number | null;
 };
 
 export function defaultRemoteConfig(): EdgeRemoteConfig {
@@ -34,15 +35,16 @@ export function defaultRemoteConfig(): EdgeRemoteConfig {
 		out_window_after_minutes: 120,
 		eod_checkout_hour_local: 23,
 		eod_checkout_minute_local: 30,
+		heartbeat_seconds: null,
 		pipeline: {
 			sample_interval_sec: 0.5,
 			hit_cooldown_sec: 8,
-			min_face_px: 40,
-			unknown_min: 0.35,
+			min_face_px: 80,
+			unknown_min: 0.70,
 			det_size: 640,
 			require_crop_verify: true,
 			min_skin_ratio: 0,
-			min_sharpness: 18,
+			min_sharpness: 100,
 			unknown_confirm_frames: 2,
 		},
 	};
@@ -103,11 +105,165 @@ export function inferRuntimeColor(item: { InferRuntime?: string; InferDevice?: s
 
 export const EDGE_HEARTBEAT_ONLINE_MS = 10 * 60 * 1000;
 
-export function isEdgeOnline(item: { LastHeartbeat?: string | Date | null } | null | undefined, now = Date.now()): boolean {
+export function edgeOnlineThresholdMs(
+	item: { RemoteConfig?: { heartbeat_seconds?: number | null } } | null | undefined
+): number {
+	const hb = item?.RemoteConfig?.heartbeat_seconds;
+	if (hb != null && hb >= 30) return Math.max(3 * hb * 1000, 600_000);
+	return EDGE_HEARTBEAT_ONLINE_MS;
+}
+
+export function isEdgeOnline(
+	item: { LastHeartbeat?: string | Date | null; RemoteConfig?: { heartbeat_seconds?: number | null } } | null | undefined,
+	now = Date.now()
+): boolean {
 	if (!item?.LastHeartbeat) return false;
 	const t = new Date(item.LastHeartbeat).getTime();
 	if (Number.isNaN(t)) return false;
-	return now - t < EDGE_HEARTBEAT_ONLINE_MS;
+	return now - t < edgeOnlineThresholdMs(item);
+}
+
+export type EdgeVersionManifest = {
+	minVersion?: string;
+	latestVersion?: string;
+};
+
+export function edgeManifestFields(manifest: EdgeVersionManifest | null | undefined): {
+	min_version?: string;
+	latest_version?: string;
+} {
+	if (!manifest) return {};
+	return {
+		min_version: manifest.minVersion,
+		latest_version: manifest.latestVersion,
+	};
+}
+
+export function edgeSoftwareStatus(item: {
+	SoftwareVersion?: string;
+	min_version?: string;
+	latest_version?: string;
+	minVersion?: string;
+	latestVersion?: string;
+}): 'ok' | 'update' | 'required' {
+	const cur = String(item?.SoftwareVersion || '').trim();
+	const minV = String(item?.min_version || item?.minVersion || '').trim();
+	const latest = String(item?.latest_version || item?.latestVersion || '').trim();
+	if (!cur || !minV) return 'ok';
+	const cmp = (a: string, b: string) => {
+		const pa = a.split('.').map((x) => parseInt(x, 10) || 0);
+		const pb = b.split('.').map((x) => parseInt(x, 10) || 0);
+		for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+			const va = pa[i] ?? 0;
+			const vb = pb[i] ?? 0;
+			if (va !== vb) return va < vb ? -1 : 1;
+		}
+		return 0;
+	};
+	if (cmp(cur, minV) < 0) return 'required';
+	if (latest && cmp(cur, latest) < 0) return 'update';
+	return 'ok';
+}
+
+export function edgeSoftwareStatusLabel(
+	item: Parameters<typeof edgeSoftwareStatus>[0],
+	manifest?: EdgeVersionManifest | null
+): string {
+	const st = edgeSoftwareStatus({ ...item, ...edgeManifestFields(manifest) });
+	if (st === 'required') return 'Cần cập nhật gấp';
+	if (st === 'update') return 'Có bản mới';
+	return 'OK';
+}
+
+export function edgeSoftwareBadgeColor(
+	item: Parameters<typeof edgeSoftwareStatus>[0],
+	manifest?: EdgeVersionManifest | null
+): string {
+	const st = edgeSoftwareStatus({ ...item, ...edgeManifestFields(manifest) });
+	if (st === 'required') return 'danger';
+	if (st === 'update') return 'warning';
+	return 'success';
+}
+
+export function edgeUpdatePhaseHint(phase?: string | null, staged?: string | null): string | null {
+	const p = String(phase || '').trim().toLowerCase();
+	if (!p || p === 'idle') return null;
+	if (p === 'staged' && staged) return `→ ${staged}`;
+	if (p === 'downloading') return '…';
+	return p;
+}
+
+/** List-row fields refreshed by silent status poll (does not touch Name, BranchIds, selection, etc.). */
+export const EDGE_NODE_STATUS_FIELD_KEYS = [
+	'LastHeartbeat',
+	'SoftwareVersion',
+	'SoftwarePlatform',
+	'UpdatePhase',
+	'UpdateStagedVersion',
+	'InferRuntime',
+	'InferDevice',
+	'CamerasOnline',
+	'CamerasWatching',
+	'PersonMapped',
+	'PersonUnmapped',
+	'OutboxPending',
+	'ConfigVersion',
+	'IsDisabled',
+] as const;
+
+export type EdgeNodeStatusFieldKey = (typeof EDGE_NODE_STATUS_FIELD_KEYS)[number];
+
+/** Patch runtime/status metrics onto an existing list row; returns true if any field changed. */
+export function patchEdgeNodeStatusFields(
+	target: Record<string, unknown> | null | undefined,
+	incoming: Record<string, unknown> | null | undefined
+): boolean {
+	if (!target || !incoming) return false;
+	let changed = false;
+	for (const key of EDGE_NODE_STATUS_FIELD_KEYS) {
+		if (!Object.prototype.hasOwnProperty.call(incoming, key)) continue;
+		const next = incoming[key];
+		if (target[key] !== next) {
+			target[key] = next;
+			changed = true;
+		}
+	}
+	return changed;
+}
+
+/** Merge status snapshot by Id into loaded rows (in-place). Preserves object refs for selection/scroll. */
+export function mergeEdgeNodeStatusIntoItems(
+	items: Array<Record<string, unknown>> | null | undefined,
+	incomingRows: Array<Record<string, unknown>> | null | undefined
+): boolean {
+	const list = Array.isArray(items) ? items : [];
+	const incoming = Array.isArray(incomingRows) ? incomingRows : [];
+	if (!list.length || !incoming.length) return false;
+
+	const byId = new Map<number, Record<string, unknown>>();
+	for (const row of incoming) {
+		const id = Number(row?.Id);
+		if (id > 0) byId.set(id, row);
+	}
+
+	let anyChanged = false;
+	for (const row of list) {
+		const id = Number(row?.Id);
+		const fresh = id > 0 ? byId.get(id) : null;
+		if (fresh && patchEdgeNodeStatusFields(row, fresh)) anyChanged = true;
+	}
+	return anyChanged;
+}
+
+export function edgeStatusMeta(
+	row?: { SoftwareVersion?: string; LastHeartbeat?: string | Date | null } | null,
+	formatHeartbeat: (value: string | Date) => string = () => ''
+): string {
+	const ver = String(row?.SoftwareVersion || '').trim();
+	const hb = row?.LastHeartbeat ? formatHeartbeat(row.LastHeartbeat) : '';
+	if (ver && hb) return `${hb} - ${ver}`;
+	if (ver) return ver;
+	return hb;
 }
 
 export type EdgeFleetSummary = {

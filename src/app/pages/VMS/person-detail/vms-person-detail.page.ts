@@ -11,6 +11,12 @@ import { VmsEnrollService } from 'src/app/services/vms/vms-enroll.service';
 import { environment } from 'src/environments/environment';
 import { personActionLabel, identityIsDisabled, identityIsStaff, personPhotoPath, personDisplayName } from '../person/vms-person.util';
 import {
+	VMS_EDGE_EVENT_TYPE_GROUP,
+	eventTypeColor as mapEventTypeColor,
+	eventTypeIcon as mapEventTypeIcon,
+	eventTypeLabel as mapEventTypeLabel,
+} from '../vms-edge-event-type.util';
+import {
 	PersonDetailTab,
 	eventConfidencePercent,
 	eventIdOf,
@@ -32,6 +38,7 @@ import { VMS_AVATAR_FALLBACK, vmsApplyAvatarFallback } from '../vms-image.util';
 })
 export class VmsPersonDetailPage extends PageBase {
 	branchList: any[] = [];
+	edgeEventTypeList: any[] = [];
 	optionGroup = [
 		{
 			Code: 'person-info',
@@ -154,7 +161,10 @@ export class VmsPersonDetailPage extends PageBase {
 		this.pageConfig.pageTitle = 'Persons';
 		this.branchList = [...(this.env.branchList || [])];
 		this.bindPersonRouteReload();
-		super.preLoadData(event);
+		Promise.all([this.env.getType(VMS_EDGE_EVENT_TYPE_GROUP)]).then(([types]: any[]) => {
+			this.edgeEventTypeList = types || [];
+			super.preLoadData(event);
+		});
 	}
 
 	delete(publishEventCode = this.pageConfig.pageName) {
@@ -240,7 +250,7 @@ export class VmsPersonDetailPage extends PageBase {
 				LastConfidence: this.recognition.lastConfidence,
 				LastEdgeNodeName: this.recognition.lastEdgeNodeName,
 				LastCameraId: this.recognition.lastCameraId,
-				LastEventType: this.recognition.lastEventType,
+				LastEventType: mapEventTypeLabel(this.recognition.lastEventType, this.edgeEventTypeList),
 				LastOccurredAt: this.recognition.lastOccurredAt,
 			},
 			{ emitEvent: false }
@@ -399,11 +409,16 @@ export class VmsPersonDetailPage extends PageBase {
 		return personActionLabel(person);
 	}
 
-	eventTypeLabel(row: any): string {
-		const t = String(row?.EventType || row?.event_type || '').trim();
-		if (t === 'face.enroll') return 'Enrollment photo';
-		if (t === 'face.seen') return 'Recognition match';
-		return t || '—';
+	eventTypeText(row: any): string {
+		return mapEventTypeLabel(row?.EventType ?? row?.event_type, this.edgeEventTypeList);
+	}
+
+	eventTypeColor(row: any): string {
+		return mapEventTypeColor(row?.EventType ?? row?.event_type, this.edgeEventTypeList);
+	}
+
+	eventTypeIcon(row: any): string {
+		return mapEventTypeIcon(row?.EventType ?? row?.event_type, this.edgeEventTypeList);
 	}
 
 	eventConfidenceLabel(row: any): string {

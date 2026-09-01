@@ -21,6 +21,8 @@ import {
 	personMappedGuests,
 	personMappedSelected,
 	personMappedStaff,
+	personMergeEffectiveTargetKey,
+	personMergeSources,
 	personNeedsMapping,
 	personRebindSelection,
 	personRowIsDeleted,
@@ -274,9 +276,11 @@ export class VmsPersonPage extends PageBase {
 	}
 
 	private async mergeSelected(data: {
-		sources: any[];
+		items?: any[];
+		sources?: any[];
 		targetPerson: any | null;
 		advancedContact: any | null;
+		targetKey?: string | null;
 	}) {
 		if (this.merging) return;
 		const contact =
@@ -296,7 +300,11 @@ export class VmsPersonPage extends PageBase {
 			return;
 		}
 
-		const sources = (data.sources || []).filter((s) => !!personAssignEventId(s));
+		const targetKey = personMergeEffectiveTargetKey(data.items || data.sources || [], data.targetKey ?? null, data.advancedContact);
+		const targetContactId = Number(contact.Id);
+		const sources = personMergeSources(data.items || data.sources || [], targetKey, data.advancedContact).filter(
+			(s) => !!personAssignEventId(s) && Number(s?.IDContact) !== targetContactId
+		);
 		if (!sources.length) {
 			this.env.showMessage('No events to merge the selected persons', 'warning');
 			return;

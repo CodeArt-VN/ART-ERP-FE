@@ -301,7 +301,10 @@
 				<datatable-column class="col-name" name="Type" property="EventType" [canSort]="false" [canFilter]="false">
 					<ng-template let-i="row" datatable-cell-template>
 						<div class="pd-cell-main">
-							<div class="bold">{{ eventTypeLabel(i) | translate }}</div>
+							<ion-badge [color]="eventTypeColor(i)" class="pd-type-badge">
+								<ion-icon *ngIf="eventTypeIcon(i) as icon" [name]="icon"></ion-icon>
+								{{ eventTypeText(i) }}
+							</ion-badge>
 							<div class="pd-when" *ngIf="i.OccurredAt">
 								<span class="pd-val">{{ i.OccurredAt | date: 'HH:mm:ss' }}</span>
 								<span class="pd-day">{{ i.OccurredAt | date: 'dd/MM' }}</span>

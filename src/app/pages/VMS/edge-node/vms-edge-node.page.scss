@@ -41,6 +41,7 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	flex-shrink: 0;
 	min-width: 28px;
 	height: 26px;
 	padding: 0 10px;
@@ -73,6 +74,7 @@
 .en-stt {
 	display: inline-flex;
 	align-items: center;
+	flex-shrink: 0;
 	gap: 6px;
 	height: 26px;
 	padding: 0 10px 0 8px;
@@ -131,14 +133,12 @@
 }
 
 :host ::ng-deep app-data-table.en-edge-table {
-	.col-infer {
-		min-width: 108px;
-		max-width: 140px;
-	}
-
 	.col-status {
 		min-width: 168px;
-		max-width: 200px;
+		max-width: none;
+		justify-content: flex-start;
+		gap: 8px;
+		flex-wrap: wrap;
 	}
 
 	.col-metric {
@@ -186,16 +186,11 @@
 				top: auto;
 				right: auto;
 				order: 2;
-				flex: 0 0 auto;
-				min-width: 0;
+				flex: 1 1 auto;
+				min-width: 0 !important;
 				max-width: none;
-			}
-
-			.col-infer {
-				order: 3;
-				flex: 0 0 auto;
-				min-width: 0;
-				max-width: none;
+				justify-content: flex-start;
+				flex-wrap: wrap;
 			}
 
 			&::after {
@@ -238,7 +233,8 @@
 
 			.en-stt,
 			.en-runtime {
-				max-width: 100%;
+				flex-shrink: 0;
+				max-width: none;
 			}
 
 			@container en-card (min-width: 520px) {
@@ -248,10 +244,6 @@
 					min-width: 8rem;
 					max-width: calc(100% - 17rem);
 					padding-right: 8px !important;
-				}
-
-				.col-infer {
-					margin-right: 28px;
 				}
 			}
 		}

@@ -4,6 +4,12 @@ import {
 	inferRuntimeColor,
 	inferRuntimeLabel,
 	isEdgeOnline,
+	edgeOnlineThresholdMs,
+	edgeSoftwareStatus,
+	edgeUpdatePhaseHint,
+	edgeStatusMeta,
+	mergeEdgeNodeStatusIntoItems,
+	patchEdgeNodeStatusFields,
 	normalizeBranchIds,
 	parseRemoteConfig,
 	servedBranchLabel,
@@ -17,7 +23,9 @@ describe('parseRemoteConfig', () => {
 	it('fills defaults when payload is empty', () => {
 		const cfg = parseRemoteConfig(null);
 		expect(cfg.confidence_auto).toBe(0.55);
-		expect(cfg.pipeline.min_face_px).toBe(40);
+		expect(cfg.pipeline.min_face_px).toBe(80);
+		expect(cfg.pipeline.unknown_min).toBe(0.70);
+		expect(cfg.pipeline.min_sharpness).toBe(100);
 	});
 
 	it('overlays ERP values onto defaults', () => {
@@ -103,6 +111,84 @@ describe('isEdgeOnline', () => {
 		expect(isEdgeOnline({ LastHeartbeat: '2026-08-19T11:49:00.000Z' }, now)).toBe(false);
 		expect(isEdgeOnline({ LastHeartbeat: null }, now)).toBe(false);
 		expect(isEdgeOnline(null, now)).toBe(false);
+	});
+
+	it('uses 3x heartbeat_seconds when set (min 600s)', () => {
+		expect(edgeOnlineThresholdMs({ RemoteConfig: { heartbeat_seconds: 120 } })).toBe(600_000);
+		expect(edgeOnlineThresholdMs({ RemoteConfig: { heartbeat_seconds: 300 } })).toBe(900_000);
+	});
+});
+
+describe('edgeSoftwareStatus', () => {
+	it('flags below min and update available', () => {
+		expect(edgeSoftwareStatus({ SoftwareVersion: '0.1.0', min_version: '0.2.0', latest_version: '0.3.0' })).toBe('required');
+		expect(edgeSoftwareStatus({ SoftwareVersion: '0.2.5', min_version: '0.2.0', latest_version: '0.3.0' })).toBe('update');
+		expect(edgeSoftwareStatus({ SoftwareVersion: '0.3.0', min_version: '0.2.0', latest_version: '0.3.0' })).toBe('ok');
+	});
+
+	it('accepts manifest minVersion/latestVersion aliases', () => {
+		expect(edgeSoftwareStatus({ SoftwareVersion: '0.1.0', minVersion: '0.2.0', latestVersion: '0.3.0' })).toBe('required');
+	});
+});
+
+describe('edgeUpdatePhaseHint', () => {
+	it('shows staged target', () => {
+		expect(edgeUpdatePhaseHint('staged', '0.1.3')).toBe('→ 0.1.3');
+		expect(edgeUpdatePhaseHint('idle', null)).toBeNull();
+	});
+});
+
+describe('patchEdgeNodeStatusFields', () => {
+	it('updates status fields only and reports change', () => {
+		const row: any = { Id: 1, Name: 'NAS', checked: true, LastHeartbeat: 'old', CamerasOnline: 1 };
+		const changed = patchEdgeNodeStatusFields(row, {
+			Id: 1,
+			Name: 'OTHER',
+			LastHeartbeat: 'new',
+			CamerasOnline: 3,
+			CamerasWatching: 4,
+		});
+		expect(changed).toBe(true);
+		expect(row.Name).toBe('NAS');
+		expect(row.checked).toBe(true);
+		expect(row.LastHeartbeat).toBe('new');
+		expect(row.CamerasOnline).toBe(3);
+		expect(row.CamerasWatching).toBe(4);
+	});
+
+	it('returns false when incoming matches', () => {
+		const row: any = { LastHeartbeat: 'x', OutboxPending: 0 };
+		expect(patchEdgeNodeStatusFields(row, { LastHeartbeat: 'x', OutboxPending: 0 })).toBe(false);
+	});
+});
+
+describe('mergeEdgeNodeStatusIntoItems', () => {
+	it('patches loaded rows by Id without replacing array items', () => {
+		const a: any = { Id: 1, Name: 'A', checked: true, LastHeartbeat: 'old' };
+		const b: any = { Id: 2, Name: 'B', PersonMapped: 1 };
+		const items = [a, b];
+		const changed = mergeEdgeNodeStatusIntoItems(items, [
+			{ Id: 1, LastHeartbeat: 'fresh', SoftwareVersion: '0.1.9' },
+			{ Id: 2, PersonMapped: 5, PersonUnmapped: 2 },
+			{ Id: 99, LastHeartbeat: 'ignored' },
+		]);
+		expect(changed).toBe(true);
+		expect(items[0]).toBe(a);
+		expect(a.LastHeartbeat).toBe('fresh');
+		expect(a.SoftwareVersion).toBe('0.1.9');
+		expect(a.checked).toBe(true);
+		expect(b.PersonMapped).toBe(5);
+		expect(b.PersonUnmapped).toBe(2);
+	});
+});
+
+describe('edgeStatusMeta', () => {
+	it('joins friendly heartbeat then version', () => {
+		expect(edgeStatusMeta({ SoftwareVersion: '0.1.7', LastHeartbeat: '2026-08-22T10:00:00Z' }, () => '5 phút trước')).toBe('5 phút trước - 0.1.7');
+	});
+
+	it('shows version only when no heartbeat', () => {
+		expect(edgeStatusMeta({ SoftwareVersion: '0.1.7' })).toBe('0.1.7');
 	});
 });
 
