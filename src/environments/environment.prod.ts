@@ -1,31 +1,23 @@
 export const environment = {
 	production: true,
-	appVersion: '0.22.28',
-	appLocation: '/', // VirtualDirectory
-	versionLocation: '', // 'V{{REPLACE_VERSION}}/',
+	appVersion: '0.22.35',
+	appLocation: '/ERP/', // VirtualDirectory
+	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
-		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'success', Icon: 'airplane' },
+		{ Code: 'https://api.rosemary.com.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
+		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'warning', Icon: 'airplane' },
 		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'warning', Icon: 'airplane' },
-
-		{ Code: 'https://artlogistics.vn/', Name: 'ART server', Color: 'danger', Icon: 'cube-outline' },
-		{ Code: 'https://app.inholdings.vn/', Name: 'IN server', Color: 'danger', Icon: 'cube-outline' },
-		{ Code: 'https://beta.inholdings.vn/', Name: 'IN beta server', Color: 'danger', Icon: 'cube-outline' },
-		{ Code: 'https://erp.codeart.vn/', Name: 'Main server', Color: 'danger', Icon: 'cube-outline' },
-		
 		{ Code: 'https://local.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'code-slash-outline' },
-		{ Code: 'https://art.appcenter.vn:54009/', Name: 'Code server', Color: 'primary', Icon: 'rocket' },
-		{ Code: 'http://localhost:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
-		{ Code: 'http://192.168.1.99:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
-	appDomain: 'https://erp.codeart.vn/',
-	staffAvatarsServer: 'https://erp.codeart.vn/Uploads/HRM/Staffs/Avatars/',
-	posImagesServer: 'https://erp.codeart.vn/',
+	appDomain: 'https://api.rosemary.com.vn/',
+	staffAvatarsServer: 'https://api.rosemary.com.vn/Uploads/HRM/Staffs/Avatars/',
+	posImagesServer: 'https://api.rosemary.com.vn/',
 	apiVersion: 'api/v1/',
 	showScrollbar: true, // (navigator.appVersion.indexOf("Win") > -1)
 	signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
 	appStoreURL: 'http://itunes.apple.com/lb/app/ART-ERP/id1540404648?mt=8',
 	playStoreURL: 'https://play.google.com/store/apps/details?id=vn.codeart.erp&hl=vn',
-	loginEmail: '@codeart.vn',
+	loginEmail: '@rosemary.com.vn',
 
 	// NEW: Cache keys to clear on version updates
 	cacheKeysToClearOnNewVersion: [
