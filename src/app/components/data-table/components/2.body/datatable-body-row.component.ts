@@ -35,6 +35,8 @@ export class DataTablBodyRowComponent implements OnInit {
 
 	@Input() rowIndex: number;
 
+	@Input() editable: false | 'always' | 'inline' | 'incell' | 'external' = false;
+
 	constructor(element: ElementRef) {
 		this._element = element.nativeElement;
 	}
@@ -42,10 +44,16 @@ export class DataTablBodyRowComponent implements OnInit {
 	ngOnInit() {}
 
 	@Output() activate: EventEmitter<any> = new EventEmitter();
+	@Output() cellChange = new EventEmitter<any>();
+
 	_element: any;
 	onActivate(event: any, index: number): void {
 		event.cellIndex = index;
 		event.rowElement = this._element;
 		this.activate.emit(event);
+	}
+
+	onCellChange(event: any): void {
+		this.cellChange.emit(event);
 	}
 }

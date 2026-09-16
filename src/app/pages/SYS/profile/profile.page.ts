@@ -10,10 +10,10 @@ import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { lib } from 'src/app/services/static/global-functions';
 import { HRM_StaffProvider, SYS_UserDeviceProvider, SYS_UserSettingProvider } from 'src/app/services/static/services.service';
 import { CompareValidator } from 'src/app/services/util/validators';
+import { BiometricAuthService } from 'src/app/services/auth/biometric-auth.service';
 
 interface ProfileUI {
 	avatarURL: string;
-	segmentView: string;
 	passwordViewType: string;
 	minDOB: string;
 	maxDOB: string;
@@ -34,7 +34,6 @@ interface ProfileUI {
 export class ProfilePage extends PageBase {
 	ui: ProfileUI = {
 		avatarURL: 'assets/imgs/avartar-empty.jpg',
-		segmentView: 's1',
 		passwordViewType: 'password',
 		minDOB: '',
 		maxDOB: '',
@@ -45,6 +44,13 @@ export class ProfilePage extends PageBase {
 		submitAttempt: false,
 		user: null,
 	};
+
+	showBiometricSection = false;
+	biometricSupported = false;
+	biometricEnabled = false;
+	biometricLabel = 'Face ID';
+	biometricStatusMessage = '';
+	biometricStatusParams: Record<string, string> = {};
 
 	@ViewChild('importfile') importfile: any;
 
@@ -62,7 +68,8 @@ export class ProfilePage extends PageBase {
 		public cdr: ChangeDetectorRef,
 		public alertCtrl: AlertController,
 		public loadingController: LoadingController,
-		public commonService: CommonService
+		public commonService: CommonService,
+		private biometricAuth: BiometricAuthService,
 	) {
 		super();
 
@@ -97,6 +104,7 @@ export class ProfilePage extends PageBase {
 			IssuedBy: new FormControl(),
 			BackgroundColor: new FormControl(),
 		});
+		this.formGroup = this.ui.formGroup;
 
 		this.ui.changePasswordForm = formBuilder.group({
 			// Email: ['', Validators.required],
@@ -114,18 +122,26 @@ export class ProfilePage extends PageBase {
 	preLoadData() {
 		this.id = this.env.user.StaffID;
 		super.preLoadData();
+		void this.refreshBiometricStatus();
+	}
+
+	ionViewWillEnter() {
+		super.ionViewWillEnter();
+		void this.refreshBiometricStatus();
 	}
 
 	loadedData(event) {
 		if (this.item) {
 			this.ui.item = this.item;
 			this.ui.item.DateOfIssueID = lib.dateFormat(this.ui.item.DateOfIssueID, 'yyyy-mm-dd');
+		}
+		if (this.env.user?.UserSetting) {
 			this.ui.userSetting = this.env.user.UserSetting;
 			this.ui.userSetting.isLoaded = true;
-			// Update ui.user to ensure it's current
-			this.ui.user = this.env.user;
 		}
+		this.ui.user = this.env.user;
 		super.loadedData(event);
+		void this.refreshBiometricStatus();
 	}
 
 	async changePassword() {
@@ -196,8 +212,103 @@ export class ProfilePage extends PageBase {
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_THEME });
 	}
 
-	segmentChanged(ev: any) {
-		this.ui.segmentView = ev.detail.value;
+	async refreshBiometricStatus() {
+		this.showBiometricSection = this.biometricAuth.showUi;
+		this.biometricLabel = 'Face ID';
+		this.biometricStatusMessage = '';
+		this.biometricStatusParams = {};
+
+		if (!this.showBiometricSection) {
+			this.biometricSupported = false;
+			this.biometricEnabled = false;
+			this.cdr.detectChanges();
+			return;
+		}
+
+		const probe = await this.biometricAuth.probe();
+		this.biometricLabel = probe.label;
+		this.biometricSupported = probe.available;
+		this.biometricEnabled = probe.enabled;
+
+		if (!probe.available) {
+			if (probe.error === 'biometry-unavailable') {
+				this.biometricStatusMessage = 'Biometry unavailable on this build';
+				this.biometricStatusParams = {};
+			} else {
+				this.biometricStatusMessage = 'Unable to check biometry ({platform}/{error})';
+				this.biometricStatusParams = {
+					platform: probe.platform || '',
+					error: probe.error || 'unknown',
+				};
+			}
+		}
+
+		this.cdr.detectChanges();
+	}
+
+	async enableBiometricLogin() {
+		const label = this.biometricLabel;
+		let password: string;
+		try {
+			const data: any = await this.env.showPrompt(
+				{ code: 'Enter your password to enable {type} on this device', type: label },
+				null,
+				label,
+				'Enable',
+				'Cancel',
+				[
+					{
+						name: 'password',
+						type: 'password',
+						placeholder: 'Password',
+					},
+				],
+			);
+			password = (data?.password || '').trim();
+		} catch {
+			return;
+		}
+
+		if (!password) {
+			this.env.showMessage('Please enter password', 'warning');
+			return;
+		}
+
+		const username = (this.env.user?.Email || this.env.user?.UserName || '').trim();
+		if (!username) {
+			this.env.showMessage('Unable to enable {type}', 'danger', { type: label });
+			return;
+		}
+
+		try {
+			await this.env.showLoading('Please wait for a few moments', async () => {
+				const ok = await this.biometricAuth.enable(username, password);
+				if (!ok) {
+					throw new Error('enable-failed');
+				}
+			});
+			await this.refreshBiometricStatus();
+			this.env.showMessage('{type} enabled', 'success', { type: label });
+		} catch {
+			this.env.showMessage('Unable to enable {type}', 'danger', { type: label });
+		}
+	}
+
+	async disableBiometricLogin() {
+		try {
+			await this.env.showPrompt(
+				{ code: 'Disable {type} sign-in on this device?', type: this.biometricLabel },
+				null,
+				this.biometricLabel,
+				'Disable',
+				'Cancel',
+			);
+		} catch {
+			return;
+		}
+		await this.biometricAuth.clearCredentials();
+		await this.refreshBiometricStatus();
+		this.env.showMessage('Biometric sign-in disabled', 'success');
 	}
 
 	logout() {

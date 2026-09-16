@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { TableColumn } from '../../interfaces/table-column.interface';
+import { columnMaxWidth, columnMinWidth } from '../../column-width.util';
 
 @Component({
 	selector: 'datatable-filter-cell',
@@ -7,7 +9,7 @@ import { TableColumn } from '../../interfaces/table-column.interface';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: false,
 })
-export class DataTableFilterCellComponent {
+export class DataTableFilterCellComponent implements OnInit, OnChanges, OnDestroy {
 	_column: TableColumn;
 
 	@Input() set column(column: TableColumn) {
@@ -42,6 +44,7 @@ export class DataTableFilterCellComponent {
 		}
 
 		this.filterFieldReset.emit();
+		this.cd.markForCheck();
 	}
 
 	@Output() sort: EventEmitter<any> = new EventEmitter();
@@ -74,24 +77,45 @@ export class DataTableFilterCellComponent {
 		return this.column.filterTemplate === undefined ? this.column.name : undefined;
 	}
 
-	@HostBinding('style.minWidth.px')
-	get minWidth(): number {
-		return this.column.minWidth;
+	@HostBinding('style.min-width')
+	get minWidth(): string | null {
+		return columnMinWidth(this.column);
 	}
 
-	@HostBinding('style.maxWidth.px')
-	get maxWidth(): number {
-		return this.column.maxWidth;
+	@HostBinding('style.max-width')
+	get maxWidth(): string | null {
+		return columnMaxWidth(this.column);
 	}
 
-	@HostBinding('style.width.px')
-	get width(): number {
-		return this.column.width;
-	}
+	private formWatch?: Subscription;
+	private watchedForm: any;
 
 	constructor(private cd: ChangeDetectorRef) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.watchForm();
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['field']) {
+			this.watchForm();
+		}
+	}
+
+	ngOnDestroy() {
+		this.formWatch?.unsubscribe();
+	}
+
+	/** Clear-from-empty-state mutates FormControls outside this OnPush cell — must markForCheck. */
+	private watchForm() {
+		const form = this.field?.form;
+		if (!form?.valueChanges || form === this.watchedForm) {
+			return;
+		}
+		this.formWatch?.unsubscribe();
+		this.watchedForm = form;
+		this.formWatch = form.valueChanges.subscribe(() => this.cd.markForCheck());
+	}
 
 	hasFilterValue(): boolean {
 		if (!this.field?.form || !this.field?.id) {

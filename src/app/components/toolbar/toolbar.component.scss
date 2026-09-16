@@ -5,3 +5,26 @@
 .dot-toolbar {
 	width: 30px;
 }
+
+.history-view-center-title {
+	font-size: 14px;
+	line-height: 1.3;
+	text-align: center;
+}
+
+.history-toolbar-title {
+	font-weight: 600;
+}
+
+.history-toolbar-subtitle {
+	font-size: 12px;
+	opacity: 0.85;
+	margin-top: 2px;
+	white-space: normal;
+}
+
+.history-pos-btn {
+	min-width: 52px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}

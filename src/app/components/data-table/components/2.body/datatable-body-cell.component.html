@@ -1,20 +1,25 @@
 <ng-template #cellTemplate *ngIf="column.cellTemplate" [ngTemplateOutlet]="column.cellTemplate" [ngTemplateOutletContext]="cellContext"></ng-template>
 <ng-container *ngIf="!column.cellTemplate">
-	<ng-container *ngIf="column.navLink">
-		<a [routerLink]="['/' + column.navLink + '/' + row.Id]" class="clickable">
-			{{ value }}
-		</a>
+	<ng-container *ngIf="showAlwaysEditor && editorField">
+		<app-input-control [field]="editorField" (change)="onEditorChange($event)"></app-input-control>
 	</ng-container>
-	<ng-container *ngIf="!column.navLink">
-		<a class="clickable" *ngIf="column.property == 'Id'">
-			{{ value }}
-		</a>
-		<input *ngIf="column.checkbox" (click)="changeSelection(row, $event)" class="c-checkbox" [checked]="isSelected" type="checkbox" />
-		<ng-container *ngIf="value && !column.checkbox && column.property != 'Id'">
-			<span *ngIf="dataType == 'string'">{{ value }}</span>
-			<span *ngIf="dataType == 'number'" class="hide-small" >{{ value | number: format }}</span>
-			<span *ngIf="dataType == 'number'" class="show-small-inline" >{{ value | numberFriendly }}</span>
-			<span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
+	<ng-container *ngIf="!showAlwaysEditor">
+		<ng-container *ngIf="column.navLink">
+			<a [routerLink]="['/' + column.navLink + '/' + row.Id]" class="clickable">
+				{{ value }}
+			</a>
+		</ng-container>
+		<ng-container *ngIf="!column.navLink">
+			<a class="clickable" *ngIf="column.property == 'Id'">
+				{{ value }}
+			</a>
+			<input *ngIf="column.checkbox" (click)="changeSelection(row, $event)" class="c-checkbox" [checked]="isSelected" type="checkbox" />
+			<ng-container *ngIf="value && !column.checkbox && column.property != 'Id'">
+				<span *ngIf="dataType == 'string'">{{ value }}</span>
+				<span *ngIf="dataType == 'number'" class="hide-small">{{ value | number: format }}</span>
+				<span *ngIf="dataType == 'number'" class="show-small-inline">{{ value | numberFriendly }}</span>
+				<span *ngIf="dataType == 'date'">{{ value | date: format }}</span>
+			</ng-container>
 		</ng-container>
 	</ng-container>
 </ng-container>

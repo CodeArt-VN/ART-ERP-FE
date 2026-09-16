@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive nvr-nvr-table"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="nvr-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{ i.Name }}</ion-text>
+						</a>
+						<app-branch-breadcrumbs
+							class="nvr-branch"
+							*ngIf="i.IDBranch"
+							[autoFit]="true"
+							[Id]="i.IDBranch"
+							[Items]="env.branchList"
+						></app-branch-breadcrumbs>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-number" name="Cameras" property="CameraInUse">
+				<ng-template let-i="row" datatable-cell-template>
+					{{ cameraInUse(i) }} / <small>{{ cameraCount(i) }}</small>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
+</ion-content>

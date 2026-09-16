@@ -1,3 +1,5 @@
+import { InputControlField } from '../../controls/controls.interface';
+
 /**
  * Column Type
  */
@@ -27,7 +29,7 @@ export interface TableColumn {
 	class?: string | ((data: any) => string | any);
 
 	/**
-	 * CSS Classes for the cell
+	 * CSS classes for the cell (legacy alias)
 	 * @memberOf TableColumn
 	 */
 	cellClass?: string | ((data: any) => string | any);
@@ -43,6 +45,21 @@ export interface TableColumn {
 	 * @memberOf TableColumn
 	 */
 	headerClass?: string | ((data: any) => string | any);
+
+	/**
+	 * When table editable='always', false keeps display-only for this column.
+	 */
+	editable?: boolean;
+
+	/**
+	 * app-input-control type when table editable='always' and no cellTemplate.
+	 */
+	editor?: InputControlField['type'];
+
+	/**
+	 * Extra InputControlField props (except id/type/form). Object or (row) => partial.
+	 */
+	editorField?: Partial<InputControlField> | ((row: any) => Partial<InputControlField>);
 
 	/**
 	 * Column name or label
@@ -63,25 +80,28 @@ export interface TableColumn {
 	property?: string;
 
 	/**
-	 * Min width of the column
+	 * Min width of the column. Number = px, string = any CSS length ('20%', '10rem').
+	 * Unset leaves whatever the column's CSS class defines.
 	 *
 	 * @memberOf TableColumn
 	 */
-	minWidth?: number;
+	minWidth?: number | string;
 
 	/**
-	 * Max width of the column
+	 * Max width of the column. Number = px, string = any CSS length ('20%', '10rem').
+	 * Unset leaves whatever the column's CSS class defines.
 	 *
 	 * @memberOf TableColumn
 	 */
-	maxWidth?: number;
+	maxWidth?: number | string;
 
 	/**
-	 * The default width of the column, in pixels
+	 * Fixed width — shorthand that pins both minWidth and maxWidth (see column-width.util).
+	 * Number = px, string = any CSS length.
 	 *
 	 * @memberOf TableColumn
 	 */
-	width?: number;
+	width?: number | string;
 
 	/**
 	 * Header checkbox enabled
@@ -97,9 +117,24 @@ export interface TableColumn {
 	format?: string;
 
 	filterControlType?: string;
+	filterDataSource?: any[];
+	filterBindValue?: string;
+	filterBindLabel?: string;
 
 	canFilter?: boolean;
 	canSort?: boolean;
 
 	navLink?: string;
+
+	dataType?: string;
+}
+
+/** Active column filter shown in empty-state list. */
+export interface DataTableActiveFilter {
+	property: string;
+	label: string;
+	controlType: string;
+	displayValue?: string;
+	displayFrom?: string;
+	displayTo?: string;
 }

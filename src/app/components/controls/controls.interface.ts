@@ -41,6 +41,9 @@ export interface InputControlField {
 
 	placeholder?: string;
 
+	/** When false, form-control hides app-input-control. Default true. */
+	showInput?: boolean;
+
 	dataSource?: any[] | any;
 
 	bindValue?: string;
@@ -52,6 +55,10 @@ export interface InputControlField {
 	clearable?: boolean;
 
 	noCheckDirty?: boolean;
+
+	/** ngx-mask for type=number. Default separator.2 (money). Port: '99999' (digits, no thousand sep). */
+	mask?: string;
+	thousandSeparator?: string;
 
 	appendTo?: string;
 

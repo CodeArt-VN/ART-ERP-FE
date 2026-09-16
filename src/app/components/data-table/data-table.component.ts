@@ -1,6 +1,18 @@
-import { Component, ContentChild, ContentChildren, EventEmitter, Input, OnInit, Output, QueryList, TemplateRef } from '@angular/core';
+import {
+	AfterViewChecked,
+	Component,
+	ContentChild,
+	ContentChildren,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	QueryList,
+	TemplateRef,
+} from '@angular/core';
 import { ColumnChangesService, DataTableColumnDirective } from './directives/data-table-column-directive';
-import { TableColumn } from './interfaces/table-column.interface';
+import { DataTableActiveFilter, TableColumn } from './interfaces/table-column.interface';
 import { Subscription } from 'rxjs';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
@@ -12,8 +24,18 @@ import { dog } from 'src/environments/environment';
 	templateUrl: './data-table.component.html',
 	styleUrls: ['./data-table.component.scss'],
 	standalone: false,
+	host: {
+		'[class.virtual-scroll]': 'virtualScroll',
+		'[class.virtual-scroll-page]': 'virtualScroll && virtualScrollMode === "page"',
+		'[class.virtual-scroll-container]': 'virtualScroll && virtualScrollMode === "container"',
+		'[class.is-empty]': 'isEmpty',
+		// Only apply minHeight when empty/loading. With data, inline min-height:100% replaces
+		// flex min-height:auto and lets ion-content.scrollx shrink the host below content —
+		// table background then stops at viewport while rows overflow below it.
+		'[style.min-height]': 'hostMinHeight',
+	},
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, AfterViewChecked {
 	_allColumns: TableColumn[];
 	_inputColumns: TableColumn[];
 	_columnTemplates: QueryList<DataTableColumnDirective>;
@@ -45,9 +67,14 @@ export class DataTableComponent implements OnInit {
 
 	_query: any = {};
 	@Input() set query(val: any) {
+		const prevSkip = this._query?.Skip;
 		this._query = val ?? {};
+		if (val?.Skip === 0 && prevSkip > 0) {
+			this.resetInfiniteScrollState();
+		}
 		if (this.formGroup) {
 			this.formGroup.patchValue(this._query, { emitEvent: false });
+			this.syncTimeFrameFormsFromQuery();
 			dog && console.log(this._query);
 
 			//this.onFilterSubmit(null);
@@ -55,6 +82,74 @@ export class DataTableComponent implements OnInit {
 		this.syncFilterIndicatorFromQuery();
 	}
 	filterValue: any;
+	/** Cached — rebuilt in syncFilterIndicatorFromQuery (not a getter; avoids *ngFor recreate every CD). */
+	activeFilters: DataTableActiveFilter[] = [];
+
+	private formatFilterDisplayValue(col: TableColumn, value: any): string {
+		const type = col.filterControlType || 'text';
+		if (type.startsWith('ng-select') && col.filterDataSource?.length) {
+			const bindValue = col.filterBindValue || 'Id';
+			const bindLabel = col.filterBindLabel || 'Name';
+			const resolve = (v: any) => {
+				const found = col.filterDataSource.find((d) => d?.[bindValue] == v);
+				return found?.[bindLabel] ?? String(v);
+			};
+			if (Array.isArray(value)) {
+				return value.map(resolve).join(', ');
+			}
+			return resolve(value);
+		}
+		return String(value);
+	}
+
+	private safeFormatTimeConfig(cfg: any): string {
+		try {
+			return cfg ? lib.formatTimeConfig(cfg) || '' : '';
+		} catch {
+			return cfg?.Value != null ? String(cfg.Value) : '';
+		}
+	}
+
+	clearFilter(property: string) {
+		this.resetColumnFilter(property);
+		this.onFilterSubmit(null);
+	}
+
+	clearAllFilters() {
+		const props = this.activeFilters.map((f) => f.property);
+		for (const property of props) {
+			this.resetColumnFilter(property);
+		}
+		this.onFilterSubmit(null);
+	}
+
+	private resetColumnFilter(property: string) {
+		if (!this.formGroup || !property) {
+			return;
+		}
+		const col = this._allColumns?.find((c) => c.property === property);
+		if (!col) {
+			return;
+		}
+		if (col.filterControlType === 'time-frame') {
+			const tf = this.formGroup.get(property + 'TimeFrame') as FormGroup;
+			if (tf) {
+				const from = tf.get('From') as FormGroup;
+				const to = tf.get('To') as FormGroup;
+				from?.get('IsNull')?.setValue(true);
+				from?.get('Value')?.setValue(null);
+				to?.get('IsNull')?.setValue(true);
+				to?.get('Value')?.setValue(null);
+			}
+			this.formGroup.get(property + 'From')?.setValue(null);
+			this.formGroup.get(property + 'To')?.setValue(null);
+		} else {
+			const control = this.formGroup.controls[property];
+			if (control) {
+				control.setValue(col.filterControlType === 'text' ? '' : null);
+			}
+		}
+	}
 
 	/**
 	 * Header search icon reads filterValue (datatable-header-cell); without this, preset [query]
@@ -62,29 +157,54 @@ export class DataTableComponent implements OnInit {
 	 */
 	private syncFilterIndicatorFromQuery() {
 		if (!this._allColumns?.length) {
+			this.filterValue = undefined;
+			this.activeFilters = [];
 			return;
 		}
 		const fv: Record<string, unknown> = {};
+		const list: DataTableActiveFilter[] = [];
 		const q = this._query || {};
 		for (const col of this._allColumns) {
 			if (!col.canFilter || !col.property) {
 				continue;
 			}
 			const p = col.property;
-			if (col.filterControlType === 'time-frame') {
-				const from = q[p + 'From'];
-				const to = q[p + 'To'];
-				if ((from != null && from !== '') || (to != null && to !== '')) {
-					fv[p] = true;
+			const controlType = col.filterControlType || 'text';
+			if (controlType === 'time-frame') {
+				const tf =
+					(this.formGroup?.get(p + 'TimeFrame') as FormGroup)?.getRawValue() ?? q[p + 'TimeFrame'];
+				const from = q[p + 'From'] ?? tf?.From?.Value;
+				const to = q[p + 'To'] ?? tf?.To?.Value;
+				const hasRelative = tf && (tf.From?.IsNull === false || tf.To?.IsNull === false);
+				if (!hasRelative && (from == null || from === '') && (to == null || to === '')) {
+					continue;
 				}
+				fv[p] = true;
+				const fromCfg = tf?.From ?? { Type: 'Absolute', Value: from, IsNull: !from };
+				const toCfg = tf?.To ?? { Type: 'Absolute', Value: to, IsNull: !to };
+				list.push({
+					property: p,
+					label: col.name || p,
+					controlType,
+					displayFrom: this.safeFormatTimeConfig(fromCfg) || String(from ?? ''),
+					displayTo: this.safeFormatTimeConfig(toCfg) || String(to ?? ''),
+				});
 			} else {
-				const v = q[p];
-				if (v != null && v !== '') {
-					fv[p] = v;
+				const v = q[p] ?? this.formGroup?.get(p)?.value;
+				if (v == null || v === '') {
+					continue;
 				}
+				fv[p] = v;
+				list.push({
+					property: p,
+					label: col.name || p,
+					controlType,
+					displayValue: this.formatFilterDisplayValue(col, v),
+				});
 			}
 		}
 		this.filterValue = Object.keys(fv).length ? fv : undefined;
+		this.activeFilters = list;
 	}
 
 	@Output() filterInputChange: EventEmitter<any> = new EventEmitter();
@@ -99,16 +219,36 @@ export class DataTableComponent implements OnInit {
 	onFilterSubmit(e) {
 		this.filterValue = this.formGroup.getRawValue();
 
+		// Preserve list query fields (e.g. IDOwner, Take, Skip) — filter form only has column keys;
+		// emitting filterValue alone breaks [(query)] two-way binding by replacing the whole object.
+		const nextQuery = { ...(this._query || {}), ...this.filterValue };
+
 		this._allColumns.forEach((column) => {
 			if (column.canFilter && column.property && column.filterControlType === 'time-frame') {
-				this.filterValue[column.property + 'From'] = this.filterValue[column.property + 'TimeFrame'].From.Value;
-				this.filterValue[column.property + 'To'] = this.filterValue[column.property + 'TimeFrame'].To.Value;
+				const timeFrameKey = column.property + 'TimeFrame';
+				const timeFrame = this.filterValue[timeFrameKey];
+				const from = timeFrame?.From?.Value ?? null;
+				const to = timeFrame?.To?.Value ?? null;
+				const cleared =
+					(timeFrame?.From?.IsNull !== false && (from == null || from === '')) &&
+					(timeFrame?.To?.IsNull !== false && (to == null || to === ''));
+				this.filterValue[column.property + 'From'] = cleared ? null : from;
+				this.filterValue[column.property + 'To'] = cleared ? null : to;
+				nextQuery[column.property + 'From'] = cleared ? null : from;
+				nextQuery[column.property + 'To'] = cleared ? null : to;
+				if (cleared) {
+					delete nextQuery[timeFrameKey];
+				} else {
+					// Keep Relative/Absolute TimeFrame on query for picker UI; strip before HTTP in PageBase.getApiQuery
+					nextQuery[timeFrameKey] = timeFrame;
+				}
+				delete this.filterValue[timeFrameKey];
+				delete this.filterValue[column.property];
+				delete nextQuery[column.property];
 			}
 		});
 
-		// Preserve list query fields (e.g. IDOwner, Take, Skip) — filter form only has column keys;
-		// emitting filterValue alone breaks [(query)] two-way binding by replacing the whole object.
-		this.queryChange.emit({ ...(this._query || {}), ...this.filterValue });
+		this.queryChange.emit(nextQuery);
 		if (this.isQueryLocalOnly) {
 			this._rowsBeforeFilter = this._rowsBeforeFilter || this._rows;
 			this._rows = this._rowsBeforeFilter.filter((row) => {
@@ -121,6 +261,7 @@ export class DataTableComponent implements OnInit {
 		} else {
 			this.filter.emit({ event: e, query: this.filterValue });
 		}
+		this.syncFilterIndicatorFromQuery();
 	}
 
 	formGroup: FormGroup;
@@ -132,32 +273,93 @@ export class DataTableComponent implements OnInit {
 				group[column.property] = new FormControl(this._query[column.property] || defaultValue);
 
 				if (column.filterControlType === 'time-frame') {
+					const fromVal = this._query[column.property + 'From'] || null;
+					const toVal = this._query[column.property + 'To'] || null;
+					const tfPreset = this._query[column.property + 'TimeFrame'];
 					group[column.property + 'TimeFrame'] = this.formBuilder.group({
-						From: this.formBuilder.group({
-							Type: ['Relative'],
-							IsPastDate: [false],
-							Period: ['Day'],
-							Amount: [0],
-							Value: [null],
-							IsNull: [true],
-						}),
-						To: this.formBuilder.group({
-							Type: ['Relative'],
-							IsPastDate: [false],
-							Period: ['Day'],
-							Amount: [0],
-							Value: [null],
-							IsNull: [true],
-						}),
+						From: this.buildTimeConfigGroup(tfPreset?.From, fromVal, false),
+						To: this.buildTimeConfigGroup(tfPreset?.To, toVal, true),
 					});
 
-					group[column.property + 'From'] = new FormControl(this._query[column.property + 'From'] || defaultValue);
-					group[column.property + 'To'] = new FormControl(this._query[column.property + 'To'] || defaultValue);
+					group[column.property + 'From'] = new FormControl(fromVal || defaultValue);
+					group[column.property + 'To'] = new FormControl(toVal || defaultValue);
 				}
 			}
 		});
 		this.formGroup = new FormGroup(group);
 		this.syncFilterIndicatorFromQuery();
+	}
+
+	/** Prefer explicit TimeConfig preset (Relative/Absolute); else hydrate from From/To date string. */
+	private buildTimeConfigGroup(preset: any, fallbackValue: any, isTo: boolean) {
+		return this.formBuilder.group(this.resolveTimeConfigValue(preset, fallbackValue, isTo));
+	}
+
+	/** Keep nested *TimeFrame form in sync when parent sets query. */
+	private syncTimeFrameFormsFromQuery() {
+		if (!this.formGroup || !this._allColumns?.length) {
+			return;
+		}
+		const q = this._query || {};
+		for (const column of this._allColumns) {
+			if (column.filterControlType !== 'time-frame' || !column.property) {
+				continue;
+			}
+			const tf = this.formGroup.get(column.property + 'TimeFrame') as FormGroup;
+			if (!tf) {
+				continue;
+			}
+			const tfPreset = q[column.property + 'TimeFrame'];
+			this.patchTimeConfigControl(tf.get('From') as FormGroup, tfPreset?.From, q[column.property + 'From'], false);
+			this.patchTimeConfigControl(tf.get('To') as FormGroup, tfPreset?.To, q[column.property + 'To'], true);
+		}
+	}
+
+	private patchTimeConfigControl(control: FormGroup, preset: any, fallbackValue: any, isTo: boolean) {
+		if (!control) {
+			return;
+		}
+		control.patchValue(this.resolveTimeConfigValue(preset, fallbackValue, isTo), { emitEvent: false });
+	}
+
+	private resolveTimeConfigValue(preset: any, fallbackValue: any = null, isTo = false) {
+		// Explicit TimeConfig (e.g. Relative Today from page default / picker)
+		if (preset && typeof preset === 'object' && preset.Type) {
+			let value = preset.Value ?? fallbackValue ?? null;
+			if (preset.Type === 'Relative' && (value == null || value === '') && preset.IsNull !== true) {
+				value = lib.dateFormat(lib.calcTimeValue(preset, isTo), 'yyyy-mm-ddThh:MM:ss');
+			}
+			return {
+				Type: preset.Type,
+				IsPastDate: preset.IsPastDate ?? true,
+				Period: preset.Period || 'Day',
+				Amount: preset.Amount ?? 0,
+				Value: value,
+				IsNull: preset.IsNull ?? !(value != null && value !== ''),
+			};
+		}
+
+		const value = fallbackValue ?? preset;
+		const hasValue = value != null && value !== '';
+		if (!hasValue) {
+			return {
+				Type: 'Relative',
+				IsPastDate: true,
+				Period: 'Day',
+				Amount: 0,
+				Value: null,
+				IsNull: true,
+			};
+		}
+		// Date-only fallback (no TimeConfig preset) → Absolute
+		return {
+			Type: 'Absolute',
+			IsPastDate: false,
+			Period: 'Day',
+			Amount: 0,
+			Value: value,
+			IsNull: false,
+		};
 	}
 
 	/**
@@ -198,7 +400,9 @@ export class DataTableComponent implements OnInit {
 	 * Rows that are displayed in the table.
 	 */
 	@Input() set rows(val: any) {
+		this.syncEndOfDataFromRows(val);
 		this._rows = val;
+		this.showInfinitespinner = false;
 		if (this._isTreeList && this.isQueryLocalOnly) {
 			this.onSort([]);
 		} else if (this._rows?.length && this._isTreeList && this._rows[0]?.levelSort == null) {
@@ -212,7 +416,6 @@ export class DataTableComponent implements OnInit {
 	 * Gets the data.
 	 */
 	get rows(): any {
-		this.showInfinitespinner = false;
 		return this._rows;
 	}
 
@@ -226,9 +429,129 @@ export class DataTableComponent implements OnInit {
 
 	@Input() trackBy: string;
 
-	@Input() showSpinner: boolean;
 	@Input() showFilter: boolean;
 	@Input() isQueryLocalOnly: boolean;
+
+	private _showSpinner = false;
+	@Input() set showSpinner(val: boolean) {
+		if (val && !this._showSpinner) {
+			this.resetInfiniteScrollState();
+		}
+		this._showSpinner = !!val;
+		if (!val) {
+			this.syncEndOfDataFromRows(this._rows);
+		}
+	}
+	get showSpinner(): boolean {
+		return this._showSpinner;
+	}
+
+	private _isEndOfData = false;
+	private _pendingInfiniteLoad = false;
+	private _rowsAtInfiniteRequest = 0;
+
+	/** Derived from query.Take + row growth — pages must not pass a disable flag. */
+	get isInfiniteScrollDisabled(): boolean {
+		if (this.isQueryLocalOnly || !this.virtualScroll) {
+			return true;
+		}
+		const take = this.getPageSize();
+		if (!take) {
+			return true;
+		}
+		return this._isEndOfData;
+	}
+
+	private getPageSize(): number {
+		const take = Number(this._query?.Take);
+		return take > 0 ? take : 0;
+	}
+
+	private resetInfiniteScrollState() {
+		this._isEndOfData = false;
+		this._pendingInfiniteLoad = false;
+		this._rowsAtInfiniteRequest = 0;
+	}
+
+	private syncEndOfDataFromRows(val: any[]) {
+		const newLen = val?.length ?? 0;
+		const take = this.getPageSize();
+
+		if (this._pendingInfiniteLoad && take > 0) {
+			const added = newLen - this._rowsAtInfiniteRequest;
+			if (added <= 0 || added < take) {
+				this._isEndOfData = true;
+			}
+			this._pendingInfiniteLoad = false;
+			return;
+		}
+
+		if (!take || this.showSpinner) {
+			return;
+		}
+
+		if (newLen === 0) {
+			this._isEndOfData = true;
+		} else if (newLen < take) {
+			this._isEndOfData = true;
+		}
+	}
+
+	/**
+	 * Minimum height of the whole table (host). Default '100%' — fills the parent's height
+	 * (parent must establish a definite height, e.g. flex/grid/fixed; otherwise this is a
+	 * no-op, same as normal CSS `min-height:100%` behavior). Accepts any CSS length: '50%',
+	 * '200px', '90vh'...
+	 *
+	 * Container-mode virtual scroll tables that rely on `min-height:0` to shrink inside a
+	 * bounded flex ancestor should pass `[minHeight]="'0'"` to opt out of this default.
+	 */
+	@Input() minHeight = '100%';
+
+	/**
+	 * Drives the `.is-empty` host class (see data-table.scss) so the built-in empty message
+	 * (page-message) stretches to fill `minHeight` instead of floating with dead space below it.
+	 */
+	get isEmpty(): boolean {
+		return !!this.showSpinner || !this._rows?.length;
+	}
+
+	/** Host style binding — see host `[style.min-height]` comment. */
+	get hostMinHeight(): string | null {
+		if (!this.isEmpty && (this.minHeight === '100%' || this.minHeight == null || this.minHeight === '')) {
+			return null;
+		}
+		return this.minHeight;
+	}
+
+	/** Virtual scroll for large lists. Default on — pass `[virtualScroll]="false"` to use legacy *ngFor. */
+	@Input() virtualScroll = true;
+	/** page = ion-content scroll (~90% list pages); container = scroll inside table (modal/picker). */
+	@Input() virtualScrollMode: 'page' | 'container' = 'page';
+	@Input() virtualScrollHeight = '100%';
+	@Input() virtualScrollMinBufferPx = 300;
+	@Input() virtualScrollMaxBufferPx = 600;
+	/** Seed for the autosize averager — set close to the real row height to minimize drift. */
+	@Input() virtualScrollDefaultItemSize = 51;
+	/**
+	 * CDK recycled views break ReactiveForms + ngx-mask (detached FormControl).
+	 * Keep 0 when cells bind formControlName / app-input-control.
+	 */
+	@Input() virtualScrollTemplateCacheSize = 0;
+
+	/**
+	 * Editing mode. 'always' renders app-input-control for columns with editor / no cellTemplate.
+	 * inline | incell | external reserved for later.
+	 */
+	@Input() editable: false | 'always' | 'inline' | 'incell' | 'external' = false;
+
+	@Output() cellChange = new EventEmitter<{
+		row: any;
+		rowIndex: number;
+		property: string;
+		column: TableColumn;
+		event?: any;
+	}>();
 
 	@Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -236,10 +559,124 @@ export class DataTableComponent implements OnInit {
 
 	constructor(
 		private columnChangesService: ColumnChangesService,
-		public formBuilder: FormBuilder
+		public formBuilder: FormBuilder,
+		private host: ElementRef<HTMLElement>
 	) {}
 
 	ngOnInit() {}
+
+	ngAfterViewChecked() {
+		this.polishInlineBranchBreadcrumbs();
+	}
+
+	/** Ionic crumb chrome lives in shadow DOM — flatten to inline text inside table only. */
+	private polishInlineBranchBreadcrumbs() {
+		const css = `
+			:host {
+				margin: 0 !important;
+				padding: 0 !important;
+				min-height: 0 !important;
+				max-width: 100%;
+				white-space: nowrap;
+			}
+			:host(.breadcrumb-collapsed:not(:first-child)) {
+				display: none !important;
+			}
+			:host(.breadcrumb-active),
+			:host(:not(.breadcrumb-collapsed)) {
+				display: inline-flex !important;
+				align-items: center !important;
+				vertical-align: middle !important;
+				flex: 0 0 auto;
+				max-width: 100%;
+			}
+			:host(.breadcrumb-collapsed:first-child) {
+				display: inline-flex !important;
+				align-items: center !important;
+				vertical-align: middle !important;
+				margin-right: 6px !important;
+				flex: 0 0 auto;
+			}
+			.breadcrumb-native {
+				display: inline-block !important;
+				padding: 0 !important;
+				margin: 0 !important;
+				min-height: 0 !important;
+				height: auto !important;
+				max-width: 100%;
+				background: transparent !important;
+				border: none !important;
+				border-radius: 0 !important;
+				box-shadow: none !important;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				vertical-align: middle;
+				line-height: 1.35;
+			}
+			:host(.breadcrumb-collapsed:first-child) .breadcrumb-native,
+			:host(.breadcrumb-collapsed:first-child) .breadcrumb-separator {
+				display: none !important;
+			}
+			.breadcrumb-separator {
+				display: inline-flex !important;
+				align-items: center !important;
+				flex-shrink: 0;
+				margin: 0 6px !important;
+				padding: 0 !important;
+				opacity: 0.5;
+				vertical-align: middle;
+			}
+			.breadcrumb-separator ion-icon {
+				font-size: 12px !important;
+				width: 12px !important;
+				height: 12px !important;
+				margin: 0 !important;
+			}
+			.breadcrumbs-collapsed-indicator {
+				display: inline-flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				min-width: 0 !important;
+				min-height: 0 !important;
+				width: auto !important;
+				height: 1em !important;
+				line-height: 1 !important;
+				background: transparent !important;
+				border: none !important;
+				border-radius: 0 !important;
+				box-shadow: none !important;
+				opacity: 0.75;
+				cursor: pointer;
+				vertical-align: middle;
+			}
+			.breadcrumbs-collapsed-indicator ion-icon {
+				font-size: 12px !important;
+				width: 12px !important;
+				height: 12px !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				min-width: 12px !important;
+				min-height: 12px !important;
+			}
+		`;
+		const crumbs = this.host.nativeElement.querySelectorAll('app-branch-breadcrumbs ion-breadcrumb');
+		crumbs.forEach((el: any) => {
+			const root: ShadowRoot = el.shadowRoot;
+			if (!root) return;
+			let style = root.querySelector('style[data-dt-inline-bc]') as HTMLStyleElement | null;
+			if (!style) {
+				style = document.createElement('style');
+				style.setAttribute('data-dt-inline-bc', '');
+				root.appendChild(style);
+			}
+			if (style.textContent !== css) {
+				style.textContent = css;
+			}
+		});
+	}
 
 	ngAfterContentInit() {
 		this.columnTemplates.changes.subscribe((v) => this.translateColumns(v));
@@ -252,6 +689,11 @@ export class DataTableComponent implements OnInit {
 
 	showInfinitespinner = false;
 	onDataInfinite(event) {
+		if (this.isInfiniteScrollDisabled) {
+			return;
+		}
+		this._pendingInfiniteLoad = true;
+		this._rowsAtInfiniteRequest = this._rows?.length ?? 0;
 		this.showInfinitespinner = true;
 		this.dataInfinite.emit(event);
 	}

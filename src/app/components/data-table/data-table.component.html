@@ -1,4 +1,10 @@
-<datatable-header [columns]="_allColumns" [query]="_query" [filterValue]="filterValue" (sort)="onSort($event)" class="row header sticky-header bold"></datatable-header>
+<datatable-header
+	[columns]="_allColumns"
+	[query]="_query"
+	[filterValue]="filterValue"
+	(sort)="onSort($event)"
+	class="row header sticky-header bold"
+></datatable-header>
 <form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup">
 	<datatable-header
 		[formGroup]="formGroup"
@@ -15,14 +21,26 @@
 <datatable-body
 	[columns]="_allColumns"
 	[emptyMessage]="emptyMessageTemplate"
+	[activeFilters]="activeFilters"
 	[rows]="_rows"
 	[trackBy]="trackBy"
 	[(selectedRows)]="selectedRows"
 	[showSpinner]="showSpinner"
+	[editable]="editable"
+	[virtualScroll]="virtualScroll"
+	[virtualScrollMode]="virtualScrollMode"
+	[virtualScrollHeight]="virtualScrollHeight"
+	[virtualScrollMinBufferPx]="virtualScrollMinBufferPx"
+	[virtualScrollMaxBufferPx]="virtualScrollMaxBufferPx"
+	[virtualScrollDefaultItemSize]="virtualScrollDefaultItemSize"
+	[virtualScrollTemplateCacheSize]="virtualScrollTemplateCacheSize"
+	[infiniteScrollDisabled]="isInfiniteScrollDisabled"
 	(activate)="onSelectedRowsChange($event)"
 	(dataInfinite)="onDataInfinite($event)"
+	(cellChange)="cellChange.emit($event)"
+	(clearFilter)="clearFilter($event)"
+	(clearAllFilters)="clearAllFilters()"
 ></datatable-body>
 <div *ngIf="showInfinitespinner" style="text-align: center">
 	<ion-spinner name="dots"></ion-spinner>
 </div>
-<!-- <datatable-footer></datatable-footer> -->

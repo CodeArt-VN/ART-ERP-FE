@@ -309,6 +309,7 @@ ion-app.guest-customer-mode {
 	min-width: 45px;
 	max-width: 45px;
 	pointer-events: auto;
+	margin-top: -1px;
 
 	@media print {
 		display: none;

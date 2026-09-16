@@ -82,6 +82,10 @@ Content/
 android/**/*
 !android/variables.gradle
 !android/build.gradle
+!android/app/
+!android/app/src/
+!android/app/src/main/
+!android/app/src/main/AndroidManifest.xml
 
 !android/app/
 !android/app/build.gradle

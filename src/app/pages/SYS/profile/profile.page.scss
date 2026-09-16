@@ -11,12 +11,8 @@
 	height: 200px;
 	max-width: 40vw;
 	max-height: 40vw;
-
 	border-radius: 100px;
 	display: inline-block;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
 	border: solid 4px var(--ion-color-secondary);
 }
 
@@ -24,6 +20,12 @@
 	margin-top: 20px;
 	text-transform: uppercase;
 	font-size: calc(10 / 16 * 1.9rem);
+}
+
+.user-name {
+	margin-top: 4px;
+	font-size: calc(10 / 16 * 1.3rem);
+	color: var(--ion-color-medium);
 }
 
 ion-item,

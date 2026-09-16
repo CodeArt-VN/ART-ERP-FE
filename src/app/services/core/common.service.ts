@@ -67,10 +67,16 @@ export class CommonService {
 			URL = pmethod != 'Login' ? ApiSetting.apiDomain(URL) : ApiSetting.appDomain(URL);
 		}
 
-		if (((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch')) || !data) && URL.indexOf('IDBranch') == -1 && this.env.selectedBranch) {
+		if (
+			pmethod != 'Login' &&
+			((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('IDBranch')) || !data) &&
+			URL.indexOf('IDBranch') == -1 &&
+			this.env.selectedBranch
+		) {
 			URL = URL + (URL.indexOf('?') > -1 ? '&' : '?') + 'IDBranch=' + this.env.selectedBranchAndChildren + '';
 		}
 		if (
+			pmethod != 'Login' &&
 			((data && !data.hasOwnProperty('IgnoredBranch') && !data.hasOwnProperty('SelectedBranch')) || !data) &&
 			URL.indexOf('SelectedBranch') == -1 &&
 			this.env.selectedBranch
@@ -626,7 +632,7 @@ export class CommonService {
 
 		if (err.status == 417 && err.statusText) {
 			let vers = err.statusText.split('|');
-			this.env.showMessage('Please update the software ( to min version {{value}}).', 'danger', vers[0], 0, true);
+			this.env.showMessage('Please update the software ( to min version {value}).', 'danger', vers[0], 0, true);
 			this.env.publishEvent({ Code: EVENT_TYPE.APP.FORCE_UPDATE_MOBILEAPP });
 		} else if (err.status == 401) {
 			const hasToken = !!this.env.storage?.app?.token?.access_token;

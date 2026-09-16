@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { Subject, Subscription, concat, of, distinctUntilChanged, tap, switchMap, catchError, filter, mergeMap, from } from 'rxjs';
 
@@ -7,6 +7,7 @@ import { InputControlComponent } from './components/controls/input-control.compo
 import { PageConfig } from './interfaces/base-page-interface';
 import { AdvanceFilterModalComponent } from './modals/advance-filter-modal/advance-filter-modal.component';
 import { PopoverPage } from './pages/SYS/popover/popover.page';
+import { EnrichedLog, HistoryService, SnapshotAtStep } from './services/custom/history.service';
 import { EVENT_TYPE } from './services/static/event-type';
 import { lib } from './services/static/global-functions';
 import { APIList } from './services/static/global-variable';
@@ -20,6 +21,8 @@ import { FormManagementService } from './services/page/form-management.service';
 	standalone: false,
 })
 export abstract class PageBase implements OnInit {
+	historyService = inject(HistoryService);
+
 	dataManagementService: PageDataManagementService;
 	formManagementService = new FormManagementService();
 	env;
@@ -41,11 +44,23 @@ export abstract class PageBase implements OnInit {
 	items: any = [];
 	selectedItems: any = [];
 
+	/** History view mode (inline Time Machine) */
+	historyItems: EnrichedLog[] = [];
+	historySnapshots: SnapshotAtStep[] = [];
+	historyIndex = 0;
+	/** Bumps on every snapshot apply so child grids always rebuild. */
+	historyRevision = 0;
+	historyViewTitle = '';
+	historyViewSubtitle = '';
+	historyViewPosition = '';
+	historySnapshotBefore: any = null;
+	historySavedCanEdit = false;
+
 	localQuery: any = {};
 
 	query: any = {
 		Keyword: '',
-		Take: 100,
+		Take: 200,
 		Skip: 0,
 	};
 	maskConfig = { thousandSeparator: ',' };
@@ -81,6 +96,7 @@ export abstract class PageBase implements OnInit {
 		ShowExport: true,
 		ShowImport: true,
 		ShowHelp: true,
+		ShowHistory: false,
 		ShowFeature: false,
 
 		ShowCopy: true,
@@ -125,16 +141,18 @@ export abstract class PageBase implements OnInit {
 			this.parseSort();
 
 			if (this.pageProvider && !this.pageConfig.isEndOfData) {
+				const apiQuery = this.getApiQuery();
 				if (event == 'search') {
-					this.pageProvider.read(this.query, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
+					this.pageProvider.read(apiQuery, this.pageConfig.forceLoadData || forceReload).then((result: any) => {
 						this.markEndOfDataIfLastPage(result.data.length);
 						this.items = result.data;
 						this.loadedData(null);
 					});
 				} else {
 					this.query.Skip = this.items.length;
+					apiQuery.Skip = this.query.Skip;
 					this.pageProvider
-						.read(this.query, this.pageConfig.forceLoadData)
+						.read(apiQuery, this.pageConfig.forceLoadData)
 						.then((result: any) => {
 							this.markEndOfDataIfLastPage(result.data.length);
 							if (result.data.length > 0) {
@@ -157,6 +175,29 @@ export abstract class PageBase implements OnInit {
 				this.loadedData(event);
 			}
 		}
+	}
+
+	/** Drop UI-only *TimeFrame objects; map Relative/Absolute Values → *From/*To for API. */
+	getApiQuery(query = this.query) {
+		const q = { ...(query || {}) };
+		Object.keys(q).forEach((key) => {
+			if (!(key.endsWith('TimeFrame') && q[key] && typeof q[key] === 'object' && !Array.isArray(q[key]))) {
+				return;
+			}
+			const prop = key.slice(0, -'TimeFrame'.length);
+			const tf = q[key];
+			if (tf.From && tf.From.IsNull !== true) {
+				q[prop + 'From'] =
+					tf.From.Value ??
+					(tf.From.Type === 'Relative' ? lib.dateFormat(lib.calcTimeValue(tf.From, false), 'yyyy-mm-ddThh:MM:ss') : null);
+			}
+			if (tf.To && tf.To.IsNull !== true) {
+				q[prop + 'To'] =
+					tf.To.Value ?? (tf.To.Type === 'Relative' ? lib.dateFormat(lib.calcTimeValue(tf.To, true), 'yyyy-mm-ddThh:MM:ss') : null);
+			}
+			delete q[key];
+		});
+		return q;
 	}
 
 	DefaultItem = { Id: 0, IsDisabled: false };
@@ -407,9 +448,9 @@ export abstract class PageBase implements OnInit {
 		} else {
 			this.pageProvider.disable(this.selectedItems, !this.query.IsDisabled).then(() => {
 				if (this.query.IsDisabled) {
-					this.env.showMessage('Reopened {{value}} lines!', 'success', this.selectedItems.length);
+					this.env.showMessage('Reopened {value} lines!', 'success', this.selectedItems.length);
 				} else {
-					this.env.showMessage('Archived {{value}} lines!', 'success', this.selectedItems.length);
+					this.env.showMessage('Archived {value} lines!', 'success', this.selectedItems.length);
 				}
 				this.removeSelectedItems();
 			});
@@ -426,6 +467,299 @@ export abstract class PageBase implements OnInit {
 		});
 
 		this.selectedItems = [];
+	}
+
+	/** Latest-wins in-flight fetch-by-Id for create shape fallback. */
+	private listFetchSeqById = new Map<string | number, number>();
+
+	/**
+	 * Detail → list sync after save/delete. Prefer in-memory patch; full refresh only as legacy fallback.
+	 */
+	applyListEvent(data: any) {
+		if (!data) {
+			this.refresh(null);
+			return;
+		}
+
+		if (data.Action === 'delete') {
+			const ids = (data.Ids?.length ? data.Ids : data.Id != null ? [data.Id] : []).filter((id) => id != null && id !== '');
+			if (ids.length) {
+				this.removeListItemsByIds(ids);
+			} else {
+				this.refresh(null);
+			}
+			return;
+		}
+
+		const id = data.Id ?? data.Data?.Id;
+		const idx = id != null && id !== '' ? this.items.findIndex((x) => x?.Id == id) : -1;
+
+		// Existing row by Id → always patch in place (do not remove via filter match)
+		if (idx >= 0) {
+			const row = this.mergeListRow(this.items[idx], data.Data);
+			this.upsertListItemAt(idx, row);
+			return;
+		}
+
+		// Create / insert — only then gate by current list filters
+		if (!data.Data || typeof data.Data !== 'object') {
+			this.refresh(null);
+			return;
+		}
+
+		const tryInsert = (row: any) => {
+			if (!row || !this.matchesListQuery(row)) {
+				return;
+			}
+			this.insertListItemSorted(row);
+		};
+
+		const sample = this.items[0];
+		if (sample && this.hasEnoughListShape(data.Data, sample)) {
+			tryInsert(data.Data);
+		} else if (id != null && id !== '') {
+			this.fetchAndUpsertListItem(id).then((row) => row && tryInsert(row));
+		} else {
+			this.refresh(null);
+		}
+	}
+
+	publishListUpsert(publishEventCode: string, wasCreate: boolean, savedItem: any = null, form = this.formGroup) {
+		if (!publishEventCode) {
+			return;
+		}
+
+		if (wasCreate) {
+			if (savedItem && typeof savedItem === 'object' && savedItem.Id != null && savedItem.Id !== '' && savedItem.Id !== 0) {
+				this.env.publishEvent({
+					Code: publishEventCode,
+					Action: 'upsert',
+					Id: savedItem.Id,
+					Data: savedItem,
+				});
+			} else {
+				// Create without returned object — cannot patch safely
+				this.env.publishEvent({ Code: publishEventCode });
+			}
+			return;
+		}
+
+		const data = this.buildListEventData(form, savedItem);
+		const id = data?.Id ?? this.id ?? form?.controls?.Id?.value;
+		this.env.publishEvent({
+			Code: publishEventCode,
+			Action: 'upsert',
+			Id: id,
+			Data: data,
+		});
+	}
+
+	/** Snapshot for list patch after edit — UI form/item, not relying on save body. */
+	buildListEventData(form = this.formGroup, savedItem: any = null) {
+		const raw = form?.getRawValue?.() ?? form?.value ?? {};
+		const data = { ...(this.item || {}), ...raw };
+		if (savedItem && typeof savedItem === 'object') {
+			Object.assign(data, savedItem);
+		}
+		if ((data.Id == null || data.Id === '' || data.Id === 0) && this.id) {
+			data.Id = this.id;
+		}
+		return data;
+	}
+
+	mergeListRow(existing: any, patch: any) {
+		if (!patch || typeof patch !== 'object') {
+			return this.enrichListItem({ ...existing });
+		}
+		return this.enrichListItem({ ...existing, ...patch });
+	}
+
+	enrichListItem(row: any) {
+		return row;
+	}
+
+	/** Hook after local list mutation (aggregates, etc.). */
+	onListItemsPatched() {}
+
+	listRowShapeKeys(sample: any): string[] {
+		if (!sample || typeof sample !== 'object') {
+			return [];
+		}
+		const clientOnly = new Set(['StatusText', 'StatusColor', 'TypeOfPartyText', 'checked', 'show']);
+		return Object.keys(sample).filter((k) => !k.startsWith('_') && !clientOnly.has(k));
+	}
+
+	hasEnoughListShape(data: any, sample: any): boolean {
+		if (!data || !sample) {
+			return false;
+		}
+		const keys = this.listRowShapeKeys(sample);
+		if (!keys.length) {
+			return true;
+		}
+		return keys.every((k) => Object.prototype.hasOwnProperty.call(data, k));
+	}
+
+	matchesListQuery(row: any): boolean {
+		if (!row) {
+			return false;
+		}
+		const skip = new Set(['Skip', 'Take', 'SortBy', 'Sort']);
+		// Normalize UI *TimeFrame → *From/*To (same as API query)
+		const q = this.getApiQuery(this.query);
+		for (const [key, qv] of Object.entries(q || {})) {
+			if (skip.has(key) || key.startsWith('_')) {
+				continue;
+			}
+			if (qv == null || qv === '') {
+				continue;
+			}
+			// Defensive: never match raw objects against a row field
+			if (typeof qv === 'object' && !Array.isArray(qv)) {
+				continue;
+			}
+			if (key === 'Keyword') {
+				if (!this.rowMatchesKeyword(row, String(qv))) {
+					return false;
+				}
+				continue;
+			}
+			// Date/range filters: PartyDateFrom / PartyDateTo → row.PartyDate
+			if (key.endsWith('From') && key.length > 4) {
+				const prop = key.slice(0, -4);
+				if (prop in (row || {})) {
+					if (!this.rowMatchesRangeBound(row[prop], qv, 'from')) {
+						return false;
+					}
+				}
+				continue;
+			}
+			if (key.endsWith('To') && key.length > 2) {
+				const prop = key.slice(0, -2);
+				if (prop in (row || {})) {
+					if (!this.rowMatchesRangeBound(row[prop], qv, 'to')) {
+						return false;
+					}
+				}
+				continue;
+			}
+			if (!this.queryValueMatches(row[key], qv, key)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	rowMatchesKeyword(row: any, keyword: string): boolean {
+		const term = keyword.toLowerCase();
+		const fields = ['Name', 'Code', 'CustomerName', 'Remark', 'Phone', 'Email', 'Title'];
+		return fields.some((f) => {
+			const v = row?.[f];
+			return v != null && String(v).toLowerCase().includes(term);
+		});
+	}
+
+	/** Compare row date/value against query *From / *To bound. */
+	rowMatchesRangeBound(rv: any, qv: any, bound: 'from' | 'to'): boolean {
+		if (rv == null || rv === '') {
+			return false;
+		}
+		const rowTime = new Date(rv).getTime();
+		const boundTime = new Date(qv).getTime();
+		if (!isNaN(rowTime) && !isNaN(boundTime)) {
+			return bound === 'from' ? rowTime >= boundTime : rowTime <= boundTime;
+		}
+		const rs = String(rv);
+		const qs = String(qv);
+		return bound === 'from' ? rs >= qs : rs <= qs;
+	}
+
+	queryValueMatches(rv: any, qv: any, _key?: string): boolean {
+		if (Array.isArray(qv)) {
+			return qv.map(String).includes(String(rv));
+		}
+		if (typeof qv === 'string' && /^\d{4}-\d{2}-\d{2}/.test(qv)) {
+			return String(rv ?? '').substring(0, 10) === String(qv).substring(0, 10);
+		}
+		return String(rv ?? '') === String(qv);
+	}
+
+	compareListRows(a: any, b: any, sort = this.pageConfig?.sort): number {
+		const terms = sort?.length ? sort : [{ Dimension: 'Id', Order: 'DESC' }];
+		for (const t of terms) {
+			const av = a?.[t.Dimension];
+			const bv = b?.[t.Dimension];
+			if (av == bv) {
+				continue;
+			}
+			if (av == null) {
+				return t.Order === 'DESC' ? 1 : -1;
+			}
+			if (bv == null) {
+				return t.Order === 'DESC' ? -1 : 1;
+			}
+			const cmp = av > bv ? 1 : -1;
+			return t.Order === 'DESC' ? -cmp : cmp;
+		}
+		return 0;
+	}
+
+	getListInsertIndex(row: any): number {
+		let index = this.items.findIndex((it) => this.compareListRows(row, it) < 0);
+		return index < 0 ? this.items.length : index;
+	}
+
+	upsertListItemAt(index: number, row: any) {
+		const enriched = this.enrichListItem({ ...row });
+		const next = this.items.slice();
+		next[index] = enriched;
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	insertListItemSorted(row: any) {
+		const enriched = this.enrichListItem({ ...row });
+		const id = enriched?.Id;
+		if (id != null && this.items.some((x) => x?.Id == id)) {
+			const idx = this.items.findIndex((x) => x?.Id == id);
+			this.upsertListItemAt(idx, enriched);
+			return;
+		}
+		const index = this.getListInsertIndex(enriched);
+		const next = this.items.slice();
+		next.splice(index, 0, enriched);
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	removeListItemsByIds(ids: any[]) {
+		const idSet = new Set(ids.map(String));
+		const next = this.items.filter((x) => !idSet.has(String(x?.Id)));
+		if (next.length === this.items.length) {
+			return;
+		}
+		this.items = next;
+		this.onListItemsPatched();
+	}
+
+	fetchAndUpsertListItem(id: any): Promise<any | null> {
+		const seq = (this.listFetchSeqById.get(id) || 0) + 1;
+		this.listFetchSeqById.set(id, seq);
+		const q = { Id: id };
+		return this.pageProvider
+			.read(q, true)
+			.then((result: any) => {
+				if (this.listFetchSeqById.get(id) !== seq) {
+					return null;
+				}
+				const row = result?.data?.[0];
+				if (!row) {
+					this.removeListItemsByIds([id]);
+					return null;
+				}
+				return row;
+			})
+			.catch(() => null);
 	}
 
 	print() {
@@ -454,11 +788,11 @@ export abstract class PageBase implements OnInit {
 					this.env
 						.showPrompt(
 							{
-								code: 'Có {{value}} lỗi khi import: {{value1}}',
+								code: '{value} error(s) during import: {value1}',
 								value: { value: resp.ErrorList.length, value1: message },
 							},
-							'Bạn có muốn xem lại các mục bị lỗi?',
-							'Có lỗi import dữ liệu'
+							'Do you want to review the items with errors?',
+							'Data import error'
 						)
 						.then((_) => {
 							this.downloadURLContent(resp.FileUrl);
@@ -482,7 +816,7 @@ export abstract class PageBase implements OnInit {
 		if (this.submitAttempt) return;
 		this.submitAttempt = true;
 		this.env
-			.showLoading('Please wait for a few moments', this.pageProvider.export(this.query))
+			.showLoading('Please wait for a few moments', this.pageProvider.export(this.getApiQuery()))
 			.then((response: any) => {
 				this.downloadURLContent(response);
 				this.submitAttempt = false;
@@ -558,7 +892,7 @@ export abstract class PageBase implements OnInit {
 				const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 				Promise.all(translationPromises).then((values) => {
 					invalidControls = values;
-					this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+					this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControls.join(' | '));
 					reject('form invalid');
 				});
 			} else if (this.submitAttempt == false) {
@@ -588,12 +922,8 @@ export abstract class PageBase implements OnInit {
 				this.pageProvider
 					.save(this.item, this.pageConfig.isForceCreate)
 					.then((savedItem: any) => {
-						if (publishEventCode) {
-							this.env.publishEvent({ Code: publishEventCode });
-							console.log('saveChange', publishEventCode);
-						}
-
-						if (this.item.Id != savedItem.Id) {
+						const wasCreate = !this.id || this.id == 0;
+						if (this.item.Id != savedItem?.Id && savedItem?.Id) {
 							this.item.Id = savedItem.Id;
 							this.id = savedItem.Id;
 							this.loadedData();
@@ -607,9 +937,12 @@ export abstract class PageBase implements OnInit {
 						this.env.showMessage('Saving completed!', 'success');
 						this.formGroup.markAsPristine();
 						this.cdr.detectChanges();
-						resolve(savedItem.Id);
+						resolve(savedItem?.Id ?? this.id);
 						this.submitAttempt = false;
 						this.savedChange(savedItem);
+						if (publishEventCode) {
+							this.publishListUpsert(publishEventCode, wasCreate, savedItem);
+						}
 					})
 					.catch((err) => {
 						// if (loading) loading.dismiss();
@@ -631,19 +964,22 @@ export abstract class PageBase implements OnInit {
 				const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 				Promise.all(translationPromises).then((values) => {
 					invalidControls = values;
-					this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControls.join(' | '));
+					this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControls.join(' | '));
 					reject('form invalid');
 				});
 			} else if (this.submitAttempt == false) {
 				this.submitAttempt = true;
 				let submitItem = this.getDirtyValues(form);
+				const wasCreate = !this.id || this.id == 0 || form?.controls?.Id?.value == 0;
 
 				provider
 					.save(submitItem, this.pageConfig.isForceCreate)
 					.then((savedItem: any) => {
-						resolve(savedItem);
 						this.savedChange(savedItem, form);
-						if (publishEventCode) this.env.publishEvent({ Code: publishEventCode });
+						if (publishEventCode) {
+							this.publishListUpsert(publishEventCode, wasCreate, savedItem, form);
+						}
+						resolve(savedItem);
 					})
 					.catch((err) => {
 						this.env.showMessage('Cannot save, please try again', 'danger');
@@ -790,7 +1126,17 @@ export abstract class PageBase implements OnInit {
 				)
 				.then((_) => {
 					this.env.showMessage('DELETE_RESULT_SUCCESS', 'success');
-					this.env.publishEvent({ Code: publishEventCode });
+					const ids = this.pageConfig.isDetailPage
+						? this.item?.Id != null
+							? [this.item.Id]
+							: []
+						: (this.selectedItems || []).map((i) => i.Id).filter((id) => id != null);
+					this.env.publishEvent({
+						Code: publishEventCode,
+						Action: 'delete',
+						Id: ids[0],
+						Ids: ids,
+					});
 
 					if (this.pageConfig.isDetailPage) {
 						this.goBack();
@@ -868,6 +1214,9 @@ export abstract class PageBase implements OnInit {
 
 	ionViewDidEnter() {
 		this.pageConfig.didEnter = true;
+		// Virtual viewport may have patched items while this page was display:none; force
+		// a correct mid-list recompute now that scroll metrics are usable again.
+		this.relayoutVirtualViewports();
 	}
 
 	ionViewWillLeave() {
@@ -875,6 +1224,17 @@ export abstract class PageBase implements OnInit {
 	}
 
 	ionViewDidLeave() {}
+
+	/** Ask every app-virtual-viewport to recompute after this page becomes visible again. */
+	relayoutVirtualViewports() {
+		if (typeof document === 'undefined') {
+			return;
+		}
+		// Defer one frame so Ionic has applied display/size before viewports measure.
+		requestAnimationFrame(() => {
+			document.dispatchEvent(new CustomEvent('app:virtual-viewport-relayout'));
+		});
+	}
 
 	events(e) {}
 
@@ -922,7 +1282,7 @@ export abstract class PageBase implements OnInit {
 				if (data.Code == EVENT_TYPE.TENANT.BRANCH_SWITCHED) {
 					this.preLoadData(null);
 				} else if (!this.pageConfig.isDetailPage && data.Code == this.pageConfig.pageName) {
-					this.refresh(null);
+					this.applyListEvent(data);
 				} else {
 					this.events(data);
 				}
@@ -1002,6 +1362,203 @@ export abstract class PageBase implements OnInit {
 		this.env.publishEvent({ Code: EVENT_TYPE.APP.SHOW_HELP, Value: code });
 	}
 
+	/** Derive Segment3/Segment4 from pageProvider API path (e.g. PURCHASE/Order) or serviceName. */
+	resolveHistorySegments(): { segment3: string; segment4: string } | null {
+		if (this.pageConfig?.historySegment3 && this.pageConfig?.historySegment4) {
+			return { segment3: this.pageConfig.historySegment3, segment4: this.pageConfig.historySegment4 };
+		}
+		try {
+			const urlFn = this.pageProvider?.apiPath?.getItem?.url;
+			if (typeof urlFn === 'function') {
+				const path = String(urlFn(0) || '');
+				const parts = path.split('/').filter((p) => p && !/^\d+$/.test(p));
+				if (parts.length >= 2) {
+					return { segment3: parts[0], segment4: parts[1] };
+				}
+			}
+		} catch {
+			/* ignore */
+		}
+		const name = this.pageProvider?.serviceName || '';
+		const idx = name.indexOf('_');
+		if (idx > 0) {
+			return { segment3: name.substring(0, idx), segment4: name.substring(idx + 1) };
+		}
+		return null;
+	}
+
+	showEditHistory() {
+		this.enterHistoryView();
+	}
+
+	async enterHistoryView() {
+		if (!this.pageConfig?.isDetailPage || !this.id || this.id == 0) {
+			return;
+		}
+		const segments = this.resolveHistorySegments();
+		if (!segments) {
+			this.env.showMessage('Cannot resolve history for this form', 'warning');
+			return;
+		}
+
+		try {
+			const itemsAsc = await this.historyService.loadHistory(segments.segment3, segments.segment4, this.id);
+			this.historySnapshots = this.historyService.buildCumulativeSnapshots(itemsAsc);
+			this.historyItems = this.historyService.toNewestFirst(itemsAsc);
+
+			if (!this.historyItems.length) {
+				this.env.showMessage('No history logs found', 'warning');
+				return;
+			}
+
+			this.historySnapshotBefore = lib.cloneObject(this.item);
+			this.historySavedCanEdit = this.pageConfig.canEdit ?? false;
+			this.pageConfig.isHistoryView = true;
+			this.pageConfig.canEdit = false;
+			this.historyService.active = true;
+			this.formGroup?.disable({ emitEvent: false });
+
+			// Detail pages may preload ng-select sources for lines that only appear in older logs
+			// (e.g. deleted OrderLines whose IDItem is not in live _Items).
+			await this.onHistoryDataReady();
+
+			this.selectHistoryIndex(0);
+		} catch (err: any) {
+			this.env.showMessage(err?.message || 'Cannot load history', 'danger');
+		}
+	}
+
+	/**
+	 * Hook after history snapshots are built and historySnapshotBefore is cloned.
+	 * Override to enrich helpers (e.g. _Items) so deleted-line ng-selects can render.
+	 */
+	protected async onHistoryDataReady(): Promise<void> {}
+
+	exitHistoryView() {
+		if (!this.pageConfig.isHistoryView) return;
+
+		this.pageConfig.isHistoryView = false;
+		this.historyService.active = false;
+		this.historyService.clearHighlight();
+
+		if (this.historySnapshotBefore) {
+			this.item = lib.cloneObject(this.historySnapshotBefore);
+			this.formGroup?.patchValue(this.item, { emitEvent: false });
+		}
+
+		this.pageConfig.canEdit = this.historySavedCanEdit;
+		if (this.formGroup) {
+			this.formGroup.enable({ emitEvent: false });
+			if (!this.pageConfig.canEdit) {
+				this.formGroup.disable({ emitEvent: false });
+			}
+		}
+
+		this.historyItems = [];
+		this.historySnapshots = [];
+		this.historyIndex = 0;
+		this.historyRevision++;
+		this.historyViewTitle = '';
+		this.historyViewSubtitle = '';
+		this.historyViewPosition = '';
+		this.historySnapshotBefore = null;
+		this.cdr?.detectChanges();
+	}
+
+	historyPrev() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		if (this.historyIndex < this.historyItems.length - 1) {
+			this.selectHistoryIndex(this.historyIndex + 1);
+		}
+	}
+
+	historyNext() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		if (this.historyIndex > 0) {
+			this.selectHistoryIndex(this.historyIndex - 1);
+		}
+	}
+
+	historyFirst() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		this.selectHistoryIndex(this.historyItems.length - 1);
+	}
+
+	historyLast() {
+		if (!this.pageConfig.isHistoryView || !this.historyItems.length) return;
+		this.selectHistoryIndex(0);
+	}
+
+	selectHistoryIndex(index: number) {
+		if (!this.historyItems.length) return;
+		const i = Math.max(0, Math.min(index, this.historyItems.length - 1));
+		this.historyIndex = i;
+		const entry = this.historyItems[i];
+		this.historyViewTitle = this.historyService.formatViewTitle(entry, i, this.historyItems.length);
+		this.historyViewPosition = this.historyService.formatViewPosition(i, this.historyItems.length);
+		this.historyViewSubtitle = this.historyService.formatViewSubtitle(entry) || '';
+		this.applyHistorySnapshotAt(i);
+		this.cdr?.detectChanges();
+	}
+
+	/**
+	 * Apply history step at newest-first index.
+	 * Snapshot list is chronological (asc): step N = merge(log1..logN).
+	 * Viewing step 3 → clear form, patchValue(1+2+3).
+	 * Viewing step 2 → clear form, patchValue(1+2) — nothing from log 3 remains.
+	 */
+	applyHistorySnapshotAt(newestFirstIndex: number) {
+		const ascIndex = this.historySnapshots.length - 1 - newestFirstIndex;
+		if (ascIndex < 0 || ascIndex >= this.historySnapshots.length) return;
+
+		const currStep = this.historySnapshots[ascIndex];
+		const prevStep = ascIndex > 0 ? this.historySnapshots[ascIndex - 1] : null;
+		const currSnapshot = currStep.snapshot || {};
+		const prevSnapshot = prevStep?.snapshot || {};
+		const entry = currStep.entry;
+
+		const linesKey =
+			this.historyService.findLinesKeyInSnapshot(currSnapshot) ||
+			this.historyService.findLinesKeyInSnapshot(prevSnapshot) ||
+			'OrderLines';
+		// Keep deleted lines visible (danger + strikethrough) only on DELETE steps.
+		// Id-promote PUTs (0→real Id) change identity — must not look like a delete.
+		const includeRemoved = (entry.Method || '').toUpperCase() === 'DELETE' || entry._badge === 'delete';
+		const lines = this.historyService.buildViewLinesWithRemoved(
+			prevSnapshot,
+			currSnapshot,
+			linesKey,
+			includeRemoved
+		);
+
+		// Keep display helpers (_Vendor, _Items, …) from live item — snapshot has business fields only.
+		// Wiping them breaks ng-select dataSource.selected / line item pickers.
+		const helpers: Record<string, any> = {};
+		const helperSource = this.historySnapshotBefore || this.item || {};
+		Object.keys(helperSource).forEach((k) => {
+			if (k.startsWith('_')) helpers[k] = helperSource[k];
+		});
+
+		// item = helpers + cumulative 1..N (never merge live business fields)
+		this.item = lib.cloneObject({
+			...helpers,
+			Id: this.id,
+			...currSnapshot,
+			[linesKey]: lines,
+		});
+
+		if (this.formGroup) {
+			this.historyService.applyCumulativeSnapshotToForm(this.formGroup, currSnapshot, this.id, linesKey);
+		}
+
+		const isCreate = entry._badge === 'create';
+		const headerChanged = this.historyService.diffHeaderFields(prevSnapshot, currSnapshot, isCreate);
+		const lineDiff = this.historyService.diffLineChanges(prevSnapshot, currSnapshot);
+		const expanded = this.historyService.expandLineHighlight(lineDiff, currSnapshot, linesKey);
+		this.historyService.applyHighlight(headerChanged, expanded.lineIds, expanded.lineFields);
+		this.historyRevision++;
+	}
+
 	async changeBranch(ev: any) {
 		if (!this.pageConfig.canChangeBranch) {
 			return;
@@ -1029,6 +1586,9 @@ export abstract class PageBase implements OnInit {
 					.then((_) => {
 						this.env.showMessage('Unit changed', 'success');
 						this.refresh();
+					})
+					.catch((err) => {
+						if (err?.message) this.env.showMessage(err.message, 'danger');
 					});
 			}
 		});
@@ -1204,7 +1764,7 @@ export abstract class PageBase implements OnInit {
 			if (data.isApplyFilter) this.query._AdvanceConfig = data?.data;
 			if (data.schema) this.schemaPage = data?.schema;
 			if (data.data) {
-				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.query)).then((resp) => {
+				this.env.showLoading('Please wait for a few moments', this.pageProvider.read(this.getApiQuery())).then((resp) => {
 					if (resp && resp.data) {
 						if (callback) callback(resp['data']);
 						else {

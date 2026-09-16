@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this">
+		<ion-button title="{{ 'Edge update policy' | translate }}" [routerLink]="['/vms-edge-version']">
+			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+		</ion-button>
+	</app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="left" forceOverscroll="false">
+	<ion-refresher [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-title class="ion-padding safe-max-width" [icon]="pageConfig.pageIcon" [color]="pageConfig.pageColor" [title]="pageConfig.pageTitle" [remark]="fleetLine" [pageName]="pageConfig.pageName"></app-page-title>
+
+	<div class="safe-max-width">
+		<app-data-table
+			class="box-shadow responsive en-edge-table"
+			[rows]="items"
+			[trackBy]="'Id'"
+			[(selectedRows)]="selectedItems"
+			[showSpinner]="pageConfig.showSpinner"
+			[showFilter]="pageConfig.isShowSearch"
+			[(query)]="query"
+			(dataInfinite)="loadData($event)"
+			(filter)="onDatatableFilter($event)"
+			(sort)="onSort($event)"
+			(selectedRowsChange)="showCommandBySelectedRows($event)"
+		>
+			<datatable-column [checkbox]="true" name=""></datatable-column>
+			<datatable-column class="col-name" name="Name" property="Name">
+				<ng-template let-i="row" datatable-cell-template>
+					<div class="en-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
+						<a class="bold">
+							<ion-text color="dark">{{ i.Name }}</ion-text>
+						</a>
+						<app-branch-breadcrumbs
+							class="en-branch"
+							*ngFor="let bid of branchIds(i)"
+							[autoFit]="true"
+							[Id]="bid"
+							[Items]="env.branchList"
+						></app-branch-breadcrumbs>
+					</div>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-status" name="Status" property="LastHeartbeat" [minWidth]="320">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="en-stt" [class.on]="isOnline(i)" [class.off]="!isOnline(i)">
+						<span class="dot"></span>
+						<strong>{{ (isOnline(i) ? 'Online' : 'Offline') | translate }}</strong>
+						<span class="en-time" *ngIf="statusMeta(i)">{{ statusMeta(i) }}</span>
+					</span>
+					<span class="en-runtime" [class.is-empty]="inferLabel(i) === '—'" [attr.data-kind]="inferLabel(i)">{{ inferLabel(i) }}</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-metric col-cameras" name="Cameras" property="CamerasWatching">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="show-small-inline en-lbl">{{ 'Cameras' | translate }}</span>
+					<span class="en-val" *ngIf="i.CamerasWatching != null" [class.warn]="cameraWarn(i)">{{ i.CamerasOnline ?? 0 }}/{{ i.CamerasWatching }}</span>
+					<span class="en-val is-empty" *ngIf="i.CamerasWatching == null">—</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-metric col-person" name="Person" property="PersonMapped">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="show-small-inline en-lbl">{{ 'Person' | translate }}</span>
+					<span class="en-val" *ngIf="i.PersonMapped != null || i.PersonUnmapped != null">
+						<span class="en-ok">{{ i.PersonMapped ?? 0 }}</span>/<span class="en-warn">{{ i.PersonUnmapped ?? 0 }}</span>
+					</span>
+					<span class="en-val is-empty" *ngIf="i.PersonMapped == null && i.PersonUnmapped == null">—</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-metric col-outbox" name="Outbox" property="OutboxPending">
+				<ng-template let-i="row" datatable-cell-template>
+					<span class="show-small-inline en-lbl">{{ 'Outbox' | translate }}</span>
+					<span class="en-val" *ngIf="i.OutboxPending != null" [class.warn]="i.OutboxPending > 0">{{ i.OutboxPending }}</span>
+					<span class="en-val is-empty" *ngIf="i.OutboxPending == null">—</span>
+				</ng-template>
+			</datatable-column>
+			<datatable-column class="col-icon large" name="" property="IsDisabled" [canSort]="false" [canFilter]="false">
+				<ng-template let-i="row" datatable-cell-template>
+					<ion-icon
+						class="clickable"
+						[class.disabled]="pageConfig.canEdit === false"
+						[color]="inUse(i) ? 'success' : 'medium'"
+						[name]="inUse(i) ? 'checkmark-circle' : 'ellipse-outline'"
+						[attr.title]="(inUse(i) ? 'In use' : 'Not in use') | translate"
+						(click)="$event.stopPropagation(); toggleInUse(i, $event)"
+					></ion-icon>
+				</ng-template>
+			</datatable-column>
+		</app-data-table>
+	</div>
+</ion-content>

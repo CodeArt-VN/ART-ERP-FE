@@ -173,7 +173,7 @@ export class AddressComponent extends PageBase {
 			const translationPromises = invalidControls.map((control) => this.env.translateResource(control));
 			Promise.all(translationPromises).then((values) => {
 				let invalidControlsTranslated = values;
-				this.env.showMessage('Please recheck control(s): {{value}}', 'warning', invalidControlsTranslated.join(' | '));
+				this.env.showMessage('Please recheck control(s): {value}', 'warning', invalidControlsTranslated.join(' | '));
 			});
 		} else this.onChange.emit(this.formGroup.value);
 	}
@@ -181,7 +181,7 @@ export class AddressComponent extends PageBase {
 	@Output() onDelete = new EventEmitter();
 	removeAddress() {
 		this.env
-			.showPrompt('Bạn có chắc muốn xóa không?', null, 'Xóa địa chỉ')
+			.showPrompt('Are you sure you want to delete?', null, 'Delete address')
 			.then((_) => {
 				this.onDelete.emit(this.formGroup.getRawValue());
 			})
