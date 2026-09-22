@@ -492,6 +492,20 @@ export abstract class PageBase implements OnInit {
 		}
 
 		const id = data.Id ?? data.Data?.Id;
+
+		if (this.pageConfig?.listSyncFetchById) {
+			if (id == null || id === '') {
+				this.refresh(null);
+				return;
+			}
+			return this.fetchAndUpsertListItem(id).then((row) => {
+				if (!row) {
+					return;
+				}
+				this.upsertFetchedListRow(id, row);
+			});
+		}
+
 		const idx = id != null && id !== '' ? this.items.findIndex((x) => x?.Id == id) : -1;
 
 		// Existing row by Id → always patch in place (do not remove via filter match)
@@ -740,6 +754,15 @@ export abstract class PageBase implements OnInit {
 		}
 		this.items = next;
 		this.onListItemsPatched();
+	}
+
+	upsertFetchedListRow(id: any, row: any) {
+		const idx = this.items.findIndex((x) => x?.Id == id);
+		if (idx >= 0) {
+			this.upsertListItemAt(idx, row);
+			return;
+		}
+		this.insertListItemSorted(row);
 	}
 
 	fetchAndUpsertListItem(id: any): Promise<any | null> {

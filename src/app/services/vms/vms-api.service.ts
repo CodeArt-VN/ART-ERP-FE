@@ -96,6 +96,18 @@ export class VmsApiService {
 	setEdgeCameraProcess(nodeId: number, cameraId: number, enabled: boolean): Observable<any> {
 		return this.post(`VMS/EdgeNodes/${nodeId}/Cameras/${cameraId}/Process`, { enabled });
 	}
+	getEdgeVersionManifest(): Observable<any> {
+		return this.get('VMS/Edge/VersionManifest');
+	}
+	saveEdgeVersionManifest(body: any): Observable<any> {
+		return this.commonService.connect('PUT', 'VMS/Edge/VersionManifest', body) as Observable<any>;
+	}
+	resetEdgeVersionManifest(mode: 'defaults' | 'lastRelease'): Observable<any> {
+		return this.post('VMS/Edge/VersionManifest/Reset', { mode });
+	}
+	requestEdgeUpdate(id: number): Observable<any> {
+		return this.post(`VMS/EdgeNodes/${id}/RequestUpdate`, {});
+	}
 	listPersonPhotos(id: number): Observable<any> {
 		return this.get(`VMS/Person/${id}/Photos`);
 	}

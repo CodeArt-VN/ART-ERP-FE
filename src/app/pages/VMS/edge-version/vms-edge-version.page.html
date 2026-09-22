@@ -1,0 +1,90 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this">
+		<ion-button [title]="'Reset defaults' | translate" (click)="reset('defaults')">
+			<ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+		</ion-button>
+		<ion-button [title]="'Reset last release' | translate" (click)="reset('lastRelease')">
+			<ion-icon slot="icon-only" name="time-outline"></ion-icon>
+		</ion-button>
+	</app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+	<div class="main-view" *ngIf="pageConfig.showSpinner == false">
+		<ion-note class="policy-banner">{{ 'Edge manifest policy banner' | translate }}</ion-note>
+		<ion-note *ngIf="adminMeta?.overlayModified" class="meta-note">
+			{{ 'Last modified' | translate }}: {{ adminMeta.overlayModified }} · {{ adminMeta.overlayModifiedBy }}
+		</ion-note>
+		<form [formGroup]="formGroup">
+			<ion-row class="hr-group">
+				<ion-col size="12" size-xl="3">
+					<ion-list-header class="ion-no-padding">
+						<ion-label color="primary">{{ 'Version policy' | translate }}</ion-label>
+					</ion-list-header>
+				</ion-col>
+				<ion-col size="12" size-xl="8">
+					<app-form-control [field]="{ id: 'manifestUrl', label: 'Manifest URL', type: 'text', form: formGroup }"></app-form-control>
+					<app-form-control [field]="{ id: 'minVersion', label: 'Minimum version', type: 'text', form: formGroup }"></app-form-control>
+					<app-form-control [field]="{ id: 'latestVersion', label: 'Latest version', type: 'text', form: formGroup }"></app-form-control>
+					<app-form-control [field]="{ id: 'releasedAt', label: 'Released at', type: 'text', form: formGroup }"></app-form-control>
+					<app-form-control [field]="{ id: 'baseUrl', label: 'Artifact base URL', type: 'text', form: formGroup }"></app-form-control>
+				</ion-col>
+			</ion-row>
+			<ion-row class="hr-group" formGroupName="updateSchedule">
+				<ion-col size="12" size-xl="3">
+					<ion-list-header class="ion-no-padding">
+						<ion-label color="primary">{{ 'Normal update schedule' | translate }}</ion-label>
+					</ion-list-header>
+				</ion-col>
+				<ion-col size="12" size-xl="4" formGroupName="normal">
+					<app-form-control [field]="{ id: 'autoUpdate', label: 'Auto update', type: 'checkbox', form: normalForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'quietHours', label: 'Quiet hours', type: 'text', form: normalForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'prefetchImmediately', label: 'Prefetch immediately', type: 'checkbox', form: normalForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'timezone', label: 'Timezone', type: 'text', form: normalForm }"></app-form-control>
+				</ion-col>
+			</ion-row>
+			<ion-row class="hr-group" formGroupName="updateSchedule">
+				<ion-col size="12" size-xl="3">
+					<ion-list-header class="ion-no-padding">
+						<ion-label color="primary">{{ 'Required update schedule' | translate }}</ion-label>
+					</ion-list-header>
+				</ion-col>
+				<ion-col size="12" size-xl="4" formGroupName="required">
+					<app-form-control [field]="{ id: 'autoUpdate', label: 'Auto update', type: 'checkbox', form: requiredForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'quietHours', label: 'Quiet hours', type: 'text', form: requiredForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'manualAnytime', label: 'Manual anytime', type: 'checkbox', form: requiredForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'maxDeferMinutes', label: 'Max defer minutes', type: 'number', mask: '9999', form: requiredForm }"></app-form-control>
+					<app-form-control [field]="{ id: 'blockVmsWhenBelowMin', label: 'Block VMS when below min', type: 'checkbox', form: requiredForm }"></app-form-control>
+				</ion-col>
+			</ion-row>
+			<ion-row *ngIf="artifactRows.length">
+				<ion-col size="12">
+					<ion-list-header><ion-label color="medium">{{ 'Release artifacts (readonly)' | translate }}</ion-label></ion-list-header>
+					<table class="artifact-table">
+						<thead>
+							<tr>
+								<th>{{ 'Platform' | translate }}</th>
+								<th>{{ 'File' | translate }}</th>
+								<th>sha256</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let row of artifactRows">
+								<td>{{ row.platform }}</td>
+								<td>{{ row.file }}</td>
+								<td class="sha">{{ row.sha256 }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col>
+					<ion-button (click)="saveChange()" [disabled]="saving">{{ 'Save' | translate }}</ion-button>
+				</ion-col>
+			</ion-row>
+		</form>
+	</div>
+	<app-page-message [itemsLength]="1" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+</ion-content>

@@ -116,9 +116,9 @@ export function faceOverlay(event: any): { edge: string; camera: string; time: a
 			event?.edge_node_name ??
 			event?.LatestEdgeNodeName ??
 			event?.latest_edge_node_name ??
-			event?.EdgeNodeId ??
-			event?.edge_node_id ??
-			event?.LatestEdgeNodeId ??
+			event?.EdgeNodeUUID ??
+			event?.edge_node_uuid ??
+			event?.LatestEdgeNodeUUID ??
 			''
 	).trim();
 	const camera = String(event?.CameraId ?? event?.camera_id ?? '').trim();
@@ -127,10 +127,10 @@ export function faceOverlay(event: any): { edge: string; camera: string; time: a
 	return { edge, camera, time };
 }
 
-export function identityFaceContext(identity: any): { EdgeNodeName?: string; EdgeNodeId?: string; CameraId?: string; OccurredAt?: any } {
+export function identityFaceContext(identity: any): { EdgeNodeName?: string; EdgeNodeUUID?: string; CameraId?: string; OccurredAt?: any } {
 	return {
 		EdgeNodeName: identity?.LatestEdgeNodeName ?? identity?.latest_edge_node_name ?? identity?.EdgeNodeName ?? identity?.edge_node_name,
-		EdgeNodeId: identity?.LatestEdgeNodeId ?? identity?.latest_edge_node_id ?? identity?.EdgeNodeId ?? identity?.edge_node_id,
+		EdgeNodeUUID: identity?.LatestEdgeNodeUUID ?? identity?.latest_edge_node_uuid ?? identity?.EdgeNodeUUID ?? identity?.edge_node_uuid,
 		CameraId: identity?.LatestCameraId ?? identity?.latest_camera_id ?? identity?.CameraId ?? identity?.camera_id,
 		OccurredAt: identity?.LatestOccurredAt ?? identity?.latest_occurred_at ?? identity?.OccurredAt ?? identity?.occurred_at,
 	};
@@ -166,12 +166,33 @@ export function personMergeTargetDefault(rows: any[]): string | null {
 	return personItemKey(mapped[0]) || null;
 }
 
-/** Selected rows to merge away (everything except the target key). */
-export function personMergeSources(rows: any[], targetKey: string | null): any[] {
+/** Resolve merge target row key from explicit pick, advanced contact, or single mapped default. */
+export function personMergeEffectiveTargetKey(rows: any[], targetKey: string | null, advancedContact?: any): string | null {
+	if (targetKey) return targetKey;
+	const contactId = Number(advancedContact?.Id);
+	if (Number.isFinite(contactId) && contactId > 0) {
+		const match = (rows || []).find((r) => Number(r?.IDContact ?? r?.id_contact ?? r?.IdContact) === contactId);
+		if (match) return personItemKey(match) || null;
+	}
+	return personMergeTargetDefault(rows);
+}
+
+function personRowContactId(row: any): number | null {
+	const id = Number(row?.IDContact ?? row?.id_contact ?? row?.IdContact);
+	return Number.isFinite(id) && id > 0 ? id : null;
+}
+
+/** Selected rows to merge away (never include the resolved merge target). */
+export function personMergeSources(rows: any[], targetKey: string | null, advancedContact?: any): any[] {
+	const effectiveKey = personMergeEffectiveTargetKey(rows, targetKey, advancedContact);
+	const targetContactId = Number(advancedContact?.Id);
+	const hasTargetContact = Number.isFinite(targetContactId) && targetContactId > 0;
 	return (rows || []).filter((r) => {
 		const key = personItemKey(r);
 		if (!key) return false;
-		if (targetKey && key === targetKey) return false;
+		if (effectiveKey && key === effectiveKey) return false;
+		// Survivor already mapped to the chosen BP must not be re-assigned (avoids duplicate POST).
+		if (hasTargetContact && personRowContactId(r) === targetContactId) return false;
 		return true;
 	});
 }
@@ -179,12 +200,13 @@ export function personMergeSources(rows: any[], targetKey: string | null): any[]
 /** Confirm enabled when a BP target is resolved and at least one source has LatestEventId. */
 export function canConfirmPersonMerge(rows: any[], targetKey: string | null, advancedContact?: any): boolean {
 	const hasAdvanced = advancedContact?.Id != null && advancedContact.Id !== '' && Number(advancedContact.Id) > 0;
+	const effectiveKey = personMergeEffectiveTargetKey(rows, targetKey, advancedContact);
 	if (!hasAdvanced) {
-		if (!targetKey) return false;
-		const target = (rows || []).find((r) => personItemKey(r) === targetKey);
+		if (!effectiveKey) return false;
+		const target = (rows || []).find((r) => personItemKey(r) === effectiveKey);
 		if (!target || identityNeedsBpMapping(target)) return false;
 	}
-	const sources = personMergeSources(rows, targetKey);
+	const sources = personMergeSources(rows, targetKey, advancedContact);
 	return sources.some((s) => !!personAssignEventId(s));
 }
 

@@ -8,7 +8,7 @@ import { CommonService } from 'src/app/services/core/common.service';
 import { EnvService } from 'src/app/services/core/env.service';
 import { VmsApiService } from 'src/app/services/vms/vms-api.service';
 import { VMS_EdgeNodeProvider } from 'src/app/services/static/services.service';
-import { inferRuntimeLabel, parseRemoteConfig, groupCamerasByBranch, truthyFlag, isEdgeOnline } from './vms-edge-node-detail.util';
+import { inferRuntimeLabel, parseRemoteConfig, groupCamerasByBranch, truthyFlag, isEdgeOnline, edgeSoftwareStatusLabel, edgeSoftwareBadgeColor } from './vms-edge-node-detail.util';
 import type { EdgeCameraGroup, EdgeCameraRow } from './vms-edge-node-detail.util';
 
 @Component({
@@ -30,6 +30,8 @@ export class VmsEdgeNodeDetailPage extends PageBase {
 	get pipelineForm() {
 		return this.formGroup.get('RemoteConfig.pipeline') as FormGroup;
 	}
+
+	edgeManifest: { minVersion?: string; latestVersion?: string } | null = null;
 
 	constructor(
 		public pageProvider: VMS_EdgeNodeProvider,
@@ -56,6 +58,10 @@ export class VmsEdgeNodeDetailPage extends PageBase {
 			LastHeartbeat: new FormControl({ value: '', disabled: true }),
 			InferRuntime: new FormControl({ value: '', disabled: true }),
 			InferDevice: new FormControl({ value: '', disabled: true }),
+			SoftwareVersion: new FormControl({ value: '', disabled: true }),
+			SoftwarePlatform: new FormControl({ value: '', disabled: true }),
+			UpdateStagedVersion: new FormControl({ value: '', disabled: true }),
+			UpdatePhase: new FormControl({ value: '', disabled: true }),
 			CamerasWatching: new FormControl({ value: '', disabled: true }),
 			CamerasOnline: new FormControl({ value: '', disabled: true }),
 			PersonMapped: new FormControl({ value: '', disabled: true }),
@@ -78,14 +84,15 @@ export class VmsEdgeNodeDetailPage extends PageBase {
 				pipeline: formBuilder.group({
 					sample_interval_sec: [0.5],
 					hit_cooldown_sec: [8],
-					min_face_px: [40],
-					unknown_min: [0.35],
+					min_face_px: [80],
+					unknown_min: [0.70],
 					det_size: [640],
 					require_crop_verify: [true],
 					min_skin_ratio: [0],
-					min_sharpness: [18],
+					min_sharpness: [100],
 					unknown_confirm_frames: [2],
 				}),
+				heartbeat_seconds: [null as number | null],
 			}),
 		});
 	}
@@ -110,6 +117,20 @@ export class VmsEdgeNodeDetailPage extends PageBase {
 		this.cameraGroups = groupCamerasByBranch(this.item?.Cameras, this.item?.BranchIds);
 		this.pageConfig.canAdd = false;
 		this.pageConfig.ShowAdd = false;
+		void this.loadEdgeManifest();
+	}
+
+	private async loadEdgeManifest() {
+		try {
+			const raw: any = await firstValueFrom(this.vmsApi.getEdgeVersionManifest());
+			const m = raw?.effective ?? raw?.Effective ?? raw;
+			this.edgeManifest = {
+				minVersion: m?.minVersion ?? m?.MinVersion,
+				latestVersion: m?.latestVersion ?? m?.LatestVersion,
+			};
+		} catch {
+			this.edgeManifest = null;
+		}
 	}
 
 	processingOn(cam: EdgeCameraRow): boolean {
@@ -150,6 +171,24 @@ export class VmsEdgeNodeDetailPage extends PageBase {
 
 	isOnline() {
 		return isEdgeOnline(this.item);
+	}
+
+	softwareStatusLabel() {
+		return edgeSoftwareStatusLabel(this.item || {}, this.edgeManifest);
+	}
+
+	softwareBadgeColor() {
+		return edgeSoftwareBadgeColor(this.item || {}, this.edgeManifest);
+	}
+
+	async pushUpdate() {
+		if (!this.item?.Id || !this.pageConfig.canEdit) return;
+		try {
+			await firstValueFrom(this.vmsApi.requestEdgeUpdate(this.item.Id));
+			this.env.showMessage('Push update queued — Edge sẽ tải/apply trên heartbeat tiếp theo.', 'success');
+		} catch (e: any) {
+			this.env.showMessage(e?.message || e?.error?.Message || 'Cannot queue update', 'danger');
+		}
 	}
 
 	async toggleInUse() {

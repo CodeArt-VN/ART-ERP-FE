@@ -133,6 +133,18 @@
 	text-transform: none;
 }
 
+.pd-type-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 600;
+	text-transform: none;
+}
+
+.pd-type-badge ion-icon {
+	font-size: 14px;
+}
+
 .pd-ev-thumb {
 	display: block;
 	width: 56px;

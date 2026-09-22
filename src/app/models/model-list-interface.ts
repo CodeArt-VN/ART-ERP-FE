@@ -9554,6 +9554,10 @@ export interface VMS_EdgeNode
     RemoteConfigJson?: string;
     InferRuntime?: string;
     InferDevice?: string;
+    SoftwareVersion?: string;
+    SoftwarePlatform?: string;
+    UpdatePhase?: string;
+    UpdateStagedVersion?: string;
     UUID?: string;
     
 
@@ -9581,8 +9585,7 @@ export interface VMS_Event
     Confidence?: number;
     PayloadJson?: string;
     FramePath?: string;
-    Status?: string;
-    EdgeNodeId?: string;
+    EdgeNodeUUID?: string;
     PersonId?: string;
     
 

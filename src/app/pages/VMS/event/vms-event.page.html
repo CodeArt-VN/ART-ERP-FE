@@ -10,7 +10,6 @@
 	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
 
 	<div class="safe-max-width">
-		<ion-button fill="outline" size="small" class="ion-margin-bottom" (click)="openPeople()">{{ 'Assign faces in Person' | translate }}</ion-button>
 		<app-data-table
 			class="box-shadow responsive ev-event-table"
 			[rows]="items"
@@ -48,8 +47,10 @@
 			</datatable-column>
 			<datatable-column class="col-status" name="Type" property="EventType" filterControlType="ng-select" [filterDataSource]="eventTypeList">
 				<ng-template let-i="row" datatable-cell-template>
-					<ion-badge [color]="typeColor(i)">{{ typeLabel(i) | translate }}</ion-badge>
-					<ion-badge *ngIf="statusVisible(i)" [color]="statusColor(i)">{{ statusLabel(i) | translate }}</ion-badge>
+					<ion-badge [color]="typeColor(i)" class="ev-type-badge">
+						<ion-icon *ngIf="typeIcon(i) as icon" [name]="icon"></ion-icon>
+						{{ typeLabel(i) }}
+					</ion-badge>
 				</ng-template>
 			</datatable-column>
 			<datatable-column class="col-date" name="Time" property="OccurredAt" filterControlType="date">

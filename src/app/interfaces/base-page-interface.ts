@@ -83,4 +83,7 @@ export interface PageConfig {
 
 	// Force create flag
 	isForceCreate?: boolean;
+
+	/** After detail save: list re-reads that Id and upserts the row (skip in-memory form patch). */
+	listSyncFetchById?: boolean;
 }
