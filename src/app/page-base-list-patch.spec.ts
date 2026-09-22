@@ -1,32 +1,32 @@
 import { PageBase } from 'src/app/page-base';
 
 /** Minimal stand-in — exercises list-patch helpers without Ionic DI. */
-class ListPatchHarness extends PageBase {
-	constructor() {
-		super();
-		this.query = { Keyword: '', Take: 200, Skip: 0 };
-		this.pageConfig = { ...(this.pageConfig || {}), sort: [], isDetailPage: false } as any;
-		this.items = [];
-	}
+function createListPage(): PageBase {
+	const page = Object.create(PageBase.prototype) as PageBase;
+	page.query = { Keyword: '', Take: 200, Skip: 0 };
+	page.pageConfig = { sort: [], isDetailPage: false } as any;
+	page.items = [];
+	(page as any).listFetchSeqById = new Map();
+	return page;
 }
 
 describe('PageBase list patch helpers', () => {
 	it('hasEnoughListShape requires sample keys on data', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		const sample = { Id: 1, CustomerName: 'A', PartyDate: '2026-07-31', StatusText: 'X', checked: false };
 		expect(page.hasEnoughListShape({ Id: 2, CustomerName: 'B', PartyDate: '2026-07-31' }, sample)).toBeTrue();
 		expect(page.hasEnoughListShape({ Id: 2, CustomerName: 'B' }, sample)).toBeFalse();
 	});
 
 	it('matchesListQuery ignores paging and compares PartyDate by day', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.query = { PartyDate: '2026-07-31', Status: '', Skip: 0, Take: 200, SortBy: '[Id_desc]' };
 		expect(page.matchesListQuery({ PartyDate: '2026-07-31T18:00:00', Status: 'WAITING' })).toBeTrue();
 		expect(page.matchesListQuery({ PartyDate: '2026-07-30T18:00:00', Status: 'WAITING' })).toBeFalse();
 	});
 
 	it('insertListItemSorted places by Id DESC by default', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.items = [
 			{ Id: 30, Name: 'c' },
 			{ Id: 20, Name: 'b' },
@@ -37,7 +37,7 @@ describe('PageBase list patch helpers', () => {
 	});
 
 	it('applyListEvent edit patches in place without refresh', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.items = [
 			{ Id: 5, CustomerName: 'Old', PartyDate: '2026-07-31' },
 			{ Id: 6, CustomerName: 'Other', PartyDate: '2026-07-31' },
@@ -60,7 +60,7 @@ describe('PageBase list patch helpers', () => {
 	});
 
 	it('applyListEvent create inserts when shape matches top-1', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.items = [{ Id: 10, CustomerName: 'A', PartyDate: '2026-07-31', Status: 'WAITING' }];
 		page.query = { PartyDate: '2026-07-31', Skip: 0, Take: 200 };
 
@@ -75,7 +75,7 @@ describe('PageBase list patch helpers', () => {
 	});
 
 	it('applyListEvent create skips insert when outside filter', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.items = [{ Id: 10, CustomerName: 'A', PartyDate: '2026-07-31', Status: 'WAITING' }];
 		page.query = { PartyDate: '2026-07-31', Skip: 0, Take: 200 };
 
@@ -89,19 +89,64 @@ describe('PageBase list patch helpers', () => {
 	});
 
 	it('applyListEvent delete removes by Ids', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		page.items = [{ Id: 1 }, { Id: 2 }, { Id: 3 }];
 		page.applyListEvent({ Action: 'delete', Ids: [1, 3] });
 		expect(page.items.map((i) => i.Id)).toEqual([2]);
 	});
 
 	it('applyListEvent without Data falls back to refresh', () => {
-		const page = new ListPatchHarness();
+		const page = createListPage();
 		let refreshed = false;
 		page.refresh = (() => {
 			refreshed = true;
 		}) as any;
 		page.applyListEvent({ Code: 'attendance-booking' });
 		expect(refreshed).toBeTrue();
+	});
+
+	it('listSyncFetchById inserts fetched row when Id is not in the list', async () => {
+		const page = createListPage();
+		page.pageConfig.listSyncFetchById = true;
+		page.items = [{ Id: 10, CustomerName: 'A', Status: 'New' }];
+		page.pageProvider = {
+			read: jasmine.createSpy('read').and.resolveTo({
+				data: [{ Id: 99, CustomerName: 'Fetched', Status: 'New' }],
+			}),
+		};
+
+		await page.applyListEvent({
+			Action: 'upsert',
+			Id: 99,
+			Data: { Id: 99, Name: 'form-only' },
+		});
+
+		expect(page.pageProvider.read).toHaveBeenCalledWith({ Id: 99 }, true);
+		const inserted = page.items.find((i) => i.Id === 99);
+		expect(inserted).toBeTruthy();
+		expect(inserted.CustomerName).toBe('Fetched');
+		expect(inserted.Name).toBeUndefined();
+	});
+
+	it('listSyncFetchById replaces existing row with fetched data instead of form Data', async () => {
+		const page = createListPage();
+		page.pageConfig.listSyncFetchById = true;
+		page.items = [{ Id: 5, CustomerName: 'Old', Status: 'New' }];
+		page.pageProvider = {
+			read: jasmine.createSpy('read').and.resolveTo({
+				data: [{ Id: 5, CustomerName: 'FromServer', Status: 'Submitted' }],
+			}),
+		};
+
+		await page.applyListEvent({
+			Action: 'upsert',
+			Id: 5,
+			Data: { Id: 5, CustomerName: 'FromForm' },
+		});
+
+		expect(page.pageProvider.read).toHaveBeenCalledWith({ Id: 5 }, true);
+		expect(page.items.length).toBe(1);
+		expect(page.items[0].CustomerName).toBe('FromServer');
+		expect(page.items[0].Status).toBe('Submitted');
 	});
 });
