@@ -1344,6 +1344,55 @@ ion-content.cameraFrame {
 		--max-width: 1200px;
 	}
 
+	.modal-auto-height {
+		--height: auto;
+		--max-height: min(720px, calc(100vh - 48px));
+
+		.ion-page {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			height: auto;
+			max-height: min(720px, calc(100vh - 48px));
+			overflow: hidden;
+		}
+
+		ion-header {
+			flex: none;
+		}
+
+		ion-content {
+			--offset-top: 0px !important;
+			--offset-bottom: 0px !important;
+			display: block;
+			flex: none;
+			contain: none;
+			height: auto;
+			max-height: min(560px, calc(100vh - 220px));
+
+			&::part(scroll) {
+				position: relative;
+				top: auto;
+				right: auto;
+				bottom: auto;
+				left: auto;
+				height: auto;
+				max-height: min(560px, calc(100vh - 220px));
+				overflow-y: auto;
+			}
+		}
+	}
+
+	.modal-w540 {
+		--width: min(540px, calc(100vw - 32px));
+		--max-width: 540px;
+		--border-radius: 14px;
+
+		&::part(content) {
+			border-radius: 14px;
+		}
+	}
+
 	.modal-change-table {
 		--height: 570px;
 		--width: 535px;
