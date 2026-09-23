@@ -25,6 +25,12 @@
 	}
 
 	.fc-event-main {
+		ion-text,
+		b,
+		small {
+			color: inherit;
+		}
+
 		ion-icon {
 			height: calc(10 / 16 * 1.8rem);
 			width: calc(10 / 16 * 1.8rem);
@@ -36,10 +42,19 @@
 			display: inline-block;
 		}
 
+		[style*='--event-ink'] {
+			color: color-mix(in srgb, var(--event-ink) 62%, #14181c);
+		}
+
 		ion-icon.del-event-btn {
 			float: right;
 			padding-right: 5px;
 			display: none;
+		}
+
+		ion-icon.night-shift-icon {
+			float: right;
+			padding-right: 4px;
 		}
 
 		&:hover ion-icon.del-event-btn {
@@ -127,5 +142,16 @@
 
 	.fc-datagrid-cell {
 		cursor: pointer;
+	}
+}
+
+.dark .fc .fc-event-main [style*='--event-ink'] {
+	color: var(--event-ink);
+}
+
+@media (prefers-color-scheme: dark) {
+	.inholdings-theme:not(.light) .fc .fc-event-main [style*='--event-ink'],
+	.default-theme:not(.light) .fc .fc-event-main [style*='--event-ink'] {
+		color: var(--event-ink);
 	}
 }
