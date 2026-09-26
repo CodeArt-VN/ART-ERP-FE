@@ -21,6 +21,9 @@ export class ToolbarComponent implements OnInit {
 	@Input() BackHref;
 	@Input() pageTitle; // optional override for page.pageConfig.pageTitle
 
+	/** False hides the form-name button. Put the replacement in startTitle. */
+	@Input() showTitle = true;
+
 	@Input() CenterTitle;
 
 	@Input() ShowAdd = true;

@@ -7,6 +7,7 @@ import { Capacitor } from '@capacitor/core';
 import { dogF, environment } from 'src/environments/environment';
 import { StorageService } from '../core/storage.service';
 import { CacheManagementService } from '../core/cache-management.service';
+import { assetI18nEndpoint, tenantI18nEndpoint } from './translate-loader.url';
 
 @Injectable({
 	providedIn: 'root',
@@ -88,8 +89,7 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 
 	private loadFromTenant(serverUrl: string, lang: string): Observable<any> {
 		try {
-			const url = new URL(serverUrl);
-			const endpoint = `${url.origin}/uploads/i18n/${lang}.json`;
+			const endpoint = tenantI18nEndpoint(serverUrl, lang, environment.appVersion);
 
 			return this.http.get(endpoint).pipe(
 				timeout(3000),
@@ -105,7 +105,7 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 	}
 
 	private loadFromAssets(lang: string): Observable<any> {
-		const endpoint = `./assets/i18n/${lang}.json`;
+		const endpoint = assetI18nEndpoint(lang, environment.appVersion);
 		dogF && console.log(`Loading language from assets: ${endpoint}`);
 
 		return this.http.get(endpoint).pipe(

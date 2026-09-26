@@ -22,11 +22,13 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 	@Input() Items;
 	/** Ceiling for visible crumbs; component may lower this to fit container width. */
 	@Input() maxItems;
-	@Input() itemsBeforeCollapse = 0;
+	@Input() itemsBeforeCollapse = 1;
 	@Input() itemsAfterCollapse = 1;
 	/** When true (default), shrink maxItems if path overflows. Disable for wrapping full-path cells. */
 	@Input() autoFit = true;
 	breadcrumbs = [];
+	/** True when Id exists in Items. Root-only paths stay empty without the missing message. */
+	pathFound = false;
 
 	/** Bound to ion-breadcrumbs — shrinks when content overflows. */
 	effectiveMaxItems: number | undefined;
@@ -69,11 +71,14 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 
 	loadData() {
 		this.breadcrumbs = [];
+		this.pathFound = false;
 		if (!Array.isArray(this.Items) || typeof this.Id !== 'number' || this.Id < 0) {
 			this.effectiveMaxItems = this.maxItems;
 			return;
 		}
+		this.pathFound = this.Items.some((d) => d.Id == this.Id);
 		this.addParent(this.Id);
+		this.dropRoot();
 		const ceiling = this.resolveCeiling();
 		this.effectiveMaxItems = ceiling;
 	}
@@ -86,6 +91,18 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 			this.breadcrumbs.unshift(parent);
 			this.addParent(parent.IDParent);
 		}
+	}
+
+	/** Hide the tree root (Tổng công ty). Visible path starts at F1. */
+	private dropRoot() {
+		if (!this.breadcrumbs.length || !this.isTreeRoot(this.breadcrumbs[0])) return;
+		this.breadcrumbs.shift();
+	}
+
+	private isTreeRoot(item): boolean {
+		const parentId = item?.IDParent;
+		if (parentId === null || parentId === undefined) return true;
+		return !this.Items.some((d) => d.Id == parentId);
 	}
 
 	async presentPopover(e: Event) {
