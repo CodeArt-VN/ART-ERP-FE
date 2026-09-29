@@ -1,5 +1,6 @@
+import '@ionic/angular';
 import { ChangeDetectorRef, ElementRef } from '@angular/core';
-import { BranchBreadcrumbsComponent } from './branch-breadcrumbs.component';
+import { BranchBreadcrumbsComponent, crumbCollapseLayout } from './branch-breadcrumbs.component';
 
 describe('BranchBreadcrumbsComponent', () => {
 	const items = [
@@ -45,6 +46,23 @@ describe('BranchBreadcrumbsComponent', () => {
 
 		expect(component.breadcrumbs).toEqual([]);
 		expect(component.pathFound).toBeTrue();
+	});
+
+	it('locks crumbs to one line when autoFit is on', () => {
+		const component = create();
+
+		expect(component.autoFit).toBeTrue();
+		expect(component.crumbFlexWrap).toBe('nowrap');
+
+		component.autoFit = false;
+		expect(component.crumbFlexWrap).toBeNull();
+	});
+
+	it('keeps as many crumbs as requested instead of jumping to first and last', () => {
+		expect(crumbCollapseLayout(5, 5)).toEqual({ maxItems: 5, before: 1, after: 1 });
+		expect(crumbCollapseLayout(5, 4)).toEqual({ maxItems: 4, before: 1, after: 3 });
+		expect(crumbCollapseLayout(5, 2)).toEqual({ maxItems: 2, before: 1, after: 1 });
+		expect(crumbCollapseLayout(5, 1)).toEqual({ maxItems: 1, before: 0, after: 1 });
 	});
 
 	it('marks the path missing when Id is not in Items', () => {

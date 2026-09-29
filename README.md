@@ -4,6 +4,14 @@ Ionic + Angular 20 **NgModule** ERP (Capacitor). Hash router (`useHash: true`).
 
 **This file overrides generic Angular 20 advice.** Official standalone / signals / `@if` `@for` / `inject()`-only / OnPush-by-default **do not apply** unless the file you are editing already uses them.
 
+> **STOP — GenCode files (will be wiped on rebuild)**  
+> Do **not** put hand-written logic in:
+> - `src/app/services/static/services.service.ts` ← `Services.tt` / GenCode
+> - `src/app/services/static/api-list.ts` ← `api-list.tt` / GenCode
+> - `src/app/models/model-list-interface.ts` ← `ModelList-Interface.tt` / GenCode  
+> Building `ART-DMS/GenCode` **overwrites** these files; any edit here is lost.  
+> Custom APIs / helpers: new file under `src/app/services/` or `src/app/pages/.../*.service.ts` (e.g. `staff-timesheet-record.service.ts`, `hrm-timesheet-cycle.service.ts`, `hrm-staff-payroll.service.ts`), or extend paths only in `global-variable.ts` on an existing `APIList` key.
+
 Canonical CRUD sample (copy this, do not invent a new page architecture):
 
 - List: [`src/app/pages/_template/flat/`](src/app/pages/_template/flat/)
@@ -328,6 +336,8 @@ Do not mix: if the list uses `app-data-table` + `navLink`, the detail must be a 
 ## GenCode — already generated, do not duplicate
 
 Source: `ART-DMS/GenCode` T4 templates read `ART-DMS/ClassLibrary/Model.edmx`. Building GenCode **overwrites** these FE files. Pages / routing / HTML are **not** generated.
+
+**Never commit feature work inside GenCode outputs.** Treat `services.service.ts` as read-only generated providers (`{Name}Provider`). If you need extra methods (import/export/custom route), create a **separate** `@Injectable` service that extends or wraps the generated provider — do not edit `services.service.ts`.
 
 | Template | Copied to (do not hand-write) |
 | --- | --- |

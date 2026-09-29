@@ -1,4 +1,4 @@
-<ion-breadcrumbs [maxItems]="effectiveMaxItems" [itemsBeforeCollapse]="itemsBeforeCollapse" [itemsAfterCollapse]="itemsAfterCollapse" (ionCollapsedClick)="presentPopover($event)">
+<ion-breadcrumbs [style.flex-wrap]="crumbFlexWrap" [maxItems]="effectiveMaxItems" [itemsBeforeCollapse]="autoFit ? effectiveBefore : itemsBeforeCollapse" [itemsAfterCollapse]="autoFit ? effectiveAfter : itemsAfterCollapse" (ionCollapsedClick)="presentPopover($event)">
 	<ion-breadcrumb *ngFor="let i of breadcrumbs; last as isLast">{{ i.Name }}</ion-breadcrumb>
 	<ion-breadcrumb *ngIf="!breadcrumbs?.length && Id && !pathFound">{{ 'Branch ID not found' | translate:{Id: Id} }}</ion-breadcrumb>
 </ion-breadcrumbs>

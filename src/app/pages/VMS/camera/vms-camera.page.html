@@ -27,14 +27,13 @@
 			<datatable-column class="col-id" name="#" property="Id" [navLink]="pageConfig.pageName"></datatable-column>
 			<datatable-column class="col-name" name="Name" property="Name">
 				<ng-template let-i="row" datatable-cell-template>
-					<div class="cam-person" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
-						<a class="bold">
+					<div class="cam-person" >
+						<a class="bold" [routerLink]="['/' + pageConfig.pageName + '/' + i.Id]">
 							<ion-text color="dark">{{ i.Name }}</ion-text>
 						</a>
 						<app-branch-breadcrumbs
 							class="cam-branch"
 							*ngIf="i.IDBranch"
-							[autoFit]="true"
 							[Id]="i.IDBranch"
 							[Items]="env.branchList"
 						></app-branch-breadcrumbs>

@@ -579,9 +579,6 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 				max-width: 100%;
 				white-space: nowrap;
 			}
-			:host(.breadcrumb-collapsed:not(:first-child)) {
-				display: none !important;
-			}
 			:host(.breadcrumb-active),
 			:host(:not(.breadcrumb-collapsed)) {
 				display: inline-flex !important;
@@ -614,8 +611,7 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 				vertical-align: middle;
 				line-height: 1.35;
 			}
-			:host(.breadcrumb-collapsed:first-child) .breadcrumb-native,
-			:host(.breadcrumb-collapsed:first-child) .breadcrumb-separator {
+			:host(.breadcrumb-collapsed) .breadcrumb-native {
 				display: none !important;
 			}
 			.breadcrumb-separator {

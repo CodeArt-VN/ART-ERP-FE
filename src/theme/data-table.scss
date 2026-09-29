@@ -236,6 +236,13 @@ app-data-table,
 			width: 100%;
 		}
 
+		&:has(app-branch-breadcrumbs) > * {
+			flex: 1 1 auto;
+			width: 100%;
+			min-width: 0;
+			max-width: 100%;
+		}
+
 		>small {
 			// border-left: solid 3px rgba(var(--ion-color-primary-rgb, 0, 0, 0), .2);;
 			margin: 1px 2px;
@@ -389,7 +396,7 @@ app-data-table,
 			}
 		}
 
-		// Full path can wrap after each ">"; each crumb stays on one line (no mid-item wrap)
+		// Full path can wrap after each ">" when autoFit is off. autoFit locks one line so width fitting can collapse.
 		app-branch-breadcrumbs {
 			display: block;
 			width: 100%;
@@ -400,6 +407,10 @@ app-data-table,
 			font-size: inherit;
 			color: inherit;
 			vertical-align: baseline;
+
+			&.auto-fit ion-breadcrumbs {
+				flex-wrap: nowrap;
+			}
 
 			ion-breadcrumbs {
 				display: flex;
@@ -470,43 +481,38 @@ app-data-table,
 					}
 
 					&.breadcrumb-collapsed {
-						&:not(:first-child) {
+						display: none !important;
+
+						&::part(native) {
 							display: none !important;
 						}
+					}
+				}
 
-						&:first-child {
-							display: inline-flex !important;
-							align-items: center !important;
-							vertical-align: middle !important;
-							margin-right: 6px !important;
+				> ion-breadcrumb:not(.breadcrumb-collapsed) + ion-breadcrumb.breadcrumb-collapsed,
+				> ion-breadcrumb.breadcrumb-collapsed:first-child {
+					display: inline-flex !important;
+					align-items: center !important;
+					vertical-align: middle !important;
+					margin-right: 6px !important;
 
-							&::part(native) {
-								display: none !important;
-							}
-
-							&::part(separator) {
-								display: none !important;
-							}
-
-							&::part(collapsed-indicator) {
-								display: inline-flex !important;
-								align-items: center;
-								justify-content: center;
-								margin: 0 !important;
-								padding: 0 !important;
-								min-width: 0 !important;
-								min-height: 0 !important;
-								height: 1em !important;
-								line-height: 1 !important;
-								background: transparent !important;
-								border: none !important;
-								border-radius: 0 !important;
-								box-shadow: none !important;
-								opacity: 0.75;
-								cursor: pointer;
-								vertical-align: middle;
-							}
-						}
+					&::part(collapsed-indicator) {
+						display: inline-flex !important;
+						align-items: center;
+						justify-content: center;
+						margin: 0 !important;
+						padding: 0 !important;
+						min-width: 0 !important;
+						min-height: 0 !important;
+						height: 1em !important;
+						line-height: 1 !important;
+						background: transparent !important;
+						border: none !important;
+						border-radius: 0 !important;
+						box-shadow: none !important;
+						opacity: 0.75;
+						cursor: pointer;
+						vertical-align: middle;
 					}
 				}
 			}
