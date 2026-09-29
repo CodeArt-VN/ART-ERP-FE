@@ -48,10 +48,25 @@ describe('BranchBreadcrumbsComponent', () => {
 		expect(component.pathFound).toBeTrue();
 	});
 
-	it('locks crumbs to one line when autoFit is on', () => {
+	it('skips autoFit when maxItems is set from outside', () => {
+		const component = create();
+		component.Id = 3;
+		component.Items = items;
+		component.maxItems = 1;
+
+		component.loadData();
+
+		expect(component.useAutoFit).toBeFalse();
+		expect(component.crumbFlexWrap).toBeNull();
+		expect(component.effectiveMaxItems).toBe(1);
+		expect(component.effectiveBefore).toBe(1);
+		expect(component.effectiveAfter).toBe(1);
+	});
+	it('locks crumbs to one line when autoFit is on and maxItems is unset', () => {
 		const component = create();
 
 		expect(component.autoFit).toBeTrue();
+		expect(component.useAutoFit).toBeTrue();
 		expect(component.crumbFlexWrap).toBe('nowrap');
 
 		component.autoFit = false;

@@ -516,6 +516,11 @@ app-data-table,
 					}
 				}
 			}
+
+			&.medium {
+				font-size: calc(10 / 16 * 1.2rem);
+				color: var(--ion-color-medium);
+			}
 		}
 
 		.c-checkbox {

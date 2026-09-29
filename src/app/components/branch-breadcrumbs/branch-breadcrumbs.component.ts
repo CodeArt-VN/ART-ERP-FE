@@ -16,18 +16,18 @@ import {
 	styleUrls: ['./branch-breadcrumbs.component.scss'],
 	standalone: false,
 	host: {
-		'[class.auto-fit]': 'autoFit',
+		'[class.auto-fit]': 'useAutoFit',
 	},
 })
 export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('popover') popover;
 	@Input() Id;
 	@Input() Items;
-	/** Ceiling for visible crumbs; component may lower this to fit container width. */
+	/** Fixed visible crumbs. When set, autoFit is skipped. */
 	@Input() maxItems;
 	@Input() itemsBeforeCollapse = 1;
 	@Input() itemsAfterCollapse = 1;
-	/** When true (default), keep crumbs on one line and shrink maxItems if the path overflows. */
+	/** When true (default) and maxItems is unset, keep one line and shrink to the cell width. */
 	@Input() autoFit = true;
 	breadcrumbs = [];
 	/** True when Id exists in Items. Root-only paths stay empty without the missing message. */
@@ -99,6 +99,12 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 		this.pathFound = this.Items.some((d) => d.Id == this.Id);
 		this.addParent(this.Id);
 		this.dropRoot();
+		if (!this.useAutoFit) {
+			this.effectiveMaxItems = this.maxItems;
+			this.effectiveBefore = this.itemsBeforeCollapse;
+			this.effectiveAfter = this.itemsAfterCollapse;
+			return;
+		}
 		this.applyCollapseLayout(this.breadcrumbs.length || 1);
 	}
 
@@ -135,7 +141,12 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 
 	/** nowrap so fitToWidth can see horizontal overflow. Null leaves the table free to wrap. */
 	get crumbFlexWrap(): 'nowrap' | null {
-		return this.autoFit ? 'nowrap' : null;
+		return this.useAutoFit ? 'nowrap' : null;
+	}
+
+	/** Width fitting runs only when the caller did not pass maxItems. */
+	get useAutoFit(): boolean {
+		return !!this.autoFit && !(typeof this.maxItems === 'number' && this.maxItems > 0);
 	}
 
 	private resolveCeiling(): number {
@@ -156,7 +167,7 @@ export class BranchBreadcrumbsComponent implements OnInit, AfterViewInit, OnDest
 
 	/** Collapse the middle only as far as the row still overflows. Keep the ">" after …. */
 	private fitToWidth() {
-		if (!this.autoFit || this.fitting || this.destroyed) return;
+		if (!this.useAutoFit || this.fitting || this.destroyed) return;
 		const el = this.host.nativeElement;
 		const width = el?.clientWidth ?? 0;
 		const n = this.breadcrumbs.length;

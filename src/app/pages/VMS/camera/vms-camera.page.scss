@@ -10,15 +10,6 @@
 	gap: 4px;
 }
 
-.cam-branch {
-	display: block;
-	width: 100%;
-	margin-top: 2px;
-	font-size: 12px;
-	line-height: 1.35;
-	color: var(--ion-color-medium);
-}
-
 :host ::ng-deep app-data-table.cam-camera-table {
 	.col-status {
 		min-width: 125px;
