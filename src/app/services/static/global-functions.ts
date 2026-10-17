@@ -1,4 +1,5 @@
 import { TimeConfig } from 'src/app/interfaces/options-interface';
+import { resolveVietQrBankBin, resolveVietQrBankCodeFromBin } from './vietqr-bank.bin';
 
 export var lib = {
 	formatTimeConfig(time: TimeConfig, isPrevious = false) {
@@ -793,17 +794,12 @@ export var lib = {
 	genBankTransferQRCode(bankCode: string, bankAccount: string, amount: number, message: string) {
 		//Mô tả thông tin QR Code trong y tế căn cứ theo TCCS TCVN 03:2018
 		//https://pcbinhthuan.evnspc.vn/Portals/0/TinTucVaSuKien/PhongKinhDoanh/5_%20Ap%20dung%20Tieu%20chuan%20QR%20Code%20cua%20NHNN.pdf
-		const bankIdByCode = {
-			vcb: '970436',
-			mb: '970422',
-			vietinbank: '970415',
-		};
-
 		// Build sub-fields for ID 38 (Merchant Account Information)
 		const guid = '0010A000000727'; // ID 00: Globally Unique Identifier
 		
 		// ID 01: Beneficiary Organization - sub-fields bên trong chỉ có format: ID + LENGTH + VALUE
-		const bankBinValue = bankIdByCode[bankCode];
+		const bankBinValue = resolveVietQrBankBin(bankCode);
+		if (!bankBinValue) return '';
 		const bankBinField = '00' + bankBinValue.length.toString().padStart(2, '0') + bankBinValue; // ID 00: Acquiring Bank
 		const accountField = '01' + bankAccount.length.toString().padStart(2, '0') + bankAccount; // ID 01: Merchant Account
 		const beneficiaryOrgContent = bankBinField + accountField;
@@ -848,14 +844,8 @@ export var lib = {
 			amount: 0,
 			message: '',
 		};
-		const bankIdByCode = {
-			vcb: '970436',
-			mb: '970422',
-			vietinbank: '970415',
-		};
-
 		let bankId = code.substring(38, 38 + 6);
-		result.bankCode = Object.keys(bankIdByCode).find((key) => bankIdByCode[key] === bankId);
+		result.bankCode = resolveVietQrBankCodeFromBin(bankId);
 
 		let bankAccountLength = parseInt(code.substring(46, 48));
 		result.bankAccount = code.substring(48, 48 + bankAccountLength);
