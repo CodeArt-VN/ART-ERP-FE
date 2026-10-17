@@ -92,7 +92,7 @@ export class DynamicTranslateLoaderService implements TranslateLoader {
 			const endpoint = tenantI18nEndpoint(serverUrl, lang, environment.appVersion);
 
 			return this.http.get(endpoint).pipe(
-				timeout(3000),
+				timeout(500),
 				catchError((error) => {
 					dogF && console.warn(`Failed to load language from tenant ${serverUrl}:`, error);
 					return throwError(() => error);

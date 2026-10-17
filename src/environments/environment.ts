@@ -4,7 +4,7 @@ export let environment = {
 	appLocation: '/',
 	versionLocation: '',
 	appServers: [
-		{ Code: 'https://api.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
+		{ Code: 'https://in.appcenter.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
@@ -15,8 +15,8 @@ export let environment = {
 		{ Code: 'http://192.168.1.99:54009/', Name: 'Local server', Color: 'primary', Icon: 'home' },
 	],
 	appDomain: 'http://192.168.1.99:54009/',
-	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
-	posImagesServer: 'https://app.inholdings.vn/',
+	staffAvatarsServer: 'https://in.appcenter.vn/Uploads/HRM/Staffs/Avatars/',
+	posImagesServer: 'https://in.appcenter.vn/',
 	apiVersion: 'api/v1/',
 	showScrollbar: navigator.appVersion.indexOf('Win') > -1 || true,
 	// signalRServiceDomain: 'https://localhost:5001/'
