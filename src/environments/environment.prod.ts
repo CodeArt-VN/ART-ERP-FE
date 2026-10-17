@@ -1,17 +1,16 @@
 export const environment = {
 	production: true,
-	appVersion: '0.22.39',
+	appVersion: '0.22.45',
 	appLocation: '/ERP/', // VirtualDirectory
 	versionLocation: 'V{{REPLACE_VERSION}}/',
 	appServers: [
-		{ Code: 'https://app.inholdings.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://beta.inholdings.vn/', Name: 'Beta server', Color: 'danger', Icon: 'rocket' },
+		{ Code: 'https://in.appcenter.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'warning', Icon: 'airplane' },
 		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'warning', Icon: 'airplane' },
 	],
-	appDomain: 'https://app.inholdings.vn/',
-	staffAvatarsServer: 'https://app.inholdings.vn/Uploads/HRM/Staffs/Avatars/',
-	posImagesServer: 'https://app.inholdings.vn/',
+	appDomain: 'https://in.appcenter.vn/',
+	staffAvatarsServer: 'https://in.appcenter.vn/Uploads/HRM/Staffs/Avatars/',
+	posImagesServer: 'https://in.appcenter.vn/',
 	apiVersion: 'api/v1/',
 	showScrollbar: true, // (navigator.appVersion.indexOf("Win") > -1)
 	signalRServiceDomain: 'https://signalrservice.appcenter.vn/',
