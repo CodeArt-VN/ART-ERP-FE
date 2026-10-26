@@ -132,37 +132,32 @@ if (!patchedContent.includes('if !overlay {\n                restoreStatusBarBac
 }
 
 if (!patchedContent.includes('private func restoreStatusBarBackground()')) {
-	patchedContent = patchedContent.replace(
-		`    private func initializeBackgroundViewIfNeeded() {
-        if backgroundView == nil {
-            backgroundView = UIView(frame: getStatusBarFrame())
-            backgroundView!.backgroundColor = backgroundColor
-            backgroundView!.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-            backgroundView!.isHidden = !bridge.statusBarVisible
-        }
-    }
-}`,
-		`    private func initializeBackgroundViewIfNeeded() {
-        if backgroundView == nil {
-            backgroundView = UIView(frame: getStatusBarFrame())
-            backgroundView!.backgroundColor = backgroundColor
-            backgroundView!.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-            backgroundView!.isHidden = !bridge.statusBarVisible
-        }
-    }
-
+	const restoreFunction = `
     private func restoreStatusBarBackground() {
         initializeBackgroundViewIfNeeded()
         if let backgroundView = backgroundView, backgroundView.superview == nil {
-            bridge.webView?.superview?.addSubview(backgroundView)
+            bridge?.webView?.superview?.addSubview(backgroundView)
         }
         resizeStatusBarBackgroundView()
         backgroundView?.backgroundColor = backgroundColor
-        backgroundView?.isHidden = !bridge.statusBarVisible
+        backgroundView?.isHidden = !(bridge?.statusBarVisible ?? false)
     }
-}`
-	);
-	changed = true;
+`;
+	const anchors = [
+		`            backgroundView!.isHidden = !bridge.statusBarVisible
+        }
+    }
+}`,
+		`            backgroundView!.isHidden = !(bridge?.statusBarVisible ?? false)
+        }
+    }
+}`,
+	];
+	const matchedAnchor = anchors.find((anchor) => patchedContent.includes(anchor));
+	if (matchedAnchor) {
+		patchedContent = patchedContent.replace(matchedAnchor, `${matchedAnchor.slice(0, -1)}${restoreFunction}}`);
+		changed = true;
+	}
 }
 
 if (!changed) {
