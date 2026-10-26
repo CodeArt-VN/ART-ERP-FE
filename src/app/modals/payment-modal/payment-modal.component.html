@@ -400,12 +400,16 @@
 							</ion-grid>
 						</fieldset>
 					} @else {
-						<div class="text-center">
+						<div class="payment-qr-panel text-center">
 							<ion-spinner *ngIf="formGroup.get('Type').value == 'GrabPay' && isGrabPayLoading"></ion-spinner>
 							<div *ngIf="formGroup.get('Type').value == 'GrabPay' && !!grabPayError" class="ion-margin-bottom">
 								<ion-text color="danger">{{ grabPayError }}</ion-text>
 							</div>
-							<div [innerHTML]="qrCodeHtml"></div>
+							<div class="payment-qr-caption" *ngIf="formGroup.get('Type').value == 'VietQR' && qrCodeHtml">
+								<div class="payment-qr-caption-title">{{ 'BILL_PAYMENT_QR_TITLE' | translate }}</div>
+								<div class="payment-qr-caption-sub">{{ 'BILL_PAYMENT_QR_SUBTITLE' | translate }}</div>
+							</div>
+							<div class="payment-qr-frame" [innerHTML]="qrCodeHtml"></div>
 						</div>
 					}
 					<!-- Thông báo bảo mật -->

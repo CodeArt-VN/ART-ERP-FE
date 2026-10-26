@@ -11,7 +11,7 @@
 		>
 		</ion-back-button>
 
-		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && !page.selectedItems?.length && pageTitle != 'app-page-title'">
+		<ion-button color="dark" *ngIf="showTitle && !page.pageConfig.isDetailPage && !page.selectedItems?.length">
 			{{ (pageTitle || page.pageConfig.pageTitle) | translate }}
 		</ion-button>
 		<ion-button color="dark" *ngIf="!page.pageConfig.isDetailPage && page.selectedItems?.length" (click)="page.unselect()">

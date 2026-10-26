@@ -4,6 +4,17 @@
 	min-width: 0;
 }
 
+:host(.auto-fit) {
+	width: 100%;
+	min-width: 0;
+	overflow: hidden;
+}
+
+:host(.auto-fit) ion-breadcrumbs {
+	flex-wrap: nowrap !important;
+	max-width: 100%;
+}
+
 ion-label {
 	white-space: normal;
 }

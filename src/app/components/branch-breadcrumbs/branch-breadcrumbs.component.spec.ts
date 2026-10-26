@@ -1,0 +1,93 @@
+import '@ionic/angular';
+import { ChangeDetectorRef, ElementRef } from '@angular/core';
+import { BranchBreadcrumbsComponent, crumbCollapseLayout } from './branch-breadcrumbs.component';
+
+describe('BranchBreadcrumbsComponent', () => {
+	const items = [
+		{ Id: 1, IDParent: null, Name: 'Tổng công ty' },
+		{ Id: 2, IDParent: 1, Name: 'F1 Công ty' },
+		{ Id: 3, IDParent: 2, Name: 'F2 Chi nhánh' },
+	];
+
+	function create(): BranchBreadcrumbsComponent {
+		return new BranchBreadcrumbsComponent(
+			{ nativeElement: document.createElement('div') } as ElementRef<HTMLElement>,
+			{ detectChanges() {} } as ChangeDetectorRef
+		);
+	}
+
+	it('starts the path at F1 and omits the root', () => {
+		const component = create();
+		component.Id = 3;
+		component.Items = items;
+
+		component.loadData();
+
+		expect(component.breadcrumbs.map((i) => i.Name)).toEqual(['F1 Công ty', 'F2 Chi nhánh']);
+		expect(component.pathFound).toBeTrue();
+	});
+
+	it('shows only F1 when the selected node is a direct child of root', () => {
+		const component = create();
+		component.Id = 2;
+		component.Items = items;
+
+		component.loadData();
+
+		expect(component.breadcrumbs.map((i) => i.Name)).toEqual(['F1 Công ty']);
+	});
+
+	it('leaves an empty path when the selected node is the root', () => {
+		const component = create();
+		component.Id = 1;
+		component.Items = items;
+
+		component.loadData();
+
+		expect(component.breadcrumbs).toEqual([]);
+		expect(component.pathFound).toBeTrue();
+	});
+
+	it('skips autoFit when maxItems is set from outside', () => {
+		const component = create();
+		component.Id = 3;
+		component.Items = items;
+		component.maxItems = 1;
+
+		component.loadData();
+
+		expect(component.useAutoFit).toBeFalse();
+		expect(component.crumbFlexWrap).toBeNull();
+		expect(component.effectiveMaxItems).toBe(1);
+		expect(component.effectiveBefore).toBe(1);
+		expect(component.effectiveAfter).toBe(1);
+	});
+	it('locks crumbs to one line when autoFit is on and maxItems is unset', () => {
+		const component = create();
+
+		expect(component.autoFit).toBeTrue();
+		expect(component.useAutoFit).toBeTrue();
+		expect(component.crumbFlexWrap).toBe('nowrap');
+
+		component.autoFit = false;
+		expect(component.crumbFlexWrap).toBeNull();
+	});
+
+	it('keeps as many crumbs as requested instead of jumping to first and last', () => {
+		expect(crumbCollapseLayout(5, 5)).toEqual({ maxItems: 5, before: 1, after: 1 });
+		expect(crumbCollapseLayout(5, 4)).toEqual({ maxItems: 4, before: 1, after: 3 });
+		expect(crumbCollapseLayout(5, 2)).toEqual({ maxItems: 2, before: 1, after: 1 });
+		expect(crumbCollapseLayout(5, 1)).toEqual({ maxItems: 1, before: 0, after: 1 });
+	});
+
+	it('marks the path missing when Id is not in Items', () => {
+		const component = create();
+		component.Id = 99;
+		component.Items = items;
+
+		component.loadData();
+
+		expect(component.breadcrumbs).toEqual([]);
+		expect(component.pathFound).toBeFalse();
+	});
+});

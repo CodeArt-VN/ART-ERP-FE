@@ -170,10 +170,85 @@ ion-button {
 		padding-inline-end: 0 !important;
 	}
 
-	.qrc{
-
-		margin: 32px;;
+	.qrc {
+		margin: 32px;
 	}
+}
+
+.payment-qr-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20px 12px 8px;
+	gap: 14px;
+}
+
+.payment-qr-caption {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin: 0;
+}
+
+.payment-qr-caption-title {
+	font-size: 1.45rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: var(--ion-text-color);
+}
+
+.payment-qr-caption-sub {
+	font-size: 1.2rem;
+	line-height: 1.35;
+	color: var(--ion-color-medium);
+}
+
+.payment-qr-frame {
+	width: fit-content;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 14px;
+	border-radius: 20px;
+	background: #ffffff;
+	border: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.08));
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+	::ng-deep {
+		.payment-qr,
+		.qr-section {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 0;
+			padding: 0;
+			text-align: center;
+		}
+
+		.payment-qr-title,
+		.payment-qr-sub {
+			display: none;
+		}
+
+		img {
+			display: block;
+			width: 240px;
+			height: 240px;
+			max-width: min(240px, 72vw);
+			aspect-ratio: 1;
+			margin: 0;
+			padding: 10px;
+			border-radius: 12px;
+			background: #fff;
+			box-sizing: border-box;
+			image-rendering: pixelated;
+		}
+	}
+}
+
+.payment-qr-panel + .c-control {
+	margin-top: 18px;
 }
 
 .coupon {

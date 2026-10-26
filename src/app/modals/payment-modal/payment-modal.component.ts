@@ -141,9 +141,8 @@ export class PaymentModalComponent implements OnInit {
 	ngAfterViewInit() {
 		if (!this.billElement?.nativeElement) return;
 
-		const observer = new MutationObserver((mutations) => {
-
-			const qr = this.billElement.nativeElement.querySelector('.qr-section');
+		const observer = new MutationObserver(() => {
+			const qr = this.queryBillQrElement();
 			if (qr) {
 				this.qrCodeHtml = qr.outerHTML;
 			}
@@ -154,6 +153,13 @@ export class PaymentModalComponent implements OnInit {
 			subtree: true,
 		});
 
+	}
+
+	/** Bill template uses `.payment-qr`; keep `.qr-section` as fallback for older templates. */
+	private queryBillQrElement(): Element | null {
+		const root = this.billElement?.nativeElement;
+		if (!root) return null;
+		return root.querySelector('.payment-qr') || root.querySelector('.qr-section');
 	}
 	async ngOnInit() {
 		if (!this.subPromotion) {
@@ -533,7 +539,7 @@ export class PaymentModalComponent implements OnInit {
 		this.next();
 		if (type == 'VietQR') {
 			this.grabPayError = '';
-			const qr = this.billElement?.nativeElement?.querySelector('.qr-section');
+			const qr = this.queryBillQrElement();
 			if (qr) {
 				this.qrCodeHtml = qr.outerHTML;
 			}
@@ -889,8 +895,7 @@ export class PaymentModalComponent implements OnInit {
 		if (this.subscribePOSOrderDetail) this.subscribePOSOrderDetail?.unsubscribe();
 	}
 	private getQrCodeHtml(): string {
-		if (!this.billElement?.nativeElement) return '';
-		const qr = this.billElement.nativeElement.querySelector('.qr-section');
+		const qr = this.queryBillQrElement();
 		return qr ? qr.outerHTML : '';
 	}
 
