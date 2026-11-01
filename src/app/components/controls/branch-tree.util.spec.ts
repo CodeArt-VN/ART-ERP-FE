@@ -88,6 +88,27 @@ describe('BranchTreeView', () => {
 		expect(view.getLabelItems('3', 'Id')[0]?.Name).toBe('Team B');
 	});
 
+	it('indents each child one step past its parent', () => {
+		const view = new BranchTreeView(source, { showingMode: 'showAll' });
+		const indent = (id: number) => {
+			const levels = view.workingItems.find((i) => i.Id === id)?.levels || [];
+			return levels.slice(1).length;
+		};
+		expect(indent(1)).toBe(0);
+		expect(indent(2)).toBe(1);
+		expect(indent(3)).toBe(2);
+	});
+
+	it('keeps levels that were already computed', () => {
+		const preset = [
+			{ Id: 1, IDParent: null, Name: 'Company', Type: 'Company', levels: ['preset'] },
+			{ Id: 2, IDParent: 1, Name: 'Dept A', Type: 'Department', levels: ['preset', 'Company'] },
+		];
+		const view = new BranchTreeView(preset, { showingMode: 'showAll' });
+		expect(view.workingItems.find((i) => i.Id === 1)?.levels).toEqual(['preset']);
+		expect(view.workingItems.find((i) => i.Id === 2)?.levels).toEqual(['preset', 'Company']);
+	});
+
 	it('firstSearchHitId is the first name/code match, not only the ancestor', () => {
 		const view = new BranchTreeView(source, { showingMode: 'showAll' });
 		view.search('Team');

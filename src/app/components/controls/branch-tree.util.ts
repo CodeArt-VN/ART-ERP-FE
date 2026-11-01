@@ -368,7 +368,8 @@ export class BranchTreeView {
 				return item.levels;
 			}
 			if (item.IDParent == null || !byId.has(item.IDParent)) {
-				const rootLevels: string[] = [];
+				// Template skips levels[0], same as buildSubNode which pushes a placeholder on the root.
+				const rootLevels: string[] = [''];
 				levelsCache.set(item.Id, rootLevels);
 				item.levels = rootLevels;
 				item.level = 0;
@@ -379,7 +380,7 @@ export class BranchTreeView {
 			const levels = [...parentLevels, parent.Name || ''];
 			levelsCache.set(item.Id, levels);
 			item.levels = levels;
-			item.level = levels.length;
+			item.level = levels.length - 1;
 			return levels;
 		};
 
