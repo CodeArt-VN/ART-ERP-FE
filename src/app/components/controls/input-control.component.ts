@@ -12,6 +12,9 @@ import { FormulaExpandModalComponent } from './formula-expand-modal';
 import { Subject } from 'rxjs';
 import { InputControlTempateDirective } from './input-control-template.directive';
 import { BranchTreeView, buildBranchTreeConfigKey } from './branch-tree.util';
+import { pickDefaultWarehouseId, WarehouseSelectController } from './warehouse-select';
+import { CommonService } from 'src/app/services/core/common.service';
+import { EnvService } from 'src/app/services/core/env.service';
 
 @Component({
 	selector: 'app-input-control',
@@ -32,7 +35,7 @@ export class InputControlComponent implements OnInit {
 		if (f.secondaryId) this.secondaryId = f.secondaryId;
 		if (f.label) this.label = f.label;
 		if (f.placeholder) this.placeholder = f.placeholder;
-		if (f.dataSource) this.dataSource = f.dataSource;
+		if (f.dataSource && f.type !== 'ng-select-warehouse') this.dataSource = f.dataSource;
 		if (f.bindValue) this.bindValue = f.bindValue;
 		if (f.bindLabel) this.bindLabel = f.bindLabel;
 		if (f.multiple) this.multiple = f.multiple;
@@ -46,8 +49,18 @@ export class InputControlComponent implements OnInit {
 		if (f.branchConfig) {
 			if (f.branchConfig.selectedBranch !== undefined) this.selectedBranch = f.branchConfig.selectedBranch;
 			if (f.branchConfig.showingType) this.showingType = f.branchConfig.showingType;
+			if (f.branchConfig.showingKeepDisabled != undefined) this.showingKeepDisabled = f.branchConfig.showingKeepDisabled;
 			if (f.branchConfig.showingDisable != undefined) this.showingDisable = f.branchConfig.showingDisable;
 			if (f.branchConfig.showingMode) this.showingMode = f.branchConfig.showingMode;
+		}
+		if (f.type === 'ng-select-warehouse') {
+			this.type = 'ng-select-branch';
+			this.warehouseMode = true;
+			this.showingType = 'Warehouse';
+			this.showingMode = 'showAll';
+			this.bindValue = f.bindValue || 'Id';
+			this.bindLabel = f.bindLabel || 'Name';
+			this.ensureWarehouses();
 		}
 		if (this.type == 'ng-select-branch') {
 			if (f.virtualScroll === undefined) this.virtualScroll = true;
@@ -146,8 +159,15 @@ export class InputControlComponent implements OnInit {
 	@Input() branchConfig?;
 	@Input() selectedBranch?: number;
 	@Input() showingType?: string;
+	@Input() showingKeepDisabled?: boolean;
 	@Input() showingDisable?: boolean;
 	@Input() showingMode?: string; //'showAll'  | 'showSelectedAndChildren' | default
+
+	private warehouseMode = false;
+	private warehouseSelect = new WarehouseSelectController();
+	private warehouseLoadingBranch: number | null = null;
+	private warehouseAppliedBranch: number | null = null;
+	private alive = true;
 
 	branchTreeView: BranchTreeView | null = null;
 	branchVisibleItems: any[] = [];
@@ -184,7 +204,9 @@ export class InputControlComponent implements OnInit {
 	constructor(
 		public monacoProvider: MonacoEditorLoaderService,
 		public modalController: ModalController,
-		public dynamicScriptLoaderService: DynamicScriptLoaderService
+		public dynamicScriptLoaderService: DynamicScriptLoaderService,
+		public commonService: CommonService,
+		public env: EnvService
 	) {
 		this.lib = lib;
 		this.searchShowAllChildren = this.searchShowAllChildren.bind(this);
@@ -200,6 +222,7 @@ export class InputControlComponent implements OnInit {
 		}
 	}
 	ngOnDestroy() {
+		this.alive = false;
 		this.dismissDatePicker();
 		if (this.branchSearchTimer) {
 			clearTimeout(this.branchSearchTimer);
@@ -635,12 +658,44 @@ export class InputControlComponent implements OnInit {
 		return item?.Id ?? _index;
 	}
 
+	private ensureWarehouses() {
+		const branchId = Number(this.env.selectedBranch) || 0;
+		if (this.warehouseAppliedBranch === branchId || this.warehouseLoadingBranch === branchId) {
+			return;
+		}
+		this.warehouseLoadingBranch = branchId;
+		this.warehouseSelect
+			.load(branchId, (method, url, query) => this.commonService.connect(method, url, query).toPromise())
+			.then((warehouses) => {
+				if (!this.alive || (Number(this.env.selectedBranch) || 0) !== branchId) {
+					return;
+				}
+				this.warehouseAppliedBranch = branchId;
+				this.dataSource = warehouses;
+				const control = this.form?.get(this.id);
+				if (!this.multiple && control && (control.value === '' || control.value == null)) {
+					const next = pickDefaultWarehouseId(warehouses, '');
+					if (next !== '') {
+						control.setValue(next);
+					}
+				}
+				this.syncBranchTreeView({
+					form: this.form,
+					id: this.id,
+					type: 'ng-select-branch',
+					dataSource: this.dataSource,
+				});
+				this.ngSelect?.detectChanges();
+			});
+	}
+
 	private syncBranchTreeView(f: InputControlField): void {
-		const source = f.dataSource || this.dataSource;
+		const source = this.warehouseMode ? this.dataSource || [] : f.dataSource || this.dataSource;
 		const selectedValue = f.form?.get(f.id)?.value;
 		const configKey = buildBranchTreeConfigKey(source, {
 			selectedBranch: this.selectedBranch,
 			showingType: this.showingType,
+			showingKeepDisabled: this.showingKeepDisabled,
 			showingDisable: this.showingDisable,
 			showingMode: this.showingMode,
 			isCollapsed: this.isCollapsed ?? true,
@@ -659,6 +714,7 @@ export class InputControlComponent implements OnInit {
 		this.branchTreeView = new BranchTreeView(source, {
 			selectedBranch: this.selectedBranch,
 			showingType: this.showingType,
+			showingKeepDisabled: this.showingKeepDisabled,
 			showingDisable: this.showingDisable,
 			showingMode: this.showingMode,
 			isCollapsed: this.isCollapsed ?? true,

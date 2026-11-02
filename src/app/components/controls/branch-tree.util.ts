@@ -22,6 +22,8 @@ export interface BranchTreeNode {
 export interface BranchTreeConfig {
 	selectedBranch?: number;
 	showingType?: string;
+	/** When true, showingType does not re-enable a node that was already disabled. */
+	showingKeepDisabled?: boolean;
 	showingDisable?: boolean;
 	showingMode?: string;
 	isCollapsed?: boolean;
@@ -35,6 +37,7 @@ export function buildBranchTreeConfigKey(source: any[] | null | undefined, confi
 		len: source?.length ?? 0,
 		selectedBranch: config.selectedBranch ?? null,
 		showingType: config.showingType ?? '',
+		showingKeepDisabled: config.showingKeepDisabled ?? false,
 		showingDisable: config.showingDisable ?? false,
 		showingMode: config.showingMode ?? '',
 		isCollapsed: config.isCollapsed ?? true,
@@ -165,7 +168,7 @@ export class BranchTreeView {
 			}
 		}
 
-		this.applyShowingType(items, config.showingType);
+		this.applyShowingType(items, config.showingType, !!config.showingKeepDisabled);
 
 		if (!config.showingDisable) {
 			const parentDisabledList = new Set<number>();
@@ -196,7 +199,7 @@ export class BranchTreeView {
 		return items;
 	}
 
-	private applyShowingType(items: BranchTreeNode[], showingType?: string): void {
+	private applyShowingType(items: BranchTreeNode[], showingType?: string, keepDisabled = false): void {
 		if (!showingType) {
 			return;
 		}
@@ -210,13 +213,15 @@ export class BranchTreeView {
 
 		items.forEach((d) => {
 			const inList = types.includes(d.Type);
+			let typeDisabled: boolean;
 			if (isNegated) {
-				d.disabled = inList;
+				typeDisabled = inList;
 			} else if (isList) {
-				d.disabled = !inList;
+				typeDisabled = !inList;
 			} else {
-				d.disabled = d.Type != draft;
+				typeDisabled = d.Type != draft;
 			}
+			d.disabled = (keepDisabled && !!d.disabled) || typeDisabled;
 		});
 	}
 

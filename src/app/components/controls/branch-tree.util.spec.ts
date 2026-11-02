@@ -109,6 +109,43 @@ describe('BranchTreeView', () => {
 		expect(view.workingItems.find((i) => i.Id === 2)?.levels).toEqual(['preset', 'Company']);
 	});
 
+	it('selected department keeps the full parent chain and descendant job titles', () => {
+		const source = [
+			{ Id: 1, IDParent: null, Name: 'Company', Type: 'Company', disabled: true },
+			{ Id: 2, IDParent: 1, Name: 'Division', Type: 'Department', disabled: true },
+			{ Id: 3, IDParent: 2, Name: 'Dept', Type: 'Department', disabled: true },
+			{ Id: 4, IDParent: 3, Name: 'Lead', Type: 'TitlePosition', disabled: false },
+			{ Id: 5, IDParent: 4, Name: 'Staff', Type: 'TitlePosition', disabled: false },
+			{ Id: 6, IDParent: 3, Name: 'Locked title', Type: 'TitlePosition', disabled: true },
+			{ Id: 9, IDParent: 1, Name: 'Other division', Type: 'Department', disabled: true },
+			{ Id: 10, IDParent: 9, Name: 'Other title', Type: 'TitlePosition', disabled: false },
+		];
+		const view = new BranchTreeView(source, {
+			selectedBranch: 3,
+			showingType: 'TitlePosition',
+			showingKeepDisabled: true,
+		});
+
+		expect(view.workingItems.map((i) => i.Id)).toEqual([1, 2, 3, 4, 5, 6]);
+		expect(view.workingItems.find((i) => i.Id === 1)?.disabled).toBe(true);
+		expect(view.workingItems.find((i) => i.Id === 2)?.disabled).toBe(true);
+		expect(view.workingItems.find((i) => i.Id === 4)?.disabled).toBe(false);
+		expect(view.workingItems.find((i) => i.Id === 6)?.disabled).toBe(true);
+		expect(view.workingItems.find((i) => i.Id === 5)?.levels?.slice(1)).toEqual(['Company', 'Division', 'Dept', 'Lead']);
+
+		const visible = view.visibleItems.map((i) => i.Id);
+		expect(visible).toEqual([1, 2, 3, 4, 5]);
+		expect(source.find((i) => i.Id === 4)?.disabled).toBe(false);
+	});
+
+	it('showingType still re-enables a node unless showingKeepDisabled is set', () => {
+		const source = [{ Id: 1, IDParent: null, Name: 'Locked title', Type: 'TitlePosition', disabled: true }];
+		const overwritten = new BranchTreeView(source, { showingMode: 'showAll', showingType: 'TitlePosition' });
+		const kept = new BranchTreeView(source, { showingMode: 'showAll', showingType: 'TitlePosition', showingKeepDisabled: true });
+		expect(overwritten.workingItems[0].disabled).toBe(false);
+		expect(kept.workingItems[0].disabled).toBe(true);
+	});
+
 	it('firstSearchHitId is the first name/code match, not only the ancestor', () => {
 		const view = new BranchTreeView(source, { showingMode: 'showAll' });
 		view.search('Team');
