@@ -5,7 +5,7 @@
 	(sort)="onSort($event)"
 	class="row header sticky-header bold"
 ></datatable-header>
-<form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup">
+<form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup && !sheetFilter">
 	<datatable-header
 		[formGroup]="formGroup"
 		(filterInputChange)="onFilterSubmit($event)"
@@ -44,3 +44,56 @@
 <div *ngIf="showInfinitespinner" style="text-align: center">
 	<ion-spinner name="dots"></ion-spinner>
 </div>
+
+<ion-modal
+	*ngIf="sheetFilter || filterSheetOpen"
+	class="mobile-filter-modal"
+	[isOpen]="filterSheetOpen"
+	[initialBreakpoint]="0.5"
+	[breakpoints]="[0, 0.25, 0.5, 0.75, 1]"
+	[expandToScroll]="false"
+	handleBehavior="cycle"
+	(willDismiss)="onFilterSheetWillDismiss()"
+	(didDismiss)="onFilterSheetDidDismiss()"
+>
+	<ng-template>
+		<ion-header [translucent]="true" collapse="fade">
+			<ion-toolbar>
+				<ion-title>{{ 'Filter' | translate }}</ion-title>
+				<ion-buttons slot="primary">
+					<ion-button title="{{ 'Close' | translate }}" color="secondary" (click)="filterSheetOpen = false">
+						<ion-icon slot="icon-only" name="close"></ion-icon>
+					</ion-button>
+				</ion-buttons>
+			</ion-toolbar>
+		</ion-header>
+		<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+			<form *ngIf="formGroup" [formGroup]="formGroup" (submit)="applyMobileFilters($event)">
+				<ion-grid fixed>
+					<ion-row>
+						<ion-col size="12">
+							<ng-container *ngFor="let column of filterColumns">
+								<div class="c-control" *ngIf="column.filterTemplate">
+									<label class="c-label" *ngIf="column.name">{{ column.name | translate }}</label>
+									<ng-container *ngTemplateOutlet="column.filterTemplate; context: column"></ng-container>
+								</div>
+								<app-form-control *ngIf="!column.filterTemplate" [field]="filterField(column)"></app-form-control>
+							</ng-container>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+				<button type="submit" hidden>Apply</button>
+			</form>
+		</ion-content>
+		<ion-footer [translucent]="true" collapse="fade">
+			<ion-toolbar>
+				<div slot="start">
+					<ion-button fill="clear" color="warning" (click)="clearAllFiltersFromSheet()">{{ 'Clear all filters' | translate }}</ion-button>
+				</div>
+				<div slot="end">
+					<ion-button [strong]="true" (click)="applyMobileFilters()">{{ 'Apply' | translate }}</ion-button>
+				</div>
+			</ion-toolbar>
+		</ion-footer>
+	</ng-template>
+</ion-modal>

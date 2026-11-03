@@ -5,6 +5,7 @@ import {
 	VirtualViewportComponent,
 } from 'src/app/components/virtual-scroll/virtual-viewport.component';
 import { buildVirtualItems, DatatableVirtualItem, rowTrackKey, virtualItemTrackBy } from './virtual-items.util';
+import { DATA_TABLE_COMPACT_MQ } from '../../data-table-layout';
 import { DataTableActiveFilter } from '../../interfaces/table-column.interface';
 import { HistoryService } from 'src/app/services/custom/history.service';
 
@@ -162,7 +163,7 @@ export class DataTablBodyComponent implements OnInit, OnDestroy, DoCheck {
 		// flip without this table's own rendered width changing (e.g. fixed-width sidebar), and a
 		// table width change can happen without crossing this breakpoint (e.g. sidebar toggle) —
 		// each covers a case the other misses.
-		this.mediaQuery = window.matchMedia('(max-width: 1164px)');
+		this.mediaQuery = window.matchMedia(DATA_TABLE_COMPACT_MQ);
 		this.mediaListener = () => {
 			this.ngZone.run(() => this.vp?.scheduleRemeasureAfterResize());
 		};

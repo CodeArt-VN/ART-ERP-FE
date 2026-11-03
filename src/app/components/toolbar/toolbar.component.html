@@ -98,12 +98,13 @@
 
 		<!-- Search -->
 		<ion-button
-			
+			class="search-filter-btn"
 			title="{{ 'Search' | translate }}"
 			*ngIf="!page.selectedItems?.length && page.pageConfig.ShowSearch && !page.pageConfig.isDetailPage"
-			(click)="page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
+			(click)="onSearchClick($event)"
 		>
 			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
+			<span class="filter-count-badge" *ngIf="compactFilterCount">{{ compactFilterCount }}</span>
 		</ion-button>
 
 		<!-- Refresh -->
@@ -344,10 +345,13 @@
 								*ngIf="!page.selectedItems?.length && ShowSearch && !page.pageConfig.isDetailPage"
 								[button]="true"
 								[detail]="false"
-								(click)="isToolBarPopoverOpen = false; page.pageConfig.isShowSearch = !page.pageConfig.isShowSearch"
+								(click)="isToolBarPopoverOpen = false; onSearchClick($event)"
 							>
 								<ion-icon slot="start" name="search-outline"></ion-icon>
-								<ion-label> {{ 'Search' | translate }}</ion-label>
+								<ion-label>
+									{{ 'Search' | translate }}
+									<span *ngIf="compactFilterCount">({{ compactFilterCount }})</span>
+								</ion-label>
 							</ion-item>
 
 							<!-- Refresh -->

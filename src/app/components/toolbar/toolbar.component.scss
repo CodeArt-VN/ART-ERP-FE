@@ -1,3 +1,25 @@
+.search-filter-btn {
+	position: relative;
+
+	.filter-count-badge {
+		position: absolute;
+		top: 2px;
+		right: 0;
+		z-index: 2;
+		min-width: 16px;
+		height: 16px;
+		padding: 0 4px;
+		border-radius: 8px;
+		background: var(--ion-color-primary);
+		color: var(--ion-color-primary-contrast, #fff);
+		font-size: 10px;
+		font-weight: 700;
+		line-height: 16px;
+		text-align: center;
+		pointer-events: none;
+	}
+}
+
 .toolbar-no-border {
 	--border-style: none;
 }
