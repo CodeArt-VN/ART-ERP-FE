@@ -147,7 +147,7 @@ export async function recheckCurrentRoutePermission(
 	profileService?: UserProfileService,
 ): Promise<void> {
 	const path = router.url.split('?')[0].split('#')[0];
-	if (!path || path === '/login' || path === UNAUTHORIZED_PATH || path === '/not-found') {
+	if (!path || path === '/login' || path === UNAUTHORIZED_PATH || path === '/not-found' || path === '/about' || path === '/ui-kit') {
 		return;
 	}
 
@@ -222,14 +222,22 @@ async function runAuthGuard(
 	return denied;
 }
 
-/** Đã authenticated (có token) — dùng cho /unauthorized. */
-export const authenticatedGuard: CanActivateFn = (_next, state) => {
+/** Đã authenticated (có token) — dùng cho /unauthorized, /ui-kit. Phải await env.ready kẻo F5 đá login sớm. */
+export const authenticatedGuard: CanActivateFn = async (_next, state) => {
 	const router = inject(Router);
 	const env = inject(EnvService);
+	try {
+		if (env.ready) {
+			await env.ready;
+		}
+	} catch (error) {
+		dogF && console.error('[authenticatedGuard] Error waiting for environment:', error);
+		return loginUrlTree(router, state.url);
+	}
 	if (hasAccessToken(env)) {
 		return true;
 	}
-	return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+	return loginUrlTree(router, state.url);
 };
 
 /** Functional guard — use `inject()` in Angular injection context (e.g. `canActivate: [authGuard]`). */

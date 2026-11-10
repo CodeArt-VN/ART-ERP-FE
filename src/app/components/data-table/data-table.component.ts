@@ -6,6 +6,8 @@ import {
 	ElementRef,
 	EventEmitter,
 	Input,
+	NgZone,
+	OnDestroy,
 	OnInit,
 	Output,
 	QueryList,
@@ -17,6 +19,8 @@ import { Subscription } from 'rxjs';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { lib } from 'src/app/services/static/global-functions';
 import { DataTableEmptyMessageDirective } from './directives/data-table-empty-message-directive';
+import { DATA_TABLE_COMPACT_MQ, DATA_TABLE_PHONE_MQ } from './data-table-layout';
+import { DataTableMobileFilterService } from './data-table-mobile-filter.service';
 import { dog } from 'src/environments/environment';
 
 @Component({
@@ -35,7 +39,7 @@ import { dog } from 'src/environments/environment';
 		'[style.min-height]': 'hostMinHeight',
 	},
 })
-export class DataTableComponent implements OnInit, AfterViewChecked {
+export class DataTableComponent implements OnInit, OnDestroy, AfterViewChecked {
 	_allColumns: TableColumn[];
 	_inputColumns: TableColumn[];
 	_columnTemplates: QueryList<DataTableColumnDirective>;
@@ -75,6 +79,9 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 		if (this.formGroup) {
 			this.formGroup.patchValue(this._query, { emitEvent: false });
 			this.syncTimeFrameFormsFromQuery();
+			if (this.filterSheetOpen) {
+				this.sheetSnapshot = this.formGroup.getRawValue();
+			}
 			dog && console.log(this._query);
 
 			//this.onFilterSubmit(null);
@@ -205,6 +212,7 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 		}
 		this.filterValue = Object.keys(fv).length ? fv : undefined;
 		this.activeFilters = list;
+		this.publishMobileFilterCount();
 	}
 
 	@Output() filterInputChange: EventEmitter<any> = new EventEmitter();
@@ -287,6 +295,7 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 			}
 		});
 		this.formGroup = new FormGroup(group);
+		this.filterFieldCache.clear();
 		this.syncFilterIndicatorFromQuery();
 	}
 
@@ -430,6 +439,22 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 	@Input() trackBy: string;
 
 	@Input() showFilter: boolean;
+
+	/** False keeps the inline filter row and ignores the mobile sheet (nested tables). */
+	@Input() mobileFilter = true;
+
+	/**
+	 * True when this table should use the bottom sheet instead of the inline filter row.
+	 * Phone always. Up to the card-layout breakpoint, only tables with class `responsive` / `small-width`.
+	 */
+	sheetFilter = false;
+
+	filterSheetOpen = false;
+	private sheetSnapshot: any;
+	private sheetCommit = false;
+	private compactCleanups: Array<() => void> = [];
+	private filterFieldCache = new Map<string, any>();
+
 	@Input() isQueryLocalOnly: boolean;
 
 	private _showSpinner = false;
@@ -560,10 +585,43 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 	constructor(
 		private columnChangesService: ColumnChangesService,
 		public formBuilder: FormBuilder,
-		private host: ElementRef<HTMLElement>
+		private host: ElementRef<HTMLElement>,
+		private ngZone: NgZone,
+		private mobileFilterBus: DataTableMobileFilterService
 	) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		const apply = () => {
+			const next = this.computeSheetFilter();
+			const leavingSheet = this.sheetFilter && !next;
+			this.sheetFilter = next;
+			if (leavingSheet && this.filterSheetOpen) {
+				this.filterSheetOpen = false;
+				this.restoreFilterSheetSnapshot();
+			}
+			this.publishMobileFilterCount();
+		};
+		apply();
+		for (const query of [DATA_TABLE_COMPACT_MQ, DATA_TABLE_PHONE_MQ]) {
+			const list = window.matchMedia(query);
+			const listener = () => this.ngZone.run(apply);
+			list.addEventListener('change', listener);
+			this.compactCleanups.push(() => list.removeEventListener('change', listener));
+		}
+
+		this._subscriptions.push(
+			this.mobileFilterBus.requests$.subscribe((req) => {
+				if (!this.canOpenFilterSheet(req.source)) {
+					return;
+				}
+				req.register({
+					inOverlay: this.isInsideOverlay(),
+					area: this.visibleArea(),
+					open: () => this.openFilterSheet(),
+				});
+			})
+		);
+	}
 
 	ngAfterViewChecked() {
 		this.polishInlineBranchBreadcrumbs();
@@ -681,6 +739,189 @@ export class DataTableComponent implements OnInit, AfterViewChecked {
 
 	ngOnDestroy() {
 		this._subscriptions.forEach((subscription) => subscription.unsubscribe());
+		for (const cleanup of this.compactCleanups) {
+			cleanup();
+		}
+		this.compactCleanups = [];
+		this.mobileFilterBus.releaseActiveCount(this);
+	}
+
+	get filterColumns(): TableColumn[] {
+		return (this._allColumns || []).filter((column) => this.columnShowsFilter(column));
+	}
+
+	private readonly filterTemplateHasNodes = new WeakMap<object, boolean>();
+
+	/** Same rule as the header filter cell: an empty filter template means the column is not filtered. */
+	private columnShowsFilter(column: TableColumn): boolean {
+		if (!column.canFilter || !column.property || column.checkbox || column.property === '#') {
+			return false;
+		}
+		if (!column.filterTemplate) {
+			return true;
+		}
+		return this.filterTemplateHasContent(column.filterTemplate);
+	}
+
+	/**
+	 * Empty `<ng-template datatable-filter-template>` is how list pages turn a column's filter off.
+	 * The template's nodes exist only after it is rendered, so read them from a detached view.
+	 */
+	private filterTemplateHasContent(template: {
+		createEmbeddedView?: (context: unknown) => { rootNodes?: Node[]; detectChanges?: () => void; destroy?: () => void };
+	}): boolean {
+		const cached = this.filterTemplateHasNodes.get(template);
+		if (cached != null) {
+			return cached;
+		}
+		let has = true;
+		if (typeof template.createEmbeddedView === 'function') {
+			let view: { rootNodes?: Node[]; detectChanges?: () => void; destroy?: () => void } | undefined;
+			try {
+				view = template.createEmbeddedView({});
+				const hasNode = (node: Node) =>
+					node?.nodeType === Node.ELEMENT_NODE || (node?.nodeType === Node.TEXT_NODE && !!node.textContent?.trim());
+				has = (view.rootNodes || []).some(hasNode);
+				if (!has && view.detectChanges) {
+					view.detectChanges();
+					has = (view.rootNodes || []).some(hasNode);
+				}
+			} catch {
+				has = true;
+			} finally {
+				view?.destroy?.();
+			}
+		}
+		this.filterTemplateHasNodes.set(template, has);
+		return has;
+	}
+
+	filterField(column: TableColumn) {
+		const timeFrame = column.filterControlType === 'time-frame';
+		const form = timeFrame ? this.formGroup?.controls[column.property + 'TimeFrame'] : this.formGroup;
+		const key = (column.property || '') + '|' + (column.filterControlType || '');
+		const cached = this.filterFieldCache.get(key);
+		if (cached && cached.form === form) {
+			return cached;
+		}
+		const field = {
+			form,
+			type: column.filterControlType || 'text',
+			id: timeFrame ? 'From' : column.property,
+			secondaryId: timeFrame ? 'To' : null,
+			label: column.name || column.property,
+			dataSource: column.filterDataSource,
+			bindValue: column.filterBindValue,
+			bindLabel: column.filterBindLabel,
+			appendTo: 'body',
+			clearable: true,
+			noCheckDirty: true,
+		};
+		this.filterFieldCache.set(key, field);
+		return field;
+	}
+
+	private canOpenFilterSheet(source: 'compact' | 'modifier'): boolean {
+		if (!this.mobileFilter || !this.filterColumns.length || !this.isHostVisible()) {
+			return false;
+		}
+		if (source === 'modifier') {
+			return true;
+		}
+		return this.sheetFilter;
+	}
+
+	private isInsideOverlay(): boolean {
+		return !!this.host.nativeElement.closest('ion-modal, ion-popover');
+	}
+
+	private visibleArea(): number {
+		const rect = this.host.nativeElement.getBoundingClientRect();
+		return Math.max(0, rect.width) * Math.max(0, rect.height);
+	}
+
+	openFilterSheet() {
+		if (!this.formGroup || !this.filterColumns.length) {
+			return;
+		}
+		this.sheetSnapshot = this.formGroup.getRawValue();
+		this.sheetCommit = false;
+		this.filterSheetOpen = true;
+	}
+
+	applyMobileFilters(event?: Event) {
+		event?.preventDefault();
+		if (!this.formGroup) {
+			return;
+		}
+		this.sheetCommit = true;
+		this.onFilterSubmit(event ?? null);
+		this.filterSheetOpen = false;
+	}
+
+	clearAllFiltersFromSheet() {
+		if (!this.formGroup) {
+			return;
+		}
+		for (const column of this.filterColumns) {
+			this.resetColumnFilter(column.property);
+		}
+		this.sheetCommit = true;
+		this.onFilterSubmit(null);
+		this.filterSheetOpen = false;
+	}
+
+	onFilterSheetWillDismiss() {
+		if (!this.sheetCommit) {
+			this.restoreFilterSheetSnapshot();
+		}
+	}
+
+	onFilterSheetDidDismiss() {
+		this.filterSheetOpen = false;
+		this.sheetCommit = false;
+	}
+
+	private computeSheetFilter(): boolean {
+		if (!this.mobileFilter || typeof window === 'undefined' || !window.matchMedia) {
+			return false;
+		}
+		if (window.matchMedia(DATA_TABLE_PHONE_MQ).matches) {
+			return true;
+		}
+		if (!window.matchMedia(DATA_TABLE_COMPACT_MQ).matches) {
+			return false;
+		}
+		const cls = this.host.nativeElement.classList;
+		return cls.contains('responsive') || cls.contains('small-width');
+	}
+
+	private isHostVisible(): boolean {
+		const el = this.host.nativeElement;
+		if (!el.isConnected) {
+			return false;
+		}
+		if (el.closest('.ion-page-hidden')) {
+			return false;
+		}
+		const rect = el.getBoundingClientRect();
+		return rect.width > 0 || rect.height > 0;
+	}
+
+	private publishMobileFilterCount() {
+		if (!this.mobileFilter || !this.filterColumns.length || !this.isHostVisible()) {
+			this.mobileFilterBus.releaseActiveCount(this);
+			return;
+		}
+		this.mobileFilterBus.publishActiveCount(this, this.activeFilters.length);
+	}
+
+	private restoreFilterSheetSnapshot() {
+		if (!this.formGroup || !this.sheetSnapshot) {
+			return;
+		}
+		this.formGroup.patchValue(this.sheetSnapshot, { emitEvent: false });
+		this.syncTimeFrameFormsFromQuery();
 	}
 
 	showInfinitespinner = false;

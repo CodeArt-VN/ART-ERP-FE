@@ -9,6 +9,11 @@ export const SYSRoutes: Routes = [
 		canActivate: [authenticatedGuard],
 	},
 	{ path: 'about', loadChildren: () => import('./about/about.module').then((m) => m.AboutPageModule) },
+	{
+		path: 'ui-kit',
+		loadChildren: () => import('./ui-kit/ui-kit.module').then((m) => m.UiKitPageModule),
+		canActivate: [authenticatedGuard],
+	},
 	{ path: 'not-found', loadChildren: () => import('./not-found/not-found.module').then((m) => m.NotFoundPageModule), canActivate: [authGuard] },
 	{ path: 'setting', loadChildren: () => import('./setting/setting.module').then((m) => m.SettingPageModule), canActivate: [authGuard] },
 	{ path: 'profile', loadChildren: () => import('./profile/profile.module').then((m) => m.ProfilePageModule), canActivate: [authGuard] },

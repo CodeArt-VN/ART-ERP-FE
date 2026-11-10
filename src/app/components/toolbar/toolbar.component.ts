@@ -1,9 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AdvanceFilterModalComponent } from 'src/app/modals/advance-filter-modal/advance-filter-modal.component';
 import { EnvService } from 'src/app/services/core/env.service';
 import { HistoryLogPopoverComponent } from './history-log-popover.component';
+import { DATA_TABLE_COMPACT_MQ } from '../data-table/data-table-layout';
+import { DataTableMobileFilterService } from '../data-table/data-table-mobile-filter.service';
 
 @Component({
 	selector: 'app-toolbar',
@@ -11,7 +14,7 @@ import { HistoryLogPopoverComponent } from './history-log-popover.component';
 	styleUrls: ['./toolbar.component.scss'],
 	standalone: false,
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 	@ViewChild('importfile') importfile: any;
 
 	@Input() NoBorder = false;
@@ -53,11 +56,15 @@ export class ToolbarComponent implements OnInit {
 
 	@Input() AcceptFile = '.xlsx';
 
+	compactFilterCount = 0;
+	private filterCountSub?: Subscription;
+
 	constructor(
 		public translate: TranslateService,
 		public env: EnvService,
 		public modalController: ModalController,
-		public popoverController: PopoverController
+		public popoverController: PopoverController,
+		private mobileFilter: DataTableMobileFilterService
 	) {
 		this.env.getEvents().subscribe((data) => {
 			if (data.Code == 'app:closePopListToolBar') {
@@ -68,12 +75,35 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.filterCountSub = this.mobileFilter.activeCount$.subscribe((count) => {
+			this.compactFilterCount = count;
+		});
 		if (this.pageTitle) {
 			window.document.title = typeof this.pageTitle === 'string' ? this.pageTitle : '';
 		} else if (this.page.pageConfig?.pageTitle) {
 			this.translate.get(this.page.pageConfig.pageTitle).subscribe((text: string) => {
 				window.document.title = text;
 			});
+		}
+	}
+
+	ngOnDestroy() {
+		this.filterCountSub?.unsubscribe();
+	}
+
+	/** Compact screens open the sheet. Desktop Ctrl/Command+click opens the same sheet. */
+	onSearchClick(event?: MouseEvent) {
+		const modifier = !!(event?.ctrlKey || event?.metaKey);
+		const compact = typeof window !== 'undefined' && window.matchMedia?.(DATA_TABLE_COMPACT_MQ).matches;
+		if (modifier && this.mobileFilter.requestOpen('modifier')) {
+			event?.preventDefault();
+			return;
+		}
+		if (compact && this.mobileFilter.requestOpen('compact')) {
+			return;
+		}
+		if (this.page?.pageConfig) {
+			this.page.pageConfig.isShowSearch = !this.page.pageConfig.isShowSearch;
 		}
 	}
 

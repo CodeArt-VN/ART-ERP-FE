@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": ["jasmine"]
+  },
+  "files": ["src/test.ts", "src/polyfills.ts"],
+  "include": [
+    "src/app/guards/app.guard.spec.ts",
+    "src/app/guards/app.guard.ts",
+    "src/app/interfaces/auth.interfaces.ts",
+    "src/environments/environment.ts",
+    "src/app/services/static/event-type.ts"
+  ]
+}

@@ -1691,6 +1691,21 @@ ion-content.scrollx {
 	}
 }
 
+ion-modal.mobile-filter-modal {
+	--width: 100%;
+	--border-radius: 16px 16px 0 0;
+	align-items: flex-end;
+	justify-content: center;
+
+	&::part(content) {
+		border-radius: 16px 16px 0 0;
+	}
+
+	@media screen and (min-width: 768px) {
+		--width: min(440px, calc(100% - 48px));
+	}
+}
+
 .history-removed-row {
 	background-color: rgba(var(--ion-color-danger-rgb), 0.1) !important;
 	color: var(--ion-color-danger);

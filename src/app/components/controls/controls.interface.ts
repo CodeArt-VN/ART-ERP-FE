@@ -14,6 +14,7 @@ export interface InputControlField {
 		| 'select'
 		| 'ng-select'
 		| 'ng-select-branch'
+		| 'ng-select-warehouse'
 		| 'ng-select-status'
 		| 'ng-select-bp'
 		| 'ng-select-item'
@@ -77,6 +78,8 @@ export interface InputControlField {
 	branchConfig?: {
 		selectedBranch?: number;
 		showingType?: string;
+		/** When true, showingType does not re-enable a node that was already disabled. */
+		showingKeepDisabled?: boolean;
 		showingDisable?: boolean;
 		showingMode?: 'showAll' | 'showSelectedAndChildren';
 	};
