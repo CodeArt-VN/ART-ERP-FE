@@ -1,0 +1,299 @@
+<ion-header [translucent]="true">
+	<app-toolbar [page]="this"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" appScrollbarTheme class="scrollx left ui-kit-page" [ngClass]="{ withFeature: pageConfig.isShowFeature }">
+	<ion-fab *ngIf="pageConfig.isShowFeature" [ngClass]="{ 'ion-hide-md-down': pageConfig.isSubActive }" class="feature no-print" vertical="bottom" horizontal="start" slot="fixed">
+		<ion-list>
+			<ion-list-header>
+				<ion-label color="dark">{{ 'Components' | translate }}</ion-label>
+			</ion-list-header>
+			<ion-item lines="none" class="ui-kit-search-item">
+				<ion-searchbar
+					[(ngModel)]="sectionQuery"
+					(ionInput)="onSectionSearch($event)"
+					debounce="150"
+					placeholder="{{ 'Search components' | translate }}"
+				></ion-searchbar>
+			</ion-item>
+			<ion-item
+				*ngFor="let s of filteredSections"
+				[color]="s.id === activeSectionId ? 'primary' : ''"
+				[button]="true"
+				(click)="selectSection(s.id)"
+			>
+				<ion-icon slot="start" [name]="s.icon || 'cube-outline'" [color]="s.id === activeSectionId ? '' : 'medium'"></ion-icon>
+				<ion-label>{{ s.title | translate }}</ion-label>
+			</ion-item>
+			<ion-item *ngIf="!filteredSections.length" lines="none">
+				<ion-label color="medium">{{ 'No data' | translate }}</ion-label>
+			</ion-item>
+		</ion-list>
+	</ion-fab>
+
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+
+	<div class="safe-max-width ui-kit-body">
+		<div class="ui-kit-canvas box-shadow">
+			<div class="ui-kit-controls">
+				<div class="control-group">
+					<span class="control-label">{{ 'Appearance' | translate }}</span>
+					<ion-segment [value]="appearance" (ionChange)="setAppearance($event.detail.value)">
+						<ion-segment-button value="light">
+							<ion-label>{{ 'Light' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="dark">
+							<ion-label>{{ 'Dark' | translate }}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+				</div>
+				<div class="control-group" *ngIf="activeSectionId === 'app-toolbar'">
+					<span class="control-label">{{ 'Toolbar context' | translate }}</span>
+					<ion-segment [value]="toolbarContext" (ionChange)="setToolbarContext($event.detail.value)">
+						<ion-segment-button value="list">
+							<ion-label>{{ 'List' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="detail">
+							<ion-label>{{ 'Detail' | translate }}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+				</div>
+				<div class="control-group" *ngIf="activeSectionId === 'side-menu'">
+					<span class="control-label">{{ 'Menu item state' | translate }}</span>
+					<ion-segment [value]="menuItemState" (ionChange)="setMenuItemState($event.detail.value)">
+						<ion-segment-button value="default">
+							<ion-label>{{ 'Default' | translate }}</ion-label>
+						</ion-segment-button>
+						<ion-segment-button value="active">
+							<ion-label>{{ 'Active' | translate }}</ion-label>
+						</ion-segment-button>
+					</ion-segment>
+				</div>
+			</div>
+
+			<div class="canvas-heading" *ngIf="activeSection as sec">
+				<h2>{{ sec.title | translate }}</h2>
+			</div>
+
+			<!-- Foundations -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'foundations'">
+				<p class="section-hint">{{ 'CSS variables from the live theme.' | translate }}</p>
+				<div class="swatch-grid">
+					<div class="swatch" *ngFor="let c of colorTokens">
+						<div class="swatch-chip" [style.background]="'var(' + c.varName + ')'"></div>
+						<div class="swatch-meta">
+							<strong>{{ c.name | translate }}</strong>
+							<code>{{ c.varName }}</code>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Toolbar Icon Buttons -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'toolbar-icons'">
+				<p class="section-hint">{{ 'Icon-only toolbar buttons, not text pills.' | translate }}</p>
+				<div>
+					<ion-toolbar class="demo-toolbar">
+						<ion-buttons slot="end">
+							<ion-button title="{{ 'Add' | translate }}">
+								<ion-icon color="success" slot="icon-only" name="add-outline"></ion-icon>
+							</ion-button>
+							<ion-button title="{{ 'Search' | translate }}">
+								<ion-icon slot="icon-only" name="search-outline"></ion-icon>
+							</ion-button>
+							<ion-button title="{{ 'Refresh' | translate }}">
+								<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+							</ion-button>
+							<ion-button title="{{ 'Export' | translate }}">
+								<ion-icon color="warning" slot="icon-only" name="cloud-download-outline"></ion-icon>
+							</ion-button>
+							<ion-button title="{{ 'Delete' | translate }}">
+								<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
+							</ion-button>
+							<ion-button title="{{ 'Help' | translate }}">
+								<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+							</ion-button>
+						</ion-buttons>
+					</ion-toolbar>
+				</div>
+			</div>
+
+			<!-- App Toolbar -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'app-toolbar'">
+				<p class="section-hint">{{ 'Live app-toolbar — List vs Detail.' | translate }}</p>
+				<div class="toolbar-shell">
+					<ion-header>
+						<app-toolbar [page]="demoPage"></app-toolbar>
+					</ion-header>
+				</div>
+			</div>
+
+			<!-- Side Menu -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'side-menu'">
+				<p class="section-hint">{{ 'Side menu markup pattern from #app-menu.' | translate }}</p>
+				<div class="ui-kit-menu-demo" [style.width.px]="sizes.menuWidth">
+					<div class="app-logo-wrapper">
+						<a class="app-logo"></a>
+						<div class="branch-placeholder">{{ 'Branch placeholder' | translate }}</div>
+					</div>
+					<div class="menu-items">
+						<div class="menu-group">
+							<div class="menu-item menu-module">
+								<span class="menu-title">{{ 'Sample module' | translate }}</span>
+							</div>
+							<div class="menu-item menu-submodule">
+								<span class="menu-title">{{ 'Sample submodule' | translate }}</span>
+							</div>
+							<a class="menu-item" [class.is-active]="menuItemState === 'active'">
+								<ion-icon class="menu-icon" name="cube-outline"></ion-icon>
+								<span class="menu-title">{{ 'Sample page' | translate }}</span>
+							</a>
+							<a class="menu-item">
+								<ion-icon class="menu-icon" name="layers-outline"></ion-icon>
+								<span class="menu-title">{{ 'Default' | translate }}</span>
+							</a>
+						</div>
+					</div>
+					<div class="menu-footer">
+						<div class="menu-item user-row">
+							<ion-avatar>
+								<ion-img src="assets/avartar-empty.jpg"></ion-img>
+							</ion-avatar>
+							<div class="user-meta">
+								<strong>Demo User</strong>
+								<small>demo@local</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Page Title -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'page-title'">
+				<app-page-title class="ion-padding" [pageConfig]="pageConfig"></app-page-title>
+			</div>
+
+			<!-- Form controls -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'form-controls'">
+				<p class="section-hint">{{ 'Form inputs with measured height and radius.' | translate }}</p>
+				<form [formGroup]="sampleForm" class="form-sample">
+					<ion-grid fixed>
+						<ion-row>
+							<ion-col size="12" size-md="6">
+								<app-form-control [field]="{ id: 'Code', label: 'Code', type: 'text', form: sampleForm }"></app-form-control>
+								<app-form-control [field]="{ id: 'Name', label: 'Name', type: 'text', form: sampleForm }"></app-form-control>
+								<app-form-control [field]="{ id: 'Amount', label: 'Amount', type: 'number', form: sampleForm }"></app-form-control>
+							</ion-col>
+							<ion-col size="12" size-md="6">
+								<app-form-control [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: sampleForm }"></app-form-control>
+								<app-form-control [field]="{ id: 'IsActive', label: 'Active', type: 'checkbox', form: sampleForm }"></app-form-control>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</form>
+			</div>
+
+			<!-- Modal chrome — copy of currency-detail popup -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'modal-chrome'">
+				<p class="section-hint">{{ 'Popup chrome from currency-detail.' | translate }}</p>
+				<div class="modal-chrome-demo">
+					<ion-header [translucent]="true" collapse="fade">
+						<ion-toolbar>
+							<ion-title>{{ 'Currency' | translate }}</ion-title>
+							<ion-buttons slot="primary">
+								<ion-button title="{{ 'Close' | translate }}" color="secondary">
+									<ion-icon slot="icon-only" name="close"></ion-icon>
+								</ion-button>
+							</ion-buttons>
+						</ion-toolbar>
+					</ion-header>
+					<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+						<form [formGroup]="sampleForm">
+							<ion-grid fixed>
+								<ion-row>
+									<ion-col size="12" size-md="6">
+										<app-form-control [field]="{ id: 'Code', label: 'Code', type: 'text', form: sampleForm }"></app-form-control>
+										<app-form-control [field]="{ id: 'Name', label: 'Name', type: 'text', form: sampleForm }"></app-form-control>
+									</ion-col>
+									<ion-col size="12" size-md="6">
+										<app-form-control [field]="{ id: 'Remark', label: 'Remark', type: 'textarea', form: sampleForm }"></app-form-control>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</form>
+					</ion-content>
+					<ion-footer [translucent]="true" collapse="fade">
+						<ion-toolbar>
+							<div slot="start">
+								<ion-button fill="outline" color="danger">{{ 'Delete' | translate }}</ion-button>
+							</div>
+							<div slot="end">
+								<ion-button fill="outline" color="warning">{{ 'Cancel' | translate }}</ion-button>
+								<ion-button [strong]="true">{{ 'Save' | translate }}</ion-button>
+							</div>
+						</ion-toolbar>
+					</ion-footer>
+				</div>
+			</div>
+
+			<!-- Data table sample -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'data-table'">
+				<p class="section-hint">{{ 'Static table styled like app list rows.' | translate }}</p>
+				<div class="table-sample">
+					<div class="table-header row">
+						<div class="col-id">#</div>
+						<div class="col-code">{{ 'Code' | translate }}</div>
+						<div class="col-name flex-break">{{ 'Name' | translate }}</div>
+						<div class="col-status">{{ 'Status' | translate }}</div>
+					</div>
+					<div class="table-row row" *ngFor="let r of tableRows">
+						<div class="col-id">{{ r.Id }}</div>
+						<div class="col-code">{{ r.Code }}</div>
+						<div class="col-name flex-break">{{ r.Name }}</div>
+						<div class="col-status">{{ r.Status }}</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Layout shells -->
+			<div class="canvas-section" *ngIf="activeSectionId === 'layout-shells'">
+				<div class="shells-row">
+					<div class="shell desktop-shell">
+						<div class="shell-label">{{ 'Desktop list shell' | translate }}</div>
+						<div class="shell-body">
+							<aside class="shell-menu" [style.width.px]="sizes.menuWidth">
+								<div class="shell-logo"></div>
+								<div class="shell-menu-item is-active"></div>
+								<div class="shell-menu-item"></div>
+								<div class="shell-menu-item"></div>
+							</aside>
+							<div class="shell-content">
+								<div class="shell-toolbar" [style.height.px]="sizes.toolbarHeight"></div>
+								<div class="shell-page">
+									<div class="shell-title-bar"></div>
+									<div class="shell-rows">
+										<div class="shell-row" *ngFor="let i of [1, 2, 3, 4]"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="shell mobile-shell">
+						<div class="shell-label">{{ 'Mobile sketch' | translate }}</div>
+						<div class="phone-frame">
+							<div class="shell-toolbar" [style.height.px]="sizes.toolbarHeight"></div>
+							<div class="shell-page">
+								<div class="shell-title-bar"></div>
+								<div class="shell-rows">
+									<div class="shell-row" *ngFor="let i of [1, 2, 3]"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ion-padding"></div>
+</ion-content>

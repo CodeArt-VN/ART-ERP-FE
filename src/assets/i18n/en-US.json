@@ -3534,5 +3534,11 @@
 	"{value} quotations sent for approval": "{value} quotations sent for approval",
 	"{value} sent to Kitchen {value1} {value2}": "{value} sent to Kitchen {value1} {value2}",
 	"Đề nghị": "Recommend",
-	"Đối tượng": "Object"
+	"Đối tượng": "Object",
+	"Accounts by company": "Accounts by company",
+	"Select a company to configure accounts": "Select a company to configure accounts",
+	"Select company": "Select company",
+	"Inventory account": "Inventory account",
+	"Save the group before configuring accounts": "Save the group before configuring accounts",
+	"Accounts": "Accounts"
 }

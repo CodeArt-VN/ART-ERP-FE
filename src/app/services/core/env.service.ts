@@ -600,13 +600,16 @@ export class EnvService {
 			if (!this.user || !hasValidUserId(this.user.Id)) {
 				resolve(false);
 			} else {
-				if (functionCode == '/default') {
-					resolve(false);
-				} else if (functionCode == '/not-found' || functionCode == '/unauthorized') {
+				const normalized = (path.startsWith('/') ? path : `/${path}`).replace(/\/+$/, '') || '/';
+				// Always-allowed authenticated pages (no SYS_Form row required)
+				const openPaths = ['/not-found', '/unauthorized', '/about', '/ui-kit'];
+				if (openPaths.includes(normalized)) {
 					resolve(true);
+				} else if (normalized == '/default') {
+					resolve(false);
 				} else {
-					functionCode = functionCode + '/';
-					let form = this.user.Forms.find((d) => functionCode.startsWith('/' + d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2));
+					const functionCodeWithSlash = normalized + '/';
+					let form = this.user.Forms.find((d) => functionCodeWithSlash.startsWith('/' + d.Code + '/') && (d.Type == 0 || d.Type == 1 || d.Type == 2));
 					resolve(form != null);
 				}
 			}

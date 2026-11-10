@@ -3535,5 +3535,11 @@
 	"{value} quotations sent for approval": "Đã gửi duyệt {value} báo giá",
 	"{value} sent to Kitchen {value1} {value2}": "Đã chuyển {value} xuống bếp {value1} {value2}",
 	"Đề nghị": "Đề nghị",
-	"Đối tượng": "Đối tượng"
+	"Đối tượng": "Đối tượng",
+	"Accounts by company": "Tài khoản theo pháp nhân",
+	"Select a company to configure accounts": "Chọn pháp nhân để cấu hình tài khoản",
+	"Select company": "Chọn pháp nhân",
+	"Inventory account": "Tài khoản tồn kho",
+	"Save the group before configuring accounts": "Lưu nhóm trước khi cấu hình tài khoản",
+	"Accounts": "Tài khoản"
 }
