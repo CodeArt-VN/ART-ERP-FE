@@ -49,6 +49,7 @@ app-data-table,
 		top: 0;
 		padding: 0;
 		z-index: 10;
+		background: transparent;
 	}
 
 	header,
@@ -60,8 +61,7 @@ app-data-table,
 		min-height: 35px;
 		//border-bottom: solid 2px rgba(var(--ion-color-primary-rgb, 0, 0, 0), .9);
 		border-bottom: solid 1px var(--menu-right-border-color);
-		//background: rgba(var(--table-header-background-rgb, 0, 0, 0), .6) !important;
-		@include mixins.translucent;
+		background: transparent;
 
 		&.filter {
 			margin-top: -1px;
@@ -136,26 +136,45 @@ app-data-table,
 			}
 		}
 
+		// Glass via ::before. Do NOT set position:relative on .col-sticky — it would override position:sticky.
 		datatable-header-cell,
 		.cell {
+			isolation: isolate;
 			color: var(--ion-color-dark);
 			white-space: normal;
-			background: rgba(var(--table-header-background-rgb, 0, 0, 0), .6) !important;
+			background: transparent !important;
+			background-image: none !important;
 
-			&.selected {
-				background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				pointer-events: none;
+				background: rgba(var(--table-header-background-rgb, 248, 249, 251), 0.55);
+				-webkit-backdrop-filter: saturate(180%) blur(20px);
+				backdrop-filter: saturate(180%) blur(20px);
+			}
+
+			&.selected::before {
+				background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.3);
 			}
 		}
 
-		// .col-sticky {
-		// 	position: unset;
-		// 	z-index: 1;
-		// 	left: 0;
-		// 	background-color: unset;
-		// 	backdrop-filter: unset;
-		// 	border-right: unset;
-		// 	border-left: unset;
-		// }
+		datatable-header-cell:not(.col-sticky),
+		.cell:not(.col-sticky) {
+			position: relative; // containing block for ::before only on non-sticky header cells
+		}
+
+		datatable-header-cell.col-sticky,
+		.cell.col-sticky {
+			// keep position:sticky from .col-sticky
+			z-index: 3;
+
+			&::before {
+				background: rgba(var(--table-row-background-rgb, 255, 255, 255), 0.55);
+			}
+		}
 	}
 
 	.table-body {
@@ -170,20 +189,19 @@ app-data-table,
 		border-bottom: solid 1px var(--menu-right-border-color);
 		position: relative;
 
-		&:hover {
+		&:not(.header):hover {
 			background-color: var(--table-row-hover-background);
-			.col-sticky {
-				background-color: var(--table-cell-sticky-background);
-				//backdrop-filter: blur(10px);
+			.col-sticky::before {
+				background: rgba(var(--table-row-background-rgb, 255, 255, 255), 0.72);
 			}
 		}
 
-		&.selected {
+		&:not(.header).selected {
 			background-color: var(--table-row-selected-background);
 
-			.col-sticky {
-				background-color: var(--table-cell-sticky-background);
-				//backdrop-filter: blur(10px);
+			.col-sticky::before {
+				background: rgba(var(--table-row-background-rgb, 255, 255, 255), 0.65);
+				box-shadow: inset 0 0 0 999px var(--table-row-selected-background);
 			}
 		}
 		&.divider{
@@ -668,13 +686,25 @@ app-data-table,
 
 	.col-sticky {
 		position: sticky;
-		z-index: 1;
+		z-index: 2;
 		left: 0;
-		//background: var(--table-header-background);
-		background-color: var(--table-cell-sticky-background);
-		//backdrop-filter: blur(10px);
+		isolation: isolate;
+		background: transparent !important;
+		background-image: none !important;
 		border-right: solid var(--menu-right-border-color);
 		border-left: solid var(--menu-right-border-color);
+
+		// Glass layer behind cell content (works when filter on the sticky box itself does not).
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			pointer-events: none;
+			background: rgba(var(--table-row-background-rgb, 255, 255, 255), 0.55);
+			-webkit-backdrop-filter: saturate(180%) blur(20px);
+			backdrop-filter: saturate(180%) blur(20px);
+		}
 	}
 
 	.col-code {

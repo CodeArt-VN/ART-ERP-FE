@@ -71,12 +71,25 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 
 	/** Align the target row: center (default) or start (top of viewport, e.g. first search hit). */
 	@Input() scrollAlign: 'center' | 'start' = 'center';
+	/**
+	 * Subtract from scroll target when scrollAlign=start (sticky/translucent header height).
+	 * Row lands just below the header instead of under it / at scrollport top.
+	 */
+	@Input() scrollInsetTop = 0;
+	/**
+	 * Extra px after the last row inside the scroll spacer (page/container).
+	 * Lets the last card clear sticky chrome / safe-area — not a DOM sibling outside the viewport.
+	 */
+	@Input() endSpacerPx = 0;
+	/** When > 0, scrollToId animates scrollTop over this many ms (ease-out). 0 = instant. */
+	@Input() scrollDurationMs = 0;
 
 	/** Scroll so the item with this id is in view (center). Queues until layout is ready. */
 	@Input() set scrollToId(id: string | number | null | undefined) {
 		if (id == null || id === '') {
 			this.pendingScrollToId = null;
 			this.scrollRetryCount = 0;
+			this.cancelScrollAnimation();
 			return;
 		}
 		this.pendingScrollToId = id;
@@ -111,6 +124,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 	private pendingScrollToId: string | number | null = null;
 	private scrollRetryCount = 0;
 	private scrollRetryTimer: ReturnType<typeof setTimeout> | null = null;
+	private scrollAnimFrame: number | null = null;
 	private resizeSettleTimer: ReturnType<typeof setTimeout> | null = null;
 	private pendingWidthRemeasure = false;
 	private pendingHeightRelayout = false;
@@ -162,6 +176,9 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 			}
 			this.tryScrollToId();
 		}
+		if (changes['endSpacerPx'] && !changes['endSpacerPx'].firstChange && this.scrollEl) {
+			this.recompute();
+		}
 		if (changes['mode'] && !changes['mode'].firstChange) {
 			this.scrollSub?.unsubscribe();
 			this.scrollSub = undefined;
@@ -175,6 +192,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 		this.resizeObserver?.disconnect();
 		this.visibilityObserver?.disconnect();
 		this.clearResizeSettleTimer();
+		this.cancelScrollAnimation();
 		if (this.scrollRetryTimer != null) {
 			clearTimeout(this.scrollRetryTimer);
 			this.scrollRetryTimer = null;
@@ -272,10 +290,62 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 		const viewportH = this.scrollEl.clientHeight;
 		const rowH = this.defaultItemSize;
 		const alignOffset = this.scrollAlign === 'start' ? 0 : Math.max(0, (viewportH - rowH) / 2);
-		const target = Math.max(0, offset - alignOffset);
+		// Page mode: virtualProgress = scrollTop - viewportOffset. Subtract scrollInsetTop (header)
+		// so align=start sits under the sticky header, not under the scrollport top / hidden.
+		const viewportOffset = this.mode === 'page' ? this.measureViewportOffset() : 0;
+		const inset = this.scrollAlign === 'start' ? Math.max(0, Number(this.scrollInsetTop) || 0) : 0;
+		const target = Math.max(0, offset - alignOffset + viewportOffset - inset);
+		const duration = Number(this.scrollDurationMs) || 0;
+		if (duration > 0) {
+			this.animateScrollTo(target, duration);
+			return;
+		}
 		this.scrollEl.scrollTop = target;
 		this.recompute();
 		this.verifyScrollToId(target);
+	}
+
+	private cancelScrollAnimation(): void {
+		if (this.scrollAnimFrame != null) {
+			cancelAnimationFrame(this.scrollAnimFrame);
+			this.scrollAnimFrame = null;
+		}
+	}
+
+	private animateScrollTo(target: number, durationMs: number): void {
+		if (!this.scrollEl) return;
+		this.cancelScrollAnimation();
+		const el = this.scrollEl;
+		const start = el.scrollTop;
+		const delta = target - start;
+		if (Math.abs(delta) < 1) {
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+			this.recompute();
+			return;
+		}
+		const t0 = typeof performance !== 'undefined' ? performance.now() : Date.now();
+		const step = (now: number) => {
+			if (!this.scrollEl || this.scrollEl !== el) {
+				this.scrollAnimFrame = null;
+				return;
+			}
+			const t = Math.min(1, (now - t0) / durationMs);
+			// easeOutQuad
+			const eased = 1 - (1 - t) * (1 - t);
+			el.scrollTop = start + delta * eased;
+			this.ngZone.run(() => this.recompute());
+			if (t < 1) {
+				this.scrollAnimFrame = requestAnimationFrame(step);
+				return;
+			}
+			this.scrollAnimFrame = null;
+			el.scrollTop = target;
+			this.ngZone.run(() => this.recompute());
+			this.pendingScrollToId = null;
+			this.scrollRetryCount = 0;
+		};
+		this.scrollAnimFrame = requestAnimationFrame(step);
 	}
 
 	private verifyScrollToId(target: number): void {
@@ -587,7 +657,7 @@ export class VirtualViewportComponent<T = any> implements OnInit, AfterViewInit,
 		this.renderStart = range.start;
 		this.renderedItems = range.end >= range.start ? this.itemsArr.slice(range.start, range.end + 1) : [];
 		this.contentTransform = `translateY(${this.engine.getOffset(range.start)}px)`;
-		this.totalHeight = this.engine.getTotalHeight();
+		this.totalHeight = this.engine.getTotalHeight() + Math.max(0, Number(this.endSpacerPx) || 0);
 		this.pendingRelayout = false;
 
 		this.scrollProgress.emit({ distanceToEndPx: this.totalHeight - virtualProgress - clientHeight });

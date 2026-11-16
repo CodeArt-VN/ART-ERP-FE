@@ -503,6 +503,103 @@ export var lib = {
 		let value = getComputedStyle(document.querySelector('ion-app')).getPropertyValue(variableName);
 		return value ? value.trim() : '';
 	},
+
+	/** Primary chart text (legend / title) — follows light/dark via --ion-color-dark. */
+	chartTextColor(): string {
+		return lib.getCssVariableValue('--ion-color-dark') || lib.getCssVariableValue('--ion-text-color') || '';
+	},
+
+	/** Supporting axis labels — muted so they don't outshine series (both themes). */
+	chartAxisLabelColor(): string {
+		return lib.getCssVariableValue('--ion-color-medium') || lib.chartTextColor();
+	},
+
+	/** Supporting grid / split lines — border token, quieter than axis text. */
+	chartSplitLineColor(): string {
+		return lib.getCssVariableValue('--menu-right-border-color') || lib.getCssVariableValue('--ion-color-step-200') || '';
+	},
+
+	/** Ionic color token (success/danger/…) → CSS color from --ion-color-{token}. Pass-through hex/rgb. */
+	resolveIonColorCss(colorToken: string): string {
+		if (colorToken == null || colorToken === '') return '';
+		const token = String(colorToken).trim();
+		if (!token) return '';
+		if (token.startsWith('#') || token.startsWith('rgb') || token.startsWith('hsl')) return token;
+		return lib.getCssVariableValue('--ion-color-' + token) || '';
+	},
+
+	/**
+	 * Find status row in a flat children list (from env.getStatus(parentCode)) by Name, Code, or Id.
+	 */
+	findStatusInList(statusList: any[], statusKey: string): any | null {
+		if (!statusList?.length || statusKey == null || statusKey === '') return null;
+		const key = String(statusKey).trim().toLowerCase();
+		const idKey = String(statusKey).trim();
+		return (
+			statusList.find(
+				(d) => String(d.Name || '').toLowerCase() === key || String(d.Code || '').toLowerCase() === key || String(d.Id) === idKey
+			) || null
+		);
+	},
+
+	/** @deprecated Prefer findStatusInList with env.getStatus(parentCode) children. */
+	findStatusChild(statusList: any[], parentCode: string, statusKey: string): any | null {
+		if (!statusList?.length || !parentCode || statusKey == null || statusKey === '') return null;
+		const parent = statusList.find((d) => d.Code == parentCode);
+		if (!parent) return lib.findStatusInList(statusList, statusKey);
+		const key = String(statusKey).trim().toLowerCase();
+		const idKey = String(statusKey).trim();
+		return (
+			statusList.find((d) => {
+				if (d.IDParent != parent.Id) return false;
+				return String(d.Name || '').toLowerCase() === key || String(d.Code || '').toLowerCase() === key || String(d.Id) === idKey;
+			}) || null
+		);
+	},
+
+	/** Map status Name/Code/Id → CSS color from a getStatus() children list. */
+	getStatusColorCssFromList(statusList: any[], statusKey: string): string {
+		const row = lib.findStatusInList(statusList, statusKey);
+		if (!row) return '';
+		return lib.resolveIonColorCss(row.Color || row.BadgeColor);
+	},
+
+	/** @deprecated Prefer getStatusColorCssFromList after env.getStatus(parentCode). */
+	getStatusColorCss(statusList: any[], parentCode: string, statusKey: string): string {
+		const row = lib.findStatusChild(statusList, parentCode, statusKey);
+		if (!row) return '';
+		return lib.resolveIonColorCss(row.Color || row.BadgeColor);
+	},
+
+	/** Paint pie series data[].itemStyle.color from a getStatus() children list (by data[].name). */
+	applyStatusColorsToPieOptionFromList(option: any, statusList: any[]): void {
+		if (!option?.series || !statusList?.length) return;
+		const seriesArr = Array.isArray(option.series) ? option.series : [option.series];
+		seriesArr.forEach((s) => {
+			if (!s?.data || !Array.isArray(s.data)) return;
+			s.data.forEach((item) => {
+				if (!item || item.name == null) return;
+				const css = lib.getStatusColorCssFromList(statusList, item.name);
+				if (!css) return;
+				item.itemStyle = Object.assign({}, item.itemStyle || {}, { color: css });
+			});
+		});
+	},
+
+	/** @deprecated Prefer applyStatusColorsToPieOptionFromList after env.getStatus(parentCode). */
+	applyStatusColorsToPieOption(option: any, statusList: any[], parentCode: string): void {
+		if (!option?.series || !parentCode) return;
+		const seriesArr = Array.isArray(option.series) ? option.series : [option.series];
+		seriesArr.forEach((s) => {
+			if (!s?.data || !Array.isArray(s.data)) return;
+			s.data.forEach((item) => {
+				if (!item || item.name == null) return;
+				const css = lib.getStatusColorCss(statusList, parentCode, item.name);
+				if (!css) return;
+				item.itemStyle = Object.assign({}, item.itemStyle || {}, { color: css });
+			});
+		});
+	},
 	//tree json
 	listToTree(list, childrenFieldName = 'children', assign = null) {
 		var map = {},

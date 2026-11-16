@@ -1,17 +1,54 @@
+:host {
+	display: block;
+	transition: all 150ms linear 0s;
+
+	&.full {
+		position: relative;
+		right: auto;
+		cursor: auto;
+		width: 100%;
+		min-width: 0;
+		flex: 1 1 100%;
+		// Explicit height so % / flex children (app-e-chart) can grow after mini→full.
+		height: 590px;
+		min-height: 590px;
+		background: var(--table-row-background);
+		border-radius: 6px;
+		margin-top: 20px;
+	}
+
+	&.mini {
+		position: relative;
+		cursor: pointer;
+		flex: 0 0 auto;
+		flex-shrink: 0;
+		height: 100px;
+		width: 200px;
+		min-width: 200px;
+		right: 16px;
+		top: 0;
+	}
+
+	&.dashboard {
+		height: 100%;
+		width: 100%;
+	}
+}
+
 .chart-holder {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	position: relative;
 	height: 100%;
 	border-radius: 6px;
 
 	&.box-shadow {
-		background: var(--table-row-background);
-		background: rgba(255, 255, 255, 0.2);
+		background: rgba(var(--table-header-background-rgb, 248, 249, 251), 0.6);
+		border: 1px solid var(--menu-right-border-color);
 		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-		backdrop-filter: blur(5px);
-		-webkit-backdrop-filter: blur(5px);
-		border: 1px solid rgba(255, 255, 255, 0.3);
+		-webkit-backdrop-filter: saturate(180%) blur(20px);
+		backdrop-filter: saturate(180%) blur(20px);
 	}
 
 	// &:hover {
@@ -78,8 +115,13 @@
 
 	.app-chart {
 		flex: 1 1 auto;
+		min-height: 0;
 		display: flex;
 		flex-direction: column-reverse;
+	}
+
+	&.full .app-chart {
+		min-height: 320px;
 	}
 
 	.loading {

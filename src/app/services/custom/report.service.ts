@@ -85,8 +85,15 @@ export class ReportService extends BI_ReportProvider {
 		// Notify commponents to change data to refresh / update UI
 	}
 
+	/** In-flight read so embedded charts outside BI pages can share one load. */
+	private _readReportsInflight: Promise<void> | null = null;
+
 	readReports(forceReload = false): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
+		if (!forceReload && this._readReportsInflight) {
+			return this._readReportsInflight;
+		}
+
+		this._readReportsInflight = new Promise<void>((resolve, reject) => {
 			this.read(null, forceReload)
 				.then((resp: any) => {
 					this.items = resp['data'];
@@ -103,8 +110,13 @@ export class ReportService extends BI_ReportProvider {
 				})
 				.catch((error) => {
 					reject(error);
+				})
+				.finally(() => {
+					this._readReportsInflight = null;
 				});
 		});
+
+		return this._readReportsInflight;
 	}
 
 	updateChartConfigFromScript(report: BIReport, chartConfig) {

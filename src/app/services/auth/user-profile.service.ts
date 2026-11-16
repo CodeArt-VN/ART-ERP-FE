@@ -14,6 +14,7 @@ import { UserProfile, UserSettings } from '../../interfaces/auth.interfaces';
 import { dogF } from 'src/environments/environment';
 import { SYS_StatusProvider, SYS_TypeProvider, SYS_UserSettingProvider } from '../static/services.service';
 import { CacheManagementService } from '../core/cache-management.service';
+import { EVENT_TYPE } from '../static/event-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -66,6 +67,7 @@ export class UserProfileService {
 	async changeTheme(theme: string): Promise<void> {
 		this.env.user.UserSetting.Theme.Value = theme;
 		this.cache.set('Theme', theme, { enable: true, timeToLive: 365 * 24 * 60 });
+		this.env.publishEvent({ Code: EVENT_TYPE.APP.CHANGE_THEME, Value: theme });
 		this.userSettingProvider.save(this.env.user.UserSetting.Theme).then((response: any) => {
 			this.userContextService.setCurrentUser(this.env.user);
 		});

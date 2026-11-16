@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ReportService } from 'src/app/services/custom/report.service';
 import { lib } from 'src/app/services/static/global-functions';
 
 import { DynamicScriptLoaderService } from 'src/app/services/custom/custom.service';
 import { thirdPartyLibs } from 'src/app/services/static/thirdPartyLibs';
 import { EnvService } from 'src/app/services/core/env.service';
+import { EVENT_TYPE } from 'src/app/services/static/event-type';
 import { dogF } from 'src/environments/environment';
 
 declare var echarts: any;
@@ -14,9 +16,11 @@ declare var echarts: any;
 	template: '<div style="height: 100%;" [id]="elId"></div>',
 	standalone: false,
 })
-export class EChartComponent implements OnInit {
+export class EChartComponent implements OnInit, OnDestroy {
 	elId: string = ''; //Chart element Id
 	chart = null; //Chart object
+	private themeSub: Subscription;
+	private themeRefreshTimer: ReturnType<typeof setTimeout>;
 
 	@Input() chartType: string = 'auto';
 	@Input() viewMode: 'full' | 'mini' | 'dashboard';
@@ -41,7 +45,16 @@ export class EChartComponent implements OnInit {
 		this.elId = lib.generateCode();
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.themeSub = this.env.getEvents().subscribe((data) => {
+			if (data?.Code === EVENT_TYPE.APP.CHANGE_THEME || data?.Code === EVENT_TYPE.APP.CHANGE_LANGUAGE) {
+				clearTimeout(this.themeRefreshTimer);
+				// Theme: wait for CSS vars. Language: rebuild labels (status translateResource).
+				const delay = data?.Code === EVENT_TYPE.APP.CHANGE_THEME ? 100 : 0;
+				this.themeRefreshTimer = setTimeout(() => this.updateChart(), delay);
+			}
+		});
+	}
 
 	ngAfterViewInit() {
 		this.loadEchartLib();
@@ -67,6 +80,8 @@ export class EChartComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
+		clearTimeout(this.themeRefreshTimer);
+		this.themeSub?.unsubscribe();
 		this.chart?.dispose();
 	}
 

@@ -10,7 +10,7 @@ import {
 import { EnvService } from '../services/core/env.service';
 import { UserContextService } from '../services/auth/user-context.service';
 import { UserProfileService } from '../services/auth/user-profile.service';
-import { dogF } from 'src/environments/environment';
+import { dogF, isOpenFormPath } from 'src/environments/environment';
 import { EVENT_TYPE } from '../services/static/event-type';
 import { hasValidUserId } from '../interfaces/auth.interfaces';
 
@@ -147,7 +147,7 @@ export async function recheckCurrentRoutePermission(
 	profileService?: UserProfileService,
 ): Promise<void> {
 	const path = router.url.split('?')[0].split('#')[0];
-	if (!path || path === '/login' || path === UNAUTHORIZED_PATH || path === '/not-found' || path === '/about' || path === '/ui-kit') {
+	if (isOpenFormPath(path)) {
 		return;
 	}
 
@@ -222,7 +222,7 @@ async function runAuthGuard(
 	return denied;
 }
 
-/** Đã authenticated (có token) — dùng cho /unauthorized, /ui-kit. Phải await env.ready kẻo F5 đá login sớm. */
+/** Đã authenticated (có token) — dùng cho environment.openFormPaths (ui-kit, mockup, …). Phải await env.ready kẻo F5 đá login sớm. */
 export const authenticatedGuard: CanActivateFn = async (_next, state) => {
 	const router = inject(Router);
 	const env = inject(EnvService);

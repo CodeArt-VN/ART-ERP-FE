@@ -279,6 +279,22 @@ input[type='number'] {
 	width: 100%;
 }
 
+// List tables sit in `.safe-max-width` without ion-padding; page-title usually has it.
+// On narrow main columns that is fine. Once the main column is at least --grid-ll,
+// safe-max-width locks to max-width and the table looks 32px wider than title content —
+// add the same inline padding only in that case (no list markup / report class needed).
+ion-content.scrollx {
+	container-type: inline-size;
+	container-name: page-main;
+}
+
+@container page-main (min-width: 1440px) {
+	.safe-max-width:has(> app-data-table):not(.report-table-stage) {
+		box-sizing: border-box;
+		padding-inline: var(--ion-padding, 16px);
+	}
+}
+
 .fullfill {
 	position: absolute;
 	z-index: 1;
@@ -416,23 +432,13 @@ input[type='number'] {
 		inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
 }
 
+// Match menu / table header glass (same tokens as data-table sticky header).
 ion-app {
 	.glass {
-		background: rgba(255, 255, 255, 0.2);
+		background: rgba(var(--table-header-background-rgb, 248, 249, 251), 0.6);
+		border: 1px solid var(--menu-right-border-color);
 		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-		backdrop-filter: blur(5px);
-		-webkit-backdrop-filter: blur(5px);
-		border: 1px solid rgba(255, 255, 255, 0.3);
-	}
-
-	&.dark {
-		.glass {
-			background: rgba(48, 53, 60, 0.2);
-			box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-			backdrop-filter: blur(5px);
-			-webkit-backdrop-filter: blur(5px);
-			border: 1px solid rgba(106, 106, 106, 0.3);
-		}
+		@include mixins.translucent;
 	}
 }
 
@@ -1274,6 +1280,62 @@ ion-content.cameraFrame {
 			top: 0px;
 			font-size: calc(10 / 16 * 3rem);
 		}
+	}
+}
+
+/* sale-order3 product catalog: always full screen height */
+ion-modal.so3-product-category-modal {
+	--height: 100%;
+	--width: 100%;
+	--max-height: 100%;
+	--border-radius: 0;
+	--background: var(--main-background-top);
+}
+
+/* sale-order3 cart + customer picker: sheet style (breakpoints on create) */
+ion-modal.so3-cart-modal,
+ion-modal.so3-customer-picker-modal {
+	--width: 100%;
+	--max-width: 100%;
+	--border-radius: 16px 16px 0 0;
+	--box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.18);
+	--background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
+	align-items: flex-end;
+	justify-content: center;
+
+	&::part(content) {
+		border-radius: 16px 16px 0 0;
+	}
+}
+
+@media only screen and (min-width: 500px) {
+	ion-modal.so3-cart-modal,
+	ion-modal.so3-customer-picker-modal {
+		--width: min(560px, calc(100vw - 32px));
+		--max-width: 560px;
+		--border-radius: 16px;
+		align-items: center;
+
+		&::part(content) {
+			border-radius: 16px;
+		}
+	}
+}
+
+/* sale-order3 invoice: compact sheet, not full screen — keep backdrop over cart modal */
+ion-modal.so3-invoice-modal {
+	--width: min(480px, calc(100vw - 24px));
+	--max-width: 480px;
+	--height: min(62vh, 520px);
+	--max-height: min(62vh, 520px);
+	--border-radius: 16px;
+	--box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+	--backdrop-opacity: 0.4;
+	align-items: center;
+
+	&::part(backdrop) {
+		background: #000;
+		opacity: var(--backdrop-opacity);
 	}
 }
 

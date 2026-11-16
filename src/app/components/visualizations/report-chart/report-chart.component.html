@@ -129,7 +129,7 @@
 	</div>
 
 	<!-- statistic in full mode -->
-	<div class="statistic-row" *ngIf="viewMode == 'full'">
+	<div class="statistic-row" *ngIf="viewMode == 'full' && !isLoading && rptLoaded">
 		<app-card-multi-row
 			[title]="m.Title || m.Property"
 			[value]="m.Value"
@@ -158,7 +158,7 @@
 	<!-- chart -->
 	<app-e-chart
 		class="app-chart"
-		*ngIf="(viewMode != 'dashboard' || (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')) && rptLoaded && (rawData.length || report.DataConfig.Schema.Id == null)"
+		*ngIf="!isLoading && (viewMode != 'dashboard' || (viewMode == 'dashboard' && _gridItem?.Config?.Type == 'Chart')) && rptLoaded && (rawData.length || report.DataConfig.Schema.Id == null)"
 		[viewMode]="viewMode"
 		[chartType]="chartType"
 		[chartScript]="chartScript"
@@ -176,7 +176,7 @@
 	></app-e-chart>
 
 	<!-- timeframe picker in full mode-->
-	<form [formGroup]="form" (submit)="onChangeTimeRange($event)">
+	<form *ngIf="form && !isLoading" [formGroup]="form" (submit)="onChangeTimeRange($event)">
 		<ion-label color="primary" class="ion-text-nowrap ion-no-margin flex-nowrap" *ngIf="viewMode != 'mini'">
 			<app-input-control
 				[field]="{
@@ -191,8 +191,8 @@
 
 			<p>
 				<ng-container formGroupName="TimeFrame">
-					<span *ngIf="dataFetchDate" [class]="'updatedtime updatedtime-label' + report.Id">
-						<small>{{ 'Updated' | translate }}: {{ dataFetchDate | dateFriendly | async }}</small>
+					<span *ngIf="dataFetchDate as updatedAt" [class]="'updatedtime updatedtime-label' + report.Id">
+						<small>{{ 'Updated' | translate }}: {{ updatedAt | dateFriendly | async }}</small>
 					</span>
 				</ng-container>
 			</p>
