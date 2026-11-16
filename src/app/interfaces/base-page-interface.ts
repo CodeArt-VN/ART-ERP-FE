@@ -10,6 +10,8 @@ export interface PageConfig {
 	pageRemark: string;
 	pageIcon: string;
 	pageColor: string;
+	/** Optional BI report Id shown as mini chart in `app-page-title`. */
+	reportId?: number;
 
 	// Page behavior flags
 	isDetailPage: boolean;

@@ -5,7 +5,7 @@ import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer, Subject, fromEvent, merge, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment, dogF } from 'src/environments/environment';
+import { environment, dogF, isOpenFormPath } from 'src/environments/environment';
 import { lib } from '../static/global-functions';
 import { DynamicTranslateLoaderService } from '../util/translate-loader.service';
 import { CacheManagementService } from './cache-management.service';
@@ -600,10 +600,8 @@ export class EnvService {
 			if (!this.user || !hasValidUserId(this.user.Id)) {
 				resolve(false);
 			} else {
-				const normalized = (path.startsWith('/') ? path : `/${path}`).replace(/\/+$/, '') || '/';
-				// Always-allowed authenticated pages (no SYS_Form row required)
-				const openPaths = ['/not-found', '/unauthorized', '/about', '/ui-kit'];
-				if (openPaths.includes(normalized)) {
+				const normalized = (path.startsWith('/') ? path : `/${path}`).split('?')[0].replace(/\/+$/, '') || '/';
+				if (isOpenFormPath(normalized)) {
 					resolve(true);
 				} else if (normalized == '/default') {
 					resolve(false);

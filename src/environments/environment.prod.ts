@@ -48,7 +48,17 @@ export const environment = {
 		enableDetailedLogs: false // Enable verbose migration logs
 	},
 	sessionTimeout: 0, // In minutes
+
+	/** Authenticated pages that do not require a SYS_Form row. */
+	openFormPaths: ['/login', '/not-found', '/unauthorized', '/about', '/ui-kit'],
 };
+
+/** Normalize then match {@link environment.openFormPaths}. */
+export function isOpenFormPath(path: string | null | undefined): boolean {
+	if (!path) return true;
+	const normalized = (path.startsWith('/') ? path : `/${path}`).split('?')[0].replace(/\/+$/, '') || '/';
+	return environment.openFormPaths.indexOf(normalized) >= 0;
+}
 
 // dog = dev log;
 export let dogF = false; // Framework log;

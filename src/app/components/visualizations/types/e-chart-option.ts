@@ -21,10 +21,13 @@ export class EChartDefaultOption {
 	/** default option */
 
 	get eChartsOption(): any {
+		const text = lib.chartTextColor();
+		const axis = lib.chartAxisLabelColor();
+		const split = lib.chartSplitLineColor();
 		return {
 			backgroundColor: lib.getCssVariableValue('--ion-color-tint'),
 			textStyle: {
-				color: lib.getCssVariableValue('--ion-color-dark'),
+				color: text,
 			},
 			legend: {
 				show: true,
@@ -33,16 +36,16 @@ export class EChartDefaultOption {
 				padding: [16, 16, 16, 16],
 				icon: 'circle',
 				textStyle: {
-					color: lib.getCssVariableValue('--ion-color-dark'),
+					color: axis,
 				},
 			},
 			tooltip: {
 				appendToBody: true,
 				extraCssText: 'width:auto; max-width: 250px; white-space:pre-wrap;',
 				textStyle: {
-					color: lib.getCssVariableValue('--ion-color-dark'),
+					color: text,
 				},
-				borderColor: lib.getCssVariableValue('--menu-right-border-color'),
+				borderColor: split,
 				backgroundColor: lib.getCssVariableValue('--main-background-top'),
 				confine: true,
 			},
@@ -62,7 +65,7 @@ export class EChartDefaultOption {
 				},
 				iconStyle: {
 					//color: lib.getCssVariableValue('--ion-color-primary'),
-					borderColor: lib.getCssVariableValue('--ion-color-dark'),
+					borderColor: axis,
 				},
 			},
 		};
@@ -92,7 +95,7 @@ export class EChartDefaultOption {
 					label: {
 						show: true,
 						formatter: '{b} {d}%',
-						color: lib.getCssVariableValue('--ion-color-dark'),
+						color: lib.chartAxisLabelColor(),
 					},
 					itemStyle: {
 						borderRadius: 3,
@@ -153,9 +156,19 @@ export class EChartDefaultOption {
 						yAxis: {
 							show: true,
 							axisLine: { show: false },
+							axisTick: { show: false },
 							axisLabel: {
+								color: lib.chartAxisLabelColor(),
 								formatter: function (value, index) {
 									return lib.currencyFormatFriendly(value);
+								},
+							},
+							splitLine: {
+								show: true,
+								lineStyle: {
+									color: lib.chartSplitLineColor(),
+									width: 1,
+									opacity: 0.7,
 								},
 							},
 						},
@@ -169,6 +182,11 @@ export class EChartDefaultOption {
 					show: true,
 					type: 'category',
 					axisLine: { show: false },
+					axisTick: { show: false },
+					axisLabel: {
+						color: lib.chartAxisLabelColor(),
+					},
+					splitLine: { show: false },
 				});
 
 				switch (viewMode) {

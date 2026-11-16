@@ -137,7 +137,8 @@
 	--table-row-background: rgb(var(--table-row-background-rgb));
 	--table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
 	--table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
-	--table-cell-sticky-background: #2a2d32;
+	// Match table row (not main bg) so sticky doesn't look like a darker patch in dark theme.
+	--table-cell-sticky-background: #30353c;
 
 	--feature-background-top: var(--menu-background-bottom);
 	--feature-background-bottom: var(--menu-background-bottom);

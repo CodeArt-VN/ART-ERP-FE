@@ -125,6 +125,25 @@ describe('VirtualViewportComponent item identity', () => {
 		expect(scrollEl.scrollTop).toBe(19 * 36);
 	});
 
+	it('page mode scrollToId adds viewportOffset and subtracts scrollInsetTop (header)', () => {
+		const vp = makeViewport();
+		vp.mode = 'page';
+		vp.defaultItemSize = 36;
+		vp.scrollAlign = 'start';
+		vp.scrollInsetTop = 96;
+		(vp as any).engine.setDefaultItemSize(36);
+		const scrollEl = { scrollTop: 0, clientHeight: 280, getBoundingClientRect: () => ({ top: 0 }) };
+		(vp as any).scrollEl = scrollEl;
+		(vp as any).el.nativeElement.getBoundingClientRect = () => ({ top: 80, width: 200, height: 280 });
+
+		vp.items = Array.from({ length: 40 }, (_, i) => ({ id: i + 1 }));
+		(vp as any).syncEngineItems();
+		(vp as any).recompute();
+		vp.scrollToId = 20;
+		// offset(19)=684 + viewportOffset(80) - header(96)
+		expect(scrollEl.scrollTop).toBe(19 * 36 + 80 - 96);
+	});
+
 	it('retries scroll once the dropdown viewport has height', () => {
 		const vp = makeViewport();
 		vp.mode = 'container';

@@ -7,5 +7,36 @@
 		</p>
 		<app-page-notification [pageName]="pageName"></app-page-notification>
 	</div>
-	<ng-content select="[rightContent]"></ng-content>
+
+	<!-- Embedded mini-chart carousel from pageConfig.reportIds / reportId -->
+	<div class="page-title-report" *ngIf="activeReportId">
+		<app-report-chart viewMode="mini" [reportId]="activeReportId"></app-report-chart>
+		<div class="report-page-dots" *ngIf="showReportDots">
+			<button
+				type="button"
+				class="report-page-dots-half prev"
+				title="{{ 'Previous report' | translate }}"
+				(click)="cycleReport($event, -1)"
+			></button>
+			<button
+				type="button"
+				class="report-page-dots-half next"
+				title="{{ 'Next report' | translate }}"
+				(click)="cycleReport($event, 1)"
+			></button>
+			<div class="report-page-dots-track" aria-hidden="true">
+				<span
+					class="dot"
+					*ngFor="let id of reportIds; let i = index"
+					[class.active]="i === activeReportIndex"
+					[attr.aria-current]="i === activeReportIndex ? 'true' : null"
+				></span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Projected rightContent (e.g. dynamic-report-detail full chart) -->
+	<div class="page-title-report page-title-report-projected">
+		<ng-content select="[rightContent]"></ng-content>
+	</div>
 </div>

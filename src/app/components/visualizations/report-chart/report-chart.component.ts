@@ -39,45 +39,120 @@ export class ReportChartComponent implements OnInit {
 
 	/** Report Id to find report config */
 	_reportId: number;
+	private trackingStarted = false;
+	private dataTrackingSub: Subscription;
+
 	@Input() set reportId(v: number) {
-		if (v) {
-			if (!this._reportId || this._reportId != v) {
-				setTimeout(() => {
-					if (this.viewDimension) this.changeViewDimension.emit(this.viewDimension);
-					this.rpt.getReportData(this._reportId);
-				}, 300);
-			}
+		if (!v) return;
 
-			this._reportId = v;
-			this.report = this.rpt.getReport(this._reportId);
-			//this.report = lib.cloneObject(this.rpt.getReport(this._reportId));
-			this.buildForm(this.report.DataConfig);
-			this.compareBy = this.report.DataConfig.CompareBy.map((x) => x.Title || x.Property);
-			this.measureBy = this.report.DataConfig.MeasureBy.map((x) => x.Title || x.Property);
-			this.dataIntervalProperty = this.report.DataConfig.Interval?.Title || this.report.DataConfig.Interval?.Property;
-			this.dataIntervalType = this.report.DataConfig.Interval.Type;
+		const idChanged = !this._reportId || this._reportId != v;
+		this._reportId = v;
 
-			if (this.report.Dimensions?.length > 0) this.dimensions = this.report.Dimensions;
-			else this.updateDimensions();
-
-			if (!this.viewDimension || !this.dimensions.includes(this.viewDimension)) {
-				this.viewDimension = this.report.viewDimension || this.measureBy[0];
-			}
-
-			this.chartScript = this.report.ChartScript;
-
-			if (!this.report.DataConfig.Schema.Id) {
-				this.rptLoaded = true;
-				this.isLoading = false;
-			}
-
-			if (this.report.DataConfig.Schema.Type == 'None' || this.report?.ChartConfig?.series) {
-				this.chartType = 'fixed';
-			}
-			if (this.report.ChartConfig) {
-				this.chartOption = this.report.ChartConfig;
-			}
+		if (idChanged && this.trackingStarted) {
+			this.bindReportTracking(this._reportId);
 		}
+
+		const report = this.rpt.getReport(this._reportId);
+		if (report?.DataConfig) {
+			this.applyReportConfig(report, idChanged);
+			return;
+		}
+
+		// Outside BI pages, report list may not be loaded yet — load then apply.
+		this.isLoading = true;
+		this.rpt
+			.readReports()
+			.then(() => {
+				if (this._reportId != v) return;
+				const loaded = this.rpt.getReport(this._reportId);
+				if (loaded?.DataConfig) {
+					this.applyReportConfig(loaded, true);
+				} else {
+					this.isLoading = false;
+					console.log('Report with Id=' + this._reportId + ' not found!');
+				}
+			})
+			.catch(() => {
+				this.isLoading = false;
+			});
+	}
+
+	/** Apply report config once BIReport (+ DataConfig) is available in memory. */
+	private applyReportConfig(report: BIReport, loadData: boolean) {
+		this.report = report;
+		const cfg = this.report.DataConfig;
+		if (!cfg) {
+			this.isLoading = false;
+			return;
+		}
+
+		cfg.CompareBy = cfg.CompareBy || [];
+		cfg.MeasureBy = cfg.MeasureBy || [];
+		cfg.Schema = cfg.Schema || ({} as any);
+
+		this.buildForm(cfg);
+		this.compareBy = cfg.CompareBy.map((x) => x.Title || x.Property);
+		this.measureBy = cfg.MeasureBy.map((x) => x.Title || x.Property);
+		this.dataIntervalProperty = cfg.Interval?.Title || cfg.Interval?.Property;
+		this.dataIntervalType = cfg.Interval?.Type;
+
+		// New report: always activate first measure. Keeping the previous viewDimension
+		// makes updateDimensions() push a stale measure and the chart stays blank.
+		if (loadData) {
+			this.viewDimension = this.report.viewDimension || this.measureBy[0];
+		}
+
+		if (this.report.Dimensions?.length > 0) this.dimensions = this.report.Dimensions;
+		else this.updateDimensions();
+
+		if (!this.viewDimension || !this.dimensions.includes(this.viewDimension)) {
+			this.viewDimension = this.report.viewDimension || this.measureBy[0];
+			if (!this.report.Dimensions?.length) this.updateDimensions();
+		}
+
+		this.chartScript = this.report.ChartScript;
+		// Reset so cycling reportId does not keep the previous chart option/type.
+		this.chartType = 'auto';
+		this.chartOption = this.report.ChartConfig || null;
+		if (cfg.Schema.Type == 'None' || this.report?.ChartConfig?.series) {
+			this.chartType = 'fixed';
+		}
+
+		if (!cfg.Schema.Id) {
+			this.rptLoaded = true;
+			this.isLoading = false;
+		}
+
+		if (loadData) {
+			// Clear previous chart state so we don't flash stale series / "undefined" labels while loading.
+			this.isLoading = true;
+			this.rptLoaded = false;
+			this.rawData = [];
+			this.comparitionData = [];
+			this.dataFetchDate = undefined;
+			setTimeout(() => {
+				if (this.viewDimension) this.changeViewDimension.emit(this.viewDimension);
+				this.rpt.getReportData(this._reportId);
+			}, 300);
+		}
+	}
+
+	/** (Re)bind dataset tracking when reportId changes without remounting the host. */
+	private bindReportTracking(reportId: number) {
+		if (this.dataTrackingSub) {
+			this.dataTrackingSub.unsubscribe();
+			const idx = this.subscriptions.indexOf(this.dataTrackingSub);
+			if (idx >= 0) this.subscriptions.splice(idx, 1);
+			this.dataTrackingSub = null;
+		}
+		if (!reportId) return;
+
+		this.dataTrackingSub = this.rpt.regReportTrackingData(reportId).subscribe((ds) => {
+			this.updateDataset(ds);
+			this.rptLoaded = true;
+			this.isLoading = false;
+		});
+		this.subscriptions.push(this.dataTrackingSub);
 	}
 
 	/** grid item in dashboard - to set UI responsive */
@@ -110,13 +185,8 @@ export class ReportChartComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.subscriptions.push(
-			this.rpt.regReportTrackingData(this._reportId).subscribe((ds) => {
-				this.updateDataset(ds);
-				this.rptLoaded = true;
-				this.isLoading = false;
-			})
-		);
+		this.trackingStarted = true;
+		this.bindReportTracking(this._reportId);
 
 		this.subscriptions.push(
 			this.rpt.reportConfigTracking.subscribe((reportId) => {
@@ -144,12 +214,14 @@ export class ReportChartComponent implements OnInit {
 
 	dimensions: string[] = [];
 	updateDimensions() {
-		if (this.report.DataConfig.CompareBy.length > 0) {
-			this.dimensions = this.report.DataConfig.CompareBy.map((x) => x.Title || x.Property);
+		const compareBy = this.report?.DataConfig?.CompareBy || [];
+		const measureBy = this.report?.DataConfig?.MeasureBy || [];
+		if (compareBy.length > 0) {
+			this.dimensions = compareBy.map((x) => x.Title || x.Property);
 			if (this.viewDimension) {
 				this.dimensions.push(this.viewDimension);
-			} else if (this.report.DataConfig.MeasureBy.length) {
-				this.dimensions.push(this.report.DataConfig.MeasureBy[0].Title || this.report.DataConfig.MeasureBy[0].Property);
+			} else if (measureBy.length) {
+				this.dimensions.push(measureBy[0].Title || measureBy[0].Property);
 			}
 		}
 	}
@@ -223,6 +295,10 @@ export class ReportChartComponent implements OnInit {
 		} else {
 			this.viewMode = 'mini';
 		}
+		// Let host size settle then e-chart ResizeObserver / update can redraw.
+		setTimeout(() => {
+			window.dispatchEvent(new Event('resize'));
+		}, 160);
 	}
 
 	/** Open report handle in dashboard */
