@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
 
 	ui: ComponentUI = {
 		// App state
-		appTheme: 'default-theme',
+		appTheme: 'adora-theme',
 		isConnectFail: false,
 		appMessages: [],
 		canGoBack: false,
@@ -245,7 +245,7 @@ export class AppComponent implements OnInit {
 			if (sb.LogoURL) {
 				this.ui.logo = sb.LogoURL;
 			} else {
-				this.ui.logo = 'assets/logos/logo-in-holdings.png';
+				this.ui.logo = 'assets/logos/logo-adora.svg';
 			}
 			dogF && console.log('🌲 [AppComponent] Changing branch logo:', this.ui.logo);
 		},
@@ -464,8 +464,8 @@ export class AppComponent implements OnInit {
 			return;
 		}
 
-		let title = 'ERP';
-		let relIcon = 'assets/icons/icon-512.webp';
+		let title = 'Adora ERP';
+		let relIcon = 'assets/icons/favicon-adora-32.png';
 
 		// Remove all classes that start with 'theme'
 		const classList = document.documentElement.classList;

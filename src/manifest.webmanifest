@@ -1,8 +1,8 @@
 {
-  "name": "ART ERP",
-  "short_name": "ART",
-  "description": "ART ERP Progressive Web App",
-  "theme_color": "#1976d2",
+  "name": "Adora ERP",
+  "short_name": "Adora",
+  "description": "Adora ERP Progressive Web App",
+  "theme_color": "#002C5B",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",

@@ -33,7 +33,7 @@ export class EnvService {
 
 	public app = {
 		version: 'v' + environment.appVersion,
-		theme: 'default-theme',
+		theme: 'adora-theme',
 		isOnline: false,
 		tenant: {
 			current: environment.appDomain,

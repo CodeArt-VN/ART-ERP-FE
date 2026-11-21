@@ -1,0 +1,287 @@
+@use './_default-theme' as defaultTheme;
+
+@mixin light-theme {
+	// #region ionic colors — The ADORA (#002C5B)
+	--ion-color-primary: #002c5b;
+	--ion-color-primary-rgb: 0, 44, 91;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255, 255, 255;
+	--ion-color-primary-shade: #002650;
+	--ion-color-primary-tint: #1a416b;
+
+	--ion-color-secondary: #002c5b;
+	--ion-color-secondary-rgb: 0, 44, 91;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255, 255, 255;
+	--ion-color-secondary-shade: #002650;
+	--ion-color-secondary-tint: #1a416b;
+
+	--ion-color-tertiary: #ffffff;
+	--ion-color-tertiary-rgb: 255, 255, 255;
+	--ion-color-tertiary-contrast: #000000;
+	--ion-color-tertiary-contrast-rgb: 0, 0, 0;
+	--ion-color-tertiary-shade: #e0e0e0;
+	--ion-color-tertiary-tint: #ffffff;
+
+	// Neutral near-black (same as ART/IN) — must not read as navy/primary.
+	--ion-color-dark: #1b1a16;
+	--ion-color-dark-rgb: 27, 26, 22;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255, 255, 255;
+	--ion-color-dark-shade: #181713;
+	--ion-color-dark-tint: #32312d;
+
+	// Neutral gray (no blue cast) — toolbar icons / secondary ink must not read as navy.
+	--ion-color-medium: #6b6b6b;
+	--ion-color-medium-rgb: 107, 107, 107;
+	--ion-color-medium-contrast: #ffffff;
+	--ion-color-medium-contrast-rgb: 255, 255, 255;
+	--ion-color-medium-shade: #5e5e5e;
+	--ion-color-medium-tint: #7a7a7a;
+
+	--ion-color-light: #f0f4f8;
+	--ion-color-light-rgb: 240, 244, 248;
+	--ion-color-light-contrast: #000000;
+	--ion-color-light-contrast-rgb: 0, 0, 0;
+	--ion-color-light-shade: #d3d7da;
+	--ion-color-light-tint: #f2f5f9;
+	// #endregion
+
+	// #region custom colors
+	--menu-right-border-color: #e2e8ed;
+	--menu-background-item-active: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.1);
+	--menu-background-top: #ffffff;
+	--menu-background-bottom: #ffffff;
+
+	--main-background-top: #eff2f5;
+	--main-background-bottom: #eff2f5;
+
+	--table-header-background-rgb: 248, 249, 251;
+	--table-row-background-rgb: 255, 255, 255;
+	--table-header-background: rgb(var(--table-header-background-rgb));
+	--table-row-background: rgb(var(--table-row-background-rgb));
+	--table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.07);
+	--table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.05);
+	--table-cell-sticky-background: #f0f4f8;
+
+	--feature-background-top: #ffffff;
+	--feature-background-bottom: #ffffff;
+
+	--ion-toolbar-background: #fff;
+
+	--ion-card-background: var(--main-background-top);
+	// #endregion
+
+	color-scheme: light;
+
+	// Original site SVG only — same file for login / menu / compact.
+	$logo-url: '../assets/logos/logo-adora.svg';
+
+	.login {
+		.logo {
+			background-image: url($logo-url);
+		}
+	}
+
+	#app-menu {
+		.app-logo-wrapper {
+			.app-logo {
+				height: 90px !important;
+				margin-bottom: 16px !important;
+				background-image: url($logo-url) !important;
+				filter: none;
+			}
+		}
+
+		&.compact-menu {
+			.app-logo-wrapper {
+				.app-logo {
+					height: 70px !important;
+					width: 60px !important;
+					margin-bottom: auto !important;
+					background-image: url($logo-url) !important;
+				}
+			}
+		}
+	}
+}
+
+@mixin dark-theme {
+	// #region ionic colors — Adora navy on dark surfaces
+	--ion-color-primary: #4a7fb5;
+	--ion-color-primary-rgb: 74, 127, 181;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255, 255, 255;
+	--ion-color-primary-shade: #41709f;
+	--ion-color-primary-tint: #5c8cbc;
+
+	--ion-color-secondary: #ffffff;
+	--ion-color-secondary-rgb: 255, 255, 255;
+	--ion-color-secondary-contrast: #000000;
+	--ion-color-secondary-contrast-rgb: 0, 0, 0;
+	--ion-color-secondary-shade: #e0e0e0;
+	--ion-color-secondary-tint: #ffffff;
+
+	--ion-color-tertiary: #535456;
+	--ion-color-tertiary-rgb: 83, 84, 86;
+	--ion-color-tertiary-contrast: #ffffff;
+	--ion-color-tertiary-contrast-rgb: 255, 255, 255;
+	--ion-color-tertiary-shade: #494a4c;
+	--ion-color-tertiary-tint: #646567;
+
+	--ion-color-dark: #fdfdfd;
+	--ion-color-dark-rgb: 253, 253, 253;
+	--ion-color-dark-contrast: #000000;
+	--ion-color-dark-contrast-rgb: 0, 0, 0;
+	--ion-color-dark-shade: #dfdfdf;
+	--ion-color-dark-tint: #fdfdfd;
+
+	--ion-color-medium: #929396;
+	--ion-color-medium-rgb: 146, 147, 150;
+	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast-rgb: 0, 0, 0;
+	--ion-color-medium-shade: #808184;
+	--ion-color-medium-tint: #9d9ea1;
+
+	--ion-color-light: #2a3440;
+	--ion-color-light-rgb: 42, 52, 64;
+	--ion-color-light-contrast: #ffffff;
+	--ion-color-light-contrast-rgb: 255, 255, 255;
+	--ion-color-light-shade: #252e38;
+	--ion-color-light-tint: #3f4853;
+	// #endregion
+
+	// #region custom colors — #161C24 / #212B36 from theadora.vn
+	--menu-right-border-color: #2a3440;
+	--menu-background-item-active: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.12);
+	--menu-background-top: #212b36;
+	--menu-background-bottom: #212b36;
+
+	--main-background-top: #161c24;
+	--main-background-bottom: #161c24;
+
+	--table-header-background-rgb: 33, 43, 54;
+	--table-row-background-rgb: 26, 33, 42;
+	--table-header-background: rgb(var(--table-header-background-rgb));
+	--table-row-background: rgb(var(--table-row-background-rgb));
+	--table-row-selected-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.12);
+	--table-row-hover-background: rgba(var(--ion-color-primary-rgb, 0, 0, 0), 0.08);
+	--table-cell-sticky-background: #212b36;
+
+	--feature-background-top: var(--menu-background-bottom);
+	--feature-background-bottom: var(--menu-background-bottom);
+
+	--ion-background-color: var(--main-background-bottom);
+	--ion-background-color-rgb: 22, 28, 36;
+
+	--ion-toolbar-background: var(--main-background-top);
+	--ion-item-background: var(--menu-background-bottom);
+	--ion-card-background: var(--main-background-top);
+
+	--ion-text-color: #eeeeee;
+	--ion-text-color-rgb: 238, 238, 238;
+
+	--ion-color-step-50: #1c232c;
+	--ion-color-step-100: #222a34;
+	--ion-color-step-150: #28313c;
+	--ion-color-step-200: #2e3844;
+	--ion-color-step-250: #343f4c;
+	--ion-color-step-300: #3a4654;
+	--ion-color-step-350: #404d5c;
+	--ion-color-step-400: #465464;
+	--ion-color-step-450: #4c5b6c;
+	--ion-color-step-500: #526274;
+	--ion-color-step-550: #636f80;
+	--ion-color-step-600: #747c8c;
+	--ion-color-step-650: #858998;
+	--ion-color-step-700: #9696a4;
+	--ion-color-step-750: #a7a3b0;
+	--ion-color-step-800: #b8b0bc;
+	--ion-color-step-850: #c9bdc8;
+	--ion-color-step-900: #dacad4;
+	--ion-color-step-950: #ebd7e0;
+
+	ion-item {
+		--border-color: var(--menu-right-border-color);
+	}
+	// #endregion
+
+	color-scheme: dark;
+
+	// Same original SVG; CSS filter only on dark menu (no extra asset files).
+	$logo-url: '../assets/logos/logo-adora.svg';
+
+	.login {
+		.logo {
+			background-image: url($logo-url);
+			filter: none;
+		}
+	}
+
+	#app-menu {
+		.app-logo-wrapper {
+			.app-logo {
+				height: 90px !important;
+				margin-bottom: 16px !important;
+				background-image: url($logo-url) !important;
+				filter: brightness(0) invert(1);
+			}
+		}
+
+		&.compact-menu {
+			.app-logo-wrapper {
+				.app-logo {
+					height: 70px !important;
+					width: 60px !important;
+					margin-bottom: auto !important;
+					background-image: url($logo-url) !important;
+				}
+			}
+		}
+	}
+}
+
+.adora-theme {
+	.login {
+		// White strip so original navy logo stays readable (no fake white logo file).
+		.logo-contain {
+			padding-top: 10vh;
+			padding-bottom: 5vh;
+			background-color: #ffffff;
+		}
+
+		.logo {
+			margin: auto;
+			width: 90vw;
+			height: 20vh;
+			max-width: 335px;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center center;
+		}
+
+		form {
+			margin-top: 0px !important;
+		}
+	}
+
+	&.light {
+		@include light-theme;
+	}
+
+	&.dark {
+		@include defaultTheme.dark-theme;
+		@include dark-theme;
+	}
+
+	&:not(.light):not(.dark) {
+		@media (prefers-color-scheme: light) {
+			@include light-theme;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			@include defaultTheme.dark-theme;
+			@include dark-theme;
+		}
+	}
+}

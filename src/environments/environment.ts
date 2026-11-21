@@ -6,7 +6,7 @@ export let environment = {
 	appServers: [
 		{ Code: 'https://in.appcenter.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://artlogistics.vn/', Name: 'Main server', Color: 'success', Icon: 'rocket' },
-		{ Code: 'https://vnetwork.appcenter.vn/', Name: 'VNetwork server', Color: 'success', Icon: 'rocket' },
+		{ Code: 'https://adora.appcenter.vn/', Name: 'Adora server', Color: 'success', Icon: 'rocket' },
 		{ Code: 'https://demo1.appcenter.vn/', Name: 'Demo server 1', Color: 'danger', Icon: 'airplane' },
 		{ Code: 'https://demo2.appcenter.vn/', Name: 'Demo server 2', Color: 'danger', Icon: 'airplane' },
 
