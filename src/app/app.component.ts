@@ -19,6 +19,7 @@ import { UserProfileService } from './services/auth/user-profile.service';
 import { AuthenticationService } from './services/auth/authentication.service';
 import { recheckCurrentRoutePermission } from './guards/app.guard';
 import { UserCardPage } from './pages/SYS/user-card/user-card.page';
+import { setOverlayMenuEnabled } from './services/core/menu-overlay.util';
 
 register();
 
@@ -251,18 +252,21 @@ export class AppComponent implements OnInit {
 		},
 
 		// Help events
-		closeHelp: () => {
-			this.menu.close('appHelpDetail');
+		closeHelp: async () => {
 			this.ui.showHelp = false;
+			await setOverlayMenuEnabled(this.menu, 'appHelpDetail', false);
 		},
 
-		openHelp: () => {
-			this.menu.open('appHelpDetail');
+		openHelp: async () => {
+			this.ui.showHelp = true;
+			await setOverlayMenuEnabled(this.menu, 'appHelpDetail', true);
+			await this.menu.open('appHelpDetail');
 		},
 
 		// Menu toggle events
-		toogleMenu: () => {
+		toogleMenu: async () => {
 			this.ui.showAppMenu = !this.ui.showAppMenu;
+			await setOverlayMenuEnabled(this.menu, 'appMenu', this.ui.showAppMenu);
 		},
 
 		toggleCompactMenu: () => {
@@ -334,6 +338,8 @@ export class AppComponent implements OnInit {
 		this.updateStatusbar();
 		this.eventHandler();
 		this.renderUI();
+		// Help starts closed: disable it so the hamburger cannot open a hidden overlay and lock scroll
+		await setOverlayMenuEnabled(this.menu, 'appHelpDetail', false);
 
 		this.initNotification();
 		this.serviceWorkerRegister();
@@ -370,11 +376,11 @@ export class AppComponent implements OnInit {
 					break;
 				case EVENT_TYPE.APP.SHOW_MENU:
 					this.ui.showAppMenu = data.Value;
+					void setOverlayMenuEnabled(this.menu, 'appMenu', !!data.Value);
 					break;
 				case EVENT_TYPE.APP.SHOW_HELP:
-					this.ui.showHelp = true;
 					this.ui.pageConfigPageName = data.Value;
-					this.uiEvents.openHelp();
+					void this.uiEvents.openHelp();
 					break;
 
 				case EVENT_TYPE.APP.CHANGE_THEME:

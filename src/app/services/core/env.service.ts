@@ -658,7 +658,7 @@ export class EnvService {
 			if (AllChild) {
 				let ids = lib.findChildren(this.pv.typeList, it.Id);
 				let childs = this.pv.typeList.filter((d) => ids.includes(d.Id));
-				return await lib.buildSubNode(childs, [], it, []); //await lib.buildFlatTree(childs, [], true, it);
+				return await lib.buildSubNode(childs, [], it); //await lib.buildFlatTree(childs, [], true, it);
 			} else return this.pv.typeList.filter((d) => d.IDParent == it.Id);
 		} else return [];
 	}

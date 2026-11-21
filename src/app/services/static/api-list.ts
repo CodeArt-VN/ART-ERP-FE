@@ -3272,6 +3272,106 @@ export var APIListBase = {
 	},
 
 
+	CRM_Hall:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Hall/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Hall"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Hall/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Hall/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Hall/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Hall/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Hall/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Hall/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Hall"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Hall/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Hall/" + id} 
+        }
+		
+	},
+
+
+	CRM_HallBooking:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/HallBooking/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/HallBooking"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/HallBooking/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/HallBooking/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/HallBooking/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/HallBooking/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/HallBooking/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/HallBooking/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/HallBooking"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/HallBooking/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/HallBooking/" + id} 
+        }
+		
+	},
+
+
 	CRM_Lead:{
         getSearchList:{
             method: "GET",
@@ -3522,6 +3622,56 @@ export var APIListBase = {
 	},
 
 
+	CRM_OpportunityStageHistory:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/OpportunityStageHistory/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/OpportunityStageHistory"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/OpportunityStageHistory/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/OpportunityStageHistory/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/OpportunityStageHistory/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/OpportunityStageHistory/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/OpportunityStageHistory/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/OpportunityStageHistory/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/OpportunityStageHistory"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/OpportunityStageHistory/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/OpportunityStageHistory/" + id} 
+        }
+		
+	},
+
+
 	CRM_Outlets:{
         getSearchList:{
             method: "GET",
@@ -3767,6 +3917,206 @@ export var APIListBase = {
         delItem:{
             method: "DELETE",
             url: function(id){return "CRM/PersonInfo/" + id} 
+        }
+		
+	},
+
+
+	CRM_Pipeline:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/Pipeline/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/Pipeline"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/Pipeline/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/Pipeline/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/Pipeline/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Pipeline/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Pipeline/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/Pipeline/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/Pipeline"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/Pipeline/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/Pipeline/" + id} 
+        }
+		
+	},
+
+
+	CRM_PipelineRule:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineRule/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineRule"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PipelineRule/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PipelineRule/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PipelineRule/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineRule/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineRule/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineRule/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PipelineRule"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PipelineRule/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PipelineRule/" + id} 
+        }
+		
+	},
+
+
+	CRM_PipelineStage:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineStage/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineStage"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PipelineStage/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PipelineStage/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PipelineStage/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStage/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStage/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStage/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PipelineStage"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PipelineStage/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PipelineStage/" + id} 
+        }
+		
+	},
+
+
+	CRM_PipelineStageTask:{
+        getSearchList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineStageTask/Search"}  
+        },
+        getList:{
+            method: "GET",
+            url: function(){return "CRM/PipelineStageTask"}  
+        },
+        getExport:{
+            method: "DOWNLOAD",
+            url: function(){return "CRM/PipelineStageTask/Export"}  
+        },
+        postImport:{
+            method: "UPLOAD",
+            url: function(){return "CRM/PipelineStageTask/Import"}  
+        },
+        getItem:{
+            method: "GET",
+            url: function(id){return "CRM/PipelineStageTask/" + id} 
+        },
+        putItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStageTask/" + id} 
+        },
+        disableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStageTask/Disable/" + id} 
+        },
+        enableItem:{
+            method: "PUT",
+            url: function(id){return "CRM/PipelineStageTask/Enable/" + id} 
+        },
+        
+        postItem:{
+            method: "POST",
+            url: function(){return "CRM/PipelineStageTask"}
+        },
+        changeBranch:{
+            method: "POST",
+            url: function(){return "CRM/PipelineStageTask/ChangeBranch"} 
+        },
+        delItem:{
+            method: "DELETE",
+            url: function(id){return "CRM/PipelineStageTask/" + id} 
         }
 		
 	},

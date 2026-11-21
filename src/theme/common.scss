@@ -1292,13 +1292,12 @@ ion-modal.so3-product-category-modal {
 	--background: var(--main-background-top);
 }
 
-/* sale-order3 cart + customer picker: sheet style (breakpoints on create) */
-ion-modal.so3-cart-modal,
-ion-modal.so3-customer-picker-modal {
+/* Sheet popup (open with breakpoints [0, .25, .5, .75, 1]): one-column form popups, sale-order3 cart and customer picker */
+ion-modal.form-1column {
 	--width: 100%;
 	--max-width: 100%;
 	--border-radius: 16px 16px 0 0;
-	--box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.18);
+	--box-shadow: 0 -8px 28px rgba(var(--ion-color-primary-rgb), 0.25);
 	--background: linear-gradient(180deg, var(--main-background-top), var(--main-background-bottom));
 	align-items: flex-end;
 	justify-content: center;
@@ -1309,11 +1308,11 @@ ion-modal.so3-customer-picker-modal {
 }
 
 @media only screen and (min-width: 500px) {
-	ion-modal.so3-cart-modal,
-	ion-modal.so3-customer-picker-modal {
+	ion-modal.form-1column {
 		--width: min(560px, calc(100vw - 32px));
 		--max-width: 560px;
 		--border-radius: 16px;
+		--box-shadow: 0 8px 28px rgba(var(--ion-color-primary-rgb), 0.25);
 		align-items: center;
 
 		&::part(content) {
@@ -1361,6 +1360,139 @@ ion-modal.so3-invoice-modal {
 	overflow: hidden;
 }
 
+/* form-2columns: centred 760px dialog from 768px up (tablet landscape, desktop); below 768px Ionic keeps it full screen */
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+	ion-modal.form-2columns {
+		--width: 760px;
+		--height: min(520px, 90vh);
+		--border-radius: 16px;
+		--box-shadow: 0 8px 28px rgba(var(--ion-color-primary-rgb), 0.25);
+		align-items: center;
+
+		&::part(content) {
+			border-radius: 16px;
+		}
+	}
+
+}
+
+/* White box around form controls inside popups (same look as detail page cards) */
+.edit-box {
+	margin: 12px;
+	padding: 4px 12px 12px;
+	background: var(--table-row-background);
+	border-radius: 6px;
+	border: 1px solid var(--ion-color-light-shade);
+	overflow: hidden;
+}
+
+/* iOS settings section head above inset ion-list (fe-popup child list).
+   Padding lives here — never on inline style — so ≤425px can clear it with the list. */
+.ios-settings-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 36px;
+	padding-inline: 16px;
+	box-sizing: border-box;
+
+	ion-text,
+	.ios-settings-label {
+		font-size: 13px;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	ion-icon {
+		flex: 0 0 auto;
+		font-size: 1.1rem;
+	}
+}
+
+/* Same idea as data-table @425px: on a narrow phone, popup content goes edge-to-edge (no side padding). */
+@media screen and (max-width: calc(425px)) {
+	ion-modal {
+		--ion-grid-padding: 0;
+		--ion-grid-padding-xs: 0;
+		--ion-grid-padding-sm: 0;
+		--ion-grid-column-padding: 0;
+		--ion-grid-column-padding-xs: 0;
+		--ion-grid-column-padding-sm: 0;
+
+		ion-content.ion-padding,
+		ion-content.ion-padding-horizontal {
+			--padding-start: 0;
+			--padding-end: 0;
+			padding-inline-start: 0 !important;
+			padding-inline-end: 0 !important;
+		}
+
+		/* Utility class on nested divs (advance-filter, POS cancel, …) */
+		.ion-padding,
+		.ion-padding-horizontal {
+			--padding-start: 0;
+			--padding-end: 0;
+			padding-inline-start: 0 !important;
+			padding-inline-end: 0 !important;
+		}
+
+		ion-grid,
+		ion-grid[fixed] {
+			padding-inline: 0 !important;
+			width: 100% !important;
+			max-width: 100% !important;
+		}
+
+		ion-list[inset],
+		ion-list.list-inset {
+			margin-inline: 0;
+		}
+
+		.ios-settings-head {
+			padding-inline: 12px;
+		}
+
+		/* Flush white form boxes to the sheet edges (same as detail cards @425) */
+		.edit-box,
+		.row-full.shadow {
+			margin: 8px 0;
+			border-radius: 0;
+			border-left-width: 0;
+			border-right-width: 0;
+		}
+
+		/* Legacy modal form indent (form-control.scss .modal-wrapper form) */
+		.modal-wrapper form,
+		form {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		ion-card,
+		ion-item {
+			--inner-padding-start: 12px;
+			--inner-padding-end: 12px;
+			--padding-start: 0;
+			--padding-end: 0;
+			margin-inline: 0;
+		}
+	}
+
+	/* Force sheet popups full-bleed (override the ≥500px floating card inset) */
+	ion-modal.form-1column,
+	ion-modal.form-2columns,
+	ion-modal.form-full-width {
+		--width: 100% !important;
+		--max-width: 100% !important;
+		--border-radius: 16px 16px 0 0;
+		align-items: flex-end;
+
+		&::part(content) {
+			border-radius: 16px 16px 0 0;
+		}
+	}
+}
+
 @media only screen and (min-width: 500px) and (min-height: 600px) {
 	.modal90 {
 		--height: 90vh;
@@ -1374,6 +1506,22 @@ ion-modal.so3-invoice-modal {
 
 	.modal90vh {
 		--height: 90vh;
+	}
+
+	/* Wider form popups: same look as form-1column (theme colours only), only the size differs. */
+	ion-modal.form-full-width {
+		--border-radius: 16px;
+		--box-shadow: 0 8px 28px rgba(var(--ion-color-primary-rgb), 0.25);
+		align-items: center;
+
+		&::part(content) {
+			border-radius: 16px;
+		}
+	}
+
+	ion-modal.form-full-width {
+		--width: 960px;
+		--height: 80vh;
 	}
 
 	.nfc-scanner-modal {

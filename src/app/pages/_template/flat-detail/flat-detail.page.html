@@ -2,12 +2,11 @@
 	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
-	<div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
-		
+<ion-content [fullscreen]="true" appScrollbarTheme>
+	<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
+	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 
-		<app-page-title class="ion-padding safe-max-width" [pageConfig]="pageConfig"></app-page-title>
-
+	<div class="safe-max-width main-view" *ngIf="item && pageConfig.showSpinner==false">
 		<ion-grid fixed>
 			<form [formGroup]="formGroup">
 				<ion-row class="hr-group">
@@ -92,5 +91,4 @@
 			</div>
 		</div>
 	</div>
-	<app-page-message [itemsLength]="item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
 </ion-content>

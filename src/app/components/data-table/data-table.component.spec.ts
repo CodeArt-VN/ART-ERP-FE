@@ -161,16 +161,36 @@ describe('DataTableComponent', () => {
 			component.sheetFilter = false;
 			const bus = TestBed.inject(DataTableMobileFilterService);
 			expect(bus.activeCount$.value).toBe(1);
-			expect(bus.requestOpen('compact')).toBeFalse();
+			expect(bus.requestOpen('click')).toBeFalse();
 			expect(component.filterSheetOpen).toBeFalse();
 			expect(bus.requestOpen('modifier')).toBeTrue();
 			expect(component.filterSheetOpen).toBeTrue();
 		});
 
+		it('opens the sheet on a plain click on desktop when IsShowFilterPopup is set', () => {
+			spyOn(component as any, 'isHostVisible').and.returnValue(true);
+			useColumns();
+			component.sheetFilter = false;
+			component.IsShowFilterPopup = true;
+			const bus = TestBed.inject(DataTableMobileFilterService);
+			expect(bus.requestOpen('click')).toBeTrue();
+			expect(component.filterSheetOpen).toBeTrue();
+			expect(component.usesFilterPopup).toBeTrue();
+		});
+
+		it('keeps the inline row on desktop when IsShowFilterPopup is off or mobileFilter is false', () => {
+			useColumns();
+			component.sheetFilter = false;
+			expect(component.usesFilterPopup).toBeFalse();
+			component.IsShowFilterPopup = true;
+			component.mobileFilter = false;
+			expect(component.usesFilterPopup).toBeFalse();
+		});
+
 		it('scrolls the filter list at every sheet height', () => {
 			component.sheetFilter = true;
 			fixture.detectChanges();
-			const modal = fixture.nativeElement.querySelector('ion-modal.mobile-filter-modal');
+			const modal = fixture.nativeElement.querySelector('ion-modal.form-1column');
 			expect(modal.expandToScroll).toBeFalse();
 		});
 

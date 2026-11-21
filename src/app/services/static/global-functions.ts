@@ -704,74 +704,64 @@ export var lib = {
 
 		return new Promise((resolve) => {
 			let resp = items;
-			let headerItems = [];
-
-			if (resp.length) {
-				for (var key in resp[0]) {
-					headerItems.push(key);
-				}
-				let removePros = ['IDParent', 'IDBranch', 'Id', 'Code', 'Name'];
-				headerItems = headerItems.filter((d) => removePros.findIndex((i) => i == d) == -1);
-			}
-
-			let flatHeader = headerItems.map((e) => e.Name);
 			listItems = resp;
 			listItems.sort((a, b) => (a.Sort > b.Sort ? 1 : b.Sort > a.Sort ? -1 : 0));
 			treeItems = [];
-			this.buildSubNode(listItems, treeItems, root, flatHeader);
 
-			//load saved state
-			let currentParent = null;
+			// Snapshot before buildSubNode: treeState often shares object refs with items,
+			// and buildSubNode mutates show/showdetail on those refs.
+			const savedState = (treeState || []).map((d) => ({
+				Id: d?.Id,
+				showdetail: d?.showdetail,
+			}));
+			const isRebuild = savedState.some((d) => d.Id != null);
+			const newIds = [];
+
+			this.buildSubNode(listItems, treeItems, root, isAllRowOpened);
+
+			const findNode = (id) => (id == null || id === '' ? null : treeItems.find((d) => d.Id == id));
+
+			// 1) Restore expand flags only. Do not reuse prior `show` — recompute from parent chain.
 			treeItems.forEach((i) => {
-				currentParent = treeItems.find((d) => d.Id == i.IDParent);
-
-				let f = treeState.find((d) => d.Id == i.Id);
+				const f = savedState.find((d) => d.Id == i.Id);
 				if (f) {
-					i.show = !currentParent ? true : currentParent.showdetail && f.show ? true : false;
-					i.showdetail = f.showdetail ? true : false;
+					i.showdetail = !!f.showdetail;
 				} else {
-					i.show = !currentParent ? true : currentParent.showdetail;
 					i.showdetail = isAllRowOpened;
+					if (isRebuild) {
+						newIds.push(i.Id);
+					}
 				}
 			});
 
-			let needCalcItems = treeItems.filter((i) => {
-				return i.Code ? i.Code.indexOf('=') > -1 : false;
+			// 2) Newly inserted nodes must be visible → expand ancestors on rebuild.
+			newIds.forEach((id) => {
+				let parent = findNode(findNode(id)?.IDParent);
+				while (parent) {
+					parent.showdetail = true;
+					parent = findNode(parent.IDParent);
+				}
 			});
 
-			flatHeader.forEach((h) => {
-				needCalcItems.forEach((c) => {
-					let fomular = c.Code.split('=')[1];
-					let groups = fomular.match(/(\([0-9]+\))/g);
-					groups?.forEach((g) => {
-						fomular = fomular.split(g).join('treeItems.find(i=> i.Code && i.Code.indexOf("' + g + '")==0)["' + h + '"]');
-					});
-					try {
-						// Sử dụng Function constructor thay vì eval để an toàn hơn
-						const func = new Function('treeItems', `return ${fomular}`);
-						c[h] = func(treeItems);
-					} catch (error) {
-						//console.log(error);
-					}
-				});
+			// 3) Visibility: root/orphan always shown; child shown iff parent is shown + expanded.
+			treeItems.forEach((i) => {
+				const parent = findNode(i.IDParent);
+				if (!parent) {
+					i.show = true;
+				} else {
+					i.show = !!(parent.show && parent.showdetail);
+				}
 			});
 
 			treeItems.forEach((i) => {
 				i.HasChild = resp.findIndex((d) => d.IDParent == i.Id) > -1;
-				flatHeader.forEach((h) => {
-					if (i[h]) {
-						i[h] = lib.formatMoney(i[h], 0, '', '.');
-					} else {
-						i[h] = 0;
-					}
-				});
 			});
 
 			resolve(treeItems);
 		});
 	},
 
-	buildSubNode(listItem, treeItems, item, hierarchicalSumCols = [], isAllRowOpened = true) {
+	buildSubNode(listItem, treeItems, item, isAllRowOpened = true) {
 		let idp = item == null ? null : item.Id;
 		let childrent = listItem.filter((d) => d.IDParent == idp && idp !== undefined);
 
@@ -797,19 +787,7 @@ export var lib = {
 			i.show = item == null ? true : false;
 			i.showdetail = isAllRowOpened;
 
-			this.buildSubNode(listItem, treeItems, i, hierarchicalSumCols);
-
-			if (item) {
-				hierarchicalSumCols.forEach((col) => {
-					if (!i[col]) {
-						i[col] = 0;
-					}
-					// if(!item.IsRevenue){
-					//     i[col] = i[col] * -1;
-					// }
-					item[col] += i[col];
-				});
-			}
+			this.buildSubNode(listItem, treeItems, i, isAllRowOpened);
 		});
 	},
 

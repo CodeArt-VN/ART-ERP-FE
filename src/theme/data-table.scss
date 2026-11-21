@@ -230,6 +230,10 @@ app-data-table,
 		min-height: 20px;
 	}
 
+	.cell p {
+		margin: 8px 0;
+	}
+
 	.cell {
 		display: flex;
 		flex: 1;
@@ -715,6 +719,23 @@ app-data-table,
 		text-overflow: ellipsis;
 	}
 
+	ion-badge {
+		font-weight: normal;
+	}
+
+	ion-chip {
+		height: 24px;
+		min-height: 24px;
+		margin: 0 4px 0 0;
+		padding: 0 8px;
+		border-radius: 3px;
+		font-size: 12px;
+
+		ion-icon {
+			margin-inline-end: 4px;
+		}
+	}
+
 	.col-status {
 		max-width: 125px;
 		min-width: 125px;
@@ -977,15 +998,15 @@ app-data-table,
 					margin-left: -35px;
 					min-width: 35px !important;
 					max-width: 35px !important;
-					padding: 0 !important;
 					margin-right: 0px;
+					align-items: flex-start;
 				}
 
 				.col-id {
 					order: 1;
 					min-width: fit-content !important;
 					max-width: fit-content !important;
-					padding: 0 !important;
+					align-items: flex-start;
 
 					> a {
 						//margin-bottom: 5px;
@@ -1721,20 +1742,7 @@ ion-content.scrollx {
 	}
 }
 
-ion-modal.mobile-filter-modal {
-	--width: 100%;
-	--border-radius: 16px 16px 0 0;
-	align-items: flex-end;
-	justify-content: center;
-
-	&::part(content) {
-		border-radius: 16px 16px 0 0;
-	}
-
-	@media screen and (min-width: 768px) {
-		--width: min(440px, calc(100% - 48px));
-	}
-}
+/* Filter sheet uses ion-modal.form-1column (theme/common.scss) — no per-table size class. */
 
 .history-removed-row {
 	background-color: rgba(var(--ion-color-danger-rgb), 0.1) !important;

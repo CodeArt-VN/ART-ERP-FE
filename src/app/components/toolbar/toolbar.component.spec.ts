@@ -88,4 +88,17 @@ describe('ToolbarComponent search', () => {
 		component.onSearchClick({ metaKey: true, preventDefault() {} } as MouseEvent);
 		expect(sources).toEqual(['modifier', 'modifier']);
 	});
+
+	it('asks for the popup on a plain click even on a wide screen so IsShowFilterPopup tables can claim it', () => {
+		matchMediaSpy.and.returnValue({ matches: false, addEventListener: () => {}, removeEventListener: () => {} });
+		const bus = TestBed.inject(DataTableMobileFilterService);
+		let opened = false;
+		bus.requests$.subscribe((req) => {
+			expect(req.source).toBe('click');
+			req.register({ inOverlay: false, area: 10, open: () => (opened = true) });
+		});
+		component.onSearchClick();
+		expect(opened).toBeTrue();
+		expect(component.page.pageConfig.isShowSearch).toBeFalse();
+	});
 });

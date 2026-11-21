@@ -444,6 +444,12 @@ export class DataTableComponent implements OnInit, OnDestroy, AfterViewChecked {
 	@Input() mobileFilter = true;
 
 	/**
+	 * True makes the toolbar search button open the filter popup on every screen size
+	 * instead of toggling the inline filter row. Ctrl/Command+click does this for any table.
+	 */
+	@Input() IsShowFilterPopup = false;
+
+	/**
 	 * True when this table should use the bottom sheet instead of the inline filter row.
 	 * Phone always. Up to the card-layout breakpoint, only tables with class `responsive` / `small-width`.
 	 */
@@ -821,14 +827,19 @@ export class DataTableComponent implements OnInit, OnDestroy, AfterViewChecked {
 		return field;
 	}
 
-	private canOpenFilterSheet(source: 'compact' | 'modifier'): boolean {
+	private canOpenFilterSheet(source: 'click' | 'modifier'): boolean {
 		if (!this.mobileFilter || !this.filterColumns.length || !this.isHostVisible()) {
 			return false;
 		}
 		if (source === 'modifier') {
 			return true;
 		}
-		return this.sheetFilter;
+		return this.sheetFilter || this.IsShowFilterPopup;
+	}
+
+	/** True when the inline filter row is replaced by the popup (compact screen or IsShowFilterPopup). */
+	get usesFilterPopup(): boolean {
+		return this.sheetFilter || (this.mobileFilter && this.IsShowFilterPopup);
 	}
 
 	private isInsideOverlay(): boolean {

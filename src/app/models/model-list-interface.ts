@@ -1592,6 +1592,16 @@ export interface CRM_Activity
     ModifiedBy?: string;
     CreatedDate?: Date;
     ModifiedDate?: Date;
+    TaskType?: string;
+    IsRequired?: boolean;
+    Status?: string;
+    CompletedDate?: Date;
+    DocumentType?: string;
+    IDDocument?: number;
+    IDOwner?: number;
+    IDContract?: number;
+    IDStage?: number;
+    IDStageTask?: number;
     
 
 }
@@ -2043,6 +2053,83 @@ export interface CRM_Customer
 }
 
 
+export interface CRM_Hall
+{
+    IDParent?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    HallType?: string;
+    LineNo?: number;
+    Floor?: string;
+    HallKind?: string;
+    AreaSqm?: number;
+    SizeText?: string;
+    CapCircle?: number;
+    CapBuffet?: number;
+    CapTheater?: number;
+    CapClass?: number;
+    CapSemicircle?: number;
+    CapLetterU?: number;
+    CapSquare?: number;
+    MinGuests?: number;
+    MaxGuests?: number;
+    MinTables?: number;
+    MaxTables?: number;
+    ExternalSource?: string;
+    ExternalId?: string;
+    ExternalCode?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+
+}
+
+
+export interface CRM_HallBooking
+{
+    IDHall?: number;
+    IDOpportunity?: number;
+    IDContract?: number;
+    IDOwner?: number;
+    IDEventType?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    BookingGroupCode?: string;
+    EventDate?: Date;
+    SessionCode?: string;
+    TimeFrom?: Date;
+    TimeTo?: Date;
+    Purpose?: string;
+    Status?: string;
+    HoldExpiredAt?: Date;
+    Tables?: number;
+    Guests?: number;
+    ExternalSource?: string;
+    ExternalId?: string;
+    ExternalCode?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+
+}
+
+
 export interface CRM_Lead
 {
     IDCampaign?: number;
@@ -2199,6 +2286,46 @@ export interface CRM_Opportunity
     RefSourceID?: number;
     RefOwnerID?: number;
     RefAccountCode?: string;
+    StageChangedDate?: Date;
+    IsClosed?: boolean;
+    ClosedType?: string;
+    LostRemark?: string;
+    QualificationData?: string;
+    PipelineReason?: string;
+    QualifiedBy?: string;
+    QualifiedDate?: Date;
+    IDPipeline?: number;
+    IDLostReason?: number;
+    
+
+}
+
+
+export interface CRM_OpportunityStageHistory
+{
+    IDOpportunity?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    FromStageName?: string;
+    ToStageName?: string;
+    DurationHours?: number;
+    Note?: string;
+    Source?: string;
+    ExternalRef?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDPipeline?: number;
+    IDFromStage?: number;
+    IDToStage?: number;
+    IDLostReason?: number;
     
 
 }
@@ -2336,6 +2463,114 @@ export interface CRM_PersonInfo
     CreatedDate?: Date;
     ModifiedDate?: Date;
     Name?: string;
+    
+
+}
+
+
+export interface CRM_Pipeline
+{
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Icon?: string;
+    Color?: string;
+    IsDefault?: boolean;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    PostSignMode?: string;
+    
+
+}
+
+
+export interface CRM_PipelineRule
+{
+    IDPipeline?: number;
+    IDTargetBranch?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    CustomerType?: string;
+    MinGuests?: number;
+    MaxGuests?: number;
+    CustomerHistory?: string;
+    Priority?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    IDServiceType?: number;
+    
+
+}
+
+
+export interface CRM_PipelineStage
+{
+    IDPipeline?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    Icon?: string;
+    Color?: string;
+    Outcome?: string;
+    Probability?: number;
+    ExpectedDays?: number;
+    SLAHours?: number;
+    IsRequireLostReason?: boolean;
+    RequiredFields?: string;
+    Guide?: string;
+    ExternalNames?: string;
+    HoldDays?: number;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
+    
+
+}
+
+
+export interface CRM_PipelineStageTask
+{
+    IDPipeline?: number;
+    IDStage?: number;
+    IDBranch?: number;
+    Id?: number;
+    Code?: string;
+    Name?: string;
+    Remark?: string;
+    TaskType?: string;
+    DocumentType?: string;
+    IsRequired?: boolean;
+    DueOffsetDays?: number;
+    TemplateCode?: string;
+    Guide?: string;
+    Sort?: number;
+    IsDisabled?: boolean;
+    IsDeleted?: boolean;
+    CreatedBy?: string;
+    ModifiedBy?: string;
+    CreatedDate?: Date;
+    ModifiedDate?: Date;
     
 
 }

@@ -5,7 +5,7 @@
 	(sort)="onSort($event)"
 	class="row header sticky-header bold"
 ></datatable-header>
-<form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup && !sheetFilter">
+<form [formGroup]="formGroup" (submit)="onFilterSubmit($event)" action="#" *ngIf="showFilter && formGroup && !usesFilterPopup">
 	<datatable-header
 		[formGroup]="formGroup"
 		(filterInputChange)="onFilterSubmit($event)"
@@ -47,7 +47,7 @@
 
 <ion-modal
 	*ngIf="sheetFilter || filterSheetOpen"
-	class="mobile-filter-modal"
+	class="form-1column"
 	[isOpen]="filterSheetOpen"
 	[initialBreakpoint]="0.5"
 	[breakpoints]="[0, 0.25, 0.5, 0.75, 1]"
@@ -67,21 +67,23 @@
 				</ion-buttons>
 			</ion-toolbar>
 		</ion-header>
-		<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
+		<ion-content [fullscreen]="true" appScrollbarTheme>
 			<form *ngIf="formGroup" [formGroup]="formGroup" (submit)="applyMobileFilters($event)">
-				<ion-grid fixed>
-					<ion-row>
-						<ion-col size="12">
-							<ng-container *ngFor="let column of filterColumns">
-								<div class="c-control" *ngIf="column.filterTemplate">
-									<label class="c-label" *ngIf="column.name">{{ column.name | translate }}</label>
-									<ng-container *ngTemplateOutlet="column.filterTemplate; context: column"></ng-container>
-								</div>
-								<app-form-control *ngIf="!column.filterTemplate" [field]="filterField(column)"></app-form-control>
-							</ng-container>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+				<div class="edit-box">
+					<ion-grid fixed>
+						<ion-row>
+							<ion-col size="12">
+								<ng-container *ngFor="let column of filterColumns">
+									<div class="c-control" *ngIf="column.filterTemplate">
+										<label class="c-label" *ngIf="column.name">{{ column.name | translate }}</label>
+										<ng-container *ngTemplateOutlet="column.filterTemplate; context: column"></ng-container>
+									</div>
+									<app-form-control *ngIf="!column.filterTemplate" [field]="filterField(column)"></app-form-control>
+								</ng-container>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div>
 				<button type="submit" hidden>Apply</button>
 			</form>
 		</ion-content>

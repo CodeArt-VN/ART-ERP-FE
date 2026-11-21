@@ -4,6 +4,15 @@
 	}
 }
 
+/* Narrow phone: drop the 16px form side indent inside popups */
+@media screen and (max-width: calc(425px)) {
+	ion-modal .modal-wrapper form,
+	ion-modal form {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
 .hr-group {
 	border-bottom: 1px dashed var(--menu-right-border-color);
 	padding-top: 30px;

@@ -8,14 +8,15 @@ export interface MobileFilterClaim {
 }
 
 export interface MobileFilterRequest {
-	/** compact: phone/card layout. modifier: Ctrl/Command+click on the desktop toolbar. */
-	source: 'compact' | 'modifier';
+	/** click: plain toolbar click. modifier: Ctrl/Command+click, which always asks for the popup. */
+	source: 'click' | 'modifier';
 	register: (claim: MobileFilterClaim) => void;
 }
 
 /**
  * Toolbar search asks; the visible list table claims and opens its sheet.
- * Compact layout claims on every search click. Desktop claims only for Ctrl/Command+click.
+ * A plain click is claimed on compact layouts or by a table with IsShowFilterPopup.
+ * Ctrl/Command+click is claimed by any visible table that has filter columns.
  * Tables that do not claim (custom filter headers) leave the toolbar on the old toggle.
  */
 @Injectable({ providedIn: 'root' })
@@ -26,7 +27,7 @@ export class DataTableMobileFilterService {
 	readonly activeCount$ = new BehaviorSubject<number>(0);
 	private countOwner: object | null = null;
 
-	requestOpen(source: 'compact' | 'modifier' = 'compact'): boolean {
+	requestOpen(source: 'click' | 'modifier' = 'click'): boolean {
 		const claims: MobileFilterClaim[] = [];
 		this.requests.next({
 			source,

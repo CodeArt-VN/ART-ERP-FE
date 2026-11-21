@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { AdvanceFilterModalComponent } from 'src/app/modals/advance-filter-modal/advance-filter-modal.component';
 import { EnvService } from 'src/app/services/core/env.service';
 import { HistoryLogPopoverComponent } from './history-log-popover.component';
-import { DATA_TABLE_COMPACT_MQ } from '../data-table/data-table-layout';
 import { DataTableMobileFilterService } from '../data-table/data-table-mobile-filter.service';
 
 @Component({
@@ -91,15 +90,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 		this.filterCountSub?.unsubscribe();
 	}
 
-	/** Compact screens open the sheet. Desktop Ctrl/Command+click opens the same sheet. */
+	/**
+	 * A visible list table opens its filter popup when it is on a compact screen, has IsShowFilterPopup,
+	 * or the click holds Ctrl/Command. Otherwise the inline filter row toggles.
+	 */
 	onSearchClick(event?: MouseEvent) {
 		const modifier = !!(event?.ctrlKey || event?.metaKey);
-		const compact = typeof window !== 'undefined' && window.matchMedia?.(DATA_TABLE_COMPACT_MQ).matches;
-		if (modifier && this.mobileFilter.requestOpen('modifier')) {
-			event?.preventDefault();
-			return;
-		}
-		if (compact && this.mobileFilter.requestOpen('compact')) {
+		if (this.mobileFilter.requestOpen(modifier ? 'modifier' : 'click')) {
+			if (modifier) {
+				event?.preventDefault();
+			}
 			return;
 		}
 		if (this.page?.pageConfig) {

@@ -151,6 +151,7 @@
 
 @media (prefers-color-scheme: dark) {
 	.inholdings-theme:not(.light) .fc .fc-event-main [style*='--event-ink'],
+	.adora-theme:not(.light) .fc .fc-event-main [style*='--event-ink'],
 	.default-theme:not(.light) .fc .fc-event-main [style*='--event-ink'] {
 		color: var(--event-ink);
 	}

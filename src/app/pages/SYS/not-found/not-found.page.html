@@ -1,11 +1,8 @@
 <ion-header [translucent]="true">
-	<ion-toolbar *ngIf="!pageConfig.isShowSearch">
-		<ion-buttons slot="start">
-			<ion-back-button *ngIf="!isFromLogin"></ion-back-button>
-			<ion-button color="dark"> {{'Cannot find' | translate}} </ion-button>
-		</ion-buttons>
-	</ion-toolbar>
+	<app-toolbar [page]="this" [pageTitle]="'Cannot find'"></app-toolbar>
 </ion-header>
+
+
 
 <!-- <ion-content [fullscreen]="true" appScrollbarTheme>
 	<div class="one-col ion-padding">
