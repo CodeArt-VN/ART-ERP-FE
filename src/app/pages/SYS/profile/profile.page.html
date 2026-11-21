@@ -2,22 +2,21 @@
 	<app-toolbar [page]="this"></app-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" appScrollbarTheme class="ion-padding">
-	<div class="one-col ion-padding">
-		<div class="ion-text-center" *ngIf="env.user">
-			<ion-avatar class="avatar" slot="start">
-				<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
-			</ion-avatar>
-			<div class="full-name">{{ env.user.FullName }}</div>
-			<div class="user-name">{{ env.user.UserName || env.user.Email }}</div>
+<ion-content [fullscreen]="true" appScrollbarTheme>
+	<div class="safe-max-width main-view">
+		<div class="one-col profile-hero" *ngIf="env.user">
+			<div class="ion-text-center">
+				<ion-avatar class="avatar" slot="start">
+					<ion-img #img [src]="env.user.Avatar || 'assets/avartar-empty.jpg'" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+				</ion-avatar>
+				<div class="full-name">{{ env.user.FullName }}</div>
+				<div class="user-name">{{ env.user.UserName || env.user.Email }}</div>
+			</div>
+			<ion-button color="primary" class="logout shadow" (click)="logout()" expand="block">{{ 'Account sign - out' | translate }} </ion-button>
 		</div>
-		<ion-button color="primary" class="logout shadow" (click)="logout()" expand="block">{{ 'Account sign - out' | translate }} </ion-button>
-		<div class="ion-margin ion-padding"></div>
-	</div>
 
-	<div class="main-view">
 		<div class="row-full shadow full-screen">
-			<div class="ion-padding">
+			<div class="ion-padding profile-body">
 				<ion-grid fixed>
 					<!-- Face ID / biometrics -->
 					<ion-row class="hr-group" *ngIf="showBiometricSection">

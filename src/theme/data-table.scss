@@ -1496,11 +1496,18 @@ app-data-table.is-empty {
 	flex-direction: column;
 	box-sizing: border-box;
 
+	// Beat responsive / small-width `datatable-body { flex: none }` (card lists like opportunity).
+	// Without this the body stays content-sized (~padding only) and page-message collapses to 0px —
+	// spinner and empty copy are in the DOM but invisible.
+	&.responsive > datatable-body,
+	&.responsive.small-width > datatable-body,
 	> datatable-body {
 		flex: 1 1 auto;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+		// small-width sets padding-bottom for card gaps; keep it from being the only height
+		height: auto;
 
 		// display:flex (not height:100%) on purpose — a flex item's flex-stretched height
 		// isn't a valid containing block for a percentage-height *child* (it stays 0 here),
